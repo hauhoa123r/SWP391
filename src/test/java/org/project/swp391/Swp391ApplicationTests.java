@@ -1,10 +1,10 @@
-package org.project.swp291;
+package org.project.swp391;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Swp291ApplicationTests {
+class Swp391ApplicationTests {
 
     @Test
     void contextLoads() {
