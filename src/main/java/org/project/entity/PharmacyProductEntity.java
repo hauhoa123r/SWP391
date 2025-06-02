@@ -20,7 +20,7 @@ public class PharmacyProductEntity {
 	@Column(name="product_id", nullable = false)
 	private long id;
 	
-	@Column(name="name")
+	@Column(name="name",columnDefinition = "varchar(255)")
 	private String name;
 	
 	@Column(name="type")
@@ -29,9 +29,9 @@ public class PharmacyProductEntity {
 	@Column(name = "price", columnDefinition = "DECIMAL", precision = 10, scale = 2)
 	private BigDecimal price;
 	
-	@Column(name="unit", nullable = false)
+	@Column(name="unit", columnDefinition = "varchar(50)")
 	private String unit;
 	
-	@Column(name="avatar", nullable = false)
+	@Column(name="avatar", columnDefinition = "varchar(255)")
 	private String avatar;
 }

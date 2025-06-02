@@ -1,5 +1,10 @@
 package org.project.entity;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
+import org.project.enums.OrderStatus;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,4 +23,18 @@ public class PrescriptionOrderEntity {
 	@Column(name="order_id",nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	
+	private long patientId;
+	
+	private long staffId;
+	
+	private long appointmentId;
+	
+	@Column(name = "total", columnDefinition = "DECIMAL", precision = 10, scale = 2)
+	private BigDecimal total;
+	@Column(name="status")
+	private OrderStatus status;
+	
+	@Column(name="created_at", columnDefinition = "datetime")
+	private Date createdAt;
 }

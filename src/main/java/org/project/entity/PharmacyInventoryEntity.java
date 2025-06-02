@@ -17,8 +17,9 @@ public class PharmacyInventoryEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name="product_id", nullable = false)
-	private long productId;
+	@ManyToOne
+	@JoinColumn(name="product_id",columnDefinition = "BIGINT")
+	private PharmacyProductEntity pharmacyProductEntity;
 	
 	@Column(name="current_stock")
 	private int currentStock;

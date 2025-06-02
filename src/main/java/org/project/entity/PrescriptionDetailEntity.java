@@ -21,21 +21,21 @@ public class PrescriptionDetailEntity {
 	private long id;
 	
 	@ManyToOne
-	@JoinColumn(name="order_id")
+	@JoinColumn(name="order_id", columnDefinition = "bigint")
 	private PrescriptionOrderEntity prescriptionOrderEntity;
 	
 	@ManyToOne
-	@JoinColumn(name="product_id")
+	@JoinColumn(name="product_id", columnDefinition = "bigint")
 	private PharmacyProductEntity PharmacyProductEntity;
 	
 	@ManyToOne
-	@JoinColumn(name="ingredient_id")
+	@JoinColumn(name="ingredient_id", columnDefinition = "bigint")
 	private ActiveIngredientEntity activeIngredientEntity;
 	
-	@Column(name="custom_strength")
+	@Column(name="custom_strength", columnDefinition = "varchar(100)")
 	private String customStrength;
 	
-	@Column(name="dosage")
+	@Column(name="dosage", columnDefinition = "text")
 	private String dosage;
 	
 	@Column(name="duration_days")

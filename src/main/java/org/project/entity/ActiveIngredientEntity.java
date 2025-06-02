@@ -20,14 +20,14 @@ public class ActiveIngredientEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name="chemical_name")
+	@Column(name="chemical_name",columnDefinition = "varchar(255)")
 	private String chemicalName;
-	@Column(name="generic_name")
+	@Column(name="generic_name",columnDefinition = "varchar(255)")
 	private String genericName;
-	@Column(name="description")
+	@Column(name="description",columnDefinition = "text")
 	private String description;
-	@Column(name="therapeutic_class")
+	@Column(name="therapeutic_class",columnDefinition = "varchar(255)")
 	private String therapeuticClass;
-	@Column(name="atc_code")
+	@Column(name="atc_code",columnDefinition = "varchar(50)")
 	private String atcCode;
 }
