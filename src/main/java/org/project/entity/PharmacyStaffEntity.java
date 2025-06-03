@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,6 +32,6 @@ public class PharmacyStaffEntity {
     @JoinColumn(name = "account_id")
     private AccountEntity accountEntity;
 
-    @OneToMany(mappedBy = "pharmacyStaffEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pharmacyStaffEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SupplierTransactionEntity> supplierTransactionEntities;
 }

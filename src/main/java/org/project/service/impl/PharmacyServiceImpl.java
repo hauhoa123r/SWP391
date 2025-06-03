@@ -28,7 +28,7 @@ public class PharmacyServiceImpl implements PharmacyService {
         String normalized = normalize(name);
         if (normalized == null) return getAllPharmacies();
         return toConverterPharmacy.toConverterPharmacyProductList(
-            pharmacyProductRepository.findByNameContainingIgnoreCase(normalized)
+                pharmacyProductRepository.findByNameContainingIgnoreCase(normalized)
         );
     }
 
@@ -38,7 +38,7 @@ public class PharmacyServiceImpl implements PharmacyService {
         maxPrice = safeMax(maxPrice);
         validatePriceRange(minPrice, maxPrice);
         return toConverterPharmacy.toConverterPharmacyProductList(
-            pharmacyProductRepository.findByPriceBetween(minPrice, maxPrice)
+                pharmacyProductRepository.findByPriceBetween(minPrice, maxPrice)
         );
     }
 
@@ -47,7 +47,7 @@ public class PharmacyServiceImpl implements PharmacyService {
         String normalized = normalize(type);
         if (normalized == null) return getAllPharmacies();
         return toConverterPharmacy.toConverterPharmacyProductList(
-            pharmacyProductRepository.findByType(normalized)
+                pharmacyProductRepository.findByType(normalized)
         );
     }
 

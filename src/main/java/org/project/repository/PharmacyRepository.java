@@ -17,8 +17,8 @@ public interface PharmacyRepository extends JpaRepository<PharmacyProductEntity,
 
     @Query("SELECT p FROM PharmacyProductEntity p WHERE p.price BETWEEN :minPrice AND :maxPrice")
     List<PharmacyProductEntity> findByPriceBetween(
-        @Param("minPrice") BigDecimal minPrice, 
-        @Param("maxPrice") BigDecimal maxPrice
+            @Param("minPrice") BigDecimal minPrice,
+            @Param("maxPrice") BigDecimal maxPrice
     );
 
     // Sửa lại cho đúng signature: tìm chính xác theo type
@@ -26,15 +26,15 @@ public interface PharmacyRepository extends JpaRepository<PharmacyProductEntity,
 
     // Advanced search
     @Query("SELECT p FROM PharmacyProductEntity p WHERE " +
-           "(:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
-           "(:type IS NULL OR p.type = :type) AND " +
-           "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
-           "(:maxPrice IS NULL OR p.price <= :maxPrice)")
+            "(:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
+            "(:type IS NULL OR p.type = :type) AND " +
+            "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
+            "(:maxPrice IS NULL OR p.price <= :maxPrice)")
     List<PharmacyProductEntity> advancedSearch(
-        @Param("name") String name,
-        @Param("type") String type,
-        @Param("minPrice") BigDecimal minPrice,
-        @Param("maxPrice") BigDecimal maxPrice
+            @Param("name") String name,
+            @Param("type") String type,
+            @Param("minPrice") BigDecimal minPrice,
+            @Param("maxPrice") BigDecimal maxPrice
     );
 
     // Lấy chi tiết thuốc (có thể join fetch inventory nếu cần)

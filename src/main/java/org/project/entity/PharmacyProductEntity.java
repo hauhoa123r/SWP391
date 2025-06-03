@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.List;
 
 @Entity
 @Table(name = "pharmacy_products")
@@ -34,23 +35,21 @@ public class PharmacyProductEntity {
     @Column(name = "unit", nullable = false)
     private String unit;
 
-    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PharmacyInventoryEntity> pharmacyInventoryEntities;
 
-    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<InventoryBatchEntity> inventoryBatchEntities;
 
-    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TransactionDetailEntity> transactionDetailEntities;
 
-    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SubscribedPackageEntity> subscribedPackageEntities;
 
-    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PrescriptionDetailEntity> prescriptionDetailEntities;
 
-    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pharmacyProductEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductFeedbackEntity> productFeedbackEntities;
-
-
 }
