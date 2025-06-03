@@ -25,8 +25,8 @@ public class ShopController {
         return mv;
     }
 
-    @GetMapping("/product-standard/{id}")
-    public ModelAndView product(@PathVariable("id") Long id) {
+    @GetMapping("/product-standard")
+    public ModelAndView product() {
         ModelAndView mv = new ModelAndView("product-standard");
         // Lấy chi tiết sản phẩm theo ID (cần thêm phương thức trong PharmacyService)
 //        PharmacyListResponse product = pharmacyServiceImpl.getPharmacyById(id);
