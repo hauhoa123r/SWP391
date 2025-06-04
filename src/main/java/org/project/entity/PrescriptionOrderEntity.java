@@ -1,7 +1,8 @@
 package org.project.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+
 
 import org.project.enums.OrderStatus;
 
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Entity
 @Table(name="prescription_orders")
 @Getter
 @Setter
@@ -23,8 +25,9 @@ public class PrescriptionOrderEntity {
 	@Column(name="order_id",nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	private long patientId;
+	@ManyToOne
+	@JoinColumn(name="patient_id")
+	private PatientProfileEntity patientProfileEntity;
 	
 	private long staffId;
 	
@@ -36,5 +39,5 @@ public class PrescriptionOrderEntity {
 	private OrderStatus status;
 	
 	@Column(name="created_at", columnDefinition = "datetime")
-	private Date createdAt;
+	private SimpleDateFormat createdAt;
 }

@@ -17,8 +17,9 @@ public class PatientProfileEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="patient_id",nullable = false)
 	private long id;
-	
-	private long memberId;
+	@ManyToOne
+	@JoinColumn(name="member_id")
+	private FamilyMemberEntity familyMemberEntity;
 	@Column(name="insurance_number",columnDefinition = "varchar(255)")
 	private String insuranceNumber;
 	@Column(name="primary_contact",columnDefinition = "varchar(20)")

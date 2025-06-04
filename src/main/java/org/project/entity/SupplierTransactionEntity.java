@@ -1,7 +1,8 @@
 package org.project.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,5 +30,5 @@ public class SupplierTransactionEntity {
 	private BigDecimal totalAmount;
 	
 	@Column(name="transaction_date", columnDefinition = "datetime")
-	private Date transasctionDate;
+	private SimpleDateFormat transasctionDate;
 }

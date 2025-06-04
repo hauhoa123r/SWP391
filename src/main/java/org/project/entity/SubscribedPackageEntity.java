@@ -1,5 +1,6 @@
 package org.project.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import jakarta.persistence.*;
@@ -17,14 +18,15 @@ public class SubscribedPackageEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="subscription_id", nullable = false)
 	private long id;
-	
-	private long patientId;
+	@ManyToOne
+	@JoinColumn(name="patient_id")
+	private PatientProfileEntity patientProfileEntity;
 	
 	@ManyToOne
 	@JoinColumn(name="product_id")
 	private PharmacyProductEntity pharmacyProductEntity;
 	@Column(name="start_date", columnDefinition = "date")
-	private Date startDate;
+	private SimpleDateFormat startDate;
 	@Column(name="end_date", columnDefinition = "date")
-	private Date endDate;
+	private SimpleDateFormat endDate;
 }

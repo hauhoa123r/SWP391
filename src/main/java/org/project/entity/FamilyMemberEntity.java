@@ -20,8 +20,9 @@ public class FamilyMemberEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="member_id", nullable = false)
 	private long id;
-	
-	private long accountId;
+	@ManyToOne
+	@JoinColumn(name="account_id")
+	private AccountEntity accountEntity;
 	@Column(name="name", columnDefinition = "varchar(255)")
 	private String name;
 	@Column(name="relationship")
