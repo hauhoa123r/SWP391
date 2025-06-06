@@ -15,6 +15,6 @@ public class UserController {
 
     @GetMapping("")
     public String hello(Model model) {
-        return "product-home";
+        return "frontend/product-home";
     }
 }
