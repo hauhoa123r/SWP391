@@ -34,7 +34,10 @@ public class PharmacyProductEntity {
 
     @Column(name = "unit", nullable = false)
     private String unit;
-
+    
+    @Column(name = "avatar") 
+    private String avatar; 
+    
     @OneToMany(mappedBy = "pharmacyProductEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PharmacyInventoryEntity> pharmacyInventoryEntities;
 

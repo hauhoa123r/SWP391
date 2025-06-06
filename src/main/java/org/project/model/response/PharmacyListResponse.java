@@ -11,7 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PharmacyListResponse {
     private String name;
+    private String type; 
     private Long price;
-    private String imageUrl;
     private String unit;
+    private String avatar; 
 }

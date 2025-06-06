@@ -1,6 +1,7 @@
 package org.project.model.dto;
 
 public class UserLoginDTO {
+	//login just using username and password 
     private String username;
     private String password;
 
