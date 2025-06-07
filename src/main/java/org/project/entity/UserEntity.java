@@ -1,43 +1,61 @@
 package org.project.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.util.Date;
+import java.time.Instant;
 
-@Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "user")
+@Entity
+@Table(name = "users")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    Long id;
+    @Column(name = "user_id", nullable = false)
+    private Long id;
 
-    @Column(name = "full_name")
-    String fullName;
+    @Size(max = 255)
+    @Column(name = "username")
+    private String username;
 
-    @Column(name = "username", unique = true, nullable = false)
-    String username;
+    @Size(max = 255)
+    @Column(name = "email")
+    private String email;
 
-    @Column(name = "password", nullable = false)
-    String password;
+    @Size(max = 255)
+    @Column(name = "password_hash")
+    private String passwordHash;
 
-    @Column(name = "email", unique = true, nullable = false)
-    String email;
+    @Size(max = 255)
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-    @Column(name = "phone_number", unique = true, nullable = false)
-    String phoneNumber;
+    @Lob
+    @Column(name = "status")
+    private String status;
 
-    @Column(name = "created_date")
-    Date createdDate;
+    @Column(name = "last_login")
+    private Instant lastLogin;
 
-    @Column(name = "date_of_birth")
-    Date dateOfBirth;
+    @Size(max = 255)
+    @Column(name = "verification_token")
+    private String verificationToken;
 
+    @Column(name = "is_verified")
+    private Boolean isVerified;
+
+    @Column(name = "two_factor_enabled")
+    private Boolean twoFactorEnabled;
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
+    private Instant createdAt;
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "updated_at")
+    private Instant updatedAt;
 
 }
