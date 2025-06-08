@@ -2,13 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:replace="${title}">Doctor Dashboard</title>
-    <!-- Config Options -->
-
+    <link rel="stylesheet" th:href="@{/assets/css/doctor_fragment.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <div th:replace="/fragments/header.html"></div>
-    <div th:replace="${content}"></div>
-    <div th:replace="/fragments/footer.html"></div>
+    <div th:replace="~{/fragments/doctor_header.html}"></div>
+    <div th:replace="~{/fragments/doctor_slider.html}"></div>
+    <div th:replace="~{${content}}"></div>
 </body>
 </html>
