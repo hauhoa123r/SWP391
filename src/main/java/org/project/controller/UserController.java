@@ -16,7 +16,7 @@ public class UserController {
 
     @GetMapping("")
     public String hello(Model model) {
-        return "frontend/product-home";
+        return "redirect:/product-home";
     }
     //mapping for admin's dashboard 
     @GetMapping("/admin/dashboard") 

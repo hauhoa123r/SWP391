@@ -50,6 +50,8 @@ public class ShopController {
 	@GetMapping("/product-home")
 	public ModelAndView productHome() {
 		ModelAndView mv = new ModelAndView("frontend/product-home");
+		// Fetch top 10 products for the home page 
+		mv.addObject("products", pharmacyServiceImpl.findTop10Products());
 		return mv;
 	}
 

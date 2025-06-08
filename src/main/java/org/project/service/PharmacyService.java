@@ -21,4 +21,6 @@ public interface PharmacyService {
     List<PharmacyListResponse> findByName(String name); 
     //Delete by id 
     void deleteById(Long id); 
+    //select top 10 products for home page 
+    List<PharmacyListResponse> findTop10Products(); 
 }
