@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.project.enums.QualificationType;
+import org.project.enums.*;
 
 import java.sql.Date;
 

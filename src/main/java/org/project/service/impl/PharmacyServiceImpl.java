@@ -3,6 +3,7 @@ package org.project.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.project.converter.ConverterPharmacyProduct;
 import org.project.entity.PharmacyProductEntity;
+import org.project.entity.ProductEntity;
 import org.project.model.response.PharmacyListResponse;
 import org.project.repository.PharmacyRepository;
 import org.project.service.PharmacyService;
@@ -24,22 +25,22 @@ public class PharmacyServiceImpl implements PharmacyService {
 	@Override
 	public List<PharmacyListResponse> getAllPharmacies() {
 		// list contains entity with full info
-		List<PharmacyProductEntity> pharmacyProductEntity = pharmacyRepositoryImpl.findAll();
+		List<ProductEntity> pharmacyProductEntity = pharmacyRepositoryImpl.findAll();
 		// convert to list of entities with necessary infos
 		List<PharmacyListResponse> pharmacyListResponse = toConverterPharmacy
 				.toConverterPharmacyProductList(pharmacyProductEntity);
 		return pharmacyListResponse;
 	}
-
+	
 	@Override
-	public PharmacyProductEntity save(PharmacyProductEntity pharmacy) {
+	public ProductEntity save(ProductEntity pharmacy) {
 		// TODO Auto-generated method stub
 		// check if pharmacy is null
 		if (pharmacy == null) {
 			throw new NullPointerException();
 		}
 		// save
-		PharmacyProductEntity entity = pharmacyRepositoryImpl.save(pharmacy);
+		ProductEntity entity = pharmacyRepositoryImpl.save(pharmacy);
 		// return
 		return entity;
 	}
@@ -47,7 +48,7 @@ public class PharmacyServiceImpl implements PharmacyService {
 	@Override
 	public PharmacyListResponse findById(Long id) {
 		// TODO Auto-generated method stub
-		Optional<PharmacyProductEntity> pharmacy = pharmacyRepositoryImpl.findById(id);
+		Optional<ProductEntity> pharmacy = pharmacyRepositoryImpl.findById(id);
 		// Check
 		if (pharmacy.isPresent()) {
 			return toConverterPharmacy.toConverterPharmacyResponse(pharmacy.get());
@@ -60,7 +61,7 @@ public class PharmacyServiceImpl implements PharmacyService {
 	public List<PharmacyListResponse> findByType(String type) {
 		// TODO Auto-generated method stub
 		// Get the list of type
-		List<PharmacyProductEntity> pharmacyList = new ArrayList<>();
+		List<ProductEntity> pharmacyList = new ArrayList<>();
 		// search
 		pharmacyList = pharmacyRepositoryImpl.findByNameContaining(type);
 		// Check
@@ -74,7 +75,7 @@ public class PharmacyServiceImpl implements PharmacyService {
 	public List<PharmacyListResponse> findByName(String name) {
 		// TODO Auto-generated method stub
 		// Get the list of entity has the name
-		List<PharmacyProductEntity> pharmacyList = new ArrayList<>();
+		List<ProductEntity> pharmacyList = new ArrayList<>();
 		// search
 		pharmacyList = pharmacyRepositoryImpl.findByNameContaining(name);
 		// Check
@@ -91,7 +92,7 @@ public class PharmacyServiceImpl implements PharmacyService {
 		// TODO Auto-generated method stub
 		pharmacyRepositoryImpl.deleteById(id);
 		// find by id
-		Optional<PharmacyProductEntity> entity = pharmacyRepositoryImpl.findById(id);
+		Optional<ProductEntity> entity = pharmacyRepositoryImpl.findById(id);
 		// Check if entity is present
 		if (entity.isPresent()) {
 			System.out.println("Delete unsucessfully");
@@ -103,7 +104,7 @@ public class PharmacyServiceImpl implements PharmacyService {
 	public List<PharmacyListResponse> findTop10Products() {
 		// TODO Auto-generated method stub
 		// Get the list of top 10 products
-		List<PharmacyProductEntity> pharmacyList = pharmacyRepositoryImpl.findTop10Products();
+		List<ProductEntity> pharmacyList = pharmacyRepositoryImpl.findTop10Products();
 		// Check if the list is not empty
 		if (pharmacyList != null && !pharmacyList.isEmpty()) {
 			// Convert to response list

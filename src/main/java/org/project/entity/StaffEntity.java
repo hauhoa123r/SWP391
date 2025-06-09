@@ -8,8 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.project.enums.StaffRole;
-import org.project.enums.StaffType;
+import org.project.enums.*;
 
 import java.sql.Date;
 import java.util.LinkedHashSet;
