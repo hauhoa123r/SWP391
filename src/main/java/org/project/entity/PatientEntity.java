@@ -8,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -57,5 +58,8 @@ public class PatientEntity {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
     private Instant createdAt;
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    private List<MedicalProfileEntity> medicalProfile;
 
 }

@@ -28,11 +28,9 @@ public class MedicalProfileEntity {
     private String bloodType;
 
     @Column(name = "allergies")
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> allergies;
+    private String allergies;
 
     @Column(name = "chronic_diseases")
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> chronicDiseases;
+    private String chronicDiseases;
 
 }

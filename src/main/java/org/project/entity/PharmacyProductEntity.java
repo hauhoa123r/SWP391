@@ -17,23 +17,25 @@ import java.util.List;
 @AllArgsConstructor
 public class PharmacyProductEntity {
 
-    @Column(name = "product_id", nullable = false)
+    @Column(name = "pharmacy_product_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "type")
     private String type;
 
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "unit", nullable = false)
+    @Column(name = "unit")
     private String unit;
 
+    @Column(name = "avatar")
+    private String avatar;
     @OneToMany(mappedBy = "pharmacyProductEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<PharmacyInventoryEntity> pharmacyInventoryEntities;
 
