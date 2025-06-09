@@ -1,16 +1,15 @@
 package org.project.enums;
 
-public enum Gender {
-    MALE("MALE"),
-    FEMALE("FEMALE"),
-    OTHER("OTHER");
-    ;
+public enum Label {
+    NEW("NEW"),
+    SALE("SALE"),
+    STANDARD("STANDARD");
+
     private final String value;
 
-    Gender(String value) {
+    Label(String value) {
         this.value = value;
     }
-
     public String getValue() {
         return value;
     }
