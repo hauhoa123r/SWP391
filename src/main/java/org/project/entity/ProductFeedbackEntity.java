@@ -27,5 +27,5 @@ public class ProductFeedbackEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private PharmacyProductEntity pharmacyProductEntity;
+    private ProductEntity productEntity;
 }

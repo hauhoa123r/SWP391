@@ -1,14 +1,19 @@
 package org.project.controller;
 
+import jakarta.servlet.http.HttpSession;
+import org.project.enums.ProductSortType;
 import org.project.model.response.PharmacyListResponse;
 import org.project.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Comparator;
 
 
 @Controller
@@ -18,12 +23,68 @@ public class ShopController {
     private PharmacyService pharmacyServiceImpl;
 
     @GetMapping("/shop")
-    public ModelAndView shop() {
-        ModelAndView mv = new ModelAndView("shop");
-        List<PharmacyListResponse> products = pharmacyServiceImpl.getAllPharmacies();
+    public ModelAndView shop(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "sort", required = false) ProductSortType sort,
+            HttpSession session
+    ) {
+        ModelAndView mv = new ModelAndView("/shop");
+
+        String trimmedSearch = (search != null) ? search.trim() : null;
+        String previousSearch = (String) session.getAttribute("previousSearch");
+
+        boolean isNewSearch = trimmedSearch != null && !trimmedSearch.isEmpty()
+                && (previousSearch == null || !trimmedSearch.equals(previousSearch));
+
+        // Nếu là tìm kiếm mới, ép sort về DEFAULT
+        if (isNewSearch) {
+            sort = ProductSortType.DEFAULT;
+            session.setAttribute("previousSearch", trimmedSearch);
+        } else if (trimmedSearch == null || trimmedSearch.isEmpty()) {
+            // Nếu không có search, xóa session
+            trimmedSearch = null;
+            session.removeAttribute("previousSearch");
+            if (sort == null) {
+                sort = ProductSortType.DEFAULT;
+            }
+        }
+
+        // Lấy dữ liệu
+        List<PharmacyListResponse> products = (trimmedSearch != null)
+                ? pharmacyServiceImpl.searchByName(trimmedSearch)
+                : pharmacyServiceImpl.getAllPharmacies();
+
+        products = pharmacyServiceImpl.sortProducts(products, sort);
+
         mv.addObject("products", products);
+        mv.addObject("selectedSort", sort);
+        mv.addObject("search", trimmedSearch);
         return mv;
     }
+
+
+
+    @PostMapping("/submit")
+    public String search(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "sort", required = false) String sort
+    ) {
+        StringBuilder url = new StringBuilder("redirect:/shop");
+        boolean hasQuery = false;
+
+        if (search != null && !search.trim().isEmpty()) {
+            url.append("?search=").append(search.trim());
+            hasQuery = true;
+        }
+
+        if (sort != null && !sort.isEmpty()) {
+            url.append(hasQuery ? "&" : "?").append("sort=").append(sort);
+        }
+
+        return url.toString();
+    }
+
+
 
     @GetMapping("/product-standard")
     public ModelAndView product() {
