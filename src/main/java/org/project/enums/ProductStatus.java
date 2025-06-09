@@ -1,16 +1,14 @@
 package org.project.enums;
 
-public enum Gender {
-    MALE("MALE"),
-    FEMALE("FEMALE"),
-    OTHER("OTHER");
-    ;
+public enum ProductStatus {
+    ACTIVE("ACTIVE"),
+    INACTIVE("INACTIVE");
+
     private final String value;
 
-    Gender(String value) {
+    ProductStatus(String value) {
         this.value = value;
     }
-
     public String getValue() {
         return value;
     }
