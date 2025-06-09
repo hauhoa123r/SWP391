@@ -1,23 +1,24 @@
-package org.project.model.dto;
+package org.project.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-public class PatientDTO {
+@NoArgsConstructor
+public class PatientResponse {
+    private Long id;
     private Long userId;
     private String fullName;
+    private String avatarUrl;
     private String email;
     private String phoneNumber;
     private String address;
     private String gender;
     private String dateOfBirth;
     private String familyRelationship;
-    private String avatarUrl;
     private String bloodType;
 }
