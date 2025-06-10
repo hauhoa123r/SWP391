@@ -1,35 +1,42 @@
 package org.project.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@Entity
-@Table(name = "suppliers")
-@Setter
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Entity(name = "SupplierEntityEntity")
+@Table(name = "suppliers", schema = "swp391")
 public class SupplierEntity {
-
-    @Column(name = "supplier_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "supplier_id", nullable = false)
     private Long id;
 
+    @Size(max = 255)
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "contact_email")
-    private String contactEmail;
+    @Size(max = 255)
+    @Column(name = "email")
+    private String email;
 
-    @Column(name ="phone")
+    @Size(max = 255)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "supplierEntity", fetch = FetchType.LAZY)
-    private List<SupplierTransactionEntity> supplierTransactionEntities;
+    @OneToMany
+    private Set<SupplierTransactionsEntity> supplierTransactionEntities = new LinkedHashSet<>();
+
 }
