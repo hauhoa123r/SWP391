@@ -1,5 +1,10 @@
 package org.project.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum QualificationType {
     DEGREE("DEGREE"),
     CERTIFICATE("CERTIFICATE"),
@@ -8,10 +13,4 @@ public enum QualificationType {
 
     private final String value;
 
-    QualificationType(String value) {
-        this.value = value;
-    }
-    public String getValue() {
-        return value;
-    }
 }
