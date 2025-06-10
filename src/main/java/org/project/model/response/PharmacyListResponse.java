@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PharmacyListResponse {
+	private Long id;
     private String name;
     private String type; 
     private Long price;

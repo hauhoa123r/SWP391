@@ -1,14 +1,16 @@
 package org.project.controller;
 
+import org.project.model.response.PharmacyListResponse;
 import org.project.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.qos.logback.core.model.Model;
 
 @Controller
 public class ShopController {
@@ -41,10 +43,28 @@ public class ShopController {
 		return "redirect:/shop";
 	}
 
-	@GetMapping("/product-standard")
+	@GetMapping("/product-standard/")
 	public ModelAndView product() {
 		ModelAndView mv = new ModelAndView("frontend/product-standard");
 		return mv;
+	}
+	
+	@GetMapping("/product-standard/{id}") 
+	public String getProduct(@PathVariable("id") Long id, Model model) {
+		// Check if the ID is null or less than 1 
+		if (id == null || id < 1) {
+			throw new IllegalArgumentException("Invalid product ID: " + id);
+		}
+		// Fetch the product by ID
+		PharmacyListResponse product = pharmacyServiceImpl.findById(id);
+		// Check if the product is null
+		if (product == null) {
+			throw new IllegalArgumentException("No product found with ID: " + id);
+		}
+		// Add the product to the model
+		model.addAttribute("product", product);
+		// Return the view name
+		return "frontend/product-standard";
 	}
 
 	@GetMapping("/product-home")
