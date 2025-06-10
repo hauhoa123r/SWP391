@@ -59,4 +59,6 @@ public class DepartmentEntity {
     @JoinColumn(name = "hospital_id", nullable = false)
     private HospitalEntity hospital;
 
+    @OneToMany(mappedBy = "departmentEntity")
+    private Set<ServiceEntity> serviceEntities = new LinkedHashSet<>();
 }
