@@ -5,6 +5,7 @@ import org.project.entity.MedicalRecordEntity;
 import org.project.entity.PatientEntity;
 import org.project.model.dai.DataUserDAI;
 import org.project.model.dai.MedicalRecordData;
+import org.project.repository.MedicalRecordRepository;
 import org.project.repository.PatientRepository;
 import org.springframework.stereotype.Component;
 
@@ -40,9 +41,13 @@ public class DataPatientConverter {
 
                 if(medicalRecordEntity != null){
                     for(MedicalRecordEntity medicalRecord: medicalRecordEntity){
-                        medicalRecordData.add(modelMapper.map(medicalRecord, MedicalRecordData.class));
+                        MedicalRecordData result = modelMapper.map(medicalRecord, MedicalRecordData.class);
+                        result.setAllergies(patient.getMedicalProfileEntity().getAllergies());
+                        result.setChronicDiseases(patient.getMedicalProfileEntity().getChronicDiseases());
+                        medicalRecordData.add(result);
                     }
                 }
+
                 dataUser.setListMedicalRecordData(medicalRecordData);
 
                 results.add(dataUser);

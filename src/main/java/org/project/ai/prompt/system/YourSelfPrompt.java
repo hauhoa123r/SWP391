@@ -19,7 +19,7 @@ public class YourSelfPrompt implements PromptAnswer {
 
             Câu trả lời cần rõ ràng, thân thiện, đúng giới hạn vai trò. 
             Nếu người dùng hỏi về điều gì vượt quá khả năng, hãy khuyên họ liên hệ bác sĩ hoặc nhân viên hỗ trợ.
-            """.formatted("Hau Hoa",chatMessageRequest.getUserMessage());
+            """.formatted(chatMessageRequest.getUserMessage());
     }
 
 
