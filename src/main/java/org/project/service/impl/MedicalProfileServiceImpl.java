@@ -45,7 +45,7 @@ public class MedicalProfileServiceImpl implements MedicalProfileService {
 
     @Override
     public MedicalProfileResponse getMedicalProfileByPatientId(Long Id) {
-        Optional<MedicalProfileEntity> medicalProfileEntityOptional = medicalProfileRepositoryImpl.findByPatientId(Id);
+        Optional<MedicalProfileEntity> medicalProfileEntityOptional = medicalProfileRepositoryImpl.findByPatientEntity_Id(Id);
         if (medicalProfileEntityOptional != null) {
             MedicalProfileResponse response = new MedicalProfileResponse();
             String allergies = medicalProfileEntityOptional.get().getAllergies();
