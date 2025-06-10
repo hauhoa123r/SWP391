@@ -16,11 +16,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "suppliers", schema = "swp391")
-public class SupplierEntity {
+@Table(name = "hospitals", schema = "swp391")
+public class HospitalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "supplier_id", nullable = false)
+    @Column(name = "hospital_id", nullable = false)
     private Long id;
 
     @Size(max = 255)
@@ -29,14 +29,28 @@ public class SupplierEntity {
     private String name;
 
     @Size(max = 255)
-    @Column(name = "email")
+    @NotNull
+    @Column(name = "address", nullable = false)
+    private String address;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Size(max = 255)
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
+    @OneToMany(mappedBy = "hospital")
+    private Set<DepartmentEntity> departmentEntities = new LinkedHashSet<>();
 
     @OneToMany
-    private Set<SupplierTransactionsEntity> supplierTransactionEntities = new LinkedHashSet<>();
+    private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
 
 }
