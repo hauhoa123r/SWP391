@@ -83,6 +83,7 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "productEntity")
     private Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
+
     @OneToOne(mappedBy = "productEntity")
     private TestEntity testEntity;
 
