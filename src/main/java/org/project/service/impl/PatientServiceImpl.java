@@ -7,6 +7,7 @@ import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.PatientDTO;
 import org.project.model.response.PatientResponse;
 import org.project.repository.PatientRepository;
+import org.project.repository.UserRepository;
 import org.project.service.PatientService;
 import org.project.converter.PatientConverter;
 import org.springframework.beans.factory.annotation.Autowired;
