@@ -63,8 +63,8 @@ public class PatientEntity {
     @OneToMany(mappedBy = "patientEntity")
     private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
 
-    @ManyToMany
-    private Set<PricingPlanEntity> pricingPlanEntities = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "patientEntity")
+    private Set<PricingPlanSubscriptionEntity> pricingPlanSubscriptionEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "patientEntity")
     private Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
