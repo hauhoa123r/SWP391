@@ -26,7 +26,7 @@ public class MedicalRecordEntity {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private PatientEntity patientEntity;
 
@@ -50,13 +50,11 @@ public class MedicalRecordEntity {
 
     @NotNull
     @Column(name = "allergies", nullable = false)
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> allergies;
+    private String allergies;
 
     @NotNull
     @Column(name = "chronic_diseases", nullable = false)
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> chronicDiseases;
+    private String chronicDiseases;
 
     @NotNull
     @Lob

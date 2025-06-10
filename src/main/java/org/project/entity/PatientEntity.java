@@ -7,6 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.project.enums.BloodType;
+import org.project.enums.FamilyRelationship;
+import org.project.enums.Gender;
+import org.project.enums.converter.BloodTypeConverter;
 
 import java.sql.Date;
 import java.util.LinkedHashSet;
@@ -55,35 +60,29 @@ public class PatientEntity {
     @NotNull
     @Column(name = "birthdate", nullable = false)
     private Date birthdate;
-    @OneToMany
+    @OneToMany(mappedBy = "patientEntity")
     private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
 
     @ManyToMany
     private Set<PricingPlanEntity> pricingPlanEntities = new LinkedHashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "patientEntity")
     private Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
-    @OneToMany
+
+    @OneToMany(mappedBy = "patientEntity")
     private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
 
-/*
- TODO [Reverse Engineering] create field to map the 'relationship' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'SELF'")
     @Column(name = "relationship", columnDefinition = "enum not null")
-    private Object relationship;
-*/
-/*
- TODO [Reverse Engineering] create field to map the 'gender' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
+    private FamilyRelationship relationship;
+
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'OTHER'")
     @Column(name = "gender", columnDefinition = "enum not null")
-    private Object gender;
-*/
-/*
- TODO [Reverse Engineering] create field to map the 'blood_type' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
+    private Gender gender;
+
     @Column(name = "blood_type", columnDefinition = "enum")
-    private Object bloodType;
-*/
+    @Convert(converter = BloodTypeConverter.class)
+    private BloodType bloodType;
 }
