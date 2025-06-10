@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class MedicinePrompt implements PromptAnswer {
+
     private final ProductRepository productRepository;
     private final DataPatientConverter dataPatientConverter;
     public MedicinePrompt(ProductRepository productRepository, DataPatientConverter dataPatientConverter) {
