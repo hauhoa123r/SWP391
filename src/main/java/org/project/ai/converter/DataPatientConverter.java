@@ -41,9 +41,13 @@ public class DataPatientConverter {
 
                 if(medicalRecordEntity != null){
                     for(MedicalRecordEntity medicalRecord: medicalRecordEntity){
-                        medicalRecordData.add(modelMapper.map(medicalRecord, MedicalRecordData.class));
+                        MedicalRecordData result = modelMapper.map(medicalRecord, MedicalRecordData.class);
+                        result.setAllergies(patient.getMedicalProfileEntity().getAllergies());
+                        result.setChronicDiseases(patient.getMedicalProfileEntity().getChronicDiseases());
+                        medicalRecordData.add(result);
                     }
                 }
+
                 dataUser.setListMedicalRecordData(medicalRecordData);
 
                 results.add(dataUser);

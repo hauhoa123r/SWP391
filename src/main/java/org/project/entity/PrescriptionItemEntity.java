@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "PrescriptionItemEntityEntity")
+@Entity
 @Table(name = "prescription_items", schema = "swp391")
 public class PrescriptionItemEntity {
     @EmbeddedId

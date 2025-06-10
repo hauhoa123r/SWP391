@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "ReviewEntityEntity")
+@Entity
 @Table(name = "reviews", schema = "swp391")
 public class ReviewEntity {
     @Id
