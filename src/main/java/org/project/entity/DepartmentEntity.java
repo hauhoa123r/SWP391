@@ -30,7 +30,6 @@ public class DepartmentEntity {
 
     @NotNull
     @OneToMany(mappedBy = "departmentEntity")
-//    @JoinColumn(name = "department_id", nullable = false)
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
 
     @Size(max = 255)

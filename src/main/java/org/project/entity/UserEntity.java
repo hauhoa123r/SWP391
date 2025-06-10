@@ -70,6 +70,7 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<ProductEntity> products = new LinkedHashSet<>();
 
+
 /*
  TODO [Reverse Engineering] create field to map the 'status' column
  Available actions: Define target Java type | Uncomment as is | Remove column mapping
