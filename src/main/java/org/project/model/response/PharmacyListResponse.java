@@ -1,5 +1,7 @@
 package org.project.model.response;
 
+import org.project.enums.Label;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +16,7 @@ public class PharmacyListResponse {
     private String type; 
     private Long price;
     private String unit;
-    private String avatar; 
+    private String imageUrl; 
+    private String description;
+    private Label label; 
 }

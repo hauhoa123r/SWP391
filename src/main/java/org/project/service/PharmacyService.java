@@ -2,6 +2,7 @@ package org.project.service;
 
 
 import org.project.entity.ProductEntity;
+import org.project.enums.ProductType;
 import org.project.model.response.PharmacyListResponse;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public interface PharmacyService {
     //view by id 
     PharmacyListResponse findById(Long id); 
     //View all by type 
-    List<PharmacyListResponse> findByType(String type); 
+    List<PharmacyListResponse> findByProductType(ProductType type); 
     //view by name 
     List<PharmacyListResponse> findByName(String name); 
     //Delete by id 

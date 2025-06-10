@@ -3,6 +3,7 @@ package org.project.service.impl;
 import lombok.RequiredArgsConstructor; 
 import org.project.converter.ConverterPharmacyProduct;
 import org.project.entity.ProductEntity;
+import org.project.enums.ProductType;
 import org.project.model.response.PharmacyListResponse;
 import org.project.repository.PharmacyRepository;
 import org.project.service.PharmacyService;
@@ -57,12 +58,12 @@ public class PharmacyServiceImpl implements PharmacyService {
 	}
 
 	@Override
-	public List<PharmacyListResponse> findByType(String type) {
+	public List<PharmacyListResponse> findByProductType(ProductType type) {
 		// TODO Auto-generated method stub
 		// Get the list of type
 		List<ProductEntity> pharmacyList = new ArrayList<>();
 		// search
-		pharmacyList = pharmacyRepositoryImpl.findByNameContaining(type);
+		pharmacyList = pharmacyRepositoryImpl.findByProductTypeContaining(type);
 		// Check
 		if (pharmacyList != null) {
 			return toConverterPharmacy.toConverterPharmacyProductList(pharmacyList);

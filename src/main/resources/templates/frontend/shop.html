@@ -1324,7 +1324,7 @@
                                  <div class="col-sm-4">
                                     <div class="iq-product-image position-relative">
                                        <img src="/frontend_assets/assets/images/shop/product-1.webp" alt="icon" class="img-fluid"
-                                          loading="lazy" th:src="@{'/assets/images/'+${product.avatar}}"> 
+                                          loading="lazy" th:src="@{${product.imageUrl}}"> 
                                        <div class="iq-button-holder d-inline-block">
                                           <ul class="list-inline d-flex align-items-center gap-5 m-0 bg-white">
                                              <li class="quick-view line-height-0">
@@ -1407,10 +1407,7 @@
                                              </li>
                                           </ul>
                                        </div>
-                                       <p class="product-desc mt-4 mb-0">An
-                                                electric toothbrush is a toothbrush that cleans teeth using quick, automatic bristle
-                                                movements such as rotational oscillation or back-and-forth oscillation. A motor propels
-                                                objects at or below sonic speeds.</p>
+                                       <p class="product-desc mt-4 mb-0" th:text="${product.description}"></p>
                                     </div>
                                  </div>
                               </div>
@@ -1527,7 +1524,7 @@
                               <a href="shop-detail.html"></a>
                               <div class="iq-product-image position-relative">
                                  <div class="animate:hover-media-wrap">
-                                    <img th:src="'/frontend_assets/assets/images/'+${product.avatar}" alt="icon"
+                                    <img th:src="${product.imageUrl}" alt="icon"
                                        class="img-fluid hover-media" loading="lazy">
                                  </div>
                                  <div class="iq-button-holder d-inline-block">
@@ -1586,7 +1583,7 @@
                                        </li>
                                     </ul>
                                  </div>
-                                 <span class="iq-on-sale badge bg-primary">Sale</span>
+                                 <span class="iq-on-sale badge bg-primary" th:text=${product.label}></span>
                               </div>
                               <div class="product-caption text-center mt-3">
                                  <span class="iq-category" th:text="${product.type}"></span>            
@@ -1728,7 +1725,7 @@
                               <a href="shop-detail.html"></a>
                               <div class="iq-product-image position-relative">
                                  <div class="animate:hover-media-wrap">
-                                    <img th:src="'/frontend_assets/assets/images/'+${product.avatar}" alt="icon"
+                                    <img th:src="${product.imageUrl}" alt="icon"
                                        class="img-fluid hover-media" loading="lazy">
                                  </div>
                                  <div class="iq-button-holder d-inline-block">
@@ -1787,7 +1784,7 @@
                                        </li>
                                     </ul>
                                  </div>
-                                 <span class="iq-on-sale badge bg-primary">Sale</span>
+                                 <span class="iq-on-sale badge bg-primary" th:text=${product.label}></span>
                               </div>
                               <div class="product-caption text-center mt-3">
                                  <span class="iq-category" th:text="${product.type}"></span>            
@@ -1929,7 +1926,7 @@
                               <a href="shop-detail.html"></a>
                               <div class="iq-product-image position-relative">
                                  <div class="animate:hover-media-wrap">
-                                    <img th:src="'/frontend_assets/assets/images/'+${product.avatar}" alt="icon"
+                                    <img th:src="${product.imageUrl}" alt="icon"
                                        class="img-fluid hover-media" loading="lazy">
                                  </div>
                                  <div class="iq-button-holder d-inline-block">
