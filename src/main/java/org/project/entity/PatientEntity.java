@@ -85,4 +85,7 @@ public class PatientEntity {
     @Column(name = "blood_type", columnDefinition = "enum")
     @Convert(converter = BloodTypeConverter.class)
     private BloodType bloodType;
+
+    @OneToOne(mappedBy = "patientEntity")
+    private MedicalProfileEntity medicalProfileEntity;
 }
