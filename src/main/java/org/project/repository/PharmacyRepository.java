@@ -1,8 +1,6 @@
 package org.project.repository;
 
-import java.util.List;
-
-import org.project.entity.PharmacyProductEntity;
+import java.util.List; 
 import org.project.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

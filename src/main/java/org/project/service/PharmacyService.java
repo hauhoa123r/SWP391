@@ -1,7 +1,6 @@
 package org.project.service;
 
 
-import org.project.entity.PharmacyProductEntity;
 import org.project.entity.ProductEntity;
 import org.project.model.response.PharmacyListResponse;
 import org.springframework.stereotype.Service;

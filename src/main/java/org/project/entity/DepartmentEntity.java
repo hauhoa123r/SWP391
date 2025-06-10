@@ -29,8 +29,8 @@ public class DepartmentEntity {
     private StaffEntity staffEntity;
 
     @NotNull
-    @OneToMany
-    @JoinColumn(name = "department_id", nullable = false)
+    @OneToMany(mappedBy = "departmentEntity")
+//    @JoinColumn(name = "department_id", nullable = false)
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
 
     @Size(max = 255)
