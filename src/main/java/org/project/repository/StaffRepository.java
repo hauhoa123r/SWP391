@@ -16,4 +16,6 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long> {
     List<StaffEntity> findAllByStaffRoleAndDepartmentEntityNameAndIdIsNot(StaffRole staffRole, String departmentEntityName, Long id);
 
     StaffEntity findByStaffRoleAndId(StaffRole staffRole, Long id);
+
+    boolean existsByStaffRoleAndId(StaffRole staffRole, Long id);
 }
