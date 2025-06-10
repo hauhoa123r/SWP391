@@ -49,14 +49,6 @@ public class MedicalRecordEntity {
     private String mainComplaint;
 
     @NotNull
-    @Column(name = "allergies", nullable = false)
-    private String allergies;
-
-    @NotNull
-    @Column(name = "chronic_diseases", nullable = false)
-    private String chronicDiseases;
-
-    @NotNull
     @Lob
     @Column(name = "diagnosis", nullable = false)
     private String diagnosis;
