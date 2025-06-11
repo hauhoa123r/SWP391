@@ -1,0 +1,24 @@
+package org.project.ai.intent.emotion;
+
+import org.project.ai.chat.AIService;
+import org.project.ai.intent.BasePromptHandler;
+import org.project.ai.prompt.emotion.EmotionalSupportPrompt;
+import org.project.model.request.ChatMessageRequest;
+
+public class EmotionalSupportHandler extends BasePromptHandler<EmotionalSupportPrompt> {
+
+
+    public EmotionalSupportHandler(AIService aiService, EmotionalSupportPrompt emotionalSupportPrompt) {
+        super(aiService, emotionalSupportPrompt);
+    }
+
+    @Override
+    protected String buildPrompt(ChatMessageRequest chatMessageRequest) {
+        return prompt.buildPrompt(chatMessageRequest);
+    }
+
+    @Override
+    public String contextType() {
+        return "emotional_support";
+    }
+}

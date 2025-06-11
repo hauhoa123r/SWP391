@@ -18,15 +18,15 @@ public class SystemPrompt implements PromptStrategy {
     @Override
     public String buildPrompt(String userMessage) {
         return """
-            Bạn là trợ lý ảo đại diện cho hệ thống bệnh viện Kivicare.
+        You are a virtual assistant representing the Kivicare hospital system.
 
-            Người dùng hỏi: "%s"
+        User's question: "%s"
 
-            Thông tin về bệnh viện Kivicare:
-            %s
+        Information about the Kivicare hospital system:
+        %s
 
-            Trả lời một cách chuyên nghiệp, ngắn gọn, đầy đủ thông tin cho người dùng, liêt kê 3 bênh viện và trả lời còn bao nhiêu bênh viện.
-            Hỏi người dùng địa chỉ của người dùng ở đâu để tư vấn bệnh viện gần nhất cho tiện đường đi.
-            """.formatted(userMessage,dataSystemConverter.toConverterAllHospitals());
+        Respond in a professional, concise, and informative manner. List 3 hospitals and inform the user how many hospitals remain.
+        Ask the user for their address in order to recommend the nearest hospital for convenient travel.
+        """.formatted(userMessage, dataSystemConverter.toConverterAllHospitals());
     }
 }

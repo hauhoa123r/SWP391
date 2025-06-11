@@ -1,0 +1,23 @@
+package org.project.ai.intent.service;
+
+import org.project.ai.chat.AIService;
+import org.project.ai.intent.BasePromptHandler;
+import org.project.ai.prompt.service.OrderMedicinePrompt;
+import org.project.model.request.ChatMessageRequest;
+
+public class OrderMedicineHandler extends BasePromptHandler<OrderMedicinePrompt> {
+
+    public OrderMedicineHandler(AIService aiService, OrderMedicinePrompt orderMedicinePrompt) {
+        super(aiService, orderMedicinePrompt);
+    }
+
+    @Override
+    protected String buildPrompt(ChatMessageRequest chatMessageRequest) {
+        return prompt.buildPrompt(chatMessageRequest);
+    }
+
+    @Override
+    public String contextType() {
+        return "order_medicine";
+    }
+}
