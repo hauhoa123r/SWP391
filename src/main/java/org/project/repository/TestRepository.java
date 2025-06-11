@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TestRepository extends JpaRepository<TestEntity, Integer> {
+public interface TestRepository extends JpaRepository<TestEntity, Long> {
     List<TestEntity> findTop10ByProductEntityNameContainingIgnoreCase(String productName);
 }

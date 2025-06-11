@@ -1,6 +1,8 @@
 package org.project.api;
 
+import org.project.model.request.TestListRequest;
 import org.project.model.response.TestListResponse;
+import org.project.service.TestRequestItemService;
 import org.project.service.TestRequestService;
 import org.project.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,16 @@ import java.util.List;
 @RequestMapping("/lab-test")
 public class LabTestAPI {
     @Autowired
-    TestRequestService testRequestService;
+    private TestRequestService testRequestService;
     @Autowired
-    TestService testService;
+    private TestService testService;
+    @Autowired
+    private TestRequestItemService testRequestItemService;
 
     @PostMapping("/{appoint_id}")
-    public ResponseEntity<String> createTestRequest(@PathVariable("appoint_id") Long appoint_id) {
+    public ResponseEntity<String> createTestRequest(@PathVariable("appoint_id") Long appoint_id,@RequestBody TestListRequest testListRequest ) {
         Long id = testRequestService.createTestRequest(appoint_id);
+        testRequestItemService.createTestRequestItem(id,testListRequest.getListTest());
         return ResponseEntity.ok("Test Request Created Successfully, "+id);
     }
 
