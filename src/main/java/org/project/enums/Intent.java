@@ -8,7 +8,7 @@ public enum Intent {
     MAKE_APPOINTMENT("make_appointment", ""),
     SYMPTOM_ADVICE("symptom_advice", ""),
     ASK_MEDICINE("ask_medicine", "This is a question about medicine."),
-    ASK_HOSPITAL("ask_hospital", ""),
+    ASK_HOSPITAL("ask_hospital", "This is a user question about where is the hospital, where is your hospital (what locations do you have)."),
     ASK_YOURSELF("ask_yourself", "This is a question about you, you are a virtual assistant of the KiViCare system"),
     ASK_DOCTOR("ask_doctor", ""),
     ASK_PATIENT("ask_patient", "This is the kind of question, do you know who I am?"),
