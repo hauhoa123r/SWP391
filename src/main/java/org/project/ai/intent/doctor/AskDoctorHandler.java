@@ -15,7 +15,7 @@ public class AskDoctorHandler extends BasePromptHandler<DoctorPrompt>{
 
     @Override
     protected String buildPrompt(ChatMessageRequest chatMessageRequest) {
-        return prompt.buildPrompt(chatMessageRequest.getUserMessage());
+        return prompt.buildPrompt(chatMessageRequest);
     }
 
     @Override

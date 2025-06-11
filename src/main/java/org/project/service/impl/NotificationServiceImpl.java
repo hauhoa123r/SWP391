@@ -34,9 +34,7 @@ public class NotificationServiceImpl implements NotificationService {
     public NotificationEntity send(UserEntity user, String title, String content) {
         NotificationEntity notification = NotificationEntity.builder()
                 .userEntity(user)
-                .title(title)
                 .content(content)
-                .createdAt(LocalDateTime.now())
                 .build();
         return notificationRepository.save(notification);
     }

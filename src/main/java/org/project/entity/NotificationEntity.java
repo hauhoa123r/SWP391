@@ -3,10 +3,7 @@ package org.project.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +11,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "notifications", schema = "swp391")
+@Builder
 public class NotificationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
