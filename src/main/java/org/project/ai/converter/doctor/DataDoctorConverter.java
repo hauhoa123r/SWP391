@@ -1,4 +1,4 @@
-package org.project.ai.converter;
+package org.project.ai.converter.doctor;
 
 import org.modelmapper.ModelMapper;
 import org.project.entity.StaffEntity;

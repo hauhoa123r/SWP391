@@ -4,7 +4,9 @@ import org.project.ai.chat.AIService;
 import org.project.ai.intent.BasePromptHandler;
 import org.project.ai.prompt.service.RescheduleAppointmentPrompt;
 import org.project.model.request.ChatMessageRequest;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RescheduleAppointmentHandler extends BasePromptHandler<RescheduleAppointmentPrompt> {
     public RescheduleAppointmentHandler(AIService aiService, RescheduleAppointmentPrompt rescheduleAppointmentPrompt) {
         super(aiService, rescheduleAppointmentPrompt);

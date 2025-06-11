@@ -1,8 +1,7 @@
 package org.project.ai.prompt.doctor;
 
-import org.project.ai.converter.DataDoctorConverter;
+import org.project.ai.converter.doctor.DataDoctorConverter;
 import org.project.ai.prompt.PromptAnswer;
-import org.project.ai.prompt.PromptStrategy;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 

@@ -13,7 +13,7 @@ public enum Intent {
     ASK_DOCTOR("ask_doctor", "This is a request for information about a doctor."),
     SELF_IDENTIFICATION("self_identification", "This is the kind of question, do you know who I am?"),
     HEALTH_EFFECT("health_effect", "This is asking if a certain issue affects their health."),
-    PERSONAL_HEALTH_QUESTION("ask_health_patient", "This is a health question about the customer himself"),
+    PERSONAL_HEALTH_QUESTION("personal_health_question", "This is a health question about the customer himself"),
     TREATMENT("treatment", "This is how to ask for treatment"),
     CHITCHAT("chitchat", "Casual conversations such as small talk, personal sharing, or polite social phrases that are NOT greetings, thank you, or good bye messages."),
     EMOTIONAL_SUPPORT("emotional_support", "This is a message where the user expresses feelings of sadness, disappointment, frustration, or emotional distress, requiring comforting or motivational responses."),

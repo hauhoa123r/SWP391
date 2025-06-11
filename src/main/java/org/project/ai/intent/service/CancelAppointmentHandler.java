@@ -4,7 +4,9 @@ import org.project.ai.chat.AIService;
 import org.project.ai.intent.BasePromptHandler;
 import org.project.ai.prompt.service.CancelAppointmentPrompt;
 import org.project.model.request.ChatMessageRequest;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CancelAppointmentHandler extends BasePromptHandler<CancelAppointmentPrompt> {
     public CancelAppointmentHandler(AIService aiService, CancelAppointmentPrompt cancelAppointmentPrompt) {
         super(aiService, cancelAppointmentPrompt);

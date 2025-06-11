@@ -1,7 +1,6 @@
 package org.project.ai.prompt.system;
 
-import org.project.ai.converter.DataSystemConverter;
-import org.project.ai.intent.system.AskSystemHandler;
+import org.project.ai.converter.system.DataSystemConverter;
 import org.project.ai.prompt.PromptStrategy;
 import org.springframework.stereotype.Component;
 

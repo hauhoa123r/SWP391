@@ -4,7 +4,9 @@ import org.project.ai.chat.AIService;
 import org.project.ai.intent.BasePromptHandler;
 import org.project.ai.prompt.health.PersonalHealthQuestionPrompt;
 import org.project.model.request.ChatMessageRequest;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PersonalHealthQuestionHandler extends BasePromptHandler<PersonalHealthQuestionPrompt> {
     public PersonalHealthQuestionHandler(AIService aiService, PersonalHealthQuestionPrompt personalHealthQuestionPrompt) {
         super(aiService, personalHealthQuestionPrompt);
@@ -17,6 +19,6 @@ public class PersonalHealthQuestionHandler extends BasePromptHandler<PersonalHea
 
     @Override
     public String contextType() {
-        return "ask_health_patient";
+        return "personal_health_question";
     }
 }
