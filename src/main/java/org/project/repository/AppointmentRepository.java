@@ -1,14 +1,13 @@
 package org.project.repository;
 
-import org.project.entity.AppointmentEntity;
+import org.project.entity.AppointmentsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
-    List<AppointmentEntity> findByStartTimeBetween(LocalDateTime start, LocalDateTime end);
-
+@Repository
+public interface AppointmentRepository extends JpaRepository<AppointmentsEntity,Long>{
+    List<AppointmentsEntity> findByDoctorId(Long id);
 }
-
-
