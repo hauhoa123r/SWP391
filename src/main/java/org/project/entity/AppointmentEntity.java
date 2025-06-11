@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.project.enums.AppointmentStatus;
 
 import java.sql.Timestamp;
 import java.util.LinkedHashSet;
@@ -60,6 +61,10 @@ public class AppointmentEntity {
     private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
     @OneToMany
     private Set<TestRequestEntity> testRequestEntities = new LinkedHashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "appointment_status")
+    private AppointmentStatus appointmentStatus;
 
 /*
  TODO [Reverse Engineering] create field to map the 'appointment_status' column

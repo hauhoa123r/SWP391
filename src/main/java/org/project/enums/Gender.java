@@ -1,9 +1,9 @@
 package org.project.enums;
 
 public enum Gender {
-    male("Male"),
-    female("Female"),
-    other("Other");
+    MALE("Male"),
+    FEMALE("Female"),
+    OTHER("Other");
     ;
     private final String value;
 

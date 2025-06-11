@@ -31,10 +31,10 @@ public class ServiceEntity {
     @JoinColumn(name = "department_id", nullable = false)
     private DepartmentEntity departmentEntity;
 
-    @OneToMany
+    @OneToMany(mappedBy = "serviceEntity")
     private Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "serviceEntity")
     private Set<ServiceFeatureEntity> serviceFeatureEntities = new LinkedHashSet<>();
 
 }

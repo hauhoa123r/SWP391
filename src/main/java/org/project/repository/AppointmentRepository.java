@@ -1,13 +1,14 @@
 package org.project.repository;
 
-import org.project.entity.AppointmentsEntity;
+import org.project.entity.AppointmentEntity;
+import org.project.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface AppointmentRepository extends JpaRepository<AppointmentsEntity,Long>{
-    List<AppointmentsEntity> findByDoctorId(Long id);
+public interface AppointmentRepository extends JpaRepository<AppointmentEntity,Long>{
+    List<AppointmentEntity> findByDoctorEntityIdAndAppointmentStatusIn(Long dortorId, List<AppointmentStatus> statuses);
+
 }

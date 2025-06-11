@@ -4,185 +4,461 @@
     <meta charset="UTF-8">
     <title>Doctor Appointments Dashboard</title>
     <style>
-        .doctor_appoinment-content {
-            margin-left: 250px;
-            margin-top: 60px;
-            padding: 20px;
-            min-height: calc(100vh - 60px);
-            background-color: #ecf0f1;
+        /* Reset và base styles */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
         }
 
-        .doctor_appoinment-table {
+        /* Main container */
+        .doctor-appointment-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Header styles */
+        .doctor-appointment-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .doctor-appointment-header h2 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .doctor-appointment-header p {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        /* Table styles */
+        .doctor-appointment-table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 25px 0;
+            font-size: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
 
-        .doctor_appoinment-table th, .doctor_appoinment-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        .doctor-appointment-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
             text-align: left;
+            position: sticky;
+            top: 0;
         }
 
-        .doctor_appoinment-table th {
-            background-color: #333;
-            color: white;
+        .doctor-appointment-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
         }
 
-        .doctor_appoinment-table tr:nth-child(even) {
-            background-color: #f2f2f2;
+        .doctor-appointment-table tr:last-child td {
+            border-bottom: none;
         }
 
-        .doctor_appoinment-table tr:hover {
-            background-color: #ddd;
+        .doctor-appointment-table tr:nth-child(even) {
+            background-color: #f8fafc;
         }
 
-        .doctor_appoinment-action-btn {
+        .doctor-appointment-table tr:hover {
+            background-color: #f1f7fd;
+        }
+
+        /* Button styles */
+        .doctor-appointment-btn {
             border: none;
-            padding: 5px 10px;
-            margin-right: 5px;
+            padding: 8px 15px;
+            margin: 5px;
             cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            min-width: 100px;
         }
 
-        .doctor_appoinment-view {
-            background-color: #007bff;
+        .doctor-appointment-btn--view {
+            background-color: #3498db;
             color: white;
         }
 
-        .doctor_appoinment-confirm {
-            background-color: #28a745;
+        .doctor-appointment-btn--confirm {
+            background-color: #2ecc71;
             color: white;
         }
 
-        .doctor_appoinment-reject {
-            background-color: #dc3545;
+        .doctor-appointment-btn--reject {
+            background-color: #e74c3c;
             color: white;
+        }
+
+        .doctor-appointment-btn--start {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .doctor-appointment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            opacity: 0.9;
+        }
+
+        /* Status styles */
+        .status-pending {
+            color: #f39c12;
+            font-weight: 500;
+        }
+
+        .status-confirmed {
+            color: #2ecc71;
+            font-weight: 500;
+        }
+
+        .status-rejected {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+
+        /* Animation cho hàng đã xác nhận */
+        @keyframes doctor-appointment-shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
+        }
+
+        .doctor-appointment-confirmed-row {
+            animation: doctor-appointment-shake 0.5s ease-in-out;
+            background-color: #e8f8f5 !important;
+        }
+
+        /* Tùy chỉnh cho cột hành động */
+        .doctor-appointment-actions {
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .doctor-appointment-actions button {
+            margin: 3px;
+        }
+
+        /* Modal styles */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirmation-modal-content {
+            background: white;
+            width: 450px;
+            max-width: 90%;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .confirmation-modal h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .confirmation-modal p {
+            color: #7f8c8d;
+            margin-bottom: 25px;
+        }
+
+        .confirmation-modal-btn {
+            padding: 10px 25px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .confirmation-modal-btn-primary {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .confirmation-modal-btn-secondary {
+            background-color: #bdc3c7;
+            color: #2c3e50;
+        }
+
+        .confirmation-modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .doctor-appointment-container {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            .doctor-appointment-table {
+                font-size: 14px;
+            }
+
+            .doctor-appointment-table th,
+            .doctor-appointment-table td {
+                padding: 10px 8px;
+            }
+
+            .doctor-appointment-btn {
+                padding: 6px 10px;
+                font-size: 13px;
+                min-width: 80px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="doctor_appoinment-content">
-    <h2>Danh sách bệnh nhân hôm nay</h2>
-    <p>Quản lý, chỉ số, cập nhật trạng thái khám</p>
-    <table class="doctor_appoinment-table" id="appointmentsTable">
+<div class="doctor-appointment-container">
+    <div class="doctor-appointment-header">
+        <h2>Danh sách bệnh nhân hôm nay</h2>
+        <p>Quản lý, chỉ số, cập nhật trạng thái khám</p>
+    </div>
+    <table class="doctor-appointment-table" id="appointmentsTable">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Ngày & Giờ</th>
-            <th>Tên Bệnh Nhân</th>
-            <th>Trạng Thái</th>
-            <th>Nhân viên điều phối</th>
-            <th>Thao Tác</th>
+            <th>Patient Name</th>
+            <th>Service</th>
+            <th>Start Time</th>
+            <th>Duration</th>
+            <th>Coordinator</th>
+            <th>Status</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody id="appointmentsTableBody">
         <!-- Data will be populated by JS -->
         </tbody>
     </table>
-    <div id="confirmationModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000;">
-        <div style="background:white; width:400px; margin:100px auto; padding:20px; border-radius:8px; text-align:center;">
+    <div id="confirmationModal" class="confirmation-modal">
+        <div class="confirmation-modal-content">
             <h3>Hồ sơ đã được xác nhận thành công!</h3>
             <p>Bác sĩ có thể bắt đầu khám bệnh ngay bây giờ.</p>
-            <button id="startExaminationBtn" style="margin-top:10px;">Bắt đầu khám bệnh</button>
-            <br/>
-            <button onclick="closeConfirmationModal()" style="margin-top:10px;">Đóng</button>
+            <button id="startExaminationBtn" class="confirmation-modal-btn confirmation-modal-btn-primary">Bắt đầu khám bệnh</button>
+            <button onclick="closeConfirmationModal()" class="confirmation-modal-btn confirmation-modal-btn-secondary">Đóng</button>
         </div>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const doctor_id = 1; // Giả sử doctorId cố định lúc này
+            const doctor_id = 9;
+            let currentPage = 1;
+            const itemsPerPage = 10;
 
-            fetch(`/appointments/${doctor_id}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const tableBody = document.getElementById("appointmentsTableBody");
-                    tableBody.innerHTML = ""; // clear any existing rows
+            function fetchAppointments(page) {
+                fetch(`/appointments/${doctor_id}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const tableBody = document.getElementById("appointmentsTableBody");
+                        tableBody.innerHTML = "";
 
-                    data.forEach(appointment => {
-                        const row = document.createElement("tr");
+                        data.forEach(appointment => {
+                            const row = document.createElement("tr");
 
+                            // Thêm class nếu là trạng thái CONFIRMED
+                            if (appointment.appointmentStatus === "Confirmed") {
+                                row.classList.add("doctor-appointment-confirmed-row");
+                            }
 
-                        // Tạo nội dung row bằng cách template literal
-                        row.innerHTML = `
-                        <td>${appointment.id}</td>
-                        <td>null</td> <!-- Nếu có dữ liệu cần thay null -->
-                        <td>${appointment.patientName}</td>
-                        <td>${appointment.status}</td>
-                        <td>${appointment.coordinatorName}</td>
-                        <td>
-                            <button class="doctor_appoinment-action-btn doctor_appoinment-confirm" type="button">Xác nhận</button>
-                            <button class="doctor_appoinment-action-btn doctor_appoinment-reject" type="button">Từ chối</button>
-                        </td>
-                    `;
+                            // Xác định class status
+                            let statusClass = "";
+                            if (appointment.appointmentStatus === "Pending") {
+                                statusClass = "status-pending";
+                            } else if (appointment.appointmentStatus === "Confirmed") {
+                                statusClass = "status-confirmed";
+                            } else if (appointment.appointmentStatus === "Rejected") {
+                                statusClass = "status-rejected";
+                            }
 
-                        // Gán sự kiện click cho từng button sau khi tạo row
-                        const [btnConfirm, btnReject] = row.querySelectorAll("button");
-                        btnConfirm.onclick = () => confirmAppointment(appointment.id);
-                        btnReject.onclick = () => rejectAppointment(appointment.id);
+                            row.innerHTML = `
+                                <td>${appointment.id}</td>
+                                <td>${appointment.patientEntityName}</td>
+                                <td>${appointment.serviceEntityProductEntityName}</td>
+                                <td>${appointment.startTime}</td>
+                                <td>${appointment.durationMinutes} minute</td>
+                                <td>${appointment.schedulingCoordinatorEntityName}</td>
+                                <td class="${statusClass}">${appointment.appointmentStatus}</td>
+                                <td class="doctor-appointment-actions">
+                                    ${appointment.appointmentStatus === "Confirmed" ?
+                                `<button class="doctor-appointment-btn doctor-appointment-btn--start">Bắt đầu khám</button>` :
+                                `<button class="doctor-appointment-btn doctor-appointment-btn--confirm">Xác nhận</button>
+                                         <button class="doctor-appointment-btn doctor-appointment-btn--reject">Từ chối</button>`
+                            }
+                                </td>
+                            `;
 
-                        tableBody.appendChild(row);
+                            // Gán sự kiện cho các nút
+                            const actionCell = row.querySelector(".doctor-appointment-actions");
+                            if (appointment.appointmentStatus === "Confirmed") {
+                                const startBtn = actionCell.querySelector(".doctor-appointment-btn--start");
+                                startBtn.onclick = () => startExamination(appointment.id);
+                            } else {
+                                const confirmBtn = actionCell.querySelector(".doctor-appointment-btn--confirm");
+                                const rejectBtn = actionCell.querySelector(".doctor-appointment-btn--reject");
+                                confirmBtn.onclick = () => confirmAppointment(appointment.id, row);
+                                rejectBtn.onclick = () => rejectAppointment(appointment.id, row);
+                            }
+
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error fetching appointments:", error);
                     });
-                })
-                .catch(error => {
-                    console.error("Error fetching appointments:", error);
-                });
-        });
-
-        function confirmAppointment(id) {
-            // if (confirm('Xác nhận hồ sơ cho bệnh nhân với ID: ' + id + '?')) {
-            //     // Giả sử bạn muốn gọi API xác nhận ở đây
-            //     fetch(`/appointments/confirm/${id}`, {
-            //         method: 'POST'
-            //     })
-            //         .then(response => {
-            //             if (!response.ok) {
-            //                 throw new Error("Xác nhận thất bại");
-            //             }
-            //             return response.json(); // nếu API trả về JSON
-            //         })
-            //         .then(data => {
-            //             // Hiển thị modal
-            //             showConfirmationModal(id);
-            //         })
-            //         .catch(error => {
-            //             alert('Xác nhận thất bại: ' + error.message);
-            //         });
-            // }
-            showConfirmationModal(id);
-        }
-
-        function showConfirmationModal(id) {
-            const modal = document.getElementById('confirmationModal');
-            modal.style.display = 'block';
-            document.getElementById('startExaminationBtn').onclick = function() {
-                startExamination(id);
-            };
-        }
-
-        function closeConfirmationModal() {
-            const modal = document.getElementById('confirmationModal');
-            modal.style.display = 'none';
-        }
-
-        function startExamination(id) {
-            const modal = document.getElementById('confirmationModal');
-            modal.style.display = 'none';
-            window.location.href = `/doctor/in-progress?appoint_id=${id}`;
-        }
-
-        function rejectAppointment(id) {
-            if (confirm('Từ chối hồ sơ cho bệnh nhân với ID: ' + id + '?')) {
-                alert('Hồ sơ với ID ' + id + ' đã bị từ chối.');
-                // Add your rejection logic here
             }
-        }
-    </script>
 
+            function confirmAppointment(id, row) {
+                if (confirm('Xác nhận hồ sơ cho bệnh nhân với ID: ' + id + '?')) {
+                    const appointmentDTO = {
+                        id: id,
+                        appointmentStatus: 'CONFIRMED'
+                    };
+
+                    fetch(`/appointments/${id}/status`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(appointmentDTO)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Failed to confirm appointment: ${response.statusText}`);
+                            }
+                            return response.json();
+                        })
+                        .then(updatedAppointment => {
+                            // Update status cell
+                            const statusCell = row.querySelector("td:nth-child(7)");
+                            statusCell.textContent = updatedAppointment.appointmentStatus;
+                            statusCell.className = "status-confirmed";
+
+                            // Update action buttons
+                            const actionCell = row.querySelector(".doctor-appointment-actions");
+                            actionCell.innerHTML = `<button class="doctor-appointment-btn doctor-appointment-btn--start">Bắt đầu khám</button>`;
+
+                            // Bind event to new start button
+                            const startBtn = actionCell.querySelector(".doctor-appointment-btn--start");
+                            startBtn.onclick = () => startExamination(id);
+
+                            // Apply shake effect
+                            row.classList.add("doctor-appointment-confirmed-row");
+                            setTimeout(() => {
+                                row.classList.remove("doctor-appointment-confirmed-row");
+                                void row.offsetWidth;
+                                row.classList.add("doctor-appointment-confirmed-row");
+                            }, 10);
+
+                            // Show confirmation modal
+                            showConfirmationModal(id);
+                        })
+                        .then(() => fetchAppointments(currentPage)) // Refresh table with current filters
+                        .catch(error => {
+                            console.error('Error confirming appointment:', error);
+                            alert('Có lỗi xảy ra khi xác nhận hồ sơ: ' + error.message);
+                        });
+                }
+            }
+
+            function rejectAppointment(id, row) {
+                if (confirm('Từ chối hồ sơ cho bệnh nhân với ID: ' + id + '?')) {
+                    fetch(`/appointments/${id}/reject`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to reject appointment');
+                            }
+                            return response.json();
+                        })
+                        .then(updatedAppointment => {
+                            // Cập nhật trạng thái
+                            const statusCell = row.querySelector("td:nth-child(7)");
+                            statusCell.textContent = "Rejected";
+                            statusCell.className = "status-rejected";
+
+                            // Cập nhật nút hành động
+                            const actionCell = row.querySelector(".doctor-appointment-actions");
+                            actionCell.innerHTML = `<span style="color:#e74c3c; font-style:italic;">Đã từ chối</span>`;
+
+                            // Thêm style cho hàng
+                            row.style.backgroundColor = "#fdedec";
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Có lỗi xảy ra khi từ chối hồ sơ');
+                        });
+                }
+            }
+
+            function showConfirmationModal(id) {
+                const modal = document.getElementById('confirmationModal');
+                modal.style.display = 'flex';
+                document.getElementById('startExaminationBtn').onclick = function() {
+                    startExamination(id);
+                };
+            }
+
+            function closeConfirmationModal() {
+                const modal = document.getElementById('confirmationModal');
+                modal.style.display = 'none';
+            }
+
+            function startExamination(id) {
+                const modal = document.getElementById('confirmationModal');
+                modal.style.display = 'none';
+                window.location.href = `/doctor/in-progress?id=${id}`;
+            }
+
+            // Initial fetch
+            fetchAppointments(currentPage);
+        });
+    </script>
 </div>
 </body>
 </html>

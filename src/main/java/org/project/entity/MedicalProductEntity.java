@@ -20,6 +20,6 @@ public class MedicalProductEntity {
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "medical_product_id", nullable = false)
-    private ProductEntity productEntities;
+    private ProductEntity productEntity;
 
 }

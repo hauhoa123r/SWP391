@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+        }
+
+        .doctor_header-main {
+            background-color: #ffffff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .doctor_header-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .doctor_header-logo img {
+            height: 48px;
+            transition: transform 0.3s ease;
+        }
+
+        .doctor_header-logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .doctor_header-logo h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .doctor_header-nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .doctor_header-nav a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .doctor_header-nav a:hover {
+            color: #007bff;
+            background-color: #f0f4ff;
+        }
+
+        .doctor_header-nav a i {
+            font-size: 1.1rem;
+        }
+
+        .doctor_header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .doctor_header-doctor-logo img {
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            transition: border-color 0.3s;
+        }
+
+        .doctor_header-doctor-logo img:hover {
+            border-color: #007bff;
+        }
+
+        .doctor_header-logout {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .doctor_header-logout:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .doctor_header-logout:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .doctor_header-main {
+                flex-direction: column;
+                padding: 15px 20px;
+                gap: 15px;
+            }
+
+            .doctor_header-nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .doctor_header-nav a {
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="doctor_header-main">
+    <div class="doctor_header-logo">
+        <img th:src="@{/frontend/assets/images/logo/logo.png}" alt="KiwiCare Logo">
+        <h1>KiwiCare</h1>
+    </div>
+    <div class="doctor_header-nav">
+        <a href="/doctor/appointments"><i class="fa-regular fa-calendar-check"></i> APPOINTMENT</a>
+        <a href="/doctor/test-result"><i class="fa-solid fa-flask-vial"></i> LAB TEST RESULT</a>
+    </div>
+    <div class="doctor_header-actions">
+        <div class="doctor_header-doctor-logo">
+            <img src="https://via.placeholder.com/40" alt="Doctor Logo">
+        </div>
+        <button class="doctor_header-logout" onclick="logout()">Logout</button>
+    </div>
+</div>
+</body>
+</html>

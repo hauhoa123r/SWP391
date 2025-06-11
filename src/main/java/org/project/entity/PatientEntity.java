@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.project.enums.BloodType;
+import org.project.enums.Gender;
+import org.project.enums.Relationship;
 
 import java.sql.Date;
 import java.util.LinkedHashSet;
@@ -65,6 +68,18 @@ public class PatientEntity {
     private Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
     @OneToMany
     private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    private Gender gender;
+
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "blood_type")
+//    private BloodType bloodType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "relationship")
+    private Relationship relationship;
 
 /*
  TODO [Reverse Engineering] create field to map the 'relationship' column

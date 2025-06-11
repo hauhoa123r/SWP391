@@ -2,9 +2,10 @@ package org.project.enums;
 
 public enum StaffRole {
     DOCTOR("Doctor"),
-    NURSE("Nurse"),
-    COORDINATOR("Coordinator");
-
+    TECHNICIAN("Technician"),
+    SCHEDULING_COORDINATOR("Scheduling Coordinator"),
+    PHARMACIST("Pharmacist"),
+    INVENTORY_MANAGER("Inventory Manager"),;
 
     private final String value;
     StaffRole(String value) {
