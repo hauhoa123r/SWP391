@@ -59,6 +59,9 @@ public class ProductEntity {
     private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
+    private ServiceEntity serviceEntity;
+
+    @OneToOne(mappedBy = "productEntity")
     private MedicalProductEntity medicalProductEntity;
 
     @OneToOne(mappedBy = "productEntity")
@@ -73,7 +76,7 @@ public class ProductEntity {
     @OneToMany(mappedBy = "productEntity")
     private Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "productEntities")
     private Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
 
     @ManyToMany
@@ -87,8 +90,6 @@ public class ProductEntity {
     @OneToOne(mappedBy = "productEntity")
     private TestEntity testEntity;
 
-    @ManyToMany
-    private Set<DepartmentEntity> departmentEntities = new LinkedHashSet<>();
     @ManyToMany
     private Set<UserEntity> userEntities = new LinkedHashSet<>();
 
