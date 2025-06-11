@@ -1,29 +1,46 @@
 package org.project.ai.prompt.emotion;
 
+import org.project.ai.converter.patient.DataPatientConverter;
 import org.project.ai.prompt.PromptAnswer;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ChitChatPrompt implements PromptAnswer {
+
+    private final DataPatientConverter dataPatientConverter;
+
+    public ChitChatPrompt(DataPatientConverter dataPatientConverter) {
+        this.dataPatientConverter = dataPatientConverter;
+    }
+
     @Override
     public String buildPrompt(ChatMessageRequest chatMessageRequest) {
+        String userData = "";
+        if(chatMessageRequest.getUserId() != null){
+            userData = dataPatientConverter.toConverterDataUser(chatMessageRequest.getUserId());
+        }
         return """
-        You are KiviCare AI, a friendly and helpful virtual assistant for the KiviCare hospital system. Your job is to casually chat with the user, provide polite and friendly responses, and always make it clear that you are part of the KiviCare system.
+        You are KiviCare AI, a friendly and helpful virtual assistant of the KiviCare hospital system.
 
-        When the user says something casual, polite, or unrelated to a specific action, you should respond in a warm, natural way and gently guide them back to the system's services.
+        When the user sends casual, polite, or unrelated messages:
+        - Respond naturally and warmly.
+        - Always remind the user that you are part of KiviCare and can assist with hospital services.
+        - If the user's message shows signs of health concerns, give caring advice and mention their name if provided.
 
-        For example:
-        - If they greet you, greet them back and offer help.
-        - If they thank you, politely acknowledge.
-        - If they say goodbye, politely say goodbye.
-        - If they make small talk, respond casually but remind them you are here to assist with hospital services.
+        Examples:
+        - Greetings → Greet back, offer help.
+        - Thanks → Politely acknowledge.
+        - Goodbye → Politely say goodbye.
+        - Small talk → Respond casually, gently guide back to KiviCare's services.
 
         Always keep the tone friendly and professional.
 
         User message: "%s"
 
-        Respond directly as KiviCare AI (do not classify, do not explain). Keep it short, warm, and natural.
-        """.formatted(chatMessageRequest.getUserMessage());
+        Patient information: "%s"
+
+        Respond as KiviCare AI directly (do not classify or explain). Keep your response short, warm, and natural.
+                """.formatted(chatMessageRequest.getUserMessage(), userData);
     }
 }

@@ -30,22 +30,22 @@ public class DataPatientConverter {
 
         List<PatientEntity> patientEntities = patientRepository.findAllByUserEntity_Id(userId);
 
+        if(patientEntities == null){
+            return "This is a new user, no medical examination with data in the system, please reply as usual.";
+        }
+
         List<DataUserDAI> results = new ArrayList<>();
         if (patientEntities != null) {
             for(PatientEntity patient : patientEntities){
                 DataUserDAI dataUser = modelMapper.map(patient, DataUserDAI.class);
 
                 Set<MedicalRecordEntity> medicalRecordEntity = patient.getMedicalRecordEntities();
-
                 Set<MedicalRecordData> medicalRecordData = new HashSet<>();
-
-                if(medicalRecordEntity != null){
                     for(MedicalRecordEntity medicalRecord: medicalRecordEntity){
                         MedicalRecordData result = modelMapper.map(medicalRecord, MedicalRecordData.class);
                         result.setAllergies(patient.getMedicalProfileEntity().getAllergies());
                         result.setChronicDiseases(patient.getMedicalProfileEntity().getChronicDiseases());
                         medicalRecordData.add(result);
-                    }
                 }
 
                 dataUser.setListMedicalRecordData(medicalRecordData);
