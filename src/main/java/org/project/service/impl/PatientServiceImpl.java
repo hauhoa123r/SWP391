@@ -99,4 +99,22 @@ public class PatientServiceImpl implements PatientService {
             throw new ResourceNotFoundException("Patient not found");
         }
     }
+
+    @Override
+    public List<String> getAllRelationships(Long userId) {
+        List<String> relationships = patientRepository.getAllRelationships(userId);
+        if (relationships.isEmpty()) {
+            throw new ResourceNotFoundException("No relationships found for user with ID: " + userId);
+        } else {
+            return relationships;
+        }
+    }
+
+    @Override
+    public Long getPatientIdByUserId(Long userId) {
+        return patientRepository.getPatientIdByUserId(userId)
+                .describeConstable().orElseThrow(
+                        () -> new ResourceNotFoundException("No patient found for user with ID: " + userId)
+                );
+    }
 }

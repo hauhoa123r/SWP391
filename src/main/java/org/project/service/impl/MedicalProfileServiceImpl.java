@@ -4,17 +4,22 @@ import org.project.entity.MedicalProfileEntity;
 import org.project.entity.PatientEntity;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.MedicalProfileDTO;
+import org.project.model.dto.PatientDTO;
 import org.project.model.response.MedicalProfileResponse;
+import org.project.model.response.PatientResponse;
 import org.project.repository.MedicalProfileRepository;
 import org.project.repository.PatientRepository;
 import org.project.service.MedicalProfileService;
+import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Transactional
 @Service
 public class MedicalProfileServiceImpl implements MedicalProfileService {
 
@@ -22,10 +27,13 @@ public class MedicalProfileServiceImpl implements MedicalProfileService {
 
     private MedicalProfileRepository medicalProfileRepositoryImpl;
 
+    private PatientService patientServiceImpl;
+
     @Autowired
-    public MedicalProfileServiceImpl(PatientRepository patientRepository, MedicalProfileRepository medicalProfileRepository) {
+    public MedicalProfileServiceImpl(PatientRepository patientRepository, MedicalProfileRepository medicalProfileRepository, PatientService patientService) {
         this.patientRepositoryImpl = patientRepository;
         this.medicalProfileRepositoryImpl = medicalProfileRepository;
+        this.patientServiceImpl = patientService;
     }
 
     @Override
@@ -100,5 +108,15 @@ public class MedicalProfileServiceImpl implements MedicalProfileService {
         } else {
             throw new ResourceNotFoundException("Medical profile not found with id: " + medicalProfileId);
         }
+    }
+
+    @Override
+    public PatientResponse addPatientAndMedicalProfile(MedicalProfileDTO medicalProfileDTO, PatientDTO patientDTO) {
+    patientServiceImpl.createPatient(patientDTO);
+    Long patientId = patientServiceImpl.getPatientIdByUserId(patientDTO.getUserId());
+    medicalProfileDTO.setPatientId(patientId);
+    createMedicalProfile(medicalProfileDTO);
+    return patientServiceImpl.getPatientById(patientId)
+            .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + patientId));
     }
 }

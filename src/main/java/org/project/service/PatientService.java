@@ -12,4 +12,6 @@ public interface PatientService {
     Optional<PatientResponse> getPatientById(Long patientId);
     void updatePatient(Long patientId, PatientDTO patientDTO);
     void deletePatient(Long patientId);
+    List<String> getAllRelationships(Long userId);
+    Long getPatientIdByUserId(Long userId);
 }

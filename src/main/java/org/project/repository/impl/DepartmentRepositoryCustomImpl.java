@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.project.entity.DepartmentEntity;
 import org.project.repository.impl.custom.DepartmentRepsitoryCustom;
+import org.project.repository.impl.custom.PatientRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

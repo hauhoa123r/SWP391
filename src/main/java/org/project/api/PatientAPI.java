@@ -3,10 +3,10 @@ package org.project.api;
 import org.project.model.dto.PatientDTO;
 import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @RestController
 public class PatientAPI {
@@ -18,11 +18,16 @@ public class PatientAPI {
         this.patientService = patientService;
     }
 
-    @PostMapping("/api/patient")
-    public ModelAndView createPatient(@RequestBody PatientDTO patientDTO) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/patient_infor");
-        patientService.createPatient(patientDTO);
-        modelAndView.addObject("message", "Patient created successfully");
+    @GetMapping("/api/patient")
+    public ModelAndView getUserPatientRelationships(@RequestParam Long userId) {
+        ModelAndView modelAndView = new ModelAndView("patient_add");
+
+        List<String> relationships = patientService.getAllRelationships(userId);
+        if (relationships != null && !relationships.isEmpty()) {
+            modelAndView.addObject("relationships", relationships);
+        } else {
+            modelAndView.addObject("error", "No relationships found.");
+        }
         return modelAndView;
     }
 }

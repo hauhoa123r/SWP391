@@ -1,13 +1,14 @@
 package org.project.repository;
 
 import org.project.entity.PatientEntity;
+import org.project.repository.impl.custom.PatientRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
+public interface PatientRepository extends JpaRepository<PatientEntity, Long>, PatientRepositoryCustom{
 
     List<PatientEntity> findAllByUserEntity_Id(Long userId);
 

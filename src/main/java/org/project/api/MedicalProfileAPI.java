@@ -2,8 +2,11 @@ package org.project.api;
 
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.MedicalProfileDTO;
+import org.project.model.dto.PatientDTO;
 import org.project.model.response.MedicalProfileResponse;
+import org.project.model.response.PatientResponse;
 import org.project.service.MedicalProfileService;
+import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,24 +18,29 @@ public class MedicalProfileAPI {
 
     private MedicalProfileService medicalProfileService;
 
+    private PatientService patientService;
+
     @Autowired
-    public MedicalProfileAPI(MedicalProfileService medicalProfileService) {
+    public MedicalProfileAPI(MedicalProfileService medicalProfileService, PatientService patientService) {
         this.medicalProfileService = medicalProfileService;
+        this.patientService = patientService;
     }
 
     @PostMapping("/api/profile")
-    public ModelAndView createMedicalProfile(@RequestBody MedicalProfileDTO medicalProfileDTO) {
+    public ModelAndView createPatientAndMedicalProfile(@RequestBody MedicalProfileDTO medicalProfileDTO, @RequestBody PatientDTO patientDTO) {
         ModelAndView modelAndView = new ModelAndView("redirect:/patient_infor");
-        medicalProfileService.createMedicalProfile(medicalProfileDTO);
-        MedicalProfileResponse medicalProfileResponse = medicalProfileService.getMedicalProfileByPatientId(medicalProfileDTO.getPatientId());
-        if (medicalProfileResponse == null) {
-            throw new ResourceNotFoundException("Medical profile not found for patient with id: " + medicalProfileDTO.getPatientId());
-        } else {
-            modelAndView.addObject("medicalProfile", medicalProfileResponse);
+
+        try {
+            PatientResponse patientResponse =  medicalProfileService.addPatientAndMedicalProfile(medicalProfileDTO, patientDTO);
+            if (patientResponse != null) {
+                modelAndView.addObject("patient", patientResponse);
+            } else {
+                modelAndView.addObject("error", "Failed to create patient and medical profile.");
+            }
+        } catch (ResourceNotFoundException e) {
+            modelAndView.addObject("error", "Resource not found: " + e.getMessage());
         }
         return modelAndView;
     }
-
-
 
 }
