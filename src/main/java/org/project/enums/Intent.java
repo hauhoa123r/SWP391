@@ -17,7 +17,7 @@ public enum Intent {
     HEALTH_EFFECT("health_effect", "This is asking if a certain behavior, situation, event, or issue has an impact on the user's health. Example: Does drinking coffee at night affect my health?"),
     PERSONAL_HEALTH_QUESTION("personal_health_question", "This is when the user asks about their own health status or medical information stored in the system, such as: Do you know my blood pressure? or What is my medical history?"),
     TREATMENT("treatment", "This is a request for treatment methods, asking how to manage or cure a specific health issue or symptom. Example: How do I treat a sore throat?"),
-    CHITCHAT("chitchat", "Casual conversations such as small talk, personal sharing, or polite social phrases that are NOT greetings, thank you, or good bye messages."),
+    CHITCHAT("chitchat", "Casual conversations such as small talk, personal sharing, or polite social phrases that are greetings, thank you, or good bye messages."),
     EMOTIONAL_SUPPORT("emotional_support", "This is a message where the user expresses feelings of sadness, disappointment, frustration, stress, or emotional distress, requiring comforting or motivational responses."),
     DIET_ADVICE("diet_advice","These are questions about food, diet, or nutrition, including what to eat, what to avoid, dietary recommendations, or healthy eating habits."),
     ADVICE("advice","This is when the user asks for general health advice or lifestyle tips not specifically about medicine or diet. Example: How can I improve my sleep quality?"),
