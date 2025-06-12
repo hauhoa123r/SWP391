@@ -1,57 +1,57 @@
 <!doctype html>
-<html lang="en" data-bs-theme="light" dir="ltr" class="landing-pages" xmlns:th="http://www.thymeleaf.org">
+<html class="landing-pages" data-bs-theme="light" dir="ltr" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <title>Kivicare | Medical Clinic & Patient Management Html Template</title>
     <!-- Config Options -->
-    <meta name="setting_options"
-          content='{&quot;saveLocal&quot;:&quot;sessionStorage&quot;,&quot;storeKey&quot;:&quot;huisetting&quot;,&quot;setting&quot;:{&quot;app_name&quot;:{&quot;value&quot;:&quot;Kivicare&quot;}}}'>
+    <meta content='{&quot;saveLocal&quot;:&quot;sessionStorage&quot;,&quot;storeKey&quot;:&quot;huisetting&quot;,&quot;setting&quot;:{&quot;app_name&quot;:{&quot;value&quot;:&quot;Kivicare&quot;}}}'
+          name="setting_options">
     <!-- Google Font Api KEY-->
-    <meta name="google_font_api" content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
+    <meta content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k" name="google_font_api">
     <!-- Favicon -->
-    <link rel="shortcut icon" href="./assets/images/favicon.ico" th:href="@{/frontend/assets/images/favicon.ico}"/>
+    <link href="./assets/images/favicon.ico" rel="shortcut icon" th:href="@{/frontend/assets/images/favicon.ico}"/>
 
     <!-- Library / Plugin Css Build -->
-    <link rel="stylesheet" href="./assets/css/core/libs.min.css" th:href="@{/frontend/assets/css/core/libs.min.css}"/>
+    <link href="./assets/css/core/libs.min.css" rel="stylesheet" th:href="@{/frontend/assets/css/core/libs.min.css}"/>
 
     <!-- flaticon css -->
-    <link rel="stylesheet" href="./assets/vendor/flaticon/css/flaticon.css"
+    <link href="./assets/vendor/flaticon/css/flaticon.css" rel="stylesheet"
           th:href="@{/frontend/assets/vendor/flaticon/css/flaticon.css}"/>
 
     <!-- font-awesome css -->
-    <link rel="stylesheet" href="./assets/vendor/font-awesome/css/all.min.css"
+    <link href="./assets/vendor/font-awesome/css/all.min.css" rel="stylesheet"
           th:href="@{/frontend/assets/vendor/font-awesome/css/all.min.css}"/>
 
 
     <!-- SwiperSlider css -->
-    <link rel="stylesheet" href="./assets/vendor/swiperSlider/swiper-bundle.min.css"
+    <link href="./assets/vendor/swiperSlider/swiper-bundle.min.css" rel="stylesheet"
           th:href="@{/frontend/assets/vendor/swiperSlider/swiper-bundle.min.css}">
 
     <!-- Kivicare Design System Css -->
-    <link rel="stylesheet" href="./assets/css/kivicare.min.css?v=1.4.1"
+    <link href="./assets/css/kivicare.min.css?v=1.4.1" rel="stylesheet"
           th:href="@{/frontend/assets/css/kivicare.min.css?v=1.4.1}"/>
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="./assets/css/custom.min.css?v=1.4.1"
+    <link href="./assets/css/custom.min.css?v=1.4.1" rel="stylesheet"
           th:href="@{/frontend/assets/css/custom.min.css?v=1.4.1}"/>
 
     <!-- Rtl Css -->
-    <link rel="stylesheet" href="./assets/css/rtl.min.css?v=1.4.1"
+    <link href="./assets/css/rtl.min.css?v=1.4.1" rel="stylesheet"
           th:href="@{/frontend/assets/css/rtl.min.css?v=1.4.1}"/>
 
     <!-- Customizer Css -->
-    <link rel="stylesheet" href="./assets/css/customizer.min.css?v=1.4.1"
+    <link href="./assets/css/customizer.min.css?v=1.4.1" rel="stylesheet"
           th:href="@{/frontend/assets/css/customizer.min.css?v=1.4.1}"/>
 
     <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap"
           rel="stylesheet">
 
 
-    <meta name="page_colors" content=''>
+    <meta content='' name="page_colors">
 </head>
 <body class=" body-bg landing-pages">
 <span class="screen-darken"></span>
@@ -68,15 +68,15 @@
     <div class="position-relative">
         <!--Nav Start-->
         <div th:replace="/frontend/fragments/header.html"></div>
-        <div class="offcanvas offcanvas-end " tabindex="-1" id="right-panel-toggle">
+        <div class="offcanvas offcanvas-end " id="right-panel-toggle" tabindex="-1">
             <div class="offcanvas-header border-bottom px-5 mb-5 py-4">
                 <a href="./index.html" th:href="@{/frontend/index.html}">
                    <span class="logo-normal">
                       <img src="./assets/images/logo/logo.png" th:src="@{/frontend/assets/images/logo/logo.png}">
                    </span>
                 </a>
-                <button type="button" class="btn-close text-reset"
-                        data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close text-reset"
+                        data-bs-dismiss="offcanvas" type="button"></button>
             </div>
             <div class="offcanvas-body px-5 d-flex flex-column justify-content-between">
                 <div class="mb-5 pb-5 border-bottom">
@@ -86,60 +86,66 @@
                             <a data-fslightbox="sidebar-gallery"
                                href="./assets/images/gallery/blog-1.jpg"
                                th:href="@{/frontend/assets/images/gallery/blog-1.jpg}">
-                                <img src="./assets/images/gallery/blog-1.jpg"
-                                     th:src="@{/frontend/assets/images/gallery/blog-1.jpg}"
+                                <img alt="profile-image"
                                      class="img-fluid w-100"
-                                     alt="profile-image" loading="lazy">
+                                     loading="lazy"
+                                     src="./assets/images/gallery/blog-1.jpg"
+                                     th:src="@{/frontend/assets/images/gallery/blog-1.jpg}">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="./assets/images/gallery/blog-2.jpg"
                                th:href="@{/frontend/assets/images/gallery/blog-2.jpg}">
-                                <img src="./assets/images/gallery/blog-2.jpg"
-                                     th:src="@{/frontend/assets/images/gallery/blog-2.jpg}"
+                                <img alt="profile-image"
                                      class="img-fluid w-100"
-                                     alt="profile-image" loading="lazy">
+                                     loading="lazy"
+                                     src="./assets/images/gallery/blog-2.jpg"
+                                     th:src="@{/frontend/assets/images/gallery/blog-2.jpg}">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="./assets/images/gallery/blog-3.jpg"
                                th:href="@{/frontend/assets/images/gallery/blog-3.jpg}">
-                                <img src="./assets/images/gallery/blog-3.jpg"
-                                     th:src="@{/frontend/assets/images/gallery/blog-3.jpg}"
+                                <img alt="profile-image"
                                      class="img-fluid w-100"
-                                     alt="profile-image" loading="lazy">
+                                     loading="lazy"
+                                     src="./assets/images/gallery/blog-3.jpg"
+                                     th:src="@{/frontend/assets/images/gallery/blog-3.jpg}">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="./assets/images/gallery/blog-4.jpg"
                                th:href="@{/frontend/assets/images/gallery/blog-4.jpg}">
-                                <img src="./assets/images/gallery/blog-4.jpg"
-                                     th:src="@{/frontend/assets/images/gallery/blog-4.jpg}"
+                                <img alt="profile-image"
                                      class="img-fluid w-100"
-                                     alt="profile-image" loading="lazy">
+                                     loading="lazy"
+                                     src="./assets/images/gallery/blog-4.jpg"
+                                     th:src="@{/frontend/assets/images/gallery/blog-4.jpg}">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="./assets/images/gallery/blog-5.jpg"
                                th:href="@{/frontend/assets/images/gallery/blog-5.jpg}">
-                                <img src="./assets/images/gallery/blog-5.jpg"
-                                     th:src="@{/frontend/assets/images/gallery/blog-5.jpg}"
+                                <img alt="profile-image"
                                      class="img-fluid w-100"
-                                     alt="profile-image" loading="lazy">
+                                     loading="lazy"
+                                     src="./assets/images/gallery/blog-5.jpg"
+                                     th:src="@{/frontend/assets/images/gallery/blog-5.jpg}">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="./assets/images/gallery/blog-6.jpg"
                                th:href="@{/frontend/assets/images/gallery/blog-6.jpg}">
-                                <img src="./assets/images/gallery/blog-6.jpg"
-                                     th:src="@{/frontend/assets/images/gallery/blog-6.jpg}"
+                                <img alt="profile-image"
                                      class="img-fluid w-100"
-                                     alt="profile-image" loading="lazy">
+                                     loading="lazy"
+                                     src="./assets/images/gallery/blog-6.jpg"
+                                     th:src="@{/frontend/assets/images/gallery/blog-6.jpg}">
                             </a>
                         </div>
                     </div>
@@ -155,33 +161,33 @@
                     <ul class="iq-social list-inline d-flex align-items-center gap-3 m-0">
                         <li>
                             <a href="https://facebook.com/">
-                                <svg class="base-circle animated" width="38" height="38"
-                                     viewBox="0 0 50 50">
-                                    <circle class="c1" cx="25" cy="25" r="23" stroke="#6e7990"
-                                            stroke-width="1"
-                                            fill="none"></circle>
+                                <svg class="base-circle animated" height="38" viewBox="0 0 50 50"
+                                     width="38">
+                                    <circle class="c1" cx="25" cy="25" fill="none" r="23"
+                                            stroke="#6e7990"
+                                            stroke-width="1"></circle>
                                 </svg>
                                 <i class="fab fa-facebook-f"></i>
                             </a>
                         </li>
                         <li>
                             <a href="https://x.com/">
-                                <svg class="base-circle animated" width="38" height="38"
-                                     viewBox="0 0 50 50">
-                                    <circle class="c1" cx="25" cy="25" r="23" stroke="#6e7990"
-                                            stroke-width="1"
-                                            fill="none"></circle>
+                                <svg class="base-circle animated" height="38" viewBox="0 0 50 50"
+                                     width="38">
+                                    <circle class="c1" cx="25" cy="25" fill="none" r="23"
+                                            stroke="#6e7990"
+                                            stroke-width="1"></circle>
                                 </svg>
                                 <i class="fab fa-twitter"></i>
                             </a>
                         </li>
                         <li>
                             <a href="https://www.google.com/">
-                                <svg class="base-circle animated" width="38" height="38"
-                                     viewBox="0 0 50 50">
-                                    <circle class="c1" cx="25" cy="25" r="23" stroke="#6e7990"
-                                            stroke-width="1"
-                                            fill="none"></circle>
+                                <svg class="base-circle animated" height="38" viewBox="0 0 50 50"
+                                     width="38">
+                                    <circle class="c1" cx="25" cy="25" fill="none" r="23"
+                                            stroke="#6e7990"
+                                            stroke-width="1"></circle>
                                 </svg>
                                 <i class="fab fa-google"></i>
                             </a>
@@ -219,10 +225,13 @@
                     <div class="team-member-info">
                         <div class="iq-team-block team-overdetail position-relative p-2">
                             <div class="iq-team-img">
-                                <img th:src="${doctor.avatarUrl}"
+                                <img alt="Doctor Avatar"
+                                     class="img-fluid w-100"
+                                     loading="lazy"
                                      onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
-                                     alt="Doctor Avatar" class="img-fluid w-100" loading="lazy">
+                                     th:src="${doctor.avatarUrl}">
                             </div>
+                            <div th:replace="/frontend/fragments/doctor/rating :: rating(averageRating=${doctor.averageRating}, reviewCount=${doctor.reviewCount})"></div>
                             <div class="iq-team-info position-absolute d-block w-100">
                                 <div class="iq-team-main-detail bg-white">
                                     <h5 th:text="${doctor.fullName}">Gunner Peha</h5>
@@ -310,14 +319,19 @@
                                 <div class="wrapper-progress">
                                     <div class="percentage-progress d-flex justify-content-between">
                                         <h6 class="mb-2 text-body" th:text="${skill.name}">Technique</h6>
-                                        <div><span th:text="${skill.proficiencyPercentage + '%'}">70%</span></div>
+                                        <div><span class="counter"
+                                                   th:text="${skill.proficiencyPercentage + '%'}">70%</span></div>
                                     </div>
                                 </div>
-                                <div class="progress" style="height:10px">
-                                    <div class="progress-bar bg-primary" role="progressbar"
-                                         style="height:10px" th:style="'width:' + ${skill.proficiencyPercentage + '%'}"
-                                         th:aria-valuenow="${skill.proficiencyPercentage}" aria-valuemin="0"
-                                         aria-valuemax="100"></div>
+                                <div class="progress mb-3" style="height:10px">
+                                    <div aria-valuemax="100"
+                                         aria-valuemin="0"
+                                         class="progress-bar"
+                                         role="progressbar"
+                                         th:aria-valuenow="${skill.proficiencyPercentage}"
+                                         th:classappend="${skill.proficiencyPercentage < 25} ? 'bg-danger' : (${skill.proficiencyPercentage < 50} ? 'bg-warning' : (${skill.proficiencyPercentage < 75} ? 'bg-info' : 'bg-success'))"
+                                         th:style="'width:' + ${skill.proficiencyPercentage + '%'}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -380,20 +394,23 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <div class="position-relative overflow-hidden swiper swiper-general" data-slide="2"
+                        <div class="position-relative overflow-hidden swiper swiper-general" data-autoplay="true"
                              data-laptop="2"
-                             data-tab="2" data-mobile="1" data-mobile-sm="1" data-autoplay="true" data-loop="true"
-                             data-navigation="true" data-pagination="true">
+                             data-loop="true" data-mobile="1" data-mobile-sm="1" data-navigation="true"
+                             data-pagination="true"
+                             data-slide="2" data-tab="2">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide" th:each="colleague : ${colleagueDoctors}">
                                     <div class="iq-team-block team-overdetail position-relative p-2"
                                          th:onclick="'window.location.href=\'/doctor/detail/' + ${colleague.id} + '\''">
                                         <div class="iq-team-img">
-                                            <img th:src="${colleague.avatarUrl}"
+                                            <img alt="team"
+                                                 class="img-fluid w-100"
+                                                 loading="lazy"
                                                  onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
-                                                 alt="team"
-                                                 class="img-fluid w-100" loading="lazy">
+                                                 th:src="${colleague.avatarUrl}">
                                         </div>
+                                        <div th:replace="/frontend/fragments/doctor/rating :: rating(averageRating=${colleague.averageRating}, reviewCount=${colleague.reviewCount})"></div>
                                         <div class="iq-team-info position-absolute d-block w-100">
                                             <div class="iq-team-main-detail bg-white">
                                                 <h5 th:text="${colleague.fullName}">Gunner Peha</h5>
@@ -420,31 +437,33 @@
 
 <!-- setting -->
 <div class="rtl-box">
-    <a class="btn btn-icon btn-setting bg-primary" id="settingbutton" data-bs-toggle="offcanvas"
-       data-bs-target="#live-customizer" role="button" aria-controls="live-customizer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="1.875em" height="1.875em" viewBox="0 0 20 20" fill="white">
-            <path fill-rule="evenodd"
+    <a aria-controls="live-customizer" class="btn btn-icon btn-setting bg-primary" data-bs-target="#live-customizer"
+       data-bs-toggle="offcanvas" id="settingbutton" role="button">
+        <svg fill="white" height="1.875em" viewBox="0 0 20 20" width="1.875em" xmlns="http://www.w3.org/2000/svg">
+            <path clip-rule="evenodd"
                   d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                  clip-rule="evenodd"/>
+                  fill-rule="evenodd"/>
         </svg>
     </a>
-    <div class="offcanvas offcanvas-end live-customizer on-rtl end" tabindex="-1" id="live-customizer"
-         data-bs-scroll="true" data-bs-backdrop="false" aria-labelledby="live-customizer-label" aria-modal="true"
-         role="dialog">
+    <div aria-labelledby="live-customizer-label" aria-modal="true"
+         class="offcanvas offcanvas-end live-customizer on-rtl end"
+         data-bs-backdrop="false" data-bs-scroll="true" id="live-customizer" role="dialog"
+         tabindex="-1">
         <div class="offcanvas-header gap-3 pb-2">
             <div class="d-flex align-items-center">
                 <h5 class="offcanvas-title" id="live-customizer-label">Language Mode</h5>
             </div>
             <div class="d-flex gap-1 align-items-center">
-                <button class="btn btn-icon text-primary border-0" data-reset="settings" data-bs-toggle="tooltip"
-                        data-bs-placement="left" aria-label="Reset All Settings"
-                        data-bs-original-title="Reset All Settings">
+                <button aria-label="Reset All Settings" class="btn btn-icon text-primary border-0"
+                        data-bs-original-title="Reset All Settings"
+                        data-bs-placement="left" data-bs-toggle="tooltip"
+                        data-reset="settings">
                         <span class="btn-inner">
                             <i class="fas fa-sync-alt"></i>
                         </span>
                 </button>
-                <button type="button" class="btn btn-icon btn-close px-0 shadow-none" data-bs-dismiss="offcanvas"
-                        aria-label="Close">
+                <button aria-label="Close" class="btn btn-icon btn-close px-0 shadow-none" data-bs-dismiss="offcanvas"
+                        type="button">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -452,18 +471,20 @@
         <div class="offcanvas-body pt-0">
             <div class="modes row row-cols-2 gx-2">
                 <div class="col">
-                    <div data-setting="attribute" class="text-center w-100">
-                        <input type="radio" value="ltr" class="btn-check" name="theme_scheme_direction" data-prop="dir"
-                               id="theme-scheme-direction-ltr" checked>
+                    <div class="text-center w-100" data-setting="attribute">
+                        <input checked class="btn-check" data-prop="dir" id="theme-scheme-direction-ltr"
+                               name="theme_scheme_direction"
+                               type="radio" value="ltr">
                         <label class="btn dir-btn cutomizer-button w-100" for="theme-scheme-direction-ltr">
                             LTR
                         </label>
                     </div>
                 </div>
                 <div class="col">
-                    <div data-setting="attribute" class="text-center w-100">
-                        <input type="radio" value="rtl" class="btn-check" name="theme_scheme_direction" data-prop="dir"
-                               id="theme-scheme-direction-rtl">
+                    <div class="text-center w-100" data-setting="attribute">
+                        <input class="btn-check" data-prop="dir" id="theme-scheme-direction-rtl"
+                               name="theme_scheme_direction" type="radio"
+                               value="rtl">
                         <label class="btn dir-btn cutomizer-button w-100" for="theme-scheme-direction-rtl">
                             RTL
                         </label>
@@ -476,10 +497,10 @@
 
 <!-- Back To Top -->
 <div id="back-to-top" style="display: none;">
-    <a class="p-0 btn btn-sm position-fixed top border-0 text-white" id="top" href="#top">
-        <svg width="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 15.5L12 8.5L19 15.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                  stroke-linejoin="round"></path>
+    <a class="p-0 btn btn-sm position-fixed top border-0 text-white" href="#top" id="top">
+        <svg fill="none" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 15.5L12 8.5L19 15.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="1.5"></path>
         </svg>
     </a>
 </div>
@@ -493,7 +514,7 @@
 <script src="./assets/js/plugins/slider-tabs.js" th:src="@{/frontend/assets/js/plugins/slider-tabs.js}"></script>
 
 <!-- fslightbox Script -->
-<script src="./assets/js/plugins/fslightbox.js" th:src="@{/frontend/assets/js/plugins/fslightbox.js}" defer></script>
+<script defer src="./assets/js/plugins/fslightbox.js" th:src="@{/frontend/assets/js/plugins/fslightbox.js}"></script>
 
 
 <!-- SwiperSlider Script -->
@@ -513,11 +534,11 @@
 <!-- External Library Bundle Script -->
 <script src="./assets/js/core/external.min.js" th:src="@{/frontend/assets/js/core/external.min.js}"></script>
 <!-- Kivicare Script -->
-<script src="./assets/js/kivicare.js?v=1.4.1" th:src="@{/frontend/assets/js/kivicare.js?v=1.4.1}" defer></script>
-<script src="./assets/js/kivicare-advance.js?v=1.4.1" th:src="@{/frontend/assets/js/kivicare-advance.js?v=1.4.1}"
-        defer></script>
+<script defer src="./assets/js/kivicare.js?v=1.4.1" th:src="@{/frontend/assets/js/kivicare.js?v=1.4.1}"></script>
+<script defer src="./assets/js/kivicare-advance.js?v=1.4.1"
+        th:src="@{/frontend/assets/js/kivicare-advance.js?v=1.4.1}"></script>
 <!-- Kivicare Pages Script -->
-<script src="./assets/js/slider.js" th:src="@{/frontend/assets/js/slider.js}" defer></script>
-<script src="./assets/js/scroll-text.js" th:src="@{/frontend/assets/js/scroll-text.js}" defer></script>
+<script defer src="./assets/js/slider.js" th:src="@{/frontend/assets/js/slider.js}"></script>
+<script defer src="./assets/js/scroll-text.js" th:src="@{/frontend/assets/js/scroll-text.js}"></script>
 </body>
 </html>

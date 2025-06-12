@@ -23,4 +23,6 @@ public class StaffResponse {
     private List<StaffQualificationEntity> staffQualificationEntities;
     private List<StaffSpecialityEntity> staffSpecialityEntities;
     private String hospitalEntityName;
+    private int reviewCount;
+    private double averageRating;
 }
