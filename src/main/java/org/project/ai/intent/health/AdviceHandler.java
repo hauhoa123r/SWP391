@@ -1,16 +1,15 @@
-package org.project.ai.intent.doctor;
+package org.project.ai.intent.health;
 
 import org.project.ai.chat.AIService;
 import org.project.ai.intent.BasePromptHandler;
-import org.project.ai.prompt.doctor.DoctorPrompt;
+import org.project.ai.prompt.health.AdvicePrompt;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AskDoctorHandler extends BasePromptHandler<DoctorPrompt>{
-
-    public AskDoctorHandler(AIService aiService, DoctorPrompt doctorPrompt) {
-        super(aiService, doctorPrompt);
+public class AdviceHandler extends BasePromptHandler<AdvicePrompt> {
+    public AdviceHandler(AIService aiService, AdvicePrompt advicePrompt) {
+        super(aiService, advicePrompt);
     }
 
     @Override
@@ -20,6 +19,6 @@ public class AskDoctorHandler extends BasePromptHandler<DoctorPrompt>{
 
     @Override
     public String contextType() {
-        return "ask_doctor";
+        return "advice";
     }
 }

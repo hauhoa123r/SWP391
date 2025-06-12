@@ -1,16 +1,15 @@
-package org.project.ai.intent.doctor;
+package org.project.ai.intent.patient;
 
 import org.project.ai.chat.AIService;
 import org.project.ai.intent.BasePromptHandler;
-import org.project.ai.prompt.doctor.DoctorPrompt;
+import org.project.ai.prompt.patient.SelfIdentificationPrompt;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AskDoctorHandler extends BasePromptHandler<DoctorPrompt>{
-
-    public AskDoctorHandler(AIService aiService, DoctorPrompt doctorPrompt) {
-        super(aiService, doctorPrompt);
+public class SelfIdentificationHandler extends BasePromptHandler<SelfIdentificationPrompt> {
+    public SelfIdentificationHandler(AIService aiService, SelfIdentificationPrompt selfIdentificationPrompt) {
+        super(aiService, selfIdentificationPrompt);
     }
 
     @Override
@@ -20,6 +19,6 @@ public class AskDoctorHandler extends BasePromptHandler<DoctorPrompt>{
 
     @Override
     public String contextType() {
-        return "ask_doctor";
+        return "self_identification";
     }
 }

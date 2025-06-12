@@ -1,4 +1,4 @@
-package org.project.ai.converter;
+package org.project.ai.converter.system;
 
 import org.project.entity.HospitalEntity;
 import org.project.repository.HospitalRepository;

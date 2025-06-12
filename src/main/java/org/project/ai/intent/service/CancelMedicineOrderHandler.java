@@ -1,16 +1,16 @@
-package org.project.ai.intent.doctor;
+package org.project.ai.intent.service;
 
 import org.project.ai.chat.AIService;
 import org.project.ai.intent.BasePromptHandler;
-import org.project.ai.prompt.doctor.DoctorPrompt;
+import org.project.ai.prompt.service.CancelMedicineOrderPrompt;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AskDoctorHandler extends BasePromptHandler<DoctorPrompt>{
+public class CancelMedicineOrderHandler extends BasePromptHandler<CancelMedicineOrderPrompt> {
 
-    public AskDoctorHandler(AIService aiService, DoctorPrompt doctorPrompt) {
-        super(aiService, doctorPrompt);
+    public CancelMedicineOrderHandler(AIService aiService, CancelMedicineOrderPrompt cancelMedicineOrderPrompt) {
+        super(aiService, cancelMedicineOrderPrompt);
     }
 
     @Override
@@ -20,6 +20,6 @@ public class AskDoctorHandler extends BasePromptHandler<DoctorPrompt>{
 
     @Override
     public String contextType() {
-        return "ask_doctor";
+        return "cancel_medicine_order";
     }
 }

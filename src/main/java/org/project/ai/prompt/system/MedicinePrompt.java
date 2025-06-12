@@ -1,6 +1,6 @@
 package org.project.ai.prompt.system;
 
-import org.project.ai.converter.DataPatientConverter;
+import org.project.ai.converter.patient.DataPatientConverter;
 import org.project.ai.prompt.PromptAnswer;
 import org.project.entity.ProductEntity;
 import org.project.enums.ProductStatus;
@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class MedicinePrompt implements PromptAnswer {
+
     private final ProductRepository productRepository;
     private final DataPatientConverter dataPatientConverter;
     public MedicinePrompt(ProductRepository productRepository, DataPatientConverter dataPatientConverter) {
