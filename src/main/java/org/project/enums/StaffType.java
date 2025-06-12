@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum StaffType {
-    PART_TIME_CONSTRACT("pat_time_contract"),
+    PART_TIME_CONTRACT("part_time_contract"),
     INTERN("intern"),
     CONSULTANT("consultant"),
     FULL_TIME("full_time");
