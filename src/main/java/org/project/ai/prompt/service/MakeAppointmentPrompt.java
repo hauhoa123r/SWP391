@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class MakeAppointmentPrompt implements PromptAnswer {
 
     @Override
-    public String buildPrompt(ChatMessageRequest chatMessageRequest) {
+    public String buildPrompt(ChatMessageRequest chatMessageRequest, String historyWithUser) {
         return "";
     }
 }

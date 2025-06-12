@@ -16,8 +16,8 @@ public class AskSystemHandler extends BasePromptHandler<SystemPrompt> {
     }
 
     @Override
-    protected String buildPrompt(ChatMessageRequest chatMessageRequest) {
-        return prompt.buildPrompt(chatMessageRequest.getUserMessage());
+    protected String buildPrompt(ChatMessageRequest chatMessageRequest, String historyWithUser) {
+        return prompt.buildPrompt(chatMessageRequest, historyWithUser);
     }
 
     @Override

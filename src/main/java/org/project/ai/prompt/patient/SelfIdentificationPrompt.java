@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SelfIdentificationPrompt implements PromptAnswer {
     @Override
-    public String buildPrompt(ChatMessageRequest chatMessageRequest) {
+    public String buildPrompt(ChatMessageRequest chatMessageRequest, String historyWithUser) {
         return "";
     }
 }

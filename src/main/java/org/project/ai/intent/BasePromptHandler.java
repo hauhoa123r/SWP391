@@ -12,10 +12,10 @@ public abstract class BasePromptHandler<TPrompt> implements IntentHandler{
         this.prompt = prompt;
     }
 
-    protected abstract String buildPrompt(ChatMessageRequest chatMessageRequest);
+    protected abstract String buildPrompt(ChatMessageRequest chatMessageRequest, String historyWithUser);
 
     @Override
-    public String handle(ChatMessageRequest chatMessageRequest) {
-        return aiService.complete(buildPrompt(chatMessageRequest));
+    public String handle(ChatMessageRequest chatMessageRequest, String historyWithUser) {
+        return aiService.complete(buildPrompt(chatMessageRequest, historyWithUser));
     }
 }

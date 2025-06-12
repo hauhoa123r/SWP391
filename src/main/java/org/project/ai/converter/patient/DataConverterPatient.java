@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class DataPatientConverter {
+public class DataConverterPatient {
     private final MedicalRecordRepository medicalRecordRepository;
     private final PatientRepository patientRepository;
     private final ModelMapper modelMapper;
 
-    public DataPatientConverter(MedicalRecordRepository medicalRecordRepository, ModelMapper modelMapper,
+    public DataConverterPatient(MedicalRecordRepository medicalRecordRepository, ModelMapper modelMapper,
                                 PatientRepository patientRepository) {
         this.medicalRecordRepository = medicalRecordRepository;
         this.modelMapper = modelMapper;
@@ -60,10 +60,10 @@ public class DataPatientConverter {
         StringBuilder results = new StringBuilder();
 
         for(DataUserDAI data : dataUserDAI){
-            results.append("- Tên: " + data.getFullName() + "\n");
-            results.append("- Tuổi: " + data.getBirthDate() + "\n");
-            results.append("- Giới tính: " + data.getGender() + "\n");
-            results.append("- Loại máu: " + data.getBloodType() + "\n");
+            results.append("- Name: " + data.getFullName() + "\n");
+            results.append("- Age: " + data.getBirthDate() + "\n");
+            results.append("- Gender: " + data.getGender() + "\n");
+            results.append("- Blood Type: " + data.getBloodType() + "\n");
             if(data.getListMedicalRecordData() != null){
                 results.append(toConverterDataMedicalRecord(data.getListMedicalRecordData()));
             }
@@ -71,12 +71,12 @@ public class DataPatientConverter {
         return results.toString();
     }
     private String toConverterDataMedicalRecord(Set<MedicalRecordData> medicalRecordData){
-        StringBuilder allergen = new StringBuilder("- Dị ứng: ");
-        StringBuilder chronicDiseases = new StringBuilder("- Bệnh án: ");
-        StringBuilder dischargeDate = new StringBuilder("- Ngày xuất viện: ");
-        StringBuilder tretmentPlan = new StringBuilder("- Kế hoạch điều trị: ");
-        StringBuilder diagnosis = new StringBuilder("- Chuẩn đoán bệnh: ");
-        StringBuilder outcome = new StringBuilder("- Kết quả: ");
+        StringBuilder allergen = new StringBuilder("- Allergen: ");
+        StringBuilder chronicDiseases = new StringBuilder("- Chronic Diseases: ");
+        StringBuilder dischargeDate = new StringBuilder("- Discharge Date: ");
+        StringBuilder tretmentPlan = new StringBuilder("- Tretment Plan: ");
+        StringBuilder diagnosis = new StringBuilder("- Diagnosis: ");
+        StringBuilder outcome = new StringBuilder("- Result: ");
         for(MedicalRecordData medicalRecord : medicalRecordData){
             allergen.append(medicalRecord.getAllergies() + ", ");
             chronicDiseases.append(medicalRecord.getChronicDiseases() + ", ");
@@ -95,7 +95,7 @@ public class DataPatientConverter {
 
     private String dataResult(Long userId){
         return """
-                Đây là thông tin của người dùng gồm có:
+                This is contains information of patients:
                 %s
                 """.formatted(toConverterDataUser(userId));
     }

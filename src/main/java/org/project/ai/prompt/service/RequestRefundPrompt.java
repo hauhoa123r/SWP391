@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RequestRefundPrompt implements PromptAnswer {
     @Override
-    public String buildPrompt(ChatMessageRequest chatMessageRequest) {
+    public String buildPrompt(ChatMessageRequest chatMessageRequest, String historyWithUser) {
         return "";
     }
 }

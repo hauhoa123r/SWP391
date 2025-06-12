@@ -2,6 +2,8 @@ package org.project.api;
 
 import jakarta.servlet.http.HttpSession;
 import org.project.ai.context.ChatMessage;
+import org.project.ai.context.ChatSession;
+import org.project.ai.context.ChatSessionManager;
 import org.project.ai.intent.ChatRouterService;
 import org.project.model.request.ChatMessageRequest;
 import org.project.service.LanguageService;
@@ -21,31 +23,30 @@ public class ChatBoxAPI {
 
     private final ChatRouterService chatRouterService;
     private final LanguageService languageService;
-    private static final int MAX_HISTORY_SIZE = 10;
-    public ChatBoxAPI(ChatRouterService chatRouterService, LanguageService languageService) {
+    private final ChatSessionManager chatSessionManager;
+    private final ChatSession chatSession;
+    public ChatBoxAPI(ChatRouterService chatRouterService,
+                      LanguageService languageService,
+                      ChatSessionManager chatSessionManager,
+                      ChatSession chatSession) {
         this.chatRouterService = chatRouterService;
         this.languageService = languageService;
+        this.chatSessionManager = chatSessionManager;
+        this.chatSession = chatSession;
     }
 
     @PostMapping
     public ResponseEntity<String> handleMessageUser(@RequestBody ChatMessageRequest chatMessageRequest,
     HttpSession session) {
-        @SuppressWarnings("unchecked")
-        List<ChatMessage> chatHisroty = (List<ChatMessage>) session.getAttribute("chatHistory");
-        if(chatHisroty == null) {
-            chatHisroty = new ArrayList<>();
-        }
 
-        chatHisroty.add(new ChatMessage("user", chatMessageRequest.getUserMessage()));
+        List<ChatMessage> chatHisroty = chatSessionManager.getChatSessionWithUser(session);
+
+        String historyWithUser = chatSession.getChatSessionWithUser(chatHisroty);
+
         chatMessageRequest.setLanguage(languageService.getLanguageFromChatUser(chatMessageRequest.getUserMessage()));
-        String aiResponse = chatRouterService.convertToUserMessage(chatMessageRequest);
+        String aiResponse = chatRouterService.convertToUserMessage(chatMessageRequest, historyWithUser);
 
-        chatHisroty.add(new ChatMessage("assistant", aiResponse));
-
-        if(chatHisroty.size() > MAX_HISTORY_SIZE) {
-            chatHisroty = chatHisroty.subList(chatHisroty.size() - MAX_HISTORY_SIZE, chatHisroty.size());
-        }
-        session.setAttribute("chatHistory", chatHisroty);
+        chatSessionManager.setChatSessionWithUser(session, chatMessageRequest, aiResponse);
 
         return ResponseEntity.ok(aiResponse);
     }

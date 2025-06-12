@@ -2,6 +2,7 @@ package org.project.ai.prompt.system;
 
 import org.project.ai.converter.system.DataSystemConverter;
 import org.project.ai.prompt.PromptStrategy;
+import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +16,7 @@ public class SystemPrompt implements PromptStrategy {
     }
 
     @Override
-    public String buildPrompt(String userMessage) {
+    public String buildPrompt(ChatMessageRequest userMessage, String historyWithUser) {
         return """
         You are a virtual assistant representing the Kivicare hospital system.
 

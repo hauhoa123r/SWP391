@@ -17,8 +17,8 @@ public class IntentHandlerRegistry {
                 .collect(Collectors.toMap(IntentHandler::contextType, h -> h));
     }
 
-    public String handle(ChatMessageRequest chatMessageRequest) {
+    public String handle(ChatMessageRequest chatMessageRequest, String historyWithUser) {
         IntentHandler handler = handlerMap.get(chatMessageRequest.getPrompt());
-        return handler.handle(chatMessageRequest);
+        return handler.handle(chatMessageRequest, historyWithUser);
     }
 }

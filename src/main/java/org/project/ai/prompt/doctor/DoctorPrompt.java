@@ -15,7 +15,7 @@ public class DoctorPrompt implements PromptAnswer {
     }
 
     @Override
-    public String buildPrompt(ChatMessageRequest chatMessageRequest) {
+    public String buildPrompt(ChatMessageRequest chatMessageRequest, String historyWithUser) {
 
         return """
             You are a professional medical information assistant.
