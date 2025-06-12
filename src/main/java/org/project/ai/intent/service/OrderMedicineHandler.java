@@ -14,8 +14,8 @@ public class OrderMedicineHandler extends BasePromptHandler<OrderMedicinePrompt>
     }
 
     @Override
-    protected String buildPrompt(ChatMessageRequest chatMessageRequest) {
-        return prompt.buildPrompt(chatMessageRequest);
+    protected String buildPrompt(ChatMessageRequest chatMessageRequest, String historyWithUser) {
+        return prompt.buildPrompt(chatMessageRequest, historyWithUser);
     }
 
     @Override

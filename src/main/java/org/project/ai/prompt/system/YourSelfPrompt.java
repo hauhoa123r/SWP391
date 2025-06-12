@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class YourSelfPrompt implements PromptAnswer {
     @Override
-    public String buildPrompt(ChatMessageRequest chatMessageRequest) {
+    public String buildPrompt(ChatMessageRequest chatMessageRequest, String historyWithUser) {
         return """
             Người dùng hỏi: "%s"
             Bạn là trợ lý ảo trong hệ thống bệnh viện Kivicare.

@@ -12,5 +12,4 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long>, P
 
     List<PatientEntity> findAllByUserEntity_Id(Long userId);
 
-
 }

@@ -22,17 +22,17 @@ public class ChatRouterService {
         this.handlerRegistry = handlerRegistry;
     }
 
-    private String findContextType(String userMessage) {
-        String prompt = intentPrompt.buildPrompt(userMessage);
+    private String findContextType(ChatMessageRequest userMessage, String historyWithUser) {
+        String prompt = intentPrompt.buildPrompt(userMessage, historyWithUser);
         return aiService.complete(prompt).toLowerCase();
     }
 
-    public String convertToUserMessage(ChatMessageRequest chatMessageRequest) {
-        chatMessageRequest.setPrompt(findContextType(chatMessageRequest.getUserMessage()));
+    public String convertToUserMessage(ChatMessageRequest chatMessageRequest, String historyWithUser) {
+        chatMessageRequest.setPrompt(findContextType(chatMessageRequest, historyWithUser));
         if (Intent.fromKey(chatMessageRequest.getPrompt()).isEmpty() || ("unknown").equals(chatMessageRequest.getPrompt())) {
 
         }
 
-        return handlerRegistry.handle(chatMessageRequest);
+        return handlerRegistry.handle(chatMessageRequest, historyWithUser);
     }
 }

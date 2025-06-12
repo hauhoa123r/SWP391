@@ -81,6 +81,7 @@ public class ProductEntity {
 
     @ManyToMany
     private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+
     @OneToMany(mappedBy = "productEntity")
     private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
 
