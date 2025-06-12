@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -102,7 +103,10 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<String> getAllRelationships(Long userId) {
-        List<String> relationships = patientRepository.getAllRelationships(userId);
+        List<String> relationships = patientRepository.getAllRelationships(userId)
+                .stream()
+                .map(FamilyRelationship::name)
+                .collect(Collectors.toList());
         if (relationships.isEmpty()) {
             throw new ResourceNotFoundException("No relationships found for user with ID: " + userId);
         } else {
@@ -112,9 +116,6 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Long getPatientIdByUserId(Long userId) {
-        return patientRepository.getPatientIdByUserId(userId)
-                .describeConstable().orElseThrow(
-                        () -> new ResourceNotFoundException("No patient found for user with ID: " + userId)
-                );
+        return patientRepository.findFirstByUserEntity_IdOrderByIdDesc(userId);
     }
 }

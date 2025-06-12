@@ -3,6 +3,7 @@ package org.project.api;
 import org.project.model.dto.PatientDTO;
 import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,7 +21,7 @@ public class PatientAPI {
 
     @GetMapping("/api/patient")
     public ModelAndView getUserPatientRelationships(@RequestParam Long userId) {
-        ModelAndView modelAndView = new ModelAndView("patient_add");
+        ModelAndView modelAndView = new ModelAndView("frontend/patient-add-previous");
 
         List<String> relationships = patientService.getAllRelationships(userId);
         if (relationships != null && !relationships.isEmpty()) {
@@ -30,4 +31,5 @@ public class PatientAPI {
         }
         return modelAndView;
     }
+
 }
