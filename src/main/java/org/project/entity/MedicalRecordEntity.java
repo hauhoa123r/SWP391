@@ -17,7 +17,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "MedicalRecordEntityEntity")
+@Entity
 @Table(name = "medical_records", schema = "swp391")
 public class MedicalRecordEntity {
     @Id

@@ -21,7 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "ProductEntityEntity")
+@Entity
 @Table(name = "products", schema = "swp391")
 public class ProductEntity {
     @Id
@@ -59,6 +59,9 @@ public class ProductEntity {
     private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
+    private ServiceEntity serviceEntity;
+
+    @OneToOne(mappedBy = "productEntity")
     private MedicalProductEntity medicalProductEntity;
 
     @OneToOne(mappedBy = "productEntity")
@@ -73,11 +76,17 @@ public class ProductEntity {
     @OneToMany(mappedBy = "productEntity")
     private Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "productEntities")
     private Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
 
     @ManyToMany
+    @JoinTable(
+            name = "product_reviews",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_review_id")
+    )
     private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+
     @OneToMany(mappedBy = "productEntity")
     private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
 
@@ -87,8 +96,6 @@ public class ProductEntity {
     @OneToOne(mappedBy = "productEntity")
     private TestEntity testEntity;
 
-    @ManyToMany
-    private Set<DepartmentEntity> departmentEntities = new LinkedHashSet<>();
     @ManyToMany
     private Set<UserEntity> userEntities = new LinkedHashSet<>();
 
