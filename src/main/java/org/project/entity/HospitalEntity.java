@@ -50,7 +50,7 @@ public class HospitalEntity {
     @OneToMany(mappedBy = "hospital")
     private Set<DepartmentEntity> departmentEntities = new LinkedHashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "hospitalEntity", fetch =  FetchType.LAZY)
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
 
 }

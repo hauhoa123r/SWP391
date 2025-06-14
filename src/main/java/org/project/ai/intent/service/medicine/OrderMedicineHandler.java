@@ -1,8 +1,8 @@
-package org.project.ai.intent.service;
+package org.project.ai.intent.service.medicine;
 
 import org.project.ai.chat.AIService;
 import org.project.ai.intent.BasePromptHandler;
-import org.project.ai.prompt.service.OrderMedicinePrompt;
+import org.project.ai.prompt.service.medicine.OrderMedicinePrompt;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 
