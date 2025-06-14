@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class StaffSpecialityResponse {
     private Long id;
-    private String name;
+    private String title;
     private String description;
 }

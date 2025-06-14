@@ -12,5 +12,5 @@ import lombok.Setter;
 public class StaffSkillResponse {
     private Long id;
     private String name;
-    private String proficiencyPercentage;
+    private Double proficiencyPercentage;
 }

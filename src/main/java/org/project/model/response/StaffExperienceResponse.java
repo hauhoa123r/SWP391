@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.project.enums.QualificationType;
-
-import java.sql.Date;
 
 @Getter
 @Setter
@@ -14,10 +11,9 @@ import java.sql.Date;
 @AllArgsConstructor
 public class StaffExperienceResponse {
     private Long id;
-    private String title;
-    private String description;
-    private Date issueDate;
-    private Date expirationDate;
-    private String url;
-    private QualificationType qualificationType;
+    private Integer year;
+    private String department;
+    private String position;
+    private String hospital;
+    private String result;
 }

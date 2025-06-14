@@ -22,6 +22,6 @@ public class StaffResponse {
     private List<StaffQualificationResponse> staffQualificationEntities;
     private List<StaffSpecialityResponse> staffSpecialityEntities;
     private String hospitalEntityName;
-    private int reviewCount;
-    private double averageRating;
+    private Integer reviewCount;
+    private Double averageRating;
 }
