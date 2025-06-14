@@ -5,6 +5,7 @@ import org.project.entity.MedicalRecordEntity;
 import org.project.entity.PatientEntity;
 import org.project.model.dai.DataUserDAI;
 import org.project.model.dai.MedicalRecordData;
+import org.project.repository.MedicalRecordRepository;
 import org.project.repository.PatientRepository;
 import org.springframework.stereotype.Component;
 

@@ -1,105 +1,142 @@
 package org.project.controller;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.project.enums.ProductSortType;
+import org.project.model.response.CategoryListResponse;
 import org.project.model.response.PharmacyListResponse;
+import org.project.service.CategoryService;
 import org.project.service.PharmacyService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.project.service.ProductSearchService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Comparator;
+import java.util.Optional;
 
-
+@Slf4j
 @Controller
+@RequiredArgsConstructor
 public class ShopController {
+    private final ProductSearchService productSearchService;
+    private final PharmacyService pharmacyServiceImpl;
+    private final CategoryService categoryService;
 
-    @Autowired
-    private PharmacyService pharmacyServiceImpl;
+    private static final String PREVIOUS_SEARCH_KEY = "previousSearch";
 
     @GetMapping("/shop")
     public ModelAndView shop(
-            @RequestParam(value = "search", required = false) String search,
-            @RequestParam(value = "sort", required = false) ProductSortType sort,
-            HttpSession session
-    ) {
-        ModelAndView mv = new ModelAndView("/shop");
+            @RequestParam(value = "search", required = false) String searchQuery,
+            @RequestParam(value = "sort", required = false) ProductSortType sortType,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "40") int size,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            HttpSession session) {
+        log.info("Processing shop request: searchQuery={}, sortType={}, page={}, size={}", searchQuery, sortType, page, size);
 
-        String trimmedSearch = (search != null) ? search.trim() : null;
-        String previousSearch = (String) session.getAttribute("previousSearch");
+        ModelAndView mv = new ModelAndView("shop");
+        SearchContext context = buildSearchContext(searchQuery, sortType, session);
 
-        boolean isNewSearch = trimmedSearch != null && !trimmedSearch.isEmpty()
-                && (previousSearch == null || !trimmedSearch.equals(previousSearch));
+        Page<PharmacyListResponse> productPage = productSearchService.searchProducts(
+                context.searchQuery(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), context.sortType(), PageRequest.of(page, size));
 
-        // Nếu là tìm kiếm mới, ép sort về DEFAULT
-        if (isNewSearch) {
-            sort = ProductSortType.DEFAULT;
-            session.setAttribute("previousSearch", trimmedSearch);
-        } else if (trimmedSearch == null || trimmedSearch.isEmpty()) {
-            // Nếu không có search, xóa session
-            trimmedSearch = null;
-            session.removeAttribute("previousSearch");
-            if (sort == null) {
-                sort = ProductSortType.DEFAULT;
-            }
-        }
+        List<CategoryListResponse> categories = loadCategoriesWithProductCount();
 
-        // Lấy dữ liệu
-        List<PharmacyListResponse> products = (trimmedSearch != null)
-                ? pharmacyServiceImpl.searchByName(trimmedSearch)
-                : pharmacyServiceImpl.getAllPharmacies();
-
-        products = pharmacyServiceImpl.sortProducts(products, sort);
-
-        mv.addObject("products", products);
-        mv.addObject("selectedSort", sort);
-        mv.addObject("search", trimmedSearch);
+        mv.addObject("products", productPage.getContent());
+        mv.addObject("productPage", productPage);
+        mv.addObject("selectedSort", context.sortType());
+        mv.addObject("search", context.searchQuery().orElse(null));
+        mv.addObject("categories", categories);
+        mv.addObject("categoryId", categoryId);
         return mv;
     }
 
-
-
     @PostMapping("/submit")
-    public String search(
-            @RequestParam(value = "search", required = false) String search,
-            @RequestParam(value = "sort", required = false) String sort
-    ) {
-        StringBuilder url = new StringBuilder("redirect:/shop");
+    public String search(@RequestParam(value = "search", required = false) String searchQuery,
+                         @RequestParam(value = "sort", required = false) String sortType) {
+        StringBuilder redirectUrl = new StringBuilder("redirect:/shop");
         boolean hasQuery = false;
 
-        if (search != null && !search.trim().isEmpty()) {
-            url.append("?search=").append(search.trim());
+        if (isValid(searchQuery)) {
+            redirectUrl.append("?search=").append(searchQuery.trim());
             hasQuery = true;
         }
 
-        if (sort != null && !sort.isEmpty()) {
-            url.append(hasQuery ? "&" : "?").append("sort=").append(sort);
+        if (isValid(sortType)) {
+            redirectUrl.append(hasQuery ? "&" : "?").append("sort=").append(sortType);
         }
 
-        return url.toString();
+        return redirectUrl.toString();
     }
 
-
-
-    @GetMapping("/product-standard")
+    @GetMapping("/product-standard/")
     public ModelAndView product() {
         ModelAndView mv = new ModelAndView("product-standard");
-        // Lấy chi tiết sản phẩm theo ID (cần thêm phương thức trong PharmacyService)
-//        PharmacyListResponse product = pharmacyServiceImpl.getPharmacyById(id);
-//        mv.addObject("product", product);
         return mv;
+    }
+
+    @GetMapping("/product-standard/{id}")
+    public String getProduct(@PathVariable("id") Long id, Model model) {
+        log.info("Fetching product with ID: {}", id);
+
+        // Validate ID
+        if (id == null || id < 1) {
+            log.warn("Invalid product ID: {}", id);
+            throw new IllegalArgumentException("Invalid product ID: " + id);
+        }
+
+        // Fetch the product by ID
+        PharmacyListResponse product = pharmacyServiceImpl.findById(id);
+        if (product == null) {
+            log.warn("No product found with ID: {}", id);
+            throw new IllegalArgumentException("No product found with ID: " + id);
+        }
+
+        // Add the product to the model
+        model.addAttribute("product", product);
+        log.debug("Product {} loaded successfully", id);
+        return "product-standard";
     }
 
     @GetMapping("/product-home")
     public ModelAndView productHome() {
+        log.info("Loading product home page");
+
         ModelAndView mv = new ModelAndView("product-home");
-        List<PharmacyListResponse> products = pharmacyServiceImpl.getAllPharmacies();
-        mv.addObject("products", products);
+
+        try {
+            // Fetch top 10 products for the home page
+            List<PharmacyListResponse> products = pharmacyServiceImpl.findTop10Products();
+
+            // Kiểm tra nếu danh sách trả về là null
+            if (products == null) {
+                log.warn("findTop10Products returned null, using empty list");
+                products = Collections.emptyList();
+            } else if (products.isEmpty()) {
+                log.debug("No products found, returning empty list");
+            } else {
+                log.debug("Loaded {} products for home page", products.size());
+            }
+
+            // Thêm danh sách sản phẩm vào model
+            mv.addObject("products", products);
+
+        } catch (Exception e) {
+            log.error("Error fetching top 10 products: {}", e.getMessage(), e);
+            // Trả về danh sách rỗng nếu có lỗi để tránh lỗi render
+            mv.addObject("products", Collections.emptyList());
+        }
+
         return mv;
     }
 
@@ -117,7 +154,7 @@ public class ShopController {
 
     @GetMapping("/wishlist")
     public ModelAndView wishlist() {
-        ModelAndView mv = new ModelAndView("wishlist");
+        ModelAndView mv = new ModelAndView("/wishlist");
         return mv;
     }
 
@@ -136,41 +173,63 @@ public class ShopController {
     @GetMapping("/product-new")
     public ModelAndView productNew() {
         ModelAndView mv = new ModelAndView("product-new");
-        List<PharmacyListResponse> products = pharmacyServiceImpl.getAllPharmacies();
-        mv.addObject("products", products);
         return mv;
     }
 
     @GetMapping("/product-sale")
     public ModelAndView productSale() {
         ModelAndView mv = new ModelAndView("product-sale");
-        List<PharmacyListResponse> products = pharmacyServiceImpl.getAllPharmacies();
-        mv.addObject("products", products);
         return mv;
     }
 
     @GetMapping("/shop-left-sidebar")
     public ModelAndView shopLeftSidebar() {
         ModelAndView mv = new ModelAndView("shop-left-sidebar");
-        List<PharmacyListResponse> products = pharmacyServiceImpl.getAllPharmacies();
-        mv.addObject("products", products);
         return mv;
     }
 
     @GetMapping("/shop-right-sidebar")
     public ModelAndView shopRightSidebar() {
         ModelAndView mv = new ModelAndView("shop-right-sidebar");
-        List<PharmacyListResponse> products = pharmacyServiceImpl.getAllPharmacies();
-        mv.addObject("products", products);
         return mv;
     }
 
     @GetMapping("/shop-no-sidebar")
     public ModelAndView shopNoSidebar() {
         ModelAndView mv = new ModelAndView("shop-no-sidebar");
-        List<PharmacyListResponse> products = pharmacyServiceImpl.getAllPharmacies();
-        mv.addObject("products", products);
         return mv;
     }
-}
 
+    private SearchContext buildSearchContext(String searchQuery, ProductSortType sortType, HttpSession session) {
+        String normalizedQuery = normalizeQuery(searchQuery);
+        String previousSearch = (String) session.getAttribute(PREVIOUS_SEARCH_KEY);
+        boolean isNewSearch = normalizedQuery != null && !normalizedQuery.equals(previousSearch);
+
+        ProductSortType finalSortType = sortType != null ? sortType : ProductSortType.DEFAULT;
+        if (isNewSearch) {
+            finalSortType = ProductSortType.DEFAULT;
+            session.setAttribute(PREVIOUS_SEARCH_KEY, normalizedQuery);
+        } else if (normalizedQuery == null) {
+            session.removeAttribute(PREVIOUS_SEARCH_KEY);
+        }
+
+        return new SearchContext(Optional.ofNullable(normalizedQuery), finalSortType);
+    }
+
+    private List<CategoryListResponse> loadCategoriesWithProductCount() {
+        List<CategoryListResponse> categories = categoryService.findAllCategory();
+        categories.forEach(category -> category.setProductCount(
+                String.valueOf(categoryService.countProductsByCategory(category.getId()))));
+        return categories;
+    }
+
+    private String normalizeQuery(String query) {
+        return isValid(query) ? query.trim() : null;
+    }
+
+    private boolean isValid(String input) {
+        return input != null && !input.trim().isEmpty();
+    }
+
+    private record SearchContext(Optional<String> searchQuery, ProductSortType sortType) {}
+}
