@@ -9,6 +9,7 @@ import org.project.exception.ResourceUnsupportedException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -34,30 +35,30 @@ public class FilterSpecification<T> {
 
     public Specification<T> getSpecification(SearchCriteria searchCriteria) {
         if (searchCriteria == null || searchCriteria.getFieldName() == null || searchCriteria.getOperation() == null || searchCriteria.getComparedValue() == null) {
-            return Specification.allOf();
+            return null;
         }
         return new GenericSpecification<>(searchCriteria);
     }
 
     public Specification<T> getSpecification(String fieldName, Operation operation, Object comparedValue) {
         if (fieldName == null || operation == null || comparedValue == null) {
-            return Specification.allOf();
+            return null;
         }
         return new GenericSpecification<>(new SearchCriteria(fieldName, operation, comparedValue));
     }
 
     public Specification<T> getSpecifications(SearchCriteria... searchCriterias) {
-        Specification<T> specification = Specification.allOf();
-        for (SearchCriteria searchCriteria : searchCriterias) {
-            specification = specification.and(getSpecification(searchCriteria));
-        }
-        return specification;
+        return getSpecifications(Arrays.asList(searchCriterias));
     }
 
     public Specification<T> getSpecifications(List<SearchCriteria> searchCriterias) {
         Specification<T> specification = Specification.allOf();
         for (SearchCriteria searchCriteria : searchCriterias) {
-            specification = specification.and(getSpecification(searchCriteria));
+            Specification<T> newSpecification = getSpecification(searchCriteria);
+            if (newSpecification == null) {
+                continue; // Skip invalid search criteria
+            }
+            specification = specification.and(newSpecification);
         }
         return specification;
     }
