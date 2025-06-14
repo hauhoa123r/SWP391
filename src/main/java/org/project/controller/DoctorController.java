@@ -6,8 +6,6 @@ import org.project.service.DepartmentService;
 import org.project.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,9 +42,6 @@ public class DoctorController {
     @GetMapping("/page/{pageIndex}")
     public String getAllStaffByPage(@PathVariable int pageIndex, Model model) {
         Page<StaffResponse> staffResponsePage = staffService.getDoctorsByPage(pageIndex, PAGE_SIZE);
-        if (pageIndex < 0 || pageIndex >= staffResponsePage.getTotalPages()) {
-            return "frontend/404";
-        }
         model.addAttribute("doctors", staffResponsePage.getContent());
         model.addAttribute("currentPage", pageIndex);
         model.addAttribute("totalPages", staffResponsePage.getTotalPages());
@@ -55,15 +50,9 @@ public class DoctorController {
 
     @GetMapping("/page/{pageIndex}/department/{departmentName}")
     public String getStaffByDepartment(@PathVariable int pageIndex,
-                                         @PathVariable String departmentName,
-                                         Model model) {
-        if (!departmentService.isDepartmentNameExist(departmentName)) {
-            return "frontend/404";
-        }
+                                       @PathVariable String departmentName,
+                                       Model model) {
         Page<StaffResponse> staffResponsePage = staffService.getDoctorsByDepartmentNameAndPage(departmentName, pageIndex, PAGE_SIZE);
-        if (pageIndex < 0 || pageIndex >= staffResponsePage.getTotalPages()) {
-            return "frontend/404";
-        }
         model.addAttribute("doctors", staffResponsePage.getContent());
         model.addAttribute("currentPage", pageIndex);
         model.addAttribute("totalPages", staffResponsePage.getTotalPages());
@@ -73,9 +62,6 @@ public class DoctorController {
 
     @GetMapping("/detail/{staffId}")
     public String getDoctorDetail(@PathVariable Long staffId, Model model) {
-        if (!staffService.isDoctorExist(staffId)) {
-            return "frontend/404";
-        }
         StaffResponse staffResponse = staffService.getDoctorByStaffId(staffId);
         model.addAttribute("doctor", staffResponse);
         List<StaffResponse> medicalStaffResponses = staffService.getColleagueDoctorByStaffId(staffResponse.getDepartmentEntityName(), staffId);

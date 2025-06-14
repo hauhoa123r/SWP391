@@ -4,6 +4,9 @@ import jakarta.transaction.Transactional;
 import org.project.converter.ProductConverter;
 import org.project.entity.ProductEntity;
 import org.project.enums.ProductType;
+import org.project.exception.page.InvalidPageException;
+import org.project.exception.page.PageNotFoundException;
+import org.project.exception.sql.EntityNotFoundException;
 import org.project.model.response.ProductResponse;
 import org.project.repository.ProductRepository;
 import org.project.repository.impl.custom.ProductRepositoryCustom;
@@ -39,9 +42,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponse> getAllServicesByPage(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<ProductResponse> getAllServicesByPage(int index, int size) {
+        if (index < 0 || size <= 0) {
+            throw new InvalidPageException(index, size);
+        }
+        Pageable pageable = PageRequest.of(index, size);
         Page<ProductEntity> productEntityPage = productRepositoryCustom.findAllByProductType(SERVICE_TYPE, pageable);
+        if (productEntityPage == null || productEntityPage.isEmpty()) {
+            throw new PageNotFoundException(ProductEntity.class, index, size);
+        }
         return productEntityPage.map(productConverter::toResponse);
     }
 
@@ -52,6 +61,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse getServiceByProductId(Long productId) {
+        if (!isServiceExist(productId)) {
+            throw new EntityNotFoundException(ProductEntity.class, productId);
+        }
         return productConverter.toResponse(productRepository.findByProductTypeAndId(SERVICE_TYPE, productId));
     }
 }
