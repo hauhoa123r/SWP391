@@ -2,16 +2,20 @@ package org.project.api;
 
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.MedicalProfileDTO;
+import org.project.model.dto.PatientAndMedicalProfileDTO;
 import org.project.model.dto.PatientDTO;
-import org.project.model.response.MedicalProfileResponse;
 import org.project.model.response.PatientResponse;
 import org.project.service.MedicalProfileService;
 import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 public class MedicalProfileAPI {
@@ -27,20 +31,25 @@ public class MedicalProfileAPI {
     }
 
     @PostMapping("/api/profile")
-    public ModelAndView createPatientAndMedicalProfile(@RequestBody MedicalProfileDTO medicalProfileDTO, @RequestBody PatientDTO patientDTO) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/patient_infor");
-
+    public ResponseEntity<?> createPatientAndMedicalProfile(@RequestBody PatientAndMedicalProfileDTO dto) {
         try {
-            PatientResponse patientResponse =  medicalProfileService.addPatientAndMedicalProfile(medicalProfileDTO, patientDTO);
+            PatientDTO patientDTO = dto.getPatientDTO();
+            MedicalProfileDTO medicalProfileDTO = dto.getMedicalProfileDTO();
+            PatientResponse patientResponse = medicalProfileService.addPatientAndMedicalProfile(medicalProfileDTO, patientDTO);
             if (patientResponse != null) {
-                modelAndView.addObject("patient", patientResponse);
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body("Created susccessfully!");
             } else {
-                modelAndView.addObject("error", "Failed to create patient and medical profile.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Failed to create patient and medical profile.");
             }
         } catch (ResourceNotFoundException e) {
-            modelAndView.addObject("error", "Resource not found: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Resource not found: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to create patient and medical profile.");
         }
-        return modelAndView;
     }
 
 }

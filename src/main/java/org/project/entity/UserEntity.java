@@ -52,7 +52,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity")
     private Set<NotificationEntity> notificationEntities = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PatientEntity> patientEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "userEntity")
@@ -69,6 +69,11 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<ProductEntity> products = new LinkedHashSet<>();
+
+    public void addPatientEntity(PatientEntity patientEntity) {
+        this.patientEntities.add(patientEntity);
+        patientEntity.setUserEntity(this);
+    }
 
 
 /*

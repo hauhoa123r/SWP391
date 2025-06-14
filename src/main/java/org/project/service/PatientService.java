@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PatientService {
-    void createPatient(PatientDTO patientDTO);
+    Long createPatient(PatientDTO patientDTO);
     List<PatientResponse> getAllPatients();
-    Optional<PatientResponse> getPatientById(Long patientId);
+    PatientResponse getPatientById(Long patientId);
     void updatePatient(Long patientId, PatientDTO patientDTO);
     void deletePatient(Long patientId);
     List<String> getAllRelationships(Long userId);

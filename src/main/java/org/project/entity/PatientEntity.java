@@ -26,27 +26,27 @@ import java.util.Set;
 public class PatientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "patient_id", nullable = false)
+    @Column(name = "patient_id")
     private Long id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     private String fullName;
 
     @Size(max = 255)
@@ -58,7 +58,7 @@ public class PatientEntity {
     private String address;
 
     @NotNull
-    @Column(name = "birthdate", nullable = false)
+    @Column(name = "birthdate")
     private Date birthdate;
     @OneToMany(mappedBy = "patientEntity")
     private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
@@ -74,7 +74,7 @@ public class PatientEntity {
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'SELF'")
-    @Column(name = "relationship", columnDefinition = "enum not null")
+    @Column(name = "relationship")
     private FamilyRelationship relationship;
 
     @Enumerated(EnumType.STRING)

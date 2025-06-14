@@ -40,8 +40,8 @@ public class MedicalProfileServiceImpl implements MedicalProfileService {
     public void createMedicalProfile(MedicalProfileDTO medicalProfileDTO) {
         MedicalProfileEntity medicalProfileEntity = new MedicalProfileEntity();
 
-        medicalProfileEntity.setAllergies(medicalProfileDTO.getAllergies().toString());
-        medicalProfileEntity.setChronicDiseases(medicalProfileDTO.getChronicDiseases().toString());
+        medicalProfileEntity.setAllergies(String.join(",", medicalProfileDTO.getAllergies()));
+        medicalProfileEntity.setChronicDiseases(String.join(",", medicalProfileDTO.getChronicDiseases()));
 
         PatientEntity patientEntity = patientRepositoryImpl.findById(medicalProfileDTO.getPatientId())
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + medicalProfileDTO.getPatientId()));
@@ -112,11 +112,12 @@ public class MedicalProfileServiceImpl implements MedicalProfileService {
 
     @Override
     public PatientResponse addPatientAndMedicalProfile(MedicalProfileDTO medicalProfileDTO, PatientDTO patientDTO) {
-    patientServiceImpl.createPatient(patientDTO);
-    Long patientId = patientServiceImpl.getPatientIdByUserId(patientDTO.getUserId());
+    Long patientId = patientServiceImpl.createPatient(patientDTO);
+
     medicalProfileDTO.setPatientId(patientId);
+
     createMedicalProfile(medicalProfileDTO);
-    return patientServiceImpl.getPatientById(patientId)
-            .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + patientId));
+
+    return patientServiceImpl.getPatientById(patientId);
     }
 }
