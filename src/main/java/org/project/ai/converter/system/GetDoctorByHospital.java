@@ -17,7 +17,7 @@ public class GetDoctorByHospital {
         this.hospitalRepository = hospitalRepository;
     }
 
-    public String toGetAllDoctorByHospital(){
+    public String toGetAllDoctorByHospital() {
         List<HospitalEntity> hospitalEntity = hospitalRepository.findAll();
         StringBuilder informationDoctor = new StringBuilder();
         for (HospitalEntity hospital : hospitalEntity) {
@@ -25,11 +25,13 @@ public class GetDoctorByHospital {
             System.out.println(hospital.getPhoneNumber());
             System.out.println(hospital.getEmail());
             System.out.println(hospital.getAddress());
-            for(StaffEntity doctor: hospital.getStaffEntities()){
+            for (StaffEntity doctor : hospital.getStaffEntities()) {
                 System.out.println(doctor.getFullName());
                 System.out.println(doctor.getRankLevel());
                 System.out.println(doctor.getStaffRole());
+            }
         }
+        return "";
     }
 }
 
