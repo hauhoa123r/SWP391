@@ -90,7 +90,7 @@ public class StaffEntity {
     @JoinColumn(name = "hospital_id", nullable = false)
     private HospitalEntity hospitalEntity;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @JoinTable(name = "staff_reviews",
             joinColumns = @JoinColumn(name = "staff_id"),
             inverseJoinColumns = @JoinColumn(name = "staff_review_id"))
