@@ -13,6 +13,6 @@ public class StaffDTO {
     private String fullName;
     private String departmentEntityName;
     private String hospitalEntityName;
-    private int reviewCount;
-    private double averageRating;
+    private Integer reviewCount;
+    private Double averageRating;
 }
