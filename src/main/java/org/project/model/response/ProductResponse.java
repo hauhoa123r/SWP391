@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.project.entity.CategoryEntity;
-import org.project.entity.ProductAdditionalInfoEntity;
-import org.project.entity.ServiceFeatureEntity;
 
 import java.util.List;
 
@@ -14,13 +11,16 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductRespsonse {
+public class ProductResponse {
     private Long id;
     private String name;
     private String description;
     private String imageUrl;
-    private List<CategoryEntity> categoryEntities;
-    private List<ServiceFeatureEntity> serviceEntityServiceFeatureEntities;
+    private Double price;
+    private List<CategoryResponse> categoryEntities;
+    private List<ServiceFeatureResponse> serviceEntityServiceFeatureEntities;
     private String serviceEntityDepartmentEntityName;
-    private List<ProductAdditionalInfoEntity> productAdditionalInfoEntities;
+    private List<ProductAdditionalInfoResponse> productAdditionalInfoEntities;
+    private Integer reviewCount;
+    private Double averageRating;
 }
