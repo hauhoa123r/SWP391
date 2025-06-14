@@ -1,6 +1,6 @@
 package org.project.controller;
 
-import org.project.model.response.ProductRespsonse;
+import org.project.model.response.ProductResponse;
 import org.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +25,7 @@ public class ServiceController {
 
     @GetMapping("/page/{pageIndex}")
     public String service(@PathVariable int pageIndex, Model model) {
-        Page<ProductRespsonse> productRespsonsePage = productService.getAllServicesByPage(pageIndex, PAGE_SIZE);
+        Page<ProductResponse> productRespsonsePage = productService.getAllServicesByPage(pageIndex, PAGE_SIZE);
         if (pageIndex < 0 || pageIndex >= productRespsonsePage.getTotalPages()) {
             return "frontend/404";
         }
@@ -40,8 +40,8 @@ public class ServiceController {
         if (!productService.isServiceExist(productId)) {
             return "frontend/404";
         }
-        ProductRespsonse productRespsonse = productService.getServiceByProductId(productId);
-        model.addAttribute("service", productRespsonse);
+        ProductResponse productResponse = productService.getServiceByProductId(productId);
+        model.addAttribute("service", productResponse);
         return "frontend/service-detail";
     }
 }

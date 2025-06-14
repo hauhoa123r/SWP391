@@ -67,7 +67,7 @@
 <main class="main-content">
     <div class="position-relative">
         <!--Nav Start-->
-        <div th:replace="/frontend/fragments/header.html"></div>
+        <div th:replace="~{fragments/header :: header}"></div>
         <div class="offcanvas offcanvas-end " id="right-panel-toggle" tabindex="-1">
             <div class="offcanvas-header border-bottom px-5 mb-5 py-4">
                 <a href="./index.html" th:href="@{/frontend/index.html}">
@@ -235,6 +235,12 @@
                                       th:text="${service.serviceEntityDepartmentEntityName}">Psychiatrist</span>
                                 <span class="left-text text-capitalize fw-light">Treatments</span>
                             </h3>
+                            <div class="d-flex align-items-center mb-3">
+                                <h4 class="text-primary mb-0 me-2">Price:</h4>
+                                <h4 class="mb-0"
+                                    th:text="${'$ ' + (#numbers.formatDecimal(service.price, 1, 'COMMA', 2, 'POINT'))}">
+                                    100,000 VND</h4>
+                            </div>
                             <p class="iq-title-desc text-body" th:text="${service.description}">
                                 A cardiologist is a doctor that deals with the cardiovascular system. This means he or
                                 she treats any abnormality in our blood vessels and heart. This can include heart
@@ -253,15 +259,24 @@
                             <div class="row mt-5 align-items-center">
                                 <div class="col-md-5 text-center">
                                     <div class="iq-counter iq-counter-no-icon bg-primary-subtle p-3">
-                                        <div class="counter-content"
-                                             th:with="starRating=4.4, wholeStar=4, hasHalfStar=true">
-                                            <h3 class="counter mt-0 text-primary fw-500" th:text="${starRating}">
-                                                5</h3>
-                                            <i class="fas fa-star text-warning"
-                                               th:each="i : ${#numbers.sequence(1, wholeStar)}"></i>
-                                            <i class="fas fa-star-half text-warning" th:if="${hasHalfStar}"></i>
-                                            <h4 class="counter-title mt-3 fw-normal">1000+</h4>
-                                            <p class="counter-text m-0 text-body">Reviews</p>
+                                        <div class="service-rating">
+                                            <div class="counter-content">
+                                                <h3 class="counter mt-0 text-primary fw-500"
+                                                    th:text="${#numbers.formatDecimal(service.averageRating, 1, 1, 'POINT')}">
+                                                    5</h3>
+                                                <span th:classappend="${service.reviewCount > 0 ? 'text-warning' : 'text-primary'}"
+                                                      th:each="i : ${#numbers.sequence(1, 5)}">
+                                                    <i class="fas fa-star"
+                                                       th:if="${service.averageRating - i > -0.5}"></i>
+                                                    <i class="fas fa-star-half-alt"
+                                                       th:if="${i - service.averageRating >= 0.5 && i - service.averageRating < 1}"></i>
+                                                    <i class="far fa-star"
+                                                       th:if="${i - service.averageRating >= 1}"></i>
+                                                </span>
+                                                <h4 class="counter-title mt-3 fw-normal"
+                                                    th:text="${service.reviewCount}">1000+</h4>
+                                                <p class="counter-text m-0 text-body">Reviews</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -617,7 +632,7 @@
 </main>
 <!-- Wrapper End -->
 <!-- Footer start -->
-<div th:replace="/frontend/fragments/footer.html"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <!-- footer end -->
 
 <!-- setting -->

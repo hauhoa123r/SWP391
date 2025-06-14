@@ -1,12 +1,12 @@
 package org.project.service;
 
-import org.project.model.response.ProductRespsonse;
+import org.project.model.response.ProductResponse;
 import org.springframework.data.domain.Page;
 
 public interface ProductService {
-    Page<ProductRespsonse> getAllServicesByPage(int page, int size);
+    Page<ProductResponse> getAllServicesByPage(int page, int size);
 
     boolean isServiceExist(Long productId);
 
-    ProductRespsonse getServiceByProductId(Long productId);
+    ProductResponse getServiceByProductId(Long productId);
 }

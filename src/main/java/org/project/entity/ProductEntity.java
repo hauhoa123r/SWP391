@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Remove;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.Label;
 import org.project.enums.ProductStatus;
@@ -79,8 +78,14 @@ public class ProductEntity {
     @ManyToMany(mappedBy = "productEntities")
     private Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany()
+    @JoinTable(
+            name = "product_reviews",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_review_id")
+    )
     private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+
     @OneToMany(mappedBy = "productEntity")
     private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
 

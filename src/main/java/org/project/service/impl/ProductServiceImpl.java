@@ -4,8 +4,9 @@ import jakarta.transaction.Transactional;
 import org.project.converter.ProductConverter;
 import org.project.entity.ProductEntity;
 import org.project.enums.ProductType;
-import org.project.model.response.ProductRespsonse;
+import org.project.model.response.ProductResponse;
 import org.project.repository.ProductRepository;
+import org.project.repository.impl.custom.ProductRepositoryCustom;
 import org.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductType SERVICE_TYPE = ProductType.SERVICE;
 
     private ProductRepository productRepository;
+    private ProductRepositoryCustom productRepositoryCustom;
     private ProductConverter productConverter;
 
     @Autowired
@@ -27,14 +29,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Autowired
+    public void setProductRepositoryCustom(ProductRepositoryCustom productRepositoryCustom) {
+        this.productRepositoryCustom = productRepositoryCustom;
+    }
+
+    @Autowired
     public void setProductConverter(ProductConverter productConverter) {
         this.productConverter = productConverter;
     }
 
     @Override
-    public Page<ProductRespsonse> getAllServicesByPage(int page, int size) {
+    public Page<ProductResponse> getAllServicesByPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductEntity> productEntityPage = productRepository.findAllByProductType(SERVICE_TYPE,  pageable);
+        Page<ProductEntity> productEntityPage = productRepositoryCustom.findAllByProductType(SERVICE_TYPE, pageable);
         return productEntityPage.map(productConverter::toResponse);
     }
 
@@ -44,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductRespsonse getServiceByProductId(Long productId) {
+    public ProductResponse getServiceByProductId(Long productId) {
         return productConverter.toResponse(productRepository.findByProductTypeAndId(SERVICE_TYPE, productId));
     }
 }
