@@ -6,6 +6,7 @@ import org.project.entity.StaffEntity;
 import org.project.enums.StaffRole;
 import org.project.model.response.StaffResponse;
 import org.project.repository.StaffRepository;
+import org.project.repository.impl.custom.StaffRepositoryCustom;
 import org.project.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,13 +20,20 @@ import java.util.List;
 @Transactional
 public class StaffServiceImpl implements StaffService {
 
-    private StaffRepository staffRepository;
-    private StaffConverter staffConverter;
     private final StaffRole DOCTOR_ROLE = StaffRole.DOCTOR;
+
+    private StaffRepository staffRepository;
+    private StaffRepositoryCustom staffRepositoryCustom;
+    private StaffConverter staffConverter;
 
     @Autowired
     public void setStaffRepository(StaffRepository staffRepository) {
         this.staffRepository = staffRepository;
+    }
+
+    @Autowired
+    public void setStaffRepositoryCustom(StaffRepositoryCustom staffRepositoryCustom) {
+        this.staffRepositoryCustom = staffRepositoryCustom;
     }
 
     @Autowired
@@ -36,20 +44,20 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public Page<StaffResponse> getDoctorsByPage(int index, int size) {
         Pageable pageable = PageRequest.of(index, size);
-        Page<StaffEntity> staffEntityPage = staffRepository.findAllByStaffRole(DOCTOR_ROLE, pageable);
+        Page<StaffEntity> staffEntityPage = staffRepositoryCustom.findAllByStaffRole(DOCTOR_ROLE, pageable);
         return staffEntityPage.map(staffConverter::toResponse);
     }
 
     @Override
     public Page<StaffResponse> getDoctorsByDepartmentNameAndPage(String departmentName, int index, int size) {
         Pageable pageable = PageRequest.of(index, size);
-        Page<StaffEntity> staffEntityPage = staffRepository.findAllByStaffRoleAndDepartmentEntityName(DOCTOR_ROLE, departmentName, pageable);
+        Page<StaffEntity> staffEntityPage = staffRepositoryCustom.findAllByStaffRoleAndDepartmentEntityName(DOCTOR_ROLE, departmentName, pageable);
         return staffEntityPage.map(staffConverter::toResponse);
     }
 
     @Override
     public List<StaffResponse> getColleagueDoctorByStaffId(String departmentName, Long staffId) {
-        List<StaffEntity> staffEntities = staffRepository.findAllByStaffRoleAndDepartmentEntityNameAndIdIsNot(
+        List<StaffEntity> staffEntities = staffRepositoryCustom.findAllByStaffRoleAndDepartmentEntityNameAndIdIsNot(
                 DOCTOR_ROLE, departmentName, staffId);
         return staffEntities.stream().map(staffConverter::toResponse).toList();
     }

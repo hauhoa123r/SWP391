@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public enum Intent {
-    MAKE_APPOINTMENT("make_appointment", "This is the step to make an appointment, doctor, hospital visit with address."),
+    MAKE_APPOINTMENT("make_appointment", "This step handles appointment scheduling for doctors or hospital visits. "),
     SYMPTOM_ADVICE("symptom_advice", "This is when the user describes their personal health symptoms, such as feeling pain, discomfort, fever, coughing, or any signs of illness. It does not include accidents, injuries caused by external events (fighting, falling, traffic accidents), or issues caused by risky personal behaviors (substance abuse, violence)."),
     ASK_MEDICINE("ask_medicine", "This is a question about medicine, including inquiries about medication names, uses, dosage, possible side effects, or whether a specific medicine is suitable for the patient."),
     ASK_HOSPITAL("ask_hospital", "This is a user question about where is the hospital, where is your hospital (what locations do you have)."),

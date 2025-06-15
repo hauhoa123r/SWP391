@@ -1,16 +1,15 @@
-package org.project.ai.intent.service;
+package org.project.ai.intent.service.appointment;
 
 import org.project.ai.chat.AIService;
 import org.project.ai.intent.BasePromptHandler;
-import org.project.ai.prompt.service.CancelMedicineOrderPrompt;
+import org.project.ai.prompt.service.appointment.RescheduleAppointmentPrompt;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CancelMedicineOrderHandler extends BasePromptHandler<CancelMedicineOrderPrompt> {
-
-    public CancelMedicineOrderHandler(AIService aiService, CancelMedicineOrderPrompt cancelMedicineOrderPrompt) {
-        super(aiService, cancelMedicineOrderPrompt);
+public class RescheduleAppointmentHandler extends BasePromptHandler<RescheduleAppointmentPrompt> {
+    public RescheduleAppointmentHandler(AIService aiService, RescheduleAppointmentPrompt rescheduleAppointmentPrompt) {
+        super(aiService, rescheduleAppointmentPrompt);
     }
 
     @Override
@@ -20,6 +19,6 @@ public class CancelMedicineOrderHandler extends BasePromptHandler<CancelMedicine
 
     @Override
     public String contextType() {
-        return "cancel_medicine_order";
+        return "reschedule_appointment";
     }
 }
