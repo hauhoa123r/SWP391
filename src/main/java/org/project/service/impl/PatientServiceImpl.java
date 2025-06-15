@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,16 +67,60 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List<PatientResponse> getAllPatients() {
         List<PatientEntity> patientEntities = patientRepository.findAll();
+        if (patientEntities.isEmpty()) {
+            throw new ResourceNotFoundException("No patients found");
+        }
+
         return patientEntities.stream()
-                .map(patientConverter::toConvertResponse)
-                .toList();
+                .map(entity -> {
+                    PatientResponse response = patientConverter.toConvertResponse(entity);
+
+                    // Xử lý ngày tháng an toàn
+                    if (entity.getBirthdate() != null) {
+                        response.setDateOfBirth(entity.getBirthdate().toString());
+                    } else {
+                        response.setDateOfBirth("N/A");
+                    }
+
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PatientResponse> getAllPatientsByUserId(Long userId) {
+        List<PatientEntity> patientEntities = patientRepository.findAllByUserEntity_Id(userId);
+        if (patientEntities.isEmpty()) {
+            throw new ResourceNotFoundException("No patients found for user with ID: " + userId);
+        }
+
+        return patientEntities.stream()
+                .map(entity -> {
+                    PatientResponse response = patientConverter.toConvertResponse(entity);
+
+                    // Xử lý ngày tháng an toàn
+                    if (entity.getBirthdate() != null) {
+                        response.setDateOfBirth(entity.getBirthdate().toString());
+                    } else {
+                        response.setDateOfBirth("N/A");
+                    }
+
+                    return response;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public PatientResponse getPatientById(Long patientId) {
         PatientEntity patientEntity = patientRepository.findById(patientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
-        return patientConverter.toConvertResponse(patientEntity);
+        PatientResponse response = patientConverter.toConvertResponse(patientEntity);
+        if(patientEntity.getBirthdate() != null) {
+            response.setDateOfBirth(patientEntity.getBirthdate().toString());
+        } else {
+            response.setDateOfBirth("N/A");
+        }
+        return response;
     }
 
     @Override
