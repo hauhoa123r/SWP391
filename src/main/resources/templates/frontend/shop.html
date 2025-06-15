@@ -713,6 +713,7 @@
                                      </li>
                                   </ul>
                                </li>
+                              <!-- TODO -->
                                <li class="nav-item dropdown">
                                   <a href="#" class="nav-link" id="cart-drop"
                                      data-bs-toggle="dropdown">
@@ -1271,27 +1272,35 @@
                                        <div class="list-buttons mt-3">
                                           <ul class="list-inline m-0 d-flex align-items-center">
                                              <li>
-                                                <div class="iq-btn-container">
-                                                   <a class="iq-button text-capitalize cart-btn" href="javascript:void(0)">
-                                                      <span class="iq-btn-text-holder position-relative cart-btn">add to cart</span>
-                                                      <span class="iq-btn-icon-holder">
-                                                         <svg width="10" height="11" viewBox="0 0 10 11" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                               d="M5 0.5C5.34518 0.5 5.625 0.779822 5.625 1.125V4.875H9.375C9.72018 4.875 10 5.15482 10 5.5C10 5.84518 9.72018 6.125 9.375 6.125H5.625V9.875C5.625 10.2202 5.34518 10.5 5 10.5C4.65482 10.5 4.375 10.2202 4.375 9.875V6.125H0.625C0.279822 6.125 0 5.84518 0 5.5C0 5.15482 0.279822 4.875 0.625 4.875H4.375V1.125C4.375 0.779822 4.65482 0.5 5 0.5Z"
-                                                               fill="currentColor" />
-                                                         </svg>
-                                                      </span>
-                                                   </a>
-                                                </div>
-                                             </li>
+                                                <div
+																			class="iq-btn-container">
+																			<form th:action="@{/cart/add/{id}(id=${product.id})}"
+																				method="post">
+																				<input type="hidden" name="quantity" value="1" />
+																				<button type="submit"
+																					class="iq-button text-capitalize cart-btn">
+																					<span
+																						class="iq-btn-text-holder position-relative cart-btn">add
+																						to cart</span> <span class="iq-btn-icon-holder"> <svg
+																							width="10" height="11" viewBox="0 0 10 11"
+																							fill="none" xmlns="http://www.w3.org/2000/svg">
+            															<path
+																								d="M5 0.5C5.34518 0.5 5.625 0.779822 5.625 1.125V4.875H9.375C9.72018 4.875 10 5.15482 10 5.5C10 5.84518 9.72018 6.125 9.375 6.125H5.625V9.875C5.625 10.2202 5.34518 10.5 5 10.5C4.65482 10.5 4.375 10.2202 4.375 9.875V6.125H0.625C0.279822 6.125 0 5.84518 0 5.5C0 5.15482 0.279822 4.875 0.625 4.875H4.375V1.125C4.375 0.779822 4.65482 0.5 5 0.5Z"
+																								fill="currentColor" />
+         																		</svg>
+																					</span>
+																				</button>
+																			</form>
+																		</div>
+																	</li>
                                              <li class="wish-list bg-primary-subtle ms-3">
                                                 <a href="#" class="wishlist-btn">
                                                    <span class="btn-inner">
                                                       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20"
                                                          viewBox="0 0 22 20" fill="none">
                                                          <path fill-rule="evenodd" clip-rule="evenodd"
-                                                            d="M1.87187 9.59832C0.798865 6.24832 2.05287 2.41932 5.56986 1.28632C7.41986 0.689322 9.46186 1.04132 10.9999 2.19832C12.4549 1.07332 14.5719 0.693322 16.4199 1.28632C19.9369 2.41932 21.1989 6.24832 20.1269 9.59832C18.4569 14.9083 10.9999 18.9983 10.9999 18.9983C10.9999 18.9983 3.59787 14.9703 1.87187 9.59832Z"
+                                                            d="M1.87187 9.59832C0.798865 6.24832 2.05287 2.41932 5.56986 1.28632C7.41986 0.689322 9.46186 1.04132 10.9999 2.19832C12.4549 1.07332 14.5719 0.693322 16.4199 
+                                                            1.28632C19.9369 2.41932 21.1989 6.24832 20.1269 9.59832C18.4569 14.9083 10.9999 18.9983 10.9999 18.9983C10.9999 18.9983 3.59787 14.9703 1.87187 9.59832Z"
                                                             stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                                             stroke-linejoin="round" />
                                                          <path d="M15 4.70001C16.07 5.04601 16.826 6.00101 16.917 7.12201"

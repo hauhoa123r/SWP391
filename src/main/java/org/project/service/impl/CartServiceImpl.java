@@ -1,5 +1,7 @@
 package org.project.service.impl;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import org.project.entity.CartItemEntity;
@@ -8,7 +10,7 @@ import org.project.entity.CouponEntity;
 import org.project.entity.ProductEntity;
 import org.project.entity.UserEntity;
 import org.project.repository.*;
-import org.project.service.CartItemService;
+import org.project.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,63 +18,69 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class CartServiceImpl implements CartItemService {
-	
-	@Autowired
-    private CartRepository cartRepo;
+public class CartServiceImpl implements CartService {
 
-    @Autowired
-    private ProductRepository productRepo;
+	private final CartRepository cartRepo;
+	private final ProductRepository productRepo;
+	private final CouponRepository couponRepo;
 
-    @Autowired
-    private CouponRepository couponRepo;
-
-    @Override
-    public CartItemEntity getCart(CartItemEntityId cartId) {
-        return cartRepo.findById(cartId).orElseGet(() -> {
-        	CartItemEntity cart = new CartItemEntity();
-            return cartRepo.save(cart);
-        });
-    }
-
-	@Override
-	public CartItemEntity addItem(CartItemEntityId cartId, UserEntity userId, ProductEntity productId,
-			Integer quantity) {
-		CartItemEntity cart = getCart(cartId);
-        ProductEntity product = productRepo.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-        cart.addItem(product, quantity);
-        return cartRepo.save(cart);
+	public CartServiceImpl(CartRepository cartRepo, ProductRepository productRepo, CouponRepository couponRepo) {
+		this.cartRepo = cartRepo;
+		this.productRepo = productRepo;
+		this.couponRepo = couponRepo;
 	}
 
 	@Override
-	public CartItemEntity removeItem(CartItemEntityId cartId, ProductEntity productId) {
-		CartItemEntity cart = getCart(cartId);
-        cart.removeItem(productId);
-        return cartRepo.save(cart);
+	public List<CartItemEntity> getCart(Long userId) {
+		return cartRepo.findByUserEntityId(userId);
 	}
 
-    @Override
-    public CartItemEntity updateQuantity(CartItemEntityId cartId, ProductEntity productId, Integer quantity) {
-    	CartItemEntity cart = getCart(cartId);
-        cart.updateItem(productId, quantity);
-        return cartRepo.save(cart);
-    }
+	@Override
+	public void addItem(Long userId, Long productId, Integer quantity) {
+		ProductEntity product = productRepo.findById(productId)
+				.orElseThrow(() -> new RuntimeException("Product not found"));
+		CartItemEntity item = new CartItemEntity();
+		item.setId(new CartItemEntityId(productId + userId, userId));
+		UserEntity user = new UserEntity();
+		user.setId(userId);
+		item.setUserEntity(user);
+		item.setProductEntity(product);
+		item.setQuantity(quantity);
+		cartRepo.save(item);
+	}
 
-    @Override
-    public CartItemEntity applyCoupon(CartItemEntityId cartId, String couponCode) {
-    	CartItemEntity cart = getCart(cartId);
-        Optional<CouponEntity> optCoupon = couponRepo.findByCode(couponCode);
-        if (!optCoupon.isPresent()) {
-            throw new RuntimeException("Invalid coupon");
-        }
-        cart.setCoupon(optCoupon.get());
-        return cartRepo.save(cart);
-    }
+	@Override
+	public void removeItem(Long userId, Long productId) {
+		cartRepo.deleteByUserEntityIdAndProductEntityId(userId, productId);
+	}
 
-    @Override
-    public double calculateTotal(CartItemEntityId cartId) {
-    	CartItemEntity cart = getCart(cartId);
-        return cart.calculateTotal();
-    }
+	@Override
+	public void updateQuantity(Long userId, Long productId, Integer quantity) {
+		List<CartItemEntity> items = cartRepo.findByUserEntityId(userId);
+		for (CartItemEntity item : items) {
+			if (item.getProductEntity().getId().equals(productId)) {
+				item.setQuantity(quantity);
+				cartRepo.save(item);
+				return;
+			}
+		}
+		throw new RuntimeException("Item not found in cart");
+	}
+
+	@Override
+	public void applyCoupon(Long userId, String couponCode) {
+		// Store coupon in session or apply logic in checkout stage
+		couponRepo.findByCode(couponCode).orElseThrow(() -> new RuntimeException("Invalid coupon code"));
+	}
+
+	@Override
+	public BigDecimal calculateTotal(Long userId) {
+		List<CartItemEntity> items = cartRepo.findByUserEntityId(userId);
+		return items.stream().map(item -> {
+			BigDecimal price = item.getProductEntity().getPrice();
+			if (price == null)
+				price = BigDecimal.ZERO;
+			return price.multiply(BigDecimal.valueOf(item.getQuantity()));
+		}).reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
 }
