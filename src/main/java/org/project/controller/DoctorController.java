@@ -45,7 +45,7 @@ public class DoctorController {
         model.addAttribute("doctors", staffResponsePage.getContent());
         model.addAttribute("currentPage", pageIndex);
         model.addAttribute("totalPages", staffResponsePage.getTotalPages());
-        return "frontend/doctor";
+        return "/frontend/doctor";
     }
 
     @GetMapping("/page/{pageIndex}/department/{departmentName}")
@@ -57,7 +57,7 @@ public class DoctorController {
         model.addAttribute("currentPage", pageIndex);
         model.addAttribute("totalPages", staffResponsePage.getTotalPages());
         model.addAttribute("departmentName", departmentName);
-        return "frontend/doctor";
+        return "/frontend/doctor";
     }
 
     @GetMapping("/detail/{staffId}")
@@ -66,6 +66,6 @@ public class DoctorController {
         model.addAttribute("doctor", staffResponse);
         List<StaffResponse> medicalStaffResponses = staffService.getColleagueDoctorByStaffId(staffResponse.getDepartmentEntityName(), staffId);
         model.addAttribute("colleagueDoctors", medicalStaffResponses);
-        return "frontend/doctor-details";
+        return "/frontend/doctor-details";
     }
 }

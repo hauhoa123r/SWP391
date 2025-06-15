@@ -29,13 +29,13 @@ public class ServiceController {
         model.addAttribute("services", productRespsonsePage.getContent());
         model.addAttribute("currentPage", pageIndex);
         model.addAttribute("totalPages", productRespsonsePage.getTotalPages());
-        return "frontend/service";
+        return "/frontend/service";
     }
 
     @GetMapping("/detail/{productId}")
     public String serviceDetail(@PathVariable Long productId, Model model) {
         ProductResponse productResponse = productService.getServiceByProductId(productId);
         model.addAttribute("service", productResponse);
-        return "frontend/service-detail";
+        return "/frontend/service-detail";
     }
 }
