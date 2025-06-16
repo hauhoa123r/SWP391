@@ -1,6 +1,11 @@
 package org.project.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.project.model.response.PharmacyListResponse;
+import org.project.projection.ProductViewProjection;
 import org.project.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,13 +61,30 @@ public class ShopController {
 			throw new IllegalArgumentException("Invalid product ID: " + id);
 		}
 		// Fetch the product by ID
-		PharmacyListResponse product = pharmacyServiceImpl.findById(id);
+//		PharmacyListResponse product = pharmacyServiceImpl.findById(id);
+		List<ProductViewProjection> product = pharmacyServiceImpl.findAllProductsWithFullInfo(id);  
 		// Check if the product is null
 		if (product == null) {
 			throw new IllegalArgumentException("No product found with ID: " + id);
 		}
+		//Map of additional information (name-value pairs) 
+		Map<String, String> additionalInfo = new HashMap<>(); 
+		//iterate through the product's additional information and add it to the map 
+		for (ProductViewProjection info : product) {
+			//Get name 
+			String name = info.getAdditionalInfoName(); 
+			//Get value 
+			String value = info.getAdditionalInfoValue(); 
+			// If name is not null, add to the map 
+			if (name != null && !name.isEmpty()) {
+				//add to the map 
+				additionalInfo.put(name, value);
+			}
+		}
 		// Add the product to the model
-		model.addAttribute("product", product);
+		model.addAttribute("product", product.get(0)); // Assuming the projection returns a list, take the first item
+		//add the additional information map to the model 
+		model.addAttribute("additionalInfo", additionalInfo); 
 		// Return the view name
 		return "frontend/product-standard";
 	}

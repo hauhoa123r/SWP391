@@ -4,6 +4,8 @@ package org.project.service;
 import org.project.entity.ProductEntity;
 import org.project.enums.ProductType;
 import org.project.model.response.PharmacyListResponse;
+import org.project.projection.ProductViewProjection;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,4 +26,6 @@ public interface PharmacyService {
     void deleteById(Long id); 
     //select top 10 products for home page 
     List<PharmacyListResponse> findTop10Products(); 
+    //Select all products with full information including category, tag, additional info 
+    List<ProductViewProjection> findAllProductsWithFullInfo(Long id); 
 }

@@ -1588,7 +1588,7 @@
                               <div class="product-caption text-center mt-3">
                                  <span class="iq-category" th:text="${product.type}"></span>            
                                  <h5 class="product-title mt-1 mb-2">
-                                    <a href="./product-standard.html" th:href="@{/product-standard}" th:text="${product.name}"></a>
+                                    <a href="./product-standard.html" th:href="@{/product-standard/{id}(id=${product.id})}" th:text="${product.name}"></a>
                                  </h5>
                                  <h6 class="price-value fw-semibold mb-2">
                                        <span th:text="'$'+${product.price}"></span>
@@ -1789,7 +1789,7 @@
                               <div class="product-caption text-center mt-3">
                                  <span class="iq-category" th:text="${product.type}"></span>            
                                  <h5 class="product-title mt-1 mb-2">
-                                    <a href="./product-standard.html" th:href="@{/product-standard}" th:text="${product.name}"></a>
+                                    <a href="./product-standard.html" th:href="@{/product-standard/{id}(id=${product.id})}" th:text="${product.name}"></a>
                                  </h5>
                                  <h6 class="price-value fw-semibold mb-2">
                                        <span th:text="'$'+${product.price}"></span>
@@ -1989,7 +1989,7 @@
                               <div class="product-caption text-center mt-3">
                                  <span class="iq-category" th:text="${product.type}"></span>            
                                  <h5 class="product-title mt-1 mb-2">
-                                    <a href="./product-standard.html" th:href="@{/product-standard}" th:text="${product.name}"></a>
+                                    <a href="./product-standard.html" th:href="@{/product-standard/{id}(id=${product.id})}" th:text="${product.name}"></a>
                                  </h5>
                                  <h6 class="price-value fw-semibold mb-2">
                                     <span th:text="'$'+${product.price}"></span>

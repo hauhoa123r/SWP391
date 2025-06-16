@@ -5,6 +5,7 @@ import org.project.converter.ConverterPharmacyProduct;
 import org.project.entity.ProductEntity;
 import org.project.enums.ProductType;
 import org.project.model.response.PharmacyListResponse;
+import org.project.projection.ProductViewProjection;
 import org.project.repository.PharmacyRepository;
 import org.project.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,4 +114,21 @@ public class PharmacyServiceImpl implements PharmacyService {
 		// If not found return empty list
 		return new ArrayList<PharmacyListResponse>();
 	}
+
+	@Override
+	public List<ProductViewProjection> findAllProductsWithFullInfo(Long id) {
+		// TODO Auto-generated method stub 
+		// Get the list of products with full information 
+		List<ProductViewProjection> productViewProjections = pharmacyRepositoryImpl.findAllProductsWithFullInfo(id); 
+		// Check if the list is not empty 
+		if (productViewProjections != null && !productViewProjections.isEmpty()) {
+			// Return the list of products with full information
+			return productViewProjections;
+		} 
+		// If not found return empty list 
+		return new ArrayList<ProductViewProjection>();
+	}
+
+	
+	
 }
