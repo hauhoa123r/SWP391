@@ -3,6 +3,7 @@ package org.project.controller;
 import org.project.model.response.PatientResponse;
 import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +28,15 @@ public class PatientController {
 
     @GetMapping("/patient/showList/{userId}")
     public String showPatientList(@PathVariable Long userId,
-                                  @RequestParam(defaultValue = "0") int page, Model model) {
+                                  @RequestParam (defaultValue = "0") int pageIndex,
+                                  Model model) {
 
-        List<PatientResponse> patientResponses = patientService.getAllPatientsByUserIdPaged(userId, page, 6);
-        model.addAttribute("patients", patientResponses);
-        model.addAttribute("currentPage", page);
-        return "frontend/patient-list";// This should return the name of the HTML template for showing the patient list
+        Page<PatientResponse> patientResponsePage = patientService.getAllPatientsByUserIdForPage(userId, pageIndex, 6);
+        List<PatientResponse> patients = patientResponsePage.getContent();
+        model.addAttribute("patients", patients);
+        model.addAttribute("pageIndex", pageIndex);
+        model.addAttribute("totalPages", patientResponsePage.getTotalPages());
+        return "/frontend/patient-list"; // This should return the name of the HTML template for showing the patient list
     }
 
 

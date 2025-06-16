@@ -114,27 +114,22 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<PatientResponse> getAllPatientsByUserIdPaged(Long userId, int page, int size) {
+    public Page<PatientResponse> getAllPatientsByUserIdForPage(Long userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<PatientEntity> patientPage = patientRepository.findAllByUserEntity_Id(userId, pageable);
         if (patientPage.isEmpty()) {
             throw new ResourceNotFoundException("No patients found for user with ID: " + userId);
         }
-        List<PatientEntity> patientEntities = patientPage.getContent();
-        return patientEntities.stream()
-                .map(entity -> {
-                    PatientResponse response = patientConverter.toConvertResponse(entity);
-
+        return patientPage.map(patientConverter::toConvertResponse)
+                .map(response -> {
                     // Xử lý ngày tháng an toàn
-                    if (entity.getBirthdate() != null) {
-                        response.setDateOfBirth(entity.getBirthdate().toString());
+                    if (response.getDateOfBirth() != null) {
+                        response.setDateOfBirth(response.getDateOfBirth());
                     } else {
                         response.setDateOfBirth("N/A");
                     }
-
                     return response;
-                })
-                .collect(Collectors.toList());
+                });
     }
 
     @Override
