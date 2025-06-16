@@ -40,7 +40,7 @@ public class CartController {
 		List<CartItemEntity> cartItems = cartService.getCart(userId);
 		model.addAttribute("cartItems", cartItems);
 		model.addAttribute("total", cartService.calculateTotal(userId));
-		return "cart";
+		return "frontend/cart";
 	}
 
 	@PostMapping("/add/{productId}")
