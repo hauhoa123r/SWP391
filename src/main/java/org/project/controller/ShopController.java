@@ -58,6 +58,8 @@ public class ShopController {
         mv.addObject("search", context.searchQuery().orElse(null));
         mv.addObject("categories", categories);
         mv.addObject("categoryId", categoryId);
+        mv.addObject("size", size);
+        mv.addObject("page", page);
         return mv;
     }
 
@@ -79,7 +81,7 @@ public class ShopController {
         return redirectUrl.toString();
     }
 
-    @GetMapping("/product-standard/")
+    @GetMapping("/product-standard")
     public ModelAndView product() {
         ModelAndView mv = new ModelAndView("product-standard");
         return mv;
