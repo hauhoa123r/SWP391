@@ -3,9 +3,10 @@ package org.project.service.impl;
 import jakarta.transaction.Transactional;
 import org.project.converter.DepartmentConverter;
 import org.project.entity.DepartmentEntity;
+import org.project.enums.StaffRole;
 import org.project.model.response.DepartmentResponse;
 import org.project.repository.DepartmentRepository;
-import org.project.repository.impl.custom.DepartmentRepsitoryCustom;
+import org.project.repository.impl.custom.DepartmentRepositoryCustom;
 import org.project.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,10 @@ import java.util.List;
 @Transactional
 public class DepartmentServiceImpl implements DepartmentService {
 
+    private final StaffRole DOCTOR_ROLE = StaffRole.DOCTOR;
+
     private DepartmentRepository departmentRepository;
-    private DepartmentRepsitoryCustom departmentRepsitoryCustom;
+    private DepartmentRepositoryCustom departmentRepositoryCustom;
     private DepartmentConverter departmentConverter;
 
     @Autowired
@@ -31,8 +34,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Autowired
-    public void setDepartmentRepsitoryCustom(DepartmentRepsitoryCustom departmentRepsitoryCustom) {
-        this.departmentRepsitoryCustom = departmentRepsitoryCustom;
+    public void setDepartmentRepositoryCustom(DepartmentRepositoryCustom departmentRepositoryCustom) {
+        this.departmentRepositoryCustom = departmentRepositoryCustom;
     }
 
     @Override
@@ -43,7 +46,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentResponse> getAllDepartmentsHaveDoctor() {
-        List<DepartmentEntity> departmentEntities = departmentRepsitoryCustom.findAllDepartmentsByDoctorRole();
+        List<DepartmentEntity> departmentEntities = departmentRepositoryCustom.findAllDepartmentsByStaffRole(DOCTOR_ROLE);
         return departmentEntities.stream().map(departmentConverter::toResponse).toList();
     }
 

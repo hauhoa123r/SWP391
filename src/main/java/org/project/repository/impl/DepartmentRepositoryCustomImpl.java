@@ -1,9 +1,11 @@
 package org.project.repository.impl;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.project.entity.DepartmentEntity;
-import org.project.repository.impl.custom.DepartmentRepsitoryCustom;
+import org.project.enums.StaffRole;
+import org.project.repository.impl.custom.DepartmentRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,23 +13,25 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class DepartmentRepositoryCustomImpl implements DepartmentRepsitoryCustom {
+public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCustom {
     private EntityManager entityManager;
 
     @Autowired
-     public void setEntityManager(EntityManager entityManager) {
-         this.entityManager = entityManager;
-     }
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
-    public List<DepartmentEntity> findAllDepartmentsByDoctorRole() {
+    public List<DepartmentEntity> findAllDepartmentsByStaffRole(StaffRole staffRole) {
         String jpql = """
                     select de.name from DepartmentEntity de
                     join de.staffEntities se
-                    where se.staffRole = 'DOCTOR'
+                    where se.staffRole = :staffRole
                     group by de.name
                 """;
-        return entityManager.createQuery(jpql, String.class).getResultList().stream().map(departmentName -> {
+        TypedQuery<String> typedQuery = entityManager.createQuery(jpql, String.class);
+        typedQuery.setParameter("staffRole", staffRole);
+        return typedQuery.getResultList().stream().map(departmentName -> {
             DepartmentEntity departmentEntity = new DepartmentEntity();
             departmentEntity.setName(departmentName);
             return departmentEntity;
