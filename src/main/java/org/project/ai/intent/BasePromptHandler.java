@@ -7,8 +7,7 @@ public abstract class BasePromptHandler<TPrompt> implements IntentHandler{
     protected final AIService aiService;
     protected final TPrompt prompt;
 
-
-    protected BasePromptHandler(AIService aiService, TPrompt prompt) {
+    public BasePromptHandler(AIService aiService, TPrompt prompt) {
         this.aiService = aiService;
         this.prompt = prompt;
     }

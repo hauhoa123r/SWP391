@@ -38,8 +38,7 @@ public class ReviewEntity {
 
     @ManyToMany(mappedBy = "reviewEntities")
     private Set<ProductEntity> productEntities = new LinkedHashSet<>();
-
-    @ManyToMany(mappedBy = "reviewEntities")
+    @ManyToMany
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
 
 /*
