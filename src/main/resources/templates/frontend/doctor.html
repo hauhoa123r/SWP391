@@ -262,7 +262,7 @@
                         </li>
 
                         <!-- First page -->
-                        <li class="page-item" th:if="${currentPage > 2}">
+                        <li class="page-item" th:if="${currentPage > 1}">
                             <a class="page-link"
                                th:href="@{${departmentName == null} ? '/doctor/page/0' : '/doctor/page/0/department/' + ${departmentName}}">1</a>
                         </li>
