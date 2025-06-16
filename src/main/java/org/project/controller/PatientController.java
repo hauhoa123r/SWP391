@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
@@ -24,16 +25,14 @@ public class PatientController {
         return "/frontend/patient-add-previous"; // This should return the name of the HTML template for adding a patient
     }
 
-    @GetMapping("/patient/showList")
-    public String showPatientList(@RequestParam Long userId, Model model) {
+    @GetMapping("/patient/showList/{userId}")
+    public String showPatientList(@PathVariable Long userId,
+                                  @RequestParam(defaultValue = "0") int page, Model model) {
 
-        List<PatientResponse> patients = patientService.getAllPatientsByUserId(userId);
-        if (patients == null || patients.isEmpty()) {
-            model.addAttribute("errorMessage", "No patients found for the given user ID.");
-        } else {
-            model.addAttribute("patients", patients);
-        }
-        return "/frontend/patient-list"; // This should return the name of the HTML template for showing the patient list
+        List<PatientResponse> patientResponses = patientService.getAllPatientsByUserIdPaged(userId, page, 6);
+        model.addAttribute("patients", patientResponses);
+        model.addAttribute("currentPage", page);
+        return "frontend/patient-list";// This should return the name of the HTML template for showing the patient list
     }
 
 

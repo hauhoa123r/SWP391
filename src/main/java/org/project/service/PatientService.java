@@ -10,6 +10,7 @@ public interface PatientService {
     Long createPatient(PatientDTO patientDTO);
     List<PatientResponse> getAllPatients();
     List<PatientResponse> getAllPatientsByUserId(Long userId);
+    List<PatientResponse> getAllPatientsByUserIdPaged(Long userId, int page, int size);
     PatientResponse getPatientById(Long patientId);
     void updatePatient(Long patientId, PatientDTO patientDTO);
     void deletePatient(Long patientId);

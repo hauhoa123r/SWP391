@@ -15,6 +15,9 @@ import org.project.repository.UserRepository;
 import org.project.service.PatientService;
 import org.project.converter.PatientConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -94,6 +97,30 @@ public class PatientServiceImpl implements PatientService {
             throw new ResourceNotFoundException("No patients found for user with ID: " + userId);
         }
 
+        return patientEntities.stream()
+                .map(entity -> {
+                    PatientResponse response = patientConverter.toConvertResponse(entity);
+
+                    // Xử lý ngày tháng an toàn
+                    if (entity.getBirthdate() != null) {
+                        response.setDateOfBirth(entity.getBirthdate().toString());
+                    } else {
+                        response.setDateOfBirth("N/A");
+                    }
+
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PatientResponse> getAllPatientsByUserIdPaged(Long userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PatientEntity> patientPage = patientRepository.findAllByUserEntity_Id(userId, pageable);
+        if (patientPage.isEmpty()) {
+            throw new ResourceNotFoundException("No patients found for user with ID: " + userId);
+        }
+        List<PatientEntity> patientEntities = patientPage.getContent();
         return patientEntities.stream()
                 .map(entity -> {
                     PatientResponse response = patientConverter.toConvertResponse(entity);
