@@ -95,4 +95,7 @@ public class StaffEntity {
             joinColumns = @JoinColumn(name = "staff_id"),
             inverseJoinColumns = @JoinColumn(name = "staff_review_id"))
     private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+
+    @OneToOne(mappedBy = "staffEntity", fetch = FetchType.LAZY)
+    private DoctorEntity doctorEntity;
 }

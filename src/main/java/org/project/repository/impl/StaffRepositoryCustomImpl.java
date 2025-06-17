@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.project.entity.StaffEntity;
 import org.project.enums.StaffRole;
+import org.project.model.dto.MakeAppointmentDTO;
 import org.project.repository.impl.custom.StaffRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -91,5 +92,10 @@ public class StaffRepositoryCustomImpl implements StaffRepositoryCustom {
         getEntitiesTypedQuery.setParameter("departmentEntityName", departmentEntityName);
         getEntitiesTypedQuery.setParameter("id", id);
         return getEntitiesTypedQuery.getResultList();
+    }
+
+    @Override
+    public List<MakeAppointmentDTO> findAllMakeAppointment(MakeAppointmentDTO makeAppointmentDTO) {
+        return List.of();
     }
 }
