@@ -14,6 +14,12 @@ public interface ProductViewProjection {
     String getImageUrl();
     String getLabel();
     Long getCategoryId();
+    String getCategoryName(); 
+    String getReviewContent(); 
+    Integer getReviewRating(); 
+    String getPatientFullName(); 
+    String getPatientEmail(); 
+    String getPatientAvatarUrl(); 
     String getTagName();
     String getAdditionalInfoName();
     String getAdditionalInfoValue();

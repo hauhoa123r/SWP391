@@ -1,9 +1,14 @@
 package org.project.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.project.model.dto.ReviewDTO;
 import org.project.model.response.PharmacyListResponse;
 import org.project.projection.ProductViewProjection;
 import org.project.service.PharmacyService;
@@ -69,22 +74,89 @@ public class ShopController {
 		}
 		//Map of additional information (name-value pairs) 
 		Map<String, String> additionalInfo = new HashMap<>(); 
+		//List of categories name 
+		Set<String> categories = new HashSet<>(); 
+		//set of tag 
+		Set<String> tags = new HashSet<>(); 
+		//Set of reviews with linkedHashSet to avoid duplicates and keep insertion order  
+		Set<ReviewDTO> reviews = new LinkedHashSet<>();  
 		//iterate through the product's additional information and add it to the map 
 		for (ProductViewProjection info : product) {
 			//Get name 
 			String name = info.getAdditionalInfoName(); 
 			//Get value 
 			String value = info.getAdditionalInfoValue(); 
+			//set naem of categories 
+			String categoryName = info.getCategoryName(); 
+			//set the tag name 
+			String tagName = info.getTagName(); 
+			//set the string of review content 
+			String reviewContent = info.getReviewContent(); 
 			// If name is not null, add to the map 
 			if (name != null && !name.isEmpty()) {
 				//add to the map 
 				additionalInfo.put(name, value);
 			}
+			// If category name is not null, add to the list 
+			if (categoryName != null && !categoryName.isEmpty()) {
+				//add to the list 
+				categories.add(categoryName);
+			}
+			else {
+				categories.add("N/A"); // If no category, add "N/A" 
+			}
+			// If tag name is not null, add to the set 
+			if (tagName != null && !tagName.isEmpty()) {
+				tags.add(tagName);
+			} 
+			else {
+				tags.add("N/A"); // If no tag, add "N/A" 
+			}
+			// If review content is not null, create a ReviewDTO and add to the list 
+			if (reviewContent != null && !reviewContent.isEmpty()) {
+				// Create a ReviewDTO object 
+				ReviewDTO review = new ReviewDTO();
+				// Set the patient full name 
+				review.setPatientFullName(info.getPatientFullName());
+				// Set the patient image URL 
+				review.setPatientImageUrl(info.getPatientAvatarUrl());
+				// Set the content of the review 
+				review.setContent(reviewContent);
+				// Set the rating of the review 
+				review.setRating(info.getReviewRating());
+				// Add the review to the list 
+				reviews.add(review);
+			} 
+			// If review content is null, add a default review 
+			else {
+				ReviewDTO review = new ReviewDTO();
+				review.setPatientFullName("Anonymous");
+				review.setPatientImageUrl("/frontend_assets/assets/images/general/avatar.png");
+				review.setContent("No reviews yet.");
+				review.setRating(0);
+				reviews.add(review);
+			}
 		}
+		//join the categories set to a string with commas 
+		String categoriesString = String.join(", ", categories);
+		//join the tags set to a string with commas 
+		String tagsString = String.join(", ", tags); 
+		// If categories is empty, add "N/A"	
+		if (categories.isEmpty()) {
+			categories.add("N/A");
+		} 
 		// Add the product to the model
 		model.addAttribute("product", product.get(0)); // Assuming the projection returns a list, take the first item
 		//add the additional information map to the model 
-		model.addAttribute("additionalInfo", additionalInfo); 
+		model.addAttribute("additionalInfo", additionalInfo);
+		//add the categories list to the model 
+		model.addAttribute("categories", categories); 
+		//add the categories string to the model 
+		model.addAttribute("categoriesString", categoriesString);
+		//add the tags string to the model
+		model.addAttribute("tagsString", tagsString); 
+		//Add the reviews list to the model 
+		model.addAttribute("reviews", reviews); 
 		// Return the view name
 		return "frontend/product-standard";
 	}
