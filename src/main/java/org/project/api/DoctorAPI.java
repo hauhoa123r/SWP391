@@ -49,6 +49,7 @@ public class DoctorAPI {
         filterSpecification = filterSpecification.addSearchCriteria(new SearchCriteria("hospitalEntity.name", Operation.EQUALS, staffDTO.getHospitalEntityName()), Operation.AND);
         filterSpecification = filterSpecification.addSearchCriteria(new SearchCriteria("reviewEntities.rating", Operation.AVG_EQUALS, staffDTO.getAverageRating()), Operation.AND);
         filterSpecification = filterSpecification.addSearchCriteria(new SearchCriteria("reviewEntities.id", Operation.COUNT_GREATER_THAN_OR_EQUAL_TO, staffDTO.getReviewCount()), Operation.AND);
-        return staffRepository.findAll(filterSpecification.getSpecification()).stream().map(staffConverter::toResponse).toList();
+        return null;
+      //  return staffRepository.findAll(filterSpecification.getSpecification()).stream().map(staffConverter::toResponse).toList();
     }
 }

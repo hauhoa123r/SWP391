@@ -38,11 +38,14 @@ public class FilterDataMakeAppointment {
     }
 
 
+
     private String promptToGetDataMakeAppointment(String userMessage, String historyWithUser) {
         Date date = new Date();
         String prompt = String.format("""
     You are a highly accurate data extraction system for medical appointment scheduling in the KiviCare hospital system.
-
+    
+    Today is: %s
+    
     Task:
     - Analyze the entire conversation history and especially the most recent user message.
     - Always prioritize the information in the most recent user message. If there are conflicting details, the user's most recent message should override the previous ones.
@@ -72,7 +75,7 @@ public class FilterDataMakeAppointment {
     %s
 
     Provide the extracted information now:
-    """, new SimpleDateFormat("dd/MM/yyyy").format(date), historyWithUser, userMessage);
+    """, date.toString(),new SimpleDateFormat("dd/MM/yyyy").format(date), historyWithUser, userMessage);
 
         return aiService.complete(prompt);
     }

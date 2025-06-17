@@ -20,13 +20,12 @@ public class ChatSessionManager {
         return chatHisroty;
     }
 
-    public void setChatSessionWithUser(HttpSession session, ChatMessageRequest chatMessageRequest
-    ,String aiResponse){
-        List<ChatMessage> chatHisroty = getChatSessionWithUser(session);
-        chatHisroty.add(new ChatMessage("user", chatMessageRequest.getUserMessage()));
-        chatHisroty.add(new ChatMessage("assistant(you)", aiResponse));
-        checkMaxHistory(chatHisroty);
-        session.setAttribute("chatHistory", chatHisroty);
+    public void setChatSessionWithUser(HttpSession session, ChatMessageRequest chatMessageRequest, String aiResponse) {
+        List<ChatMessage> chatHistory = getChatSessionWithUser(session);
+        chatHistory.add(new ChatMessage("user", chatMessageRequest.getUserMessage()));
+        chatHistory.add(new ChatMessage("assistant", aiResponse)); // Sửa "assistant(you)" thành "assistant"
+        checkMaxHistory(chatHistory);
+        session.setAttribute("chatHistory", chatHistory);
     }
 
     private void checkMaxHistory(List<ChatMessage> chatHistory){
