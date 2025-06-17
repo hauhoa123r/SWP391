@@ -3,21 +3,14 @@ package org.project.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.project.converter.ConverterPharmacyProduct;
 import org.project.entity.ProductEntity;
-import org.project.enums.ProductLabel;
-import org.project.enums.ProductSortType;
 import org.project.model.response.PharmacyListResponse;
 import org.project.repository.PharmacyRepository;
 import org.project.service.PharmacyService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,29 +22,64 @@ public class PharmacyServiceImpl implements PharmacyService {
     private final ConverterPharmacyProduct converter;
 
     public List<PharmacyListResponse> findTop10Products() {
-        List<ProductEntity> entities = pharmacyRepository.findAll(
-                PageRequest.of(0, 10, Sort.by("rating").descending())).getContent();
+        // Fetch first page without sorting by a non-existent column, then sort in memory by calculated rating
+        List<ProductEntity> entities = new ArrayList<>(pharmacyRepository.findAll(PageRequest.of(0, 100)).getContent());
+        // Sort in-memory
+        entities.sort((e1, e2) -> Double.compare(calculateRating(e2), calculateRating(e1)));
+        if (entities.size() > 10) {
+            entities = entities.subList(0, 10);
+        }
         return entities.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-@Override
-public PharmacyListResponse findById(Long id) {
-    return pharmacyRepository.findById(id)
-            .map(this::convertToDto)
-            .orElse(null);
-}
+    @Override
+    public PharmacyListResponse findById(Long id) {
+        return pharmacyRepository.findById(id)
+                .map(this::convertToDto)
+                .orElse(null);
+    }
+
+    @Override
+    public List<PharmacyListResponse> findRelatedProducts(Long productId, int limit) {
+        // Method to fetch related products based on category
+        ProductEntity product = pharmacyRepository.findById(productId).orElse(null);
+        if (product == null || product.getCategoryEntities() == null || product.getCategoryEntities().isEmpty()) {
+            return new ArrayList<>();
+        }
+        Long categoryId = product.getCategoryEntities().iterator().next().getId();
+        List<ProductEntity> relatedEntities = new ArrayList<>(pharmacyRepository.findByCategoryEntities_Id(categoryId, PageRequest.of(0, limit + 1)).getContent());
+        // Sort in-memory by calculated rating
+        relatedEntities.sort((e1, e2) -> Double.compare(calculateRating(e2), calculateRating(e1)));
+        return relatedEntities.stream()
+                .filter(entity -> !entity.getId().equals(productId))
+                .limit(limit)
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
 
     private PharmacyListResponse convertToDto(ProductEntity entity) {
         PharmacyListResponse dto = new PharmacyListResponse();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
+        dto.setImageUrl(entity.getImageUrl());
         dto.setPrice(entity.getPrice());
         dto.setRating(calculateRating(entity));
+        // map additional fields
+        dto.setLabel(entity.getLabel() != null ? entity.getLabel().name() : null);
+        dto.setStatus(entity.getProductStatus() != null ? entity.getProductStatus().name() : null);
+        dto.setStockQuantity(entity.getStockQuantities());
         dto.setCategory(entity.getCategoryEntities() != null && !entity.getCategoryEntities().isEmpty()
                 ? entity.getCategoryEntities().iterator().next().getName() : null);
-        // ... ánh xạ các trường khác
+        dto.setTags(entity.getProductTagEntities() != null
+                ? entity.getProductTagEntities().stream().map(tag -> tag.getId().getName()).toList()
+                : null);
         return dto;
+    }
+
+    @Override
+    public Long findFirstProductId() {
+        return pharmacyRepository.findFirstProductId();
     }
 
     private double calculateRating(ProductEntity entity) {
@@ -138,6 +166,7 @@ public PharmacyListResponse findById(Long id) {
 //        dto.setPrice(entity.getPrice());
 //        dto.setImageUrl(entity.getImageUrl());
 //        dto.setDescription(entity.getDescription());
+        // dto.setImageUrl(entity.getImageUrl());
 //        dto.setLabel(entity.getLabel() != null ? entity.getLabel().name() : null);
 //        double avgRating = 0.0;
 //        if (entity.getReviewEntities() != null && !entity.getReviewEntities().isEmpty()) {

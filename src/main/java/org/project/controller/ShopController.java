@@ -8,13 +8,16 @@ import org.project.model.response.CategoryListResponse;
 import org.project.model.response.PharmacyListResponse;
 import org.project.service.CategoryService;
 import org.project.service.PharmacyService;
-import org.project.service.ProductSearchService;
+import org.project.service.ProductService;
+import org.project.repository.ProductTagRepository;
+
+import java.math.BigDecimal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,9 +30,10 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 public class ShopController {
-    private final ProductSearchService productSearchService;
+    private final ProductService productService;
     private final PharmacyService pharmacyServiceImpl;
     private final CategoryService categoryService;
+    private final ProductTagRepository productTagRepository;
 
     private static final String PREVIOUS_SEARCH_KEY = "previousSearch";
 
@@ -40,15 +44,19 @@ public class ShopController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "40") int size,
             @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
+            @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
+            @RequestParam(value = "tag", required = false) String tagRaw,
             HttpSession session) {
         log.info("Processing shop request: searchQuery={}, sortType={}, page={}, size={}", searchQuery, sortType, page, size);
 
         ModelAndView mv = new ModelAndView("shop");
         SearchContext context = buildSearchContext(searchQuery, sortType, session);
 
-        Page<PharmacyListResponse> productPage = productSearchService.searchProducts(
-                context.searchQuery(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), context.sortType(), PageRequest.of(page, size));
+        Page<PharmacyListResponse> productPage = productService.searchProducts(
+                context.searchQuery(), Optional.ofNullable(categoryId),
+                Optional.ofNullable(minPrice), Optional.ofNullable(maxPrice),
+                Optional.ofNullable(tagRaw), context.sortType(), PageRequest.of(page, size));
 
         List<CategoryListResponse> categories = loadCategoriesWithProductCount();
 
@@ -60,6 +68,12 @@ public class ShopController {
         mv.addObject("categoryId", categoryId);
         mv.addObject("size", size);
         mv.addObject("page", page);
+        // Sidebar data
+        mv.addObject("topProducts", pharmacyServiceImpl.findTop10Products());
+        mv.addObject("tags", productTagRepository.findDistinctTagNames());
+        mv.addObject("minPrice", minPrice);
+        mv.addObject("maxPrice", maxPrice);
+        mv.addObject("selectedTag", tagRaw);
         return mv;
     }
 
@@ -81,34 +95,6 @@ public class ShopController {
         return redirectUrl.toString();
     }
 
-    @GetMapping("/product-standard")
-    public ModelAndView product() {
-        ModelAndView mv = new ModelAndView("product-standard");
-        return mv;
-    }
-
-    @GetMapping("/product-standard/{id}")
-    public String getProduct(@PathVariable("id") Long id, Model model) {
-        log.info("Fetching product with ID: {}", id);
-
-        // Validate ID
-        if (id == null || id < 1) {
-            log.warn("Invalid product ID: {}", id);
-            throw new IllegalArgumentException("Invalid product ID: " + id);
-        }
-
-        // Fetch the product by ID
-        PharmacyListResponse product = pharmacyServiceImpl.findById(id);
-        if (product == null) {
-            log.warn("No product found with ID: {}", id);
-            throw new IllegalArgumentException("No product found with ID: " + id);
-        }
-
-        // Add the product to the model
-        model.addAttribute("product", product);
-        log.debug("Product {} loaded successfully", id);
-        return "product-standard";
-    }
 
     @GetMapping("/product-home")
     public ModelAndView productHome() {
@@ -219,10 +205,15 @@ public class ShopController {
     }
 
     private List<CategoryListResponse> loadCategoriesWithProductCount() {
+        // Only keep categories that have at least one product to display in sidebar
+
         List<CategoryListResponse> categories = categoryService.findAllCategory();
         categories.forEach(category -> category.setProductCount(
                 String.valueOf(categoryService.countProductsByCategory(category.getId()))));
-        return categories;
+        // filter
+        return categories.stream()
+                .filter(c -> !"0".equals(c.getProductCount()))
+                .toList();
     }
 
     private String normalizeQuery(String query) {
@@ -232,6 +223,7 @@ public class ShopController {
     private boolean isValid(String input) {
         return input != null && !input.trim().isEmpty();
     }
+
 
     private record SearchContext(Optional<String> searchQuery, ProductSortType sortType) {}
 }
