@@ -238,29 +238,29 @@
                         <div class="overflow-hidden mb-5">
                             <img class="img-fluid w-100 service-img" loading="lazy"
                                  src="./assets/images//general/doctor.svg"
-                                 th:src="${service.imageUrl}">
+                                 th:src="${service.productEntity.imageUrl}">
                         </div>
                         <div class="iq-fancy-box-content mt-5">
-                            <h4 class="mb-2" th:text="${service.name}">Qualified Doctors</h4>
-                            <p class="text-body m-0 line-count-3" th:text="${service.description}">A person who holds a
+                            <h4 class="mb-2" th:text="${service.productEntity.name}">Qualified Doctors</h4>
+                            <p class="text-body m-0 line-count-3" th:text="${service.productEntity.description}">A person who holds a
                                 degree recognised by the Medical
                                 Council is registered. </p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <div class="service-price fw-bold"
-                                     th:text="${'$ ' + (#numbers.formatDecimal(service.price, 1, 'COMMA', 2, 'POINT'))}">
+                                     th:text="${'$ ' + (#numbers.formatDecimal(service.productEntity.price, 1, 'COMMA', 2, 'POINT'))}">
                                     $ 100.00
                                 </div>
                                 <div class="service-rating">
                                     <span class="ms-1 text-muted small"
-                                          th:text="${#numbers.formatDecimal(service.averageRating, 1, 1, 'POINT')}">4.5</span>
-                                    <span th:classappend="${service.reviewCount > 0 ? 'text-warning' : 'text-primary'}"
+                                          th:text="${#numbers.formatDecimal(service.productEntity.averageRating, 1, 1, 'POINT')}">4.5</span>
+                                    <span th:classappend="${service.productEntity.reviewCount > 0 ? 'text-warning' : 'text-primary'}"
                                           th:each="i : ${#numbers.sequence(1, 5)}">
                                         <i class="fas fa-star"
-                                           th:if="${service.averageRating - i > -0.5}"></i>
+                                           th:if="${service.productEntity.averageRating - i > -0.5}"></i>
                                         <i class="fas fa-star-half-alt"
-                                           th:if="${i - service.averageRating >= 0.5 && i - service.averageRating < 1}"></i>
+                                           th:if="${i - service.productEntity.averageRating >= 0.5 && i - service.productEntity.averageRating < 1}"></i>
                                         <i class="far fa-star"
-                                           th:if="${i - service.averageRating >= 1}"></i>
+                                           th:if="${i - service.productEntity.averageRating >= 1}"></i>
                                     </span>
                                 </div>
                             </div>
