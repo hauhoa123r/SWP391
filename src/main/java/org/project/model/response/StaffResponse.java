@@ -15,7 +15,8 @@ public class StaffResponse {
     private Long id;
     private String fullName;
     private String avatarUrl;
-    private String departmentEntityName;
+    private DepartmentResponse departmentEntity;
+    private String userEntityEmail;
     private List<StaffEducationResponse> staffEducationEntities;
     private List<StaffExperienceResponse> staffExperienceEntities;
     private List<StaffSkillResponse> staffSkillEntities;
