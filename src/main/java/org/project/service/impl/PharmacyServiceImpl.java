@@ -3,7 +3,7 @@ package org.project.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.project.converter.ConverterPharmacyProduct;
 import org.project.entity.ProductEntity;
-import org.project.model.response.PharmacyListResponse;
+import org.project.model.response.PharmacyResponse;
 import org.project.repository.PharmacyRepository;
 import org.project.service.PharmacyService;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +21,7 @@ public class PharmacyServiceImpl implements PharmacyService {
     private final PharmacyRepository pharmacyRepository;
     private final ConverterPharmacyProduct converter;
 
-    public List<PharmacyListResponse> findTop10Products() {
+    public List<PharmacyResponse> findTop10Products() {
         // Fetch first page without sorting by a non-existent column, then sort in memory by calculated rating
         List<ProductEntity> entities = new ArrayList<>(pharmacyRepository.findAll(PageRequest.of(0, 100)).getContent());
         // Sort in-memory
@@ -33,14 +33,14 @@ public class PharmacyServiceImpl implements PharmacyService {
     }
 
     @Override
-    public PharmacyListResponse findById(Long id) {
+    public PharmacyResponse findById(Long id) {
         return pharmacyRepository.findById(id)
                 .map(this::convertToDto)
                 .orElse(null);
     }
 
     @Override
-    public List<PharmacyListResponse> findRelatedProducts(Long productId, int limit) {
+    public List<PharmacyResponse> findRelatedProducts(Long productId, int limit) {
         // Method to fetch related products based on category
         ProductEntity product = pharmacyRepository.findById(productId).orElse(null);
         if (product == null || product.getCategoryEntities() == null || product.getCategoryEntities().isEmpty()) {
@@ -57,8 +57,8 @@ public class PharmacyServiceImpl implements PharmacyService {
                 .collect(Collectors.toList());
     }
 
-    private PharmacyListResponse convertToDto(ProductEntity entity) {
-        PharmacyListResponse dto = new PharmacyListResponse();
+    private PharmacyResponse convertToDto(ProductEntity entity) {
+        PharmacyResponse dto = new PharmacyResponse();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
@@ -69,8 +69,13 @@ public class PharmacyServiceImpl implements PharmacyService {
         dto.setLabel(entity.getLabel() != null ? entity.getLabel().name() : null);
         dto.setStatus(entity.getProductStatus() != null ? entity.getProductStatus().name() : null);
         dto.setStockQuantity(entity.getStockQuantities());
-        dto.setCategory(entity.getCategoryEntities() != null && !entity.getCategoryEntities().isEmpty()
-                ? entity.getCategoryEntities().iterator().next().getName() : null);
+        // Join all category names
+        String joinedCategories = entity.getCategoryEntities() != null && !entity.getCategoryEntities().isEmpty()
+                ? entity.getCategoryEntities().stream().map(cat -> cat.getName()).toList().stream().reduce((a,b)->a + ", " + b).orElse(null)
+                : null;
+        dto.setCategory(joinedCategories);
+        // set product type
+        dto.setProductType(entity.getProductType() != null ? entity.getProductType().name() : null);
         dto.setTags(entity.getProductTagEntities() != null
                 ? entity.getProductTagEntities().stream().map(tag -> tag.getId().getName()).toList()
                 : null);
