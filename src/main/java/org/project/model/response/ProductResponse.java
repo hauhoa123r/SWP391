@@ -18,8 +18,6 @@ public class ProductResponse {
     private String imageUrl;
     private Double price;
     private List<CategoryResponse> categoryEntities;
-    private List<ServiceFeatureResponse> serviceEntityServiceFeatureEntities;
-    private String serviceEntityDepartmentEntityName;
     private List<ProductAdditionalInfoResponse> productAdditionalInfoEntities;
     private Integer reviewCount;
     private Double averageRating;
