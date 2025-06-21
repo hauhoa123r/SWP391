@@ -211,15 +211,15 @@
                 <div class="mb-0 nav nav-tabs justify-content-center" id="nav-tab1" role="tablist">
                     <button aria-controls="doc-all" aria-selected="true"
                             class="nav-link" onclick="window.location.href='/doctor/page/0'"
-                            th:classappend="${departmentName == null} ? 'active' : ''"
+                            th:classappend="${departmentId == null} ? 'active' : ''"
                             type="button">All
                     </button>
                     <button aria-selected="false" class="nav-link"
-                            onclick="window.location.href='/doctor/page/0/department/' + this.getAttribute('data-department')"
                             th:aria-controls="${department.name}"
-                            th:classappend="${department.name == departmentName} ? 'active' : ''"
-                            th:data-department="${department.name}"
+                            th:classappend="${department.id == departmentId} ? 'active' : ''"
+                            th:data-departmtent="${department.id}"
                             th:each="department : ${departments}"
+                            th:onclick="'window.location.href=\'/doctor/page/0/department/' + ${department.id} + '\''"
                             th:text="${department.name}"
                             type="button">
                         Cardiologist
@@ -237,14 +237,14 @@
                                          class="img-fluid w-100"
                                          loading="lazy"
                                          onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
-                                         th:src="${doctor.avatarUrl}">
+                                         th:src="${doctor.staffEntity.avatarUrl}">
                                 </div>
-                                <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${doctor.averageRating}, reviewCount=${doctor.reviewCount})}"></div>
+                                <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${doctor.staffEntity.averageRating}, reviewCount=${doctor.staffEntity.reviewCount})}"></div>
                                 <div class="iq-team-info position-absolute d-block w-100">
                                     <div class="iq-team-main-detail bg-white">
-                                        <h5 th:text="${doctor.fullName}"></h5>
+                                        <h5 th:text="${doctor.staffEntity.fullName}"></h5>
                                         <p class="mb-0 text-uppercase fw-bolder text-primary fw-500"
-                                           th:text="${doctor.departmentEntityName}">Cardiologist</p>
+                                           th:text="${doctor.staffEntity.departmentEntity.name}">Cardiologist</p>
                                     </div>
                                 </div>
                             </div>

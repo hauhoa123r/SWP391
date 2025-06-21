@@ -229,14 +229,14 @@
                                      class="img-fluid w-100"
                                      loading="lazy"
                                      onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
-                                     th:src="${doctor.avatarUrl}">
+                                     th:src="${doctor.staffEntity.avatarUrl}">
                             </div>
-                            <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${doctor.averageRating}, reviewCount=${doctor.reviewCount})}"></div>
+                            <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${doctor.staffEntity.averageRating}, reviewCount=${doctor.staffEntity.reviewCount})}"></div>
                             <div class="iq-team-info position-absolute d-block w-100">
                                 <div class="iq-team-main-detail bg-white">
-                                    <h5 th:text="${doctor.fullName}">Gunner Peha</h5>
+                                    <h5 th:text="${doctor.staffEntity.fullName}">Gunner Peha</h5>
                                     <p class="mb-0 text-uppercase fw-bolder text-primary fw-500"
-                                       th:text="${doctor.departmentEntityName}">Cardiologist</p>
+                                       th:text="${doctor.staffEntity.departmentEntity.name}">Cardiologist</p>
                                 </div>
                             </div>
                         </div>
@@ -287,9 +287,9 @@
                     <div class="iq-title-box">
                         <h3 class="iq-title iq-heading-title mb-3">
                             <span class="right-text text-capitalize"
-                                  th:text="${doctor.departmentEntityName}">General</span>
+                                  th:text="${doctor.staffEntity.departmentEntity.name}">General</span>
                         </h3>
-                        <p class="iq-title-desc text-body" th:text="${doctor.hospitalEntityName}">
+                        <p class="iq-title-desc text-body" th:text="${doctor.staffEntity.hospitalEntityName}">
                             Dr. Mantooth has done Basic and Advanced training in Reproductive Medicine and IVF- Homerton
                             University hospital London UK. He is an active member of London Fertility Society and has
                             helped
@@ -301,7 +301,7 @@
                             <h5 class="fw-normal">Honors and Awards </h5>
                             <div class="row mt-5 g-3">
                                 <div class="col-sm-6 mt-0"
-                                     th:each="qualification : ${doctor.staffQualificationEntities}">
+                                     th:each="qualification : ${doctor.staffEntity.staffQualificationEntities}">
                                     <div class="px-3 pt-2 pb-3 border">
                                         <div class="text-primary">
                                             <i aria-hidden="true" class="flaticon flaticon-flaticon flaticon-award"></i>
@@ -315,7 +315,7 @@
                         </div>
                         <div class="col-md-6 mt-md-0 mt-5">
                             <h5 class="fw-normal">Skillset</h5>
-                            <div class="mt-5" th:each="skill : ${doctor.staffSkillEntities}">
+                            <div class="mt-5" th:each="skill : ${doctor.staffEntity.staffSkillEntities}">
                                 <div class="wrapper-progress">
                                     <div class="percentage-progress d-flex justify-content-between">
                                         <h6 class="mb-2 text-body" th:text="${skill.name}">Technique</h6>
@@ -343,7 +343,8 @@
                             </div>
                             <div class="col-md-10 mt-md-0 mt-2">
                                 <ul class="list-inline m-0">
-                                    <li class="mb-2" th:each="speciality : ${doctor.staffSpecialityEntities}">
+                                    <li class="mb-2"
+                                        th:each="speciality : ${doctor.staffEntity.staffSpecialityEntities}">
                                         <span class="text-primary"><i class="far fa-star"></i></span>
                                         <span class="ms-1" th:text="${speciality.title}">Gynecologist</span>
                                     </li>
@@ -359,7 +360,7 @@
                             <div class="col-md-10 mt-md-0 mt-2">
                                 <ul class="list-inline m-0">
                                     <li class="mb-2"
-                                        th:each="education : ${doctor.staffEducationEntities}">
+                                        th:each="education : ${doctor.staffEntity.staffEducationEntities}">
                                         <span class="text-primary"><i class="fas fa-check"></i></span>
                                         <span class="ms-1"
                                               th:text="${education.degree + ', ' + education.institute + ' (' + education.year + ')'}">Embryology</span>
@@ -375,7 +376,8 @@
                             </div>
                             <div class="col-md-10 mt-md-0 mt-2">
                                 <ul class="list-inline m-0">
-                                    <li class="mb-2" th:each="experience : ${doctor.staffExperienceEntities}">
+                                    <li class="mb-2"
+                                        th:each="experience : ${doctor.staffEntity.staffExperienceEntities}">
                                         <span class="text-primary"><i class="fas fa-file-alt"></i></span>
                                         <span class="ms-1"
                                               th:text="${experience.year + ' In ' + experience.position}">15 Years of experience in medicine</span>
@@ -408,14 +410,14 @@
                                                  class="img-fluid w-100"
                                                  loading="lazy"
                                                  onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
-                                                 th:src="${colleague.avatarUrl}">
+                                                 th:src="${colleague.staffEntity.avatarUrl}">
                                         </div>
-                                        <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${colleague.averageRating}, reviewCount=${colleague.reviewCount})}"></div>
+                                        <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${colleague.staffEntity.averageRating}, reviewCount=${colleague.staffEntity.reviewCount})}"></div>
                                         <div class="iq-team-info position-absolute d-block w-100">
                                             <div class="iq-team-main-detail bg-white">
-                                                <h5 th:text="${colleague.fullName}">Gunner Peha</h5>
+                                                <h5 th:text="${colleague.staffEntity.fullName}">Gunner Peha</h5>
                                                 <p class="mb-0 text-uppercase fw-bolder text-primary fw-500"
-                                                   th:text="${colleague.departmentEntityName}">
+                                                   th:text="${colleague.staffEntity.departmentEntity.name}">
                                                     Cardiologist</p>
                                             </div>
                                         </div>
