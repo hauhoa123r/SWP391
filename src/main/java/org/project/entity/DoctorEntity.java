@@ -20,12 +20,11 @@ public class DoctorEntity {
     @Column(name = "doctor_id", nullable = false)
     private Long id;
 
-    @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "doctor_id", nullable = false)
     private StaffEntity staffEntity;
 
-    @OneToMany
+    @OneToMany(mappedBy = "doctorEntity", fetch = FetchType.LAZY)
     private Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
 
 /*

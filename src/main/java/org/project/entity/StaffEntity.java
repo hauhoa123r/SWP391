@@ -90,4 +90,12 @@ public class StaffEntity {
     @JoinColumn(name = "hospital_id", nullable = false)
     private HospitalEntity hospitalEntity;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "staff_reviews",
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "staff_review_id"))
+    private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+
+    @OneToOne(mappedBy = "staffEntity", fetch = FetchType.LAZY)
+    private DoctorEntity doctorEntity;
 }

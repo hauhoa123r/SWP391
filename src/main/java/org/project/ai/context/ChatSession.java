@@ -18,7 +18,7 @@ public class ChatSession {
                         .append(chatMessage.getContent())
                         .append("\n");
             }
-            historyChatWithUser.append("Below is the conversation history with the user:\n" + historyBuilder.toString());
+            historyChatWithUser.append("Please consider the entire conversation history provided below when generating your response. The history includes previous messages from both the user and yourself (the assistant). Use this context to ensure your response is relevant and coherent with the ongoing conversation.:\n" + historyBuilder.toString());
         }
         return historyChatWithUser.toString();
         }
