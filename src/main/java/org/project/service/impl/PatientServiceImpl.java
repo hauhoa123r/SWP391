@@ -1,27 +1,58 @@
-//package org.project.service.impl;
-//
-//import org.modelmapper.ModelMapper;
-//import org.project.entity.PatientEntity;
-//import org.project.entity.UserEntity;
-//import org.project.exception.ResourceNotFoundException;
-//import org.project.model.dto.PatientDTO;
-//import org.project.model.response.PatientResponse;
-//import org.project.repository.PatientRepository;
-//import org.project.service.PatientService;
-//import org.project.converter.PatientConverter;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//import java.util.List;
-//import java.util.Optional;
-//
-//@Service
-//public class PatientServiceImpl implements PatientService {
-//
-//    private final ModelMapper modelMapper;
-//    private  PatientRepository patientRepository;
-//    private PatientConverter patientConverter;
+package org.project.service.impl;
+
+import org.project.converter.PatientConverter;
+import org.project.entity.PatientEntity;
+import org.project.model.response.PatientResponse;
+import org.project.repository.PatientRepository;
+import org.project.service.PatientService;
+import org.project.utils.PageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class PatientServiceImpl implements PatientService {
+
+    //    private final ModelMapper modelMapper;
+    private PatientRepository patientRepository;
+    private PatientConverter patientConverter;
+    private PageUtils<PatientEntity> pageUtils;
+
+    @Autowired
+    public void setPatientRepository(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
+    @Autowired
+    public void setPatientConverter(PatientConverter patientConverter) {
+        this.patientConverter = patientConverter;
+    }
+
+    @Autowired
+    public void setPageUtils(PageUtils<PatientEntity> pageUtils) {
+        this.pageUtils = pageUtils;
+    }
+
+    @Override
+    public Page<PatientResponse> getPatientsByUser(Long userId, int index, int size) {
+        Pageable pageable = pageUtils.getPageable(index, size);
+        Page<PatientEntity> patientEntityPage = patientRepository.findAllByUserEntityId(userId, pageable);
+        pageUtils.validatePage(patientEntityPage, PatientEntity.class);
+        return patientEntityPage.map(patientConverter::toResponse);
+    }
+
+    @Override
+    public Page<PatientResponse> getPatientsByUserAndKeyword(Long userId, String keyword, int index, int size) {
+        Pageable pageable = pageUtils.getPageable(index, size);
+        Page<PatientEntity> patientEntityPage = patientRepository.findAllByUserEntityIdAndFullNameContainingIgnoreCase(userId, keyword, pageable);
+        pageUtils.validatePage(patientEntityPage, PatientEntity.class);
+        return patientEntityPage.map(patientConverter::toResponse);
+    }
 //    private UserRepository userRepository;
-//
+
 //    @Autowired
 //    public PatientServiceImpl(PatientRepository patientRepository, PatientConverter patientConverter, UserRepository userRepository, ModelMapper modelMapper) {
 //        this.patientRepository = patientRepository;
@@ -84,4 +115,4 @@
 //            throw new ResourceNotFoundException("Patient not found");
 //        }
 //    }
-//}
+}

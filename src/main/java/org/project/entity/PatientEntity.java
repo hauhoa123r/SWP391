@@ -60,6 +60,7 @@ public class PatientEntity {
     @NotNull
     @Column(name = "birthdate", nullable = false)
     private Date birthdate;
+
     @OneToMany(mappedBy = "patientEntity")
     private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
 
@@ -75,10 +76,9 @@ public class PatientEntity {
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'SELF'")
     @Column(name = "relationship", columnDefinition = "enum not null")
-    private FamilyRelationship relationship;
+    private FamilyRelationship familyRelationship;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("'OTHER'")
     @Column(name = "gender", columnDefinition = "enum not null")
     private Gender gender;
 

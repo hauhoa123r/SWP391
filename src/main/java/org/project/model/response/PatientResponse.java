@@ -11,14 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PatientResponse {
     private Long id;
-    private Long userId;
+    private String phoneNumber;
+    private String email;
     private String fullName;
     private String avatarUrl;
-    private String email;
-    private String phoneNumber;
     private String address;
-    private String gender;
-    private String dateOfBirth;
+    private String birthdate;
     private String familyRelationship;
+    private String gender;
     private String bloodType;
 }
