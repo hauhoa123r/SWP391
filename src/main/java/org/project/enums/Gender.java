@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Gender {
-    MALE("MALE"),
-    FEMALE("FEMALE"),
-    OTHER("OTHER");
+    MALE("Male"),
+    FEMALE("Female"),
+    OTHER("Other");
 
-    private final String value;
+    private final String gender;
 }
