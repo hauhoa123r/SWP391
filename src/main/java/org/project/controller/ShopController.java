@@ -5,10 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.enums.ProductSortType;
 import org.project.model.response.CategoryListResponse;
-import org.project.model.response.PharmacyListResponse;
+import org.project.model.response.PharmacyResponse;
 import org.project.service.CategoryService;
 import org.project.service.PharmacyService;
 import org.project.service.ProductService;
+import org.project.service.WishlistService;
 import org.project.repository.ProductTagRepository;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,6 +36,7 @@ public class ShopController {
     private final PharmacyService pharmacyServiceImpl;
     private final CategoryService categoryService;
     private final ProductTagRepository productTagRepository;
+    private final WishlistService wishlistService;
 
     private static final String PREVIOUS_SEARCH_KEY = "previousSearch";
 
@@ -51,12 +54,14 @@ public class ShopController {
         log.info("Processing shop request: searchQuery={}, sortType={}, page={}, size={}", searchQuery, sortType, page, size);
 
         ModelAndView mv = new ModelAndView("shop");
+        // Convert "%23" back to "#" for tag searches if needed
+        String tagProcessed = tagRaw != null ? tagRaw.replace("%23", "#") : null;
         SearchContext context = buildSearchContext(searchQuery, sortType, session);
 
-        Page<PharmacyListResponse> productPage = productService.searchProducts(
+        Page<PharmacyResponse> productPage = productService.searchProducts(
                 context.searchQuery(), Optional.ofNullable(categoryId),
                 Optional.ofNullable(minPrice), Optional.ofNullable(maxPrice),
-                Optional.ofNullable(tagRaw), context.sortType(), PageRequest.of(page, size));
+                Optional.ofNullable(tagProcessed), context.sortType(), PageRequest.of(page, size));
 
         List<CategoryListResponse> categories = loadCategoriesWithProductCount();
 
@@ -73,9 +78,11 @@ public class ShopController {
         mv.addObject("tags", productTagRepository.findDistinctTagNames());
         mv.addObject("minPrice", minPrice);
         mv.addObject("maxPrice", maxPrice);
-        mv.addObject("selectedTag", tagRaw);
+        mv.addObject("selectedTag", tagProcessed);
         return mv;
     }
+
+
 
     @PostMapping("/submit")
     public String search(@RequestParam(value = "search", required = false) String searchQuery,
@@ -104,7 +111,7 @@ public class ShopController {
 
         try {
             // Fetch top 10 products for the home page
-            List<PharmacyListResponse> products = pharmacyServiceImpl.findTop10Products();
+            List<PharmacyResponse> products = pharmacyServiceImpl.findTop10Products();
 
             // Kiểm tra nếu danh sách trả về là null
             if (products == null) {
@@ -128,6 +135,7 @@ public class ShopController {
         return mv;
     }
 
+
     @GetMapping("/cart")
     public ModelAndView cart() {
         ModelAndView mv = new ModelAndView("cart");
@@ -140,11 +148,6 @@ public class ShopController {
         return mv;
     }
 
-    @GetMapping("/wishlist")
-    public ModelAndView wishlist() {
-        ModelAndView mv = new ModelAndView("/wishlist");
-        return mv;
-    }
 
     @GetMapping("/my-account")
     public ModelAndView myAccount() {
