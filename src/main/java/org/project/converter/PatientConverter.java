@@ -37,7 +37,13 @@ public class PatientConverter {
     }
 
     public PatientResponse toConvertResponse(PatientEntity patientEntity) {
-        return modelMapperConfig.mapper().map(patientEntity, PatientResponse.class);
+        PatientResponse patientResponse = modelMapperConfig.mapper().map(patientEntity, PatientResponse.class);
+        if (patientEntity.getBirthdate() != null) {
+            patientResponse.setDateOfBirth(patientEntity.getBirthdate().toString());
+        } else {
+            patientResponse.setDateOfBirth("N/A");
+        }
+        return patientResponse;
     }
 }
 

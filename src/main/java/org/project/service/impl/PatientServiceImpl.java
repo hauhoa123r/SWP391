@@ -21,10 +21,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -120,16 +125,8 @@ public class PatientServiceImpl implements PatientService {
         if (patientPage.isEmpty()) {
             throw new ResourceNotFoundException("No patients found for user with ID: " + userId);
         }
-        return patientPage.map(patientConverter::toConvertResponse)
-                .map(response -> {
-                    // Xử lý ngày tháng an toàn
-                    if (response.getDateOfBirth() != null) {
-                        response.setDateOfBirth(response.getDateOfBirth());
-                    } else {
-                        response.setDateOfBirth("N/A");
-                    }
-                    return response;
-                });
+
+        return patientPage.map(patientConverter::toConvertResponse);
     }
 
     @Override
@@ -189,4 +186,43 @@ public class PatientServiceImpl implements PatientService {
     public Long getPatientIdByUserId(Long userId) {
         return patientRepository.findFirstByUserEntity_IdOrderByIdDesc(userId);
     }
+//
+//    public String saveImg(String base64) throws IOException {
+//        // Remove any data prefix (if exists)
+//        if (base64.contains(",")) {
+//            base64 = base64.substring(base64.indexOf(",") + 1);
+//        }
+//        // Decode base64 string to byte array
+//        byte[] imageBytes = Base64.getDecoder().decode(base64.getBytes(StandardCharsets.UTF_8));
+//
+//        // Generate unique file name with PNG extension
+//        String fileName = UUID.randomUUID().toString() + ".png";
+//
+//        // Define the relative folder path (relative to the project root)
+//        // Project folder: src/main/resources/templates/frontend/assets/images/patient-avatar
+//        // We return the relative path: assets/images/patient-avatar/{fileName}
+//        Path folderPath = Paths.get("src", "main", "resources", "templates", "frontend", "assets", "images", "patient-avatar");
+//
+//        // Create directories if they do not exist
+//        if (!Files.exists(folderPath)) {
+//            Files.createDirectories(folderPath);
+//        }
+//
+//        // Save file into the folder
+//        Path filePath = folderPath.resolve(fileName);
+//        Files.write(filePath, imageBytes);
+//
+//        // Convert stored absolute folder to relative web path
+//        // Returning: assets/images/patient-avatar/{fileName}
+//        String relativePath = "assets/images/patient-avatar/" + fileName;
+//        return relativePath;
+//    }
+//
+//    public String convertUrlToBase64(String urlStr) throws IOException {
+//        URL url = new URL(urlStr);
+//        try (InputStream is = url.openStream()) {
+//            byte[] imageBytes = is.readAllBytes();
+//            return Base64.getEncoder().encodeToString(imageBytes);
+//        }
+//    }
 }

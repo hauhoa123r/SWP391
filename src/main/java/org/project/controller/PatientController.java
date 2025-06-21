@@ -29,7 +29,7 @@ public class PatientController {
     @GetMapping("/patient/showList/{userId}")
     public String showPatientList(@PathVariable Long userId,
                                   @RequestParam (defaultValue = "0") int pageIndex,
-                                  Model model) {
+                                  Model model ) {
 
         Page<PatientResponse> patientResponsePage = patientService.getAllPatientsByUserIdForPage(userId, pageIndex, 6);
         List<PatientResponse> patients = patientResponsePage.getContent();
@@ -38,6 +38,5 @@ public class PatientController {
         model.addAttribute("totalPages", patientResponsePage.getTotalPages());
         return "/frontend/patient-list"; // This should return the name of the HTML template for showing the patient list
     }
-
 
 }

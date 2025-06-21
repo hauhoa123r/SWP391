@@ -1,5 +1,7 @@
 package org.project.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.project.entity.MedicalProfileEntity;
 import org.project.entity.PatientEntity;
 import org.project.exception.ResourceNotFoundException;
@@ -40,8 +42,17 @@ public class MedicalProfileServiceImpl implements MedicalProfileService {
     public void createMedicalProfile(MedicalProfileDTO medicalProfileDTO) {
         MedicalProfileEntity medicalProfileEntity = new MedicalProfileEntity();
 
-        medicalProfileEntity.setAllergies(String.join(",", medicalProfileDTO.getAllergies()));
-        medicalProfileEntity.setChronicDiseases(String.join(",", medicalProfileDTO.getChronicDiseases()));
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            String jsonAllergies = mapper.writeValueAsString(medicalProfileDTO.getAllergies());
+            String jsonChronicDiseases = mapper.writeValueAsString(medicalProfileDTO.getChronicDiseases());
+
+            medicalProfileEntity.setAllergies(jsonAllergies);
+            medicalProfileEntity.setChronicDiseases(jsonChronicDiseases);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Json mapping error", e);
+        }
 
         PatientEntity patientEntity = patientRepositoryImpl.findById(medicalProfileDTO.getPatientId())
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + medicalProfileDTO.getPatientId()));
