@@ -102,20 +102,32 @@ public class DataConverterPatient {
                 """.formatted(toConverterDataUser(userId));
     }
 
-    public String toValidationDataCreatePatient(PatientDTO patientDTO) throws IllegalAccessException {
+    public String toValidationDataCreatePatient(PatientDTO patientDTO) {
         StringBuilder sb = new StringBuilder();
         Field[] fields = patientDTO.getClass().getDeclaredFields();
+
         for (Field field : fields) {
             field.setAccessible(true);
-            Object value = field.get(patientDTO);
-            String keyName = field.getName();
-            if(value == null || value.toString().trim().isEmpty()){
-                if(keyName.equals("fullName") || keyName.equals("gender")
-                || keyName.equals("dateOfBirth") || keyName.equals("familyRelationship")){}
-                sb.append("Đang thiếu field: " + keyName).append("\n");
+            try {
+                Object value = field.get(patientDTO);
+                String keyName = field.getName();
+
+                if (value == null || value.toString().trim().isEmpty()) {
+                    if (keyName.equals("fullName") ||
+                            keyName.equals("gender") ||
+                            keyName.equals("dateOfBirth") ||
+                            keyName.equals("familyRelationship")) {
+
+                        sb.append("Đang thiếu field: ").append(keyName).append("\n");
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                // Ghi log hoặc thông báo lỗi, tùy bạn xử lý
+                sb.append("Không thể truy cập field: ").append(field.getName()).append("\n");
             }
         }
-        return null;
+
+        return sb.toString();
     }
 
 }

@@ -1,13 +1,11 @@
 package org.project.ai.prompt.system;
 
-import org.project.ai.converter.system.DataSystemConverter;
 import org.project.ai.prompt.PromptStrategy;
 import org.project.geolocation.GeocodingService;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 
 @Component
-
 public class SystemPrompt implements PromptStrategy {
 
     private final GeocodingService geocodingService;

@@ -16,7 +16,7 @@ public abstract class BasePromptHandler<TPrompt> implements IntentHandler {
     }
 
     protected abstract String buildPrompt(ChatMessageRequest req, String history)
-            throws IOException;
+            throws IOException, IllegalAccessException;
 
     @Override
     public String handle(ChatMessageRequest req, String history) {
@@ -27,7 +27,8 @@ public abstract class BasePromptHandler<TPrompt> implements IntentHandler {
             return aiService.fulfillPrompt(buildPrompt(req, history));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
-
 }

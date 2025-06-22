@@ -18,7 +18,7 @@ public class CreatePatientPrompt implements PromptAnswer {
     }
 
     @Override
-    public String buildPrompt(ChatMessageRequest chatMessageRequest, String historyWithUser) throws IOException, IllegalAccessException {
+    public String buildPrompt(ChatMessageRequest chatMessageRequest, String historyWithUser) throws IOException{
         PatientDTO patientDTO = filterDataCreatePatient.extractData(chatMessageRequest, historyWithUser);
         String validatePatient = dataConverterPatient.toValidationDataCreatePatient(patientDTO);
         if (validatePatient != null) {
