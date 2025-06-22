@@ -122,7 +122,6 @@ public class DataConverterPatient {
                     }
                 }
             } catch (IllegalAccessException e) {
-                // Ghi log hoặc thông báo lỗi, tùy bạn xử lý
                 sb.append("Không thể truy cập field: ").append(field.getName()).append("\n");
             }
         }

@@ -5,9 +5,11 @@ import org.project.ai.converter.patient.FilterDataCreatePatient;
 import org.project.ai.prompt.PromptAnswer;
 import org.project.model.dto.PatientDTO;
 import org.project.model.request.ChatMessageRequest;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class CreatePatientPrompt implements PromptAnswer {
     private final FilterDataCreatePatient filterDataCreatePatient;
     private final DataConverterPatient dataConverterPatient;
