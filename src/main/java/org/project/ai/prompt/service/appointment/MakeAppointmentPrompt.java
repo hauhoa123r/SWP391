@@ -29,6 +29,6 @@ public class MakeAppointmentPrompt implements PromptAnswer {
         if (validationResult != null) {
             return validationResult;
         }
-        return "Thông tin đầy đủ. Đang tiến hành đặt lịch cho bạn...";
+        return "Đã đăng ký thành công";
     }
 }

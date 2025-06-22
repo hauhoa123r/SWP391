@@ -6,15 +6,14 @@ import org.project.model.dai.AppointmentDAI;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 public class RequestMapper {
 
     public static <T> T mapFromMap(Map<String, Object> sourceMap, Class<T> clazz){
         try {
             T instance = clazz.getDeclaredConstructor().newInstance();
-            Field[] fields = clazz.getDeclaredFields();
+            Field[] fields = getAllFieldsIncludingSuper(clazz);
 
             for (Field field : fields) {
                 field.setAccessible(true);
@@ -59,4 +58,13 @@ public class RequestMapper {
             throw new ErrorMappingException(Map.class, clazz);
         }
     }
+    private static Field[] getAllFieldsIncludingSuper(Class<?> clazz) {
+        List<Field> fields = new ArrayList<>();
+        while (clazz != null && clazz != Object.class) {
+            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+            clazz = clazz.getSuperclass();
+        }
+        return fields.toArray(new Field[0]);
+    }
+
 }

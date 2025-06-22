@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.project.ai.chat.AIService;
-import org.project.model.dai.AppointmentDAI;
 import org.project.model.dto.PatientDTO;
 import org.project.model.request.ChatMessageRequest;
 import org.project.utils.RequestMapper;
@@ -58,28 +57,32 @@ public class FilterDataCreatePatient {
             Extract and return a JSON with exactly these fields (use null if missing):
 
             {
+              "userId": %s  
               "fullName": "string or null",
-              "gender": "male, female, or null",
-              "dateOfBirth": "dd/MM/yyyy or null",
+              "gender": "MALE, FEMALE, or OTHER",
+              "dateOfBirth": "yyyy-MM-dd or null",
               "phoneNumber": "string or null",
               "email": "string or null",
               "address": "string or null",
-              "familyRelationship": "self, parent, sibling, child, spouse, or null",
+              "familyRelationship": "SELF,FATHER,MOTHER,BROTHER,SISTER,SON,DAUGHTER,GRANDFATHER,GRANDMOTHER,CAUSIN,AUNT,UNCLE,OTHER",
               "bloodType": "A, B, AB, O or null"
+              "isFormStarted": "true or false",
             }
 
             Rules:
+            • If the user provides any **specific detail** (like Name, Gender, dateOfBirth, familyRelationship...), set `isFormStarted = true`.
+            • If the user is only asking generally about booking (e.g. “how do I create patient?”, “can you help me?”, “I want to create patient”) → set `isFormStarted = false`.
             • Use only the information clearly mentioned by the user or in the conversation history.
             • Do not guess or assume anything.
             • If the user refers to someone (e.g., “my mother”, “my child”), use `familyRelationship` accordingly.
             • If gender is unclear, return null. Do not assume based on name.
-            • Format dateOfBirth as dd/MM/yyyy if possible. Else, use null.
+            • Format dateOfBirth as yyyy-MM-dd if possible. Else, use null.
 
             --- Conversation history:
             %s
 
             --- User message:
             %s
-            """, req.getLanguage(), history, req.getUserMessage());
+            """, req.getLanguage(), req.getUserId(), history, req.getUserMessage());
     }
 }

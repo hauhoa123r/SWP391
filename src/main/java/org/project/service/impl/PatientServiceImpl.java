@@ -47,7 +47,6 @@ public class PatientServiceImpl implements PatientService {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
-
     @Transactional
     @Override
     public Long createPatient(PatientDTO patientDTO) {
@@ -57,8 +56,12 @@ public class PatientServiceImpl implements PatientService {
         patientEntity.setBirthdate(Date.valueOf(patientDTO.getDateOfBirth()));
         patientEntity.setRelationship(FamilyRelationship.valueOf(patientDTO.getFamilyRelationship().toUpperCase()));
         patientEntity.setGender(Gender.valueOf(patientDTO.getGender().toUpperCase()));
-        patientEntity.setBloodType(BloodType.valueOf(patientDTO.getBloodType().toUpperCase()));
-        patientEntity.setAvatarUrl(patientDTO.getAvatarBase64());
+        if (patientDTO.getBloodType() != null) {
+            patientEntity.setBloodType(BloodType.valueOf(patientDTO.getBloodType().toUpperCase()));
+        }
+        if(patientDTO.getAvatarBase64() != null && !patientDTO.getAvatarBase64().isEmpty()){
+            patientEntity.setAvatarUrl(patientDTO.getAvatarBase64());
+        }
 
         UserEntity userEntity = userRepository.findById(patientDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));

@@ -2,18 +2,18 @@ package org.project.enums;
 
 public enum FamilyRelationship {
     SELF("SELF"),
-    FATHER("father"),
-    MOTHER("mother"),
-    BROTHER("brother"),
-    SISTER("sister"),
-    SON("son"),
-    DAUGHTER("daughter"),
-    GRANDFATHER("grandfather"),
-    GRANDMOTHER("grandmother"),
-    CAUSIN("causin"),
-    AUNT("aunt"),
-    UNCLE("uncle"),
-    OTHER("other");
+    FATHER("FATHER"),
+    MOTHER("MOTHER"),
+    BROTHER("BROTHER"),
+    SISTER("SISTER"),
+    SON("SON"),
+    DAUGHTER("DAUGHTER"),
+    GRANDFATHER("GRANDFATHER"),
+    GRANDMOTHER("GRANDMOTHER"),
+    CAUSIN("CAUSIN"),
+    AUNT("AUNT"),
+    UNCLE("UNCLE"),
+    OTHER("OTHER");
 
     private final String relationship;
 

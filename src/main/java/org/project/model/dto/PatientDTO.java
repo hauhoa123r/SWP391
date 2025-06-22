@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientDTO {
+public class PatientDTO extends AbstractServiceAIDTO{
     private Long userId;
     private String fullName;
     private String email;

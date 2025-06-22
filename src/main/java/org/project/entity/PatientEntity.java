@@ -35,12 +35,10 @@ public class PatientEntity {
     private UserEntity userEntity;
 
     @Size(max = 255)
-    @NotNull
     @Column(name = "phone_number")
     private String phoneNumber;
 
     @Size(max = 255)
-    @NotNull
     @Column(name = "email")
     private String email;
 
