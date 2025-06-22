@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -37,7 +36,7 @@ public class ChatBoxAPI {
 
     @PostMapping
     public ResponseEntity<String> handleMessageUser(@RequestBody ChatMessageRequest chatMessageRequest,
-    HttpSession session) {
+    HttpSession session) throws IOException {
 
         List<ChatMessage> chatHisroty = chatSessionManager.getChatSessionWithUser(session);
 

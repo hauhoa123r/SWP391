@@ -59,7 +59,6 @@ public class StaffConverter {
             makeAppointmentDTO.setHospitalAddress(staffEntity.getHospitalEntity().getAddress());
             makeAppointmentDTO.setDepartmentName(staffEntity.getDepartmentEntity().getName());
 
-            // Handle appointment start times
             String startDates = "";
             if (staffEntity.getDoctorEntity() != null && staffEntity.getDoctorEntity().getAppointmentEntities() != null) {
                 startDates = staffEntity.getDoctorEntity().getAppointmentEntities()

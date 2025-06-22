@@ -2,10 +2,11 @@ package org.project.ai.intent;
 
 import org.project.ai.chat.AIService;
 import org.project.ai.prompt.IntentPrompt;
-import org.project.entity.PatientEntity;
 import org.project.enums.Intent;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class ChatRouterService {
@@ -24,10 +25,10 @@ public class ChatRouterService {
 
     private String findContextType(ChatMessageRequest userMessage, String historyWithUser) {
         String prompt = intentPrompt.buildPrompt(userMessage, historyWithUser);
-        return aiService.complete(prompt).toLowerCase();
+        return aiService.fulfillPrompt(prompt).toLowerCase();
     }
 
-    public String convertToUserMessage(ChatMessageRequest chatMessageRequest, String historyWithUser) {
+    public String convertToUserMessage(ChatMessageRequest chatMessageRequest, String historyWithUser) throws IOException {
         chatMessageRequest.setPrompt(findContextType(chatMessageRequest, historyWithUser));
         if (Intent.fromKey(chatMessageRequest.getPrompt()).isEmpty() || ("unknown").equals(chatMessageRequest.getPrompt())) {
 

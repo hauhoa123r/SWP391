@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Table(name = "medical_profile")
+@Table(name = "medical_profiles")
 @Getter
 @Setter
 @NoArgsConstructor

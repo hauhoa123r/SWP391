@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.project.enums.UserRole;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -15,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "users", schema = "swp391")
+@Table(name = "users")
 public class UserEntity {
     @Id
     @Column(name = "user_id", nullable = false)
@@ -77,13 +79,11 @@ public class UserEntity {
     @Column(name = "status", columnDefinition = "enum")
     private Object status;
 */
-/*
- TODO [Reverse Engineering] create field to map the 'user_role' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @org.hibernate.annotations.ColumnDefault("'PATIENT'")
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'PATIENT'")
     @Column(name = "user_role", columnDefinition = "enum not null")
-    private java.lang.Object userRole;
-*/
+    private UserRole userRole;
+
 /*
  TODO [Reverse Engineering] create field to map the 'user_status' column
  Available actions: Define target Java type | Uncomment as is | Remove column mapping

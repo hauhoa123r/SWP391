@@ -13,8 +13,12 @@ import java.util.Date;
 @AllArgsConstructor
 public class AppointmentDAI {
     private Long userId;
-    private String hours;
+    private String time;
     private String date;
     private String doctorName;
+    private String departmentName;
     private String hospitalName;
+    private String patientName;
+    private Boolean isFormStarted;
+    private String language;
 }

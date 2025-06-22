@@ -2,6 +2,7 @@ package org.project.ai.prompt.system;
 
 import org.project.ai.converter.system.DataSystemConverter;
 import org.project.ai.prompt.PromptStrategy;
+import org.project.geolocation.GeocodingService;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 
@@ -9,10 +10,10 @@ import org.springframework.stereotype.Component;
 
 public class SystemPrompt implements PromptStrategy {
 
-    private final DataSystemConverter dataSystemConverter;
+    private final GeocodingService geocodingService;
 
-    public SystemPrompt(DataSystemConverter dataSystemConverter) {
-        this.dataSystemConverter = dataSystemConverter;
+    public SystemPrompt(GeocodingService geocodingService) {
+        this.geocodingService = geocodingService;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class SystemPrompt implements PromptStrategy {
         Ask the user for their address in order to recommend the nearest hospital for convenient travel.
         """.formatted(historyWithUser
                 , chatMessageRequest.getUserMessage()
-                , dataSystemConverter.toConverterAllHospitals()
+                , geocodingService.toGetAddressShortest(chatMessageRequest.getUserId())
                 , chatMessageRequest.getLanguage());
     }
 }

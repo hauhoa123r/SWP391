@@ -1,7 +1,7 @@
 package org.project.enums;
 
 public enum FamilyRelationship {
-    SELF("self"),
+    SELF("SELF"),
     FATHER("father"),
     MOTHER("mother"),
     BROTHER("brother"),

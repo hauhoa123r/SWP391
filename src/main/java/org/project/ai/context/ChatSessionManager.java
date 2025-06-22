@@ -23,15 +23,19 @@ public class ChatSessionManager {
     public void setChatSessionWithUser(HttpSession session, ChatMessageRequest chatMessageRequest, String aiResponse) {
         List<ChatMessage> chatHistory = getChatSessionWithUser(session);
         chatHistory.add(new ChatMessage("user", chatMessageRequest.getUserMessage()));
-        chatHistory.add(new ChatMessage("assistant", aiResponse)); // Sửa "assistant(you)" thành "assistant"
+        chatHistory.add(new ChatMessage("assistant", aiResponse));
         checkMaxHistory(chatHistory);
         session.setAttribute("chatHistory", chatHistory);
     }
 
     private void checkMaxHistory(List<ChatMessage> chatHistory){
-        if(chatHistory.size() > MAX_HISTORY_SIZE) {
-            chatHistory = chatHistory.subList(chatHistory.size() - MAX_HISTORY_SIZE, chatHistory.size());
+        if (chatHistory.size() > MAX_HISTORY_SIZE) {
+            List<ChatMessage> keep = chatHistory.subList(
+                    chatHistory.size() - MAX_HISTORY_SIZE, chatHistory.size());
+            chatHistory.clear();
+            chatHistory.addAll(keep);
         }
     }
+
 
 }

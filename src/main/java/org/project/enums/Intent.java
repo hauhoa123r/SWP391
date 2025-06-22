@@ -9,10 +9,6 @@ public enum Intent {
     SYMPTOM_ADVICE("symptom_advice", "This is when the user describes their personal health symptoms, such as feeling pain, discomfort, fever, coughing, or any signs of illness. It does not include accidents, injuries caused by external events (fighting, falling, traffic accidents), or issues caused by risky personal behaviors (substance abuse, violence)."),
     ASK_MEDICINE("ask_medicine", "This is a question about medicine, including inquiries about medication names, uses, dosage, possible side effects, or whether a specific medicine is suitable for the patient."),
     ASK_HOSPITAL("ask_hospital", "This is a user question about where is the hospital, where is your hospital (what locations do you have)."),
-    ASK_YOURSELF("ask_yourself", "This is a question about you, you are a virtual assistant of the KiViCare system"),
-    ASK_DOCTOR("ask_doctor", "This is a request for information about a doctor."),
-    ASK_PERSON("ask_person", "When the user asks about a person in the system, which can be either a doctor or a patient. Clarification is needed to determine the intended subject."),
-    ASK_PATIENT("ask_patient", "This is when the user specifically asks about a patient (usually their registered family member) in the system. Example: Do you know Nguyen Van A?"),
     SELF_IDENTIFICATION("self_identification", "This is the kind of question, do you know who I am?"),
     HEALTH_EFFECT("health_effect", "This is asking if a certain behavior, situation, event, or issue has an impact on the user's health. Example: Does drinking coffee at night affect my health?"),
     PERSONAL_HEALTH_QUESTION("personal_health_question", "This is when the user asks about their own health status or medical information stored in the system, such as: Do you know my blood pressure? or What is my medical history?"),
@@ -27,7 +23,7 @@ public enum Intent {
     CHECK_MEDICINE_STOCK("check_medicine_stock", "This is a request to check the stock of medicine."),
     CANCEL_MEDICINE_ORDER("cancel_medicine_order", "This is a request to cancel a medicine order and possibly request a refund."),
     REQUEST_REFUND("request_refund", "This is a request to get a refund for a cancelled service or medicine order."),
-    OUT_OF_SCOPE("out_of_scope", "This is a question or message unrelated to the hospital, healthcare, medicine, appointments, or the system's functionalities."),
+    CREATE_PATIENT("create_patient", "User wants to register a new patient record."),
     UNKNOWN("unknown", "This is when the user's message is not understandable, contains random characters, meaningless text, or cannot be classified into any known category. Example: 'asdkjh2131@#' or 'xxxxxx'.");
 
 

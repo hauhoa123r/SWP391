@@ -5,10 +5,12 @@ import org.project.entity.MedicalRecordEntity;
 import org.project.entity.PatientEntity;
 import org.project.model.dai.DataUserDAI;
 import org.project.model.dai.MedicalRecordData;
+import org.project.model.dto.PatientDTO;
 import org.project.repository.MedicalRecordRepository;
 import org.project.repository.PatientRepository;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 @Component
@@ -99,4 +101,21 @@ public class DataConverterPatient {
                 %s
                 """.formatted(toConverterDataUser(userId));
     }
+
+    public String toValidationDataCreatePatient(PatientDTO patientDTO) throws IllegalAccessException {
+        StringBuilder sb = new StringBuilder();
+        Field[] fields = patientDTO.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            Object value = field.get(patientDTO);
+            String keyName = field.getName();
+            if(value == null || value.toString().trim().isEmpty()){
+                if(keyName.equals("fullName") || keyName.equals("gender")
+                || keyName.equals("dateOfBirth") || keyName.equals("familyRelationship")){}
+                sb.append("Đang thiếu field: " + keyName).append("\n");
+            }
+        }
+        return null;
+    }
+
 }
