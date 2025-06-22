@@ -1,5 +1,6 @@
 package org.project.converter;
 
+import org.modelmapper.ModelMapper;
 import org.project.config.ModelMapperConfig;
 import org.project.entity.PatientEntity;
 import org.project.model.dto.PatientDTO;
@@ -23,14 +24,26 @@ public class PatientConverter {
         if (patientDTO == null) {
             return Optional.empty();
         }
-        return Optional.of(modelMapperConfig.mapper().map(patientDTO, PatientEntity.class));
+
+        PatientEntity patientEntity = new PatientEntity();
+
+        ModelMapper modelMapper = modelMapperConfig.mapper();
+
+        modelMapper.map(patientDTO, patientEntity);
+
+        patientEntity.setId(null);
+
+        return Optional.of(patientEntity);
     }
 
-    public Optional<PatientResponse> toConvertResponse(PatientEntity patientEntity) {
-        if (patientEntity == null) {
-            return Optional.empty();
+    public PatientResponse toConvertResponse(PatientEntity patientEntity) {
+        PatientResponse patientResponse = modelMapperConfig.mapper().map(patientEntity, PatientResponse.class);
+        if (patientEntity.getBirthdate() != null) {
+            patientResponse.setDateOfBirth(patientEntity.getBirthdate().toString());
+        } else {
+            patientResponse.setDateOfBirth("N/A");
         }
-        return Optional.of(modelMapperConfig.mapper().map(patientEntity, PatientResponse.class));
+        return patientResponse;
     }
 }
 

@@ -48,7 +48,7 @@ public class HospitalEntity {
     private String avatarUrl;
 
 
-    @OneToMany(mappedBy = "hospitalEntity", fetch =  FetchType.LAZY)
+    @OneToMany
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
 
 }

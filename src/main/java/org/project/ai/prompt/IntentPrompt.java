@@ -9,28 +9,24 @@ public class IntentPrompt implements PromptStrategy {
     @Override
     public String buildPrompt(ChatMessageRequest userMessage, String historyWithUser) {
         return """
-    You are a highly accurate intent classification system for the KiviCare hospital virtual assistant.
+        You are a highly accurate intent classification system for the KiviCare hospital virtual assistant.
 
-    Task:
-    - Based on the user's current message and the entire conversation history, classify the user's intent into one of the following labels:
-    %s
+        Task:
+        - Based on the user's current message and the previous conversation history, classify the user's intent into one of the following labels:
+        %s
 
-    Rules:
-    1. Consider the entire conversation to understand the context.
-    2. Focus primarily on the most recent user message.
-    3. Always classify based on the overall flow, not just isolated sentences.
-    5. If the user's message is casual or social (greeting, thanks, small talk), classify as "chitchat".
-    6. Respond ONLY with the intent label. No extra words, no punctuation.
+        Notes:
+        - Use the conversation history to understand the context and avoid misclassification.
+        - Prioritize the most recent user message but always consider the conversation flow.
 
-    Conversation History:
-    %s
+        Conversation history:
+        %s
 
-    Current User Message:
-    "%s"
+        Current user message:
+        "%s"
 
-    Respond with only one of the intent labels above.
-    """.formatted(Intent.getAllDescriptions(), historyWithUser, userMessage.getUserMessage());
+        Respond ONLY with the exact corresponding label (no explanation, no extra words).
+        """.formatted(Intent.getAllDescriptions(), historyWithUser, userMessage.getUserMessage());
     }
-
 
 }
