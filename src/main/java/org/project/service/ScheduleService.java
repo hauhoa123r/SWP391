@@ -5,5 +5,5 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface ScheduleService {
-    List<Timestamp> getAvailableTimes(Long staffId, Date availableDate);
+    List<Timestamp> getAvailableTimes(Long staffId, Long patientId, Date availableDate);
 }
