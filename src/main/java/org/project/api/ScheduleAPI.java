@@ -22,12 +22,12 @@ public class ScheduleAPI {
         this.scheduleService = scheduleService;
     }
 
-    @GetMapping("/staff/{staffId}/date/{availableDate}")
-    public ResponseEntity<Map<String, Object>> getAvailableTimes(@PathVariable Long staffId,
+    @GetMapping("/staff/{staffId}/patient/{patientId}/date/{availableDate}")
+    public ResponseEntity<Map<String, Object>> getAvailableTimes(@PathVariable Long staffId, @PathVariable Long patientId,
                                                                  @PathVariable Date availableDate) {
         return ResponseEntity.ok(
                 Map.of(
-                        "availableTimes", scheduleService.getAvailableTimes(staffId, availableDate)
+                        "availableTimes", scheduleService.getAvailableTimes(staffId, patientId, availableDate)
                 )
         );
     }

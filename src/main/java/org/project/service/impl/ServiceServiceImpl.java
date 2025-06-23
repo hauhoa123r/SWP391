@@ -1,6 +1,7 @@
 package org.project.service.impl;
 
 import jakarta.transaction.Transactional;
+import org.project.config.WebConstant;
 import org.project.converter.ServiceConverter;
 import org.project.entity.ServiceEntity;
 import org.project.exception.sql.EntityNotFoundException;
@@ -46,7 +47,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public Page<ServiceResponse> getServices(int index, int size) {
         Pageable pageable = pageUtils.getPageable(index, size);
-        Page<ServiceEntity> serviceEntityPage = serviceRepositoryCustom.findAllOrderByProductEntityAverageRatingAndProductEntityReviewCount(pageable);
+        Page<ServiceEntity> serviceEntityPage = serviceRepositoryCustom.findAllByProductEntityProductStatusOrderByProductEntityAverageRatingAndProductEntityReviewCount(WebConstant.PRODUCT_STATUS_ACTIVE, pageable);
         pageUtils.validatePage(serviceEntityPage, ServiceEntity.class);
         return serviceEntityPage.map(serviceConverter::toResponse);
     }
@@ -54,7 +55,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public Page<ServiceResponse> getServicesByDepartment(Long departmentId, int index, int size) {
         Pageable pageable = pageUtils.getPageable(index, size);
-        Page<ServiceEntity> serviceEntityPage = serviceRepositoryCustom.findAllByDepartmentEntityIdOrderByProductEntityAverageRatingAndProductEntityReviewCount(departmentId, pageable);
+        Page<ServiceEntity> serviceEntityPage = serviceRepositoryCustom.findAllByProductEntityProductStatusAndDepartmentEntityIdOrderByProductEntityAverageRatingAndProductEntityReviewCount(WebConstant.PRODUCT_STATUS_ACTIVE, departmentId, pageable);
         pageUtils.validatePage(serviceEntityPage, ServiceEntity.class);
         return serviceEntityPage.map(serviceConverter::toResponse);
     }
@@ -62,19 +63,19 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public Page<ServiceResponse> searchServicesByDepartmentAndKeyword(Long departmentId, String keyword, int index, int size) {
         Pageable pageable = pageUtils.getPageable(index, size);
-        Page<ServiceEntity> serviceEntityPage = serviceRepositoryCustom.findAllByDepartmentEntityIdAndNameContainingOrderByProductEntityAverageRatingAndProductEntityReviewCount(departmentId, keyword, pageable);
+        Page<ServiceEntity> serviceEntityPage = serviceRepositoryCustom.findAllByProductEntityProductStatusAndProductEntityNameContainingAndDepartmentEntityIdOrderByProductEntityAverageRatingAndProductEntityReviewCount(WebConstant.PRODUCT_STATUS_ACTIVE, keyword, departmentId, pageable);
         pageUtils.validatePage(serviceEntityPage, ServiceEntity.class);
         return serviceEntityPage.map(serviceConverter::toResponse);
     }
 
     @Override
-    public boolean isServiceExist(Long id) {
-        return serviceRepository.existsById(id);
+    public boolean isActiveServiceExist(Long id) {
+        return serviceRepository.existsByIdAndProductEntityProductStatus(id, WebConstant.PRODUCT_STATUS_ACTIVE);
     }
 
     @Override
-    public ServiceResponse getService(Long id) {
-        return serviceRepository.findById(id)
+    public ServiceResponse getActiveService(Long id) {
+        return serviceRepository.findByIdAndProductEntityProductStatus(id, WebConstant.PRODUCT_STATUS_ACTIVE)
                 .map(serviceConverter::toResponse)
                 .orElseThrow(() -> new EntityNotFoundException(ServiceEntity.class, id));
     }

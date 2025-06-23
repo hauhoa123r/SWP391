@@ -1,6 +1,7 @@
 package org.project.service.impl;
 
 import jakarta.transaction.Transactional;
+import org.project.config.WebConstant;
 import org.project.converter.AppointmentConverter;
 import org.project.entity.AppointmentEntity;
 import org.project.entity.StaffScheduleEntity;
@@ -20,11 +21,11 @@ import java.util.Map;
 @Service
 @Transactional
 public class AppointmentServiceImpl implements AppointmentService {
-
     private AppointmentRepository appointmentRepository;
     private DoctorRepository doctorRepository;
     private ServiceRepository serviceRepository;
     private StaffScheduleRepository staffScheduleRepository;
+    private UserRepository userRepository;
     private PatientRepository patientRepository;
     private AppointmentConverter appointmentConverter;
     private TimestampUtils timestampUtils;
@@ -47,6 +48,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     public void setStaffScheduleRepository(StaffScheduleRepository staffScheduleRepository) {
         this.staffScheduleRepository = staffScheduleRepository;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Autowired
@@ -73,7 +79,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (serviceId == null) {
             return false;
         }
-        return serviceRepository.existsByIdAndDepartmentEntityStaffEntitiesId(serviceId, doctorId);
+        return serviceRepository.existsByIdAndProductEntityProductStatusAndDepartmentEntityStaffEntitiesId(serviceId, WebConstant.PRODUCT_STATUS_ACTIVE, doctorId);
     }
 
     private boolean isStartTimeValid(AppointmentDTO appointmentDTO) {
@@ -114,12 +120,17 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.existsByDoctorEntityIdAndStartTimeEquals(doctorId, startTime);
     }
 
-    private boolean isPatientBelongsToUser(AppointmentDTO appointmentDTO) {
-        Long patientId = appointmentDTO.getPatientEntityId();
+    private boolean isUserExistsAndActive(AppointmentDTO appointmentDTO) {
         Long userId = appointmentDTO.getPatientEntityUserEntityId();
         if (userId == null) {
             return false;
         }
+        return userRepository.existsByIdAndUserStatus(userId, WebConstant.USER_STATUS_ACTIVE);
+    }
+
+    private boolean isPatientBelongsToUser(AppointmentDTO appointmentDTO) {
+        Long patientId = appointmentDTO.getPatientEntityId();
+        Long userId = appointmentDTO.getPatientEntityUserEntityId();
         return patientRepository.existsByIdAndUserEntityId(patientId, userId);
     }
 
@@ -163,6 +174,13 @@ public class AppointmentServiceImpl implements AppointmentService {
             return Map.of(
                     "success", false,
                     "message", "Doctor is already booked at this time"
+            );
+        }
+        // Check if the user exists and is active
+        if (!isUserExistsAndActive(appointmentDTO)) {
+            return Map.of(
+                    "success", false,
+                    "message", "User does not exist or is not active"
             );
         }
         // Check if the patient does not belong to the user

@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface DepartmentRepositoryCustom {
-    List<DepartmentEntity> findAllByStaffEntitiesStaffRole(StaffRole staffRole);
+    List<DepartmentEntity> findAllByStaffEntitiesStaffRole(StaffRole staffEntitiesStaffRole);
 
-    Page<DepartmentEntity> findAllByStaffEntitiesStaffRoleAndStaffEntitiesHospitalEntityId(StaffRole staffRole, Long hospitalId, Pageable pageable);
+    Page<DepartmentEntity> findAllByStaffEntitiesStaffRoleAndStaffEntitiesHospitalEntityId(StaffRole staffEntitiesStaffRole, Long hospitalEntityId, Pageable pageable);
 
     Page<DepartmentEntity> findAllByNameContainingAndStaffEntitiesStaffRoleAndStaffEntitiesHospitalEntityId(
-            String keyword, StaffRole staffRole, Long hospitalId, Pageable pageable);
+            String name, StaffRole staffEntitiesStaffRole, Long hospitalEntityId, Pageable pageable);
 }

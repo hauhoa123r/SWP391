@@ -4,6 +4,7 @@ import org.project.entity.AppointmentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
@@ -12,4 +13,6 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     boolean existsByPatientEntityIdAndStartTimeEquals(Long patientEntityId, Timestamp startTime);
 
     boolean existsByDoctorEntityIdAndStartTimeEquals(Long doctorEntityId, Timestamp startTime);
+
+    Collection<? extends AppointmentEntity> findByPatientEntityIdAndStartTimeBetween(Long patientEntityId, Timestamp startTimeAfter, Timestamp startTimeBefore);
 }
