@@ -19,6 +19,7 @@ public class ValidateHospitalHandler extends BaseValidationHandler{
     protected boolean isValid(AppointmentDAI data) {
         if (data.getHospitalName() == null || data.getHospitalName().isBlank()) return false;
         HospitalEntity hospital = hospitalRepository.findByNameContaining(data.getHospitalName());
+        if (hospital != null) data.setHospitalId(hospital.getId());
         return hospital != null;
     }
 

@@ -73,8 +73,9 @@ public class FilterDataMakeAppointment {
           "time": "HH:mm or null",
           "doctorName": "exact doctor name if mentioned, or 'random' if user wants any doctor, or null if unclear"
           "hospitalName": "string or null",
-          "departmentName": "string or null",
+          "departmentName": "Internal Medicine, Surgery, Obstetrics & Gynecology, Pediatrics, Emergency Medicine, Laboratory, Diagnostic Imaging, Ophthalmology, Otolaryngology (ENT), Dentistry, Dermatology, Cardiology, Neurology, Intensive Care Unit, Nutrition, or null"
           "patientName": "string or null",
+          "familyRelationship": "familyRelationship": "SELF,FATHER,MOTHER,BROTHER,SISTER,SON,DAUGHTER,GRANDFATHER,GRANDMOTHER,CAUSIN,AUNT,UNCLE,OTHER",
           "isFormStarted": "true or false",
           "language": "%s"
         }

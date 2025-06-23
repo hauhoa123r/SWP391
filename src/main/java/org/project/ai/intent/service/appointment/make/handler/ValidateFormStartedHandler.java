@@ -16,14 +16,17 @@ public class ValidateFormStartedHandler extends BaseValidationHandler{
     @Override
     protected String errorMessage(AppointmentDAI data) {
         String rawMessage = """
-        Vâng, tôi có thể giúp bạn với việc đặt lịch hẹn. Bạn vui lòng cung cấp cho tôi thông tin sau:
-
-        1. Ngày và giờ bạn muốn đặt lịch hẹn.
-        2. Bệnh viện bạn muốn đến
-        3. Khoa hoặc bác sĩ cụ thể mà bạn muốn gặp.
-        4. Người cần đặt lịch hẹn là bạn hay người thân của bạn?
-
-        Vui lòng cung cấp thông tin để tôi có thể hỗ trợ bạn tốt nhất. Cảm ơn!
+        Yes, I can help you schedule. Please provide me with the following information:
+                
+        1. The date and time you would like to schedule an appointment.
+                
+        2. The hospital you would like to visit
+                
+        3. The specific department or doctor you would like to see.(optional)
+                
+        4. Is the person you would like to schedule an appointment with a friend or family member?
+                
+        Please provide the information so I can best assist you. Thank you!
         """;
 
         return """

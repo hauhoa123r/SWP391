@@ -15,7 +15,10 @@ public class AppointmentDAI {
     private Long userId;
     private String time;
     private String date;
+    private Long doctorId;
     private String doctorName;
+    private Long departmentId;
+    private Long hospitalId;
     private String departmentName;
     private String hospitalName;
     private String patientName;

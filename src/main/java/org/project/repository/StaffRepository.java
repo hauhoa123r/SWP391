@@ -22,4 +22,6 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long> {
     List<StaffEntity> findAllByStaffRole(StaffRole staffRole);
 
     boolean existsByStaffRoleAndId(StaffRole staffRole, Long id);
+
+    List<StaffEntity> findAllByStaffRoleAndFullNameContainingAndDepartmentEntity_IdAndHospitalEntity_Id(StaffRole staffRole, String fullName, Long departmentId, Long hospitalId);
 }
