@@ -72,7 +72,7 @@
 <main class="main-content">
     <div class="position-relative">
         <!--Nav Start-->
-        <div th:replace="/frontend/fragments/header.html"></div>
+        <div th:replace="~{/frontend/fragments/header :: header}"></div>
         <div class="offcanvas offcanvas-end " id="right-panel-toggle" tabindex="-1">
             <div class="offcanvas-header border-bottom px-5 mb-5 py-4">
                 <a href="./index.html" th:href="@{/frontend/index.html}">
@@ -234,17 +234,37 @@
         <div class="container">
             <div class="row row-cols-xl-3 row-cols-md-2 row-cols-1">
                 <div class="col mt-5 text-center" th:each="service : ${services}">
-                    <div class="iq-fancy-box position-relative p-md-5 bg-light rounded">
+                    <div class="iq-fancy-box position-relative p-md-5 bg-light rounded h-100">
                         <div class="overflow-hidden mb-5">
                             <img class="img-fluid w-100 service-img" loading="lazy"
                                  src="./assets/images//general/doctor.svg"
-                                 th:src="${service.imageUrl}">
+                                 th:src="${service.productEntity.imageUrl}">
                         </div>
                         <div class="iq-fancy-box-content mt-5">
-                            <h4 class="mb-2" th:text="${service.name}">Qualified Doctors</h4>
-                            <p class="text-body m-0 line-count-3" th:text="${service.description}">A person who holds a
+                            <h4 class="mb-2" th:text="${service.productEntity.name}">Qualified Doctors</h4>
+                            <p class="text-body m-0 line-count-3" th:text="${service.productEntity.description}">A
+                                person who holds a
                                 degree recognised by the Medical
                                 Council is registered. </p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="service-price fw-bold"
+                                     th:text="${'$ ' + (#numbers.formatDecimal(service.productEntity.price, 1, 'COMMA', 2, 'POINT'))}">
+                                    $ 100.00
+                                </div>
+                                <div class="service-rating">
+                                    <span class="ms-1 text-muted small"
+                                          th:text="${#numbers.formatDecimal(service.productEntity.averageRating, 1, 1, 'POINT')}">4.5</span>
+                                    <span th:classappend="${service.productEntity.reviewCount > 0 ? 'text-warning' : 'text-primary'}"
+                                          th:each="i : ${#numbers.sequence(1, 5)}">
+                                        <i class="fas fa-star"
+                                           th:if="${service.productEntity.averageRating - i > -0.5}"></i>
+                                        <i class="fas fa-star-half-alt"
+                                           th:if="${i - service.productEntity.averageRating >= 0.5 && i - service.productEntity.averageRating < 1}"></i>
+                                        <i class="far fa-star"
+                                           th:if="${i - service.productEntity.averageRating >= 1}"></i>
+                                    </span>
+                                </div>
+                            </div>
                             <div class="fencybox-button mt-3 mt-md-5">
                                 <div class="iq-btn-container">
                                     <a class="iq-button iq-btn-link text-capitalize" href="./service-detail.html"
@@ -278,7 +298,7 @@
             </li>
 
             <!-- First page -->
-            <li class="page-item" th:if="${currentPage > 2}">
+            <li class="page-item" th:if="${currentPage > 1}">
                 <a class="page-link"
                    th:href="@{/service/page/0}">1</a>
             </li>
@@ -315,7 +335,7 @@
 </main>
 <!-- Wrapper End -->
 <!-- Footer start -->
-<div th:replace="/frontend/fragments/footer.html"></div>
+<div th:replace="~{/frontend/fragments/footer :: footer}"></div>
 <!-- footer end -->
 
 <!-- setting -->

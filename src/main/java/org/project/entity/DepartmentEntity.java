@@ -23,7 +23,6 @@ public class DepartmentEntity {
     @Column(name = "department_id", nullable = false)
     private Long id;
 
-
     @NotNull
     @OneToMany(mappedBy = "departmentEntity")
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();

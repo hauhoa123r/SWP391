@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Remove;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.Label;
 import org.project.enums.ProductStatus;
@@ -79,33 +78,43 @@ public class ProductEntity {
     @ManyToMany(mappedBy = "productEntities")
     private Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany()
+    @JoinTable(
+            name = "product_reviews",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_review_id")
+    )
     private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "productEntity")
     private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "productEntity")
     private Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
-
     @OneToOne(mappedBy = "productEntity")
     private TestEntity testEntity;
-
     @ManyToMany
     private Set<UserEntity> userEntities = new LinkedHashSet<>();
-
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'MEDICAL_PRODUCT'")
     @Column(name = "product_type", columnDefinition = "enum not null")
     private ProductType productType;
-
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
     @Column(name = "product_status", columnDefinition = "enum not null")
     private ProductStatus productStatus;
-
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'STANDARD'")
     @Column(name = "label", columnDefinition = "enum not null")
     private Label label;
+
+    public Double getAverageRating() {
+        return reviewEntities.stream()
+                .mapToDouble(ReviewEntity::getRating)
+                .average()
+                .orElse(0.0);
+    }
+
+    public Long getReviewCount() {
+        return (long) reviewEntities.size();
+    }
 }

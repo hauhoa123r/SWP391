@@ -1,0 +1,377 @@
+<!doctype html>
+<html class="landing-pages" data-bs-theme="light" dir="ltr" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Patient List | Kivicare</title>
+    <!-- Library / Plugin Css Build -->
+    <link href="./assets/css/core/libs.min.css" rel="stylesheet" th:href="@{/frontend/assets/css/core/libs.min.css}"/>
+    <!-- flaticon css -->
+    <link href="./assets/vendor/flaticon/css/flaticon.css" rel="stylesheet"
+          th:href="@{/frontend/assets/vendor/flaticon/css/flaticon.css}"/>
+    <!-- font-awesome css -->
+    <link href="./assets/vendor/font-awesome/css/all.min.css" rel="stylesheet"
+          th:href="@{/frontend/assets/vendor/font-awesome/css/all.min.css}"/>
+    <!-- Kivicare Design System Css -->
+    <link href="./assets/css/kivicare.min.css?v=1.4.1" rel="stylesheet"
+          th:href="@{/frontend/assets/css/kivicare.min.css?v=1.4.1}"/>
+    <!-- Custom Css -->
+    <link href="./assets/css/custom.min.css?v=1.4.1" rel="stylesheet"
+          th:href="@{/frontend/assets/css/custom.min.css?v=1.4.1}"/>
+    <!-- Rtl Css -->
+    <link href="./assets/css/rtl.min.css?v=1.4.1" rel="stylesheet"
+          th:href="@{/frontend/assets/css/rtl.min.css?v=1.4.1}"/>
+    <!-- Customizer Css -->
+    <link href="./assets/css/customizer.min.css?v=1.4.1" rel="stylesheet"
+          th:href="@{/frontend/assets/css/customizer.min.css?v=1.4.1}"/>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+            href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap"
+            rel="stylesheet">
+    <meta content='' name="page_colors">
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+
+        .main-content {
+            min-height: 100vh;
+            padding: 32px 0;
+        }
+
+        .patient-table-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(44, 62, 80, 0.06);
+            padding: 32px 32px 24px 32px;
+            margin: 0 auto;
+            max-width: 98vw;
+        }
+
+        .patient-table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .patient-table-header .title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .patient-table-header .desc {
+            font-size: 1rem;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .add-btn {
+            background: #6c8cff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 22px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #4b6cb7;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table-patient {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 24px;
+        }
+
+        .table-patient th,
+        .table-patient td {
+            padding: 14px 10px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .table-patient th {
+            background: #111;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .table-patient th:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        .table-patient th:last-child {
+            border-top-right-radius: 8px;
+        }
+
+        .table-patient tr {
+            background: #fff;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .table-patient tr:last-child {
+            border-bottom: none;
+        }
+
+        .table-patient td {
+            color: #222;
+            font-size: 1rem;
+            vertical-align: middle;
+        }
+
+        .table-patient td .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin: 0 4px;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+
+        .table-patient td .action-btn.edit {
+            color: #4caf50;
+        }
+
+        .table-patient td .action-btn.edit:hover {
+            color: #388e3c;
+        }
+
+        .table-patient td .action-btn.delete {
+            color: #f44336;
+        }
+
+        .table-patient td .action-btn.delete:hover {
+            color: #b71c1c;
+        }
+
+        /* Pagination */
+        .pagination-wrap {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .pagination .page-item {
+            list-style: none;
+        }
+
+        .pagination .page-link {
+            display: inline-block;
+            min-width: 36px;
+            padding: 7px 14px;
+            border-radius: 6px;
+            border: none;
+            background: #f3f6fd;
+            color: #6c8cff;
+            font-weight: 500;
+            font-size: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .pagination .page-link.active,
+        .pagination .page-link:focus {
+            background: #6c8cff;
+            color: #fff;
+        }
+
+        .pagination .page-link[disabled] {
+            background: #f3f6fd;
+            color: #bbb;
+            cursor: not-allowed;
+        }
+
+        .pagination .page-link.ellipsis {
+            background: none;
+            color: #bbb;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .pagination-btn {
+            border: none;
+            border-radius: 6px;
+            padding: 7px 18px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .pagination-btn.prev {
+            background: #ff6b6b;
+            color: #fff;
+        }
+
+        .pagination-btn.next {
+            background: #6c8cff;
+            color: #fff;
+        }
+
+        .pagination-btn[disabled] {
+            background: #eee;
+            color: #bbb;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 1200px) {
+            .patient-table-card {
+                padding: 18px 4px 12px 4px;
+            }
+
+            .table-patient th,
+            .table-patient td {
+                font-size: 0.95rem;
+                padding: 10px 4px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .patient-table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .patient-table-card {
+                padding: 8px 2px;
+            }
+
+            .table-patient th,
+            .table-patient td {
+                font-size: 0.9rem;
+                padding: 7px 2px;
+            }
+
+            .pagination-wrap {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+
+<body class="body-bg landing-pages">
+<main class="main-content">
+    <div class="container">
+        <div class="patient-table-card">
+            <div class="patient-table-header mb-2">
+                <div>
+                    <div class="title">All Patient</div>
+                    <div class="desc"></div>
+                </div>
+                <a class="add-btn" th:href="@{/patient/showAddPrevious}">Add Patient&nbsp;&nbsp;+</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table-patient">
+                    <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Avatar</th>
+                        <th>Patient Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Date of Birth</th>
+                        <th>Gender</th>
+                        <th>Address</th>
+                        <th>Family Relationship</th>
+                        <th>Blood Type</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="patient,iter : ${patients}">
+                        <td th:text="${iter.index + 1}">1</td>
+                        <td>
+                            <img alt="Avatar" src="https://api.dicebear.com/6.x/avataaars/svg?seed=1.jpg"
+                                 style="width:36px;height:36px;border-radius:50%;">
+                        </td>
+                        <td th:text="${patient.fullName}">Patient Name</td>
+                        <td th:text="${patient.email}">Email</td>
+                        <td th:text="${patient.phoneNumber}">Phone</td>
+                        <td th:text="${patient.dateOfBirth}">YYYY-MM-DD</td>
+                        <td th:text="${patient.gender}">Gender</td>
+                        <td th:text="${patient.address}">Address</td>
+                        <td th:text="${patient.familyRelationship}">Relationship</td>
+                        <td th:text="${patient.bloodType}">Blood Type</td>
+                        <td>
+                            <button class="action-btn edit" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button class="action-btn delete" title="Delete"><i
+                                    class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(patients)}">
+                        <td colspan="11" style="text-align:center;color:#aaa;">No patient found.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div class="pagination-wrap">
+                <button class="pagination-btn prev" th:disabled="${pageIndex == 0}"
+                        th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + (${pageIndex} - 1)}">Previous&nbsp;&nbsp;+
+                </button>
+                <ul class="pagination">
+                    <li class="page-item" th:if="${pageIndex > 1}">
+                        <a class="page-link" th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=0'}">1</a>
+                    </li>
+                    <li class="page-item" th:if="${pageIndex > 2}">
+                        <span class="page-link ellipsis">...</span>
+                    </li>
+                    <li class="page-item"
+                        th:classappend="${i} == ${pageIndex} ? 'active'"
+                        th:each="i : ${#numbers.sequence((pageIndex > 0 ? pageIndex - 1 : 0), (pageIndex + 1 < totalPages ? pageIndex + 1 : totalPages - 1))}">
+                        <a class="page-link" th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + ${i}}"
+                           th:text="${i + 1}"></a>
+                    </li>
+                    <li class="page-item" th:if="${pageIndex < totalPages - 2}">
+                        <span class="page-link ellipsis">...</span>
+                    </li>
+                    <li class="page-item" th:if="${pageIndex < totalPages - 1}">
+                        <a class="page-link"
+                           th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + (${totalPages} - 1)}"
+                           th:text="${totalPages}"></a>
+                    </li>
+                </ul>
+                <button class="pagination-btn next" th:disabled="${pageIndex == totalPages - 1}"
+                        th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + (${pageIndex} + 1)}">Next&nbsp;&nbsp;+
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- JS -->
+<script src="./assets/js/core/libs.min.js" th:src="@{/frontend/assets/js/core/libs.min.js}"></script>
+<script src="./assets/js/kivicare.min.js?v=1.4.1" th:src="@{/frontend/assets/js/kivicare.min.js?v=1.4.1}"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
+</body>
+
+</html>
