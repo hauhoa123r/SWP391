@@ -56,11 +56,10 @@ public class CouponEntity {
     private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
     @OneToMany
     private Set<UserCouponEntity> userCouponEntities = new LinkedHashSet<>();
-
+}
 /*
  TODO [Reverse Engineering] create field to map the 'discount_type' column
  Available actions: Define target Java type | Uncomment as is | Remove column mapping
     @Column(name = "discount_type", columnDefinition = "enum not null")
     private Object discountType;
 */
-}

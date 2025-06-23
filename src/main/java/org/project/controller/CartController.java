@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/cart")
 public class CartController {
 
-	private static final String SESSION_USER_ID = "userId";
+	//private static final String SESSION_USER_ID = "userId";
 
 	private final CartService cartService;
 	public CartController(CartService cartService) {
@@ -50,10 +50,12 @@ public class CartController {
 
 	
 	//hard delete from cart
-	@PostMapping("/remove/{productId}")
-	public String removeItem(@PathVariable Long productId) {
-	    Long userId = 2l; // hard-coding the id, will need to change once login is completed
+	@PostMapping("/delete")
+	public String deleteCartItem(@RequestParam("productId") Long productId) {
+	    Long userId=2l;
 	    cartService.removeItem(userId, productId);
+	    
+	    // Redirect back to cart
 	    return "redirect:/cart";
 	}
 	//change item quantity by pressing + -
@@ -102,8 +104,13 @@ public class CartController {
 	
 	
 	//TODO: need to finish (help)
-	
 	//apply coupons (check if existed)
+	@PostMapping("/apply-coupon")
+	public String applyCoupon(@RequestParam("cartId") Long cartId,
+							  @RequestParam("") String couponCode) {
+		
+		return "redirect:/cart";
+	}
 	
 	
 	// add product into cart
