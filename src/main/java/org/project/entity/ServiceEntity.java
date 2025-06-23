@@ -22,7 +22,7 @@ public class ServiceEntity {
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne
     @JoinColumn(name = "service_id", nullable = false)
     private ProductEntity productEntity;
 

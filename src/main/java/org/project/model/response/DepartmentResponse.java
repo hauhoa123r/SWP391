@@ -12,4 +12,7 @@ import lombok.Setter;
 public class DepartmentResponse {
     private Long id;
     private String name;
+    private String slogan;
+    private String description;
+    private String bannerUrl;
 }

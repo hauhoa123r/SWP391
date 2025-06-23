@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Entity
 @Table(name = "medical_profiles")
 @Getter
@@ -18,7 +16,7 @@ import java.util.Set;
 public class MedicalProfileEntity {
     @Column(name = "medical_profile_id")
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

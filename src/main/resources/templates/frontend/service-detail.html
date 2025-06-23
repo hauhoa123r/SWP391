@@ -67,7 +67,7 @@
 <main class="main-content">
     <div class="position-relative">
         <!--Nav Start-->
-        <div th:replace="/frontend/fragments/header.html"></div>
+        <div th:replace="~{/frontend/fragments/header :: header}"></div>
         <div class="offcanvas offcanvas-end " id="right-panel-toggle" tabindex="-1">
             <div class="offcanvas-header border-bottom px-5 mb-5 py-4">
                 <a href="./index.html" th:href="@{/frontend/index.html}">
@@ -226,23 +226,30 @@
                         <div class="position-relative">
                             <img alt="image"
                                  class="img-fluid w-100"
-                                 src="./assets/images/service/relationship-issue.webp" th:src="${service.imageUrl}">
+                                 src="./assets/images/service/relationship-issue.webp"
+                                 th:src="${service.productEntity.imageUrl}">
                         </div>
                         <div class="iq-title-box mt-5 mb-0">
-                            <span class="iq-subtitle text-uppercase" th:text="${service.name}">REATIONSHIP ISSUE</span>
+                            <span class="iq-subtitle text-uppercase" th:text="${service.productEntity.name}">REATIONSHIP ISSUE</span>
                             <h3 class="iq-title iq-heading-title mb-2">
                                 <span class="right-text text-capitalize"
-                                      th:text="${service.serviceEntityDepartmentEntityName}">Psychiatrist</span>
+                                      th:text="${service.departmentEntity.name}">Psychiatrist</span>
                                 <span class="left-text text-capitalize fw-light">Treatments</span>
                             </h3>
-                            <p class="iq-title-desc text-body" th:text="${service.description}">
+                            <div class="d-flex align-items-center mb-3">
+                                <h4 class="text-primary mb-0 me-2">Price:</h4>
+                                <h4 class="mb-0"
+                                    th:text="${'$ ' + (#numbers.formatDecimal(service.productEntity.price, 1, 'COMMA', 2, 'POINT'))}">
+                                    100,000 VND</h4>
+                            </div>
+                            <p class="iq-title-desc text-body" th:text="${service.productEntity.description}">
                                 A cardiologist is a doctor that deals with the cardiovascular system. This means he or
                                 she treats any abnormality in our blood vessels and heart. This can include heart
                                 disease or condition which requires diagnosis and treatment.
                             </p>
                         </div>
                         <div class="row mt-5 align-items-center">
-                            <div class="col-md-6" th:each="feature : ${service.serviceEntityServiceFeatureEntities}">
+                            <div class="col-md-6" th:each="feature : ${service.serviceFeatureEntities}">
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="text-primary"><i class="fas fa-check"></i></span>
                                     <span th:text="${feature.name}">Treats minor illnesses</span>
@@ -253,15 +260,24 @@
                             <div class="row mt-5 align-items-center">
                                 <div class="col-md-5 text-center">
                                     <div class="iq-counter iq-counter-no-icon bg-primary-subtle p-3">
-                                        <div class="counter-content"
-                                             th:with="starRating=4.4, wholeStar=4, hasHalfStar=true">
-                                            <h3 class="counter mt-0 text-primary fw-500" th:text="${starRating}">
-                                                5</h3>
-                                            <i class="fas fa-star text-warning"
-                                               th:each="i : ${#numbers.sequence(1, wholeStar)}"></i>
-                                            <i class="fas fa-star-half text-warning" th:if="${hasHalfStar}"></i>
-                                            <h4 class="counter-title mt-3 fw-normal">1000+</h4>
-                                            <p class="counter-text m-0 text-body">Reviews</p>
+                                        <div class="service-rating">
+                                            <div class="counter-content">
+                                                <h3 class="counter mt-0 text-primary fw-500"
+                                                    th:text="${#numbers.formatDecimal(service.productEntity.averageRating, 1, 1, 'POINT')}">
+                                                    5</h3>
+                                                <span th:classappend="${service.productEntity.reviewCount > 0 ? 'text-warning' : 'text-primary'}"
+                                                      th:each="i : ${#numbers.sequence(1, 5)}">
+                                                    <i class="fas fa-star"
+                                                       th:if="${service.productEntity.averageRating - i > -0.5}"></i>
+                                                    <i class="fas fa-star-half-alt"
+                                                       th:if="${i - service.productEntity.averageRating >= 0.5 && i - service.productEntity.averageRating < 1}"></i>
+                                                    <i class="far fa-star"
+                                                       th:if="${i - service.productEntity.averageRating >= 1}"></i>
+                                                </span>
+                                                <h4 class="counter-title mt-3 fw-normal"
+                                                    th:text="${service.productEntity.reviewCount}">1000+</h4>
+                                                <p class="counter-text m-0 text-body">Reviews</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -271,7 +287,7 @@
                                             <table class="table table-bordered mb-0">
                                                 <tbody>
                                                 <tr class="text-body"
-                                                    th:each="additionalInfo : ${service.getProductAdditionalInfoEntities()}">
+                                                    th:each="additionalInfo : ${service.productEntity.getProductAdditionalInfoEntities()}">
                                                     <th class="text-dark" th:text="${additionalInfo.name}">Color</th>
                                                     <td th:text="${additionalInfo.value}">Blue, Green, Red</td>
                                                 </tr>
@@ -617,7 +633,7 @@
 </main>
 <!-- Wrapper End -->
 <!-- Footer start -->
-<div th:replace="/frontend/fragments/footer.html"></div>
+<div th:replace="~{/frontend/fragments/footer :: footer}"></div>
 <!-- footer end -->
 
 <!-- setting -->

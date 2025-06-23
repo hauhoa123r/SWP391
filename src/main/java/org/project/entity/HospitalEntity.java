@@ -47,7 +47,6 @@ public class HospitalEntity {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-
     @OneToMany
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
 

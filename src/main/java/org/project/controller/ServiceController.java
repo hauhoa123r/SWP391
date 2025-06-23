@@ -1,7 +1,7 @@
 package org.project.controller;
 
-import org.project.model.response.ProductRespsonse;
-import org.project.service.ProductService;
+import org.project.model.response.ServiceResponse;
+import org.project.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -16,32 +16,26 @@ public class ServiceController {
 
     private final int PAGE_SIZE = 9;
 
-    private ProductService productService;
+    private ServiceService serviceService;
 
     @Autowired
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
+    public void setServiceService(ServiceService serviceService) {
+        this.serviceService = serviceService;
     }
 
     @GetMapping("/page/{pageIndex}")
     public String service(@PathVariable int pageIndex, Model model) {
-        Page<ProductRespsonse> productRespsonsePage = productService.getAllServicesByPage(pageIndex, PAGE_SIZE);
-        if (pageIndex < 0 || pageIndex >= productRespsonsePage.getTotalPages()) {
-            return "frontend/404";
-        }
+        Page<ServiceResponse> productRespsonsePage = serviceService.getServices(pageIndex, PAGE_SIZE);
         model.addAttribute("services", productRespsonsePage.getContent());
         model.addAttribute("currentPage", pageIndex);
         model.addAttribute("totalPages", productRespsonsePage.getTotalPages());
-        return "frontend/service";
+        return "/frontend/service";
     }
 
-    @GetMapping("/detail/{productId}")
-    public String serviceDetail(@PathVariable Long productId, Model model) {
-        if (!productService.isServiceExist(productId)) {
-            return "frontend/404";
-        }
-        ProductRespsonse productRespsonse = productService.getServiceByProductId(productId);
-        model.addAttribute("service", productRespsonse);
-        return "frontend/service-detail";
+    @GetMapping("/detail/{id}")
+    public String serviceDetail(@PathVariable Long id, Model model) {
+        ServiceResponse productResponse = serviceService.getService(id);
+        model.addAttribute("service", productResponse);
+        return "/frontend/service-detail";
     }
 }

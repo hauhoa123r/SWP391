@@ -1,19 +1,19 @@
 package org.project.service.impl;
 
 import org.modelmapper.ModelMapper;
+import org.project.converter.PatientConverter;
 import org.project.entity.PatientEntity;
 import org.project.entity.UserEntity;
 import org.project.enums.BloodType;
 import org.project.enums.FamilyRelationship;
 import org.project.enums.Gender;
-import org.project.enums.converter.BloodTypeConverter;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.PatientDTO;
 import org.project.model.response.PatientResponse;
 import org.project.repository.PatientRepository;
 import org.project.repository.UserRepository;
 import org.project.service.PatientService;
-import org.project.converter.PatientConverter;
+import org.project.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,32 +21,64 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Date;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class PatientServiceImpl implements PatientService {
 
-    private final ModelMapper modelMapper;
-    private final PatientRepository patientRepository;
-    private final PatientConverter patientConverter;
-    private final UserRepository userRepository;
-    private final BloodTypeConverter bloodTypeConverter = new BloodTypeConverter();
+    //    private final ModelMapper modelMapper;
+    private ModelMapper modelMapper;
+    private UserRepository userRepository;
+    private PatientRepository patientRepository;
+    private PatientConverter patientConverter;
+    private PageUtils<PatientEntity> pageUtils;
+
     @Autowired
-    public PatientServiceImpl(PatientRepository patientRepository, PatientConverter patientConverter, UserRepository userRepository, ModelMapper modelMapper) {
+    public void setPatientRepository(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
-        this.patientConverter = patientConverter;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
+
+    @Autowired
+    public void setPatientConverter(PatientConverter patientConverter) {
+        this.patientConverter = patientConverter;
+    }
+
+    @Autowired
+    public void setPageUtils(PageUtils<PatientEntity> pageUtils) {
+        this.pageUtils = pageUtils;
+    }
+
+    @Override
+    public Page<PatientResponse> getPatientsByUser(Long userId, int index, int size) {
+        Pageable pageable = pageUtils.getPageable(index, size);
+        Page<PatientEntity> patientEntityPage = patientRepository.findAllByUserEntityId(userId, pageable);
+        pageUtils.validatePage(patientEntityPage, PatientEntity.class);
+        return patientEntityPage.map(patientConverter::toResponse);
+    }
+
+    @Override
+    public Page<PatientResponse> getPatientsByUserAndKeyword(Long userId, String keyword, int index, int size) {
+        Pageable pageable = pageUtils.getPageable(index, size);
+        Page<PatientEntity> patientEntityPage = patientRepository.findAllByUserEntityIdAndFullNameContainingIgnoreCase(userId, keyword, pageable);
+        pageUtils.validatePage(patientEntityPage, PatientEntity.class);
+        return patientEntityPage.map(patientConverter::toResponse);
+    }
+
+
     @Transactional
     @Override
     public Long createPatient(PatientDTO patientDTO) {
@@ -54,12 +86,12 @@ public class PatientServiceImpl implements PatientService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid patient DTO"));
 
         patientEntity.setBirthdate(Date.valueOf(patientDTO.getDateOfBirth()));
-        patientEntity.setRelationship(FamilyRelationship.valueOf(patientDTO.getFamilyRelationship().toUpperCase()));
+        patientEntity.setFamilyRelationship(FamilyRelationship.valueOf(patientDTO.getFamilyRelationship().toUpperCase()));
         patientEntity.setGender(Gender.valueOf(patientDTO.getGender().toUpperCase()));
         if (patientDTO.getBloodType() != null) {
             patientEntity.setBloodType(BloodType.valueOf(patientDTO.getBloodType().toUpperCase()));
         }
-        if(patientDTO.getAvatarBase64() != null && !patientDTO.getAvatarBase64().isEmpty()){
+        if (patientDTO.getAvatarBase64() != null && !patientDTO.getAvatarBase64().isEmpty()) {
             patientEntity.setAvatarUrl(patientDTO.getAvatarBase64());
         }
 
@@ -70,7 +102,7 @@ public class PatientServiceImpl implements PatientService {
 
         userEntity.addPatientEntity(patientEntity);
 
-        PatientEntity savedEntity =  patientRepository.save(patientEntity);
+        PatientEntity savedEntity = patientRepository.save(patientEntity);
         Long patientId = savedEntity.getId();
         return patientId;
     }
@@ -88,9 +120,9 @@ public class PatientServiceImpl implements PatientService {
 
                     // Xử lý ngày tháng an toàn
                     if (entity.getBirthdate() != null) {
-                        response.setDateOfBirth(entity.getBirthdate().toString());
+                        response.setBirthdate(entity.getBirthdate().toString());
                     } else {
-                        response.setDateOfBirth("N/A");
+                        response.setBirthdate("N/A");
                     }
 
                     return response;
@@ -111,9 +143,9 @@ public class PatientServiceImpl implements PatientService {
 
                     // Xử lý ngày tháng an toàn
                     if (entity.getBirthdate() != null) {
-                        response.setDateOfBirth(entity.getBirthdate().toString());
+                        response.setBirthdate(entity.getBirthdate().toString());
                     } else {
-                        response.setDateOfBirth("N/A");
+                        response.setBirthdate("N/A");
                     }
 
                     return response;
@@ -137,10 +169,10 @@ public class PatientServiceImpl implements PatientService {
         PatientEntity patientEntity = patientRepository.findById(patientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
         PatientResponse response = patientConverter.toConvertResponse(patientEntity);
-        if(patientEntity.getBirthdate() != null) {
-            response.setDateOfBirth(patientEntity.getBirthdate().toString());
+        if (patientEntity.getBirthdate() != null) {
+            response.setBirthdate(patientEntity.getBirthdate().toString());
         } else {
-            response.setDateOfBirth("N/A");
+            response.setBirthdate("N/A");
         }
         return response;
     }
@@ -189,43 +221,4 @@ public class PatientServiceImpl implements PatientService {
     public Long getPatientIdByUserId(Long userId) {
         return patientRepository.findFirstByUserEntity_IdOrderByIdDesc(userId);
     }
-//
-//    public String saveImg(String base64) throws IOException {
-//        // Remove any data prefix (if exists)
-//        if (base64.contains(",")) {
-//            base64 = base64.substring(base64.indexOf(",") + 1);
-//        }
-//        // Decode base64 string to byte array
-//        byte[] imageBytes = Base64.getDecoder().decode(base64.getBytes(StandardCharsets.UTF_8));
-//
-//        // Generate unique file name with PNG extension
-//        String fileName = UUID.randomUUID().toString() + ".png";
-//
-//        // Define the relative folder path (relative to the project root)
-//        // Project folder: src/main/resources/templates/frontend/assets/images/patient-avatar
-//        // We return the relative path: assets/images/patient-avatar/{fileName}
-//        Path folderPath = Paths.get("src", "main", "resources", "templates", "frontend", "assets", "images", "patient-avatar");
-//
-//        // Create directories if they do not exist
-//        if (!Files.exists(folderPath)) {
-//            Files.createDirectories(folderPath);
-//        }
-//
-//        // Save file into the folder
-//        Path filePath = folderPath.resolve(fileName);
-//        Files.write(filePath, imageBytes);
-//
-//        // Convert stored absolute folder to relative web path
-//        // Returning: assets/images/patient-avatar/{fileName}
-//        String relativePath = "assets/images/patient-avatar/" + fileName;
-//        return relativePath;
-//    }
-//
-//    public String convertUrlToBase64(String urlStr) throws IOException {
-//        URL url = new URL(urlStr);
-//        try (InputStream is = url.openStream()) {
-//            byte[] imageBytes = is.readAllBytes();
-//            return Base64.getEncoder().encodeToString(imageBytes);
-//        }
-//    }
 }
