@@ -2,17 +2,14 @@ package org.project.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.project.entity.CartItemEntity;
 import org.project.entity.CartItemEntityId;
-import org.project.entity.ProductEntity;
-import org.project.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface CartService {
-	
-	
 
 	List<CartItemEntity> getCart(Long userId);
 
@@ -20,10 +17,11 @@ public interface CartService {
 
 	void removeItem(Long userId, Long productId);
 
-	void updateQuantity(Long userId, Long productId, Integer quantity);
+	CartItemEntity getItemById(CartItemEntityId id);
 
-	void applyCoupon(Long userId, String couponCode);
+	void updateItem(CartItemEntity item);
 
 	BigDecimal calculateTotal(Long userId);
 
+	void syncCart(Long userId, List<CartItemEntity> sessionCart);
 }

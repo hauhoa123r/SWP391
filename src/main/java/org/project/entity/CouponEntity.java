@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.project.enums.DiscountType;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -34,6 +35,10 @@ public class CouponEntity {
     @Lob
     @Column(name = "description")
     private String description;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "discount_type")
+    private DiscountType discountType;
 
     @NotNull
     @Column(name = "value", nullable = false, precision = 10, scale = 2)

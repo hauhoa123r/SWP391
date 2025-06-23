@@ -13,13 +13,16 @@
 <meta name="google_font_api"
 	content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
 <!-- Favicon -->
-<link rel="shortcut icon" href="frontend-assets/assets/images/favicon.ico" />
+<link rel="shortcut icon"
+	href="frontend-assets/assets/images/favicon.ico" />
 
 <!-- Library / Plugin Css Build -->
-<link rel="stylesheet" href="frontend-assets/assets/css/core/libs.min.css" />
+<link rel="stylesheet"
+	href="frontend-assets/assets/css/core/libs.min.css" />
 
 <!-- flaticon css -->
-<link rel="stylesheet" href="frontend-assets/assets/vendor/flaticon/css/flaticon.css" />
+<link rel="stylesheet"
+	href="frontend-assets/assets/vendor/flaticon/css/flaticon.css" />
 
 <!-- font-awesome css -->
 <link rel="stylesheet"
@@ -33,16 +36,20 @@
 
 
 <!-- Kivicare Design System Css -->
-<link rel="stylesheet" href="frontend-assets/assets/css/kivicare.min.css?v=1.4.1" />
+<link rel="stylesheet"
+	href="frontend-assets/assets/css/kivicare.min.css?v=1.4.1" />
 
 <!-- Custom Css -->
-<link rel="stylesheet" href="frontend-assets/assets/css/custom.min.css?v=1.4.1" />
+<link rel="stylesheet"
+	href="frontend-assets/assets/css/custom.min.css?v=1.4.1" />
 
 <!-- Rtl Css -->
-<link rel="stylesheet" href="frontend-assets/assets/css/rtl.min.css?v=1.4.1" />
+<link rel="stylesheet"
+	href="frontend-assets/assets/css/rtl.min.css?v=1.4.1" />
 
 <!-- Customizer Css -->
-<link rel="stylesheet" href="frontend-assets/assets/css/customizer.min.css?v=1.4.1" />
+<link rel="stylesheet"
+	href="frontend-assets/assets/css/customizer.min.css?v=1.4.1" />
 
 <!-- Google Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -153,8 +160,7 @@
 									</button>
 								</div>
 								<!--Logo -->
-								<a th:href="@{/}" class="navbar-brand m-0">
-								<span
+								<a th:href="@{/}" class="navbar-brand m-0"> <span
 									class="logo-normal"> <img
 										src="frontend-assets/assets/images/logo/logo.png" alt="logo"
 										class="img-fluid" loading="lazy">
@@ -168,8 +174,8 @@
 											<div class="navbar-brand ms-3">
 												<a th:href="@{/}" class="navbar-brand m-0"> <span
 													class="logo-normal"> <img
-														src="frontend-assets/assets/images/logo/logo.png" alt="logo"
-														class="img-fluid" loading="lazy">
+														src="frontend-assets/assets/images/logo/logo.png"
+														alt="logo" class="img-fluid" loading="lazy">
 												</span>
 												</a>
 											</div>
@@ -591,11 +597,11 @@
 											</ul></li>
 
 										<!-- TODO -->
-										<li class="nav-item dropdown">
-										<a href="#" class="nav-link" id="cart-drop" data-bs-toggle="dropdown">
-												<div class="btn-icon btn-sm rounded-pill btn-action position-relative">
-													<span class="btn-inner">
-													<svg class="cart-icons"
+										<li class="nav-item dropdown"><a href="#"
+											class="nav-link" id="cart-drop" data-bs-toggle="dropdown">
+												<div
+													class="btn-icon btn-sm rounded-pill btn-action position-relative">
+													<span class="btn-inner"> <svg class="cart-icons"
 															xmlns="http://www.w3.org/2000/svg" width="18" height="17"
 															viewBox="0 0 18 17" fill="none">
                                               <path fill-rule="evenodd"
@@ -619,90 +625,30 @@
 																d="M14.6877 16.784C14.0927 16.784 13.6094 16.2998 13.6094 15.7048C13.6094 15.1098 14.0927 14.6265 14.6877 14.6265C15.2835 14.6265 15.7677 15.1098 15.7677 15.7048C15.7677 16.2998 15.2835 16.784 14.6877 16.784"
 																fill="currentColor"></path>
                                            </svg>
-													</span> 
+													</span>
 													<!-- need to change into number of item in cart -->
-													<span class=" badge-notification">{}</span>
+													<span class=" badge-notification" th:text="${size}"></span>
 												</div>
 										</a>
 											<div class="p-3 sub-drop dropdown-menu dropdown-menu-end">
 												<div class="m-0 shadow-none card">
-													<div class="card-body p-0 max-17 scroll-thin">
-													<!-- Add for each item in cart, show item -->
-														<!-- <div class="iq-sub-card" data-item="list">
-															<div class="d-flex justify-content-between">
-																<div class="d-flex align-items-center">
-																	<img class="avatar-40 rounded"
-																		src="frontend-assets/assets/images/shop/product-1.webp" alt=""
-																		loading="lazy" />
-																	<div class="ms-3 flex-grow-1">
-																		<h6 class="mb-0 ">Electric Toothbrush</h6>
-																		<div
-																			class="d-flex justify-content-between align-items-center">
-																			<p class="mb-0">
-																				<span>1</span> * <span>$123.00</span>
-																			</p>
-																		</div>
-																	</div>
-																</div>
-																<div class="text-primary">
-																	<i class="far fa-times-circle delete-btn"></i>
-																</div>
-															</div>
-														</div> -->
+												<!-- start looping in the cart-shortcut -->
+													<div class="card-body p-0 max-17 scroll-thin"
+														th:each="cartItem :${cartItems}">
 														<div class="iq-sub-card" data-item="list">
 															<div class="d-flex justify-content-between">
 																<div class="d-flex align-items-center">
 																	<img class="avatar-40 rounded"
-																		src="frontend-assets/assets/images/shop/product-2.webp" alt=""
-																		loading="lazy" />
+																		src="frontend-assets/assets/images/shop/product-2.webp"
+																		alt="" loading="lazy" />
 																	<div class="ms-3 flex-grow-1">
-																		<h6 class="mb-0 ">Medical Box</h6>
+																		<h6 class="mb-0 "
+																			th:text="${cartItem.productEntity.name}"></h6>
 																		<div
 																			class="d-flex justify-content-between align-items-center">
 																			<p class="mb-0">
-																				<span>1</span> * <span>$92.00</span>
-																			</p>
-																		</div>
-																	</div>
-																</div>
-																<div class="text-primary">
-																	<i class="far fa-times-circle delete-btn"></i>
-																</div>
-															</div>
-														</div>
-														<div class="iq-sub-card" data-item="list">
-															<div class="d-flex justify-content-between">
-																<div class="d-flex align-items-center">
-																	<img class="avatar-40 rounded"
-																		src="frontend-assets/assets/images/shop/product-3.webp" alt=""
-																		loading="lazy" />
-																	<div class="ms-3 flex-grow-1">
-																		<h6 class="mb-0 ">Hand Sanitizer Bottle</h6>
-																		<div
-																			class="d-flex justify-content-between align-items-center">
-																			<p class="mb-0">
-																				<span>1</span> * <span>$90.00</span>
-																			</p>
-																		</div>
-																	</div>
-																</div>
-																<div class="text-primary">
-																	<i class="far fa-times-circle delete-btn"></i>
-																</div>
-															</div>
-														</div>
-														<div class="iq-sub-card" data-item="list">
-															<div class="d-flex justify-content-between">
-																<div class="d-flex align-items-center">
-																	<img class="avatar-40 rounded"
-																		src="frontend-assets/assets/images/shop/product-4.webp" alt=""
-																		loading="lazy" />
-																	<div class="ms-3 flex-grow-1">
-																		<h6 class="mb-0 ">Wheel Chair</h6>
-																		<div
-																			class="d-flex justify-content-between align-items-center">
-																			<p class="mb-0">
-																				<span>1</span> * <span>$89.00</span>
+																				<span th:text="${cartItem.quantity}"></span> * <span
+																					th:text="${cartItem.productEntity.price}"></span>
 																			</p>
 																		</div>
 																	</div>
@@ -714,20 +660,22 @@
 														</div>
 													</div>
 													<div class="card-footer pt-3 px-0 pb-0 text-center">
-													<!-- update the cart total money -->
+														<!-- update the cart total money -->
 														<div
 															class="d-flex align-items-center justify-content-between ">
-															<strong>Subtotal:</strong> <span>$64.00</span>
+															<strong>Subtotal:</strong> <span th:text="'$'+${total}">$</span>
 														</div>
 														<div
 															class="d-flex align-items-center justify-content-between my-3 pt-3 border-top">
 															<div class="cart-menu">
 																<div class="iq-btn-container">
 																	<a class="iq-button text-capitalize" href="/cart">
-																		<span class="iq-btn-text-holder position-relative">View Cart</span>
-																		<span class="iq-btn-icon-holder">
-																		<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 8 8" fill="none">
-                                                                      			<path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+																		<span class="iq-btn-text-holder position-relative">View
+																			Cart</span> <span class="iq-btn-icon-holder"> <svg
+																				xmlns="http://www.w3.org/2000/svg" width="10"
+																				height="10" viewBox="0 0 8 8" fill="none">
+                                                                      			<path
+																					d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
 																					fill="currentColor"></path>
                                                                   		</svg>
 																	</span>
@@ -736,9 +684,8 @@
 															</div>
 															<div class="button-primary">
 																<div class="iq-btn-container">
-																	<a class="iq-button text-capitalize"
-																		href="/checkout"> <span
-																		class="iq-btn-text-holder position-relative">Checkout</span>
+																	<a class="iq-button text-capitalize" href="/checkout">
+																		<span class="iq-btn-text-holder position-relative">Checkout</span>
 																		<span class="iq-btn-icon-holder"> <svg
 																				xmlns="http://www.w3.org/2000/svg" width="10"
 																				height="10" viewBox="0 0 8 8" fill="none">
@@ -844,8 +791,8 @@
 				<div class="offcanvas-header border-bottom px-5 mb-5 py-4">
 					<a th:href="@{/}" class="navbar-brand m-0"> <span
 						class="logo-normal"> <img
-							src="frontend-assets/assets/images/logo/logo.png" alt="logo" class="img-fluid"
-							loading="lazy">
+							src="frontend-assets/assets/images/logo/logo.png" alt="logo"
+							class="img-fluid" loading="lazy">
 					</span>
 					</a>
 					<button type="button" class="btn-close text-reset"
@@ -957,7 +904,7 @@
 			<!--bread-crumb-->
 
 		</div>
-		<div class="cart-page  section-padding">
+		<div class="cart-page section-padding">
 			<div class="container">
 				<div class="main-cart mb-3 mb-md-5 pb-0 pb-md-5">
 					<ul
@@ -995,7 +942,11 @@
 								3 </span> <span class="cart-page-link "> Order Summary </span></li>
 					</ul>
 				</div>
-				<div class="table-responsive">
+				<!--  check if cart is empty -->
+				<div th:if="${#lists.isEmpty(cartItems)}">
+    				<p class="text-center text-muted fs-5">No item in cart.</p>
+				</div>
+				<div th:unless="${#lists.isEmpty(cartItems)}" class="table-responsive">
 					<table class="table cart-table">
 						<thead class="border-bottom">
 							<tr>
@@ -1007,137 +958,81 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr data-item="list">
+							<!-- TODO -->
+							<tr data-item="list" th:each="cartItem : ${cartItems}">
+							<form th:action="@{/cart/remove/{id}(id=${cartItem.productEntity.id})}" method="post">
 								<td>
 									<button
 										class="btn btn-icon btn-danger btn-sm delete-btn bg-transparent text-primary border-0">
 										<span class="btn-inner"> <i class="fas fa-times"></i>
 										</span>
 									</button>
+
 								</td>
+							</form>
 								<td>
 									<div class="product-thumbnail">
 										<a class="d-block mb-2" href=""> <img class="avatar-80"
-											src="frontend-assets/assets/images/shop/product-1.webp" alt="">
-										</a> <span class="mt-2 text-primary">Electric Toothbrush</span>
+											src="frontend-assets/assets/images/shop/product-1.webp"
+											alt="">
+										</a> <span class="mt-2 text-primary"
+											th:text="${cartItem.productEntity.name}"></span>
 									</div>
 								</td>
-								<td><span class="fs-5 fw-500">$123</span></td>
+								<td><span class="fs-5 fw-500"
+									th:text="'$'+${cartItem.productEntity.price}"></span></td>
 								<td>
+								
 									<div class="btn-group iq-qty-btn" data-qty="btn" role="group">
-										<button type="button"
-											class="btn btn-sm btn-outline-light iq-quantity-minus text-dark">
+									<!-- minus button -->
+									<form th:action="@{/cart/update}" method="post">
+    								<input type="hidden" name="cartId" th:value="${cartItem.id.cartItemId}" />
+    								<input type="hidden" name="userId" th:value="${cartItem.userEntity.id}" />
+								
+										<button type="submit" name="action" value="decrement" th:disabled="${cartItem.quantity == 1}"
+											class="btn btn-sm btn-outline-light iq-quantity-minus text-dark"
+											>
 											<svg xmlns="http://www.w3.org/2000/svg" width="6" height="3"
 												viewBox="0 0 6 3" fill="none">
-                              <path
+                              						<path
 													d="M5.22727 0.886364H0.136364V2.13636H5.22727V0.886364Z"
 													fill="currentColor"></path>
-                           </svg>
+                           					</svg>
 										</button>
-										<input type="text"
+										</form>
+										
+										<!-- quantity number -->
+										<form th:action="@{/cart/update-quantity}" method="post">
+										    <input type="hidden" name="cartId" th:value="${cartItem.id.cartItemId}" />
+    										<input type="hidden" name="userId" th:value="${cartItem.userEntity.id}" />
+											<input type="text" name="quantity"
 											class="btn btn-sm btn-outline-light input-display"
 											data-qty="input" pattern="^(0|[1-9][0-9]*)$" minlength="1"
-											maxlength="2" value="2" title="Qty">
-										<button type="button"
-											class="btn btn-sm btn-outline-light iq-quantity-plus text-dark">
+											maxlength="3" th:value="${cartItem.quantity}" title="Qty">
+											
+										</form>
+											<!-- plus button -->
+											
+											<form th:action="@{/cart/update}" method="post">
+    								<input type="hidden" name="cartId" th:value="${cartItem.id.cartItemId}" />
+    								<input type="hidden" name="userId" th:value="${cartItem.userEntity.id}" />
+								
+										<button type="submit" name="action" value="increment"
+											class="btn btn-sm btn-outline-light iq-quantity-plus text-dark"
+											>
 											<svg xmlns="http://www.w3.org/2000/svg" width="9" height="8"
 												viewBox="0 0 9 8" fill="none">
-                              <path
+                              						<path
 													d="M3.63636 7.70455H4.90909V4.59091H8.02273V3.31818H4.90909V0.204545H3.63636V3.31818H0.522727V4.59091H3.63636V7.70455Z"
 													fill="currentColor"></path>
-                           </svg>
+                           					</svg>
 										</button>
+										</form>
 									</div>
+									<!-- subtotal -->
 								</td>
-								<td><span class="sub-total fs-5 fw-500">$123</span></td>
-							</tr>
-							<tr data-item="list">
-								<td>
-									<button
-										class="btn btn-icon btn-danger btn-sm delete-btn bg-transparent text-primary border-0">
-										<span class="btn-inner"> <i class="fas fa-times"></i>
-										</span>
-									</button>
-								</td>
-								<td>
-									<div class="product-thumbnail">
-										<a class="d-block mb-2" href=""> <img class="avatar-80"
-											src="frontend-assets/assets/images/shop/product-2.webp" alt="">
-										</a> <span class="mt-2 text-primary">Medical Box</span>
-									</div>
-								</td>
-								<td><span class="fs-5 fw-500">$92</span></td>
-								<td>
-									<div class="btn-group iq-qty-btn" data-qty="btn" role="group">
-										<button type="button"
-											class="btn btn-sm btn-outline-light iq-quantity-minus text-dark">
-											<svg xmlns="http://www.w3.org/2000/svg" width="6" height="3"
-												viewBox="0 0 6 3" fill="none">
-                              <path
-													d="M5.22727 0.886364H0.136364V2.13636H5.22727V0.886364Z"
-													fill="currentColor"></path>
-                           </svg>
-										</button>
-										<input type="text"
-											class="btn btn-sm btn-outline-light input-display"
-											data-qty="input" pattern="^(0|[1-9][0-9]*)$" minlength="1"
-											maxlength="2" value="2" title="Qty">
-										<button type="button"
-											class="btn btn-sm btn-outline-light iq-quantity-plus text-dark">
-											<svg xmlns="http://www.w3.org/2000/svg" width="9" height="8"
-												viewBox="0 0 9 8" fill="none">
-                              <path
-													d="M3.63636 7.70455H4.90909V4.59091H8.02273V3.31818H4.90909V0.204545H3.63636V3.31818H0.522727V4.59091H3.63636V7.70455Z"
-													fill="currentColor"></path>
-                           </svg>
-										</button>
-									</div>
-								</td>
-								<td><span class="sub-total fs-5 fw-500">$92</span></td>
-							</tr>
-							<tr data-item="list">
-								<td>
-									<button
-										class="btn btn-icon btn-danger btn-sm delete-btn bg-transparent text-primary border-0">
-										<span class="btn-inner"> <i class="fas fa-times"></i>
-										</span>
-									</button>
-								</td>
-								<td>
-									<div class="product-thumbnail">
-										<a class="d-block mb-2" href=""> <img class="avatar-80"
-											src="frontend-assets/assets/images/shop/product-3.webp" alt="">
-										</a> <span class="mt-2 text-primary">Hand Sanitizer Bottle</span>
-									</div>
-								</td>
-								<td><span class="fs-5 fw-500">$90</span></td>
-								<td>
-									<div class="btn-group iq-qty-btn" data-qty="btn" role="group">
-										<button type="button"
-											class="btn btn-sm btn-outline-light iq-quantity-minus text-dark">
-											<svg xmlns="http://www.w3.org/2000/svg" width="6" height="3"
-												viewBox="0 0 6 3" fill="none">
-                              <path
-													d="M5.22727 0.886364H0.136364V2.13636H5.22727V0.886364Z"
-													fill="currentColor"></path>
-                           </svg>
-										</button>
-										<input type="text"
-											class="btn btn-sm btn-outline-light input-display"
-											data-qty="input" pattern="^(0|[1-9][0-9]*)$" minlength="1"
-											maxlength="2" value="2" title="Qty">
-										<button type="button"
-											class="btn btn-sm btn-outline-light iq-quantity-plus text-dark">
-											<svg xmlns="http://www.w3.org/2000/svg" width="9" height="8"
-												viewBox="0 0 9 8" fill="none">
-                              <path
-													d="M3.63636 7.70455H4.90909V4.59091H8.02273V3.31818H4.90909V0.204545H3.63636V3.31818H0.522727V4.59091H3.63636V7.70455Z"
-													fill="currentColor"></path>
-                           </svg>
-										</button>
-									</div>
-								</td>
-								<td><span class="sub-total fs-5 fw-500">$90</span></td>
+								<td><span class="sub-total fs-5 fw-500"
+									th:text="'$'+${cartItem.productEntity.price} * ${cartItem.quantity}"></span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -1164,21 +1059,6 @@
 							</div>
 						</div>
 					</div>
-					<div class="button-primary">
-						<div class="iq-btn-container">
-							<a class="iq-button text-capitalize" href="./"> <span
-								class="iq-btn-text-holder position-relative">Update Cart</span>
-								<span class="iq-btn-icon-holder"> <svg
-										xmlns="http://www.w3.org/2000/svg" width="10" height="10"
-										viewBox="0 0 8 8" fill="none">
-                        <path
-											d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-											fill="currentColor"></path>
-                     </svg>
-							</span>
-							</a>
-						</div>
-					</div>
 				</div>
 				<div class="cart_totals p-5 bg-primary-subtle">
 					<h5 class="mb-3">Cart Totals</h5>
@@ -1187,21 +1067,21 @@
 							<tbody>
 								<tr class="cart-subtotal">
 									<th class="border-0"><span class="text-dark fw-normal">Subtotal</span></th>
-									<td class="border-0"><span class="fs-5 text-primary">$305</span>
-									</td>
+									<td class="border-0"><span class="fs-5 text-primary"
+										th:text="'$'+${total}"></span></td>
 								</tr>
 								<tr class="order-total">
 									<th class="border-0"><strong> <span
 											class="fs-5 text-dark"> Total </span>
 									</strong></th>
-									<td class="border-0"><span class="fs-5 text-primary">$305</span>
-									</td>
+									<td class="border-0"><span class="fs-5 text-primary"
+										th:text="'$'+${total}">$</span></td>
 								</tr>
 							</tbody>
 						</table>
 						<div class="button-primary">
 							<div class="iq-btn-container">
-								<a class="iq-button text-capitalize" href="./checkout.html">
+								<a class="iq-button text-capitalize" th:href="@{/checkout}">
 									<span class="iq-btn-text-holder position-relative">Proceed
 										to checkout</span> <span class="iq-btn-icon-holder"> <svg
 											xmlns="http://www.w3.org/2000/svg" width="10" height="10"
@@ -1515,7 +1395,9 @@
 	<script src="frontend-assets/assets/js/plugins/fslightbox.js" defer></script>
 
 	<!-- Sweet-alert Script -->
-	<script src="frontend-assets/assets/vendor/sweetalert2/dist/sweetalert2.min.js" async></script>
+	<script
+		src="frontend-assets/assets/vendor/sweetalert2/dist/sweetalert2.min.js"
+		async></script>
 	<script src="frontend-assets/assets/js/plugins/sweet-alert.js" defer></script>
 
 
@@ -1533,7 +1415,8 @@
 	<script src="frontend-assets/assets/js/core/external.min.js"></script>
 	<!-- Kivicare Script -->
 	<script src="frontend-assets/assets/js/kivicare.js?v=1.4.1" defer></script>
-	<script src="frontend-assets/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
+	<script src="frontend-assets/assets/js/kivicare-advance.js?v=1.4.1"
+		defer></script>
 	<!-- Kivicare Pages Script -->
 	<script src="frontend-assets/assets/js/slider.js" defer></script>
 	<script src="frontend-assets/assets/js/scroll-text.js" defer></script>
