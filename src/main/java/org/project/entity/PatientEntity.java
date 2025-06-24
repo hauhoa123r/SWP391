@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.BloodType;
+import org.project.enums.CheckActive;
 import org.project.enums.FamilyRelationship;
 import org.project.enums.Gender;
 import org.project.enums.converter.BloodTypeConverter;
@@ -47,7 +48,6 @@ public class PatientEntity {
     @Column(name = "full_name")
     private String fullName;
 
-    @Size(max = 255)
     @Column(name = "avatar_url")
     private String avatarUrl;
 
@@ -58,6 +58,11 @@ public class PatientEntity {
     @NotNull
     @Column(name = "birthdate")
     private Date birthdate;
+
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'ACTIVE'")
+    @Column(name = "is_active", columnDefinition = "enum not null")
+    private CheckActive checkActive;
 
     @OneToMany(mappedBy = "patientEntity")
     private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();

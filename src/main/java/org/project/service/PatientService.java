@@ -17,8 +17,6 @@ public interface PatientService {
 
     List<PatientResponse> getAllPatientsByUserId(Long userId);
 
-    Page<PatientResponse> getAllPatientsByUserIdForPage(Long userId, int page, int size);
-
     PatientResponse getPatientById(Long patientId);
 
     void updatePatient(Long patientId, PatientDTO patientDTO);
@@ -28,4 +26,8 @@ public interface PatientService {
     List<String> getAllRelationships(Long userId);
 
     Long getPatientIdByUserId(Long userId);
+
+    String toConvertAvatarUrl(String avatarBase64);
+
+    String toConvertFileToBase64(String avatarUrl);
 }

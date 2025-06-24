@@ -15,21 +15,34 @@ import org.project.repository.UserRepository;
 import org.project.service.PatientService;
 import org.project.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class PatientServiceImpl implements PatientService {
 
+private static final String AVATAR_DIR_RELATIVE =
+        Paths.get("src", "main", "resources",
+                "templates", "frontend", "assets",
+                "images", "patientAvatar")
+                .toString();
     //    private final ModelMapper modelMapper;
     private ModelMapper modelMapper;
     private UserRepository userRepository;
@@ -78,7 +91,6 @@ public class PatientServiceImpl implements PatientService {
         return patientEntityPage.map(patientConverter::toResponse);
     }
 
-
     @Transactional
     @Override
     public Long createPatient(PatientDTO patientDTO) {
@@ -92,7 +104,7 @@ public class PatientServiceImpl implements PatientService {
             patientEntity.setBloodType(BloodType.valueOf(patientDTO.getBloodType().toUpperCase()));
         }
         if (patientDTO.getAvatarBase64() != null && !patientDTO.getAvatarBase64().isEmpty()) {
-            patientEntity.setAvatarUrl(patientDTO.getAvatarBase64());
+            patientEntity.setAvatarUrl(toConvertAvatarUrl(patientDTO.getAvatarBase64()));
         }
 
         UserEntity userEntity = userRepository.findById(patientDTO.getUserId())
@@ -114,20 +126,19 @@ public class PatientServiceImpl implements PatientService {
             throw new ResourceNotFoundException("No patients found");
         }
 
-        return patientEntities.stream()
-                .map(entity -> {
-                    PatientResponse response = patientConverter.toConvertResponse(entity);
-
-                    // Xử lý ngày tháng an toàn
-                    if (entity.getBirthdate() != null) {
-                        response.setBirthdate(entity.getBirthdate().toString());
-                    } else {
-                        response.setBirthdate("N/A");
-                    }
-
-                    return response;
-                })
+        List<PatientResponse> patientResponses = patientEntities.stream()
+                .map(patientConverter::toConvertResponse)
                 .collect(Collectors.toList());
+
+        for (PatientResponse patientResponse : patientResponses) {
+            if (patientResponse.getAvatarUrl() != null) {
+                patientResponse.setAvatarUrl(toConvertFileToBase64(patientResponse.getAvatarUrl()));
+            } else {
+                patientResponse.setAvatarUrl(null);
+            }
+        }
+        return patientResponses;
+
     }
 
     @Override
@@ -141,39 +152,39 @@ public class PatientServiceImpl implements PatientService {
                 .map(entity -> {
                     PatientResponse response = patientConverter.toConvertResponse(entity);
 
-                    // Xử lý ngày tháng an toàn
                     if (entity.getBirthdate() != null) {
                         response.setBirthdate(entity.getBirthdate().toString());
                     } else {
                         response.setBirthdate("N/A");
                     }
-
+                    if(entity.getAvatarUrl() != null) {
+                        response.setAvatarUrl(toConvertFileToBase64(entity.getAvatarUrl()));
+                    } else {
+                        response.setAvatarUrl(null);
+                    }
                     return response;
                 })
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Page<PatientResponse> getAllPatientsByUserIdForPage(Long userId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<PatientEntity> patientPage = patientRepository.findAllByUserEntity_Id(userId, pageable);
-        if (patientPage.isEmpty()) {
-            throw new ResourceNotFoundException("No patients found for user with ID: " + userId);
-        }
-
-        return patientPage.map(patientConverter::toConvertResponse);
-    }
-
-    @Override
     public PatientResponse getPatientById(Long patientId) {
         PatientEntity patientEntity = patientRepository.findById(patientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
+
         PatientResponse response = patientConverter.toConvertResponse(patientEntity);
-        if (patientEntity.getBirthdate() != null) {
+
+        if(response.getBirthdate() != null) {
             response.setBirthdate(patientEntity.getBirthdate().toString());
         } else {
             response.setBirthdate("N/A");
         }
+        if(patientEntity.getAvatarUrl() != null) {
+            response.setAvatarUrl(toConvertFileToBase64(patientEntity.getAvatarUrl()));
+        } else {
+            response.setAvatarUrl(null);
+        }
+
         return response;
     }
 
@@ -220,5 +231,56 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public Long getPatientIdByUserId(Long userId) {
         return patientRepository.findFirstByUserEntity_IdOrderByIdDesc(userId);
+    }
+
+    public String toConvertAvatarUrl(String avatarBase64) {
+        if (avatarBase64 == null || avatarBase64.isEmpty()) {
+            return null;
+        }
+        try {
+            String extension = "png";
+            String base64Data = avatarBase64;
+            if ( avatarBase64.contains(",")) {
+                String[] parts = avatarBase64.split(",");
+                String meta = parts[0];
+                base64Data = parts[1];
+                if(meta.contains("image/")) {
+                    extension = meta.substring(meta.indexOf(",") + 6, meta.indexOf(";"));
+                }
+            }
+            byte[] imageBytes = Base64.getDecoder().decode(base64Data);
+            String fileName = UUID.randomUUID() + "." + extension;
+
+            Path avatarDir = Paths.get(System.getProperty("user.dir"), AVATAR_DIR_RELATIVE);
+            File dir = avatarDir.toFile();
+            if(!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            File file = new File(dir, fileName);
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                fos.write(imageBytes);
+            }
+            return "templates/frontend/assets/images/patientAvatar/" + fileName;
+        } catch (IOException | IllegalArgumentException e){
+            return null;
+        }
+    }
+
+    public String toConvertFileToBase64(String avatarUrl) {
+        if (avatarUrl == null || avatarUrl.isEmpty()) {
+            return null;
+        }
+        try {
+            ClassPathResource imgFile = new ClassPathResource(avatarUrl);
+            if( !imgFile.exists()) {
+                return null;
+            }
+            byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
+            String avatarBase64 = Base64.getEncoder().encodeToString(bytes);
+            return avatarBase64;
+        } catch ( IOException e) {
+            return null;
+        }
     }
 }
