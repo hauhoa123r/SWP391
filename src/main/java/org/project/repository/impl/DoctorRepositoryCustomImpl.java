@@ -98,31 +98,31 @@ public class DoctorRepositoryCustomImpl implements DoctorRepositoryCustom {
     }
 
     @Override
-    public Page<DoctorEntity> findAllByStaffEntityDepartmentEntityIdAndStaffEntityHospitalEntityIdAndStaffEntityFullNameContainingOrderByStaffEntityAverageRatingAndStaffEntityReviewCount(Long departmentEntityId, Long hospitalEntityId, String keyword, Pageable pageable) {
+    public Page<DoctorEntity> findAllByStaffEntityDepartmentEntityIdAndStaffEntityHospitalEntityIdAndStaffEntityFullNameContainingOrderByStaffEntityAverageRatingAndStaffEntityReviewCount(Long departmentEntityId, Long hospitalEntityId, String fullName, Pageable pageable) {
         String getEntitiesJpql = """
                 select d from DoctorEntity d
                 left join d.staffEntity s
                 left join s.reviewEntities r
                 where s.departmentEntity.id = :departmentEntityId and s.hospitalEntity.id = :hospitalEntityId
-                and lower(s.fullName) like lower(concat('%', :keyword, '%'))
+                and lower(s.fullName) like lower(concat('%', :fullName, '%'))
                 group by d.id
                 order by avg(r.rating) desc, count(r.id) desc
                 """;
         TypedQuery<DoctorEntity> getEntitiesTypedQuery = entityManager.createQuery(getEntitiesJpql, DoctorEntity.class);
         getEntitiesTypedQuery.setParameter("departmentEntityId", departmentEntityId);
         getEntitiesTypedQuery.setParameter("hospitalEntityId", hospitalEntityId);
-        getEntitiesTypedQuery.setParameter("keyword", keyword);
+        getEntitiesTypedQuery.setParameter("fullName", fullName);
 
         String countEntitiesJpql = """
                 select count(d) from DoctorEntity d
                 left join d.staffEntity s
                 where s.departmentEntity.id = :departmentEntityId and s.hospitalEntity.id = :hospitalEntityId
-                and lower(s.fullName) like lower(concat('%', :keyword, '%'))
+                and lower(s.fullName) like lower(concat('%', :fullName, '%'))
                 """;
         TypedQuery<Long> countTypedQuery = entityManager.createQuery(countEntitiesJpql, Long.class);
         countTypedQuery.setParameter("departmentEntityId", departmentEntityId);
         countTypedQuery.setParameter("hospitalEntityId", hospitalEntityId);
-        countTypedQuery.setParameter("keyword", keyword);
+        countTypedQuery.setParameter("fullName", fullName);
 
         return pageUtils.getEntitiesByPage(getEntitiesTypedQuery, countTypedQuery, pageable);
     }

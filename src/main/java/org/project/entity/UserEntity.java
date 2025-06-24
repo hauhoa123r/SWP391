@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.UserRole;
+import org.project.enums.UserStatus;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -71,29 +72,24 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<ProductEntity> products = new LinkedHashSet<>();
+    /*
+     TODO [Reverse Engineering] create field to map the 'status' column
+     Available actions: Define target Java type | Uncomment as is | Remove column mapping
+        @Column(name = "status", columnDefinition = "enum")
+        private Object status;
+    */
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'PATIENT'")
+    @Column(name = "user_role", columnDefinition = "enum not null")
+    private UserRole userRole;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_status")
+    private UserStatus userStatus;
 
     public void addPatientEntity(PatientEntity patientEntity) {
         this.patientEntities.add(patientEntity);
         patientEntity.setUserEntity(this);
     }
 
-
-/*
- TODO [Reverse Engineering] create field to map the 'status' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @Column(name = "status", columnDefinition = "enum")
-    private Object status;
-*/
-    @Enumerated(EnumType.STRING)
-    @ColumnDefault("'PATIENT'")
-    @Column(name = "user_role", columnDefinition = "enum not null")
-    private UserRole userRole;
-
-/*
- TODO [Reverse Engineering] create field to map the 'user_status' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @org.hibernate.annotations.ColumnDefault("'ACTIVE'")
-    @Column(name = "user_status", columnDefinition = "enum not null")
-    private java.lang.Object userStatus;
-*/
 }

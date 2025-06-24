@@ -29,64 +29,64 @@ public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCusto
     }
 
     @Override
-    public List<DepartmentEntity> findAllByStaffEntitiesStaffRole(StaffRole staffRole) {
+    public List<DepartmentEntity> findAllByStaffEntitiesStaffRole(StaffRole staffEntitiesStaffRole) {
         String getEntitiesJpql = """
                     select de from DepartmentEntity de
                     join de.staffEntities se
-                    where se.staffRole = :staffRole
+                    where se.staffRole = :staffEntitiesStaffRole
                     group by de.id
                 """;
         TypedQuery<DepartmentEntity> getEntitiesTypedQuery = entityManager.createQuery(getEntitiesJpql, DepartmentEntity.class);
-        getEntitiesTypedQuery.setParameter("staffRole", staffRole);
+        getEntitiesTypedQuery.setParameter("staffEntitiesStaffRole", staffEntitiesStaffRole);
         return getEntitiesTypedQuery.getResultList();
     }
 
     @Override
-    public Page<DepartmentEntity> findAllByStaffEntitiesStaffRoleAndStaffEntitiesHospitalEntityId(StaffRole staffRole, Long hospitalId, Pageable pageable) {
+    public Page<DepartmentEntity> findAllByStaffEntitiesStaffRoleAndStaffEntitiesHospitalEntityId(StaffRole staffEntitiesStaffRole, Long hospitalEntityId, Pageable pageable) {
         String getEntitiesJpql = """
                     select de from DepartmentEntity de
                     join de.staffEntities se
-                    where se.staffRole = :staffRole and se.hospitalEntity.id = :hospitalId
+                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId
                     group by de.id
                 """;
         TypedQuery<DepartmentEntity> getEntitiesTypedQuery = entityManager.createQuery(getEntitiesJpql, DepartmentEntity.class);
-        getEntitiesTypedQuery.setParameter("staffRole", staffRole);
-        getEntitiesTypedQuery.setParameter("hospitalId", hospitalId);
+        getEntitiesTypedQuery.setParameter("staffEntitiesStaffRole", staffEntitiesStaffRole);
+        getEntitiesTypedQuery.setParameter("hospitalEntityId", hospitalEntityId);
 
         String countJpql = """
                     select count(distinct de.id) from DepartmentEntity de
                     join de.staffEntities se
-                    where se.staffRole = :staffRole and se.hospitalEntity.id = :hospitalId
+                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId
                 """;
         TypedQuery<Long> countTypedQuery = entityManager.createQuery(countJpql, Long.class);
-        countTypedQuery.setParameter("staffRole", staffRole);
-        countTypedQuery.setParameter("hospitalId", hospitalId);
+        countTypedQuery.setParameter("staffEntitiesStaffRole", staffEntitiesStaffRole);
+        countTypedQuery.setParameter("hospitalEntityId", hospitalEntityId);
 
         return pageUtils.getEntitiesByPage(getEntitiesTypedQuery, countTypedQuery, pageable);
     }
 
     @Override
-    public Page<DepartmentEntity> findAllByNameContainingAndStaffEntitiesStaffRoleAndStaffEntitiesHospitalEntityId(String keyword, StaffRole staffRole, Long hospitalId, Pageable pageable) {
+    public Page<DepartmentEntity> findAllByNameContainingAndStaffEntitiesStaffRoleAndStaffEntitiesHospitalEntityId(String name, StaffRole staffEntitiesStaffRole, Long hospitalEntityId, Pageable pageable) {
         String getEntitiesJpql = """
                     select de from DepartmentEntity de
                     join de.staffEntities se
-                    where se.staffRole = :staffRole and se.hospitalEntity.id = :hospitalId and de.name like :keyword
+                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId and de.name like :name
                     group by de.id
                 """;
         TypedQuery<DepartmentEntity> getEntitiesTypedQuery = entityManager.createQuery(getEntitiesJpql, DepartmentEntity.class);
-        getEntitiesTypedQuery.setParameter("staffRole", staffRole);
-        getEntitiesTypedQuery.setParameter("hospitalId", hospitalId);
-        getEntitiesTypedQuery.setParameter("keyword", "%" + keyword + "%");
+        getEntitiesTypedQuery.setParameter("staffEntitiesStaffRole", staffEntitiesStaffRole);
+        getEntitiesTypedQuery.setParameter("hospitalEntityId", hospitalEntityId);
+        getEntitiesTypedQuery.setParameter("name", "%" + name + "%");
 
         String countJpql = """
                     select count(distinct de.id) from DepartmentEntity de
                     join de.staffEntities se
-                    where se.staffRole = :staffRole and se.hospitalEntity.id = :hospitalId and de.name like :keyword
+                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId and de.name like :name
                 """;
         TypedQuery<Long> countTypedQuery = entityManager.createQuery(countJpql, Long.class);
-        countTypedQuery.setParameter("staffRole", staffRole);
-        countTypedQuery.setParameter("hospitalId", hospitalId);
-        countTypedQuery.setParameter("keyword", "%" + keyword + "%");
+        countTypedQuery.setParameter("staffEntitiesStaffRole", staffEntitiesStaffRole);
+        countTypedQuery.setParameter("hospitalEntityId", hospitalEntityId);
+        countTypedQuery.setParameter("name", "%" + name + "%");
 
         return pageUtils.getEntitiesByPage(getEntitiesTypedQuery, countTypedQuery, pageable);
     }
