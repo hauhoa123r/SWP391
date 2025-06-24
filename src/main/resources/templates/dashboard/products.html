@@ -1731,15 +1731,15 @@
                </tr>
             </thead>
             <tbody>
-               <tr data-item="list">
-                  <th scope="row">1</th>
-                  <td>#14356</td>
+               <tr data-item="list" th:each ="product, iterStat : ${products}"> 
+                  <th scope="row" th:text="${iterStat.index + 1}">1</th>
+                  <td th:text="'#'+${product.id}">#14356</td>
                   <td>
-                     <h6 class="mb-0 text-body fw-normal">Asthma Inhaler</h6>
+                     <h6 class="mb-0 text-body fw-normal" th:text="${product.name}">Asthma Inhaler</h6>
                   </td>
-                  <td>Health Care</td>
-                  <td>$67.90</td>
-                  <td>23</td>
+                  <td th:text="${product.categoryNames}">Health Care</td>
+                  <td th:text="'$'+${product.price}">$67.90</td>
+                  <td th:text="${product.stockQuantities}">23</td>
                   <td>15% Off</td>
                   <td>173 Sold</td>
                   <td>
@@ -1758,7 +1758,11 @@
                            </svg>
                         </span>
                      </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn" >
+                     
+                     <form th:action="@{/admin/product/delete/{id}(id=${product.id})}" method="post" 
+                     onsubmit="return confirm('Are you sure you want to delete this product?')" 
+                     style="display:inline-block;">  
+                     <button type="submit" class="d-inline-block ps-2 delete-btn" >
                         <span class="text-danger">
                            <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
@@ -1774,10 +1778,11 @@
                                  stroke-linejoin="round" />
                            </svg>
                         </span>
-                     </a>
+                     </button> 
+                     </form>
                   </td>
                </tr>
-               <tr data-item="list">
+               <!-- <tr data-item="list">
                   <th scope="row">2</th>
                   <td>#14678</td>
                   <td>
@@ -1822,249 +1827,48 @@
                         </span>
                      </a>
                   </td>
-               </tr>
-               <tr data-item="list">
-                  <th scope="row">3</th>
-                  <td>#12431</td>
-                  <td>
-                     <h6 class="mb-0 text-body fw-normal">Dental Equipment</h6>
-                  </td>
-                  <td>Medical Equipment</td>
-                  <td>$280</td>
-                  <td>12</td>
-                  <td>12% Off</td>
-                  <td>923 Sold</td>
-                  <td>
-                     <a class="d-inline-block pe-2" data-bs-toggle="offcanvas" href="#offcanvasProductEdit" aria-controls="offcanvasProductEdit">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-               <tr data-item="list">
-                  <th>4</th>
-                  <td>#21356</td>
-                  <td>
-                     <h6 class="mb-0 text-body fw-normal">Electric Toothbrush</h6>
-                  </td>
-                  <td>Home Equipment</td>
-                  <td>$370</td>
-                  <td>09</td>
-                  <td>09% Off</td>
-                  <td>875 Sold</td>
-                  <td>
-                     <a class="d-inline-block pe-2" data-bs-toggle="offcanvas" href="#offcanvasProductEdit" aria-controls="offcanvasProductEdit">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-               <tr data-item="list">
-                  <th>5</th>
-                  <td>#65783</td>
-                  <td>
-                     <h6 class="mb-0 text-body fw-normal">Hand Sanitizer</h6>
-                  </td>
-                  <td>Physical</td>
-                  <td>$460</td>
-                  <td>18</td>
-                  <td>10% Off</td>
-                  <td>456 Sold</td>
-                  <td>
-                     <a class="d-inline-block pe-2" data-bs-toggle="offcanvas" href="#offcanvasProductEdit" aria-controls="offcanvasProductEdit">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-               <tr data-item="list">
-                  <th>6</th>
-                  <td>#12567</td>
-                  <td>
-                     <h6 class="mb-0 text-body fw-normal">Glucose Meter Set</h6>
-                  </td>
-                  <td>Medical Equipment</td>
-                  <td>$220</td>
-                  <td>18</td>
-                  <td>05% Off</td>
-                  <td>100 Sold</td>
-                  <td>
-                     <a class="d-inline-block pe-2" data-bs-toggle="offcanvas" href="#offcanvasProductEdit" aria-controls="offcanvasProductEdit">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-               <tr data-item="list">
-                  <th>7</th>
-                  <td>#15342</td>
-                  <td>
-                     <h6 class="mb-0 text-body fw-normal">Handgloves</h6>
-                  </td>
-                  <td>Medical Equipment</td>
-                  <td>$390</td>
-                  <td>34</td>    
-                  <td>25% Off</td>
-                  <td>23 sold</td>
-                  <td>
-                     <a class="d-inline-block pe-2" data-bs-toggle="offcanvas" href="#offcanvasProductEdit" aria-controls="offcanvasProductEdit">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
+               </tr> --> 
             </tbody>
          </table>
       </div>
    </div>
    <div class="card-footer pt-0">
       <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-          <ul class="page-number m-0 p-0 list-unstyled d-flex gap-2">
+         <!--  <ul class="page-number m-0 p-0 list-unstyled d-flex gap-2">
               <li class="text-center bg-primary text-white rounded">1</li>
               <li class="text-center bg-primary-subtle text-primary rounded ">2</li>
               <li class="text-center text-primary rounded fs-1">...</li>
               <li class="text-center bg-primary-subtle text-primary rounded">6</li>
-          </ul>
+          </ul> -->
+          
+          <ul class="page-number m-0 p-0 list-unstyled d-flex gap-2">
+    <!-- Trang đầu -->
+    <li class="text-center rounded"
+        th:classappend="${currentPage == 1} ? ' bg-primary text-white' : ' bg-primary-subtle text-primary'">
+        <a th:href="@{/admin/product(page=1)}">1</a>
+    </li>
+
+    <!-- Dấu ... nếu cách xa đầu -->
+    <li th:if="${currentPage > 3}" class="text-center text-primary rounded">...</li>
+
+    <!-- Các trang gần currentPage -->
+    <li th:each="i : ${#numbers.sequence(currentPage - 1 > 1 ? currentPage - 1 : 2, currentPage + 1 < totalPages ? currentPage + 1 : totalPages - 1)}"
+        class="text-center rounded"
+        th:classappend="${i == currentPage} ? ' bg-primary text-white' : ' bg-primary-subtle text-primary'">
+        <a th:href="@{/admin/product(page=${i})}" th:text="${i}">2</a>
+    </li>
+
+    <!-- Dấu ... nếu cách xa cuối -->
+    <li th:if="${currentPage < totalPages - 2}" class="text-center text-primary rounded">...</li>
+
+    <!-- Trang cuối -->
+    <li th:if="${totalPages > 1}" class="text-center rounded"
+        th:classappend="${currentPage == totalPages} ? ' bg-primary text-white' : ' bg-primary-subtle text-primary'">
+        <a th:href="@{/admin/product(page=${totalPages})}" th:text="${totalPages}">72</a>
+    </li>
+</ul>
+
+          
           <div>
               <button class="btn btn-secondary text-white me-3" type="button">
                   <span class="btn-inner">

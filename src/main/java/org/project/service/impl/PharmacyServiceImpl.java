@@ -1,6 +1,6 @@
 package org.project.service.impl;
 
-import lombok.RequiredArgsConstructor; 
+import lombok.RequiredArgsConstructor;
 import org.project.converter.ConverterPharmacyProduct;
 import org.project.entity.ProductEntity;
 import org.project.enums.ProductType;
@@ -10,6 +10,8 @@ import org.project.repository.PharmacyRepository;
 import org.project.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class PharmacyServiceImpl implements PharmacyService {
 				.toConverterPharmacyProductList(pharmacyProductEntity);
 		return pharmacyListResponse;
 	}
-	
+
 	@Override
 	public ProductEntity save(ProductEntity pharmacy) {
 		// TODO Auto-generated method stub
@@ -87,7 +89,8 @@ public class PharmacyServiceImpl implements PharmacyService {
 		// If not found return empty list
 		return new ArrayList<PharmacyListResponse>();
 	}
-
+	
+	@Transactional 
 	@Override
 	public void deleteById(Long id) {
 		// TODO Auto-generated method stub
@@ -117,18 +120,36 @@ public class PharmacyServiceImpl implements PharmacyService {
 
 	@Override
 	public List<ProductViewProjection> findAllProductsWithFullInfo(Long id) {
-		// TODO Auto-generated method stub 
-		// Get the list of products with full information 
-		List<ProductViewProjection> productViewProjections = pharmacyRepositoryImpl.findAllProductsWithFullInfo(id); 
-		// Check if the list is not empty 
+		// TODO Auto-generated method stub
+		// Get the list of products with full information
+		List<ProductViewProjection> productViewProjections = pharmacyRepositoryImpl.findAllProductsWithFullInfo(id);
+		// Check if the list is not empty
 		if (productViewProjections != null && !productViewProjections.isEmpty()) {
 			// Return the list of products with full information
 			return productViewProjections;
-		} 
-		// If not found return empty list 
+		}
+		// If not found return empty list
 		return new ArrayList<ProductViewProjection>();
 	}
 
-	
-	
+	@Override
+	public List<PharmacyListResponse> findRandomProductsByType(String productType) {
+		// TODO Auto-generated method stub
+		// Get the list of random products by type
+		List<ProductEntity> pharmacyList = pharmacyRepositoryImpl.findRandomProductsByType(productType);
+		// Check if the list is not empty
+		if (pharmacyList != null && !pharmacyList.isEmpty()) {
+			// Convert to response list
+			return toConverterPharmacy.toConverterPharmacyProductList(pharmacyList);
+		}
+		// If not found return empty list
+		return new ArrayList<PharmacyListResponse>();
+	}
+
+	@Override
+	public Long countProducts() {
+		// TODO Auto-generated method stub
+		return pharmacyRepositoryImpl.countProducts(); 
+	}
+
 }

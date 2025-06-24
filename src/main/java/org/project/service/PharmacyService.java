@@ -28,4 +28,8 @@ public interface PharmacyService {
     List<PharmacyListResponse> findTop10Products(); 
     //Select all products with full information including category, tag, additional info 
     List<ProductViewProjection> findAllProductsWithFullInfo(Long id); 
+    //Select 4 products based on categoryName 
+    List<PharmacyListResponse> findRandomProductsByType(String productType); 
+    // Get the number of products 
+    Long countProducts(); 
 }

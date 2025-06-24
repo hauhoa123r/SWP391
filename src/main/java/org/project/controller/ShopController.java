@@ -80,6 +80,8 @@ public class ShopController {
 		Set<String> tags = new HashSet<>(); 
 		//Set of reviews with linkedHashSet to avoid duplicates and keep insertion order  
 		Set<ReviewDTO> reviews = new LinkedHashSet<>();  
+		//List of related products 
+		List<PharmacyListResponse> relatedProducts = pharmacyServiceImpl.findRandomProductsByType(product.get(0).getType()); 
 		//iterate through the product's additional information and add it to the map 
 		for (ProductViewProjection info : product) {
 			//Get name 
@@ -157,6 +159,8 @@ public class ShopController {
 		model.addAttribute("tagsString", tagsString); 
 		//Add the reviews list to the model 
 		model.addAttribute("reviews", reviews); 
+		//Add the related products to the model 
+		model.addAttribute("relatedProducts", relatedProducts); 
 		// Return the view name
 		return "frontend/product-standard";
 	}

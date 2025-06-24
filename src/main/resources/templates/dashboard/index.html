@@ -116,7 +116,7 @@
                                 <ul class="sub-nav collapse" id="dashboard" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page"
-                                            href="./index.html">
+                                            href="./index.html" th:href="@{/admin/dashboard}">  
                                             <i class="icon" data-bs-toggle="tooltip" title="Dashboard" data-bs-placement="right">
                                                 <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -132,7 +132,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link " aria-current="page"
-                                            href="./patient-dashboard.html">
+                                            href="./patient-dashboard.html" th:href="@{/dashboard/patient-dashboard}"> 
                                             <i class="icon" data-bs-toggle="tooltip" title="Dashboard" data-bs-placement="right">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" fill="none">
                                                     <path opacity="0.4"
@@ -155,7 +155,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./appointment.html">
+                                    href="./appointment.html" th:href="@{/dashboard/appointment}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Appointment" data-bs-placement="right">
                                         <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -177,7 +177,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./report.html">
+                                    href="./report.html" th:href="@{/dashboard/report}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Report" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -208,7 +208,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./doctors.html">
+                                    href="./doctors.html" th:href="@{/dashboard/doctors}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Doctors" data-bs-placement="right">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g opacity="0.4">
@@ -227,7 +227,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./patient.html">
+                                    href="./patient.html" th:href="@{/dashboard/patient}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Patient" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -244,7 +244,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./category.html">
+                                    href="./category.html" th:href="@{/dashboard/category}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Category" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -261,7 +261,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./products.html">
+                                    href="./products.html" th:href="@{/dashboard/products}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Products" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -277,7 +277,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./payment.html">
+                                    href="./payment.html" th:href="@{/dashboard/payment}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Payment" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -303,7 +303,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./helpsupport.html">
+                                    href="./helpsupport.html" th:href="@{/dashboard/helpsupport}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Help & Support" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -319,7 +319,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./setting.html">
+                                    href="./setting.html" th:href="@{/dashboard/setting}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Setting" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -344,7 +344,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./component.html">
+                                    href="./component.html" th:href="@{/dashboard/component}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Components" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -363,7 +363,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./ui-color.html">
+                                    href="./ui-color.html" th:href="@{/dashboard/ui-color}"> 
                                     <i class="icon" data-bs-toggle="tooltip" title="Colors" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -400,7 +400,7 @@
                                 <ul class="sub-nav collapse" id="auth-skins" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/sign-in.html">
+                                            href="./auth/sign-in.html" th:href="@{/dashboard/auth/sign-in}"> 
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -416,7 +416,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/sign-up.html">
+                                            href="./auth/sign-up.html" th:href="@{/dashboard/auth/sign-up}"> 
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -432,7 +432,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/confirm-mail.html">
+                                            href="./auth/confirm-mail.html" th:href="@{/dashboard/auth/confirm-mail}"> 
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -448,7 +448,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/recoverpw.html">
+                                            href="./auth/recoverpw.html" th:href="@{/dashboard/auth/recoverpw}"> 
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -464,7 +464,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/lock-screen.html">
+                                            href="./auth/lock-screen.html" th:href="@{/dashboard/auth/lock-screen}"> 
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -501,7 +501,7 @@
                                 </a>
                                 <ul class="sub-nav collapse" id="sidebar-user" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
-                                        <a class="nav-link " href="./app/user-profile.html">
+                                        <a class="nav-link " href="./app/user-profile.html" th:href="@{/dashboard/app/user-profile}"> 
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -514,7 +514,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link " href="./app/user-add.html">
+                                        <a class="nav-link " href="./app/user-add.html" th:href="@{/dashboard/app/user-add}"> 
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -527,7 +527,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link " href="./app/user-list.html">
+                                        <a class="nav-link " href="./app/user-list.html" th:href="@{/dashboard/app/user-list}"> 
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
