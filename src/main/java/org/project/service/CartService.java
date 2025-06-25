@@ -13,8 +13,6 @@ public interface CartService {
 
 	List<CartItemEntity> getCart(Long userId);
 
-	void addItem(Long userId, Long productId, Integer quantity);
-
 	void removeItem(Long userId, Long productId);
 
 	CartItemEntity getItemById(CartItemEntityId id);
@@ -23,5 +21,5 @@ public interface CartService {
 
 	BigDecimal calculateTotal(Long userId);
 
-	void syncCart(Long userId, List<CartItemEntity> sessionCart);
+	void addItem(Long userId, Long productId, Integer quantity);
 }

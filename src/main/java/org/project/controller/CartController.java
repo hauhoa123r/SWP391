@@ -28,14 +28,14 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/cart")
 public class CartController {
 
-	//private static final String SESSION_USER_ID = "userId";
+	// private static final String SESSION_USER_ID = "userId";
 
 	private final CartService cartService;
-	public CartController(CartService cartService) {
-        this.cartService = cartService;
-    }
 
-	
+	public CartController(CartService cartService) {
+		this.cartService = cartService;
+	}
+
 	// view all cart items of the user
 	// including the total amount of money and number of item in cart
 	@GetMapping
@@ -44,84 +44,66 @@ public class CartController {
 		List<CartItemEntity> cartItems = cartService.getCart(userId);
 		model.addAttribute("cartItems", cartItems);
 		model.addAttribute("total", cartService.calculateTotal(userId));
-		model.addAttribute("size",cartItems.size());
+		model.addAttribute("size", cartItems.size());
 		return "frontend/cart";
 	}
 
-	
-	//hard delete from cart
+	// hard delete from cart
 	@PostMapping("/delete")
 	public String deleteCartItem(@RequestParam("productId") Long productId) {
-	    Long userId=2l;
-	    cartService.removeItem(userId, productId);
-	    
-	    // Redirect back to cart
-	    return "redirect:/cart";
-	}
-	//change item quantity by pressing + -
-	@PostMapping("/update")
-	public String updateCartItemQuantity(
-			@RequestParam("cartId") Long cartId,
-	        @RequestParam("userId") Long userId,
-	        @RequestParam("action") String action) {
-		userId = 2l;
-	    CartItemEntityId id = new CartItemEntityId(cartId, userId);
-	    CartItemEntity item = cartService.getItemById(id);
-	    if (item == null) {
-	    	System.out.println("no cart item found"); //debugging
-	    	return "redirect:/cart";
-	    }
+		Long userId = 2l;
+		cartService.removeItem(userId, productId);
 
-	    int quantity = item.getQuantity();
-
-	    if ("increment".equals(action)) {
-	        item.setQuantity(quantity + 1);
-	    } else if ("decrement".equals(action) && quantity > 1) {
-	        item.setQuantity(quantity - 1);
-	    }
-
-	    cartService.updateItem(item);
-	    return "redirect:/cart";
-	}
-	// change item quantity by directly entering value
-	@PostMapping("/update-quantity")
-	public String updateCartItemQuantity(
-	        @RequestParam("cartId") Long cartId,
-	        @RequestParam("userId") Long userId,
-	        @RequestParam("quantity") int quantity) {
-
-	    CartItemEntityId id = new CartItemEntityId(cartId, userId);
-	    CartItemEntity item = cartService.getItemById(id);
-
-	    if (item != null && quantity > 0) {
-	        item.setQuantity(quantity);
-	        cartService.updateItem(item);
-	    }
-	    return "redirect:/cart"; 
-	}
-
-
-	
-	
-	//TODO: need to finish (help)
-	//apply coupons (check if existed)
-	@PostMapping("/apply-coupon")
-	public String applyCoupon(@RequestParam("cartId") Long cartId,
-							  @RequestParam("") String couponCode) {
-		
+		// Redirect back to cart
 		return "redirect:/cart";
 	}
-	
-	
-	// add product into cart
-		@PostMapping("/add/{productId}")
-		public String addItem(@PathVariable Long productId, @RequestParam(defaultValue = "1") Integer quantity) {
-			Long userId = 2l;
-			cartService.addItem(userId, productId, quantity);
+
+	// change item quantity by pressing + -
+	@PostMapping("/update")
+	public String updateCartItemQuantity(@RequestParam("cartId") Long cartId, @RequestParam("userId") Long userId,
+			@RequestParam("action") String action) {
+		userId = 2l;
+		CartItemEntityId id = new CartItemEntityId(cartId, userId);
+		CartItemEntity item = cartService.getItemById(id);
+		if (item == null) {
+			System.out.println("no cart item found"); // debugging
 			return "redirect:/cart";
 		}
-	
-	//
+
+		int quantity = item.getQuantity();
+
+		if ("increment".equals(action)) {
+			item.setQuantity(quantity + 1);
+		} else if ("decrement".equals(action) && quantity > 1) {
+			item.setQuantity(quantity - 1);
+		}
+
+		cartService.updateItem(item);
+		return "redirect:/cart";
+	}
+
+	// change item quantity by directly entering value
+	@PostMapping("/update-quantity")
+	public String updateCartItemQuantity(@RequestParam("cartId") Long cartId, @RequestParam("userId") Long userId,
+			@RequestParam("quantity") int quantity) {
+
+		CartItemEntityId id = new CartItemEntityId(cartId, userId);
+		CartItemEntity item = cartService.getItemById(id);
+
+		if (item != null && quantity > 0) {
+			item.setQuantity(quantity);
+			cartService.updateItem(item);
+		}
+		return "redirect:/cart";
+	}
+
+	// TODO: need to finish (help)
+	// apply coupons (check if existed)
+	@PostMapping("/apply-coupon")
+	public String applyCoupon(@RequestParam("cartId") Long cartId, @RequestParam("") String couponCode) {
+
+		return "redirect:/cart";
+	}
 
 	@GetMapping("/checkout")
 	public String checkout() {

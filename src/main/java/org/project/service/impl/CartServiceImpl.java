@@ -13,6 +13,7 @@ import org.project.entity.UserEntity;
 import org.project.repository.*;
 import org.project.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -28,31 +29,20 @@ public class CartServiceImpl implements CartService {
 	private final ProductRepository productRepo;
 	@Autowired
 	private final CouponRepository couponRepo;
+	@Autowired
+	private final UserRepository userRepo;
 
 	
-	public CartServiceImpl(CartRepository cartRepo, ProductRepository productRepo, CouponRepository couponRepo) {
+	public CartServiceImpl(CartRepository cartRepo, ProductRepository productRepo, CouponRepository couponRepo, UserRepository userRepo) {
 		this.cartRepo = cartRepo;
 		this.productRepo = productRepo;
 		this.couponRepo = couponRepo;
+		this.userRepo = userRepo;
 	}
 
 	@Override
 	public List<CartItemEntity> getCart(Long userId) {
 		return cartRepo.findByUserEntityId(userId);
-	}
-
-	@Override
-	public void addItem(Long userId, Long productId, Integer quantity) {
-		ProductEntity product = productRepo.findById(productId)
-				.orElseThrow(() -> new RuntimeException("Product not found"));
-		CartItemEntity item = new CartItemEntity();
-		item.setId(new CartItemEntityId(productId + userId, userId));
-		UserEntity user = new UserEntity();
-		user.setId(userId);
-		item.setUserEntity(user);
-		item.setProductEntity(product);
-		item.setQuantity(quantity);
-		cartRepo.save(item);
 	}
 
 	@Override
@@ -69,7 +59,7 @@ public class CartServiceImpl implements CartService {
         cartRepo.save(item); // save() updates if ID is present
     }
 
-
+    //calculate total amount of money in cart (no coupon applied)
 	@Override
 	public BigDecimal calculateTotal(Long userId) {
 		List<CartItemEntity> items = cartRepo.findByUserEntityId(userId);
@@ -82,21 +72,24 @@ public class CartServiceImpl implements CartService {
 			return price.multiply(BigDecimal.valueOf(quantity));
 		}).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
-	
+	// add item to cart
 	@Override
-	    public void syncCart(Long userId, List<CartItemEntity> sessionCart) {
-		//load list from db
-	        List<CartItemEntity> dbCartItems = cartRepo.findByUserEntityId(userId);
-	        // using session to store item ids
-	        List<CartItemEntityId> sessionItemIds = sessionCart.stream()
-	                .map(CartItemEntity::getId)
-	                .collect(Collectors.toList());
-	        // find item exist in db
-	        List<CartItemEntity> toDelete = dbCartItems.stream()
-	                .filter(item -> !sessionItemIds.contains(item.getId()))
-	                .collect(Collectors.toList());
-	        // delete from db
-	        cartRepo.deleteAll(toDelete); // can be soft delete if needed
-	    }
+	public void addItem(Long userId, Long productId, Integer quantity) {
+		//userId = 2l;
+	    CartItemEntity item = cartRepo.findByUserEntityIdAndProductEntityId(userId,productId).orElseGet(() -> {
+	    	CartItemEntity newItem = new CartItemEntity();
+	    	UserEntity user = userRepo.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+	        ProductEntity product = productRepo.findById(productId)
+	                             .orElseThrow(() -> new RuntimeException("Product not found"));
+	        newItem.setUserEntity(user);
+	        newItem.setProductEntity(product);
+	        newItem.setQuantity(0);
+	        return newItem;
+	    });
+
+	    item.setQuantity(item.getQuantity() + quantity);
+	    cartRepo.save(item);
+	}
 	
 }
