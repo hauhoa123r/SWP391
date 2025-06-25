@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Doctor Dashboard - KiviCare</title>
+    <link rel="stylesheet" href="enhanced-buttons.css" />
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 80px;
+            /* Account for fixed navbar */
+        }
+
+        .dashboard-card {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card {
+            background: var(--bs-primary);
+            color: white;
+        }
+
+        .stat-card.primary {
+            background: var(--bs-info);
+        }
+
+        .stat-card.success {
+            background: var(--bs-success);
+        }
+
+        .stat-card.warning {
+            background: var(--bs-warning);
+        }
+
+        .stat-card.info {
+            background: var(--bs-light);
+            color: var(--bs-dark);
+        }
+
+        .welcome-card {
+            background: var(--bs-primary);
+            color: white;
+            border-radius: 20px;
+        }
+
+        .activity-item {
+            border-left: 4px solid #007bff;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .appointment-card {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Enhanced Bootstrap button hover effects */
+        .btn {
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            filter: brightness(110%);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .time-badge {
+            background: var(--bs-primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Include Header -->
+<!--    <div th:replace="~{custom/doctor_header :: }"></div>-->
+
+    <div class="container-fluid px-4 py-4"> <!-- Welcome Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card card-default dashboard-card welcome-card">
+                    <div class="card-body p-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h2 class="mb-2" th:text="'Welcome back, Dr. ' + ${doctor.staffEntityFullName}">Welcome back, Dr. Smith</h2>
+                                <p class="mb-0 opacity-75" th:text="${welcomeMessage}">
+                                    Ready to make a difference in your patients' lives today? Your dashboard is updated
+                                    with the latest information.
+                                </p>
+                                <div class="mt-3">
+                                    <span class="badge bg-light text-dark me-2">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        <span
+                                            th:text="${#dates.format(#dates.createNow(), 'EEEE, MMMM dd, yyyy')}">Wednesday,
+                                            June 11, 2025</span>
+                                    </span>
+                                    <span class="badge bg-light text-dark">
+                                        <i class="fas fa-clock me-1"></i>
+                                        <span id="currentTime"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="/staff//doctor/appointments" class="btn btn-light">
+                                        <i class="fas fa-calendar-check me-2"></i>View Schedule
+                                    </a>
+                                    <a href="/staff//doctor/patients" class="btn btn-outline-light">
+                                        <i class="fas fa-users me-2"></i>Patients
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Statistics Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="card card-default dashboard-card stat-card">
+                    <div class="card-body text-center p-4">
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <div class="bg-white bg-opacity-20 rounded-circle p-3">
+                                <i class="fas fa-calendar-day fa-2x"></i>
+                            </div>
+                        </div>
+                        <h3 class="fw-bold mb-1" th:text="${todayAppointmentsCount ?: '8'}">8</h3>
+                        <p class="mb-0 opacity-75">Today's Appointments</p>
+                        <small class="d-block mt-1">
+                            <i class="fas fa-arrow-up me-1"></i>12% from yesterday
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card card-default dashboard-card stat-card success">
+                    <div class="card-body text-center p-4">
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <div class="bg-white bg-opacity-20 rounded-circle p-3">
+                                <i class="fas fa-check-circle fa-2x"></i>
+                            </div>
+                        </div>
+                        <h3 class="fw-bold mb-1" th:text="${weeklyCompletedCount ?: '32'}">32</h3>
+                        <p class="mb-0 opacity-75">Completed This Week</p>
+                        <small class="d-block mt-1">
+                            <i class="fas fa-arrow-up me-1"></i>8% from last week
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card card-glass dashboard-card stat-card warning">
+                    <div class="card-body text-center p-4">
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <div class="bg-white bg-opacity-20 rounded-circle p-3">
+                                <i class="fas fa-flask fa-2x"></i>
+                            </div>
+                        </div>
+                        <h3 class="fw-bold mb-1" th:text="${pendingLabResultsCount ?: '5'}">5</h3>
+                        <p class="mb-0 opacity-75">Pending Lab Results</p>
+                        <small class="d-block mt-1">
+                            <i class="fas fa-exclamation-triangle me-1"></i>Review needed
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card card-glass dashboard-card stat-card info">
+                    <div class="card-body text-center p-4">
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <div class="bg-white bg-opacity-20 rounded-circle p-3">
+                                <i class="fas fa-user-clock fa-2x"></i>
+                            </div>
+                        </div>
+                        <h3 class="fw-bold mb-1" th:text="${followUpCount ?: '12'}">12</h3>
+                        <p class="mb-0 opacity-75">Follow-ups Scheduled</p>
+                        <small class="d-block mt-1">
+                            <i class="fas fa-calendar me-1"></i>Next 7 days
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main Content Row -->
+        <div class="row g-4"> <!-- Today's Appointments -->
+            <div class="col-lg-8">
+                <div class="card card-default dashboard-card">
+                    <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-calendar-check text-primary me-2"></i>
+                            Today's Appointments
+                        </h5>
+                        <a href="/staff//doctor/appointments" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <!-- Sample Appointment Items -->
+                            <div class="list-group-item border-0 p-3">
+                                <div class="row align-items-center">
+                                    <div class="col-2">
+                                        <span class="time-badge">09:30</span>
+                                    </div>
+                                    <div class="col-7">
+                                        <h6 class="mb-1">Isabella Brown</h6>
+                                        <p class="mb-0 text-muted small">General Consultation</p>
+                                    </div>
+                                    <div class="col-3 text-end">
+                                        <span class="badge bg-success">Confirmed</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="list-group-item border-0 p-3 bg-light">
+                                <div class="row align-items-center">
+                                    <div class="col-2">
+                                        <span class="time-badge">11:00</span>
+                                    </div>
+                                    <div class="col-7">
+                                        <h6 class="mb-1">Daniel White</h6>
+                                        <p class="mb-0 text-muted small">Follow-up Visit</p>
+                                    </div>
+                                    <div class="col-3 text-end">
+                                        <span class="badge bg-warning">Pending</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="list-group-item border-0 p-3">
+                                <div class="row align-items-center">
+                                    <div class="col-2">
+                                        <span class="time-badge">14:30</span>
+                                    </div>
+                                    <div class="col-7">
+                                        <h6 class="mb-1">Ashley Garcia</h6>
+                                        <p class="mb-0 text-muted small">Lab Results Review</p>
+                                    </div>
+                                    <div class="col-3 text-end">
+                                        <span class="badge bg-info">Check-in</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 text-center">
+                            <a href="/staff//doctor/appointments" class="btn btn-primary">
+                                <i class="fas fa-calendar-plus me-2"></i>Manage Appointments
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions & Recent Activity -->
+            <div class="col-lg-4">
+                <!-- Quick Actions -->
+                <div class="card dashboard-card mb-4">
+                    <div class="card-header bg-transparent border-0">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-bolt text-warning me-2"></i>
+                            Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="/staff//doctor/appointments/new" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>New Appointment
+                            </a>
+                            <a href="/staff//doctor/prescriptions/create" class="btn btn-success">
+                                <i class="fas fa-prescription me-2"></i>Write Prescription
+                            </a>
+                            <a href="/staff//doctor/lab-results" class="btn btn-info">
+                                <i class="fas fa-flask me-2"></i>Review Lab Results
+                            </a>
+                            <a href="/staff//doctor/patients/search" class="btn btn-outline-primary">
+                                <i class="fas fa-search me-2"></i>Find Patient
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card card-default dashboard-card">
+                    <div class="card-header bg-transparent border-0">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-clock text-info me-2"></i>
+                            Recent Activity
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-item p-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">Lab results reviewed</h6>
+                                    <p class="mb-0 small text-muted">Patient: John Doe</p>
+                                </div>
+                                <small class="text-muted">2h ago</small>
+                            </div>
+                        </div>
+
+                        <div class="activity-item p-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">Prescription created</h6>
+                                    <p class="mb-0 small text-muted">Patient: Sarah Wilson</p>
+                                </div>
+                                <small class="text-muted">4h ago</small>
+                            </div>
+                        </div>
+
+                        <div class="activity-item p-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">Appointment completed</h6>
+                                    <p class="mb-0 small text-muted">Patient: Mike Johnson</p>
+                                </div>
+                                <small class="text-muted">6h ago</small>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="/staff//doctor/activity" class="btn btn-sm btn-outline-secondary">View All Activity</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div class="row mt-4" th:if="${notifications != null and !#lists.isEmpty(notifications)}">
+            <div class="col-12">
+                <div class="card dashboard-card">
+                    <div class="card-header bg-transparent border-0">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-bell text-warning me-2"></i>
+                            Recent Notifications
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4" th:each="notification : ${notifications}">
+                                <div class="alert alert-light border-start border-primary border-4 mb-0">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <p class="mb-1" th:text="${notification.message}">
+                                                Lab results for Patient ID #1234 are ready for review.
+                                            </p>
+                                            <small class="text-muted"
+                                                th:text="${#dates.format(notification.timestamp, 'dd/MM/yyyy HH:mm')}">
+                                                10/06/2025 14:30
+                                            </small>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script th:src="@{/frontend/assets/js/core/libs.min.js}"></script>
+    <script th:src="@{/frontend/assets/js/core/external.min.js}"></script>
+    <script>
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // Update time every minute
+        updateTime();
+        setInterval(updateTime, 60000);
+
+        // Auto-refresh page data every 5 minutes
+        setTimeout(() => {
+            location.reload();
+        }, 300000);
+
+        console.log('Doctor Dashboard loaded at ' + new Date().toLocaleString());
+    </script>
+</body>
+
+</html>
