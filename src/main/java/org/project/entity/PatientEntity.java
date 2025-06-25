@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.BloodType;
-import org.project.enums.CheckActive;
+import org.project.enums.PatientStatus;
 import org.project.enums.FamilyRelationship;
 import org.project.enums.Gender;
 import org.project.enums.converter.BloodTypeConverter;
@@ -61,8 +61,8 @@ public class PatientEntity {
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
-    @Column(name = "is_active", columnDefinition = "enum not null")
-    private CheckActive checkActive;
+    @Column(name = "patient_status", columnDefinition = "enum not null")
+    private PatientStatus patientStatus;
 
     @OneToMany(mappedBy = "patientEntity")
     private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();

@@ -1,12 +1,14 @@
 package org.project.service.impl;
 
 import org.modelmapper.ModelMapper;
+import org.project.config.WebConstant;
 import org.project.converter.PatientConverter;
 import org.project.entity.PatientEntity;
 import org.project.entity.UserEntity;
 import org.project.enums.BloodType;
 import org.project.enums.FamilyRelationship;
 import org.project.enums.Gender;
+import org.project.enums.PatientStatus;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.PatientDTO;
 import org.project.model.response.PatientResponse;
@@ -25,9 +27,12 @@ import org.springframework.util.StreamUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -78,7 +83,7 @@ private static final String AVATAR_DIR_RELATIVE =
     @Override
     public Page<PatientResponse> getPatientsByUser(Long userId, int index, int size) {
         Pageable pageable = pageUtils.getPageable(index, size);
-        Page<PatientEntity> patientEntityPage = patientRepository.findAllByUserEntityId(userId, pageable);
+        Page<PatientEntity> patientEntityPage = patientRepository.findAllByUserEntityIdAndPatientStatus(userId, pageable, WebConstant.PATIENT_STATUS_ACTIVE);
         pageUtils.validatePage(patientEntityPage, PatientEntity.class);
         return patientEntityPage.map(patientConverter::toResponse);
     }
@@ -167,6 +172,7 @@ private static final String AVATAR_DIR_RELATIVE =
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public PatientResponse getPatientById(Long patientId) {
         PatientEntity patientEntity = patientRepository.findById(patientId)
@@ -188,30 +194,95 @@ private static final String AVATAR_DIR_RELATIVE =
         return response;
     }
 
+    @Transactional
     @Override
-    public void updatePatient(Long patientId, PatientDTO patientDTO) {
-        Optional<PatientEntity> patientEntityOptional = patientRepository.findById(patientId);
-        if (patientEntityOptional.isPresent()) {
-            PatientEntity patientEntity = patientEntityOptional.get();
+    public PatientResponse updatePatient(Long patientId, PatientDTO patientDTO) {
+        PatientEntity patientEntity = patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with ID: " + patientId));
 
-            modelMapper.map(patientDTO, patientEntity);
+        Method[] methods = PatientDTO.class.getMethods();
 
-            Optional<UserEntity> userEntityOptional = userRepository.findById(patientDTO.getUserId());
-            patientEntity.setUserEntity(userEntityOptional.orElse(null));
+        for (Method method : methods) {
+            String name = method.getName();
 
-            patientRepository.save(patientEntity);
-        } else {
-            throw new ResourceNotFoundException("Patient not found");
+            if("getDateOfBirth".equals(name) && method.getParameterCount() == 0) {
+                try {
+                    String dobStr = (String) method.invoke(patientDTO);
+                    if( dobStr != null && !dobStr.isEmpty()) {
+                        Date dateOfBirth = Date.valueOf(LocalDate.parse(dobStr, DateTimeFormatter.ISO_DATE));
+                        patientEntity.setBirthdate(dateOfBirth);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException("Error updating date of birth: " + e.getMessage(), e);
+                }
+                continue;
+            }
+            if ("getAvatarBase64".equals(name) && method.getParameterCount() == 0) {
+                try {
+                    String avatarBase64 = (String) method.invoke(patientDTO);
+                    if (avatarBase64 != null && !avatarBase64.isEmpty()) {
+                        String avatarUrl = toConvertAvatarUrl(avatarBase64);
+                        patientEntity.setAvatarUrl(avatarUrl);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException("Error updating avatar: " + e.getMessage(), e);
+                }
+                continue;
+            }
+
+            if (name.startsWith("get") && method.getParameterCount() == 0) {
+                try {
+                    Object value = method.invoke(patientDTO);
+                    if (value != null) {
+                        String setterName = "set" + name.substring(3);
+                        Method setterMethod = PatientEntity.class.getMethod(setterName, method.getReturnType());
+                        setterMethod.invoke(patientEntity, value);
+                    }
+                } catch ( NoSuchMethodException e) {
+
+                } catch (Exception e) {
+                    throw new RuntimeException("Error updating patient: " + e.getMessage(), e);
+                }
+            }
         }
+
+        if (patientDTO.getFamilyRelationship() != null) {
+            patientEntity.setFamilyRelationship(
+                    FamilyRelationship.valueOf(patientDTO.getFamilyRelationship().toUpperCase())
+            );
+        }
+
+        if (patientDTO.getGender() != null) {
+            patientEntity.setGender(
+                    Gender.valueOf(patientDTO.getGender().toUpperCase())
+            );
+        }
+
+        if (patientDTO.getBloodType() != null) {
+            patientEntity.setBloodType(
+                    BloodType.valueOf(patientDTO.getBloodType().toUpperCase())
+            );
+        }
+
+        userRepository.findById(patientDTO.getUserId())
+                .ifPresentOrElse(patientEntity::setUserEntity,
+                        () -> {
+                    throw new ResourceNotFoundException("User not found with ID: " + patientDTO.getUserId()); });
+
+        patientRepository.save(patientEntity);
+
+        PatientResponse patientResponse = getPatientById(patientId);
+
+        return patientResponse;
     }
 
     @Override
     public void deletePatient(Long patientId) {
         Optional<PatientEntity> patientEntityOptional = patientRepository.findById(patientId);
         if (patientEntityOptional.isPresent()) {
-            patientRepository.delete(patientEntityOptional.get());
-        } else {
-            throw new ResourceNotFoundException("Patient not found");
+            PatientEntity patientEntity = patientEntityOptional.get();
+            patientEntity.setPatientStatus(PatientStatus.INACTIVE);
+            patientRepository.save(patientEntity);
         }
     }
 

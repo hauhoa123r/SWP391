@@ -19,7 +19,7 @@ public interface PatientService {
 
     PatientResponse getPatientById(Long patientId);
 
-    void updatePatient(Long patientId, PatientDTO patientDTO);
+    PatientResponse updatePatient(Long patientId, PatientDTO patientDTO);
 
     void deletePatient(Long patientId);
 

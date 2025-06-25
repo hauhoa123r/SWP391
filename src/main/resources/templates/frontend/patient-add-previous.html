@@ -5,54 +5,25 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <title>Add New Patient - KiviCare | Medical Clinic & Patient Management</title>
-
-    <!-- Config Options -->
-    <meta
-        content='{&quot;saveLocal&quot;:&quot;sessionStorage&quot;,&quot;storeKey&quot;:&quot;huisetting&quot;,&quot;setting&quot;:{&quot;app_name&quot;:{&quot;value&quot;:&quot;Kivicare&quot;}}}'
-        name="setting_options">
-    <!-- Google Font Api KEY-->
-    <meta content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k" name="google_font_api">
-    <!-- Favicon -->
     <link href="../frontend/assets/images/favicon.ico" rel="shortcut icon" />
-
-    <!-- Library / Plugin Css Build -->
     <link href="../frontend/assets/css/core/libs.min.css" rel="stylesheet" />
-
-    <!-- flaticon css -->
     <link href="../frontend/assets/vendor/flaticon/css/flaticon.css" rel="stylesheet" />
-
-    <!-- font-awesome css -->
     <link href="../frontend/assets/vendor/font-awesome/css/all.min.css" rel="stylesheet" />
-
-    <!-- Flatpickr css -->
     <link href="../frontend/assets/vendor/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
-
-    <!-- Kivicare Design System Css -->
     <link href="../frontend/assets/css/kivicare.min.css?v=1.4.1" rel="stylesheet" />
-
-    <!-- Custom Css -->
     <link href="../frontend/assets/css/custom.min.css?v=1.4.1" rel="stylesheet" />
-
-    <!-- RTL Css -->
     <link href="../frontend/assets/css/rtl.min.css?v=1.4.1" rel="stylesheet" />
-
-    <!-- Customizer Css -->
     <link href="../frontend/assets/css/customizer.min.css?v=1.4.1" rel="stylesheet" />
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
     <link
         href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap"
-        rel="stylesheet">
-
+        rel="stylesheet" />
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             font-family: 'Heebo', sans-serif;
         }
-
         .patient-add-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -62,7 +33,6 @@
             max-width: 1200px;
             overflow: hidden;
         }
-
         .patient-add-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -70,7 +40,6 @@
             text-align: center;
             position: relative;
         }
-
         .patient-add-header::before {
             content: '';
             position: absolute;
@@ -78,16 +47,13 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('../frontend/assets/images/bg-medical-pattern.png') repeat;
             opacity: 0.1;
             z-index: 1;
         }
-
         .patient-add-header .content {
             position: relative;
             z-index: 2;
         }
-
         .profile-upload-section {
             background: #f8f9fa;
             border-radius: 15px;
@@ -96,19 +62,16 @@
             border: 2px dashed #dee2e6;
             transition: all 0.3s ease;
         }
-
         .profile-upload-section:hover {
             border-color: #667eea;
             background: #f0f3ff;
         }
-
         .profile-img-edit {
             position: relative;
             margin: 0 auto 1.5rem;
             width: 150px;
             height: 150px;
         }
-
         .profile-pic {
             width: 150px;
             height: 150px;
@@ -118,11 +81,9 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
         }
-
         .profile-pic:hover {
             transform: scale(1.05);
         }
-
         .upload-icone {
             position: absolute;
             bottom: 10px;
@@ -138,20 +99,16 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
             transition: all 0.3s ease;
         }
-
         .upload-icone:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
         }
-
         .form-section {
             padding: 2rem;
         }
-
         .form-floating {
             margin-bottom: 1.5rem;
         }
-
         .form-control,
         .form-select {
             border: 2px solid #e9ecef;
@@ -160,20 +117,17 @@
             font-size: 1rem;
             transition: all 0.3s ease;
         }
-
         .form-control:focus,
         .form-select:focus {
             border-color: #667eea;
             box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
             transform: translateY(-2px);
         }
-
         .form-label {
             font-weight: 600;
             color: #495057;
             margin-bottom: 0.5rem;
         }
-
         .btn-submit {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
@@ -185,21 +139,17 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
-
         .btn-submit:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
             color: white;
         }
-
         .social-input {
             position: relative;
         }
-
         .social-input .form-control {
             padding-left: 3rem;
         }
-
         .social-icon {
             position: absolute;
             left: 1rem;
@@ -208,13 +158,11 @@
             color: #6c757d;
             z-index: 10;
         }
-
         .step-indicator {
             display: flex;
             justify-content: center;
             margin-bottom: 2rem;
         }
-
         .step {
             width: 40px;
             height: 40px;
@@ -227,31 +175,26 @@
             font-weight: 600;
             transition: all 0.3s ease;
         }
-
         .step.active {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             transform: scale(1.1);
         }
-
         .step.completed {
             background: #28a745;
             color: white;
         }
-
         .section-divider {
             height: 2px;
             background: linear-gradient(90deg, transparent, #667eea, transparent);
             margin: 2rem 0;
             border: none;
         }
-
         .success-animation {
             display: none;
             text-align: center;
             padding: 2rem;
         }
-
         .checkmark {
             width: 80px;
             height: 80px;
@@ -263,18 +206,14 @@
             justify-content: center;
             animation: scaleIn 0.5s ease-in-out;
         }
-
         @keyframes scaleIn {
             from {
                 transform: scale(0);
             }
-
             to {
                 transform: scale(1);
             }
         }
-
-        /* Grid for dynamic inputs (Step 2) */
         .two-col-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -294,7 +233,6 @@
             </div>
         </div>
     </div>
-    ư
     <!-- loader END -->
     <main class="main-content">
         <div class="container-fluid">
@@ -310,7 +248,7 @@
                     </div>
                 </div>
 
-                <!-- Step Indicator (chỉ có 2 bước) -->
+                <!-- Step Indicator -->
                 <div class="step-indicator mt-4">
                     <div class="step active" id="step1">1</div>
                     <div class="step" id="step2">2</div>
@@ -318,10 +256,14 @@
 
                 <!-- Start Form -->
                 <form id="patientForm">
+                    <!-- Avatar input file & hidden (dùng chung cho cả 2 step) -->
+                    <input accept="image/*" class="file-upload" id="avatarUpload" type="file" style="display:none;">
+                    <input id="avatarBase64" name="avatarBase64" type="hidden" value="">
+
                     <!-- Step 1: Profile & Basic Info -->
                     <div class="form-step active" id="formStep1">
                         <div class="row">
-                            <!-- Profile Upload Section -->
+                            <!-- Profile Upload Section (Step 1) -->
                             <div class="col-lg-4">
                                 <div class="profile-upload-section">
                                     <h5 class="text-center mb-4">
@@ -329,19 +271,16 @@
                                         Patient Photo
                                     </h5>
                                     <div class="profile-img-edit">
-                                        <img alt="profile-pic" class="profile-pic" id="profilePreview"
-                                            src="../frontend/assets/images/avatars/01.png">
-                                        <div class="upload-icone">
+                                        <img alt="profile-pic" class="profile-pic" id="profilePreview1"
+                                            src="../frontend/assets/images/01.png">
+                                        <div class="upload-icone" id="uploadIcone1">
                                             <svg class="upload-button icon-20" height="20" viewBox="0 0 24 24"
                                                 width="20">
                                                 <path
                                                     d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z"
                                                     fill="#ffffff" />
                                             </svg>
-                                            <input accept="image/*" class="file-upload" id="avatarUpload" type="file">
                                         </div>
-                                        <!-- Input hidden để lưu Base64 -->
-                                        <input id="avatarBase64" name="avatarBase64" type="hidden" value="">
                                     </div>
                                     <div class="img-extension text-center">
                                         <small class="text-muted">
@@ -350,14 +289,14 @@
                                         </small>
                                     </div>
                                 </div>
-                                <!-- Quick Stats -->
+                                <!-- Quick Stats Step 1 -->
                                 <div class="mt-4 p-3 bg-light rounded-3">
                                     <h6 class="mb-3"><i class="fas fa-chart-line me-2"></i>Registration Progress</h6>
                                     <div class="progress mb-2" style="height: 8px;">
-                                        <div class="progress-bar bg-gradient" id="progressBar" role="progressbar"
+                                        <div class="progress-bar bg-gradient" id="progressBar1" role="progressbar"
                                             style="width: 50%"></div>
                                     </div>
-                                    <small class="text-muted">Step 1 of 2 completed</small>
+                                    <small class="text-muted" id="progressText1">Step 1 of 2 completed</small>
                                 </div>
                             </div>
                             <!-- Basic Information Form -->
@@ -468,46 +407,85 @@
                     </div>
                     <!-- End Step 1 -->
 
-                    <!-- Step 2: Allergies and Chronic Diseases (Dynamic Inputs) -->
+                    <!-- Step 2: Profile Upload + Allergies and Chronic Diseases -->
                     <div class="form-step" id="formStep2" style="display: none;">
-                        <h5 class="mb-4">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Additional Information
-                        </h5>
-                        <div class="two-col-grid">
-                            <!-- Allergies Column -->
-                            <div>
-                                <h6 class="mb-3"><i class="fas fa-exclamation-triangle me-2"></i>Allergies</h6>
-                                <div id="allergiesContainer">
-                                    <!-- Khởi tạo input 1 -->
-                                    <div class="form-floating mb-2">
-                                        <input class="form-control dynamic-input" id="allergyInput1" name="allergies[]"
-                                            placeholder="Enter allergy" type="text">
-                                        <label for="allergyInput1">1. Please enter an allergy</label>
+                        <div class="row">
+                            <!-- Profile Upload Section (Step 2) -->
+                            <div class="col-lg-4">
+                                <div class="profile-upload-section">
+                                    <h5 class="text-center mb-4">
+                                        <i class="fas fa-camera me-2"></i>
+                                        Patient Photo
+                                    </h5>
+                                    <div class="profile-img-edit">
+                                        <img alt="profile-pic" class="profile-pic" id="profilePreview2"
+                                            src="../frontend/assets/images/01.png">
+                                        <div class="upload-icone" id="uploadIcone2">
+                                            <svg class="upload-button icon-20" height="20" viewBox="0 0 24 24"
+                                                width="20">
+                                                <path
+                                                    d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z"
+                                                    fill="#ffffff" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="img-extension text-center">
+                                        <small class="text-muted">
+                                            Only <strong>.jpg</strong>, <strong>.png</strong>, <strong>.jpeg</strong>
+                                            allowed
+                                        </small>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Chronic Diseases Column -->
-                            <div>
-                                <h6 class="mb-3"><i class="fas fa-notes-medical me-2"></i>Chronic Diseases</h6>
-                                <div id="chronicContainer">
-                                    <!-- Khởi tạo input 1 -->
-                                    <div class="form-floating mb-2">
-                                        <input class="form-control dynamic-input" id="chronicInput1"
-                                            name="chronicDiseases[]" placeholder="Enter chronic disease" type="text">
-                                        <label for="chronicInput1">1. Please enter a chronic disease</label>
+                                <!-- Quick Stats Step 2 -->
+                                <div class="mt-4 p-3 bg-light rounded-3">
+                                    <h6 class="mb-3"><i class="fas fa-chart-line me-2"></i>Registration Progress</h6>
+                                    <div class="progress mb-2" style="height: 8px;">
+                                        <div class="progress-bar bg-gradient" id="progressBar2" role="progressbar"
+                                            style="width: 100%"></div>
                                     </div>
+                                    <small class="text-muted" id="progressText2">Step 2 of 2 completed</small>
                                 </div>
                             </div>
-                        </div>
-                        <hr class="section-divider">
-                        <div class="d-flex justify-content-between mt-4">
-                            <button class="btn btn-outline-secondary" onclick="prevStep()" type="button">
-                                <i class="fas fa-arrow-left me-2"></i> Previous
-                            </button>
-                            <button class="btn btn-submit" id="submitBtn" type="submit">
-                                <i class="fas fa-user-plus me-2"></i> Register Patient
-                            </button>
+                            <!-- Allergies and Chronic Diseases -->
+                            <div class="col-lg-8">
+                                <h5 class="mb-4">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Additional Information
+                                </h5>
+                                <div class="two-col-grid">
+                                    <!-- Allergies Column -->
+                                    <div>
+                                        <h6 class="mb-3"><i class="fas fa-exclamation-triangle me-2"></i>Allergies</h6>
+                                        <div id="allergiesContainer">
+                                            <div class="form-floating mb-2">
+                                                <input class="form-control dynamic-input" id="allergyInput1" name="allergies[]"
+                                                    placeholder="Enter allergy" type="text">
+                                                <label for="allergyInput1">1. Please enter an allergy</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Chronic Diseases Column -->
+                                    <div>
+                                        <h6 class="mb-3"><i class="fas fa-notes-medical me-2"></i>Chronic Diseases</h6>
+                                        <div id="chronicContainer">
+                                            <div class="form-floating mb-2">
+                                                <input class="form-control dynamic-input" id="chronicInput1"
+                                                    name="chronicDiseases[]" placeholder="Enter chronic disease" type="text">
+                                                <label for="chronicInput1">1. Please enter a chronic disease</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="section-divider">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button class="btn btn-outline-secondary" onclick="prevStep()" type="button">
+                                        <i class="fas fa-arrow-left me-2"></i> Previous
+                                    </button>
+                                    <button class="btn btn-submit" id="submitBtn" type="submit">
+                                        <i class="fas fa-user-plus me-2"></i> Register Patient
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- End Step 2 -->
@@ -535,142 +513,45 @@
             </div>
         </div>
     </main>
-    <!-- Footer (sử dụng Thymeleaf include nếu cần) -->
     <div th:replace="frontend/fragments/footer :: footer"></div>
     <script>
         let currentStep = 1;
         const totalSteps = 2;
-        // Counters cho dynamic inputs
         let allergyCount = 1;
         let chronicCount = 1;
 
-        document.getElementById('avatarUpload').addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (evt) {
-                    const base64Data = evt.target.result; // Đây là chuỗi Base64
-                    // Cập nhật preview
-                    document.getElementById('profilePreview').src = base64Data;
-                    // Lưu vào input hidden, để gửi xuống backend khi submit form
-                    document.getElementById('avatarBase64').value = base64Data;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
+        // Avatar upload logic: đồng bộ preview ở cả 2 step, chỉ dùng 1 input file và 1 input hidden
         document.addEventListener('DOMContentLoaded', function () {
-            initializeDynamicInputs();
-            setupFormValidation();
+            var avatarInput = document.getElementById('avatarUpload');
+            var preview1 = document.getElementById('profilePreview1');
+            var preview2 = document.getElementById('profilePreview2');
+            var uploadIcone1 = document.getElementById('uploadIcone1');
+            var uploadIcone2 = document.getElementById('uploadIcone2');
+            var avatarBase64 = document.getElementById('avatarBase64');
+
+            // Click vào ảnh hoặc icon ở step nào cũng mở input file
+            if (preview1) preview1.style.cursor = 'pointer';
+            if (preview2) preview2.style.cursor = 'pointer';
+            if (preview1 && avatarInput) preview1.addEventListener('click', function () { avatarInput.click(); });
+            if (preview2 && avatarInput) preview2.addEventListener('click', function () { avatarInput.click(); });
+            if (uploadIcone1 && avatarInput) uploadIcone1.addEventListener('click', function (e) { if (e.target !== avatarInput) avatarInput.click(); });
+            if (uploadIcone2 && avatarInput) uploadIcone2.addEventListener('click', function (e) { if (e.target !== avatarInput) avatarInput.click(); });
+
+            // Khi chọn ảnh, cập nhật cả 2 preview và input hidden
+            avatarInput.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (evt) {
+                        const base64Data = evt.target.result;
+                        if (preview1) preview1.src = base64Data;
+                        if (preview2) preview2.src = base64Data;
+                        if (avatarBase64) avatarBase64.value = base64Data;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
         });
-
-        function customValidateFields() {
-            let isValid = true;
-
-            // Full Name: Không chứa ký tự đặc biệt, không chứa nhiều khoảng trắng liên tiếp, không bắt đầu/kết thúc bằng space
-            const fullName = document.getElementById('fullName');
-            const fullNameVal = fullName.value.trim();
-            // Regex: chỉ chữ cái, số, khoảng trắng đơn, không ký tự đặc biệt
-            const nameRegex = /^[A-Za-zÀ-ỹ0-9 ]+$/;
-            if (
-                !fullNameVal ||
-                !nameRegex.test(fullNameVal) ||
-                /\s{2,}/.test(fullName.value) || // nhiều space liên tiếp
-                fullName.value.startsWith(' ') ||
-                fullName.value.endsWith(' ')
-            ) {
-                showFieldError(fullName, 'Full name must not contain special characters, leading/trailing/multiple spaces.');
-                fullName.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                hideFieldError(fullName);
-                fullName.classList.remove('is-invalid');
-            }
-
-            // Email: đúng định dạng
-            const email = document.getElementById('email');
-            const emailVal = email.value.trim();
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailVal || !emailRegex.test(emailVal)) {
-                showFieldError(email, 'Please enter a valid email address.');
-                email.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                hideFieldError(email);
-                email.classList.remove('is-invalid');
-            }
-
-            // Phone: chỉ số, đúng 10 ký tự, không chứa space
-            const phone = document.getElementById('phoneNumber');
-            const phoneVal = phone.value.trim();
-            const phoneRegex = /^\d{10}$/;
-            if (!phoneVal || !phoneRegex.test(phoneVal)) {
-                showFieldError(phone, 'Phone number must be exactly 10 digits and contain only numbers.');
-                phone.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                hideFieldError(phone);
-                phone.classList.remove('is-invalid');
-            }
-
-            // Date of Birth: không được lớn hơn ngày hiện tại
-            const dob = document.getElementById('dateOfBirth');
-            const dobVal = dob.value;
-            if (!dobVal) {
-                showFieldError(dob, 'Please select date of birth.');
-                dob.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                const today = new Date();
-                const inputDate = new Date(dobVal);
-                today.setHours(0, 0, 0, 0);
-                if (inputDate > today) {
-                    showFieldError(dob, 'Date of birth cannot be in the future.');
-                    dob.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    hideFieldError(dob);
-                    dob.classList.remove('is-invalid');
-                }
-            }
-
-            // Không cho phép các trường required chứa toàn space
-            document.querySelectorAll('[required]').forEach(field => {
-                if (field.value.trim() === '') {
-                    showFieldError(field, 'This field is required.');
-                    field.classList.add('is-invalid');
-                    isValid = false;
-                }
-            });
-
-            return isValid;
-        }
-
-        // Gọi customValidateFields trong validateCurrentStep
-        function validateCurrentStep() {
-            const currentFormStep = document.getElementById(`formStep${currentStep}`);
-            if (!currentFormStep) return false;
-
-            // Validate các trường required như cũ
-            const requiredFields = currentFormStep.querySelectorAll('[required]');
-            let isValid = true;
-
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    field.classList.add('is-invalid');
-                    isValid = false;
-                    showFieldError(field, 'This field is required');
-                } else {
-                    field.classList.remove('is-invalid');
-                    hideFieldError(field);
-                }
-            });
-
-            // Thêm validate custom
-            if (!customValidateFields()) isValid = false;
-
-            return isValid;
-        }
 
         function nextStep() {
             if (validateCurrentStep()) {
@@ -683,7 +564,6 @@
                 }
             }
         }
-
         function prevStep() {
             if (currentStep > 1) {
                 hideCurrentStep();
@@ -693,7 +573,6 @@
                 updateProgressBar();
             }
         }
-
         function hideCurrentStep() {
             const currentFormStep = document.getElementById(`formStep${currentStep}`);
             if (currentFormStep) {
@@ -701,7 +580,6 @@
                 currentFormStep.classList.remove('active');
             }
         }
-
         function showCurrentStep() {
             const newFormStep = document.getElementById(`formStep${currentStep}`);
             if (newFormStep) {
@@ -709,7 +587,6 @@
                 newFormStep.classList.add('active');
             }
         }
-
         function updateStepIndicator() {
             for (let i = 1; i <= totalSteps; i++) {
                 const stepElement = document.getElementById(`step${i}`);
@@ -723,206 +600,151 @@
                 }
             }
         }
-
         function updateProgressBar() {
-            const progressBar = document.getElementById('progressBar');
-            const progressText = progressBar?.parentElement?.nextElementSibling;
-            if (progressBar) {
-                const progress = (currentStep / totalSteps) * 100;
-                progressBar.style.width = `${progress}%`;
-                if (progressText) {
-                    progressText.textContent = `Step ${currentStep} of ${totalSteps} completed`;
-                }
+            const pb1 = document.getElementById('progressBar1');
+            const pb2 = document.getElementById('progressBar2');
+            const pt1 = document.getElementById('progressText1');
+            const pt2 = document.getElementById('progressText2');
+            if (currentStep === 1) {
+                if (pb1) pb1.style.width = '50%';
+                if (pt1) pt1.textContent = 'Step 1 of 2 completed';
+                if (pb2) pb2.style.width = '0%';
+                if (pt2) pt2.textContent = '';
+            } else if (currentStep === 2) {
+                if (pb2) pb2.style.width = '100%';
+                if (pt2) pt2.textContent = 'Step 2 of 2 completed';
+                if (pb1) pb1.style.width = '100%';
+                if (pt1) pt1.textContent = 'Step 2 of 2 completed';
             }
         }
 
-        function validateCurrentStep() {
-            const currentFormStep = document.getElementById(`formStep${currentStep}`);
-            if (!currentFormStep) return false;
-
-            const requiredFields = currentFormStep.querySelectorAll('[required]');
-            let isValid = true;
-
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    field.classList.add('is-invalid');
-                    isValid = false;
-                    showFieldError(field, 'This field is required');
-                } else {
-                    field.classList.remove('is-invalid');
-                    hideFieldError(field);
-                    if (field.type === 'email' && !isValidEmail(field.value)) {
-                        field.classList.add('is-invalid');
-                        isValid = false;
-                        showFieldError(field, 'Please enter a valid email address');
-                    } else if (field.type === 'tel' && !isValidPhone(field.value)) {
-                        field.classList.add('is-invalid');
-                        isValid = false;
-                        showFieldError(field, 'Please enter a valid phone number');
-                    }
-                }
-            });
-            return isValid;
-        }
-
+        // Validate từng field riêng biệt
         function showFieldError(field, message) {
             hideFieldError(field);
             const errorDiv = document.createElement('div');
-            errorDiv.className = 'invalid-feedback';
+            errorDiv.className = 'invalid-feedback d-block';
             errorDiv.textContent = message;
-            field.parentNode.appendChild(errorDiv);
+            if (field.parentNode.classList.contains('form-floating')) {
+                field.parentNode.appendChild(errorDiv);
+            } else {
+                field.after(errorDiv);
+            }
         }
-
         function hideFieldError(field) {
-            const existingError = field.parentNode.querySelector('.invalid-feedback');
-            if (existingError) {
-                existingError.remove();
+            if (field.parentNode.classList.contains('form-floating')) {
+                const err = field.parentNode.querySelector('.invalid-feedback');
+                if (err) err.remove();
+            } else {
+                const next = field.nextElementSibling;
+                if (next && next.classList.contains('invalid-feedback')) next.remove();
             }
         }
-
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        function isValidPhone(phone) {
-            const phoneRegex = /^[\+]?[0-9]{10,15}$/;
-            return phoneRegex.test(phone.replace(/[\s\(\)\-]/g, ''));
-        }
-
-        function setupFormValidation() {
-            const form = document.getElementById('patientForm');
-            if (form) {
-                form.addEventListener('submit', handleFormSubmission);
+        function validateField(field) {
+            let isValid = true;
+            const val = field.value.trim();
+            if (field.id === 'fullName') {
+                const nameRegex = /^[A-Za-zÀ-ỹ0-9 ]+$/;
+                if (
+                    !val ||
+                    !nameRegex.test(val) ||
+                    /\s{2,}/.test(field.value) ||
+                    field.value.startsWith(' ') ||
+                    field.value.endsWith(' ')
+                ) {
+                    showFieldError(field, 'Full name must not contain special characters, leading/trailing/multiple spaces.');
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    hideFieldError(field);
+                    field.classList.remove('is-invalid');
+                }
             }
-        }
-
-        function handleFormSubmission(e) {
-            e.preventDefault();
-            if (validateCurrentStep()) {
-                submitForm();
+            if (field.id === 'email') {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!val || !emailRegex.test(val)) {
+                    showFieldError(field, 'Please enter a valid email address.');
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    hideFieldError(field);
+                    field.classList.remove('is-invalid');
+                }
             }
-        }
-
-        function submitForm() {
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Registering...';
-            submitBtn.disabled = true;
-
-            // Thu thập dữ liệu như cũ...
-            const patientDTO = {
-                userId: document.querySelector('input[name="userId"]').value.trim(),
-                fullName: document.getElementById('fullName').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                phoneNumber: document.getElementById('phoneNumber').value.trim(),
-                dateOfBirth: document.getElementById('dateOfBirth').value.trim(),
-                gender: document.getElementById('gender').value.trim(),
-                address: document.getElementById('address').value.trim(),
-                familyRelationship: document.getElementById('familyRelationship').value.trim(),
-                bloodType: document.getElementById('bloodType').value.trim(),
-                avatarBase64: document.getElementById('profilePreview').src
-            };
-
-            const allergiesInputs = document.querySelectorAll('input[name="allergies[]"]');
-            const allergies = [];
-            allergiesInputs.forEach(input => {
-                const val = input.value.trim();
-                if (val) allergies.push(val);
-            });
-
-            const chronicInputs = document.querySelectorAll('input[name="chronicDiseases[]"]');
-            const chronicDiseases = [];
-            chronicInputs.forEach(input => {
-                const val = input.value.trim();
-                if (val) chronicDiseases.push(val);
-            });
-
-            const medicalProfileDTO = {
-                patientId: null,
-                allergies: allergies,
-                chronicDiseases: chronicDiseases
-            };
-
-            const payload = {
-                patientDTO: patientDTO,
-                medicalProfileDTO: medicalProfileDTO
-            };
-
-            fetch('/api/profile', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Nếu status là 200 OK, chuyển hướng sang danh sách bệnh nhân
-                        window.location.href = '/patient/showList/1';
-
+            if (field.id === 'phoneNumber') {
+                const phoneRegex = /^\d{10}$/;
+                if (!val || !phoneRegex.test(val)) {
+                    showFieldError(field, 'Phone number must be exactly 10 digits and contain only numbers.');
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    hideFieldError(field);
+                    field.classList.remove('is-invalid');
+                }
+            }
+            if (field.id === 'dateOfBirth') {
+                if (!val) {
+                    showFieldError(field, 'Please select date of birth.');
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    const today = new Date();
+                    const inputDate = new Date(val);
+                    today.setHours(0, 0, 0, 0);
+                    if (inputDate > today) {
+                        showFieldError(field, 'Date of birth cannot be in the future.');
+                        field.classList.add('is-invalid');
+                        isValid = false;
                     } else {
-                        return response.text().then(msg => {
-                            throw new Error(msg);
-                        });
+                        hideFieldError(field);
+                        field.classList.remove('is-invalid');
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showErrorMessage('Failed to register patient. Please try again.');
-                    resetSubmitButton();
-                });
-        }
-
-        function showSuccessAnimation() {
-            for (let i = 1; i <= totalSteps; i++) {
-                const step = document.getElementById(`formStep${i}`);
-                if (step) step.style.display = 'none';
+                }
             }
-            const successAnimation = document.getElementById('successAnimation');
-            if (successAnimation) {
-                successAnimation.style.display = 'block';
+            if ((field.tagName === 'SELECT' || field.type === 'select-one') && field.hasAttribute('required')) {
+                if (!val) {
+                    showFieldError(field, 'This field is required.');
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    hideFieldError(field);
+                    field.classList.remove('is-invalid');
+                }
             }
-        }
-
-        function showErrorMessage(message) {
-            const alert = document.createElement('div');
-            alert.className = 'alert alert-danger alert-dismissible fade show position-fixed';
-            alert.style.cssText = 'top: 20px; right: 20px; z-index: 1050; max-width: 300px;';
-            alert.innerHTML = `<i class="fas fa-exclamation-circle me-2"></i> ${message}
-                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
-            document.body.appendChild(alert);
-            setTimeout(() => {
-                if (alert.parentNode) alert.parentNode.removeChild(alert);
-            }, 5000);
-        }
-
-        function resetSubmitButton() {
-            const submitBtn = document.getElementById('submitBtn');
-            if (submitBtn) {
-                submitBtn.innerHTML = '<i class="fas fa-user-plus me-2"></i>Register Patient';
-                submitBtn.disabled = false;
+            if (field.hasAttribute('required') && !val && !['select-one', 'date'].includes(field.type)) {
+                showFieldError(field, 'This field is required.');
+                field.classList.add('is-invalid');
+                isValid = false;
             }
+            return isValid;
         }
-
-        function resetForm() {
-            const form = document.getElementById('patientForm');
-            if (form) form.reset();
-            const profilePreview = document.getElementById('profilePreview');
-            if (profilePreview) profilePreview.src = '../frontend/assets/images/avatars/01.png';
-            currentStep = 1;
-            showCurrentStep();
-            updateStepIndicator();
-            updateProgressBar();
-            const successAnimation = document.getElementById('successAnimation');
-            if (successAnimation) successAnimation.style.display = 'none';
+        function setupRealtimeValidation() {
+            ['fullName', 'email', 'phoneNumber', 'dateOfBirth', 'gender', 'address', 'familyRelationship', 'bloodType'].forEach(id => {
+                const field = document.getElementById(id);
+                if (field) {
+                    field.addEventListener('input', function () {
+                        validateField(field);
+                    });
+                    field.addEventListener('change', function () {
+                        validateField(field);
+                    });
+                }
+            });
         }
-
-        function viewPatients() {
-            window.location.href = '/patients';
+        function validateCurrentStep() {
+            const currentFormStep = document.getElementById(`formStep${currentStep}`);
+            if (!currentFormStep) return false;
+            let isValid = true;
+            ['fullName', 'email', 'phoneNumber', 'dateOfBirth', 'gender', 'address', 'familyRelationship', 'bloodType'].forEach(id => {
+                const field = currentFormStep.querySelector('#' + id);
+                if (field && !validateField(field)) isValid = false;
+            });
+            return isValid;
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            setupRealtimeValidation();
+        });
 
-        // ---------------- Dynamic Inputs for Step 2 ---------------- //
+        // Dynamic Inputs for Step 2
         function addDynamicInput(container, typePrefix, count, labelText) {
             const inputs = container.querySelectorAll('input');
             if (inputs[inputs.length - 1].value.trim() === '') return;
@@ -942,7 +764,6 @@
             div.appendChild(label);
             container.appendChild(div);
         }
-
         function initializeBlurEvent(container, typePrefix, labelText) {
             container.addEventListener('blur', function (e) {
                 if (e.target && e.target.classList.contains('dynamic-input')) {
@@ -959,7 +780,6 @@
                 }
             }, true);
         }
-
         function updateInputNumbers(container, typePrefix, labelText) {
             const inputs = container.querySelectorAll('input.dynamic-input');
             inputs.forEach((input, index) => {
@@ -972,7 +792,6 @@
                 }
             });
         }
-
         function initializeDynamicInputs() {
             const allergiesContainer = document.getElementById('allergiesContainer');
             allergiesContainer.addEventListener('input', function (e) {
@@ -985,7 +804,6 @@
                 }
             });
             initializeBlurEvent(allergiesContainer, 'allergy', 'Please enter an allergy');
-
             const chronicContainer = document.getElementById('chronicContainer');
             chronicContainer.addEventListener('input', function (e) {
                 if (e.target && e.target.classList.contains('dynamic-input')) {
@@ -998,9 +816,124 @@
             });
             initializeBlurEvent(chronicContainer, 'chronic', 'Please enter a chronic disease');
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeDynamicInputs();
+        });
 
-        // ---------------- End Dynamic Inputs ---------------- //
+        // Submit logic
+        document.getElementById('patientForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!validateCurrentStep()) return;
+            submitForm();
+        });
 
+        function submitForm() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Registering...';
+            submitBtn.disabled = true;
+            const patientDTO = {
+                userId: document.querySelector('input[name="userId"]').value.trim(),
+                fullName: document.getElementById('fullName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phoneNumber: document.getElementById('phoneNumber').value.trim(),
+                dateOfBirth: document.getElementById('dateOfBirth').value.trim(),
+                gender: document.getElementById('gender').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                familyRelationship: document.getElementById('familyRelationship').value.trim(),
+                bloodType: document.getElementById('bloodType').value.trim(),
+                avatarBase64: document.getElementById('avatarBase64').value
+            };
+            const allergiesInputs = document.querySelectorAll('input[name="allergies[]"]');
+            const allergies = [];
+            allergiesInputs.forEach(input => {
+                const val = input.value.trim();
+                if (val) allergies.push(val);
+            });
+            const chronicInputs = document.querySelectorAll('input[name="chronicDiseases[]"]');
+            const chronicDiseases = [];
+            chronicInputs.forEach(input => {
+                const val = input.value.trim();
+                if (val) chronicDiseases.push(val);
+            });
+            const medicalProfileDTO = {
+                patientId: null,
+                allergies: allergies,
+                chronicDiseases: chronicDiseases
+            };
+            const payload = {
+                patientDTO: patientDTO,
+                medicalProfileDTO: medicalProfileDTO
+            };
+            fetch('/api/profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/patient/showList/1';
+                    } else {
+                        return response.text().then(msg => {
+                            throw new Error(msg);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showErrorMessage('Failed to register patient. Please try again.');
+                    resetSubmitButton();
+                });
+        }
+        function showSuccessAnimation() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const step = document.getElementById(`formStep${i}`);
+                if (step) step.style.display = 'none';
+            }
+            const successAnimation = document.getElementById('successAnimation');
+            if (successAnimation) {
+                successAnimation.style.display = 'block';
+            }
+        }
+        function showErrorMessage(message) {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+            alert.style.cssText = 'top: 20px; right: 20px; z-index: 1050; max-width: 300px;';
+            alert.innerHTML = `<i class="fas fa-exclamation-circle me-2"></i> ${message}
+                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+            document.body.appendChild(alert);
+            setTimeout(() => {
+                if (alert.parentNode) alert.parentNode.removeChild(alert);
+            }, 5000);
+        }
+        function resetSubmitButton() {
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fas fa-user-plus me-2"></i>Register Patient';
+                submitBtn.disabled = false;
+            }
+        }
+        function resetForm() {
+            const form = document.getElementById('patientForm');
+            if (form) form.reset();
+            const preview1 = document.getElementById('profilePreview1');
+            const preview2 = document.getElementById('profilePreview2');
+            const avatarBase64 = document.getElementById('avatarBase64');
+            if (preview1) preview1.src = '../frontend/assets/images/01.png';
+            if (preview2) preview2.src = '../frontend/assets/images/01.png';
+            if (avatarBase64) avatarBase64.value = '';
+            currentStep = 1;
+            showCurrentStep();
+            updateStepIndicator();
+            updateProgressBar();
+            const successAnimation = document.getElementById('successAnimation');
+            if (successAnimation) successAnimation.style.display = 'none';
+        }
+        function viewPatients() {
+            window.location.href = '/patients';
+        }
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' && !e.target.matches('textarea')) {
                 e.preventDefault();
@@ -1012,10 +945,7 @@
             }
         });
     </script>
-    <!-- Live Customizer end -->
-    <!-- Library Bundle Script -->
     <script src="../frontend/assets/js/core/libs.min.js"></script>
-    <!-- Plugin Scripts -->
     <script src="../frontend/assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
     <script defer src="../frontend/assets/js/plugins/flatpickr.js"></script>
     <script src="../frontend/assets/js/plugins/slider-tabs.js"></script>
@@ -1030,8 +960,4 @@
     <script defer src="../frontend/assets/js/charts/dashboard.js?v=1.4.1"></script>
     <script defer src="../frontend/assets/js/kivicare.js?v=1.4.1"></script>
     <script defer src="../frontend/assets/js/kivicare-advance.js?v=1.4.1"></script>
-    <script defer src="../frontend/assets/js/sidebar.js?v=1.4.1"></script>
-    <script defer src="../frontend/assets/js/solid-icon-search-filter.js?v=1.4.1"></script>
-</body>
-
-</html>
+    <script defer src="../frontend/assets/js/sidebar.js"></script>

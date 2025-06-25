@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum CheckActive {
+public enum PatientStatus {
     ACTIVE("Active"),
     INACTIVE("Inactive");
 

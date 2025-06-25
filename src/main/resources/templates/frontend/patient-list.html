@@ -332,7 +332,8 @@
                             <tr th:each="patient,iter : ${patients}">
                                 <td th:text="${iter.index + 1}">1</td>
                                 <td>
-                                    <img alt="Avatar" th:src="@{${patient.avatarUrl} != null ? 'data:image/jpge;base64,' + ${patient.avatarUrl} : '/frontend/assets/images/patientAvatar/anonymous.jpg'}"
+                                    <img alt="Avatar"
+                                        th:src="@{${patient.avatarUrl} != null ? 'data:image/jpge;base64,' + ${patient.avatarUrl} : '/frontend/assets/images/patientAvatar/anonymous.jpg'}"
                                         style="width:80px;height:80px;border-radius:35%;">
                                 </td>
                                 <td th:text="${patient.fullName}">Patient Name</td>
@@ -344,6 +345,7 @@
                                 <td th:text="${patient.familyRelationship}">Relationship</td>
                                 <td th:text="${patient.bloodType}">Blood Type</td>
                                 <td>
+                                    <input type="hidden" th:value="${patient.id}" class="patient-id">
                                     <button class="action-btn edit" title="Edit"><i class="fas fa-pen"></i></button>
                                     <button class="action-btn delete" title="Delete"><i
                                             class="fas fa-trash"></i></button>
@@ -357,33 +359,25 @@
                 </div>
                 <!-- Pagination -->
                 <div class="pagination-wrap">
-                    <button class="pagination-btn prev" th:disabled="${pageIndex == 0}"
-                        th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + (${pageIndex} - 1)}">Previous&nbsp;&nbsp;+
-                    </button>
+                    <a class="pagination-btn prev" th:classappend="${pageIndex == 0} ? 'disabled'"
+                        th:if="${pageIndex > 0}"
+                        th:href="@{${'/patient/showList/' + 1 + '?pageIndex=' + (pageIndex - 1)}}"
+                        aria-disabled="false">Previous&nbsp;&nbsp;+</a>
+                    <span class="pagination-btn prev disabled" th:if="${pageIndex == 0}"
+                        aria-disabled="true">Previous&nbsp;&nbsp;+</span>
                     <ul class="pagination">
-                        <li class="page-item" th:if="${pageIndex > 1}">
-                            <a class="page-link" th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=0'}">1</a>
-                        </li>
-                        <li class="page-item" th:if="${pageIndex > 2}">
-                            <span class="page-link ellipsis">...</span>
-                        </li>
-                        <li class="page-item" th:classappend="${i} == ${pageIndex} ? 'active'"
-                            th:each="i : ${#numbers.sequence((pageIndex > 0 ? pageIndex - 1 : 0), (pageIndex + 1 < totalPages ? pageIndex + 1 : totalPages - 1))}">
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                            th:classappend="${i} == ${pageIndex} ? 'active'">
                             <a class="page-link" th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + ${i}}"
                                 th:text="${i + 1}"></a>
                         </li>
-                        <li class="page-item" th:if="${pageIndex < totalPages - 2}">
-                            <span class="page-link ellipsis">...</span>
-                        </li>
-                        <li class="page-item" th:if="${pageIndex < totalPages - 1}">
-                            <a class="page-link"
-                                th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + (${totalPages} - 1)}"
-                                th:text="${totalPages}"></a>
-                        </li>
                     </ul>
-                    <button class="pagination-btn next" th:disabled="${pageIndex == totalPages - 1}"
-                        th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + (${pageIndex} + 1)}">Next&nbsp;&nbsp;+
-                    </button>
+                    <a class="pagination-btn next" th:classappend="${pageIndex == totalPages - 1} ? 'disabled'"
+                        th:if="${pageIndex < totalPages - 1}"
+                        th:href="@{${'/patient/showList/' + 1 + '?pageIndex=' + (pageIndex + 1)}}"
+                        aria-disabled="false">Next&nbsp;&nbsp;+</a>
+                    <span class="pagination-btn next disabled" th:if="${pageIndex == totalPages - 1}"
+                        aria-disabled="true">Next&nbsp;&nbsp;+</span>
                 </div>
             </div>
         </div>
@@ -397,6 +391,32 @@
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
                 style="font-size:1.5rem"></button>
         </div>
+        <div class="profile-upload-section mb-4">
+            <h5 class="text-center mb-4">
+                <i class="fas fa-camera me-2"></i>
+                Patient Photo
+            </h5>
+            <div class="profile-img-edit" style="margin:0 auto 1.5rem;width:150px;height:150px;">
+                <img alt="profile-pic" class="profile-pic" id="editProfilePreview"
+                    src="/frontend/assets/images/patientAvatar/anonymous.jpg"
+                    style="width:150px;height:150px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 8px 20px rgba(0,0,0,0.15);cursor:pointer;">
+                <div class="upload-icone" id="editUploadIcone"
+                    style="position:absolute;bottom:10px;right:10px;width:45px;height:45px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(102,126,234,0.4);">
+                    <svg class="upload-button icon-20" height="20" viewBox="0 0 24 24" width="20">
+                        <path
+                            d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z"
+                            fill="#ffffff" />
+                    </svg>
+                    <input accept="image/*" class="file-upload" id="editAvatarUpload" type="file" style="display:none;">
+                </div>
+            </div>
+            <div class="img-extension text-center">
+                <small class="text-muted">
+                    Only <strong>.jpg</strong>, <strong>.png</strong>, <strong>.jpeg</strong> allowed
+                </small>
+            </div>
+        </div>
+        <input type="hidden" id="patientIdEdit" value="" readonly>
         <div class="offcanvas-body" style="overflow-y:auto; max-height:calc(100vh - 120px);">
             <div class="form-group mb-3">
                 <label class="form-label" for="editPatientName">Name <span class="text-danger">*</span></label>
@@ -468,7 +488,7 @@
                     <option value="O_NEGATIVE">O-</option>
                 </select>
             </div>
-            <!-- Avatar không edit trực tiếp, nếu muốn thêm upload thì bổ sung sau -->
+
         </div>
         <div class="offcanvas-footer border-top">
             <div class="d-grid d-md-flex gap-3 p-3">
@@ -512,11 +532,16 @@
                     e.preventDefault();
                     var tr = btn.closest('tr');
                     var tds = tr.querySelectorAll('td');
+                    var img = tr.querySelector('img[alt="Avatar"]');
+                    var preview = document.getElementById('editProfilePreview');
+                    var idInput = tr.querySelector('input.patient-id');
+                    var patientId = idInput ? idInput.value : '';
                     // Gán dữ liệu vào form
                     document.getElementById('editPatientName').value = tds[2]?.innerText.trim() || '';
                     document.getElementById('editPatientEmail').value = tds[3]?.innerText.trim() || '';
                     document.getElementById('editPatientPhone').value = tds[4]?.innerText.trim() || '';
                     document.getElementById('editPatientBirthdate').value = tds[5]?.innerText.trim() || '';
+                    document.getElementById('patientIdEdit').value = patientId;
                     // Gender radio
                     var gender = tds[6]?.innerText.trim().toUpperCase();
                     document.getElementById('editGenderMale').checked = gender === 'MALE' || gender === 'NAM' || gender === 'MALE';
@@ -540,6 +565,9 @@
                         'UNCLE': 'UNCLE',
                         'OTHER': 'OTHER'
                     };
+                    if (img && preview) {
+                        preview.src = img.src;
+                    }
                     document.getElementById('editPatientRelationship').value = relMap[rel] || 'OTHER';
                     // Blood type select
                     var blood = (tds[9]?.innerText.trim() || '').toUpperCase();
@@ -567,6 +595,134 @@
                 btn.addEventListener('click', function () {
                     var offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasPatientEdit'));
                     offcanvas.show();
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var avatarInput = document.getElementById('editAvatarUpload');
+            var profilePreview = document.getElementById('editProfilePreview');
+            var uploadIcone = document.getElementById('editUploadIcone');
+
+            // Click vào ảnh hoặc icon để mở input file
+            if (profilePreview && avatarInput) {
+                profilePreview.addEventListener('click', function () {
+                    avatarInput.click();
+                });
+            }
+            if (uploadIcone && avatarInput) {
+                uploadIcone.addEventListener('click', function (e) {
+                    if (e.target !== avatarInput) avatarInput.click();
+                });
+            }
+            // Khi chọn ảnh, đổi preview
+            if (avatarInput && profilePreview) {
+                avatarInput.addEventListener('change', function (e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function (evt) {
+                            profilePreview.src = evt.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.action-btn.edit').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var tr = btn.closest('tr');
+                    var img = tr.querySelector('img[alt="Avatar"]');
+                    var preview = document.getElementById('editProfilePreview');
+                    if (img && preview) {
+                        preview.src = img.src;
+                        preview.setAttribute('data-original-src', img.src); // Lưu lại src gốc
+                    }
+                });
+            });
+
+            // Xử lý submit form update patient
+            const updateBtn = document.querySelector('#offcanvasPatientEdit button[type="submit"]');
+            if (updateBtn) {
+                updateBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const preview = document.getElementById('editProfilePreview');
+                    const originalSrc = preview.getAttribute('data-original-src') || '';
+                    let avatarBase64 = null;
+                    if (preview.src !== originalSrc && preview.src.startsWith('data:image')) {
+                        avatarBase64 = preview.src;
+                    }
+
+                    // Lấy patientId từ input hidden
+                    const patientId = document.getElementById('patientIdEdit').value;
+
+                    // Lấy dữ liệu từ form
+                    const patientDTO = {
+                        userId: 1,
+                        fullName: document.getElementById('editPatientName').value.trim(),
+                        email: document.getElementById('editPatientEmail').value.trim(),
+                        phoneNumber: document.getElementById('editPatientPhone').value.trim(),
+                        dateOfBirth: document.getElementById('editPatientBirthdate').value.trim(),
+                        gender: document.querySelector('input[name="editPatientGender"]:checked')?.value || '',
+                        address: document.getElementById('editPatientAddress').value.trim(),
+                        familyRelationship: document.getElementById('editPatientRelationship').value,
+                        bloodType: document.getElementById('editPatientBloodType').value,
+                        avatarBase64: avatarBase64
+                    };
+
+                    fetch(`/api/patient/update/${patientId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(patientDTO)
+                    })
+                        .then(res => {
+                            if (res.ok) return res.json();
+                            return res.text().then(msg => { throw new Error(msg); });
+                        })
+                        .then(data => {
+                            alert('Update successful!');
+                            window.location.reload();
+                        })
+                        .catch(err => {
+                            alert('Update failed: ' + err.message);
+                        });
+                });
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.action-btn.delete').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if (!confirm('Are you sure you want to delete this patient?')) return;
+
+                    // Lấy patientId từ input hidden trong dòng
+                    var tr = btn.closest('tr');
+                    var idInput = tr.querySelector('input.patient-id');
+                    var patientId = idInput ? idInput.value : null;
+                    if (!patientId) {
+                        alert('Patient ID not found!');
+                        return;
+                    }
+
+                    fetch(`/api/patient/delete/${patientId}`, {
+                        method: 'DELETE'
+                    })
+                        .then(res => {
+                            if (res.ok) return res.text();
+                            return res.text().then(msg => { throw new Error(msg); });
+                        })
+                        .then(msg => {
+                            alert('Delete successful!');
+                            window.location.reload();
+                        })
+                        .catch(err => {
+                            alert('Delete failed: ' + err.message);
+                        });
                 });
             });
         });
