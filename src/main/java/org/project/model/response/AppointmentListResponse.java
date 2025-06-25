@@ -14,6 +14,8 @@ import java.sql.Timestamp;
 public class AppointmentListResponse {
     Long id;
     String patientEntityName;
+    String patientEntityPhoneNumber;
+    String patientEntityAvatarUrl;
     String serviceEntityProductEntityName;
     Timestamp startTime;
     Integer durationMinutes;

@@ -2,6 +2,7 @@ package org.project.api;
 
 import org.project.model.request.TestListRequest;
 import org.project.model.response.TestListResponse;
+import org.project.model.response.TestRequestResponse;
 import org.project.service.TestRequestItemService;
 import org.project.service.TestRequestService;
 import org.project.service.TestService;
@@ -26,6 +27,11 @@ public class LabTestAPI {
         Long id = testRequestService.createTestRequest(appoint_id);
         testRequestItemService.createTestRequestItem(id,testListRequest.getListTest());
         return ResponseEntity.ok("Test Request Created Successfully, "+id);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TestRequestResponse> getTestList(@PathVariable Long id){
+        return ResponseEntity.ok(testRequestService.getTestRequest(id));
     }
 
     @GetMapping("/test-list")

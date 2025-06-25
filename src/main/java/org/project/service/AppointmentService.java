@@ -11,4 +11,5 @@ public interface AppointmentService {
     List<AppointmentListResponse> getAllAppointmentIsPendingOrConfirmed(Long doctorId);
     AppointmentDTO updateAppointmentStatus(AppointmentDTO appointmentDTO);
     AppointmentDetailResponse getAppointmentDetail(Long id);
+    List<AppointmentListResponse> getAllAppointmentInToday(Long id);
 }

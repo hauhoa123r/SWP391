@@ -11,6 +11,8 @@ import org.project.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -50,5 +52,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentDetailResponse getAppointmentDetail(Long id) {
         AppointmentEntity appointmentEntity = appointmentRepository.findById(id).get();
         return appointmentConverter.toAppointmentDetailResponse(appointmentEntity);
+    }
+
+    @Override
+    public List<AppointmentListResponse> getAllAppointmentInToday(Long doctorId) {
+        LocalDate today = LocalDate.now();
+        Timestamp start = Timestamp.valueOf(today.atStartOfDay());
+        Timestamp end = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
+
+        List<AppointmentEntity> appointmentEntities = appointmentRepository.findTodayAppointmentsByDoctorId(doctorId,start,end);
+        return appointmentEntities.stream().map(appointmentConverter::toAppointmentListResponse).toList();
     }
 }

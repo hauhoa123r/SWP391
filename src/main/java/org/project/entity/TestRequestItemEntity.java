@@ -31,17 +31,14 @@ public class TestRequestItemEntity {
     @JoinColumn(name = "test_request_id", nullable = false)
     private TestRequestEntity testRequestEntity;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "technician_id", nullable = false)
     private TechnicianEntity technicianEntity;
 
-    @NotNull
     @Lob
     @Column(name = "reason", nullable = false)
     private String reason;
 
-    @NotNull
     @Column(name = "result", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Object> result;
