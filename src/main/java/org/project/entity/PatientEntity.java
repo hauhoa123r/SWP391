@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.project.enums.BloodType;
 import org.project.enums.PatientStatus;
 import org.project.enums.FamilyRelationship;
@@ -23,6 +24,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@DynamicInsert
 @Table(name = "patients", schema = "swp391")
 public class PatientEntity {
     @Id
@@ -61,8 +63,8 @@ public class PatientEntity {
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
-    @Column(name = "patient_status", columnDefinition = "enum not null")
-    private PatientStatus patientStatus;
+    @Column(name = "patient_status")
+    private PatientStatus patientStatus = PatientStatus.ACTIVE;
 
     @OneToMany(mappedBy = "patientEntity")
     private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=1200, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Appointment Approval</title>
+    <link href="./assets/css/appointment-approval.css" rel="stylesheet" th:href="@{/frontend/assets/css/appointment-approval.css}" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="appointment-approval-container">
+        <div class="appointment-approval-header">
+            <div class="title">Appointments</div>
+            <div class="desc">6 appointment today</div>
+        </div>
+        <div class="table-responsive">
+            <table class="appointment-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Names</th>
+                        <th>Email</th>
+                        <th>Date And Time</th>
+                        <th>Reason</th>
+                        <th>Phone Number</th>
+                        <th>Doctor</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example row, replace with Thymeleaf th:each -->
+                    <tr>
+                        <td class="center">1</td>
+                        <td class="center">
+                            <div class="name-cell">
+                                <img src="https://via.placeholder.com/40x40?text=72x72" alt="avatar" class="avatar">
+                                <span class="name">Courtney Henry</span>
+                            </div>
+                        </td>
+                        <td class="center">courtney@gmail.com</td>
+                        <td class="center">
+                            24 May at 10:00 AM
+                            <button class="btn btn-change">Thay đổi</button>
+                        </td>
+                        <td class="center">Acne Treatment</td>
+                        <td class="center">0123456789</td>
+                        <td class="center">
+                            Dr. John Doe
+                            <button class="btn btn-change">Thay đổi</button>
+                        </td>
+                        <td class="center">
+                            <button class="btn btn-accept">Accept</button>
+                            <button class="btn btn-cancel">Cancel</button>
+                        </td>
+                    </tr>
+                    <!-- Repeat rows with th:each="appointment,iter : ${appointments}" -->
+                </tbody>
+            </table>
+        </div>
+        <div class="entries-info">
+            Showing 01 to 07 of 20 entries
+        </div>
+        <div class="pagination-wrap">
+            <span class="pagination-btn prev">&lt; Previous</span>
+            <span class="pagination-page active">1</span>
+            <span class="pagination-page">2</span>
+            <span class="pagination-btn next">Next &gt;</span>
+        </div>
+    </div>
+</body>
+</html>
