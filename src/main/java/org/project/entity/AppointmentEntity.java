@@ -54,8 +54,8 @@ public class AppointmentEntity {
     @OneToMany
     private Set<IngredientRequestEntity> ingredientRequestEntities = new LinkedHashSet<>();
 
-    @OneToMany
-    private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "appointmentEntity", fetch = FetchType.LAZY)
+    private MedicalRecordEntity medicalRecordEntity;
 
     @OneToMany
     private Set<OrderEntity> orderEntities = new LinkedHashSet<>();

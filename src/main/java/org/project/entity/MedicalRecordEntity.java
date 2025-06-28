@@ -31,8 +31,8 @@ public class MedicalRecordEntity {
     private PatientEntity patientEntity;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "appointment_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "appointment_id", nullable = false, unique = true)
     private AppointmentEntity appointmentEntity;
 
     @NotNull
@@ -47,16 +47,6 @@ public class MedicalRecordEntity {
     @NotNull
     @Column(name = "main_complaint", nullable = false)
     private String mainComplaint;
-
-    @NotNull
-    @Column(name = "allergies", nullable = false)
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> allergies;
-
-    @NotNull
-    @Column(name = "chronic_diseases", nullable = false)
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> chronicDiseases;
 
     @NotNull
     @Lob

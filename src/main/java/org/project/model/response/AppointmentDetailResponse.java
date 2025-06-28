@@ -24,7 +24,7 @@ public class AppointmentDetailResponse {
 //    BloodType patientEntityBloodType;
     Gender patientEntityGender;
     Integer durationMinutes;
-
+    String medicalReportEntityMainComplaint;
 //    public String getPatientEntityBloodTypeValue() {
 //        return patientEntityBloodType != null ? patientEntityBloodType.getValue() : null;
 //    }
