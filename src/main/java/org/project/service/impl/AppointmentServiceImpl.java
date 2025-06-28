@@ -8,7 +8,13 @@ import org.project.model.response.AppointmentDetailResponse;
 import org.project.model.response.AppointmentListResponse;
 import org.project.repository.AppointmentRepository;
 import org.project.service.AppointmentService;
+import org.project.spec.AppointmentSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -62,5 +68,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<AppointmentEntity> appointmentEntities = appointmentRepository.findTodayAppointmentsByDoctorId(doctorId,start,end);
         return appointmentEntities.stream().map(appointmentConverter::toAppointmentListResponse).toList();
+    }
+
+    @Override
+    public Page<AppointmentListResponse> searchAppointments(Long doctorId, int page, int size, String search, String status, String dateFilter, String specificDate) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("startTime").descending());
+        Specification<AppointmentEntity> spec = AppointmentSpecs.byDoctorId(doctorId)
+                .and(AppointmentSpecs.search(search))
+                .and(AppointmentSpecs.status(status))
+                .and(AppointmentSpecs.dateFilter(dateFilter, specificDate));
+        Page<AppointmentEntity> pageResult = appointmentRepository.findAll(spec, pageable);
+        return pageResult.map(appointmentConverter::toAppointmentListResponse);
     }
 }

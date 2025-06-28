@@ -12,7 +12,7 @@ public enum Relationship {
     GRAND_MOTHER("Grand Mother"),
     UNCLE("Uncle"),
     AUNT("Aunt"),
-    COUSIN("Cousin"),
+    CAUSIN("Causin"),
     OTHER("Other");
 
     private final String value;

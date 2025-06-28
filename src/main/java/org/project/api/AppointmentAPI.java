@@ -5,6 +5,7 @@ import org.project.model.response.AppointmentDetailResponse;
 import org.project.model.response.AppointmentListResponse;
 import org.project.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,17 @@ public class AppointmentAPI {
     @Autowired
     private AppointmentService appointmentService;
 
-    @GetMapping("/{doctor_id}")
-    public List<AppointmentListResponse> getAllAppointments(@PathVariable Long doctor_id) {
-        return appointmentService.getAllAppointmentIsPendingOrConfirmed(doctor_id);
+    @GetMapping("/{doctorId}")
+    public Page<AppointmentListResponse> getAppointments(
+            @PathVariable Long doctorId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String dateFilter,
+            @RequestParam(required = false) String specificDate
+    ) {
+        return appointmentService.searchAppointments(doctorId, page, size, search, status, dateFilter, specificDate);
     }
 
     @GetMapping("/in-progress/{id}")

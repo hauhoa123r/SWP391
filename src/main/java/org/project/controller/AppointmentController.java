@@ -40,7 +40,10 @@ public class AppointmentController {
     }
     @GetMapping("/in-progress")
     public String doctorInProgress(Model model, @RequestParam("id") Long id) {
-        model.addAttribute("content", "/frontend/doctor/appointment_progress");
+        Long userId = 9L;
+        DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
+        model.addAttribute("doctor", doctorResponse);
+        model.addAttribute("content", "/frontend/doctorv2/appointment_progress");
         model.addAttribute("id", id);
         return "frontend/doctorv2/doctor_layout";
     }
