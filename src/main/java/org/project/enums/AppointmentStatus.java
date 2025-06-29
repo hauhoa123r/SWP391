@@ -10,7 +10,8 @@ public enum AppointmentStatus {
     CONFIRMED("Confirmed"),
     CANCELLED("Cancelled"),
     IN_PROGRESS("In Progress"),
-    COMPLETED("Completed");
+    COMPLETED("Completed"),
+    CONFLICTED("Conflicted");
 
     private final String status;
 }

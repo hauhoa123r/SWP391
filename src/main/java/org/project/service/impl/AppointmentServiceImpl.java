@@ -2,21 +2,25 @@ package org.project.service.impl;
 
 import jakarta.transaction.Transactional;
 import org.project.config.WebConstant;
+import org.project.converter.AppointmentApprovalConverter;
 import org.project.converter.AppointmentConverter;
 import org.project.entity.AppointmentEntity;
 import org.project.entity.StaffScheduleEntity;
 import org.project.enums.AppointmentStatus;
 import org.project.model.dto.AppointmentDTO;
+import org.project.model.response.AppointmentApprovalResponse;
 import org.project.repository.*;
 import org.project.service.AppointmentService;
+import org.project.service.PatientService;
 import org.project.utils.TimestampUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,6 +33,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     private PatientRepository patientRepository;
     private AppointmentConverter appointmentConverter;
     private TimestampUtils timestampUtils;
+    private PatientService patientService;
+    private AppointmentApprovalConverter appointmentApprovalConverter;
+
+    @Autowired
+    public void setAppointmentApprovalConverter(AppointmentApprovalConverter appointmentApprovalConverter) {
+        this.appointmentApprovalConverter = appointmentApprovalConverter;
+    }
+
+    @Autowired
+    public void setPatientService(PatientService patientService) {
+        this.patientService = patientService;
+    }
 
     @Autowired
     public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
@@ -196,6 +212,78 @@ public class AppointmentServiceImpl implements AppointmentService {
         return Map.of(
                 "success", true
         );
+    }
+
+    @Override
+    public List<AppointmentApprovalResponse> getAppointmentsHaveStatusPendingByHospitalId(Long hospitalId) {
+        List<AppointmentEntity> appointmentEntities = appointmentRepository.findByDoctorEntity_StaffEntity_HospitalEntity_IdAndAppointmentStatus(hospitalId, AppointmentStatus.PENDING);
+
+        if (appointmentEntities.isEmpty() || appointmentEntities == null) {
+            return Collections.emptyList();
+        }
+
+        Map<AppointmentKey, List<Long>> appointmentLookupMap = createAppointmentLookupMap(appointmentEntities);
+
+        return appointmentEntities.stream()
+                .map(appointmentEntity -> {
+                    List<Long> conflictIds = getConflictAppointmentIds(appointmentEntity, appointmentLookupMap);
+                    return appointmentApprovalConverter.convertToResponse(appointmentEntity, conflictIds);
+                })
+                .collect(Collectors.toList());
+    }
+
+    private Map<AppointmentKey, List<Long>> createAppointmentLookupMap(List<AppointmentEntity> appointmentEntities) {
+
+        Map<AppointmentKey, List<Long>> appointmentLookupMap = new HashMap<>();
+
+        for (AppointmentEntity appointmentEntity : appointmentEntities) {
+            if (appointmentEntity.getDoctorEntity() == null || appointmentEntity.getStartTime() == null) {
+                continue; // Skip if doctor or start time is not set
+            }
+
+            AppointmentKey key = new AppointmentKey(appointmentEntity.getDoctorEntity().getId(), appointmentEntity.getStartTime());
+
+            appointmentLookupMap.computeIfAbsent(key, k -> new ArrayList<>())
+                    .add(appointmentEntity.getId());
+        }
+        return appointmentLookupMap;
+    }
+
+    private List<Long> getConflictAppointmentIds(AppointmentEntity appointmentEntity, Map<AppointmentKey, List<Long>> appointmentLookupMap) {
+        if (appointmentEntity.getDoctorEntity() == null || appointmentEntity.getStartTime() == null) {
+            return Collections.emptyList(); // No conflict if doctor or start time is not set
+        }
+
+        AppointmentKey key = new AppointmentKey(appointmentEntity.getDoctorEntity().getId(), appointmentEntity.getStartTime());
+        return Optional.ofNullable(appointmentLookupMap.get(key))
+                .map(ids -> ids.stream()
+                        .filter(id -> !id.equals(appointmentEntity.getId()))
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
+    }
+
+    private static class AppointmentKey {
+        private final Long doctorEntityId;
+        private final Timestamp startTime;
+
+        public AppointmentKey(Long doctorEntityId, Timestamp startTime) {
+            this.doctorEntityId = doctorEntityId;
+            this.startTime = startTime;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof AppointmentKey)) return false;
+            AppointmentKey that = (AppointmentKey) o;
+            return Objects.equals(doctorEntityId, that.doctorEntityId) &&
+                   Objects.equals(startTime, that.startTime);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(doctorEntityId, startTime);
+        }
     }
 
     @Autowired
