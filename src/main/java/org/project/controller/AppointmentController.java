@@ -24,7 +24,7 @@ public class AppointmentController {
 
     @GetMapping("/home-page")
     public String doctorHomePage(Model model, HttpSession session) {
-        Long userId = 1L;
+        Long userId = 588L;
         DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
         model.addAttribute("content","/frontend/doctorv2/doctor_homepage");
@@ -32,7 +32,7 @@ public class AppointmentController {
     }
     @GetMapping("/appointments")
     public String doctorAppointments(Model model) {
-        Long userId = 1L;
+        Long userId = 588L;
         DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
         model.addAttribute("content", "/frontend/doctorv2/doctor_appointments");
@@ -40,7 +40,7 @@ public class AppointmentController {
     }
     @GetMapping("/in-progress")
     public String doctorInProgress(Model model, @RequestParam("id") Long id) {
-        Long userId = 1L;
+        Long userId = 588L;
         DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
         model.addAttribute("content", "/frontend/doctorv2/appointment_progress");

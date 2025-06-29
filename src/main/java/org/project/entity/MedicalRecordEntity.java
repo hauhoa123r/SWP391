@@ -11,7 +11,9 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.sql.Date;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -61,5 +63,8 @@ public class MedicalRecordEntity {
     @Size(max = 255)
     @Column(name = "outcome")
     private String outcome;
+
+    @OneToMany(mappedBy = "medicalRecordEntity")
+    private Set<MedicalRecordSymptomEntity> medicalRecordSymptomEntities = new LinkedHashSet<>();
 
 }
