@@ -6,6 +6,8 @@ public enum Relationship {
     MOTHER("Mother"),
     BROTHER("Brother"),
     SISTER("Sister"),
+    HUSBAND("Husband"),
+    WIFE("Wife"),
     DAUGHTER("Daughter"),
     SON("Son"),
     GRAND_FATHER("Grand Father"),
