@@ -15,6 +15,7 @@ import org.project.enums.converter.BloodTypeConverter;
 
 import java.sql.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -87,4 +88,8 @@ public class PatientEntity {
 
     @OneToOne(mappedBy = "patientEntity")
     private MedicalProfileEntity medicalProfileEntity;
+
+    @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY)
+    private List<TestRequestEntity> testRequestEntity;
+
 }
