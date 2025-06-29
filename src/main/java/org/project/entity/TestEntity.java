@@ -25,7 +25,7 @@ public class TestEntity {
     @JoinColumn(name = "test_id", nullable = false)
     private ProductEntity productEntity;
 
-    @OneToMany
-    private Set<TestRequestItemEntity> testRequestItemEntities = new LinkedHashSet<>();
+//    @OneToMany
+//    private Set<TestRequestItemEntity> testRequestItemEntities = new LinkedHashSet<>();
 
 }

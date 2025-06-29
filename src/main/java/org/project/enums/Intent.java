@@ -17,12 +17,6 @@ public enum Intent {
     EMOTIONAL_SUPPORT("emotional_support", "This is a message where the user expresses feelings of sadness, disappointment, frustration, stress, or emotional distress, requiring comforting or motivational responses."),
     DIET_ADVICE("diet_advice","These are questions about food, diet, or nutrition, including what to eat, what to avoid, dietary recommendations, or healthy eating habits."),
     ADVICE("advice","This is when the user asks for general health advice or lifestyle tips not specifically about medicine or diet. Example: How can I improve my sleep quality?"),
-    CANCEL_APPOINTMENT("cancel_appointment", "This is a request to cancel an appointment."),
-    RESCHEDULE_APPOINTMENT("reschedule_appointment", "This is a request to reschedule an appointment."),
-    ORDER_MEDICINE("order_medicine", "This is a request to order medicine."),
-    CHECK_MEDICINE_STOCK("check_medicine_stock", "This is a request to check the stock of medicine."),
-    CANCEL_MEDICINE_ORDER("cancel_medicine_order", "This is a request to cancel a medicine order and possibly request a refund."),
-    REQUEST_REFUND("request_refund", "This is a request to get a refund for a cancelled service or medicine order."),
     CREATE_PATIENT("create_patient", "User wants to register a new patient record."),
     UNKNOWN("unknown", "This is when the user's message is not understandable, contains random characters, meaningless text, or cannot be classified into any known category. Example: 'asdkjh2131@#' or 'xxxxxx'.");
 
