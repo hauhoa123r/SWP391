@@ -1,0 +1,55 @@
+package org.project.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.project.model.request.AdminPatientRequest;
+import org.project.model.response.AdminPatientResponse;
+import org.project.model.response.PageResponse;
+import org.project.service.AdminPatientService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/admin/patients")
+public class AdminPatientController {
+
+    private final AdminPatientService adminPatientService;
+
+    @GetMapping({"", "/view"})
+    public String viewPatients(@RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size,
+                               Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        PageResponse<AdminPatientResponse> response = adminPatientService.getAllPatients(pageable);
+        model.addAttribute("patients", response.getContent().getContent());
+        model.addAttribute("currentPage", response.getCurrentPage());
+        model.addAttribute("totalPages", response.getTotalPages());
+        return "frontend/patient";
+    }
+
+    @GetMapping("/search")
+    public String searchPatients(@RequestParam String keyword,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size,
+                                 Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        AdminPatientRequest req = AdminPatientRequest.builder().keyword(keyword).build();
+        PageResponse<AdminPatientResponse> response = adminPatientService.searchPatients(req, pageable);
+        model.addAttribute("patients", response.getContent().getContent());
+        model.addAttribute("currentPage", response.getCurrentPage());
+        model.addAttribute("totalPages", response.getTotalPages());
+        model.addAttribute("keyword", keyword);
+        return "frontend/patient";
+    }
+
+    @GetMapping("/{id}")
+    public String getPatientById(@PathVariable Long id, Model model) {
+        AdminPatientResponse patient = adminPatientService.getPatientById(id);
+        model.addAttribute("patient", patient);
+        return "frontend/patient-detail";
+    }
+
+}

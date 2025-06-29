@@ -9,6 +9,8 @@ public enum FamilyRelationship {
     SELF("Self"),
     FATHER("Father"),
     MOTHER("Mother"),
+    HUSBAND("Husband"),
+    WIFE("Wife"),
     BROTHER("Brother"),
     SISTER("Sister"),
     SON("Son"),
