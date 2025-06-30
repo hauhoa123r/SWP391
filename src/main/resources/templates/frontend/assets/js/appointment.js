@@ -62,6 +62,14 @@ class BookingManager {
                 object: ServiceResponse,
                 prefix: "service",
                 prevTab: "doctor",
+                nextTab: "patient",
+            }, patient: {
+                ...defaultTabConfigs,
+                rootUrl: "/api/patient",
+                objectJsonName: "patients",
+                object: PatientResponse,
+                prefix: "patient",
+                prevTab: "service",
                 nextTab: "dateTime",
             }, dateTime: {
                 ...defaultTabConfigs,
@@ -69,10 +77,10 @@ class BookingManager {
                 objectJsonName: "availableTimes",
                 object: TimeResponse,
                 prefix: "date-time",
-                prevTab: "service",
-                nextTab: "patient",
+                prevTab: "patient",
+                nextTab: "confirmation",
                 customUrlBuilder: function (manager) {
-                    let apiUrl = "/api/schedule/staff/" + manager.selectedIds.doctor;
+                    let apiUrl = `/api/schedule/staff/${manager.selectedIds.doctor}/patient/${manager.selectedIds.patient}`;
                     if (!manager.searchKeywords.dateTime) {
                         manager.searchKeywords.dateTime = new Date().toISOString().split("T")[0];
                     }
@@ -96,14 +104,6 @@ class BookingManager {
                 customSelect: function (id) {
                     return document.querySelector(`input[value="${id}"]`);
                 }
-            }, patient: {
-                ...defaultTabConfigs,
-                rootUrl: "/api/patient",
-                objectJsonName: "patients",
-                object: PatientResponse,
-                prefix: "patient",
-                prevTab: "dateTime",
-                nextTab: "confirmation",
             }, confirmation: {
                 ...defaultTabConfigs, prevTab: "patient",
             }
@@ -241,6 +241,8 @@ class BookingManager {
                     price: selectedServiceElement.querySelector(".service-price").textContent.trim(),
                 };
                 this.selectedIds.service = inputServiceElement.value;
+                const userId = document.querySelector("#user-id").value;
+                this.tabConfigs.patient.urlFilter = `/user/${userId}`
                 this.nextTab();
             } else {
                 toast.warning("Please select a service first.", {
@@ -252,6 +254,31 @@ class BookingManager {
 
         document.querySelector("#service-previous-button").addEventListener("click", () => {
             this.previousTab();
+        });
+
+        document.querySelector("#patient-next-button").addEventListener("click", () => {
+            const inputPatientElement = document.querySelector("#patient-list input:checked");
+            if (inputPatientElement) {
+                const selectedPatientElement = inputPatientElement.closest(".patient");
+                this.bookingSummary.patient = {
+                    name: selectedPatientElement.querySelector(".patient-name").textContent.trim(),
+                    phone: selectedPatientElement.querySelector(".patient-phone").textContent.trim(),
+                    email: selectedPatientElement.querySelector(".patient-email").textContent.trim(),
+                };
+                this.selectedIds.patient = inputPatientElement.value;
+                this.nextTab();
+            } else {
+                toast.warning("Please select a patient first.", {
+                    position: "top-right", icon: true, duration: 3000
+                })
+            }
+        });
+
+        document.querySelector("#patient-previous-button").addEventListener("click", () => {
+            this.previousTab();
+            const flatpickrInstance = document.querySelector(".inline_flatpickr")._flatpickr;
+            const selectedDate = new Date(this.searchKeywords.dateTime || new Date().toISOString().split("T")[0]);
+            flatpickrInstance.setDate(selectedDate, true);
         });
 
         document.querySelector("#date-time-next-button").addEventListener("click", (event) => {
@@ -267,9 +294,7 @@ class BookingManager {
                     })
                 };
                 this.selectedIds.dateTime = inputTimeElement.value;
-                const userId = document.querySelector("#user-id").value;
-                this.tabConfigs.patient.urlFilter = `/user/${userId}`
-                this.nextTab();
+                this.showConfirmation();
             } else {
                 toast.warning("Please select a time slot first.", {
                     position: "top-right", icon: true, duration: 3000
@@ -280,31 +305,6 @@ class BookingManager {
 
         document.querySelector("#date-time-previous-button").addEventListener("click", () => {
             this.previousTab();
-        });
-
-        document.querySelector("#patient-next-button").addEventListener("click", () => {
-            const inputPatientElement = document.querySelector("#patient-list input:checked");
-            if (inputPatientElement) {
-                const selectedPatientElement = inputPatientElement.closest(".patient");
-                this.bookingSummary.patient = {
-                    name: selectedPatientElement.querySelector(".patient-name").textContent.trim(),
-                    phone: selectedPatientElement.querySelector(".patient-phone").textContent.trim(),
-                    email: selectedPatientElement.querySelector(".patient-email").textContent.trim(),
-                };
-                this.selectedIds.patient = inputPatientElement.value;
-                this.showConfirmation();
-            } else {
-                toast.warning("Please select a patient first.", {
-                    position: "top-right", icon: true, duration: 3000
-                })
-            }
-        });
-
-        document.querySelector("#patient-previous-button").addEventListener("click", () => {
-            this.previousTab();
-            const flatpickrInstance = document.querySelector(".inline_flatpickr")._flatpickr;
-            const selectedDate = new Date(this.searchKeywords.dateTime || new Date().toISOString().split("T")[0]);
-            flatpickrInstance.setDate(selectedDate, true);
         });
 
         document.querySelector("#confirm-button").addEventListener("click", (event) => {

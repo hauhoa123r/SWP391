@@ -1,5 +1,6 @@
 package org.project.api;
 
+import org.project.model.dto.PatientDTO;
 import org.project.model.response.PatientResponse;
 import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +22,6 @@ public class PatientAPI {
     @Autowired
     public void setPatientService(PatientService patientService) {
         this.patientService = patientService;
-    }
-
-    @GetMapping("/api/patient")
-    public ModelAndView getUserPatientRelationships(@RequestParam Long userId) {
-        ModelAndView modelAndView = new ModelAndView("frontend/patient-add-previous");
-
-        List<String> relationships = patientService.getAllRelationships(userId);
-        if (relationships != null && !relationships.isEmpty()) {
-            modelAndView.addObject("relationships", relationships);
-        } else {
-            modelAndView.addObject("error", "No relationships found.");
-        }
-        return modelAndView;
     }
 
     @GetMapping("/page/{pageIndex}/user/{userId}")
@@ -61,5 +49,30 @@ public class PatientAPI {
                         "totalPages", patientResponsePage.getTotalPages()
                 )
         );
+    }
+
+    @PatchMapping("/update/{patientId}")
+    public ResponseEntity<?> updatePatient(@RequestBody PatientDTO patientDTO,
+                                           @PathVariable Long patientId) {
+        try {
+            PatientResponse updatedPatient = patientService.updatePatient(patientId, patientDTO);
+            if (updatedPatient != null) {
+                return ResponseEntity.ok(updatedPatient);
+            } else {
+                return ResponseEntity.badRequest().body("Failed to update patient.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal server error: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{patientId}")
+    public ResponseEntity<?> deletePatient(@PathVariable Long patientId) {
+        try {
+            patientService.deletePatient(patientId);
+            return ResponseEntity.ok("Patient deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal server error: " + e.getMessage());
+        }
     }
 }

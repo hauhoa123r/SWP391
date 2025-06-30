@@ -31,8 +31,17 @@ public class PatientController {
                                   @RequestParam (defaultValue = "0") int pageIndex,
                                   Model model ) {
 
-        Page<PatientResponse> patientResponsePage = patientService.getAllPatientsByUserIdForPage(userId, pageIndex, 6);
+        Page<PatientResponse> patientResponsePage = patientService.getPatientsByUser(userId, pageIndex, 6);
         List<PatientResponse> patients = patientResponsePage.getContent();
+
+        for( PatientResponse patientResponse : patients ) {
+            if(patientResponse.getAvatarUrl() != null && !patientResponse.getAvatarUrl().isEmpty()) {
+                String base64Image = patientService.toConvertFileToBase64(patientResponse.getAvatarUrl());
+                patientResponse.setAvatarUrl(base64Image);
+            } else {
+                patientResponse.setAvatarUrl(null); // Set to null if no avatar URL is present
+            }
+        }
         model.addAttribute("patients", patients);
         model.addAttribute("pageIndex", pageIndex);
         model.addAttribute("totalPages", patientResponsePage.getTotalPages());

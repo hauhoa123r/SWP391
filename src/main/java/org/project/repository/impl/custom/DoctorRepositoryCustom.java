@@ -16,7 +16,7 @@ public interface DoctorRepositoryCustom {
             Long departmentEntityId, Long hospitalEntityId, Pageable pageable);
 
     Page<DoctorEntity> findAllByStaffEntityDepartmentEntityIdAndStaffEntityHospitalEntityIdAndStaffEntityFullNameContainingOrderByStaffEntityAverageRatingAndStaffEntityReviewCount(Long departmentEntityId,
-                                                                                                                                                                                    Long hospitalEntityId, String keyword, Pageable pageable);
+                                                                                                                                                                                    Long hospitalEntityId, String fullName, Pageable pageable);
 
     List<DoctorEntity> findAllByStaffEntityDepartmentEntityIdAndIdNotEqualsOrderByStaffEntityAverageRatingAndStaffEntityReviewCount(
             Long departmentEntityId, Long id);

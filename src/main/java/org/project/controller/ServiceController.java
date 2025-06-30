@@ -34,7 +34,7 @@ public class ServiceController {
 
     @GetMapping("/detail/{id}")
     public String serviceDetail(@PathVariable Long id, Model model) {
-        ServiceResponse productResponse = serviceService.getService(id);
+        ServiceResponse productResponse = serviceService.getActiveService(id);
         model.addAttribute("service", productResponse);
         return "/frontend/service-detail";
     }
