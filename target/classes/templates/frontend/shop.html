@@ -1755,9 +1755,10 @@
                                              </span>
                                           </a>
                                        </li>
-                                       <form th:action="@{/shop/add-to-cart}" method="post">
+                                       <form th:action="@{/add-to-cart}" method="post">
 									    <input type="hidden" name="userId" th:value="${userId}" />
 									    <input type="hidden" name="productId" th:value="${product.id}" />
+									    <input type="number" name="quantity" value="1" min="1" />
                                        <li class="add-to-cart">
                                           <button type="submit" class="cart-btn border-0 bg-transparent p-0 m-0">
                                              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 20 21"

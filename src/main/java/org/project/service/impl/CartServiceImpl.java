@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
@@ -75,21 +76,34 @@ public class CartServiceImpl implements CartService {
 	// add item to cart
 	@Override
 	public void addItem(Long userId, Long productId, Integer quantity) {
-		//userId = 2l;
-	    CartItemEntity item = cartRepo.findByUserEntityIdAndProductEntityId(userId,productId).orElseGet(() -> {
-	    	CartItemEntity newItem = new CartItemEntity();
-	    	UserEntity user = userRepo.findById(userId)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+	        // Load the user and product entities
+	        UserEntity user = userRepo.findById(userId)
+	                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 	        ProductEntity product = productRepo.findById(productId)
-	                             .orElseThrow(() -> new RuntimeException("Product not found"));
-	        newItem.setUserEntity(user);
-	        newItem.setProductEntity(product);
-	        newItem.setQuantity(0);
-	        return newItem;
-	    });
+	                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-	    item.setQuantity(item.getQuantity() + quantity);
-	    cartRepo.save(item);
+	        // Create composite key
+	        CartItemEntityId cartItemId = new CartItemEntityId();
+	        cartItemId.setUserId(userId);
+	        cartItemId.setCartItemId(productId); // Link cartItemId to productId
+
+	        // Try to find existing cart item
+	        Optional<CartItemEntity> optionalCartItem = cartRepo.findById(cartItemId);
+
+	        if (optionalCartItem.isPresent()) {
+	            // get quantity
+	            CartItemEntity existingItem = optionalCartItem.get();
+	            existingItem.setQuantity(existingItem.getQuantity() + quantity);
+	        } else {
+	            // Create new cart item
+	            CartItemEntity newItem = new CartItemEntity();
+	            newItem.setId(cartItemId);
+	            newItem.setUserEntity(user);
+	            newItem.setProductEntity(product);
+	            newItem.setQuantity(quantity);
+	            cartRepo.save(newItem);
+	        }
+	    
 	}
 	
 }

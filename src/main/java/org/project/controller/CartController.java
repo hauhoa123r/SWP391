@@ -98,12 +98,6 @@ public class CartController {
 	}
 
 	// TODO: need to finish (help)
-	// apply coupons (check if existed)
-	@PostMapping("/apply-coupon")
-	public String applyCoupon(@RequestParam("cartId") Long cartId, @RequestParam("") String couponCode) {
-
-		return "redirect:/cart";
-	}
 
 	@GetMapping("/checkout")
 	public String checkout() {

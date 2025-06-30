@@ -11,6 +11,7 @@ import java.util.Set;
 import org.project.entity.CartItemEntity;
 import org.project.entity.CartItemEntityId;
 import org.project.model.dto.ReviewDTO;
+import org.project.model.request.AddToCartRequest;
 import org.project.model.response.PharmacyListResponse;
 import org.project.projection.ProductViewProjection;
 import org.project.service.CartService;
@@ -21,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,7 +49,7 @@ public class ShopController {
 
 		// create cart object
 		Long userId = 2l; // temporary hard-code user id, need changing after finishing login
-		Long cartId =2l; //hard code, need fix later
+		Long cartId = 2l; // hard code, need fix later
 		List<CartItemEntity> cartItems = cartService.getCart(userId);
 		mv.addObject("cartItems", cartItems);
 		mv.addObject("total", cartService.calculateTotal(userId));
@@ -187,19 +189,11 @@ public class ShopController {
 		mv.addObject("products", pharmacyServiceImpl.findTop10Products());
 		return mv;
 	}
-
-	@PostMapping("/shop/add-to-cart")
-	public String addToCart(@RequestParam("userId") Long userId, @RequestParam("quantity") int quantity,
-			@RequestParam("productId") Long productId, RedirectAttributes redirectAttributes) {
-		userId=2l;
-		if (quantity <= 0) {
-	        redirectAttributes.addFlashAttribute("error", "Please enter a valid quantity.");
-	        return "redirect:/shop";
-	    }
-		cartService.addItem(userId, productId, 1); // default quantity = 1
-
-        redirectAttributes.addFlashAttribute("message", "Item added to cart!");
-        return "redirect:/shop"; 
+	@PostMapping("/add-to-cart")
+	public String addToCart(@RequestParam Long userId, @RequestParam Long productId,
+			@RequestParam(defaultValue = "1") int quantity) {
+		cartService.addItem(userId, productId, quantity);
+		return "redirect:/shop"; // or wherever you want
 	}
 //
 //	@GetMapping("/checkout")
