@@ -1,9 +1,9 @@
-import {DepartmentResponse} from "/frontend/assets/js/model/response/DepartmentResponse.js";
-import {StaffEducationResponse} from "/frontend/assets/js/model/response/StaffEducationResponse.js";
-import {StaffExperienceResponse} from "/frontend/assets/js/model/response/StaffExperienceResponse.js";
-import {StaffSkillResponse} from "/frontend/assets/js/model/response/StaffSkillResponse.js";
-import {StaffQualificationResponse} from "/frontend/assets/js/model/response/StaffQualificationResponse.js";
-import {StaffSpecialityResponse} from "/frontend/assets/js/model/response/StaffSpecialityResponse.js";
+import {DepartmentResponse} from "/templates/frontend/assets/js/model/response/DepartmentResponse.js";
+import {StaffEducationResponse} from "/templates/frontend/assets/js/model/response/StaffEducationResponse.js";
+import {StaffExperienceResponse} from "/templates/frontend/assets/js/model/response/StaffExperienceResponse.js";
+import {StaffSkillResponse} from "/templates/frontend/assets/js/model/response/StaffSkillResponse.js";
+import {StaffQualificationResponse} from "/templates/frontend/assets/js/model/response/StaffQualificationResponse.js";
+import {StaffSpecialityResponse} from "/templates/frontend/assets/js/model/response/StaffSpecialityResponse.js";
 
 export class StaffResponse {
     constructor(id, fullName, avatarUrl, departmentEntity, userEntityEmail, staffEducationEntities, staffExperienceEntities, staffSkillEntities, staffQualificationEntities, staffSpecialityEntities, hospitalEntityName, reviewCount, averageRating) {
