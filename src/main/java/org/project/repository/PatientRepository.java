@@ -38,4 +38,7 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
     );
 
     PatientEntity findByUserEntity_IdAndFullName(Long userId, String patientName);
+
+    @Query("SELECT COUNT(pe.id) FROM PatientEntity pe")
+    int countAllPatients();
 }
