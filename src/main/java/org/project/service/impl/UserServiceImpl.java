@@ -11,12 +11,15 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
 
     // Lấy tất cả người dùng (phân trang)
     @Override
@@ -81,6 +84,62 @@ public class UserServiceImpl implements UserService {
                 }
         }
         return userRepository.findByUserStatus(target, PageRequest.of(page, size));
+    }
+
+    // ================== CRUD Operations ==================
+    @Override
+    public UserEntity createUser(UserEntity user) {
+        if (user == null) throw new IllegalArgumentException("User cannot be null");
+        if (user.getEmail() != null && userRepository.existsByEmail(user.getEmail())) {
+            throw new org.project.exception.DuplicateResourceException("email", "Email already exists");
+        }
+        // hash password if provided
+        if (user.getPasswordHash() != null) {
+            user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+        }
+        return userRepository.save(user);
+    }
+
+    @Override
+    public UserEntity getUserById(Long id) {
+        return id == null ? null : userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public UserEntity updateUser(Long id, UserEntity updatedUser) {
+        if (id == null || updatedUser == null) {
+            throw new IllegalArgumentException("Id and user must not be null");
+        }
+        if (updatedUser.getEmail() != null && userRepository.existsByEmailAndIdNot(updatedUser.getEmail(), id)) {
+            throw new org.project.exception.DuplicateResourceException("email", "Email already exists");
+        }
+        if (id == null || updatedUser == null) {
+            throw new IllegalArgumentException("Id and user must not be null");
+        }
+        Optional<UserEntity> optional = userRepository.findById(id);
+        if (optional.isEmpty()) {
+            return null;
+        }
+        UserEntity existing = optional.get();
+        // Copy allowed fields (simple example)
+        if(updatedUser.getEmail()!=null) existing.setEmail(updatedUser.getEmail());
+        if(updatedUser.getPhoneNumber()!=null) existing.setPhoneNumber(updatedUser.getPhoneNumber());
+        if(updatedUser.getUserRole()!=null) existing.setUserRole(updatedUser.getUserRole());
+        if(updatedUser.getUserStatus()!=null) existing.setUserStatus(updatedUser.getUserStatus());
+        existing.setIsVerified(updatedUser.getIsVerified());
+        existing.setTwoFactorEnabled(updatedUser.getTwoFactorEnabled());
+        // update password if provided
+        if(updatedUser.getPasswordHash()!=null && !updatedUser.getPasswordHash().isBlank()){
+            existing.setPasswordHash(passwordEncoder.encode(updatedUser.getPasswordHash()));
+        }
+        return userRepository.save(existing);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        if (id != null) {
+            userRepository.deleteById(id);
+        }
     }
 
     

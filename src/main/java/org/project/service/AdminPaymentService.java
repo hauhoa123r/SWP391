@@ -18,6 +18,9 @@ public interface AdminPaymentService {
 
     PaymentEntity getPaymentById(Long id);
 
-    PageResponse<PaymentEntity> searchPayments(Long orderId, BigDecimal amount, LocalDate fromDate, LocalDate toDate, Pageable pageable);
+    PageResponse<PaymentEntity> searchPayments(Long orderId, BigDecimal amount,
+                                          String customerEmail, String method, String status,
+                                          LocalDate fromDate, LocalDate toDate,
+                                          Pageable pageable);
 
 }

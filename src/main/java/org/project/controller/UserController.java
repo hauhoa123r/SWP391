@@ -19,6 +19,56 @@ public class UserController {
 
     private final UserService userService;
 
+    // Global model attributes for form selects
+    @ModelAttribute("roles")
+    public org.project.enums.UserRole[] roles() {
+        return org.project.enums.UserRole.values();
+    }
+
+    @ModelAttribute("statuses")
+    public org.project.enums.UserStatus[] statuses() {
+        return org.project.enums.UserStatus.values();
+    }
+
+    // ================== Create User ==================
+    @GetMapping("/create")
+    public String showCreateForm(Model model) {
+        model.addAttribute("user", new org.project.entity.UserEntity());
+        model.addAttribute("formAction", "/users/create");
+        return "dashboard/user-form";
+    }
+
+    @PostMapping("/create")
+    public String createUser(@ModelAttribute("user") org.project.entity.UserEntity user) {
+        userService.createUser(user);
+        return "redirect:/users/view";
+    }
+
+    // ================== Edit User ==================
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        org.project.entity.UserEntity user = userService.getUserById(id);
+        if (user == null) {
+            return "redirect:/users/view";
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("formAction", "/users/update/" + id);
+        return "dashboard/user-form";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateUser(@PathVariable Long id, @ModelAttribute("user") org.project.entity.UserEntity user) {
+        userService.updateUser(id, user);
+        return "redirect:/users/view";
+    }
+
+    // ================== Delete User ==================
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "redirect:/users/view";
+    }
+
     // Hiển thị tất cả người dùng
     @GetMapping({ "", "/view" })
     public String viewUsers(@RequestParam(defaultValue = "0") int page,

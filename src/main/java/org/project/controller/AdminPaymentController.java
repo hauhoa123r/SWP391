@@ -31,7 +31,7 @@ import java.time.LocalDate;
  * </p>
  */
 @Controller
-@RequestMapping("/admin/payments")
+@RequestMapping("/payments")
 @RequiredArgsConstructor
 public class AdminPaymentController {
 
@@ -49,9 +49,10 @@ public class AdminPaymentController {
 
         // Gọi service dashboard, nhận PageResponse kèm meta.
         PageResponse<PaymentEntity> res = adminPaymentService.getAllPayments(PageRequest.of(page, size, Sort.by("id").descending()));
-        Page<PaymentEntity> pg = res.getContent(); // trang dữ liệu thực tế
+        Page<PaymentEntity> pg = res.getContent();
         model.addAttribute("payments", pg.getContent());
-        model.addAttribute("page", res); // truyền kèm meta totalPages, currentPage
+        model.addAttribute("page", res);
+
         return "dashboard/payment";
     }
 
@@ -62,19 +63,34 @@ public class AdminPaymentController {
     public String search(
             @RequestParam(required = false) Long orderId,
             @RequestParam(required = false) BigDecimal amount,
+            @RequestParam(required = false) String customer,
+            @RequestParam(required = false) String method,
+            @RequestParam(required = false) String status,
+
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             Model model) {
 
-        PageResponse<PaymentEntity> res = adminPaymentService.searchPayments(orderId, amount, from, to,
+        PageResponse<PaymentEntity> res = adminPaymentService.searchPayments(
+                orderId,
+                amount,
+                customer,
+                method,
+                status,
+                from,
+                to,
                 PageRequest.of(page, size, Sort.by("id").descending()));
         Page<PaymentEntity> pg = res.getContent();
         model.addAttribute("payments", pg.getContent());
         model.addAttribute("page", res);
         model.addAttribute("orderId", orderId);
         model.addAttribute("amount", amount);
+        model.addAttribute("customer", customer);
+        model.addAttribute("method", method);
+        model.addAttribute("status", status);
+
         model.addAttribute("from", from);
         model.addAttribute("to", to);
         return "dashboard/payment";

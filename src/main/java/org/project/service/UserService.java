@@ -21,5 +21,18 @@ public interface UserService {
 
     // Tìm kiếm người dùng theo trạng thái
     Page<UserEntity> searchByStatus(String status, int page, int size);
+
+    // ================== CRUD Operations ==================
+    // Tạo người dùng mới
+    UserEntity createUser(UserEntity user);
+
+    // Lấy người dùng theo ID
+    UserEntity getUserById(Long id);
+
+    // Cập nhật thông tin người dùng
+    UserEntity updateUser(Long id, UserEntity updatedUser);
+
+    // Xóa người dùng
+    void deleteUser(Long id);
 }
 

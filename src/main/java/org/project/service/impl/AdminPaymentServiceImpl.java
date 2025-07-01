@@ -8,6 +8,7 @@ import org.project.service.AdminPaymentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import jakarta.persistence.criteria.Join;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -66,16 +67,46 @@ public class AdminPaymentServiceImpl implements AdminPaymentService {
     /**
      * Tìm kiếm với bộ lọc tương tự PaymentService nhưng trả về PageResponse.
      */
-    public PageResponse<PaymentEntity> searchPayments(Long orderId, BigDecimal amount, LocalDate fromDate, LocalDate toDate, Pageable pageable) {
-        Specification<PaymentEntity> spec = // Khởi tạo điều kiện mặc định "luôn đúng" (cb.conjunction()).
-                (root, query, cb) -> cb.conjunction();
+    /**
+     * Search payments with dynamic filters and pagination.
+     *
+     * @param orderId        order id to match (nullable)
+     * @param amount         exact amount to match (nullable)
+     * @param customerEmail  substring of patient email (case-insensitive, nullable)
+     * @param method         payment method (e.g. CASH, VNPAY) (nullable)
+     * @param status         payment status (e.g. PAID, REFUND) (nullable)
+     * @param fromDate       start date (inclusive) for paymentTime (nullable)
+     * @param toDate         end date (inclusive) for paymentTime (nullable)
+     * @param pageable       spring pageable (page, size, sort)
+     */
+    public PageResponse<PaymentEntity> searchPayments(Long orderId, BigDecimal amount,
+                                                     String customerEmail,
+                                                     String method,
+                                                     String status,
+                                                     LocalDate fromDate,
+                                                     LocalDate toDate,
+                                                     Pageable pageable) {
+        // Start with an empty Specification (equivalent to "true" condition)
+        Specification<PaymentEntity> spec = Specification.where(null);
 
+        // Apply only the first non-null / non-blank basic filter so that users search by a single field
         if (orderId != null) {
             spec = spec.and((root, q, cb) -> cb.equal(root.get("orderEntity").get("id"), orderId));
-        }
-        if (amount != null) {
+        } else if (amount != null) {
             spec = spec.and((root, q, cb) -> cb.equal(root.get("amount"), amount));
+        } else if (customerEmail != null && !customerEmail.isBlank()) {
+            spec = spec.and((root, q, cb) -> {
+                Join<?, ?> patientJoin = root.join("orderEntity")
+                                              .join("appointmentEntity")
+                                              .join("patientEntity");
+                return cb.like(cb.lower(patientJoin.get("email")), customerEmail.toLowerCase() + "%");
+            });
+        } else if (method != null && !method.isBlank()) {
+            spec = spec.and((root, q, cb) -> cb.like(cb.lower(root.get("method")), method.toLowerCase() + "%"));
+        } else if (status != null && !status.isBlank()) {
+            spec = spec.and((root, q, cb) -> cb.like(cb.lower(root.get("status")), status.toLowerCase() + "%"));
         }
+        // Filter by paymentTime between fromDate (start of day) and toDate (end of day)
         if (fromDate != null || toDate != null) {
             Timestamp from = fromDate != null ? Timestamp.valueOf(fromDate.atStartOfDay()) : Timestamp.valueOf(LocalDate.of(1970,1,1).atStartOfDay());
             Timestamp to   = toDate != null ? Timestamp.valueOf(toDate.plusDays(1).atStartOfDay()) : Timestamp.valueOf(LocalDate.of(3000,1,1).atStartOfDay());

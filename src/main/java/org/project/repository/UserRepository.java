@@ -10,6 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
+    boolean existsByEmail(String email);
+
+    boolean existsByEmailAndIdNot(String email, Long id);
+    
     boolean existsByIdAndUserStatus(Long id, UserStatus userStatus);
 
     List<UserEntity> findByEmailContaining(String email);
