@@ -232,105 +232,12 @@
     </div>
     <div class="section-padding">
         <div class="container">
-            <div class="row row-cols-xl-3 row-cols-md-2 row-cols-1">
-                <div class="col mt-5 text-center" th:each="service : ${services}">
-                    <div class="iq-fancy-box position-relative p-md-5 bg-light rounded h-100">
-                        <div class="overflow-hidden mb-5">
-                            <img class="img-fluid w-100 service-img" loading="lazy"
-                                 src="./assets/images//general/doctor.svg"
-                                 th:src="${service.productEntity.imageUrl}">
-                        </div>
-                        <div class="iq-fancy-box-content mt-5">
-                            <h4 class="mb-2" th:text="${service.productEntity.name}">Qualified Doctors</h4>
-                            <p class="text-body m-0 line-count-3" th:text="${service.productEntity.description}">A
-                                person who holds a
-                                degree recognised by the Medical
-                                Council is registered. </p>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div class="service-price fw-bold"
-                                     th:text="${'$ ' + (#numbers.formatDecimal(service.productEntity.price, 1, 'COMMA', 2, 'POINT'))}">
-                                    $ 100.00
-                                </div>
-                                <div class="service-rating">
-                                    <span class="ms-1 text-muted small"
-                                          th:text="${#numbers.formatDecimal(service.productEntity.averageRating, 1, 1, 'POINT')}">4.5</span>
-                                    <span th:classappend="${service.productEntity.reviewCount > 0 ? 'text-warning' : 'text-primary'}"
-                                          th:each="i : ${#numbers.sequence(1, 5)}">
-                                        <i class="fas fa-star"
-                                           th:if="${service.productEntity.averageRating - i > -0.5}"></i>
-                                        <i class="fas fa-star-half-alt"
-                                           th:if="${i - service.productEntity.averageRating >= 0.5 && i - service.productEntity.averageRating < 1}"></i>
-                                        <i class="far fa-star"
-                                           th:if="${i - service.productEntity.averageRating >= 1}"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="fencybox-button mt-3 mt-md-5">
-                                <div class="iq-btn-container">
-                                    <a class="iq-button iq-btn-link text-capitalize" href="./service-detail.html"
-                                       th:href="${'/service/detail/' + service.id}"
-                                    >
-                                        read more
-                                        <span class="btn-link-icon">
-                                              <svg fill="none" height="10" viewBox="0 0 8 8"
-                                                   width="10"
-                                                   xmlns="http://www.w3.org/2000/svg">
-                                                 <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                       fill="currentColor"></path>
-                                              </svg>
-                                           </span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="row row-cols-xl-3 row-cols-md-2 row-cols-1" id="service-list">
             </div>
         </div>
     </div>
     <nav aria-label="Service pagination" class="mt-4">
-        <ul class="pagination justify-content-center">
-            <!-- Previous button -->
-            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                <a aria-disabled="true"
-                   class="page-link"
-                   tabindex="-1" th:href="${'/service/page/' + (currentPage - 1)}">Previous</a>
-            </li>
-
-            <!-- First page -->
-            <li class="page-item" th:if="${currentPage > 1}">
-                <a class="page-link"
-                   th:href="@{/service/page/0}">1</a>
-            </li>
-            <li class="page-item disabled" th:if="${currentPage > 2}">
-                <span class="page-link">...</span>
-            </li>
-
-            <!-- Page numbers around current -->
-            <li class="page-item"
-                th:classappend="${i} == ${currentPage} ? 'active'"
-                th:each="i : ${#numbers.sequence((currentPage > 1 ? currentPage - 1 : 0), (currentPage + 1 < totalPages ? currentPage + 1 : totalPages - 1))}">
-                <a class="page-link"
-                   th:href="${'/service/page/' + i}"
-                   th:text="${i + 1}"></a>
-            </li>
-
-            <!-- Last page -->
-            <li class="page-item disabled" th:if="${currentPage < totalPages - 3}">
-                <span class="page-link">...</span>
-            </li>
-            <li class="page-item" th:if="${currentPage < totalPages - 2}">
-                <a class="page-link"
-                   th:href="${'/service/page/' + (totalPages - 1)}"
-                   th:text="${totalPages}"></a>
-            </li>
-
-            <!-- Next button -->
-            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                <a class="page-link"
-                   th:href="${'/service/page/' + (currentPage + 1)}">Next</a>
-            </li>
-        </ul>
+        <ul class="pagination justify-content-center" id="service-pagination"></ul>
     </nav>
 </main>
 <!-- Wrapper End -->
@@ -451,5 +358,7 @@
 <!-- Kivicare Pages Script -->
 <script defer src="./assets/js/slider.js" th:src="@{/frontend/assets/js/slider.js}"></script>
 <script defer src="./assets/js/scroll-text.js" th:src="@{/frontend/assets/js/scroll-text.js}"></script>
+<script src="./assets/js/service.js" th:src="@{/frontend/assets/js/service.js}"
+        type="module"></script>
 </body>
 </html>
