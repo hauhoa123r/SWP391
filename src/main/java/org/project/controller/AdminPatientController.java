@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin/patients")
+@RequestMapping("/patients")
 public class AdminPatientController {
 
     private final AdminPatientService adminPatientService;
 
-    @GetMapping({"", "/view"})
+    @GetMapping
     public String viewPatients(@RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "10") int size,
                                Model model) {
@@ -27,7 +27,7 @@ public class AdminPatientController {
         model.addAttribute("patients", response.getContent().getContent());
         model.addAttribute("currentPage", response.getCurrentPage());
         model.addAttribute("totalPages", response.getTotalPages());
-        return "frontend/patient";
+        return "dashboard/patient";
     }
 
     @GetMapping("/search")
@@ -42,14 +42,14 @@ public class AdminPatientController {
         model.addAttribute("currentPage", response.getCurrentPage());
         model.addAttribute("totalPages", response.getTotalPages());
         model.addAttribute("keyword", keyword);
-        return "frontend/patient";
+        return "dashboard/patient";
     }
 
     @GetMapping("/{id}")
     public String getPatientById(@PathVariable Long id, Model model) {
         AdminPatientResponse patient = adminPatientService.getPatientById(id);
         model.addAttribute("patient", patient);
-        return "frontend/patient-detail";
+        return "dashboard/patient";
     }
 
 }
