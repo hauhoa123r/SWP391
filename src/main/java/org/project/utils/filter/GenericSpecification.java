@@ -128,37 +128,37 @@ public class GenericSpecification<T> implements Specification<T> {
 
             // Các phép toán AVG
             case AVG_EQUALS -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.equal(builder.avg(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case AVG_NOT_EQUALS -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.notEqual(builder.avg(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case AVG_GREATER_THAN -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.greaterThan(builder.avg(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case AVG_LESS_THAN -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.lessThan(builder.avg(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case AVG_GREATER_THAN_OR_EQUAL_TO -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.greaterThanOrEqualTo(builder.avg(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case AVG_LESS_THAN_OR_EQUAL_TO -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.lessThanOrEqualTo(builder.avg(getPath(realPath, javaType)), value));
                 return builder.conjunction();
@@ -166,37 +166,37 @@ public class GenericSpecification<T> implements Specification<T> {
 
             // Các phép toán COUNT
             case COUNT_EQUALS -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Long value = convertNumberValue(searchCriteria.getComparedValue(), Long.class);
                 query.having(builder.equal(builder.count(realPath), value));
                 return builder.conjunction();
             }
             case COUNT_NOT_EQUALS -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Long value = convertNumberValue(searchCriteria.getComparedValue(), Long.class);
                 query.having(builder.notEqual(builder.count(realPath), value));
                 return builder.conjunction();
             }
             case COUNT_GREATER_THAN -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Long value = convertNumberValue(searchCriteria.getComparedValue(), Long.class);
                 query.having(builder.greaterThan(builder.count(realPath), value));
                 return builder.conjunction();
             }
             case COUNT_LESS_THAN -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Long value = convertNumberValue(searchCriteria.getComparedValue(), Long.class);
                 query.having(builder.lessThan(builder.count(realPath), value));
                 return builder.conjunction();
             }
             case COUNT_GREATER_THAN_OR_EQUAL_TO -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Long value = convertNumberValue(searchCriteria.getComparedValue(), Long.class);
                 query.having(builder.greaterThanOrEqualTo(builder.count(realPath), value));
                 return builder.conjunction();
             }
             case COUNT_LESS_THAN_OR_EQUAL_TO -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Long value = convertNumberValue(searchCriteria.getComparedValue(), Long.class);
                 query.having(builder.lessThanOrEqualTo(builder.count(realPath), value));
                 return builder.conjunction();
@@ -204,37 +204,37 @@ public class GenericSpecification<T> implements Specification<T> {
 
             // Các phép toán SUM
             case SUM_EQUALS -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.equal(builder.sum(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case SUM_NOT_EQUALS -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.notEqual(builder.sum(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case SUM_GREATER_THAN -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.greaterThan(builder.sum(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case SUM_LESS_THAN -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.lessThan(builder.sum(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case SUM_GREATER_THAN_OR_EQUAL_TO -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.greaterThanOrEqualTo(builder.sum(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case SUM_LESS_THAN_OR_EQUAL_TO -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.lessThanOrEqualTo(builder.sum(getPath(realPath, javaType)), value));
                 return builder.conjunction();
@@ -242,37 +242,37 @@ public class GenericSpecification<T> implements Specification<T> {
 
             // Các phép toán MAX
             case MAX_EQUALS -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.equal(builder.max(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case MAX_NOT_EQUALS -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.notEqual(builder.max(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case MAX_GREATER_THAN -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.greaterThan(builder.max(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case MAX_LESS_THAN -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.lessThan(builder.max(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case MAX_GREATER_THAN_OR_EQUAL_TO -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.greaterThanOrEqualTo(builder.max(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case MAX_LESS_THAN_OR_EQUAL_TO -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.lessThanOrEqualTo(builder.max(getPath(realPath, javaType)), value));
                 return builder.conjunction();
@@ -280,37 +280,37 @@ public class GenericSpecification<T> implements Specification<T> {
 
             // Các phép toán MIN
             case MIN_EQUALS -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.equal(builder.min(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case MIN_NOT_EQUALS -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.notEqual(builder.min(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case MIN_GREATER_THAN -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.greaterThan(builder.min(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case MIN_LESS_THAN -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.lessThan(builder.min(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case MIN_GREATER_THAN_OR_EQUAL_TO -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.greaterThanOrEqualTo(builder.min(getPath(realPath, javaType)), value));
                 return builder.conjunction();
             }
             case MIN_LESS_THAN_OR_EQUAL_TO -> {
-                query.groupBy(root.get("id"));
+                query.groupBy(root);
                 Double value = convertNumberValue(searchCriteria.getComparedValue(), Double.class);
                 query.having(builder.lessThanOrEqualTo(builder.min(getPath(realPath, javaType)), value));
                 return builder.conjunction();

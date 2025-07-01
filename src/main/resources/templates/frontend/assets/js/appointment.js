@@ -1,12 +1,22 @@
-import {HospitalResponse} from "/frontend/assets/js/model/response/HospitalResponse.js";
-import {DepartmentResponse} from "/frontend/assets/js/model/response/DepartmentResponse.js";
-import {DoctorResponse} from "/frontend/assets/js/model/response/DoctorResponse.js";
-import {ServiceResponse} from "/frontend/assets/js/model/response/ServiceResponse.js";
-import {TimeResponse} from "/frontend/assets/js/model/response/TimeResponse.js";
-import {PatientResponse} from "/frontend/assets/js/model/response/PatientResponse.js";
-import {AppointmentDTO} from "/frontend/assets/js/model/dto/AppointmentDTO.js";
-import {Pagination} from "/frontend/assets/js/utils/Pagination.js";
-import toast from "/frontend/assets/js/plugins/toast.js";
+import {
+    HospitalResponse, renderHospitalResponseForBooking
+} from "/templates/frontend/assets/js/model/response/HospitalResponse.js";
+import {
+    DepartmentResponse, renderDepartmentResponseForBooking
+} from "/templates/frontend/assets/js/model/response/DepartmentResponse.js";
+import {
+    DoctorResponse, renderDoctorResponseForBooking
+} from "/templates/frontend/assets/js/model/response/DoctorResponse.js";
+import {
+    renderServiceResponseForBooking, ServiceResponse
+} from "/templates/frontend/assets/js/model/response/ServiceResponse.js";
+import {renderTimeResponseForBooking, TimeResponse} from "/templates/frontend/assets/js/model/response/TimeResponse.js";
+import {
+    PatientResponse, renderPatientResponseForBooking
+} from "/templates/frontend/assets/js/model/response/PatientResponse.js";
+import {AppointmentDTO} from "/templates/frontend/assets/js/model/dto/AppointmentDTO.js";
+import {Pagination} from "/templates/frontend/assets/js/utils/Pagination.js";
+import toast from "/templates/frontend/assets/js/plugins/toast.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const bookingManager = new BookingManager();
@@ -17,6 +27,7 @@ const defaultTabConfigs = {
     rootUrl: "",
     objectJsonName: "",
     object: null,
+    renderStrategy: null,
     prefix: "",
     urlFilter: "",
     prevTab: "",
@@ -24,8 +35,8 @@ const defaultTabConfigs = {
     currentPage: 0,
     customSearch: null,
     customUrlBuilder: null,
-    customSelect: null,
-}
+    customSelect: null
+};
 
 class BookingManager {
     constructor() {
@@ -37,45 +48,51 @@ class BookingManager {
                 rootUrl: "/api/hospital",
                 objectJsonName: "hospitals",
                 object: HospitalResponse,
+                renderStrategy: renderHospitalResponseForBooking,
                 prefix: "hospital",
-                nextTab: "department",
+                nextTab: "department"
             }, department: {
                 ...defaultTabConfigs,
                 rootUrl: "/api/department",
                 objectJsonName: "departments",
                 object: DepartmentResponse,
+                renderStrategy: renderDepartmentResponseForBooking,
                 prefix: "department",
                 prevTab: "hospital",
-                nextTab: "doctor",
+                nextTab: "doctor"
             }, doctor: {
                 ...defaultTabConfigs,
                 rootUrl: "/api/doctor",
                 objectJsonName: "doctors",
                 object: DoctorResponse,
+                renderStrategy: renderDoctorResponseForBooking,
                 prefix: "doctor",
                 prevTab: "department",
-                nextTab: "service",
+                nextTab: "service"
             }, service: {
                 ...defaultTabConfigs,
                 rootUrl: "/api/service",
                 objectJsonName: "services",
                 object: ServiceResponse,
+                renderStrategy: renderServiceResponseForBooking,
                 prefix: "service",
                 prevTab: "doctor",
-                nextTab: "patient",
+                nextTab: "patient"
             }, patient: {
                 ...defaultTabConfigs,
                 rootUrl: "/api/patient",
                 objectJsonName: "patients",
                 object: PatientResponse,
+                renderStrategy: renderPatientResponseForBooking,
                 prefix: "patient",
                 prevTab: "service",
-                nextTab: "dateTime",
+                nextTab: "dateTime"
             }, dateTime: {
                 ...defaultTabConfigs,
                 rootUrl: "/api/schedule",
                 objectJsonName: "availableTimes",
                 object: TimeResponse,
+                renderStrategy: renderTimeResponseForBooking,
                 prefix: "date-time",
                 prevTab: "patient",
                 nextTab: "confirmation",
@@ -96,7 +113,7 @@ class BookingManager {
                             manager.loadData(0);
                         } else {
                             toast.warning("Please select a date first.", {
-                                position: "top-right", icon: true, duration: 3000
+                                position: "top-right", icon: true, duration: 3000, progress: true
                             });
                         }
                     });
@@ -105,7 +122,7 @@ class BookingManager {
                     return document.querySelector(`input[value="${id}"]`);
                 }
             }, confirmation: {
-                ...defaultTabConfigs, prevTab: "patient",
+                ...defaultTabConfigs, prevTab: "patient"
             }
         };
         this.currentTab = null;
@@ -113,15 +130,15 @@ class BookingManager {
         this.selectedIds = {};
         this.bookingSummary = {
             hospital: {
-                name: null, address: null,
+                name: null, address: null
             }, patient: {
-                name: null, phone: null, email: null,
+                name: null, phone: null, email: null
             }, doctor: {
-                name: null,
+                name: null
             }, dateTime: {
-                date: null, time: null,
+                date: null, time: null
             }, service: {
-                name: null, price: null,
+                name: null, price: null
             }
         };
         Object.keys(this.tabConfigs).forEach(tabKey => {
@@ -167,7 +184,7 @@ class BookingManager {
                 const selectedHospitalElement = inputHospitalElement.closest(".hospital");
                 this.bookingSummary.hospital = {
                     name: selectedHospitalElement.querySelector(".hospital-name").textContent.trim(),
-                    address: selectedHospitalElement.querySelector(".hospital-address").textContent.trim(),
+                    address: selectedHospitalElement.querySelector(".hospital-address").textContent.trim()
                 };
                 if (this.selectedIds.hospital !== inputHospitalElement.value) {
                     this.selectedIds.department = null; // Reset doctor selection if a new hospital is selected
@@ -211,7 +228,7 @@ class BookingManager {
             if (inputDoctorElement) {
                 const selectedDoctorElement = inputDoctorElement.closest(".doctor");
                 this.bookingSummary.doctor = {
-                    name: selectedDoctorElement.querySelector(".doctor-name").textContent.trim(),
+                    name: selectedDoctorElement.querySelector(".doctor-name").textContent.trim()
                 };
                 if (this.selectedIds.doctor !== inputDoctorElement.value) {
                     this.selectedIds.service = null; // Reset service selection if a new doctor is selected
@@ -238,11 +255,11 @@ class BookingManager {
                 const selectedServiceElement = inputServiceElement.closest(".service");
                 this.bookingSummary.service = {
                     name: selectedServiceElement.querySelector(".service-name").textContent.trim(),
-                    price: selectedServiceElement.querySelector(".service-price").textContent.trim(),
+                    price: selectedServiceElement.querySelector(".service-price").textContent.trim()
                 };
                 this.selectedIds.service = inputServiceElement.value;
                 const userId = document.querySelector("#user-id").value;
-                this.tabConfigs.patient.urlFilter = `/user/${userId}`
+                this.tabConfigs.patient.urlFilter = `/user/${userId}`;
                 this.nextTab();
             } else {
                 toast.warning("Please select a service first.", {
@@ -263,14 +280,14 @@ class BookingManager {
                 this.bookingSummary.patient = {
                     name: selectedPatientElement.querySelector(".patient-name").textContent.trim(),
                     phone: selectedPatientElement.querySelector(".patient-phone").textContent.trim(),
-                    email: selectedPatientElement.querySelector(".patient-email").textContent.trim(),
+                    email: selectedPatientElement.querySelector(".patient-email").textContent.trim()
                 };
                 this.selectedIds.patient = inputPatientElement.value;
                 this.nextTab();
             } else {
                 toast.warning("Please select a patient first.", {
                     position: "top-right", icon: true, duration: 3000
-                })
+                });
             }
         });
 
@@ -341,7 +358,7 @@ class BookingManager {
                     });
                     this.isProcessing = true;
                     event.target.click();
-                })
+                });
         });
 
         document.querySelector("#confirmation-previous-button").addEventListener("click", () => {
@@ -393,7 +410,7 @@ class BookingManager {
             .then(data => {
                 if (data && data[config.objectJsonName]) {
                     const objectList = config.object.fromJsonArray(data[config.objectJsonName]);
-                    const htmlContent = objectList.map(item => item.toHtml()).join("");
+                    const htmlContent = objectList.map(item => item.setRenderStrategy(config.renderStrategy).toHtml()).join("");
                     const objectListElement = document.querySelector(`#${config.prefix}-list`);
                     if (objectListElement) {
                         objectListElement.innerHTML = htmlContent;
@@ -436,7 +453,7 @@ class BookingManager {
                     this.isLoading = false;
                     this.changeButtonStatus();
                 }, 1000);
-            })
+            });
     }
 
     changeButtonStatus() {
