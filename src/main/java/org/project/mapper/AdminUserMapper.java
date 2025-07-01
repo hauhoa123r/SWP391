@@ -16,7 +16,6 @@ public interface AdminUserMapper {
     @Mapping(source = "user.userStatus", target = "userStatus")
     @Mapping(source = "user.isVerified", target = "isVerified")
     @Mapping(source = "user.twoFactorEnabled", target = "twoFactorEnabled")
-
     @Mapping(source = "patient.fullName", target = "fullName")
     @Mapping(source = "patient.avatarUrl", target = "avatarUrl")
     @Mapping(source = "patient.address", target = "address")

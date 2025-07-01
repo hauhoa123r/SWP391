@@ -8,8 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 
-import java.util.List;
+
 import org.springframework.data.domain.Page;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -28,40 +29,55 @@ public class UserController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("pageSize", size);
-        return "frontend/user-list";
+        return "dashboard/user-list";
     }
 
-    // Tìm kiếm theo email
-    @GetMapping("/search/email")
-    public String searchByEmail(@RequestParam String email, Model model) {
-        addSearchResultToModel(model, userService.searchByEmail(email), "email", email);
-        return "frontend/user-list";
+    // Tìm kiếm chung theo type và keyword (ví dụ: /users/search?type=email&keyword=abc)
+    @GetMapping("/search")
+    public String searchUsers(@RequestParam String type,
+                              @RequestParam String keyword,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int size,
+                              Model model) {
+        Page<UserEntity> resultPage;
+        switch (type) {
+            case "email":
+                resultPage = userService.searchByEmail(keyword, page, size);
+                break;
+            case "phone":
+            
+            
+            
+                resultPage = userService.searchByPhoneNumber(keyword, page, size);
+                break;
+            case "role":
+            
+            
+             
+                resultPage = userService.searchByRole(keyword, page, size);
+                break;
+            case "status":
+            
+             
+                resultPage = userService.searchByStatus(keyword, page, size);
+                break;
+            default:
+                resultPage = Page.empty();
+        }
+        addSearchResultToModel(model, resultPage, type, keyword);
+        model.addAttribute("currentPage", resultPage.getNumber());
+        model.addAttribute("totalPages", resultPage.getTotalPages());
+        model.addAttribute("pageSize", size);
+        return "dashboard/user-list";
     }
 
-    // Tìm kiếm theo số điện thoại
-    @GetMapping("/search/phone")
-    public String searchByPhone(@RequestParam String phoneNumber, Model model) {
-        addSearchResultToModel(model, userService.searchByPhoneNumber(phoneNumber), "phone", phoneNumber);
-        return "frontend/user-list";
-    }
-
-    // Tìm kiếm theo vai trò
-    @GetMapping("/search/role")
-    public String searchByRole(@RequestParam String role, Model model) {
-        addSearchResultToModel(model, userService.searchByRole(role), "role", role);
-        return "frontend/user-list";
-    }
-
-    // Tìm kiếm theo trạng thái
-    @GetMapping("/search/status")
-    public String searchByStatus(@RequestParam String status, Model model) {
-        addSearchResultToModel(model, userService.searchByStatus(status), "status", status);
-        return "frontend/user-list";
-    }
-
-    private void addSearchResultToModel(Model model, List<UserEntity> users, String type, String keyword) {
-        model.addAttribute("users", users);
+    private void addSearchResultToModel(Model model, Page<UserEntity> pageResult, String type, String keyword) {
+        model.addAttribute("users", pageResult.getContent());
         model.addAttribute("searchType", type);
         model.addAttribute("keyword", keyword);
     }
+
+
+
+
 }

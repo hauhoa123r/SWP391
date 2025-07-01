@@ -2,7 +2,7 @@ package org.project.service;
 
 import org.project.entity.UserEntity;
 
-import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 
@@ -11,15 +11,15 @@ public interface UserService {
     Page<UserEntity> getAllUsers(int page, int size);
 
     // Tìm kiếm người dùng theo email
-    List<UserEntity> searchByEmail(String email);
+    Page<UserEntity> searchByEmail(String email, int page, int size);
 
     // Tìm kiếm người dùng theo số điện thoại
-    List<UserEntity> searchByPhoneNumber(String phoneNumber);
+    Page<UserEntity> searchByPhoneNumber(String phoneNumber, int page, int size);
 
     // Tìm kiếm người dùng theo vai trò
-    List<UserEntity> searchByRole(String role);
+    Page<UserEntity> searchByRole(String role, int page, int size);
 
     // Tìm kiếm người dùng theo trạng thái
-    List<UserEntity> searchByStatus(String status);
+    Page<UserEntity> searchByStatus(String status, int page, int size);
 }
 
