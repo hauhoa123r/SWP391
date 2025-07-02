@@ -2,6 +2,8 @@ package org.project.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.project.entity.UserEntity;
+import org.project.enums.UserRole;
+import org.project.enums.UserStatus;
 import org.project.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -20,34 +22,36 @@ public class UserController {
     private final UserService userService;
 
     // Global model attributes for form selects
-    @ModelAttribute("roles")
-    public org.project.enums.UserRole[] roles() {
-        return org.project.enums.UserRole.values();
+    @ModelAttribute("roles") //Gửi dữ liệu từ hàm roles() vào View
+    public UserRole[] roles() {
+        return UserRole.values();//trả về toàn bộ các giá trị enum.
     }
 
     @ModelAttribute("statuses")
-    public org.project.enums.UserStatus[] statuses() {
-        return org.project.enums.UserStatus.values();
+    public UserStatus[] statuses() { //phương thức trả về mảng các giá trị enum UserRole, dùng để hiển thị danh sách role trong giao diện
+        return UserStatus.values();//Trả về một mảng chứa tất cả giá trị của enum
     }
 
     // ================== Create User ==================
     @GetMapping("/create")
     public String showCreateForm(Model model) {
-        model.addAttribute("user", new org.project.entity.UserEntity());
+        model.addAttribute("user", new UserEntity());
         model.addAttribute("formAction", "/users/create");
         return "dashboard/user-form";
     }
 
-    @PostMapping("/create")
-    public String createUser(@ModelAttribute("user") org.project.entity.UserEntity user) {
-        userService.createUser(user);
-        return "redirect:/users/view";
+    @PostMapping("/create") // Xử lý dữ liệu khi form tạo user được submit (POST đến /users/create)
+    public String createUser(@ModelAttribute("user") UserEntity user) { // Nhận dữ liệu từ form và gán vào đối tượng UserEntity
+        userService.createUser(user); // Gọi service để lưu user mới vào cơ sở dữ liệu
+        return "redirect:/users/view"; // Sau khi tạo xong, chuyển hướng đến trang danh sách user
     }
+
+
 
     // ================== Edit User ==================
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        org.project.entity.UserEntity user = userService.getUserById(id);
+        UserEntity user = userService.getUserById(id);
         if (user == null) {
             return "redirect:/users/view";
         }
@@ -57,7 +61,7 @@ public class UserController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute("user") org.project.entity.UserEntity user) {
+    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserEntity user) {
         userService.updateUser(id, user);
         return "redirect:/users/view";
     }
