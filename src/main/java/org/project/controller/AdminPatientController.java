@@ -38,9 +38,9 @@ public class AdminPatientController {
         Pageable pageable = PageRequest.of(page, size);
         AdminPatientRequest req = AdminPatientRequest.builder().keyword(keyword).build();
         PageResponse<AdminPatientResponse> response = adminPatientService.searchPatients(req, pageable);
-        model.addAttribute("patients", response.getContent().getContent());
-        model.addAttribute("currentPage", response.getCurrentPage());
-        model.addAttribute("totalPages", response.getTotalPages());
+        model.addAttribute("patients", response.getContent().getContent());//gửi ds bệnh nhân ở trang hiện tại
+        model.addAttribute("currentPage", response.getCurrentPage());//gửi trang hiện tại(Để view biết trang nào đang được hiển thị.)
+        model.addAttribute("totalPages", response.getTotalPages());  // tổng số trang để tạo nút phân trang
         model.addAttribute("keyword", keyword);
         return "dashboard/patient";
     }

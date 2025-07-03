@@ -19,7 +19,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+
+
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     // Lấy tất cả người dùng (phân trang)
     @Override
@@ -100,6 +103,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+
     @Override
     public UserEntity getUserById(Long id) {
         return id == null ? null : userRepository.findById(id).orElse(null);
@@ -134,6 +138,8 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.save(existing);
     }
+
+
 
     @Override
     public void deleteUser(Long id) {

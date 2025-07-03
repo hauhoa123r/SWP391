@@ -1,10 +1,7 @@
 package org.project.service;
 
 import org.project.entity.UserEntity;
-
-
 import org.springframework.data.domain.Page;
-
 
 public interface UserService {
     // Phân trang người dùng
@@ -23,8 +20,9 @@ public interface UserService {
     Page<UserEntity> searchByStatus(String status, int page, int size);
 
     // ================== CRUD Operations ==================
-    // Tạo người dùng mới
+    // Tạo người dùng mới (cũ)
     UserEntity createUser(UserEntity user);
+
 
     // Lấy người dùng theo ID
     UserEntity getUserById(Long id);
@@ -35,4 +33,3 @@ public interface UserService {
     // Xóa người dùng
     void deleteUser(Long id);
 }
-

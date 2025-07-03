@@ -49,9 +49,9 @@ public class AdminPaymentController {
 
         // Gọi service dashboard, nhận PageResponse kèm meta.
         PageResponse<PaymentEntity> res = adminPaymentService.getAllPayments(PageRequest.of(page, size, Sort.by("id").descending()));
-        Page<PaymentEntity> pg = res.getContent();
-        model.addAttribute("payments", pg.getContent());
-        model.addAttribute("page", res);
+        Page<PaymentEntity> pg = res.getContent(); //trả về 1 Page<PaymentEntity> (tức là 1 trang payment).
+        model.addAttribute("payments", pg.getContent()); //danh sách payment của trang hiện tại
+        model.addAttribute("page", res);// tất cả cacs payment của trang hiện tại
 
         return "dashboard/payment";
     }

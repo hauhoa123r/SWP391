@@ -2130,7 +2130,7 @@
                                             <!-- Previous page -->
                                             <li class="page-item" th:classappend="${currentPage == 1} ? ' disabled'">
                                                 <a class="page-link"
-                                                   th:href="@{/users/view(page=${currentPage - 1}, size=${pageSize})}"
+                                                   th:href="@{/users/view(page=${currentPage != null ? currentPage - 1 : 0}, size=${pageSize})}"
                                                    aria-label="Previous">
                                                     &laquo; Prev
                                                 </a>
@@ -2139,7 +2139,7 @@
 
                                             <!-- Next page -->
                                             <li class="page-item" th:classappend="${currentPage >= totalPages} ? ' disabled'">
-                                                <a class="page-link" th:href="@{|/users/view?page=${currentPage+1}&size=${pageSize}|}" aria-label="Next">
+                                                <a class="page-link" th:href="@{|/users/view?page=${currentPage != null ? currentPage + 1 : 1}&size=${pageSize}|}" aria-label="Next">
                                                     Next &raquo;
                                                 </a>
                                             </li>
