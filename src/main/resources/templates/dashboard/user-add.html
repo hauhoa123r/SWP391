@@ -2864,5 +2864,38 @@
 
         <!-- Icons -->
         <script th:src="@{/assets/js/solid-icon-search-filter.js?v=1.4.1}" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    if (!form.checkValidity()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        showToast('Bạn chưa điền đầy đủ thông tin', 'danger');
+                    }
+                    form.classList.add('was-validated');
+                });
+            }
+            function showToast(message, type = 'danger') {
+                let container = document.querySelector('.toast-container');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.className = 'toast-container position-fixed top-0 end-0 p-3';
+                    document.body.appendChild(container);
+                }
+                const toast = document.createElement('div');
+                toast.className = `toast align-items-center text-bg-${type} border-0`;
+                toast.setAttribute('role', 'alert');
+                toast.innerHTML = `
+                    <div class="d-flex">
+                        <div class="toast-body">${message}</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>`;
+                container.appendChild(toast);
+                new bootstrap.Toast(toast).show();
+            }
+        });
+    </script>
     </body>
 </html>
