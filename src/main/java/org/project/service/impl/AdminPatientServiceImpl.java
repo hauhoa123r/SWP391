@@ -2,60 +2,56 @@ package org.project.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.project.entity.PatientEntity;
+import org.project.exception.sql.EntityNotFoundException;
 import org.project.mapper.AdminPatientMapper;
-import org.project.model.request.AdminPatientRequest;
+import org.project.model.request.AdminPatientUpdateRequest;
+import org.project.model.response.AdminPatientDetailResponse;
 import org.project.model.response.AdminPatientResponse;
-import org.project.model.response.PageResponse;
 import org.project.repository.AdminPatientRepository;
+import org.project.repository.UserRepository;
 import org.project.service.AdminPatientService;
-import org.project.specification.AdminPatientSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AdminPatientServiceImpl implements AdminPatientService {
 
-   private final AdminPatientRepository adminPatientRepository;
-   private final AdminPatientMapper adminPatientMapper;
+    private final AdminPatientRepository patientRepository;
+    private final AdminPatientMapper patientMapper;
+    private final UserRepository userRepository;
 
-   // Lấy tất cả bệnh nhân
-   @Override
-   public List<AdminPatientResponse> getAllPatients() {
-       return adminPatientMapper.toResponseList(adminPatientRepository.findAll());
-   }
+    @Override
+    public Page<AdminPatientResponse> getAllPatients(Pageable pageable, String keyword) {
+        Page<PatientEntity> patientPage = patientRepository.findAll(pageable); // Add filtering later
+        return patientPage.map(patientMapper::toResponse);
+    }
 
-   // Lấy tất cả bệnh nhân với phân trang
-   @Override
-   public PageResponse<AdminPatientResponse> getAllPatients(Pageable pageable) {
-       return getPatientPage(pageable); // Tái sử dụng logic từ getPatientPage
-   }
+    @Override
+    public AdminPatientDetailResponse getPatientDetail(Long id) {
+        PatientEntity patient = patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        return patientMapper.toDetailResponse(patient);
+    }
 
-   // Lấy các bệnh nhân với phân trang
-   @Override
-   public PageResponse<AdminPatientResponse> getPatientPage(Pageable pageable) {
-       Page<PatientEntity> page = adminPatientRepository.findAll(pageable);  // Lấy dữ liệu phân trang từ repository
-       Page<AdminPatientResponse> mappedPage = page.map(adminPatientMapper::toResponse);  // Ánh xạ từ PatientEntity sang AdminPatientResponse
-       return new PageResponse<>(mappedPage);  // Trả về dữ liệu phân trang
-   }
+    @Override
+    public PatientEntity getPatientById(Long id) {
+        return patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    }
 
-   // Lấy bệnh nhân theo ID
-   @Override
-   public AdminPatientResponse getPatientById(Long id) {
-       PatientEntity patient = adminPatientRepository.findById(id)
-               .orElseThrow(() -> new RuntimeException("Patient not found"));
-       return adminPatientMapper.toResponse(patient);  // Ánh xạ từ PatientEntity sang AdminPatientResponse
-   }
+    @Override
+    public AdminPatientUpdateRequest getUpdateForm(Long id) {
+        PatientEntity patient = getPatientById(id);
+        return patientMapper.toUpdateRequest(patient);
+    }
 
-   // Tìm kiếm bệnh nhân theo các tiêu chí với phân trang
-   @Override
-   public PageResponse<AdminPatientResponse> searchPatients(AdminPatientRequest req, Pageable pageable) {
-       Specification<PatientEntity> spec = AdminPatientSpecification.filter(req);  // Sử dụng Specification để tìm kiếm
-       Page<PatientEntity> page = adminPatientRepository.findAll(spec, pageable);  // Tìm kiếm với Specification và phân trang
-       return new PageResponse<>(page.map(adminPatientMapper::toResponse));  // Trả về kết quả phân trang
-   }
+    @Override
+    public void updatePatient(Long id, AdminPatientUpdateRequest request) {
+        PatientEntity patient = getPatientById(id);
+        patientMapper.updatePatientFromRequest(request, patient);
+        patient.setUserEntity(userRepository.findById(request.getUserId()).orElseThrow());
+        patientRepository.save(patient);
+    }
 }

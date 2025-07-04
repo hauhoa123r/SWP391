@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.project.enums.BloodType;
 import org.project.enums.Gender;
+import org.project.enums.PatientStatus;
 
 import java.time.LocalDate;
 
@@ -36,7 +37,7 @@ public class AdminPatientRequest {
     private Gender gender;
     private String familyRelationship;
     private BloodType bloodType;
-
+    private LocalDate dateOfBirth;
     // Khoảng ngày sinh
     private LocalDate birthdateFrom;
     private LocalDate birthdateTo;

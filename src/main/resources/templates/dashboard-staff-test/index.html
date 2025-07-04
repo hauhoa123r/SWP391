@@ -676,32 +676,27 @@
                 <li><a class="dropdown-item" href="#">Print</a></li>
                 <li><a class="dropdown-item" href="#">Download</a></li>
               </ul>
-            </div>
-          </div>
-          <div class="pt-0 card-body">
-            <div class="table-responsive">
-              <table class="table py-3 mb-0" role="grid" data-toggle="appointment_admin">
-                <thead class="bg-primary-subtle">
-                <tr class="text-dark">
-                  <th class="border-bottom">No.</th>
-                  <th class="border-bottom">Names</th>
-                  <th class="border-bottom">Date</th>
-                  <th class="border-bottom">Reason</th>
-                  <th class="border-bottom">Type</th>
-                  <th class="border-bottom">Staus</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <div class="d-flex align-items-center gap-3">
-                      <img src="./assets/images/table/10.png" th:src="@{/dashboard-staff-test/assets/images/table/10.png}"
 
-                           class="img-fluid flex-shrink-0 icon-40 object-fit-cover"
-                           alt="icon">
-                      <h5 class="mb-0">Courtney Henry</h5>
-                    </div>
+                             class="img-fluid flex-shrink-0 icon-40 object-fit-cover"
+                             alt="icon">
+                        <h5 class="mb-0" th:text="${patient.fullName}">Jerome Bell</h5>
+                      </div>
+                    </td>
+                    <td th:text="${patient.date}">16 June, 2023</td>
+                    <td th:text="${patient.reason}">Tooth Cleaning</td>
+                    <td th:text="${patient.type}">Old Patient</td>
+                    <td>
+                      <button
+                              class="badge bg-success-subtle text-success fw-500 px-3 py-2 border-0 me-2">Accept</button>
+                      <button
+                              class="badge bg-danger-subtle text-danger fw-500 px-3 py-2 border-0 me-2">Cancel</button>
+                    </td>
+                  </tr>
+                  <tr class="border-0" th:each="patient, stat : ${patients}">
+                    <td class="border-0" th:text="${stat.index + 1}">1</td>
+                    <td class="border-0">
+                      <div class="d-flex align-items-center gap-3">
+                        <img src="./assets/images/table/12.png" th:src="@{/dashboard-staff-test/assets/images/table/12.png}"
                   </td>
                   <td>22 Mar, 2023</td>
                   <td>Acne Treatment</td>

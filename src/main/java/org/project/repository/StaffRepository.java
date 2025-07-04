@@ -33,5 +33,7 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long>, JpaSp
 
     Optional<StaffEntity> findFirstByDepartmentEntityIdAndStaffRole(Long departmentEntity_id, StaffRole staffRole);
 
-
+    // Tìm kiếm staff theo keyword
+    Page<StaffEntity> findByFullNameContainingIgnoreCaseOrUserEntityEmailContainingIgnoreCaseOrUserEntityPhoneNumberContainingIgnoreCase(String keyword, String keyword2, String keyword3, Pageable pageable);
 }
+

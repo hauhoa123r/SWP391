@@ -1,16 +1,16 @@
 package org.project.service;
 
-import org.project.model.request.AdminPatientRequest;
+import org.project.entity.PatientEntity;
+import org.project.model.request.AdminPatientUpdateRequest;
+import org.project.model.response.AdminPatientDetailResponse;
 import org.project.model.response.AdminPatientResponse;
-import org.project.model.response.PageResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface AdminPatientService {
-   List<AdminPatientResponse> getAllPatients();
-   PageResponse<AdminPatientResponse> getAllPatients(Pageable pageable);
-   PageResponse<AdminPatientResponse> getPatientPage(Pageable pageable);
-   AdminPatientResponse getPatientById(Long id);
-   PageResponse<AdminPatientResponse> searchPatients(AdminPatientRequest req, Pageable pageable);
+   Page<AdminPatientResponse> getAllPatients(Pageable pageable, String keyword);
+   AdminPatientDetailResponse getPatientDetail(Long id);
+   PatientEntity getPatientById(Long id);
+   AdminPatientUpdateRequest getUpdateForm(Long id);
+   void updatePatient(Long id, AdminPatientUpdateRequest request);
 }
