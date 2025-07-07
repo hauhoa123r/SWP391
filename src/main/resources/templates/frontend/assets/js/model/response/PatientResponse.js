@@ -17,16 +17,16 @@ export class PatientResponse extends BaseResponse {
 
     static fromJson(json) {
         return new PatientResponse(
-            json.id,
-            json.phoneNumber,
-            json.email,
-            json.fullName,
-            json.avatarUrl,
-            json.address,
-            json.birthdate,
-            json.familyRelationship,
-            json.gender,
-            json.bloodType
+                json.id,
+                json.phoneNumber,
+                json.email,
+                json.fullName,
+                json.avatarUrl,
+                json.address,
+                json.birthdate,
+                json.familyRelationship,
+                json.gender,
+                json.bloodType
         );
     }
 
@@ -41,7 +41,7 @@ export class PatientResponse extends BaseResponse {
 
     toHtml(...args) {
         if (this.renderStrategy) {
-            return this.renderStrategy.render(this, ...args);
+            return this.renderStrategy(this, ...args);
         }
         throw new Error("Render strategy is not set for PatientResponse");
     }

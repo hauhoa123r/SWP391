@@ -1,6 +1,4 @@
-import {
-    HospitalResponse, renderHospitalResponseForBooking
-} from "/templates/frontend/assets/js/model/response/HospitalResponse.js";
+import {AppointmentDTO} from "/templates/frontend/assets/js/model/dto/AppointmentDTO.js";
 import {
     DepartmentResponse, renderDepartmentResponseForBooking
 } from "/templates/frontend/assets/js/model/response/DepartmentResponse.js";
@@ -8,15 +6,17 @@ import {
     DoctorResponse, renderDoctorResponseForBooking
 } from "/templates/frontend/assets/js/model/response/DoctorResponse.js";
 import {
-    renderServiceResponseForBooking, ServiceResponse
-} from "/templates/frontend/assets/js/model/response/ServiceResponse.js";
-import {renderTimeResponseForBooking, TimeResponse} from "/templates/frontend/assets/js/model/response/TimeResponse.js";
+    HospitalResponse, renderHospitalResponseForBooking
+} from "/templates/frontend/assets/js/model/response/HospitalResponse.js";
 import {
     PatientResponse, renderPatientResponseForBooking
 } from "/templates/frontend/assets/js/model/response/PatientResponse.js";
-import {AppointmentDTO} from "/templates/frontend/assets/js/model/dto/AppointmentDTO.js";
-import {Pagination} from "/templates/frontend/assets/js/utils/Pagination.js";
+import {
+    renderServiceResponseForBooking, ServiceResponse
+} from "/templates/frontend/assets/js/model/response/ServiceResponse.js";
+import {renderTimeResponseForBooking, TimeResponse} from "/templates/frontend/assets/js/model/response/TimeResponse.js";
 import toast from "/templates/frontend/assets/js/plugins/toast.js";
+import {Pagination} from "/templates/frontend/assets/js/utils/Pagination.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const bookingManager = new BookingManager();
@@ -332,10 +332,10 @@ class BookingManager {
             }
 
             const appointment = new AppointmentDTO(
-                this.selectedIds.doctor,
-                this.selectedIds.patient,
-                this.selectedIds.service,
-                this.selectedIds.dateTime
+                    this.selectedIds.doctor,
+                    this.selectedIds.patient,
+                    this.selectedIds.service,
+                    this.selectedIds.dateTime
             );
             fetch("/api/appointment", {
                 method: "POST",
@@ -344,21 +344,21 @@ class BookingManager {
                 },
                 body: JSON.stringify(appointment)
             })
-                .then(response => {
-                    if (!response.ok) {
-                        response.text().then(messageError => {
-                            toast.danger(messageError, {
-                                position: "top-right", icon: true, duration: 3000
+                    .then(response => {
+                        if (!response.ok) {
+                            response.text().then(messageError => {
+                                toast.danger(messageError, {
+                                    position: "top-right", icon: true, duration: 3000
+                                });
                             });
+                            throw new Error(`Error: ${response.status} ${response.statusText}`);
+                        }
+                        toast.success("Booking confirmed successfully!", {
+                            position: "top-right", icon: true, duration: 3000
                         });
-                        throw new Error(`Error: ${response.status} ${response.statusText}`);
-                    }
-                    toast.success("Booking confirmed successfully!", {
-                        position: "top-right", icon: true, duration: 3000
+                        this.isProcessing = true;
+                        event.target.click();
                     });
-                    this.isProcessing = true;
-                    event.target.click();
-                });
         });
 
         document.querySelector("#confirmation-previous-button").addEventListener("click", () => {
@@ -406,54 +406,54 @@ class BookingManager {
         }
 
         fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                if (data && data[config.objectJsonName]) {
-                    const objectList = config.object.fromJsonArray(data[config.objectJsonName]);
-                    const htmlContent = objectList.map(item => item.setRenderStrategy(config.renderStrategy).toHtml()).join("");
-                    const objectListElement = document.querySelector(`#${config.prefix}-list`);
-                    if (objectListElement) {
-                        objectListElement.innerHTML = htmlContent;
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data[config.objectJsonName]) {
+                        const objectList = config.object.fromJsonArray(data[config.objectJsonName]);
+                        const htmlContent = objectList.map(item => item.setRenderStrategy(config.renderStrategy).toHtml()).join("");
+                        const objectListElement = document.querySelector(`#${config.prefix}-list`);
+                        if (objectListElement) {
+                            objectListElement.innerHTML = htmlContent;
+                        }
                     }
-                }
 
-                if (this.selectedIds[this.currentTab] !== undefined) {
-                    let objectInput;
-                    const id = this.selectedIds[this.currentTab];
-                    if (!this.tabConfigs[this.currentTab].customSelect) {
-                        objectInput = document.querySelector(`#${config.prefix}-${id}`);
-                    } else {
-                        objectInput = this.tabConfigs[this.currentTab].customSelect(id);
+                    if (this.selectedIds[this.currentTab] !== undefined) {
+                        let objectInput;
+                        const id = this.selectedIds[this.currentTab];
+                        if (!this.tabConfigs[this.currentTab].customSelect) {
+                            objectInput = document.querySelector(`#${config.prefix}-${id}`);
+                        } else {
+                            objectInput = this.tabConfigs[this.currentTab].customSelect(id);
+                        }
+                        if (objectInput) {
+                            objectInput.checked = true;
+                        }
                     }
-                    if (objectInput) {
-                        objectInput.checked = true;
-                    }
-                }
 
-                if (data && data.currentPage !== undefined && data.totalPages !== undefined) {
-                    const pagination = Pagination.fromJson(data);
-                    const paginationHtml = pagination.toHtml();
-                    const paginationElement = document.querySelector(`#${config.prefix}-pagination`);
-                    if (paginationElement) {
-                        paginationElement.innerHTML = paginationHtml;
+                    if (data && data.currentPage !== undefined && data.totalPages !== undefined) {
+                        const pagination = Pagination.fromJson(data);
+                        const paginationHtml = pagination.toHtml();
+                        const paginationElement = document.querySelector(`#${config.prefix}-pagination`);
+                        if (paginationElement) {
+                            paginationElement.innerHTML = paginationHtml;
+                        }
+                        pagination.setEvent((pageIndex) => this.loadData(pageIndex));
                     }
-                    pagination.setEvent((pageIndex) => this.loadData(pageIndex));
-                }
-                setTimeout(() => {
-                    this.isLoading = false;
-                    this.changeButtonStatus();
-                }, 1000);
-            })
-            .catch(error => {
-                console.error("Error loading data:", error);
-                toast.danger("Failed to load data. Please try again later.", {
-                    position: "top-right", icon: true, duration: 3000
+                    setTimeout(() => {
+                        this.isLoading = false;
+                        this.changeButtonStatus();
+                    }, 1000);
+                })
+                .catch(error => {
+                    console.error("Error loading data:", error);
+                    toast.danger("Failed to load data. Please try again later.", {
+                        position: "top-right", icon: true, duration: 3000
+                    });
+                    setTimeout(() => {
+                        this.isLoading = false;
+                        this.changeButtonStatus();
+                    }, 1000);
                 });
-                setTimeout(() => {
-                    this.isLoading = false;
-                    this.changeButtonStatus();
-                }, 1000);
-            });
     }
 
     changeButtonStatus() {
@@ -473,22 +473,24 @@ class BookingManager {
 
         const confirmationHTML = `
             <div class="col-sm-6">
-                <h6 class="text-secondary mb-3 fw-500 text-uppercase">Hospital Information</h6>
+                <h6 class="text-secondary mb-3 fw-500 text-uppercase">
+                Thông tin bệnh viện
+                </h6>
                 <div class="p-4 bg-primary-subtle">
                     <h6 class="mb-2">${this.bookingSummary.hospital.name}</h6>
                     <p class="m-0 text-body">${this.bookingSummary.hospital.address}</p>
                 </div>
-                <h6 class="text-secondary mt-5 mb-3 fw-500 text-uppercase">Patient Information</h6>
+                <h6 class="text-secondary mt-5 mb-3 fw-500 text-uppercase">Thông tin bệnh nhân</h6>
                 <div class="p-4 bg-primary-subtle">
                     <div class="table-responsive">
                         <table class="table mb-0">
                             <tbody>
                             <tr>
-                                <td class="p-0 border-0"><h6 class="mb-2">Name:</h6></td>
+                                <td class="p-0 border-0"><h6 class="mb-2">Tên:</h6></td>
                                 <td class="p-0 border-0"><p class="mb-2 text-end">${this.bookingSummary.patient.name}</p></td>
                             </tr>
                             <tr>
-                                <td class="p-0 border-0"><h6 class="mb-2">Phone:</h6></td>
+                                <td class="p-0 border-0"><h6 class="mb-2">Số điện thoại:</h6></td>
                                 <td class="p-0 border-0"><p class="mb-2 text-end">${this.bookingSummary.patient.phone}</p></td>
                             </tr>
                             <tr>
@@ -501,36 +503,38 @@ class BookingManager {
                 </div>
             </div>
             <div class="col-sm-6 mt-sm-0 mt-5">
-                <h6 class="text-secondary mb-3 fw-500 text-uppercase">Appointment Summary</h6>
+                <h6 class="text-secondary mb-3 fw-500 text-uppercase">
+                Tóm tắt cuộc hẹn
+                </h6>
                 <div class="p-4 border">
                     <div class="table-responsive">
                         <table class="table mb-0">
                             <tbody>
                             <tr>
-                                <td class="p-0 border-0"><p class="mb-2">Doctor:</p></td>
+                                <td class="p-0 border-0"><p class="mb-2">Bác sĩ:</p></td>
                                 <td class="p-0 border-0"><h6 class="mb-2 text-end">${this.bookingSummary.doctor.name}</h6></td>
                             </tr>
                             <tr>
-                                <td class="p-0 border-0"><p class="mb-2">Date:</p></td>
+                                <td class="p-0 border-0"><p class="mb-2">Ngày:</p></td>
                                 <td class="p-0 border-0"><h6 class="mb-2 text-end">${this.bookingSummary.dateTime.date}</h6></td>
                             </tr>
                             <tr>
-                                <td class="p-0 border-0"><p class="mb-0">Time:</p></td>
+                                <td class="p-0 border-0"><p class="mb-0">Giờ:</p></td>
                                 <td class="p-0 border-0"><h6 class="mb-0 text-end">${this.bookingSummary.dateTime.time}</h6></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="p-4 bg-primary-subtle mt-4">
-                        <h6 class="mb-2">Services</h6>
+                        <h6 class="mb-2">Dịch vụ</h6>
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                             <p class="m-0 text-body">${this.bookingSummary.service.name}</p>
-                            <h6 class="m-0">$${this.bookingSummary.service.price}</h6>
+                            <h6 class="m-0">${this.bookingSummary.service.price}</h6>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mt-4">
-                        <h5 class="m-0">Total Price</h5>
-                        <p class="m-0 text-primary">$${this.bookingSummary.service.price}</p>
+                        <h5 class="m-0">Tổng giá</h5>
+                        <p class="m-0 text-primary">${this.bookingSummary.service.price}</p>
                     </div>
                 </div>
             </div>
