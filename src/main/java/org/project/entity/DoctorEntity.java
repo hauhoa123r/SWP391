@@ -33,4 +33,6 @@ public class DoctorEntity {
     @Column(name = "doctor_rank")
     private DoctorRank doctorRank;
 
+    @OneToMany(mappedBy = "doctorEntity", fetch = FetchType.LAZY)
+    private Set<TestRequestEntity> testRequestEntities = new LinkedHashSet<>();
 }

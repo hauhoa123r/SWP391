@@ -53,6 +53,9 @@ public class TestRequestEntity {
     @JoinColumn(name = "patient_id", nullable = false)
     private PatientEntity patientEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "doctor_id", nullable = false)
+    private DoctorEntity doctorEntity;
 
 
 }
