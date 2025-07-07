@@ -11,9 +11,9 @@ export class DoctorResponse extends BaseResponse {
 
     static fromJson(json) {
         const doctorResponse = new DoctorResponse(
-            json.id,
-            json.staffEntity,
-            json.doctorRank
+                json.id,
+                json.staffEntity,
+                json.doctorRank
         );
 
         if (json.staffEntity) {
@@ -40,7 +40,7 @@ export class DoctorResponse extends BaseResponse {
                     <i class="fas fa-star ${this.staffEntity.reviewCount ? "text-warning" : "text-primary"}"></i>
                     <span class="ms-1">${Math.floor(this.staffEntity.averageRating * 10) / 10}</span>
                 </div>
-                <small>${this.staffEntity.reviewCount ? (this.staffEntity.reviewCount + " reviews") : "No reviews yet"}</small>
+                <small>${this.staffEntity.reviewCount ? (this.staffEntity.reviewCount + " Đánh giá") : "Chưa có đánh giá"}</small>
             </div>
         </div>
         `;
