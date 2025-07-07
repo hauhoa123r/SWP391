@@ -1,18 +1,41 @@
+import {CategoryResponse} from "/templates/frontend/assets/js/model/response/CategoryResponse.js";
+import {
+    ProductAdditionalInfoResponse
+} from "/templates/frontend/assets/js/model/response/ProductAdditionalInfoResponse.js";
+
 export class ProductResponse {
-    constructor(name, price, imageUrl, duration) {
+    constructor(id, name, description, imageUrl, price, categoryEntities, productAdditionalInfoEntities, reviewCount, averageRating) {
+        this.id = id;
         this.name = name;
-        this.price = price;
+        this.description = description;
         this.imageUrl = imageUrl;
-        this.duration = duration;
+        this.price = price;
+        this.categoryEntities = categoryEntities;
+        this.productAdditionalInfoEntities = productAdditionalInfoEntities;
+        this.reviewCount = reviewCount;
+        this.averageRating = averageRating;
     }
 
     static fromJson(json) {
-        return new ProductResponse(
+        const productResponse = new ProductResponse(
+            json.id,
             json.name,
-            json.price,
+            json.description,
             json.imageUrl,
-            json.duration
+            json.price,
+            json.categoryEntities,
+            json.productAdditionalInfoEntities,
+            json.reviewCount,
+            json.averageRating
         );
+
+        if (json.categoryEntities) {
+            productResponse.categoryEntities = CategoryResponse.fromJsonArray(json.categoryEntities);
+        }
+        if (json.productAdditionalInfoEntities) {
+            productResponse.productAdditionalInfoEntities = ProductAdditionalInfoResponse.fromJsonArray(json.productAdditionalInfoEntities);
+        }
+        return productResponse;
     }
 
     static fromJsonArray(jsonArray) {

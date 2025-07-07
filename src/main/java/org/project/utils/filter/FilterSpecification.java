@@ -24,12 +24,16 @@ public class FilterSpecification<T> {
         Specification<T> newSpecification = getSpecification(searchCriteria);
         if (newSpecification != null) {
             switch (operation) {
-                case AND -> specification = specification.and(newSpecification);
-                case OR -> specification = specification.or(newSpecification);
+                case AND -> this.specification = this.specification.and(newSpecification);
+                case OR -> this.specification = this.specification.or(newSpecification);
                 default -> throw new ResourceUnsupportedException("Unsupported operation: " + operation);
             }
         }
+        return this;
+    }
 
+    public FilterSpecification<T> reset() {
+        this.specification = Specification.allOf();
         return this;
     }
 
