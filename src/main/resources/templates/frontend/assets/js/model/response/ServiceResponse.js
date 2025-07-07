@@ -48,6 +48,15 @@ export class ServiceResponse extends BaseResponse {
         return html;
     }
 
+    formatCurrency(amount) {
+        return (Number)(amount).toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+    }
+
     toHtml(...args) {
         if (this.renderStrategy) {
             return this.renderStrategy(this, ...args);
@@ -81,7 +90,7 @@ export function renderServiceResponseForBooking(serviceResponse) {
                         </span>
                         <span
                                 class="d-block h6 fw-500 mt-3 mb-1 service-name">${serviceResponse.productEntity.name}</span>
-                        <span class="text-body service-price">${serviceResponse.productEntity.price}$</span>
+                        <span class="text-body service-price">${serviceResponse.formatCurrency(serviceResponse.productEntity.price)}</span>
                     </span>
             </label>
         </div>
@@ -106,13 +115,13 @@ export function renderServiceResponseForList(serviceResponse) {
                     <h4 class="mb-2">${serviceResponse.productEntity.name}</h4>
                     <p class="text-body m-0 line-count-3">${serviceResponse.productEntity.description}</p>
                     <div class="d-flex justify-content-between align-items-center mt-3">
-                        <div class="service-price fw-bold">${serviceResponse.productEntity.price}</div>
+                        <div class="service-price fw-bold">${serviceResponse.formatCurrency(serviceResponse.productEntity.price)}</div>
                         <div class="service-rating">${serviceResponse.getRating()}</div>
                     </div>
                     <div class="fencybox-button mt-3 mt-md-5">
                         <div class="iq-btn-container">
                             <a class="iq-button iq-btn-link text-capitalize" href="${"/service/detail/" + serviceResponse.id}">
-                                read more
+                                Xem thêm
                                 <span class="btn-link-icon">
                                       <svg fill="none" height="10" viewBox="0 0 8 8"
                                            width="10"
