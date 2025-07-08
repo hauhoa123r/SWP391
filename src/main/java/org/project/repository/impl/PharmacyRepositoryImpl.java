@@ -25,16 +25,41 @@ public class PharmacyRepositoryImpl implements PharmacyRepositoryCustom {
 	// Example of a custom method implementation 
 	@Override
 	public List<ProductViewDTO> getPagedProducts(int limit, int offset) {
-		String sql = """
-		        SELECT p.product_id, p.name,
-		               GROUP_CONCAT(c.name SEPARATOR ', ') AS category_names,
-		               p.price, p.stock_quantities, p.label
-		        FROM products p
-		        LEFT JOIN product_categories pc ON p.product_id = pc.product_id
-		        LEFT JOIN categories c ON pc.category_id = c.category_id
-		        GROUP BY p.product_id, p.name, p.price, p.stock_quantities, p.label
-		        ORDER BY p.product_id
-		    """;
+		/*
+		 * String sql = """ SELECT p.product_id, p.name, GROUP_CONCAT(c.name SEPARATOR
+		 * ', ') AS category_names, p.price, p.stock_quantities, p.label,
+		 * p.produt_status FROM products p LEFT JOIN product_categories pc ON
+		 * p.product_id = pc.product_id LEFT JOIN categories c ON pc.category_id =
+		 * c.category_id GROUP BY p.product_id, p.name, p.price, p.stock_quantities,
+		 * p.label ORDER BY p.product_id """;
+		 */
+		String sql = "SELECT DISTINCT \r\n"
+				+ "    p.product_id,\r\n"
+				+ "    p.product_type AS type,\r\n"
+				+ "    p.name,\r\n"
+				+ "    p.description,\r\n"
+				+ "    p.price,\r\n"
+				+ "    p.unit,\r\n"
+				+ "    p.product_status,\r\n"
+				+ "    p.stock_quantities,\r\n"
+				+ "    p.image_url,\r\n"
+				+ "    p.label,\r\n"
+				+ "\r\n"
+				+ "    GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS category_names, \r\n"
+				+ "    GROUP_CONCAT(DISTINCT pt.name SEPARATOR ', ') AS tag_names,\r\n"
+				+ "    GROUP_CONCAT(DISTINCT CONCAT(pai.name, ': ', pai.value) SEPARATOR ', ') AS additional_infos\r\n"
+				+ "\r\n"
+				+ "FROM swp391.products p\r\n"
+				+ "\r\n"
+				+ "LEFT JOIN swp391.product_categories pc ON p.product_id = pc.product_id\r\n"
+				+ "LEFT JOIN swp391.categories c ON pc.category_id = c.category_id\r\n"
+				+ "\r\n"
+				+ "LEFT JOIN swp391.product_tags pt ON p.product_id = pt.product_id\r\n"
+				+ "\r\n"
+				+ "LEFT JOIN swp391.product_additional_infos pai ON p.product_id = pai.product_id\r\n"
+				+ "\r\n"
+				+ "GROUP BY p.product_id, p.product_type, p.name, p.description, p.price, p.unit, \r\n"
+				+ "         p.product_status, p.stock_quantities, p.image_url, p.label;"; 
 		// Create a native query using the EntityManager 
 		    Query query = entityManager.createNativeQuery(sql);
 		    // Set the pagination parameters 

@@ -3,6 +3,8 @@ package org.project.converter;
 import org.project.config.ModelMapperConfig; 
 import org.project.entity.ProductEntity;
 import org.project.enums.Label;
+import org.project.enums.ProductStatus;
+import org.project.enums.ProductType;
 import org.project.model.dto.ProductViewDTO;
 import org.project.model.response.PharmacyListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,24 +37,58 @@ public class ConverterPharmacyProduct {
 		// Map the fields from the Object[] to ProductViewDTO 
 		//Mapping id 
 		Long id = ((Number) product[0]).longValue();
+		//Mapping type 
+		ProductType type = ProductType.valueOf((String) product[1]); 
 		//Mapping name 
-		String name = (String) product[1]; 
-		//Mapping categoryNames 
-		String categoryNames = (String) product[2]; 
+		String name = (String) product[2]; 
+		//Mapping description 
+		String description = (String) product[3]; 
 		//Mapping price 
-		Double price = ((BigDecimal) product[3]).doubleValue();  
-		//Mapping stockQuantities 
-		Integer stockQuantities = ((Number) product[4]).intValue(); 
+		BigDecimal price = ((BigDecimal) product[4]); 
+		//Mapping unit 
+		String unit = (String) product[5]; 
+		//Mapping ProductStatus 
+		ProductStatus productStatus = ProductStatus.valueOf((String) product[6]); 
+		//Mapping StockQuantities 
+		Integer stockQuantities = ((Number) product[7]).intValue(); 
+		//Mapping imageUrl 
+		String imageUrl = (String) product[8]; 
 		//Mapping label 
-		Label label = Label.valueOf((String) product[5]); 
-		// Set the fields in ProductViewDTO 
+		Label label = Label.valueOf((String) product[9]); 
+		//mapping categoryNames 
+		String categoryNames = (String) product[10]; 
+		//Mapping tagNames 
+		String tagNames = (String) product[11]; 
+		//Mapping additinalInfos 
+		String additionalInfos = (String) product[12]; 
+		
+		//set values to ProductViewDTO 
 		productViewDTO.setId(id); 
+		//set type 
+		productViewDTO.setType(type);
+		//set name
 		productViewDTO.setName(name); 
-		productViewDTO.setCategoryNames(categoryNames); 
+		//set description 
+		productViewDTO.setDescription(description); 
 		productViewDTO.setPrice(price); 
-		productViewDTO.setStockQuantities(stockQuantities); 
+		//set unit 
+		productViewDTO.setUnit(unit);
+		//set productStatus 
+		productViewDTO.setProductStatus(productStatus);
+		//set stockQuantities 
+		productViewDTO.setStockQuantities(stockQuantities);
+		//set imageUrl 
+		productViewDTO.setImageUrl(imageUrl);
+		//set label 
 		productViewDTO.setLabel(label); 
-		// Return the populated ProductViewDTO 
+		//set categoryNames 
+		productViewDTO.setCategoryNames(categoryNames); 
+		//set tagNames 
+		productViewDTO.setTagNames(tagNames); 
+		//set additionalInfos 
+		productViewDTO.setAdditionalInfos(additionalInfos); 
+		
+		//Mapping 
 		return productViewDTO;
 	} 
 }
