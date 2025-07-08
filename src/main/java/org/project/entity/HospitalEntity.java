@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "HospitalEntityEntity")
+@Entity
 @Table(name = "hospitals", schema = "swp391")
 public class HospitalEntity {
     @Id
@@ -46,9 +46,6 @@ public class HospitalEntity {
     @Size(max = 255)
     @Column(name = "avatar_url")
     private String avatarUrl;
-
-    @OneToMany(mappedBy = "hospital")
-    private Set<DepartmentEntity> departmentEntities = new LinkedHashSet<>();
 
     @OneToMany
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();

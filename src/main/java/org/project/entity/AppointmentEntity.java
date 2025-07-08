@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.project.enums.AppointmentStatus;
 
 import java.sql.Timestamp;
 import java.util.LinkedHashSet;
@@ -15,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "AppointmentEntityEntity")
+@Entity
 @Table(name = "appointments", schema = "swp391")
 public class AppointmentEntity {
     @Id
@@ -45,26 +46,24 @@ public class AppointmentEntity {
     @Column(name = "duration_minutes")
     private Integer durationMinutes;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "scheduling_coordinator_id", nullable = false)
     private SchedulingCoordinatorEntity schedulingCoordinatorEntity;
 
-    @OneToMany
+    @OneToMany(mappedBy = "appointmentEntity")
     private Set<IngredientRequestEntity> ingredientRequestEntities = new LinkedHashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "appointmentEntity")
     private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "appointmentEntity")
     private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
-    @OneToMany
+
+    @OneToMany(mappedBy = "appointmentEntity")
     private Set<TestRequestEntity> testRequestEntities = new LinkedHashSet<>();
 
-/*
- TODO [Reverse Engineering] create field to map the 'appointment_status' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @Column(name = "appointment_status", columnDefinition = "enum not null")
-    private Object appointmentStatus;
-*/
+    @Enumerated(EnumType.STRING)
+    @Column(name = "appointment_status")
+    private AppointmentStatus appointmentStatus;
+
 }

@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "TestEntityEntity")
+@Entity
 @Table(name = "tests", schema = "swp391")
 public class TestEntity {
     @Id
@@ -25,7 +25,7 @@ public class TestEntity {
     @JoinColumn(name = "test_id", nullable = false)
     private ProductEntity productEntity;
 
-    @OneToMany
-    private Set<TestRequestItemEntity> testRequestItemEntities = new LinkedHashSet<>();
+//    @OneToMany
+//    private Set<TestRequestItemEntity> testRequestItemEntities = new LinkedHashSet<>();
 
 }

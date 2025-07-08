@@ -24,11 +24,6 @@ public class DepartmentEntity {
     private Long id;
 
     @NotNull
-    @OneToOne
-    @JoinColumn(name = "manager_id", nullable = false)
-    private StaffEntity staffEntity;
-
-    @NotNull
     @OneToMany(mappedBy = "departmentEntity")
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
 
@@ -54,9 +49,6 @@ public class DepartmentEntity {
     @Column(name = "slogan")
     private String slogan;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "hospital_id", nullable = false)
-    private HospitalEntity hospital;
-
+    @OneToMany(mappedBy = "departmentEntity")
+    private Set<ServiceEntity> serviceEntities = new LinkedHashSet<>();
 }

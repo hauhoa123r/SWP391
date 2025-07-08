@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "WalletTransactionEntityEntity")
+@Entity
 @Table(name = "wallet_transactions", schema = "swp391")
 public class WalletTransactionEntity {
     @Id

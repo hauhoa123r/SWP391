@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "TechnicianEntityEntity")
+@Entity
 @Table(name = "technicians", schema = "swp391")
 public class TechnicianEntity {
     @Id
@@ -25,8 +25,8 @@ public class TechnicianEntity {
     @JoinColumn(name = "technician_id", nullable = false)
     private StaffEntity staffEntity;
 
-    @OneToMany
-    private Set<TestRequestItemEntity> testRequestItemEntities = new LinkedHashSet<>();
+//    @OneToMany
+//    private Set<TestRequestItemEntity> testRequestItemEntities = new LinkedHashSet<>();
 
 /*
  TODO [Reverse Engineering] create field to map the 'technician_rank' column

@@ -1,0 +1,30 @@
+<!doctype html>
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        breadCrumbTitle = ${'Dịch vụ'},
+        breadCrumbTexts = ${{{'Dịch vụ'}}},
+        breadCrumbLinks = ${{{''}}}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Danh sách dịch vụ</title>
+</head>
+<body>
+<main class="main-content">
+    <section class="section-padding" layout:fragment="content">
+        <div class="container">
+            <div class="row row-cols-xl-3 row-cols-md-2 row-cols-1" id="service-list">
+            </div>
+        </div>
+        <nav aria-label="Service pagination" class="mt-4">
+            <ul class="pagination justify-content-center" id="service-pagination"></ul>
+        </nav>
+    </section>
+</main>
+<th:block layout:fragment="custom-js">
+    <script th:src="@{/frontend/assets/js/service.js}"
+            type="module"></script>
+</th:block>
+</body>
+</html>

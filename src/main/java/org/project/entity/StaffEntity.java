@@ -90,4 +90,23 @@ public class StaffEntity {
     @JoinColumn(name = "hospital_id", nullable = false)
     private HospitalEntity hospitalEntity;
 
+    @ManyToMany()
+    @JoinTable(name = "staff_reviews",
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "staff_review_id"))
+    private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+
+    @OneToOne(mappedBy = "staffEntity")
+    private DoctorEntity doctorEntity;
+
+    public Double getAverageRating() {
+        return reviewEntities.stream()
+                .mapToDouble(ReviewEntity::getRating)
+                .average()
+                .orElse(0.0);
+    }
+
+    public Integer getReviewCount() {
+        return reviewEntities.size();
+    }
 }

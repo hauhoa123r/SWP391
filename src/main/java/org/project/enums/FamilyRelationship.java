@@ -1,27 +1,26 @@
 package org.project.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum FamilyRelationship {
-    SELF("self"),
-    FATHER("father"),
-    MOTHER("mother"),
-    BROTHER("brother"),
-    SISTER("sister"),
-    SON("son"),
-    DAUGHTER("daughter"),
-    GRANDFATHER("grandfather"),
-    GRANDMOTHER("grandmother"),
-    COUSIN("cousin"),
-    AUNT("aunt"),
-    UNCLE("uncle"),
-    OTHER("other");
+    SELF("Self"),
+    WIFE("Wife"),
+    HUSBAND("Husband"),
+    FATHER("Father"),
+    MOTHER("Mother"),
+    BROTHER("Brother"),
+    SISTER("Sister"),
+    SON("Son"),
+    DAUGHTER("Daughter"),
+    GRAND_FATHER("Grandfather"),
+    GRAND_MOTHER("Grandmother"),
+    COUSIN("Cousin"),
+    AUNT("Aunt"),
+    UNCLE("Uncle"),
+    OTHER("Other");
 
     private final String relationship;
-
-    FamilyRelationship(String relationship) {
-        this.relationship = relationship;
-    }
-
-    public String getRelationship() {
-        return relationship;
-    }
 }

@@ -1,0 +1,36 @@
+<!doctype html>
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        breadCrumbTitle = ${'Danh sách bác sĩ'},
+        breadCrumbTexts = ${{{'Danh sách bác sĩ'}}},
+        breadCrumbLinks = ${{{''}}}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách bác sĩ</title>
+</head>
+<body>
+<main>
+    <section layout:fragment="content">
+        <div class="container">
+            <nav class="tab-bottom-bordered border-0 mb-5">
+                <div class="mb-0 nav nav-tabs justify-content-center" id="department-list" role="tablist"></div>
+            </nav>
+            <div class="tab-content iq-tab-fade-up" id="nav-tabContent">
+                <div aria-labelledby="doc-all-tab" class="tab-pane fade show active" id="doc-all" role="tabpanel">
+                    <div class="row row-cols-md-3 row-cols-sm-2 row-cols-1" id="doctor-list"></div>
+                </div>
+                <nav aria-label="Doctor pagination" class="mt-4">
+                    <ul class="pagination justify-content-center" id="doctor-pagination">
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+</main>
+<th:block layout:fragment="custom-js">
+    <script th:src="@{/frontend/assets/js/doctor.js}" type="module"></script>
+</th:block>
+</body>
+</html>

@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "PricingPlanEntityEntity")
+@Entity
 @Table(name = "pricing_plans", schema = "swp391")
 public class PricingPlanEntity {
     @Id
@@ -27,8 +27,9 @@ public class PricingPlanEntity {
 
     @OneToMany
     private Set<PricingPlanFeatureEntity> pricingPlanFeatureEntities = new LinkedHashSet<>();
-    @ManyToMany(mappedBy = "pricingPlanEntities")
-    private Set<PatientEntity> patientEntities = new LinkedHashSet<>();
+
+    @OneToMany (mappedBy = "pricingPlanEntity")
+    private Set<PricingPlanSubscriptionEntity> pricingPlanSubscriptionEntities = new LinkedHashSet<>();
 
 /*
  TODO [Reverse Engineering] create field to map the 'plan_type' column
