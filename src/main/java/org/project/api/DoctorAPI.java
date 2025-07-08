@@ -1,16 +1,15 @@
 package org.project.api;
 
 import org.project.enums.StaffRole;
+import org.project.model.dto.DoctorDTO;
 import org.project.model.response.DoctorResponse;
 import org.project.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -78,5 +77,10 @@ public class DoctorAPI {
                         "currentPage", doctorResponsePage.getNumber()
                 )
         );
+    }
+
+    @GetMapping("/filter/page/{pageIndex}")
+    public List<DoctorResponse> getAllDoctors(@PathVariable int pageIndex, @ModelAttribute DoctorDTO doctorDTO) {
+        return doctorService.getAllByCriteria(doctorDTO, pageIndex, PAGE_SIZE_FOR_LIST);
     }
 }
