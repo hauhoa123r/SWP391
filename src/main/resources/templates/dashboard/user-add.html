@@ -1655,7 +1655,7 @@
                                 <div class="col-md-12">
                                     <div class="flex-wrap d-flex justify-content-between align-items-center flex-wrap gap-3">
                                         <div>
-                                            <h1 class="fw-bold mb-0 rtl-primary-color">Hello KiviCare!</h1>
+                                            <h1 class="fw-bold mb-0 rtl-primary-color">Tạo nhân viên</h1>
                                         </div>
                                         <div>
                                             <a class="btn btn-link btn-secondary" data-bs-toggle="offcanvas" href="#offcanvasBreadcrumb"
@@ -1830,17 +1830,16 @@
                     </div>                <!-- Nav Header Component End -->
             <!--Nav End-->
                 <!-- Hiển thị thông báo thành công -->
+            <body>
+            <div class="container-fluid">
                 <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
-
                 <form th:action="@{/admin/doctor-staffs/create}" th:object="${staff}" method="post">
-                    <!-- Hiển thị lỗi tổng -->
                     <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
                         <ul>
                             <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
                         </ul>
                     </div>
                     <div class="row">
-
                         <!-- LEFT PANEL -->
                         <div class="col-xl-3 col-lg-4">
                             <div class="card">
@@ -1848,35 +1847,38 @@
                                     <h4 class="card-title">Thông tin cơ bản</h4>
                                 </div>
                                 <div class="card-body">
-
                                     <div class="mb-3">
-                                        <label class="form-label">Đường dẫn ảnh đại diện:</label>
-                                        <input class="form-control" type="text" th:field="*{avatarUrl}" placeholder="Nhập URL hình ảnh"
+                                        <label class="form-label">Ảnh đại diện:</label>
+                                        <input class="form-control" type="text" th:field="*{avatarUrl}" maxlength="512"
+                                               placeholder="Nhập URL hình ảnh"
                                                th:classappend="${#fields.hasErrors('avatarUrl')} ? ' is-invalid' : ''" />
                                         <div class="text-danger" th:errors="*{avatarUrl}" th:if="${#fields.hasErrors('avatarUrl')}"></div>
                                     </div>
-
                                     <div class="mb-3">
-                                        <label class="form-label">Vai trò:</label>
-                                        <select class="form-select" th:field="*{staffRole}"
+                                        <label for="staffRole" class="form-label required">Chức vụ nhân sự:</label>
+                                        <select id="staffRole" name="staffRole" class="form-select"
+                                                th:field="*{staffRole}"
                                                 th:classappend="${#fields.hasErrors('staffRole')} ? ' is-invalid' : ''">
-                                            <option value="" disabled>Chọn vai trò</option>
+                                            <option value="" disabled selected th:if="*{staffRole} == null">-- Vui lòng lựa chọn chức vụ phù hợp --</option>
                                             <option value="DOCTOR">Bác sĩ</option>
-                                            <option value="STAFF">Nhân viên</option>
+                                            <option value="STAFF">Nhân viên hành chính</option>
                                         </select>
                                         <div class="text-danger" th:errors="*{staffRole}" th:if="${#fields.hasErrors('staffRole')}"></div>
                                     </div>
 
+
                                     <div class="mb-3">
-                                        <label class="form-label">Email:</label>
-                                        <input type="email" class="form-control" th:field="*{email}" placeholder="example@gmail.com"
+                                        <label class="form-label required">Email:</label>
+                                        <input type="email" class="form-control" th:field="*{email}" maxlength="100"
+                                               placeholder="example@gmail.com"
                                                th:classappend="${#fields.hasErrors('email')} ? ' is-invalid' : ''" />
                                         <div class="text-danger" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></div>
                                     </div>
-
                                     <div class="mb-3">
-                                        <label class="form-label">Số điện thoại:</label>
-                                        <input type="text" class="form-control" th:field="*{phoneNumber}" placeholder="Số điện thoại"
+                                        <label for="phone" class="form-label required">Số điện thoại liên hệ:</label>
+                                        <input type="text" id="phone" name="phone" class="form-control"
+                                               th:field="*{phoneNumber}" maxlength="10"
+                                               placeholder="Nhập số điện thoại (10 chữ số, ví dụ: 0912345678)"
                                                th:classappend="${#fields.hasErrors('phoneNumber')} ? ' is-invalid' : ''" />
                                         <div class="text-danger" th:errors="*{phoneNumber}" th:if="${#fields.hasErrors('phoneNumber')}"></div>
                                     </div>
@@ -1884,7 +1886,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- RIGHT PANEL -->
                         <div class="col-xl-9 col-lg-8">
                             <div class="card">
@@ -1893,64 +1894,86 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Họ và tên:</label>
-                                            <input type="text" class="form-control" th:field="*{fullName}" placeholder="Họ tên đầy đủ"
+                                            <label class="form-label required">Họ và tên:</label>
+                                            <input type="text" class="form-control" th:field="*{fullName}" maxlength="100"
+                                                   placeholder="Họ tên đầy đủ"
                                                    th:classappend="${#fields.hasErrors('fullName')} ? ' is-invalid' : ''" />
                                             <div class="text-danger" th:errors="*{fullName}" th:if="${#fields.hasErrors('fullName')}"></div>
                                         </div>
-
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Loại nhân viên:</label>
-                                            <input type="text" class="form-control" th:field="*{staffType}" placeholder="Toàn thời gian, bán thời gian..."
-                                                   th:classappend="${#fields.hasErrors('staffType')} ? ' is-invalid' : ''" />
+                                            <label class="form-label required">Hình thức làm việc:</label>
+                                            <select class="form-select" th:field="*{staffType}"
+                                                    th:classappend="${#fields.hasErrors('staffType')} ? ' is-invalid' : ''">
+                                                <option value="" disabled selected th:if="*{staffType} == null">-- Vui lòng chọn hình thức làm việc --</option>
+                                                <option value="FULL_TIME">Làm việc toàn thời gian</option>
+                                                <option value="PART_TIME">Làm việc bán thời gian</option>
+                                            </select>
                                             <div class="text-danger" th:errors="*{staffType}" th:if="${#fields.hasErrors('staffType')}"></div>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Cấp bậc:</label>
-                                            <input type="number" class="form-control" th:field="*{rankLevel}" min="1" max="10" placeholder="Cấp bậc"
+                                            <label class="form-label required">Cấp bậc:</label>
+                                            <input type="number" class="form-control" th:field="*{rankLevel}" min="1" max="20"
+                                                   placeholder="1 - 20"
                                                    th:classappend="${#fields.hasErrors('rankLevel')} ? ' is-invalid' : ''" />
                                             <div class="text-danger" th:errors="*{rankLevel}" th:if="${#fields.hasErrors('rankLevel')}"></div>
                                         </div>
-
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Học hàm / Chức danh:</label>
-                                            <input type="text" class="form-control" th:field="*{doctorRank}" placeholder="Thạc sĩ, chuyên khoa II..."
-                                                   th:classappend="${#fields.hasErrors('doctorRank')} ? ' is-invalid' : ''" />
+                                            <label class="form-label">Chức danh bác sĩ:</label>
+                                            <select class="form-select" th:field="*{doctorRank}" th:classappend="${#fields.hasErrors('doctorRank')} ? ' is-invalid' : ''">
+                                                <option value="">-- Chọn chức danh --</option>
+                                                <option value="THAC_SI">Thạc sĩ</option>
+                                                <option value="TIEN_SI">Tiến sĩ</option>
+                                                <option value="CHUYEN_KHOA_I">Chuyên khoa I</option>
+                                                <option value="CHUYEN_KHOA_II">Chuyên khoa II</option>
+                                                <option value="PGS_TS">PGS.TS</option>
+                                            </select>
                                             <div class="text-danger" th:errors="*{doctorRank}" th:if="${#fields.hasErrors('doctorRank')}"></div>
                                         </div>
-
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Mã phòng ban:</label>
-                                            <input type="number" class="form-control" th:field="*{departmentId}" placeholder="ID phòng ban (nếu có)"
-                                                   th:classappend="${#fields.hasErrors('departmentId')} ? ' is-invalid' : ''" />
+                                            <label class="form-label">Phòng ban:</label>
+                                            <select class="form-select" th:field="*{departmentId}"
+                                                    th:classappend="${#fields.hasErrors('departmentId')} ? ' is-invalid' : ''">
+                                                <option value="">-- Chọn phòng ban --</option>
+                                                <option th:each="d : ${departments}"
+                                                        th:value="${d.id}"
+                                                        th:text="${d.name}">
+                                                </option>
+                                            </select>
                                             <div class="text-danger" th:errors="*{departmentId}" th:if="${#fields.hasErrors('departmentId')}"></div>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Mã bệnh viện:</label>
-                                            <input type="number" class="form-control" th:field="*{hospitalId}" placeholder="ID bệnh viện"
-                                                   th:classappend="${#fields.hasErrors('hospitalId')} ? ' is-invalid' : ''" />
+                                            <label class="form-label required">Bệnh viện:</label>
+                                            <select class="form-select" th:field="*{hospitalId}"
+                                                    th:classappend="${#fields.hasErrors('hospitalId')} ? ' is-invalid' : ''">
+                                                <option value="">-- Chọn bệnh viện --</option>
+                                                <option th:each="h : ${hospitals}"
+                                                        th:value="${h.id}"
+                                                        th:text="${h.name + ' - ' + h.address}">
+                                                </option>
+                                            </select>
                                             <div class="text-danger" th:errors="*{hospitalId}" th:if="${#fields.hasErrors('hospitalId')}"></div>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Quản lý trực tiếp:</label>
-                                            <input type="number" class="form-control" th:field="*{managerId}" placeholder="ID quản lý (tự động)" readonly />
+                                            <input type="number" class="form-control" th:field="*{managerId}" readonly />
                                         </div>
-
                                     </div>
-
-                                    <button type="submit" class="btn btn-primary mt-3">Thêm mới</button>
+                                    <button type="submit" class="btn btn-primary mt-3">
+                                        <i class="fas fa-plus-circle me-1"></i>Thêm mới
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
-            </div>
+            <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+            <script th:src="@{/js/all.min.js}"></script>
+            </body>
             <!-- Footer Section Start -->
             <footer class="footer">
                 <div class="footer-body">
@@ -2897,5 +2920,24 @@
             }
         });
     </script>
-    </body>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fields = document.querySelectorAll('.is-invalid');
+        fields.forEach(function (el) {
+            el.addEventListener('input', clearError);
+            el.addEventListener('change', clearError);
+        });
+        function clearError(e) {
+            const input = e.target;
+            input.classList.remove('is-invalid');
+            const feedback = input.parentElement.querySelector('.invalid-feedback');
+            if (feedback) {
+                feedback.remove();
+            }
+            input.removeEventListener('input', clearError);
+            input.removeEventListener('change', clearError);
+        }
+    });
+</script>
+</body>
 </html>

@@ -36,7 +36,13 @@ public class AdminStaffController {
             Model model
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        Page<AdminStaffResponse> staffPage = adminStaffService.getAllStaffs(pageable, field, keyword);
+        Page<AdminStaffResponse> staffPage;
+        switch (field) {
+            case "fullName" -> staffPage = adminStaffService.searchByFullName(keyword, pageable);
+            case "email" -> staffPage = adminStaffService.searchByEmail(keyword, pageable);
+            case "phoneNumber" -> staffPage = adminStaffService.searchByPhoneNumber(keyword, pageable);
+            default -> staffPage = adminStaffService.getAllStaffs(pageable, field, keyword);
+        }
 
         model.addAttribute("staffPage", staffPage);
         model.addAttribute("currentPage", page);
@@ -73,5 +79,28 @@ public class AdminStaffController {
         adminStaffService.updateStaff(id, request);
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thành công");
         return "redirect:/admin/staffs/detail/" + id;
+    }
+
+    // ====== Search Staffs ======
+    @GetMapping("/search")
+    public String searchStaffs(@RequestParam String field,
+                               @RequestParam String keyword,
+                               @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size,
+                               Model model) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<AdminStaffResponse> staffPage;
+        switch (field) {
+            case "fullName" -> staffPage = adminStaffService.searchByFullName(keyword, pageable);
+            case "email" -> staffPage = adminStaffService.searchByEmail(keyword, pageable);
+            case "phoneNumber" -> staffPage = adminStaffService.searchByPhoneNumber(keyword, pageable);
+            default -> staffPage = adminStaffService.getAllStaffs(pageable, field, keyword);
+        }
+        model.addAttribute("staffPage", staffPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", staffPage.getTotalPages());
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("field", field);
+        return "dashboard/staff-search";
     }
 }

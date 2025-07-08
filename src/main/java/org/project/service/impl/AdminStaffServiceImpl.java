@@ -70,4 +70,23 @@ public class AdminStaffServiceImpl implements AdminStaffService {
         }
         staffRepository.save(staff);
     }
+
+    // ===== search by individual fields =====
+    @Override
+    public Page<AdminStaffResponse> searchByFullName(String keyword, Pageable pageable) {
+        return staffRepository.searchStaffs(pageable, "fullName", keyword)
+                .map(staffMapper::toResponse);
+    }
+
+    @Override
+    public Page<AdminStaffResponse> searchByEmail(String keyword, Pageable pageable) {
+        return staffRepository.searchStaffs(pageable, "email", keyword)
+                .map(staffMapper::toResponse);
+    }
+
+    @Override
+    public Page<AdminStaffResponse> searchByPhoneNumber(String keyword, Pageable pageable) {
+        return staffRepository.searchStaffs(pageable, "phoneNumber", keyword)
+                .map(staffMapper::toResponse);
+    }
 }

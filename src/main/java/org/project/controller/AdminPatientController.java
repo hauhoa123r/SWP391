@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 
 
 @Controller
-@RequestMapping("/patients")
+@RequestMapping("/admin/patients")
 @RequiredArgsConstructor
 public class AdminPatientController {
 

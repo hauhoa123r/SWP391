@@ -9,6 +9,11 @@ import org.springframework.data.domain.Pageable;
 
 public interface AdminStaffService {
     Page<AdminStaffResponse> getAllStaffs(Pageable pageable, String field, String keyword);
+
+    // search by individual field
+    Page<AdminStaffResponse> searchByFullName(String keyword, Pageable pageable);
+    Page<AdminStaffResponse> searchByEmail(String keyword, Pageable pageable);
+    Page<AdminStaffResponse> searchByPhoneNumber(String keyword, Pageable pageable);
     AdminStaffDetailResponse getStaffDetail(Long id);
     StaffEntity getStaffById(Long id); // dùng nội bộ
     AdminStaffUpdateRequest getUpdateForm(Long id);
