@@ -7,7 +7,6 @@ import org.project.enums.ProductSortType;
 import org.project.model.response.CategoryListResponse;
 import org.project.model.response.PharmacyResponse;
 import org.project.service.CategoryService;
-import org.project.service.PharmacyService;
 import org.project.service.ProductService;
 import org.project.service.WishlistService;
 import org.project.repository.ProductTagRepository;
@@ -18,9 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,18 +25,34 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller for handling shop related operations including product listings,
+ * searching, and filtering.
+ */
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ShopController {
     private final ProductService productService;
-    private final PharmacyService pharmacyServiceImpl;
     private final CategoryService categoryService;
     private final ProductTagRepository productTagRepository;
     private final WishlistService wishlistService;
 
     private static final String PREVIOUS_SEARCH_KEY = "previousSearch";
 
+    /**
+     * Main shop page with filtering and searching capabilities
+     * @param searchQuery Optional search query for product names
+     * @param sortType Optional sort type for results
+     * @param page Page number (zero-based)
+     * @param size Number of items per page
+     * @param categoryId Optional category ID filter
+     * @param minPrice Optional minimum price filter
+     * @param maxPrice Optional maximum price filter
+     * @param tagRaw Optional tag filter
+     * @param session HTTP session for maintaining search context
+     * @return ModelAndView for shop page with search results
+     */
     @GetMapping("/shop")
     public ModelAndView shop(
             @RequestParam(value = "search", required = false) String searchQuery,
@@ -51,20 +64,25 @@ public class ShopController {
             @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
             @RequestParam(value = "tag", required = false) String tagRaw,
             HttpSession session) {
-        log.info("Processing shop request: searchQuery={}, sortType={}, page={}, size={}", searchQuery, sortType, page, size);
+        log.info("Processing shop request: searchQuery={}, sortType={}, page={}, size={}, categoryId={}, minPrice={}, maxPrice={}, tag={}",
+                searchQuery, sortType, page, size, categoryId, minPrice, maxPrice, tagRaw);
 
         ModelAndView mv = new ModelAndView("shop");
+        
         // Convert "%23" back to "#" for tag searches if needed
         String tagProcessed = tagRaw != null ? tagRaw.replace("%23", "#") : null;
         SearchContext context = buildSearchContext(searchQuery, sortType, session);
 
+        // Search for products with all filters applied
         Page<PharmacyResponse> productPage = productService.searchProducts(
                 context.searchQuery(), Optional.ofNullable(categoryId),
                 Optional.ofNullable(minPrice), Optional.ofNullable(maxPrice),
                 Optional.ofNullable(tagProcessed), context.sortType(), PageRequest.of(page, size));
 
+        // Load categories for sidebar
         List<CategoryListResponse> categories = loadCategoriesWithProductCount();
 
+        // Add all data to model
         mv.addObject("products", productPage.getContent());
         mv.addObject("productPage", productPage);
         mv.addObject("selectedSort", context.sortType());
@@ -73,20 +91,29 @@ public class ShopController {
         mv.addObject("categoryId", categoryId);
         mv.addObject("size", size);
         mv.addObject("page", page);
+        
         // Sidebar data
-        mv.addObject("topProducts", pharmacyServiceImpl.findTop10Products());
+        mv.addObject("topProducts", productService.findTop10Products());
         mv.addObject("tags", productTagRepository.findDistinctTagNames());
         mv.addObject("minPrice", minPrice);
         mv.addObject("maxPrice", maxPrice);
         mv.addObject("selectedTag", tagProcessed);
+        
+        log.debug("Shop page prepared with {} products", productPage.getNumberOfElements());
         return mv;
     }
 
-
-
+    /**
+     * Process search form submission
+     * @param searchQuery Optional search query
+     * @param sortType Optional sort type
+     * @return Redirect to shop page with search parameters
+     */
     @PostMapping("/submit")
     public String search(@RequestParam(value = "search", required = false) String searchQuery,
                          @RequestParam(value = "sort", required = false) String sortType) {
+        log.debug("Processing search form submission: search={}, sort={}", searchQuery, sortType);
+        
         StringBuilder redirectUrl = new StringBuilder("redirect:/shop");
         boolean hasQuery = false;
 
@@ -102,7 +129,10 @@ public class ShopController {
         return redirectUrl.toString();
     }
 
-
+    /**
+     * Product home page displaying top products
+     * @return ModelAndView for product home page
+     */
     @GetMapping("/product-home")
     public ModelAndView productHome() {
         log.info("Loading product home page");
@@ -111,9 +141,9 @@ public class ShopController {
 
         try {
             // Fetch top 10 products for the home page
-            List<PharmacyResponse> products = pharmacyServiceImpl.findTop10Products();
+            List<PharmacyResponse> products = productService.findTop10Products();
 
-            // Kiểm tra nếu danh sách trả về là null
+            // Validate returned list
             if (products == null) {
                 log.warn("findTop10Products returned null, using empty list");
                 products = Collections.emptyList();
@@ -123,74 +153,119 @@ public class ShopController {
                 log.debug("Loaded {} products for home page", products.size());
             }
 
-            // Thêm danh sách sản phẩm vào model
+            // Add products to model
             mv.addObject("products", products);
 
         } catch (Exception e) {
             log.error("Error fetching top 10 products: {}", e.getMessage(), e);
-            // Trả về danh sách rỗng nếu có lỗi để tránh lỗi render
+            // Return empty list on error to avoid rendering issues
             mv.addObject("products", Collections.emptyList());
         }
 
         return mv;
     }
 
+    // ==================== Other page mappings ====================
 
+    /**
+     * Shopping cart page
+     * @return ModelAndView for cart page
+     */
     @GetMapping("/cart")
     public ModelAndView cart() {
-        ModelAndView mv = new ModelAndView("cart");
-        return mv;
+        log.debug("Accessing cart page");
+        return new ModelAndView("cart");
     }
 
+    /**
+     * Checkout page
+     * @return ModelAndView for checkout page
+     */
     @GetMapping("/checkout")
     public ModelAndView checkout() {
-        ModelAndView mv = new ModelAndView("checkout");
-        return mv;
+        log.debug("Accessing checkout page");
+        return new ModelAndView("checkout");
     }
 
-
+    /**
+     * User account page
+     * @return ModelAndView for account page
+     */
     @GetMapping("/my-account")
     public ModelAndView myAccount() {
-        ModelAndView mv = new ModelAndView("my-account");
-        return mv;
+        log.debug("Accessing my account page");
+        return new ModelAndView("my-account");
     }
 
+    /**
+     * Order tracking page
+     * @return ModelAndView for order tracking page
+     */
     @GetMapping("/track-order")
     public ModelAndView trackOrder() {
-        ModelAndView mv = new ModelAndView("track-order");
-        return mv;
+        log.debug("Accessing track order page");
+        return new ModelAndView("track-order");
     }
 
+    /**
+     * New products page
+     * @return ModelAndView for new products page
+     */
     @GetMapping("/product-new")
     public ModelAndView productNew() {
-        ModelAndView mv = new ModelAndView("product-new");
-        return mv;
+        log.debug("Accessing new products page");
+        return new ModelAndView("product-new");
     }
 
+    /**
+     * Product sale page
+     * @return ModelAndView for product sale page
+     */
     @GetMapping("/product-sale")
     public ModelAndView productSale() {
-        ModelAndView mv = new ModelAndView("product-sale");
-        return mv;
+        log.debug("Accessing product sale page");
+        return new ModelAndView("product-sale");
     }
 
+    /**
+     * Shop page with left sidebar layout
+     * @return ModelAndView for shop page with left sidebar
+     */
     @GetMapping("/shop-left-sidebar")
     public ModelAndView shopLeftSidebar() {
-        ModelAndView mv = new ModelAndView("shop-left-sidebar");
-        return mv;
+        log.debug("Accessing shop with left sidebar");
+        return new ModelAndView("shop-left-sidebar");
     }
 
+    /**
+     * Shop page with right sidebar layout
+     * @return ModelAndView for shop page with right sidebar
+     */
     @GetMapping("/shop-right-sidebar")
     public ModelAndView shopRightSidebar() {
-        ModelAndView mv = new ModelAndView("shop-right-sidebar");
-        return mv;
+        log.debug("Accessing shop with right sidebar");
+        return new ModelAndView("shop-right-sidebar");
     }
 
+    /**
+     * Shop page without sidebar layout
+     * @return ModelAndView for shop page without sidebar
+     */
     @GetMapping("/shop-no-sidebar")
     public ModelAndView shopNoSidebar() {
-        ModelAndView mv = new ModelAndView("shop-no-sidebar");
-        return mv;
+        log.debug("Accessing shop with no sidebar");
+        return new ModelAndView("shop-no-sidebar");
     }
 
+    // ==================== Helper methods ====================
+    
+    /**
+     * Build search context from parameters and session state
+     * @param searchQuery Search query string
+     * @param sortType Sort type
+     * @param session HTTP session
+     * @return Search context containing normalized query and sort type
+     */
     private SearchContext buildSearchContext(String searchQuery, ProductSortType sortType, HttpSession session) {
         String normalizedQuery = normalizeQuery(searchQuery);
         String previousSearch = (String) session.getAttribute(PREVIOUS_SEARCH_KEY);
@@ -207,26 +282,42 @@ public class ShopController {
         return new SearchContext(Optional.ofNullable(normalizedQuery), finalSortType);
     }
 
+    /**
+     * Load categories with product count for sidebar
+     * @return List of categories with product count
+     */
     private List<CategoryListResponse> loadCategoriesWithProductCount() {
         // Only keep categories that have at least one product to display in sidebar
-
         List<CategoryListResponse> categories = categoryService.findAllCategory();
         categories.forEach(category -> category.setProductCount(
                 String.valueOf(categoryService.countProductsByCategory(category.getId()))));
-        // filter
+        
+        // Filter out categories with no products
         return categories.stream()
                 .filter(c -> !"0".equals(c.getProductCount()))
                 .toList();
     }
 
+    /**
+     * Normalize a search query
+     * @param query Raw search query
+     * @return Normalized query or null if invalid
+     */
     private String normalizeQuery(String query) {
         return isValid(query) ? query.trim() : null;
     }
 
+    /**
+     * Check if a string is valid (not null and not empty)
+     * @param input String to validate
+     * @return true if valid, false otherwise
+     */
     private boolean isValid(String input) {
         return input != null && !input.trim().isEmpty();
     }
 
-
+    /**
+     * Record class representing search context
+     */
     private record SearchContext(Optional<String> searchQuery, ProductSortType sortType) {}
 }

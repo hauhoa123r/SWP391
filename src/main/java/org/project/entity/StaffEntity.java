@@ -28,7 +28,7 @@ public class StaffEntity {
     private Long id;
 
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY, optional = false,orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userEntity;
 

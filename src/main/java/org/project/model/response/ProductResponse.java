@@ -4,21 +4,27 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.project.enums.Label;
+import org.project.enums.ProductStatus;
+import org.project.enums.ProductType;
 
-import java.util.List;
+import java.math.BigDecimal;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class ProductResponse {
     private Long id;
     private String name;
     private String description;
+    private BigDecimal price;
+    private String unit;
+    private Integer stockQuantity;
     private String imageUrl;
-    private Double price;
-    private List<CategoryResponse> categoryEntities;
-    private List<ProductAdditionalInfoResponse> productAdditionalInfoEntities;
-    private Integer reviewCount;
+    private ProductType productType;
+    private ProductStatus productStatus;
+    private Label label;
     private Double averageRating;
+    private Long reviewCount;
 }

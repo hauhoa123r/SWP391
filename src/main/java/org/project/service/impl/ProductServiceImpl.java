@@ -5,64 +5,293 @@ import lombok.extern.slf4j.Slf4j;
 import org.project.converter.ConverterPharmacyProduct;
 import org.project.entity.ProductEntity;
 import org.project.enums.ProductLabel;
+import org.project.enums.Operation;
+import org.project.enums.ProductStatus;
+import org.project.enums.ProductType;
+import org.project.utils.filter.SearchCriteria;
+import org.project.utils.filter.FilterSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import org.project.enums.ProductSortType;
 import org.project.model.response.PharmacyResponse;
-import org.project.repository.PharmacyRepository;
+import org.project.repository.ProductRepository;
 import org.project.service.ProductService;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.Normalizer;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of ProductService interface that provides comprehensive 
+ * product management and search capabilities.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProductServiceImpl implements ProductService {
-    private final PharmacyRepository pharmacyRepository;
+    private final ProductRepository productRepository;
     private final ConverterPharmacyProduct converter;
 
+    // ==================== Search and filtering ====================
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional(readOnly = true)
     public Page<PharmacyResponse> searchProducts(Optional<String> searchQuery, Optional<Long> categoryId,
                                                  Optional<BigDecimal> minPrice, Optional<BigDecimal> maxPrice,
                                                  Optional<String> type, ProductSortType sortType, Pageable pageable) {
-        String sanitizedQuery = sanitizeSearchQuery(searchQuery);
-        Optional<String> processedSearchQuery = sanitizedQuery != null ? Optional.of(sanitizedQuery) : Optional.empty();
-
-        validateCommonInputs(pageable, minPrice, maxPrice, processedSearchQuery, type, categoryId);
-
-        log.info("Searching products: searchQuery={}, categoryId={}, minPrice={}, maxPrice={}, type={}, sortType={}",
-                processedSearchQuery.orElse(""), categoryId.orElse(null), minPrice.orElse(null), maxPrice.orElse(null), type.orElse(""), sortType);
-
         try {
+            String sanitizedQuery = sanitizeSearchQuery(searchQuery);
+            Optional<String> processedSearchQuery = sanitizedQuery != null ? Optional.of(sanitizedQuery) : Optional.empty();
+
+            validateCommonInputs(pageable, minPrice, maxPrice, processedSearchQuery, type, categoryId);
+
+            log.info("Searching products: searchQuery={}, categoryId={}, minPrice={}, maxPrice={}, type={}, sortType={}",
+                    processedSearchQuery.orElse(""), categoryId.orElse(null), minPrice.orElse(null), maxPrice.orElse(null), type.orElse(""), sortType);
+
             Pageable sortedPageable = createSortedPageable(pageable, sortType);
-            Page<ProductEntity> productPage = determineSearchStrategy(processedSearchQuery, categoryId, minPrice, maxPrice, type, sortedPageable);
+            Specification<ProductEntity> spec = buildSpecification(processedSearchQuery, categoryId, minPrice, maxPrice, type);
+            Page<ProductEntity> productPage = productRepository.findAll(spec, sortedPageable);
             Page<PharmacyResponse> resultPage = productPage.map(this::convertToDto);
 
             if (sortType == ProductSortType.RATING) {
-                List<ProductEntity> allProducts = fetchAllProducts(processedSearchQuery, categoryId, minPrice, maxPrice, type);
-                if (allProducts.isEmpty()) {
-                    return Page.empty(pageable);
-                }
-                List<PharmacyResponse> allDtos = allProducts.stream()
-                        .map(this::convertToDto)
-                        .collect(Collectors.toList());
-                List<PharmacyResponse> sortedContent = sortByRating(allDtos);
-                int start = (int) pageable.getOffset();
-                int end = Math.min((start + pageable.getPageSize()), sortedContent.size());
-                List<PharmacyResponse> paginatedContent = sortedContent.subList(start, end);
-                return new PageImpl<>(paginatedContent, pageable, sortedContent.size());
+                return applyRatingSortWithPagination(processedSearchQuery, categoryId, minPrice, maxPrice, type, pageable);
             }
 
             return applySorting(resultPage, sortType);
         } catch (Exception e) {
-            log.error("Error searching products: {}", e.getMessage());
+            log.error("Error searching products: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to search products", e);
         }
     }
 
+    /**
+     * Apply rating-based sorting with pagination
+     */
+    private Page<PharmacyResponse> applyRatingSortWithPagination(
+            Optional<String> searchQuery, Optional<Long> categoryId,
+            Optional<BigDecimal> minPrice, Optional<BigDecimal> maxPrice,
+            Optional<String> type, Pageable pageable) {
+        
+        List<ProductEntity> allProducts = fetchAllProducts(searchQuery, categoryId, minPrice, maxPrice, type);
+        if (allProducts.isEmpty()) {
+            return Page.empty(pageable);
+        }
+        
+        List<PharmacyResponse> allDtos = allProducts.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+                
+        List<PharmacyResponse> sortedContent = sortByRating(allDtos);
+        
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), sortedContent.size());
+        List<PharmacyResponse> paginatedContent = sortedContent.subList(start, end);
+        
+        return new PageImpl<>(paginatedContent, pageable, sortedContent.size());
+    }
+
+    // ==================== CRUD operations ====================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public ProductEntity save(ProductEntity product) {
+        try {
+            log.debug("Saving product: {}", product.getName());
+            return productRepository.save(product);
+        } catch (Exception e) {
+            log.error("Error saving product: {}", e.getMessage(), e);
+            throw new RuntimeException("Failed to save product", e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public ProductEntity findById(Long id) {
+        try {
+            log.debug("Finding product by ID: {}", id);
+            return productRepository.findById(id).orElse(null);
+        } catch (Exception e) {
+            log.error("Error finding product by ID: {}", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductEntity> findAll() {
+        try {
+            log.debug("Finding all products");
+            return productRepository.findAll();
+        } catch (Exception e) {
+            log.error("Error finding all products: {}", e.getMessage(), e);
+            return List.of();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        try {
+            log.debug("Deleting product by ID: {}", id);
+            productRepository.deleteById(id);
+        } catch (Exception e) {
+            log.error("Error deleting product by ID: {}", e.getMessage(), e);
+            throw new RuntimeException("Failed to delete product", e);
+        }
+    }
+
+    // ==================== Product display and fetching ====================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<PharmacyResponse> findTop10Products() {
+        try {
+            log.debug("Finding top 10 products");
+            // Fetch first page without sorting by a non-existent column, then sort in memory by calculated rating
+            List<ProductEntity> entities = new ArrayList<>(productRepository.findAll(PageRequest.of(0, 100)).getContent());
+            // Sort in-memory
+            entities.sort((e1, e2) -> Double.compare(calculateRating(e2), calculateRating(e1)));
+            if (entities.size() > 10) {
+                entities = entities.subList(0, 10);
+            }
+            return entities.stream().map(this::convertToDto).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error finding top 10 products: {}", e.getMessage(), e);
+            return List.of();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public PharmacyResponse findProductById(Long id) {
+        try {
+            log.debug("Finding product DTO by ID: {}", id);
+            return productRepository.findByProductStatusAndId(ProductStatus.ACTIVE, id)
+                    .map(this::convertToDto)
+                    .orElse(null);
+        } catch (Exception e) {
+            log.error("Error finding product DTO by ID: {}", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<PharmacyResponse> findRelatedProducts(Long productId, int limit) {
+        try {
+            log.debug("Finding {} related products for product ID: {}", limit, productId);
+            // Method to fetch related products based on category
+            ProductEntity product = productRepository.findById(productId).orElse(null);
+            if (product == null || product.getCategoryEntities() == null || product.getCategoryEntities().isEmpty()) {
+                return new ArrayList<>();
+            }
+            Long categoryId = product.getCategoryEntities().iterator().next().getId();
+            List<ProductEntity> relatedEntities = new ArrayList<>(
+                productRepository.findByProductStatusAndCategoryEntities_Id(
+                    ProductStatus.ACTIVE, categoryId, PageRequest.of(0, limit + 1)
+                ).getContent()
+            );
+            // Sort in-memory by calculated rating
+            relatedEntities.sort((e1, e2) -> Double.compare(calculateRating(e2), calculateRating(e1)));
+            return relatedEntities.stream()
+                    .filter(entity -> !entity.getId().equals(productId))
+                    .limit(limit)
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error finding related products: {}", e.getMessage(), e);
+            return List.of();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Long findFirstProductId() {
+        try {
+            log.debug("Finding first product ID");
+            return productRepository.findFirstByProductStatusOrderById(ProductStatus.ACTIVE);
+        } catch (Exception e) {
+            log.error("Error finding first product ID: {}", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    // ==================== Type-specific operations ====================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductEntity> findAllByProductType(ProductType productType) {
+        try {
+            log.debug("Finding all products by type: {}", productType);
+            return productRepository.findAllByProductTypeAndProductStatus(productType, ProductStatus.ACTIVE);
+        } catch (Exception e) {
+            log.error("Error finding products by type: {}", e.getMessage(), e);
+            return List.of();
+        }
+    }
+
+    // ==================== Stock management ====================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void updateStock(Long id, Integer quantity) {
+        try {
+            log.debug("Updating stock for product ID: {} to quantity: {}", id, quantity);
+            ProductEntity product = findById(id);
+            if (product != null) {
+                product.setStockQuantities(quantity);
+                productRepository.save(product);
+            } else {
+                log.warn("Cannot update stock: product with ID {} not found", id);
+            }
+        } catch (Exception e) {
+            log.error("Error updating stock: {}", e.getMessage(), e);
+            throw new RuntimeException("Failed to update product stock", e);
+        }
+    }
+
+    // ==================== Utility methods ====================
+
+    /**
+     * Sanitizes a search query by removing diacritical marks and special characters
+     */
     private String sanitizeSearchQuery(Optional<String> searchQuery) {
         if (searchQuery == null || searchQuery.isEmpty()) {
             return null;
@@ -87,7 +316,9 @@ public class ProductServiceImpl implements ProductService {
         return query.isEmpty() ? null : query.toLowerCase();
     }
 
-
+    /**
+     * Creates a sorted pageable based on the sort type
+     */
     Pageable createSortedPageable(Pageable pageable, ProductSortType sortType) {
         if (pageable == null) {
             throw new IllegalArgumentException("Pageable cannot be null");
@@ -103,6 +334,9 @@ public class ProductServiceImpl implements ProductService {
         return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
     }
 
+    /**
+     * Determines the appropriate search strategy based on the provided criteria
+     */
     private Page<ProductEntity> determineSearchStrategy(Optional<String> searchQuery, Optional<Long> categoryId,
                                                         Optional<BigDecimal> minPrice, Optional<BigDecimal> maxPrice,
                                                         Optional<String> type, Pageable pageable) {
@@ -119,155 +353,107 @@ public class ProductServiceImpl implements ProductService {
             if (type.isPresent() && !type.get().trim().isEmpty()) {
                 return searchByType(type.get().trim(), pageable);
             }
-            return pharmacyRepository.findAll(pageable);
+            return productRepository.findByProductStatus(ProductStatus.ACTIVE, pageable);
         } catch (Exception e) {
-            log.error("Error determining search strategy: {}", e.getMessage());
+            log.error("Error determining search strategy: {}", e.getMessage(), e);
             return Page.empty(pageable);
         }
     }
 
+    /**
+     * Searches for products by name
+     */
+    @Deprecated // kept for compatibility; now uses Specification instead of LCS fuzzy search
     Page<ProductEntity> searchByName(String name, Pageable pageable) {
         validateCommonInputs(pageable, null, null, Optional.of(name), Optional.empty(), Optional.empty());
         try {
-            // Sử dụng logic Java để tìm kiếm tập hợp ký tự
-            Page<ProductEntity> allProducts = pharmacyRepository.findAll(pageable);
-            List<ProductEntity> matchedProducts = allProducts.getContent().stream()
-                    .filter(product -> matchesCharacterSet(name, product.getName()))
-                    .collect(Collectors.toList());
-            return new PageImpl<>(matchedProducts, pageable, matchedProducts.size());
+            Specification<ProductEntity> spec = new FilterSpecification<ProductEntity>()
+                    .getSpecification("name", Operation.CONTAINS, name.toLowerCase());
+            return productRepository.findAll(spec, pageable);
         } catch (Exception e) {
-            log.error("Error searching by name: {}", e.getMessage());
+            log.error("Error searching by name: {}", e.getMessage(), e);
             return Page.empty(pageable);
         }
     }
 
-    private boolean matchesCharacterSet(String query, String productName) {
-        if (query == null || productName == null) {
-            return false;
-        }
-        // Bỏ dấu và ký tự đặc biệt, đồng bộ với sanitizeSearchQuery
-        String sanitizedQuery = Normalizer.normalize(query, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "")
-                .replaceAll("[^\\p{L}\\p{Nd}]", "")
-                .toLowerCase();
-        String sanitizedName = Normalizer.normalize(productName, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "")
-                .replaceAll("[^\\p{L}\\p{Nd}]", "")
-                .toLowerCase();
-
-        if (sanitizedQuery.isEmpty() || sanitizedName.isEmpty()) {
-            return false;
-        }
-
-        // 1. Ưu tiên khớp theo chuỗi con đúng thứ tự
-        if (sanitizedName.contains(sanitizedQuery)) {
-            return true; // 100% match
-        }
-
-        // 2. Tính % ký tự khớp theo thứ tự (longest common subsequence)
-        int lcs = longestCommonSubsequence(sanitizedQuery, sanitizedName);
-        double similarity = (double) lcs / sanitizedQuery.length();
-        return similarity >= 0.5; // yêu cầu >= 50%
-    }
-
-    // Hỗ trợ tính LCS độ dài O(n*m) – chuỗi ở đây khá ngắn nên chấp nhận được
-    private int longestCommonSubsequence(String a, String b) {
-        int n = a.length();
-        int m = b.length();
-        int[][] dp = new int[n + 1][m + 1];
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
-                if (a.charAt(i - 1) == b.charAt(j - 1)) {
-                    dp[i][j] = dp[i - 1][j - 1] + 1;
-                } else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-                }
-            }
-        }
-        return dp[n][m];
-    }
-
+    /**
+     * Searches for products by category
+     */
     private Page<ProductEntity> searchByCategory(Long categoryId, Pageable pageable) {
         validateCommonInputs(pageable, null, null, Optional.empty(), Optional.empty(), Optional.of(categoryId));
         try {
-            return pharmacyRepository.findByCategoryEntities_Id(categoryId, pageable);
+            return productRepository.findByProductStatusAndCategoryEntities_Id(
+                ProductStatus.ACTIVE, categoryId, pageable);
         } catch (Exception e) {
-            log.error("Error searching by category: {}", e.getMessage());
+            log.error("Error searching by category: {}", e.getMessage(), e);
             return Page.empty(pageable);
         }
     }
 
+    /**
+     * Searches for products within a price range
+     */
     private Page<ProductEntity> searchByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
         validateCommonInputs(pageable, Optional.of(minPrice), Optional.of(maxPrice), Optional.empty(), Optional.empty(), Optional.empty());
         try {
-            return pharmacyRepository.findByPriceBetween(minPrice, maxPrice, pageable);
+            return productRepository.findByProductStatusAndPriceBetween(
+                ProductStatus.ACTIVE, minPrice, maxPrice, pageable);
         } catch (Exception e) {
-            log.error("Error searching by price range: {}", e.getMessage());
+            log.error("Error searching by price range: {}", e.getMessage(), e);
             return Page.empty(pageable);
         }
     }
 
+    /**
+     * Searches for products by type or tag
+     */
     private Page<ProductEntity> searchByType(String type, Pageable pageable) {
-        validateCommonInputs(pageable, null, null, Optional.empty(), Optional.of(type), Optional.empty());
-        String value = type.trim();
-        try {
-            Page<ProductEntity> byTag = pharmacyRepository.findByTagName(value, pageable);
-            if (!byTag.isEmpty()) {
-                return byTag;
-            }
-            ProductLabel label = ProductLabel.valueOf(value.toUpperCase());
-            return pharmacyRepository.findByLabel(label, pageable);
-        } catch (IllegalArgumentException e) {
-            log.warn("No ProductLabel found for value: {}", value);
+        if (type == null || type.trim().isEmpty()) {
             return Page.empty(pageable);
+        }
+        String value = type.trim();
+        
+        try {
+            // Try tag first
+            Page<ProductEntity> tagResult = productRepository.findByProductStatusAndProductTagEntities_Id_NameIgnoreCase(
+                ProductStatus.ACTIVE, value, pageable);
+            
+            if (!tagResult.isEmpty()) return tagResult;
+            
+            // Fallback label
+            try {
+                ProductLabel label = ProductLabel.valueOf(value.toUpperCase());
+                return productRepository.findByProductStatusAndLabel(ProductStatus.ACTIVE, label, pageable);
+            } catch (IllegalArgumentException ex) {
+                log.debug("Value {} is not a valid ProductLabel", value);
+                return Page.empty(pageable);
+            }
         } catch (Exception e) {
-            log.error("Error searching by type: {}", e.getMessage());
+            log.error("Error searching by type: {}", e.getMessage(), e);
             return Page.empty(pageable);
         }
     }
 
+    /**
+     * Fetches all products matching the specified criteria
+     */
     private List<ProductEntity> fetchAllProducts(Optional<String> searchQuery, Optional<Long> categoryId,
                                                  Optional<BigDecimal> minPrice, Optional<BigDecimal> maxPrice,
                                                  Optional<String> type) {
         String sanitizedQuery = sanitizeSearchQuery(searchQuery);
         Optional<String> processedSearchQuery = sanitizedQuery != null ? Optional.of(sanitizedQuery) : Optional.empty();
-        validateCommonInputs(null, minPrice, maxPrice, processedSearchQuery, type, categoryId);
         try {
-            if (processedSearchQuery.isPresent() && !processedSearchQuery.get().isEmpty()) {
-                return searchByName(processedSearchQuery.get(), Pageable.unpaged())
-                        .getContent();
-            }
-            if (categoryId.isPresent()) {
-                return pharmacyRepository.findByCategoryEntities_Id(categoryId.get(), Pageable.unpaged())
-                        .getContent();
-            }
-            if (minPrice.isPresent() || maxPrice.isPresent()) {
-                return pharmacyRepository.findByPriceBetween(minPrice.orElse(BigDecimal.ZERO),
-                                maxPrice.orElse(BigDecimal.valueOf(Long.MAX_VALUE)), Pageable.unpaged())
-                        .getContent();
-            }
-            if (type.isPresent() && !type.get().trim().isEmpty()) {
-                String value = type.get().trim();
-                List<ProductEntity> byTag = pharmacyRepository.findByTagName(value, Pageable.unpaged()).getContent();
-                if (!byTag.isEmpty()) {
-                    return byTag;
-                }
-                try {
-                    ProductLabel label = ProductLabel.valueOf(value.toUpperCase());
-                    return pharmacyRepository.findByLabel(label, Pageable.unpaged())
-                            .getContent();
-                } catch (IllegalArgumentException e) {
-                    log.warn("No ProductLabel found for value: {}", value);
-                    return List.of();
-                }
-            }
-            return pharmacyRepository.findAll();
+            Specification<ProductEntity> spec = buildSpecification(processedSearchQuery, categoryId, minPrice, maxPrice, type);
+            return productRepository.findAll(spec, Sort.unsorted());
         } catch (Exception e) {
-            log.error("Error fetching all products: {}", e.getMessage());
+            log.error("Error fetching all products: {}", e.getMessage(), e);
             return List.of();
         }
     }
 
+    /**
+     * Applies sorting to a page of products based on the specified sort type
+     */
     private Page<PharmacyResponse> applySorting(Page<PharmacyResponse> page, ProductSortType sortType) {
         if (page == null) {
             throw new IllegalArgumentException("Page cannot be null");
@@ -287,6 +473,9 @@ public class ProductServiceImpl implements ProductService {
         return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
     }
 
+    /**
+     * Converts a product entity to DTO
+     */
     private PharmacyResponse convertToDto(ProductEntity entity) {
         if (entity == null) {
             throw new IllegalArgumentException("ProductEntity cannot be null");
@@ -297,11 +486,14 @@ public class ProductServiceImpl implements ProductService {
         try {
             return converter.toDto(entity);
         } catch (Exception e) {
-            log.error("Error converting ProductEntity to PharmacyResponse: {}", e.getMessage());
+            log.error("Error converting ProductEntity to PharmacyResponse: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to convert product data", e);
         }
     }
 
+    /**
+     * Calculates the average rating for a product
+     */
     private double calculateRating(ProductEntity entity) {
         if (entity == null) {
             throw new IllegalArgumentException("ProductEntity cannot be null");
@@ -316,11 +508,14 @@ public class ProductServiceImpl implements ProductService {
                     .average()
                     .orElse(0.0);
         } catch (Exception e) {
-            log.error("Error calculating rating: {}", e.getMessage());
+            log.error("Error calculating rating: {}", e.getMessage(), e);
             return 0.0;
         }
     }
 
+    /**
+     * Sorts a list of products by rating
+     */
     private List<PharmacyResponse> sortByRating(List<PharmacyResponse> products) {
         if (products == null || products.isEmpty()) {
             return List.of();
@@ -330,6 +525,28 @@ public class ProductServiceImpl implements ProductService {
         return sortedProducts;
     }
 
+    /**
+     * Builds a specification for searching products based on the provided criteria
+     */
+    private Specification<ProductEntity> buildSpecification(Optional<String> searchQuery, Optional<Long> categoryId,
+                                                            Optional<BigDecimal> minPrice, Optional<BigDecimal> maxPrice,
+                                                            Optional<String> type) {
+        List<SearchCriteria> criteria = new ArrayList<>();
+        searchQuery.ifPresent(q -> criteria.add(new SearchCriteria("name", Operation.CONTAINS, q)));
+        categoryId.ifPresent(id -> criteria.add(new SearchCriteria("categoryEntities.id", Operation.EQUALS, id)));
+        if (minPrice.isPresent() || maxPrice.isPresent()) {
+            BigDecimal min = minPrice.orElse(BigDecimal.ZERO);
+            BigDecimal max = maxPrice.orElse(BigDecimal.valueOf(Long.MAX_VALUE));
+            criteria.add(new SearchCriteria("price", Operation.BETWEEN, new BigDecimal[]{min, max}));
+        }
+        type.filter(t -> !t.trim().isEmpty())
+                .ifPresent(t -> criteria.add(new SearchCriteria("label", Operation.EQUALS, t.trim().toUpperCase())));
+        return new FilterSpecification<ProductEntity>().getSpecifications(criteria);
+    }
+
+    /**
+     * Validates the common input parameters for search operations
+     */
     private void validateCommonInputs(Pageable pageable, Optional<BigDecimal> minPrice, Optional<BigDecimal> maxPrice,
                                       Optional<String> searchQuery, Optional<String> type, Optional<Long> categoryId) {
         if (pageable != null) {
