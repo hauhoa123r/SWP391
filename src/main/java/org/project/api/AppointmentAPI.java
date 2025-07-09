@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/appointment")
 public class AppointmentAPI {
@@ -28,12 +26,7 @@ public class AppointmentAPI {
     public ResponseEntity<String> saveAppointment(HttpSession session, @RequestBody AppointmentDTO appointmentDTO) {
         UserResponse user = (UserResponse) session.getAttribute("user");
         appointmentDTO.setPatientEntityUserEntityId(user.getId());
-        Map<String, Object> response = appointmentService.saveAppointment(appointmentDTO);
-        if (response.containsKey("success") && (boolean) response.get("success")) {
-            return ResponseEntity.ok("Appointment saved successfully.");
-        }
-        return ResponseEntity.badRequest().body(
-                response.containsKey("message") ? (String) response.get("message") : "Failed to save appointment."
-        );
+        appointmentService.saveAppointment(appointmentDTO);
+        return ResponseEntity.ok("Appointment created successfully");
     }
 }

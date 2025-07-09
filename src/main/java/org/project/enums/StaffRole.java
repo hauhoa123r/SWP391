@@ -10,6 +10,7 @@ public enum StaffRole {
     TECHNICIAN("technician"),
     SCHEDULING_COORDINATOR("scheduling_coordinator"),
     PHARMACIST("pharmacist"),
-    INVENTORY_MANAGER("inventory_manager");
+    INVENTORY_MANAGER("inventory_manager"),
+    LAB_RECEIVER("lab_receiver");
     private final String value;
 }

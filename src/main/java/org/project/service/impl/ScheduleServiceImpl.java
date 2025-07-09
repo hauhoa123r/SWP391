@@ -39,15 +39,17 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<Timestamp> getAvailableTimes(Long staffId, Date availableDate) {
+    public List<Timestamp> getAvailableTimes(Long staffId, Long patientId, Date availableDate) {
         timestampUtils = new TimestampUtils(availableDate);
-        if (availableDate.getTime() == timestampUtils.getStartOfDay().getTime()) {
+        if (availableDate.getTime() == new TimestampUtils().getStartOfDay().getTime()) {
             timestampUtils = new TimestampUtils();
         }
 
         List<StaffScheduleEntity> staffScheduleEntities = staffScheduleRepository.findByStaffEntityIdAndAvailableDate(staffId, availableDate);
         List<AppointmentEntity> appointmentEntities = appointmentRepository.findByDoctorEntityStaffEntityIdAndStartTimeBetween(staffId,
                 timestampUtils.getTimestamp(), timestampUtils.getEndOfDay());
+        appointmentEntities.addAll(appointmentRepository.findByPatientEntityIdAndStartTimeBetween(patientId,
+                timestampUtils.getTimestamp(), timestampUtils.getEndOfDay()));
 
         List<Timestamp> availableTimes = new ArrayList<>();
         for (StaffScheduleEntity schedule : staffScheduleEntities) {

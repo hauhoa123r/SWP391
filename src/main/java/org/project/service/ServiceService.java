@@ -10,7 +10,7 @@ public interface ServiceService {
 
     Page<ServiceResponse> searchServicesByDepartmentAndKeyword(Long departmentId, String keyword, int index, int size);
 
-    boolean isServiceExist(Long id);
+    boolean isActiveServiceExist(Long id);
 
-    ServiceResponse getService(Long id);
+    ServiceResponse getActiveService(Long id);
 }

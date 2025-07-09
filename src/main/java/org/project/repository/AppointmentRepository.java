@@ -2,8 +2,10 @@ package org.project.repository;
 
 import org.project.entity.AppointmentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
@@ -12,4 +14,10 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     boolean existsByPatientEntityIdAndStartTimeEquals(Long patientEntityId, Timestamp startTime);
 
     boolean existsByDoctorEntityIdAndStartTimeEquals(Long doctorEntityId, Timestamp startTime);
+
+    @Query("select count(id) from AppointmentEntity \n" +
+            "where date(startTime) = now()")
+    int countTotalAppointmentsToday();
+
+    Collection<? extends AppointmentEntity> findByPatientEntityIdAndStartTimeBetween(Long patientEntityId, Timestamp startTimeAfter, Timestamp startTimeBefore);
 }

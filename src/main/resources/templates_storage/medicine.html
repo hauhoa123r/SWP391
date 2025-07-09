@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <!-- meta data -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities." />
+    <meta name="keywords"
+        content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app" />
+    <meta name="author" content="pixelstrap" />
+    <link rel="icon" href="frontend/assets/images/favicon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="frontend/assets/images/favicon.png" type="image/x-icon" />
+    <title>Fastkart - Add New Product</title>
+
+    <!-- Google font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet" />
+
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" href="frontend/assets/css/linearicon.css" />
+
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/font-awesome.css" />
+
+    <!-- Themify icon css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/themify.css" />
+
+    <!--Dropzon css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/dropzone.css" />
+
+    <!-- Feather icon css-->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/feather-icon.css" />
+
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/remixicon.css" />
+
+    <!-- Select2 css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/select2.min.css" />
+
+    <!-- Plugins css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/scrollbar.css" />
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/animate.css" />
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/chartist.css" />
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/date-picker.css" />
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/bootstrap.css" />
+
+    <!-- Bootstrap-tag input css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/bootstrap-tagsinput.css" />
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/style.css" />
+
+
+</head>
+
+<body>
+    <!-- tap on top start -->
+    <div class="tap-top">
+        <span class="lnr lnr-chevron-up"></span>
+    </div>
+    <!-- tap on tap end -->
+
+    <!-- page-wrapper start -->
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+        <!-- Page Header Start-->
+        <div class="page-header">
+            <div class="header-wrapper m-0">
+                <div class="header-logo-wrapper p-0">
+                    <div class="logo-wrapper">
+                        <a href="index.html">
+                            <img class="img-fluid main-logo" src="frontend/assets/images/logo/1.png" alt="logo" />
+                            <img class="img-fluid white-logo" src="frontend/assets/images/logo/1-white.png" alt="logo" />
+                        </a>
+                    </div>
+
+                    <div class="toggle-sidebar">
+                        <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
+                        <a href="index.html">
+                            <img src="frontend/assets/images/logo/1.png" class="img-fluid" alt="">
+                        </a>
+                    </div>
+                </div>
+
+                <form class="form-inline search-full" action="javascript:void(0)" method="get">
+                    <div class="form-group w-100">
+                        <div class="Typeahead Typeahead--twitterUsers">
+                            <div class="u-posRelative">
+                                <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
+                                    placeholder="Search Fastkart .." name="q" title="" autofocus />
+                                <i class="close-search" data-feather="x"></i>
+                                <div class="spinner-border Typeahead-spinner" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="Typeahead-menu"></div>
+                        </div>
+                    </div>
+                </form>
+                <div class="nav-right col-6 pull-right right-header p-0">
+                    <ul class="nav-menus">
+                        <li>
+                            <span class="header-search">
+                                <i class="ri-search-line"></i>
+                            </span>
+                        </li>
+                        <li class="onhover-dropdown">
+                            <div class="notification-box">
+                                <i class="ri-notification-line"></i>
+                                <span class="badge rounded-pill badge-theme">4</span>
+                            </div>
+                            <ul class="notification-dropdown onhover-show-div">
+                                <li>
+                                    <i class="ri-notification-line"></i>
+                                    <h6 class="f-18 mb-0">Notitications</h6>
+                                </li>
+                                <li>
+                                    <p>
+                                        <i class="fa fa-circle me-2 font-primary"></i>Delivery
+                                        processing <span class="pull-right">10 min.</span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <i class="fa fa-circle me-2 font-success"></i>Order
+                                        Complete<span class="pull-right">1 hr</span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <i class="fa fa-circle me-2 font-info"></i>Tickets
+                                        Generated<span class="pull-right">3 hr</span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <i class="fa fa-circle me-2 font-danger"></i>Delivery
+                                        Complete<span class="pull-right">6 hr</span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <a class="btn btn-primary" href="javascript:void(0)">Check all notification</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <div class="mode">
+                                <i class="ri-moon-line"></i>
+                            </div>
+                        </li>
+                        <li class="profile-nav onhover-dropdown pe-0 me-0">
+                            <div class="media profile-media">
+                                <img class="user-profile rounded-circle" src="frontend/assets/images/users/4.jpg" alt="" />
+                                <div class="user-name-hide media-body">
+                                    <span>Emay Walter</span>
+                                    <p class="mb-0 font-roboto">
+                                        Admin<i class="middle ri-arrow-down-s-line"></i>
+                                    </p>
+                                </div>
+                            </div>
+                            <ul class="profile-dropdown onhover-show-div">
+                                <li>
+                                    <a href="all-users.html">
+                                        <i data-feather="users"></i>
+                                        <span>Users</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="order-list.html">
+                                        <i data-feather="archive"></i>
+                                        <span>Orders</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="support-ticket.html">
+                                        <i data-feather="phone"></i>
+                                        <span>Spports Tickets</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="profile-setting.html">
+                                        <i data-feather="settings"></i>
+                                        <span>Settings</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                        href="javascript:void(0)">
+                                        <i data-feather="log-out"></i>
+                                        <span>Log out</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Page Header Ends-->
+
+        <!-- Page Body start -->
+        <div class="page-body-wrapper">
+            <!-- Page Sidebar Start-->
+            <div class="sidebar-wrapper">
+                <div id="sidebarEffect"></div>
+                <div>
+                    <div class="logo-wrapper logo-wrapper-center">
+                        <a href="index.html" data-bs-original-title="" title="">
+                            <img class="img-fluid for-white" src="frontend/assets/images/logo/full-white.png" alt="logo" />
+                            <img class="img-fluid for-dark" src="frontend/assets/images/logo/1-white.png" alt="" />
+                        </a>
+                        <div class="back-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </div>
+                        <div class="toggle-sidebar">
+                            <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="logo-icon-wrapper">
+                        <a href="index.html">
+                            <img class="img-fluid main-logo main-white" src="frontend/assets/images/logo/1-white.png"
+                                alt="logo" />
+                            <img class="img-fluid main-logo main-dark" src="frontend/assets/images/logo/logo-white.png"
+                                alt="logo" />
+                        </a>
+                    </div>
+                    <nav class="sidebar-main">
+                        <div class="left-arrow" id="left-arrow">
+                            <i data-feather="arrow-left"></i>
+                        </div>
+
+                        <nav class="sidebar-main">
+                            <div class="left-arrow" id="left-arrow">
+                                <i data-feather="arrow-left"></i>
+                            </div>
+    
+                            <div id="sidebar-menu">
+                                <ul class="sidebar-links" id="simple-bar">
+                                    <li class="back-btn"></li>
+    
+                                    <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title link-nav" href="index.html">
+                                            <i class="ri-home-line"></i>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+    
+                                    <li class="sidebar-list">
+                                        <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                            <i class="ri-store-3-line"></i>
+                                            <span>Transaction</span>
+                                        </a>
+                                        <ul class="sidebar-submenu">
+                                            <li>
+                                                <a href="StockIn.html">Stock In</a>
+                                            </li>
+    
+                                            <li>
+                                                <a href="StockOut.html">Stock Out</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+    
+                                    <li class="sidebar-list">
+                                        <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                            <i class="ri-list-check-2"></i>
+                                            <span>Invoice</span>
+                                        </a>
+                                        <ul class="sidebar-submenu">
+                                            <li>
+                                                <a href="StockInInvoice.html">Stock In Invoice</a>
+                                            </li>
+    
+                                            <li>
+                                                <a href="StockOutInvoice.html">Stock Out Invoice</a>
+                                            </li>
+    
+                                            <li>
+                                                <a href="CustomerInvoice.html">Customer Invoice</a>
+                                            </li>
+    
+                                        </ul>
+                                    </li>
+    
+                                    <li class="sidebar-list">
+                                        <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                            <i class="ri-list-settings-line"></i>
+                                            <span>Inventory</span>
+                                        </a>
+                                        <ul class="sidebar-submenu">
+                                            <li>
+                                                <a href="medical-equipment.html">Medical Equipment</a>
+                                            </li>
+    
+                                            <li>
+                                                <a href="medicine.html">Medicine</a>
+                                            </li>
+    
+
+    
+                                        </ul>
+                                    </li>
+    <!-- 
+                                    <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                            <i class="ri-user-3-line"></i>
+                                            <span>Report</span>
+                                        </a>
+                                    </li> -->
+    
+                                    <!-- <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                            <i class="ri-user-3-line"></i>
+                                            <span>Roles</span>
+                                        </a>
+                                        <ul class="sidebar-submenu">
+                                            <li>
+                                                <a href="role.html">All roles</a>
+                                            </li>
+                                            <li>
+                                                <a href="create-role.html">Create Role</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+    
+                                    <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title link-nav" href="media.html">
+                                            <i class="ri-price-tag-3-line"></i>
+                                            <span>Media</span>
+                                        </a>
+                                    </li> -->
+    
+                                    <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                            <i class="ri-archive-line"></i>
+                                            <span>Orders</span>
+                                        </a>
+                                        <ul class="sidebar-submenu">
+                                            <li>
+                                                <a href="order-list.html">Order List</a>
+                                            </li>
+                                            <li>
+                                                <a href="order-detail.html">Order Detail</a>
+                                            </li>
+                                            <li>
+                                                <a href="order-tracking.html">Order Tracking</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+    <!-- 
+                                    <li class="sidebar-list">
+                                        <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                            <i class="ri-focus-3-line"></i>
+                                            <span>Localization</span>
+                                        </a>
+                                        <ul class="sidebar-submenu">
+                                            <li>
+                                                <a href="translation.html">Translation</a>
+                                            </li>
+    
+                                            <li>
+                                                <a href="currency-rates.html">Currency Rates</a>
+                                            </li>
+                                        </ul>
+                                    </li> -->
+    
+                                    <li class="sidebar-list">
+                                        <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                            <i class="ri-price-tag-3-line"></i>
+                                            <span>Coupons</span>
+                                        </a>
+                                        <ul class="sidebar-submenu">
+                                            <li>
+                                                <a href="coupon-list.html">Coupon List</a>
+                                            </li>
+    
+                                            <li>
+                                                <a href="create-coupon.html">Create Coupon</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+    <!-- 
+                                    <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title link-nav" href="taxes.html">
+                                            <i class="ri-price-tag-3-line"></i>
+                                            <span>Tax</span>
+                                        </a>
+                                    </li> -->
+    
+                                    <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title link-nav" href="product-review.html">
+                                            <i class="ri-star-line"></i>
+                                            <span>Product Review</span>
+                                        </a>
+                                    </li>
+    
+                                    <!-- <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title link-nav" href="support-ticket.html">
+                                            <i class="ri-phone-line"></i>
+                                            <span>Support Ticket</span>
+                                        </a>
+                                    </li>
+    
+                                    <li class="sidebar-list">
+                                        <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                            <i class="ri-settings-line"></i>
+                                            <span>Settings</span>
+                                        </a>
+                                        <ul class="sidebar-submenu">
+                                            <li>
+                                                <a href="profile-setting.html">Profile Setting</a>
+                                            </li>
+                                        </ul>
+                                    </li> -->
+    
+                                    <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title link-nav" href="reports.html">
+                                            <i class="ri-file-chart-line"></i>
+                                            <span>Reports</span>
+                                        </a>
+                                    </li>
+    
+                                    <!-- <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title link-nav" href="list-page.html">
+                                            <i class="ri-list-check"></i>
+                                            <span>List Page</span>
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </div>
+    
+                            <div class="right-arrow" id="right-arrow">
+                                <i data-feather="arrow-right"></i>
+                            </div>
+                        </nav>
+                    </div>
+            </div>
+            <!-- Page Sidebar Ends-->
+
+            <div class="page-body">
+                <!-- New Product Add Start -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-table">
+                                <div class="card-body">
+                                    <div class="title-header option-title d-sm-flex d-block">
+                                        <h5>Danh sách thu?c</h5>
+                                        <div class="right-options">
+                                            <ul>
+                                                <li>
+                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#expiredModal">Ki?m tra thu?c h?t h?n</a>
+                                                </li>
+                                                <li>
+                                                    <a class="btn btn-solid" href="StockIn.html">T?o yêu c?u nh?p kho</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="table-responsive">
+                                            <table class="table all-package theme-table table-product" id="table_id">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Hình ?nh</th>
+                                                        <th>Tên thu?c</th>
+                                                        <th>Mã thu?c</th>
+                                                        <th>S? lu?ng t?n kho</th>
+                                                        <th>Ðon giá</th>
+                                                        <th>H?n s? d?ng</th>
+                                                        <th>Tr?ng thái</th>
+                                                        <th>Tùy ch?n</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="table-image">
+                                                                <img src="frontend/assets/images/product/1.png" class="img-fluid" alt="">
+                                                            </div>
+                                                        </td>
+                                                        <td>Paracetamol 500mg</td>
+                                                        <td>M001</td>
+                                                        <td>120</td>
+                                                        <td class="td-price">5,000d</td>
+                                                        <td>30-06-2023</td>
+                                                        <td class="status-danger">
+                                                            <span>S?p h?t h?n</span>
+                                                        </td>
+                                                        <td>
+                                                            <ul>
+                                                                <li>
+                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#medicineDetail">
+                                                                        <i class="ri-eye-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="StockOut.html">
+                                                                        <i class="ri-arrow-right-circle-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <div class="table-image">
+                                                                <img src="frontend/assets/images/product/2.png" class="img-fluid" alt="">
+                                                            </div>
+                                                        </td>
+                                                        <td>Amoxicillin 250mg</td>
+                                                        <td>M002</td>
+                                                        <td>85</td>
+                                                        <td class="td-price">8,000d</td>
+                                                        <td>15-12-2023</td>
+                                                        <td class="status-close">
+                                                            <span>Còn hàng</span>
+                                                        </td>
+                                                        <td>
+                                                            <ul>
+                                                                <li>
+                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#medicineDetail">
+                                                                        <i class="ri-eye-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="StockOut.html">
+                                                                        <i class="ri-arrow-right-circle-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <div class="table-image">
+                                                                <img src="frontend/assets/images/product/3.png" class="img-fluid" alt="">
+                                                            </div>
+                                                        </td>
+                                                        <td>Vitamin C 1000mg</td>
+                                                        <td>M003</td>
+                                                        <td>50</td>
+                                                        <td class="td-price">15,000d</td>
+                                                        <td>15-07-2023</td>
+                                                        <td class="status-warning">
+                                                            <span>S?p h?t h?n</span>
+                                                        </td>
+                                                        <td>
+                                                            <ul>
+                                                                <li>
+                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#medicineDetail">
+                                                                        <i class="ri-eye-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="StockOut.html">
+                                                                        <i class="ri-arrow-right-circle-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <div class="table-image">
+                                                                <img src="frontend/assets/images/product/4.png" class="img-fluid" alt="">
+                                                            </div>
+                                                        </td>
+                                                        <td>Omeprazole 20mg</td>
+                                                        <td>M004</td>
+                                                        <td>75</td>
+                                                        <td class="td-price">12,000d</td>
+                                                        <td>20-11-2023</td>
+                                                        <td class="status-close">
+                                                            <span>Còn hàng</span>
+                                                        </td>
+                                                        <td>
+                                                            <ul>
+                                                                <li>
+                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#medicineDetail">
+                                                                        <i class="ri-eye-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="StockOut.html">
+                                                                        <i class="ri-arrow-right-circle-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <div class="table-image">
+                                                                <img src="frontend/assets/images/product/5.png" class="img-fluid" alt="">
+                                                            </div>
+                                                        </td>
+                                                        <td>Ibuprofen 400mg</td>
+                                                        <td>M005</td>
+                                                        <td>8</td>
+                                                        <td class="td-price">7,500d</td>
+                                                        <td>10-10-2023</td>
+                                                        <td class="status-danger">
+                                                            <span>S?p h?t</span>
+                                                        </td>
+                                                        <td>
+                                                            <ul>
+                                                                <li>
+                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#medicineDetail">
+                                                                        <i class="ri-eye-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="StockOut.html">
+                                                                        <i class="ri-arrow-right-circle-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Container-fluid Ends-->
+
+                <!-- footer start-->
+                <div class="container-fluid">
+                    <footer class="footer">
+                        <div class="row">
+                            <div class="col-md-12 footer-copyright text-center">
+                                <p class="mb-0">Copyright 2022 Â© Fastkart theme by pixelstrap</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+            <!-- Container-fluid End -->
+        </div>
+        <!-- Page Body End -->
+    </div>
+    <!-- page-wrapper End -->
+
+    <!-- Modal Start -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog  modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title" id="staticBackdropLabel">Logging Out</h5>
+                    <p>Are you sure you want to log out?</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="button-box">
+                        <button type="button" class="btn btn--no" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn  btn--yes btn-primary">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal End -->
+
+    <!-- Product Details Modal Start -->
+    <div class="modal fade" id="medicineDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chi ti?t thu?c</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="frontend/assets/images/product/1.png" class="img-fluid" alt="">
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Paracetamol 500mg</h4>
+                            <p><strong>Mã thu?c:</strong> M001</p>
+                            <p><strong>S? lu?ng t?n kho:</strong> 120</p>
+                            <p><strong>Ðon giá:</strong> 5,000d</p>
+                            <p><strong>H?n s? d?ng:</strong> 30-06-2023</p>
+                            <p><strong>Nhà s?n xu?t:</strong> Công ty Du?c ph?m ABC</p>
+                            <p><strong>Ngày nh?p kho g?n nh?t:</strong> 15-05-2023</p>
+                            <p><strong>V? trí luu tr?:</strong> Kho A - K? A1 - Ngan 2</p>
+                            <p><strong>Mô t?:</strong> Thu?c gi?m dau, h? s?t thông thu?ng, dùng di?u tr? các tri?u ch?ng dau nh? d?n v?a và s?t.</p>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h5>L?ch s? nh?p/xu?t kho</h5>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Ngày</th>
+                                            <th>Lo?i</th>
+                                            <th>S? lu?ng</th>
+                                            <th>S? lô</th>
+                                            <th>Ngu?i th?c hi?n</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>15-05-2023</td>
+                                            <td>Nh?p kho</td>
+                                            <td>200</td>
+                                            <td>LOT12345</td>
+                                            <td>Lê Van C</td>
+                                        </tr>
+                                        <tr>
+                                            <td>18-05-2023</td>
+                                            <td>Xu?t kho</td>
+                                            <td>50</td>
+                                            <td>LOT12345</td>
+                                            <td>Tr?n Th? B</td>
+                                        </tr>
+                                        <tr>
+                                            <td>22-05-2023</td>
+                                            <td>Xu?t kho</td>
+                                            <td>30</td>
+                                            <td>LOT12345</td>
+                                            <td>Nguy?n Van A</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ðóng</button>
+                    <a href="StockOut.html" class="btn btn-primary">Xu?t kho</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Product Details Modal End -->
+
+    <!-- Expired Medicine Modal Start -->
+    <div class="modal fade" id="expiredModal" tabindex="-1" aria-labelledby="expiredModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="expiredModalLabel">Ki?m tra thu?c h?t h?n</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="expiryThreshold" class="form-label">S? ngày c?nh báo tru?c khi h?t h?n</label>
+                                <input type="number" class="form-control" id="expiryThreshold" value="30">
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <button type="button" class="btn btn-primary">Ki?m tra</button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <h6>Danh sách thu?c s?p h?t h?n ho?c dã h?t h?n:</h6>
+                    <div class="table-responsive mt-3">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tên thu?c</th>
+                                    <th>Mã thu?c</th>
+                                    <th>S? lô</th>
+                                    <th>S? lu?ng</th>
+                                    <th>H?n s? d?ng</th>
+                                    <th>Tr?ng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Paracetamol 500mg</td>
+                                    <td>M001</td>
+                                    <td>LOT12345</td>
+                                    <td>120</td>
+                                    <td>30-06-2023</td>
+                                    <td><span class="badge bg-danger">S?p h?t h?n</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Vitamin C 1000mg</td>
+                                    <td>M003</td>
+                                    <td>LOT54321</td>
+                                    <td>50</td>
+                                    <td>15-07-2023</td>
+                                    <td><span class="badge bg-warning">S?p h?t h?n</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ðóng</button>
+                    <button type="button" class="btn btn-danger">T?o yêu c?u tiêu h?y</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Expired Medicine Modal End -->
+
+    <!-- latest js -->
+    <script src="frontend/assets/js/Stogarejs/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap js -->
+    <script src="frontend/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <!-- feather icon js -->
+    <script src="frontend/assets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="frontend/assets/js/icons/feather-icon/feather-icon.js"></script>
+
+    <!-- scrollbar simplebar js -->
+    <script src="frontend/assets/js/scrollbar/simplebar.js"></script>
+    <script src="frontend/assets/js/scrollbar/custom.js"></script>
+
+    <!-- Sidebar js -->
+    <script src="frontend/assets/js/config.js"></script>
+
+    <!-- bootstrap tag-input js -->
+    <script src="frontend/assets/js/bootstrap-tagsinput.min.js"></script>
+    <script src="frontend/assets/js/sidebar-menu.js"></script>
+
+    <!-- customizer js -->
+    <script src="frontend/assets/js/customizer.js"></script>
+
+    <!--Dropzon js -->
+    <script src="frontend/assets/js/dropzone/dropzone.js"></script>
+    <script src="frontend/assets/js/dropzone/dropzone-script.js"></script>
+
+    <!-- Plugins js -->
+    <script src="frontend/assets/js/notify/bootstrap-notify.min.js"></script>
+    <script src="frontend/assets/js/notify/index.js"></script>
+
+    <!-- select2 js -->
+    <script src="frontend/assets/js/select2.min.js"></script>
+    <script src="frontend/assets/js/select2-custom.js"></script>
+
+    <!-- all checkbox select js -->
+    <script src="frontend/assets/js/checkbox-all-check.js"></script>
+
+    <!-- sidebar effect -->
+    <script src="frontend/assets/js/sidebareffect.js"></script>
+
+    <!-- Theme js -->
+    <script src="frontend/assets/js/script.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+

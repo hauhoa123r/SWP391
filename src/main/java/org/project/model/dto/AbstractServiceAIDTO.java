@@ -10,5 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class AbstractServiceAIDTO {
+    protected int page = 0;
+    protected int size = 10;
     protected boolean isFormStarted;
 }

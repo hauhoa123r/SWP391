@@ -2,6 +2,7 @@ package org.project.repository;
 
 import org.project.entity.PatientEntity;
 import org.project.enums.FamilyRelationship;
+import org.project.enums.PatientStatus;
 import org.project.enums.UserRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,7 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
 
     List<PatientEntity> findAllByUserEntity_Id(Long userId);
 
-    Page<PatientEntity> findAllByUserEntityId(Long userEntityId, Pageable pageable);
+    Page<PatientEntity> findAllByUserEntityIdAndPatientStatus(Long userEntityId, Pageable pageable, PatientStatus patientStatus);
 
     Page<PatientEntity> findAllByUserEntity_Id(Long userId, Pageable pageable);
 
@@ -37,4 +38,7 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
     );
 
     PatientEntity findByUserEntity_IdAndFullName(Long userId, String patientName);
+
+    @Query("SELECT COUNT(pe.id) FROM PatientEntity pe")
+    int countAllPatients();
 }
