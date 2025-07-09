@@ -20,6 +20,10 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
 
     boolean existsByDoctorEntityIdAndStartTimeEquals(Long doctorEntityId, Timestamp startTime);
 
+    @Query("select count(id) from AppointmentEntity \n" +
+            "where date(startTime) = now()")
+    int countTotalAppointmentsToday();
+
     Collection<? extends AppointmentEntity> findByPatientEntityIdAndStartTimeBetween(Long patientEntityId, Timestamp startTimeAfter, Timestamp startTimeBefore);
 
     List<AppointmentEntity> findByDoctorEntity_StaffEntity_HospitalEntity_IdAndAppointmentStatus(Long hospitalId, AppointmentStatus appointmentStatus);

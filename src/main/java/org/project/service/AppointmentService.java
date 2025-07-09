@@ -13,7 +13,7 @@ import java.util.Map;
 
 public interface AppointmentService {
 
-    Map<String, Object> saveAppointment(AppointmentDTO appointmentDTO);
+    void saveAppointment(AppointmentDTO appointmentDTO);
 
     List<AppointmentApprovalResponse> getAppointmentsHaveStatusPendingByHospitalId(Long hospitalId);
 
