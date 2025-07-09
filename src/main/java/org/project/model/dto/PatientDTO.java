@@ -18,6 +18,7 @@ public class PatientDTO extends AbstractServiceAIDTO{
     private String familyRelationship;
     private String avatarBase64;
     private String bloodType;
+    private String identificationNumber;
 
     public Long getUserId() {
         return userId;
@@ -103,5 +104,13 @@ public class PatientDTO extends AbstractServiceAIDTO{
 
     public void setBloodType(String bloodType) {
         this.bloodType = bloodType;
+    }
+
+    public String getIdentificationNumber() {
+        return identificationNumber;
+    }
+
+    public void setIdentificationNumber(String identificationNumber) {
+        this.identificationNumber = identificationNumber;
     }
 }

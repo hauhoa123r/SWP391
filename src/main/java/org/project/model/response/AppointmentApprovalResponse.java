@@ -22,4 +22,7 @@ public class AppointmentApprovalResponse {
     private String patientEmail;
     private String patientAvatarBase64;
     private List<Long> appointmentConflictIds;
+    private Long hospitalId;
+    private Long doctorId;
+    private Long patientId;
 }

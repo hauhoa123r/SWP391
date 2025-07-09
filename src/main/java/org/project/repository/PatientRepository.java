@@ -38,4 +38,8 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
     );
 
     PatientEntity findByUserEntity_IdAndFullName(Long userId, String patientName);
+
+    boolean existsByIdentificationNumber(String identificationNumber);
+
+    boolean existsById(Long id);
 }

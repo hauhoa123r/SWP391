@@ -5,10 +5,14 @@ import org.project.config.WebConstant;
 import org.project.converter.AppointmentApprovalConverter;
 import org.project.converter.AppointmentConverter;
 import org.project.entity.AppointmentEntity;
+import org.project.entity.DoctorEntity;
+import org.project.entity.StaffEntity;
 import org.project.entity.StaffScheduleEntity;
 import org.project.enums.AppointmentStatus;
 import org.project.model.dto.AppointmentDTO;
+import org.project.model.dto.ChangeAppointmentDTO;
 import org.project.model.response.AppointmentApprovalResponse;
+import org.project.model.response.AppointmentAvailableResponse;
 import org.project.repository.*;
 import org.project.service.AppointmentService;
 import org.project.service.PatientService;
@@ -232,6 +236,126 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Boolean changeStatus(Long appointmentId, AppointmentStatus status, Long schedulingCoordinatorId) {
+        if (appointmentId == null || status == null) {
+            return false;
+        }
+        int updatedRows = appointmentRepository.updateAppointmentStatus(appointmentId, status, schedulingCoordinatorId);
+        return updatedRows > 0;
+    }
+
+    @Override
+    public AppointmentAvailableResponse getAvailableAppointmentsByDoctorIdForSuggestion(Long staffId, Long patientId, Timestamp availableTimestamp, int maxDays) {
+        AppointmentAvailableResponse response = new AppointmentAvailableResponse();
+        if (staffId == null || patientId == null || availableTimestamp == null) {
+            response.setAvailableTimes(Collections.emptyList());
+            return response;
+        }
+        Optional<DoctorEntity> doctorEntityOptional = doctorRepository.findById(staffId);
+        if (doctorEntityOptional.isEmpty()) {
+            response.setAvailableTimes(Collections.emptyList());
+            return response; // Doctor not found
+        }
+        List<Timestamp> availableTimes = getAvailableTimes(staffId, patientId, availableTimestamp, maxDays);
+        if (availableTimes == null || availableTimes.isEmpty()) {
+            response.setAvailableTimes(Collections.emptyList());
+        } else {
+            response.setAvailableTimes(availableTimes);
+        }
+        response.setStaffId(staffId);
+        String doctorName = doctorEntityOptional.get().getStaffEntity().getFullName();
+        response.setStaffName(doctorName);
+        response.setAvailableTimes(availableTimes);
+        return response;
+    }
+
+    @Override
+    public Boolean changeAppointment(ChangeAppointmentDTO changeAppointmentDTO) {
+        if (changeAppointmentDTO == null || changeAppointmentDTO.getAppointmentId() == null) {
+            return false; // Invalid input
+        }
+        AppointmentEntity appointmentEntity = appointmentRepository.findById(changeAppointmentDTO.getAppointmentId())
+                .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + changeAppointmentDTO.getAppointmentId()));
+
+        appointmentEntity = appointmentApprovalConverter.convertToEntity(appointmentEntity, changeAppointmentDTO);
+
+        // Save updated appointment
+        return appointmentRepository.save(appointmentEntity).getId() != null;
+    }
+
+    private List<Timestamp> getAvailableTimes(Long staffId, Long patientId, Timestamp availableTimestamp, int maxDays) {
+        TimestampUtils timestampUtils = new TimestampUtils();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        List<Timestamp> availableSlots = new ArrayList<>();
+        final int SLOT_DURATION_MINUTES = 15;
+
+        Timestamp currentDay = timestampUtils.getStartOfDay(availableTimestamp);
+
+        for (int day = 0; day < maxDays && availableSlots.size() < 10; day++) {
+            Timestamp startOfDay = timestampUtils.getStartOfDay(currentDay);
+            Timestamp endOfDay = timestampUtils.getEndOfDay(currentDay);
+
+            boolean isToday = timestampUtils.isSameDay(startOfDay, now);
+            Timestamp filterStart = isToday ? now : startOfDay;
+
+            List<StaffScheduleEntity> scheduleEntities = staffScheduleRepository.findByStaffEntityIdAndAvailableDate(
+                    staffId, new Date(currentDay.getTime())
+            );
+
+            if (scheduleEntities.isEmpty()) {
+                currentDay = timestampUtils.plusDays(currentDay, 1);
+                continue;
+            }
+
+            Set<Timestamp> busySlots = new HashSet<>();
+
+            List<AppointmentEntity> conflictingAppointments = appointmentRepository.findConflictingAppointments(
+                    staffId, patientId, startOfDay, endOfDay);
+
+            for (AppointmentEntity appointmentEntity : conflictingAppointments) {
+                Timestamp appointmentStart = appointmentEntity.getStartTime();
+                Timestamp appointmentEnd = timestampUtils.plusMinutes(
+                        appointmentStart,
+                        appointmentEntity.getDurationMinutes() // Dùng duration thực
+                );
+
+                Timestamp slot = appointmentStart;
+                while (slot.before(appointmentEnd)) {
+                    busySlots.add(slot);
+                    slot = timestampUtils.plusMinutes(slot, SLOT_DURATION_MINUTES);
+                }
+            }
+
+            for (StaffScheduleEntity staffScheduleEntity : scheduleEntities) {
+                Timestamp slot = staffScheduleEntity.getStartTime();
+                Timestamp endSlot = staffScheduleEntity.getEndTime();
+
+                while (slot.before(endSlot)) {
+                    // SỬA: bỏ điều kiện slot.after(now)
+                    if (!slot.before(filterStart) && !busySlots.contains(slot)) {
+                        availableSlots.add(slot);
+                        if (availableSlots.size() >= 10) {
+                            break;
+                        }
+                    }
+                    slot = timestampUtils.plusMinutes(slot, SLOT_DURATION_MINUTES);
+                }
+                if (availableSlots.size() >= 10) {
+                    break;
+                }
+            }
+
+            // Thoát ngay nếu đã đủ slot
+            if (availableSlots.size() >= 10) {
+                break;
+            }
+
+            currentDay = timestampUtils.plusDays(currentDay, 1);
+        }
+        return availableSlots.isEmpty() ? null : availableSlots;
+    }
+
     private Map<AppointmentKey, List<Long>> createAppointmentLookupMap(List<AppointmentEntity> appointmentEntities) {
 
         Map<AppointmentKey, List<Long>> appointmentLookupMap = new HashMap<>();
@@ -290,4 +414,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void setTimestampUtils(TimestampUtils timestampUtils) {
         this.timestampUtils = timestampUtils;
     }
+
+
 }

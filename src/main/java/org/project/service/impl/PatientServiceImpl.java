@@ -99,6 +99,12 @@ private static final String AVATAR_DIR_RELATIVE =
     @Transactional
     @Override
     public Long createPatient(PatientDTO patientDTO) {
+        if (patientDTO == null) {
+            throw new IllegalArgumentException("Patient DTO must not be null");
+        }
+        if (isPatientExistByIdentityNumber(patientDTO.getIdentificationNumber())) {
+            throw new IllegalArgumentException("Patient with this identification number already exists");
+        }
         PatientEntity patientEntity = patientConverter.toConvertEntity(patientDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid patient DTO"));
 
@@ -197,11 +203,14 @@ private static final String AVATAR_DIR_RELATIVE =
     @Transactional
     @Override
     public PatientResponse updatePatient(Long patientId, PatientDTO patientDTO) {
+        if (patientId == null || patientDTO == null) {
+            throw new IllegalArgumentException("Patient ID and DTO must not be null");
+        }
         PatientEntity patientEntity = patientRepository.findById(patientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found with ID: " + patientId));
 
         Method[] methods = PatientDTO.class.getMethods();
-
+        
         for (Method method : methods) {
             String name = method.getName();
 
@@ -353,5 +362,21 @@ private static final String AVATAR_DIR_RELATIVE =
         } catch ( IOException e) {
             return null;
         }
+    }
+
+    @Override
+    public boolean isPatientExist(Long patientId) {
+        if (patientId == null) {
+            return false;
+        }
+        return patientRepository.existsById(patientId);
+    }
+
+    @Override
+    public boolean isPatientExistByIdentityNumber(String identityNumber) {
+        if (identityNumber == null || identityNumber.isEmpty()) {
+            return false;
+        }
+        return patientRepository.existsByIdentificationNumber(identityNumber);
     }
 }

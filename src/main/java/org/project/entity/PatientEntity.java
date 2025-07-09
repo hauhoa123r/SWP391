@@ -57,6 +57,10 @@ public class PatientEntity {
     @Column(name = "address")
     private String address;
 
+    @Size(max = 255)
+    @Column(name = "identification_number", unique = true, nullable = false)
+    private String identificationNumber;
+
     @NotNull
     @Column(name = "birthdate")
     private Date birthdate;

@@ -30,4 +30,8 @@ public interface PatientService {
     String toConvertAvatarUrl(String avatarBase64);
 
     String toConvertFileToBase64(String avatarUrl);
+
+    boolean isPatientExist(Long patientId);
+
+    boolean isPatientExistByIdentityNumber(String identityNumber);
 }
