@@ -12,9 +12,79 @@
 <main>
     <section layout:fragment="content">
         <div class="container">
-            <nav class="tab-bottom-bordered border-0 mb-5">
-                <div class="mb-0 nav nav-tabs justify-content-center" id="department-list" role="tablist"></div>
-            </nav>
+            <!--            <nav class="tab-bottom-bordered border-0 mb-5">-->
+            <!--                <div class="mb-0 nav nav-tabs justify-content-center" id="department-list" role="tablist"></div>-->
+            <!--            </nav>-->
+            <!-- Phần filter bác sĩ -->
+            <div class="container mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white mb-0">
+                        <h5 class="mb-4 text-white">Tìm kiếm bác sĩ</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="filter-form">
+                            <!-- Hàng 1: Tên bác sĩ + Khoa -->
+                            <div class="row mb-3">
+                                <div class="col-md-7">
+                                    <label class="form-label" for="doctorName">Tên bác sĩ</label>
+                                    <input class="form-control" id="doctorName" name="staffEntityFullName"
+                                           placeholder="Nhập tên bác sĩ" type="text">
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label class="form-label" for="department-select">Khoa</label>
+                                    <select class="form-select" id="department-select"
+                                            name="staffEntityDepartmentEntityId"></select>
+                                </div>
+                            </div>
+
+                            <!-- Hàng 2: Đánh giá + Sắp xếp -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label" for="rating">Đánh giá tối thiểu</label>
+                                    <select class="form-select" id="rating" name="minStarRating">
+                                        <option value="">Tất cả đánh giá</option>
+                                        <option value="5">5 sao</option>
+                                        <option value="4">4 sao trở lên</option>
+                                        <option value="3">3 sao trở lên</option>
+                                        <option value="2">2 sao trở lên</option>
+                                        <option value="1">1 sao trở lên</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label" for="sortField">Sắp xếp theo</label>
+                                    <select class="form-select" id="sortField" name="sortFieldName">
+                                        <option value="staffEntity.fullName">Tên</option>
+                                        <option value="staffEntity.reviewEntities.rating">Đánh giá</option>
+                                        <option value="staffEntity.reviewEntities.id">Lượt đánh giá</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label" for="sortOrder">Thứ tự</label>
+                                    <select class="form-select" id="sortOrder" name="sortDirection">
+                                        <option value="ASC">Tăng dần</option>
+                                        <option value="DESC">Giảm dần</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Hàng 3: Các nút -->
+                            <div class="row">
+                                <div class="col-12 text-end">
+                                    <button class="btn btn-outline-secondary me-2" type="reset">
+                                        <i class="fas fa-undo me-1"></i> Đặt lại
+                                    </button>
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search me-1"></i> Tìm kiếm
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="tab-content iq-tab-fade-up" id="nav-tabContent">
                 <div aria-labelledby="doc-all-tab" class="tab-pane fade show active" id="doc-all" role="tabpanel">
                     <div class="row row-cols-md-3 row-cols-sm-2 row-cols-1" id="doctor-list"></div>
