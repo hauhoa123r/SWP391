@@ -16,7 +16,7 @@ import {
 } from "/templates/frontend/assets/js/model/response/ServiceResponse.js";
 import {renderTimeResponseForBooking, TimeResponse} from "/templates/frontend/assets/js/model/response/TimeResponse.js";
 import toast from "/templates/frontend/assets/js/plugins/toast.js";
-import {Pagination} from "/templates/frontend/assets/js/utils/Pagination.js";
+import {Pagination} from "/templates/frontend/assets/js/utils/pagination.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const bookingManager = new BookingManager();
@@ -408,7 +408,7 @@ class BookingManager {
         fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    if (data && data[config.objectJsonName]) {
+                    if (data && config.objectJsonName in data) {
                         const objectList = config.object.fromJsonArray(data[config.objectJsonName]);
                         const htmlContent = objectList.map(item => item.setRenderStrategy(config.renderStrategy).toHtml()).join("");
                         const objectListElement = document.querySelector(`#${config.prefix}-list`);

@@ -1,8 +1,8 @@
 import {
     renderServiceResponseForList, ServiceResponse
 } from "/templates/frontend/assets/js/model/response/ServiceResponse.js";
-import {Pagination} from "/templates/frontend/assets/js/utils/Pagination.js";
-import {fetchData} from "/templates/frontend/assets/js/utils/Fetching.js";
+import {FetchingUtils} from "/templates/frontend/assets/js/utils/fetching-utils.js";
+import {Pagination} from "/templates/frontend/assets/js/utils/pagination.js";
 
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function renderServiceList(pageIndex = 0) {
     const serviceListElement = $("#service-list");
     let url = `/api/service/page/${pageIndex}`;
-    const data = await fetchData(url);
+    const data = await FetchingUtils.fetch(url);
     if (!data) {
         serviceListElement.innerHTML = "<p class='text-center'>No services available</p>";
         return;
