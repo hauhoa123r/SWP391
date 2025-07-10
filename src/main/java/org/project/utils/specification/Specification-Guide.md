@@ -2,72 +2,84 @@
 
 ## Tổng quan
 
-Hệ thống search & sort sử dụng Specification cho phép xây dựng các truy vấn động, mạnh mẽ, hỗ trợ cả tìm kiếm (search),
-sắp xếp (sort), phân trang (pagination) và các phép toán tổng hợp (aggregate) trên Spring Data JPA.
+Hệ thống Specification cho phép xây dựng các truy vấn động, mạnh mẽ, hỗ trợ cả tìm kiếm (search), sắp xếp (sort), phân
+trang (pagination) và các phép toán tổng hợp (aggregate) trên Spring Data JPA.
 
 ## 1. Các thành phần chính
 
 ### a. SearchCriteria
 
 - Đại diện cho một điều kiện tìm kiếm.
-- Thuộc tính: `fieldName`, `comparisonOperator` (so sánh), `comparedValue`, `joinType` (LEFT/INNER...)
+- Thuộc tính: `fieldName`, `comparisonOperator`, `comparedValue`, `joinType` (LEFT/INNER...)
 
 ### b. SortCriteria
 
 - Đại diện cho một điều kiện sắp xếp.
 - Thuộc tính: `fieldName`, `aggregationFunction` (NONE, AVG, COUNT...), `sortDirection` (ASC/DESC), `joinType`.
 
-### c. ComparisonOperator & AggregationFunction
+### c. SpecificationUtils
 
-- Enum định nghĩa các phép toán so sánh (EQUALS, CONTAINS, GREATER_THAN, ...) và tổng hợp (AVG, COUNT, SUM, ...).
-
-### d. SpecificationUtils
-
-- Hỗ trợ build Specification từ danh sách SearchCriteria và SortCriteria.
+- Hỗ trợ build Specification từ danh sách SearchCriteria và SortCriteria, cho phép gộp cả search và sort vào một
+  Specification duy nhất.
 
 ## 2. Repository
 
 Repository phải extend `JpaSpecificationExecutor<Entity>` để sử dụng Specification:
 
 ```java
-public interface DoctorRepository extends JpaRepository<DoctorEntity, Long>, JpaSpecificationExecutor<DoctorEntity> {}
+public interface DoctorRepository extends JpaRepository<DoctorEntity, Long>, JpaSpecificationExecutor<DoctorEntity> {
+}
 ```
 
-## 3. Service: Xây dựng search, sort, phân trang
+## 3. Service: Xây dựng search + sort + phân trang
 
-Ví dụ thực tế (DoctorServiceImpl):
+### a. Cách 1: Dùng repository.findAll (dễ dùng, phù hợp join đơn giản)
 
 ```java
-public List<DoctorResponse> getAllByCriteria(DoctorDTO doctorDTO, int index, int size) {
+public Page<DoctorResponse> getDoctors(DoctorDTO doctorDTO, int index, int size) {
     Pageable pageable = pageUtils.getPageable(index, size);
-    List<SearchCriteria> searchCriterias = List.of(
-        new SearchCriteria("staffEntity.fullName", ComparisonOperator.CONTAINS, doctorDTO.getStaffEntityFullName(), JoinType.LEFT),
-        new SearchCriteria("staffEntity.departmentEntity.id", ComparisonOperator.EQUALS, doctorDTO.getStaffEntityDepartmentEntityId(), JoinType.LEFT),
-        new SearchCriteria("staffEntity.reviewEntities", ComparisonOperator.GREATER_THAN_OR_EQUAL_TO, doctorDTO.getMinStarRating(), JoinType.LEFT)
-    );
-    List<SortCriteria> sortCriterias = switch (doctorDTO.getSortFieldName()) {
-        case "staffEntity.fullName" -> List.of(new SortCriteria("staffEntity.fullName", AggregationFunction.NONE, doctorDTO.getSortDirection(), JoinType.LEFT));
-        case "staffEntity.reviewEntities.rating" -> List.of(new SortCriteria("staffEntity.reviewEntities.rating", AggregationFunction.AVG, doctorDTO.getSortDirection(), JoinType.LEFT));
-        case "staffEntity.reviewEntities.id" -> List.of(new SortCriteria("staffEntity.reviewEntities.id", AggregationFunction.COUNT, doctorDTO.getSortDirection(), JoinType.LEFT));
-        default -> List.of();
-    };
+    List<SearchCriteria> searchCriterias = ...
+    List<SortCriteria> sortCriterias = ...
     Page<DoctorEntity> doctorEntityPage = doctorRepository.findAll(
-        specificationUtils.reset().getSpecifications(searchCriterias, sortCriterias), pageable
+            specificationUtils.reset().getSpecifications(searchCriterias, sortCriterias), pageable
     );
-    return doctorEntityPage.map(doctorConverter::toResponse).getContent();
-}
+    return doctorEntityPage.map(doctorConverter::toResponse);
+
+```
+
+### b. Cách 2: Dùng PageSpecificationUtils (xử lý join phức tạp, count distinct, custom count)
+
+```java
+public Page<DoctorResponse> getDoctors(DoctorDTO doctorDTO, int index, int size) {
+    Pageable pageable = pageUtils.getPageable(index, size);
+    List<SearchCriteria> searchCriterias = ...
+    List<SortCriteria> sortCriterias = ...
+    Page<DoctorEntity> doctorEntityPage = pageSpecificationUtils.getPage(
+            specificationUtils.reset().getSpecifications(searchCriterias, sortCriterias),
+            pageable,
+            DoctorEntity.class,
+            true // true nếu cần count distinct (ví dụ join nhiều bảng)
+    );
+    return doctorEntityPage.map(doctorConverter::toResponse);
+
 ```
 
 ## 4. Controller: Nhận search + sort từ DTO, trả về kết quả phân trang
 
 ```java
-@GetMapping("/filter/page/{pageIndex}")
-public List<DoctorResponse> getAllDoctors(@PathVariable int pageIndex, @ModelAttribute DoctorDTO doctorDTO) {
-    return doctorService.getAllByCriteria(doctorDTO, pageIndex, PAGE_SIZE_FOR_LIST);
+
+@GetMapping("/page/{pageIndex}")
+public ResponseEntity<Map<String, Object>> getAllDoctors(@PathVariable int pageIndex, @ModelAttribute DoctorDTO doctorDTO) {
+    Page<DoctorResponse> doctorResponsePage = doctorService.getDoctors(doctorDTO, pageIndex, PAGE_SIZE_FOR_LIST);
+    return ResponseEntity.ok(
+            Map.of(
+                    "doctors", doctorResponsePage.getContent(),
+                    "totalPages", doctorResponsePage.getTotalPages(),
+                    "currentPage", doctorResponsePage.getNumber()
+            )
+    );
 }
 ```
-
-- Truyền các trường search, sort qua DoctorDTO (có thể dùng @ModelAttribute để nhận từ query param).
 
 ## 5. DTO mẫu (DoctorDTO)
 
@@ -86,7 +98,7 @@ public class DoctorDTO {
 
 - Tạo DTO tương tự DoctorDTO cho entity cần search/sort.
 - Tạo SearchCriteria và SortCriteria phù hợp.
-- Gọi repository.findAll(specification, pageable) như ví dụ trên.
+- Gọi repository.findAll hoặc pageSpecificationUtils.getPage như ví dụ trên.
 
 ## 7. Lưu ý
 
@@ -95,11 +107,12 @@ public class DoctorDTO {
 - Hỗ trợ cả aggregate sort (AVG, COUNT, SUM, ...).
 - Nên validate input DTO trước khi build criteria.
 - Pagination nên dùng để tránh trả về quá nhiều kết quả.
+- Nếu join phức tạp hoặc cần count distinct, nên dùng PageSpecificationUtils.
 
 ## 8. Ví dụ gọi API
 
 ```
-GET /api/doctor/filter/page/0?staffEntityFullName=Nguyen&sortFieldName=staffEntity.reviewEntities.rating&sortDirection=DESC
+GET /api/doctor/page/0?staffEntityFullName=Nguyen&sortFieldName=staffEntity.reviewEntities.rating&sortDirection=DESC
 ```
 
 ## 9. Best Practice
