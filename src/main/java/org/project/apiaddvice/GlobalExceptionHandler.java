@@ -6,6 +6,7 @@ import org.project.exception.page.InvalidPageException;
 import org.project.exception.page.PageNotFoundException;
 import org.project.exception.sql.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -34,5 +35,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
         return ResponseEntity.status(404).body(e.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult().getFieldErrors().getFirst().getDefaultMessage();
+        return ResponseEntity.badRequest().body(errorMessage);
     }
 }
