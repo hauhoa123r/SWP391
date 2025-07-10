@@ -1,5 +1,6 @@
 package org.project.api;
 
+import jakarta.validation.Valid;
 import org.project.enums.StaffRole;
 import org.project.model.dto.DoctorDTO;
 import org.project.model.response.DoctorResponse;
@@ -55,8 +56,8 @@ public class DoctorAPI {
     }
 
     @GetMapping("/page/{pageIndex}")
-    public ResponseEntity<Map<String, Object>> getAllStaffByPage(@PathVariable int pageIndex) {
-        Page<DoctorResponse> doctorResponsePage = doctorService.getAll(pageIndex, PAGE_SIZE_FOR_LIST);
+    public ResponseEntity<Map<String, Object>> getAllStaffByPage(@PathVariable int pageIndex, @Valid @ModelAttribute DoctorDTO doctorDTO) {
+        Page<DoctorResponse> doctorResponsePage = doctorService.getDoctors(doctorDTO, pageIndex, PAGE_SIZE_FOR_LIST);
         return ResponseEntity.ok(
                 Map.of(
                         "doctors", doctorResponsePage.getContent(),
