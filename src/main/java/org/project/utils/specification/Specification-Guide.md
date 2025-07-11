@@ -22,7 +22,62 @@ trang (pagination) và các phép toán tổng hợp (aggregate) trên Spring Da
 - Hỗ trợ build Specification từ danh sách SearchCriteria và SortCriteria, cho phép gộp cả search và sort vào một
   Specification duy nhất.
 
-## 2. Repository
+## 2. Cách truyền fieldName cho SearchCriteria/SortCriteria
+
+Bạn có thể truyền fieldName theo 2 cách:
+
+### a. Cách cũ (truyền string thủ công)
+
+```java
+new SearchCriteria("staffEntity.fullName",ComparisonOperator.CONTAINS, value, JoinType.LEFT)
+new
+
+SortCriteria("staffEntity.reviewEntities.rating",AggregationFunction.AVG, sortDirection, JoinType.LEFT)
+```
+
+### b. Cách mới (gợi ý tên trường, an toàn, dễ refactor)
+
+- Sử dụng @FieldNameConstants trên entity để sinh constant cho từng field.
+- Sử dụng FieldNameUtils.joinFields để build fieldName dạng "a.b.c" an toàn.
+
+Ví dụ:
+
+```java
+// DoctorEntity có @FieldNameConstants
+FieldNameUtils.joinFields(
+        DoctorEntity.Fields.staffEntity,
+        StaffEntity.Fields.fullName
+        )
+// Kết quả: "staffEntity.fullName"
+
+FieldNameUtils.
+
+joinFields(
+        DoctorEntity.Fields.staffEntity,
+        StaffEntity.Fields.reviewEntities,
+        ReviewEntity.Fields.rating
+        )
+// Kết quả: "staffEntity.reviewEntities.rating"
+
+// Áp dụng cho SearchCriteria/SortCriteria
+new
+
+SearchCriteria(
+        FieldNameUtils.joinFields(
+                DoctorEntity.Fields.staffEntity,
+        StaffEntity.Fields.fullName
+        ),
+
+ComparisonOperator.CONTAINS,
+value,
+JoinType.LEFT
+)
+```
+
+- Ưu điểm: IDE sẽ gợi ý tên field, tránh lỗi chính tả, dễ refactor khi đổi tên field trong entity.
+- Cách cũ (string thủ công) vẫn hoạt động bình thường nếu bạn muốn dùng nhanh.
+
+## 3. Repository
 
 Repository phải extend `JpaSpecificationExecutor<Entity>` để sử dụng Specification:
 
@@ -31,7 +86,7 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, Long>, Jpa
 }
 ```
 
-## 3. Service: Xây dựng search + sort + phân trang
+## 4. Service: Xây dựng search + sort + phân trang
 
 ### a. Cách 1: Dùng repository.findAll (dễ dùng, phù hợp join đơn giản)
 
@@ -64,7 +119,7 @@ public Page<DoctorResponse> getDoctors(DoctorDTO doctorDTO, int index, int size)
 
 ```
 
-## 4. Controller: Nhận search + sort từ DTO, trả về kết quả phân trang
+## 5. Controller: Nhận search + sort từ DTO, trả về kết quả phân trang
 
 ```java
 
@@ -81,7 +136,7 @@ public ResponseEntity<Map<String, Object>> getAllDoctors(@PathVariable int pageI
 }
 ```
 
-## 5. DTO mẫu (DoctorDTO)
+## 6. DTO mẫu (DoctorDTO)
 
 ```java
 public class DoctorDTO {
@@ -94,13 +149,13 @@ public class DoctorDTO {
 }
 ```
 
-## 6. Hướng dẫn sử dụng cho entity khác
+## 7. Hướng dẫn sử dụng cho entity khác
 
 - Tạo DTO tương tự DoctorDTO cho entity cần search/sort.
-- Tạo SearchCriteria và SortCriteria phù hợp.
+- Tạo SearchCriteria và SortCriteria phù hợp (có thể dùng FieldNameUtils.joinFields hoặc string thủ công).
 - Gọi repository.findAll hoặc pageSpecificationUtils.getPage như ví dụ trên.
 
-## 7. Lưu ý
+## 8. Lưu ý
 
 - Các trường search/sort phải đúng tên mapping trong entity.
 - Có thể kết hợp nhiều điều kiện search và nhiều sort.
@@ -108,14 +163,15 @@ public class DoctorDTO {
 - Nên validate input DTO trước khi build criteria.
 - Pagination nên dùng để tránh trả về quá nhiều kết quả.
 - Nếu join phức tạp hoặc cần count distinct, nên dùng PageSpecificationUtils.
+- **Nên ưu tiên cách mới với FieldNameUtils và @FieldNameConstants để code an toàn, dễ bảo trì.**
 
-## 8. Ví dụ gọi API
+## 9. Ví dụ gọi API
 
 ```
 GET /api/doctor/page/0?staffEntityFullName=Nguyen&sortFieldName=staffEntity.reviewEntities.rating&sortDirection=DESC
 ```
 
-## 9. Best Practice
+## 10. Best Practice
 
 - Tách logic build search/sort ra service/utils.
 - Luôn kiểm tra null cho các trường search/sort.
