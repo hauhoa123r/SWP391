@@ -1,10 +1,8 @@
 package org.project.enums;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public enum FamilyRelationship {
     SELF("Self"),
     WIFE("Wife"),
@@ -22,4 +20,8 @@ public enum FamilyRelationship {
     OTHER("Other");
 
     private final String relationship;
+
+    FamilyRelationship(String relationship) {
+        this.relationship = relationship;
+    }
 }

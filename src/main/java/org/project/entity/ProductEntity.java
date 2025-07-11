@@ -23,6 +23,7 @@ import java.util.Set;
 @Entity
 @Table(name = "products", schema = "swp391")
 public class ProductEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id", nullable = false)
@@ -54,7 +55,7 @@ public class ProductEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany
+    @OneToMany(mappedBy = "productEntity")
     private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
@@ -78,7 +79,7 @@ public class ProductEntity {
     @ManyToMany(mappedBy = "productEntities")
     private Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
 
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(
             name = "product_reviews",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -88,23 +89,29 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "productEntity")
     private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
+
     @OneToMany(mappedBy = "productEntity")
     private Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
+
     @OneToOne(mappedBy = "productEntity")
     private TestEntity testEntity;
-    @ManyToMany
+
+    @ManyToMany(mappedBy = "products") // ✅ ĐÃ FIX: mappedBy liên kết với 'products' ở UserEntity
     private Set<UserEntity> userEntities = new LinkedHashSet<>();
+
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'MEDICAL_PRODUCT'")
-    @Column(name = "product_type", columnDefinition = "enum not null")
+    @Column(name = "product_type", nullable = false)
     private ProductType productType;
+
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
-    @Column(name = "product_status", columnDefinition = "enum not null")
+    @Column(name = "product_status", nullable = false)
     private ProductStatus productStatus;
+
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'STANDARD'")
-    @Column(name = "label", columnDefinition = "enum not null")
+    @Column(name = "label", nullable = false)
     private Label label;
 
     public Double getAverageRating() {

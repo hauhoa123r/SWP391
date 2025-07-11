@@ -18,8 +18,8 @@ public class ValidateTimeHandler extends BaseValidationHandler{
     @Override
     protected boolean isValid(AppointmentDAI data) {
         if(data.getDate() == null || data.getDate().isBlank()) return false;
-        AppointmentEntity appointmententity = appointmentRepository.searchAppointmentExist(data);
-        if(appointmententity != null) return false;
+//        AppointmentEntity appointmententity = appointmentRepository.searchAppointmentExist(data);
+//        if(appointmententity != null) return false;
         return true;
     }
 

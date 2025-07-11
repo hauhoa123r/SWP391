@@ -3,10 +3,7 @@ package org.project.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.BloodType;
 import org.project.enums.PatientStatus;
@@ -62,7 +59,7 @@ public class PatientEntity {
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
-    @Column(name = "patient_status", columnDefinition = "enum not null")
+    @Column(name = "patient_status", nullable = false)
     private PatientStatus patientStatus;
 
     @OneToMany(mappedBy = "patientEntity")
@@ -79,15 +76,15 @@ public class PatientEntity {
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'SELF'")
-    @Column(name = "relationship")
+    @Column(name = "relationship", nullable = false)
     private FamilyRelationship familyRelationship;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'OTHER'")
-    @Column(name = "gender", columnDefinition = "enum not null")
+    @Column(name = "gender", nullable = false)
     private Gender gender;
 
-    @Column(name = "blood_type", columnDefinition = "enum")
+    @Column(name = "blood_type")
     @Convert(converter = BloodTypeConverter.class)
     private BloodType bloodType;
 
@@ -96,5 +93,4 @@ public class PatientEntity {
 
     @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY)
     private List<TestRequestEntity> testRequestEntity;
-
 }

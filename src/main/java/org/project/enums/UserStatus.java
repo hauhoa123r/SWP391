@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+
 public enum UserStatus {
     ACTIVE("Active"),
     INACTIVE("Inactive");
 
     private final String status;
+    UserStatus(String status) {
+        this.status = status;
+    }
 }
