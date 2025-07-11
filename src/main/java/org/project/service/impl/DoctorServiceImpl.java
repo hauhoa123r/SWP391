@@ -3,7 +3,10 @@ package org.project.service.impl;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.transaction.Transactional;
 import org.project.converter.DoctorConverter;
+import org.project.entity.DepartmentEntity;
 import org.project.entity.DoctorEntity;
+import org.project.entity.ReviewEntity;
+import org.project.entity.StaffEntity;
 import org.project.enums.operation.AggregationFunction;
 import org.project.enums.operation.ComparisonOperator;
 import org.project.exception.sql.EntityNotFoundException;
@@ -13,6 +16,7 @@ import org.project.model.response.StaffResponse;
 import org.project.repository.DoctorRepository;
 import org.project.repository.impl.custom.DoctorRepositoryCustom;
 import org.project.service.DoctorService;
+import org.project.utils.FieldNameUtils;
 import org.project.utils.PageUtils;
 import org.project.utils.specification.PageSpecificationUtils;
 import org.project.utils.specification.SpecificationUtils;
@@ -24,6 +28,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -79,21 +84,46 @@ public class DoctorServiceImpl implements DoctorService {
     public Page<DoctorResponse> getDoctors(DoctorDTO doctorDTO, int index, int size) {
         Pageable pageable = pageUtils.getPageable(index, size);
         List<SearchCriteria> searchCriterias = List.of(
-                new SearchCriteria("staffEntity.fullName", ComparisonOperator.CONTAINS, doctorDTO.getStaffEntityFullName(), JoinType.LEFT),
-                new SearchCriteria("staffEntity.departmentEntity.id", ComparisonOperator.EQUALS, doctorDTO.getStaffEntityDepartmentEntityId(), JoinType.LEFT),
-                new SearchCriteria("staffEntity.reviewEntities.rating", ComparisonOperator.AVG_GREATER_THAN_OR_EQUAL_TO, doctorDTO.getMinStarRating(), JoinType.LEFT)
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                DoctorEntity.Fields.staffEntity,
+                                StaffEntity.Fields.fullName
+                        ), ComparisonOperator.CONTAINS, doctorDTO.getStaffEntityFullName(), JoinType.LEFT),
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                DoctorEntity.Fields.staffEntity,
+                                StaffEntity.Fields.departmentEntity,
+                                DepartmentEntity.Fields.id
+                        ), ComparisonOperator.EQUALS, doctorDTO.getStaffEntityDepartmentEntityId(), JoinType.LEFT),
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                DoctorEntity.Fields.staffEntity,
+                                StaffEntity.Fields.reviewEntities,
+                                ReviewEntity.Fields.rating
+                        ), ComparisonOperator.AVG_GREATER_THAN_OR_EQUAL_TO, doctorDTO.getMinStarRating(), JoinType.LEFT)
         );
         List<SortCriteria> sortCriterias = List.of();
-        switch (Optional.of(doctorDTO).map(DoctorDTO::getSortFieldName).orElse("")) {
-            case "staffEntity.fullName" -> sortCriterias = List.of(
-                    new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.NONE, doctorDTO.getSortDirection(), JoinType.LEFT)
-            );
-            case "staffEntity.reviewEntities.rating" -> sortCriterias = List.of(
-                    new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.AVG, doctorDTO.getSortDirection(), JoinType.LEFT)
-            );
-            case "staffEntity.reviewEntities.id" -> sortCriterias = List.of(
-                    new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.COUNT, doctorDTO.getSortDirection(), JoinType.LEFT)
-            );
+        Map<String, SortCriteria> sortFieldMap = Map.of(
+                FieldNameUtils.joinFields(
+                        DoctorEntity.Fields.staffEntity,
+                        StaffEntity.Fields.fullName
+                ),
+                new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.NONE, doctorDTO.getSortDirection(), JoinType.LEFT),
+                FieldNameUtils.joinFields(
+                        DoctorEntity.Fields.staffEntity,
+                        StaffEntity.Fields.reviewEntities,
+                        ReviewEntity.Fields.rating
+                ),
+                new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.AVG, doctorDTO.getSortDirection(), JoinType.LEFT),
+                FieldNameUtils.joinFields(
+                        DoctorEntity.Fields.staffEntity,
+                        StaffEntity.Fields.reviewEntities,
+                        ReviewEntity.Fields.id
+                ),
+                new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.COUNT, doctorDTO.getSortDirection(), JoinType.LEFT)
+        );
+        if (sortFieldMap.containsKey(Optional.of(doctorDTO).map(DoctorDTO::getSortFieldName).orElse(""))) {
+            sortCriterias = List.of(sortFieldMap.get(doctorDTO.getSortFieldName()));
         }
 
         Page<DoctorEntity> doctorEntityPage = pageSpecificationUtils.getPage(
@@ -103,6 +133,7 @@ public class DoctorServiceImpl implements DoctorService {
                 DoctorEntity.class,
                 true
         );
+        pageUtils.validatePage(doctorEntityPage, DoctorResponse.class);
         return doctorEntityPage.map(doctorConverter::toResponse);
     }
 
@@ -156,21 +187,46 @@ public class DoctorServiceImpl implements DoctorService {
     public List<DoctorResponse> getAllByCriteria(DoctorDTO doctorDTO, int index, int size) {
         Pageable pageable = pageUtils.getPageable(index, size);
         List<SearchCriteria> searchCriterias = List.of(
-                new SearchCriteria("staffEntity.fullName", ComparisonOperator.CONTAINS, doctorDTO.getStaffEntityFullName(), JoinType.LEFT),
-                new SearchCriteria("staffEntity.departmentEntity.id", ComparisonOperator.EQUALS, doctorDTO.getStaffEntityDepartmentEntityId(), JoinType.LEFT),
-                new SearchCriteria("staffEntity.reviewEntities", ComparisonOperator.GREATER_THAN_OR_EQUAL_TO, doctorDTO.getMinStarRating(), JoinType.LEFT)
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                DoctorEntity.Fields.staffEntity,
+                                StaffEntity.Fields.fullName
+                        ), ComparisonOperator.CONTAINS, doctorDTO.getStaffEntityFullName(), JoinType.LEFT),
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                DoctorEntity.Fields.staffEntity,
+                                StaffEntity.Fields.departmentEntity,
+                                DepartmentEntity.Fields.id
+                        ), ComparisonOperator.EQUALS, doctorDTO.getStaffEntityDepartmentEntityId(), JoinType.LEFT),
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                DoctorEntity.Fields.staffEntity,
+                                StaffEntity.Fields.reviewEntities,
+                                ReviewEntity.Fields.rating
+                        ), ComparisonOperator.AVG_GREATER_THAN_OR_EQUAL_TO, doctorDTO.getMinStarRating(), JoinType.LEFT)
         );
         List<SortCriteria> sortCriterias = List.of();
-        switch (doctorDTO.getSortFieldName()) {
-            case "staffEntity.fullName" -> sortCriterias = List.of(
-                    new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.NONE, doctorDTO.getSortDirection(), JoinType.LEFT)
-            );
-            case "staffEntity.reviewEntities.rating" -> sortCriterias = List.of(
-                    new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.AVG, doctorDTO.getSortDirection(), JoinType.LEFT)
-            );
-            case "staffEntity.reviewEntities.id" -> sortCriterias = List.of(
-                    new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.COUNT, doctorDTO.getSortDirection(), JoinType.LEFT)
-            );
+        Map<String, SortCriteria> sortFieldMap = Map.of(
+                FieldNameUtils.joinFields(
+                        DoctorEntity.Fields.staffEntity,
+                        StaffEntity.Fields.fullName
+                ),
+                new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.NONE, doctorDTO.getSortDirection(), JoinType.LEFT),
+                FieldNameUtils.joinFields(
+                        DoctorEntity.Fields.staffEntity,
+                        StaffEntity.Fields.reviewEntities,
+                        ReviewEntity.Fields.rating
+                ),
+                new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.AVG, doctorDTO.getSortDirection(), JoinType.LEFT),
+                FieldNameUtils.joinFields(
+                        DoctorEntity.Fields.staffEntity,
+                        StaffEntity.Fields.reviewEntities,
+                        ReviewEntity.Fields.id
+                ),
+                new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.COUNT, doctorDTO.getSortDirection(), JoinType.LEFT)
+        );
+        if (sortFieldMap.containsKey(Optional.of(doctorDTO).map(DoctorDTO::getSortFieldName).orElse(""))) {
+            sortCriterias = List.of(sortFieldMap.get(doctorDTO.getSortFieldName()));
         }
         Page<DoctorEntity> doctorEntityPage = doctorRepository.findAll(
                 specificationUtils.reset()
