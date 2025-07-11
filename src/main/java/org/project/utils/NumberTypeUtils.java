@@ -1,11 +1,11 @@
 package org.project.utils;
 
-import org.springframework.stereotype.Component;
-
-@Component
 @SuppressWarnings({"unchecked"})
 public class NumberTypeUtils {
-    public <NumberType extends Number> NumberType convertNumberValue(Object value, Class<NumberType> targetType) {
+    private NumberTypeUtils() {
+    }
+
+    public static <NumberType extends Number> NumberType convertNumberValue(Object value, Class<NumberType> targetType) {
         if (value == null) return null;
 
         Number numValue = (Number) value;

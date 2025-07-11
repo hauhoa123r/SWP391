@@ -4,15 +4,16 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
-@Component
 @SuppressWarnings({"unchecked"})
 public class PathUtils {
-    public <Y> Path<Y> getPath(Path<?> path, Class<?> javaType) {
+    private PathUtils() {
+    }
+
+    public static <Y> Path<Y> getPath(Path<?> path, Class<?> javaType) {
         if (javaType == String.class) {
             return (Path<Y>) path.as(String.class);
         } else if (javaType == Integer.class) {
@@ -29,13 +30,13 @@ public class PathUtils {
     }
 
 
-    public Path<Object> getRealPath(Root<?> root, String fieldName, Map<String, Join<?, ?>> joinMap) {
+    public static Path<Object> getRealPath(Root<?> root, String fieldName, Map<String, Join<?, ?>> joinMap) {
         String[] fieldParts = fieldName.split("\\.");
         String joinKey = root.getJavaType().getSimpleName() + "." + fieldName.substring(0, fieldName.lastIndexOf("."));
         return joinMap.get(joinKey).get(fieldParts[fieldParts.length - 1]);
     }
 
-    public void join(Root<?> root, String fieldName, JoinType joinType, Map<String, Join<?, ?>> joinMap) {
+    public static void join(Root<?> root, String fieldName, JoinType joinType, Map<String, Join<?, ?>> joinMap) {
         String[] fieldParts = fieldName.split("\\.");
         Join<?, ?> join;
         StringBuilder joinKey = new StringBuilder();
