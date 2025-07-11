@@ -1,14 +1,12 @@
 package org.project.api;
 
+import org.project.model.dto.ServiceDTO;
 import org.project.model.response.ServiceResponse;
 import org.project.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -53,8 +51,8 @@ public class ServiceAPI {
     }
 
     @GetMapping("/page/{pageIndex}")
-    public ResponseEntity<Map<String, Object>> service(@PathVariable int pageIndex) {
-        Page<ServiceResponse> productRespsonsePage = serviceService.getServices(pageIndex, PAGE_SIZE_FOR_LIST);
+    public ResponseEntity<Map<String, Object>> service(@PathVariable int pageIndex, @ModelAttribute ServiceDTO serviceDTO) {
+        Page<ServiceResponse> productRespsonsePage = serviceService.getServices(pageIndex, PAGE_SIZE_FOR_LIST, serviceDTO);
         return ResponseEntity.ok(
                 Map.of(
                         "services", productRespsonsePage.getContent(),
