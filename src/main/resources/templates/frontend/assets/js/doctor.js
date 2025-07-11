@@ -15,63 +15,69 @@ const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await renderDoctorList();
-    await renderDepartmentOption();
-    setupFormSubmitEvent();
+    const renderDoctor = new RenderDoctor();
+    await renderDoctor.renderDepartmentOption();
+    await renderDoctor.renderDoctorList();
+    renderDoctor.setupFormSubmitEvent();
 });
 
-async function renderDepartmentOption(departmentId) {
-    const departmentSelectElement = $("#department-select");
-    if (!departmentSelectElement) return;
-    const departmentData = await FetchingUtils.fetch("/api/department");
-    const defaultOption = `
+class RenderDoctor {
+    constructor() {
+        this.doctorDTO = new DoctorDTO();
+    }
+
+    async renderDepartmentOption(departmentId) {
+        const departmentSelectElement = $("#department-select");
+        if (!departmentSelectElement) return;
+        const departmentData = await FetchingUtils.fetch("/api/department");
+        const defaultOption = `
         <option value="">Tất cả các khoa</option>
     `;
-    if (departmentData) {
-        departmentSelectElement.innerHTML = defaultOption + DepartmentResponse.fromJsonArray(departmentData).map(department => department.setRenderStrategy(renderDepartmentResponseForSelect).toHtml(departmentId)).join("");
+        if (departmentData) {
+            departmentSelectElement.innerHTML = defaultOption + DepartmentResponse.fromJsonArray(departmentData).map(department => department.setRenderStrategy(renderDepartmentResponseForSelect).toHtml(departmentId)).join("");
+        }
     }
-}
 
-async function renderDoctorList(pageIndex = 0) {
-    const doctorListElement = $("#doctor-list");
-    let url = `/api/doctor/page/${pageIndex}`;
-    const filterForm = $("#filter-form");
-    if (filterForm) {
-        const formData = new FormData(filterForm);
-        const doctorDTO = FormDataUtils.getObjectFromFormData(new DoctorDTO(), formData);
-        console.log(doctorDTO);
-        url += "?" + SearchParamsUtils.toSearchParams(doctorDTO);
+    async renderDoctorList(pageIndex = 0) {
+        const doctorListElement = $("#doctor-list");
+        let url = `/api/doctor/page/${pageIndex}`;
+        const filterForm = $("#filter-form");
+        if (filterForm) {
+            url += "?" + SearchParamsUtils.toSearchParams(this.doctorDTO);
+        }
+        const data = await FetchingUtils.fetch(url);
+        if (!data) {
+            toast.danger("Failed to load doctor data", {
+                duration: 3000,
+                position: "top-right",
+                icon: true
+            });
+            return;
+        }
+        if ("doctors" in data) {
+            const doctorData = data.doctors;
+            doctorListElement.innerHTML = DoctorResponse.fromJsonArray(doctorData).map(doctor => doctor.setRenderStrategy(renderDoctorResponseForList).toHtml()).join("");
+        }
+        if ("currentPage" in data && "totalPages" in data) {
+            const paginationElement = $("#doctor-pagination");
+            const pagination = new Pagination(data.currentPage, data.totalPages);
+            paginationElement.innerHTML = pagination.toHtml();
+            pagination.setEvent(this.renderDoctorList.bind(this));
+        }
     }
-    const data = await FetchingUtils.fetch(url);
-    if (!data) {
-        toast.danger("Failed to load doctor data", {
-            duration: 3000,
-            position: "top-right",
-            icon: true
+
+    setupFormSubmitEvent() {
+        const filterForm = $("#filter-form");
+        if (!filterForm) return;
+        filterForm.addEventListener("submit", async (event) => {
+            const formData = new FormData(filterForm);
+            this.doctorDTO = FormDataUtils.getObjectFromFormData(new DoctorDTO(), formData);
+            event.preventDefault();
+            await this.renderDoctorList();
         });
-        return;
+        filterForm.addEventListener("reset", async (event) => {
+            this.doctorDTO = new DoctorDTO();
+            await this.renderDoctorList();
+        });
     }
-    if ("doctors" in data) {
-        const doctorData = data.doctors;
-        doctorListElement.innerHTML = DoctorResponse.fromJsonArray(doctorData).map(doctor => doctor.setRenderStrategy(renderDoctorResponseForList).toHtml()).join("");
-    }
-    if ("currentPage" in data && "totalPages" in data) {
-        const paginationElement = $("#doctor-pagination");
-        const pagination = new Pagination(data.currentPage, data.totalPages);
-        paginationElement.innerHTML = pagination.toHtml();
-        pagination.setEvent(renderDoctorList);
-    }
-}
-
-function setupFormSubmitEvent() {
-    const filterForm = $("#filter-form");
-    if (!filterForm) return;
-    filterForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        await renderDoctorList();
-    });
-    filterForm.addEventListener("reset", async (event) => {
-        await event.target.reset();
-        await renderDoctorList();
-    });
 }

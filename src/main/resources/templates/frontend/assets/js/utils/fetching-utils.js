@@ -1,4 +1,4 @@
-import toast from "/templates/frontend/assets/lib/toast/toast.js";
+import toast from "/templates/frontend/assets/js/plugins/toast.js";
 
 export class FetchingUtils {
     /**
