@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -83,7 +84,7 @@ public class DoctorServiceImpl implements DoctorService {
                 new SearchCriteria("staffEntity.reviewEntities.rating", ComparisonOperator.AVG_GREATER_THAN_OR_EQUAL_TO, doctorDTO.getMinStarRating(), JoinType.LEFT)
         );
         List<SortCriteria> sortCriterias = List.of();
-        switch (doctorDTO.getSortFieldName()) {
+        switch (Optional.of(doctorDTO).map(DoctorDTO::getSortFieldName).orElse("")) {
             case "staffEntity.fullName" -> sortCriterias = List.of(
                     new SortCriteria(doctorDTO.getSortFieldName(), AggregationFunction.NONE, doctorDTO.getSortDirection(), JoinType.LEFT)
             );
