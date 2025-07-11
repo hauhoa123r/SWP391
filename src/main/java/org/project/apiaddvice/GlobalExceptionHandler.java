@@ -22,19 +22,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
-    @ExceptionHandler(PageNotFoundException.class)
+    @ExceptionHandler(exception = {
+            PageNotFoundException.class,
+            EntityNotFoundException.class,
+            ResourceNotFoundException.class
+    })
     public ResponseEntity<String> handlePageNotFoundException(PageNotFoundException e) {
-        return ResponseEntity.status(404).body("Page not found!");
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException e) {
-        return ResponseEntity.status(404).body(e.getMessage());
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
-        return ResponseEntity.status(404).body(e.getMessage());
+        return ResponseEntity.status(404).body("Không tìm thấy");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
