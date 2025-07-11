@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "tests", schema = "swp391")
+@FieldNameConstants
 public class TestEntity {
     @Id
     @Column(name = "test_id", nullable = false)

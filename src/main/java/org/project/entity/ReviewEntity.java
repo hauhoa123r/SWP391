@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "reviews", schema = "swp391")
+@FieldNameConstants
 public class ReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +40,7 @@ public class ReviewEntity {
 
     @ManyToMany(mappedBy = "reviewEntities")
     private Set<ProductEntity> productEntities = new LinkedHashSet<>();
+
     @ManyToMany
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
 
