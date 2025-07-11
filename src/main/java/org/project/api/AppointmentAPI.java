@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/appointment")
 public class AppointmentAPI {
 
     private AppointmentService appointmentService;
@@ -22,7 +20,7 @@ public class AppointmentAPI {
         this.appointmentService = appointmentService;
     }
 
-    @PostMapping
+    @PostMapping("/api/patient/appointment")
     public ResponseEntity<String> saveAppointment(HttpSession session, @RequestBody AppointmentDTO appointmentDTO) {
         UserResponse user = (UserResponse) session.getAttribute("user");
         appointmentDTO.setPatientEntityUserEntityId(user.getId());

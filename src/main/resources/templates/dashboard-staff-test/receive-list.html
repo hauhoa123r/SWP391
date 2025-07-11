@@ -182,7 +182,7 @@
     <!-- loader END -->
     <aside class="sidebar sidebar-base " id="first-tour" data-toggle="main-sidebar" data-sidebar="responsive">
         <div class="sidebar-header d-flex align-items-center justify-content-start position-relative">
-            <a href="./index.html" th:href="@{/dashboard-staff-test/index.html}"
+            <a href="./index.html" th:href="@{/lab/homepage}"
  class="navbar-brand">
 
                 <!--Logo start-->
@@ -731,48 +731,31 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="input-datatable" class="table" data-toggle="data-table-column-filter">
+                                <div class="mt-3 text-end">
+                                    <button id="submit-selection" class="btn btn-success">Submit Selected</button>
+                                </div>
+                                <table id="input-datatable" class="table">
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" id="select-all"></th>
-                                            <th>Order ID</th>
                                             <th>Patient Name</th>
+                                            <th>Doctor Name</th>
                                             <th>Referring Department</th>
                                             <th>Test Type</th>
                                             <th>Requested At</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
+                                    <tbody id="table-body">
+                                        <tr th:each="item : ${assignments}">
+                                            <td><input type="checkbox" class="row-checkbox" th:value="${item.getId()}"></td>
+                                            <td th:text="${item.getPatientName()}"></td>
+                                            <td th:text="${item.getDoctorName()}"></td>
+                                            <td th:text="${item.getDepartmentName()}"></td>
+                                            <td th:text="${item.getTestType()}">61</td>
+                                            <td th:text="${item.getRequestAt()}"></td>
                                             <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Garrett Winters</td>
-                                            <td>Skin Specialist</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
+                                                <button class="btn btn-sm btn-outline-success" title="Approve" th:data-id="${item.id}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                         fill="currentColor" class="bi bi-check-circle-fill"
                                                         viewBox="0 0 16 16">
@@ -783,203 +766,61 @@
                                                 </button>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Olivia Wilson</td>
-                                            <td>Laboratorian</td>
-                                            <td>San Francisco</td>
-                                            <td>66</td>
-                                            <td>2009/01/12</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Cedric Kelly</td>
-                                            <td>Orthopedics</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2012/03/29</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Amine Louis</td>
-                                            <td>Skin Specialist</td>
-                                            <td>Tokyo</td>
-                                            <td>33</td>
-                                            <td>2008/11/28</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Ethan Rodriguez</td>
-                                            <td>ENT Specialist</td>
-                                            <td>New York</td>
-                                            <td>61</td>
-                                            <td>2012/12/02</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Herrod Chandler</td>
-                                            <td>Eye Specialist</td>
-                                            <td>San Francisco</td>
-                                            <td>59</td>
-                                            <td>2012/08/06</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Rhona Davidson</td>
-                                            <td>ENT Specialist</td>
-                                            <td>Tokyo</td>
-                                            <td>55</td>
-                                            <td>2010/10/14</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Colleen Hurst</td>
-                                            <td>Fertility Specialist</td>
-                                            <td>San Francisco</td>
-                                            <td>39</td>
-                                            <td>2009/09/15</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Sonya Frost</td>
-                                            <td>Cardiologist</td>
-                                            <td>Edinburgh</td>
-                                            <td>23</td>
-                                            <td>2008/12/13</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" class="row-checkbox"></td>
-                                            <td>Jena Gaines</td>
-                                            <td>Office Manager</td>
-                                            <td>London</td>
-                                            <td>30</td>
-                                            <td>2008/12/19</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <th></th>
-                                            <th title="Order ID">Order ID</th>
-                                            <th title="Patient Name">Patient Name</th>
-                                            <th title="Referring Department">Referring Department</th>
-                                            <th title="Test Type">Test Type</th>
+                                            <th title="Patient Name">Patient Name
+                                                <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" />
+                                            </th>
+                                            <th title="Doctor Name">Patient Name
+                                                <input type="text" id="doctorName" name="doctorName" class="form-control form-control-sm" />
+                                            </th>
+                                            <th title="Referring Department">Referring Department
+                                                <input type="text" id="referringDepartment" name="referringDepartment" class="form-control form-control-sm" />
+                                            </th>
+                                            <th title="Test Type">Test Type
+                                                <input type="text" id="testType" name="testType" class="form-control form-control-sm" />
+                                            </th>
                                             <th title="Request At">Request At</th>
                                             <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
                                             </td>
+
                                         </tr>
                                     </tfoot>
                                 </table>
-                                <div class="mt-3 text-end">
-                                    <button id="submit-selection" class="btn btn-success">Submit Selected</button>
+                                <div class="mt-4 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span th:text="'Tổng số bản ghi: ' + ${totalItems}"></span>
+                                    </div>
+                                    <nav>
+                                        <ul class="pagination mb-0">
+                                            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                                <a class="page-link" th:href="@{/lab/receive-items(page=${currentPage - 1})}">Previous</a>
+                                            </li>
+                                            <li class="page-item"
+                                                th:each="i : ${#numbers.sequence(currentPage, currentPage + 1)}"
+                                                th:if="${i < totalPages - 2}"
+                                                th:classappend="${i == currentPage} ? 'active'">
+                                                <a class="page-link" th:href="@{/lab/receive-items(page=${i})}" th:text="${i + 1}"></a>
+                                            </li>
+
+                                            <li class="page-item disabled" th:if="${currentPage < totalPages - 3}">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                            <li class="page-item"
+                                                th:each="i : ${#numbers.sequence(totalPages - 2, totalPages - 1)}"
+                                                th:if="${i >= 0}"
+                                                th:classappend="${i == currentPage} ? 'active'">
+                                                <a class="page-link" th:href="@{/lab/receive-items(page=${i})}" th:text="${i + 1}"></a>
+                                            </li>
+
+                                            <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                                                <a class="page-link" th:href="@{/lab/receive-items(page=${currentPage + 1})}">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+
                                 </div>
                             </div>
                         </div>
@@ -1929,7 +1770,6 @@
                 checkboxes.forEach(cb => cb.checked = selectAll.checked);
             });
 
-            // Optional: xử lý nút Submit
             document.getElementById("submit-selection").addEventListener("click", function () {
                 const selectedRows = [];
                 checkboxes.forEach(cb => {
@@ -1944,11 +1784,109 @@
                     alert("No rows selected.");
                 } else {
                     console.log("Submitting:", selectedRows);
-                    // Gửi selectedRows lên backend hoặc xử lý tùy ý
                 }
             });
         });
+
+
+        $(document).on('click', '.btn-outline-success', function () {
+            const id = $(this).data('id');
+            $.ajax({
+                url: '/api/receive/' + id,
+                type: 'GET',
+                success: function (data) {
+                    alert('Received');
+                    window.location.href='/lab/receive-items'
+                },
+                error: function (data) {
+                    alert('Error');
+                }
+            });
+        });
+        $('#submit-selection').click(function () {
+            const ids = [];
+
+            $('.row-checkbox:checked').each(function () {
+                ids.push($(this).val());
+            })
+            if(ids.length === 0) {
+                alert('No rows selected');
+            }
+            const convertId = ids.join(',');
+
+            $.ajax({
+                url: '/api/receives/' + convertId,
+                type: 'GET',
+                success: function (data) {
+                    alert('Received');
+                    window.location.href='/lab/receive-items'
+                },
+                error: function (data) {
+                    alert('Error');
+                }
+            })
+        })
+
+        function fetchFilteredData() {
+            const filters = {
+                patientName: $('#patientName').val(),
+                doctorName: $('#doctorName').val(),
+                departmentName: $('#referringDepartment').val(),
+                testType: $('#testType').val()
+            };
+
+            $.ajax({
+                url: '/api/receive/filter',
+                type: 'GET',
+                data: filters,
+                success: function (data) {
+                    renderTable(data.content);
+                },
+                error: function () {
+                    alert('Lỗi khi lọc dữ liệu');
+                }
+            });
+        }
+        let typingTimer;
+        const typingDelay = 1000;
+
+        $('#patientName, #doctorName, #referringDepartment, #testType').on('input', function () {
+            clearTimeout(typingTimer);
+
+            typingTimer = setTimeout(function () {
+                fetchFilteredData();
+            }, typingDelay);
+        });
+        function renderTable(assignments) {
+            let html = '';
+            assignments.forEach(item => {
+                html += `
+                <tr>
+                    <td><input type="checkbox" class="row-checkbox" value="${item.id}"></td>
+                    <td>${item.patientName || ''}</td>
+                    <td>${item.doctorName || ''}</td>
+                    <td>${item.departmentName || ''}</td>
+                    <td>${item.testType || ''}</td>
+                    <td>${item.requestAt || ''}</td>
+                     <td>
+                     <button class="btn btn-sm btn-outline-success" title="Approve" data-id="${item.id}">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                      fill="currentColor" class="bi bi-check-circle-fill"
+                      viewBox="0 0 16 16">
+                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
+                      5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
+                      0 0 0-.01-1.05z" />
+                        </svg>
+                       </button>
+                        </td>
+                </tr>
+            `;
+            });
+
+            $('#table-body').html(html);
+        }
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 </body>
 

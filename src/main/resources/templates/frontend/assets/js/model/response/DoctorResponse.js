@@ -11,9 +11,9 @@ export class DoctorResponse extends BaseResponse {
 
     static fromJson(json) {
         const doctorResponse = new DoctorResponse(
-            json.id,
-            json.staffEntity,
-            json.doctorRank
+                json.id,
+                json.staffEntity,
+                json.doctorRank
         );
 
         if (json.staffEntity) {
@@ -40,7 +40,7 @@ export class DoctorResponse extends BaseResponse {
                     <i class="fas fa-star ${this.staffEntity.reviewCount ? "text-warning" : "text-primary"}"></i>
                     <span class="ms-1">${Math.floor(this.staffEntity.averageRating * 10) / 10}</span>
                 </div>
-                <small>${this.staffEntity.reviewCount ? (this.staffEntity.reviewCount + " reviews") : "No reviews yet"}</small>
+                <small>${this.staffEntity.reviewCount ? (this.staffEntity.reviewCount + " Đánh giá") : "Chưa có đánh giá"}</small>
             </div>
         </div>
         `;
@@ -118,7 +118,6 @@ export function renderDoctorResponseForList(doctorResponse) {
                      onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
                      src="${doctorResponse.staffEntity.avatarUrl}">
             </div>
-            <!-- Có thể cần thêm phần rating nếu muốn, ví dụ: -->
             <div>${doctorResponse.getRating()}</div>
             <div class="iq-team-info position-absolute d-block w-100">
                 <div class="iq-team-main-detail bg-white">

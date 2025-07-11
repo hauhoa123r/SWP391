@@ -3,9 +3,12 @@ package org.project.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.project.converter.AssignmentListConverter;
 import org.project.entity.StaffEntity;
+import org.project.entity.TestRequestEntity;
+import org.project.enums.RequestStatus;
 import org.project.enums.StaffRole;
 import org.project.model.dto.AssignmentListDTO;
 import org.project.repository.AppointmentRepository;
+import org.project.repository.AssignmentRepository;
 import org.project.repository.PatientRepository;
 import org.project.repository.StaffRepository;
 import org.springframework.data.domain.Page;
@@ -16,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -26,14 +30,17 @@ public class StaffTestLabController {
     private final PatientRepository patientRepository;
     private final AppointmentRepository appointmentRepository;
     private final AssignmentListConverter assignmentListConverter;
+    private final AssignmentRepository assignmentRepository;
+
     public StaffTestLabController(StaffRepository staffRepository,
                                   PatientRepository patientRepository,
                                   AppointmentRepository appointmentRepository,
-                                  AssignmentListConverter assignmentListConverter) {
+                                  AssignmentListConverter assignmentListConverter, AssignmentRepository assignmentRepository) {
         this.staffRepository = staffRepository;
         this.patientRepository = patientRepository;
         this.appointmentRepository = appointmentRepository;
         this.assignmentListConverter = assignmentListConverter;
+        this.assignmentRepository = assignmentRepository;
     }
 
     @GetMapping("/homepage")
@@ -47,22 +54,31 @@ public class StaffTestLabController {
         return modelAndView;
     }
 
-    @GetMapping("/test-list")
-    public String getAssignments(
-            @ModelAttribute() AssignmentListDTO assignmentListDTO,
-                                 Model model,
-                                 HttpServletRequest request) {
-        Pageable pageable = PageRequest.of(assignmentListDTO.getPage(), assignmentListDTO.getSize());
-        Page<AssignmentListDTO> assignments = assignmentListConverter.getAllAssignmentListPageable(pageable);
-        model.addAttribute("assignments", assignments);
-        model.addAttribute("currentURI", request.getRequestURI());
-        return "dashboard-staff-test/test-list";
-    }
+        @GetMapping("/tests")
+        public String getAssignments(
+                @ModelAttribute() AssignmentListDTO assignmentListDTO,
+                                     Model model,
+                                     HttpServletRequest request) {
+            Pageable pageable = PageRequest.of(assignmentListDTO.getPage(), assignmentListDTO.getSize());
+            Page<AssignmentListDTO> assignments = assignmentListConverter.getAllAssignmentListPageable(pageable);
+            model.addAttribute("assignments", assignments);
+            model.addAttribute("currentURI", request.getRequestURI());
+            return "dashboard-staff-test/test-list";
+        }
 
-    @GetMapping("/receive-list")
-    public ModelAndView receiveListView(HttpServletRequest request, Model model) {
+    @GetMapping("/receive-items")
+    public ModelAndView receiveListView(
+            @RequestParam(defaultValue = "0", name = "page") int pageIndex,
+            HttpServletRequest request,
+            Model model) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/receive-list");
+        Pageable pageable = PageRequest.of(pageIndex, 10);
+        Page<AssignmentListDTO> assignments = assignmentListConverter.getAllRequestPending(pageable);
+        modelAndView.addObject("assignments", assignments);
         modelAndView.addObject("currentURI", request.getRequestURI());
+        model.addAttribute("currentPage", assignments.getNumber());
+        model.addAttribute("totalPages", assignments.getTotalPages());
+        model.addAttribute("totalItems", assignments.getTotalElements());
         return modelAndView;
     }
 

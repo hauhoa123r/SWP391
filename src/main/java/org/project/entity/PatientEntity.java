@@ -3,12 +3,16 @@ package org.project.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.BloodType;
-import org.project.enums.PatientStatus;
 import org.project.enums.FamilyRelationship;
 import org.project.enums.Gender;
+import org.project.enums.PatientStatus;
 import org.project.enums.converter.BloodTypeConverter;
 
 import java.sql.Date;
@@ -22,6 +26,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "patients", schema = "swp391")
+@FieldNameConstants
 public class PatientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,7 +64,7 @@ public class PatientEntity {
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
-    @Column(name = "patient_status", nullable = false)
+    @Column(name = "patient_status", columnDefinition = "enum not null")
     private PatientStatus patientStatus;
 
     @OneToMany(mappedBy = "patientEntity")
@@ -76,15 +81,15 @@ public class PatientEntity {
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'SELF'")
-    @Column(name = "relationship", nullable = false)
+    @Column(name = "relationship")
     private FamilyRelationship familyRelationship;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'OTHER'")
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender", columnDefinition = "enum not null")
     private Gender gender;
 
-    @Column(name = "blood_type")
+    @Column(name = "blood_type", columnDefinition = "enum")
     @Convert(converter = BloodTypeConverter.class)
     private BloodType bloodType;
 
@@ -93,4 +98,5 @@ public class PatientEntity {
 
     @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY)
     private List<TestRequestEntity> testRequestEntity;
+
 }
