@@ -29,7 +29,7 @@ class RenderService {
         const data = await FetchingUtils.fetch(url);
 
         if (!data) {
-            serviceListElement.innerHTML = "<p class='text-center w-100'>No services available</p>";
+            serviceListElement.innerHTML = "<p class='text-center w-100'>Không có dịch vụ nào</p>";
             return;
         }
 

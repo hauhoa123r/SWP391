@@ -5,7 +5,6 @@ import {
 import {
     DoctorResponse, renderDoctorResponseForList
 } from "/templates/frontend/assets/js/model/response/DoctorResponse.js";
-import toast from "/templates/frontend/assets/js/plugins/toast.js";
 import {FetchingUtils} from "/templates/frontend/assets/js/utils/fetching-utils.js";
 import {FormDataUtils} from "/templates/frontend/assets/js/utils/form-data.js";
 import {Pagination} from "/templates/frontend/assets/js/utils/pagination.js";
@@ -47,11 +46,7 @@ class RenderDoctor {
         }
         const data = await FetchingUtils.fetch(url);
         if (!data) {
-            toast.danger("Failed to load doctor data", {
-                duration: 3000,
-                position: "top-right",
-                icon: true
-            });
+            doctorListElement.innerHTML = "<p class='text-center w-100'>Không có bác sĩ nào</p>";
             return;
         }
         if ("doctors" in data) {
