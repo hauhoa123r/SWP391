@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const renderDoctor = new RenderDoctor();
     await renderDoctor.renderDepartmentOption();
     await renderDoctor.renderDoctorList();
-    renderDoctor.setupFormSubmitEvent();
+    renderDoctor.setupFilterFormEvents();
 });
 
 class RenderDoctor {
@@ -66,7 +66,7 @@ class RenderDoctor {
         }
     }
 
-    setupFormSubmitEvent() {
+    setupFilterFormEvents() {
         const filterForm = $("#filter-form");
         if (!filterForm) return;
         filterForm.addEventListener("submit", async (event) => {
