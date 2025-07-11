@@ -16,8 +16,8 @@ import {
 } from "/templates/frontend/assets/js/model/response/ServiceResponse.js";
 import {renderTimeResponseForBooking, TimeResponse} from "/templates/frontend/assets/js/model/response/TimeResponse.js";
 import toast from "/templates/frontend/assets/js/plugins/toast.js";
+import {FetchingUtils} from "/templates/frontend/assets/js/utils/fetching-utils.js";
 import {Pagination} from "/templates/frontend/assets/js/utils/pagination.js";
-import {FetchingUtils} from "templates/frontend/assets/js/utils/fetching-utils.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const bookingManager = new BookingManager();
