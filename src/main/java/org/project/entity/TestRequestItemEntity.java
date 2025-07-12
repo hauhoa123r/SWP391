@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 @Setter
 @Entity
 @Table(name = "test_request_items", schema = "swp391")
+@FieldNameConstants
 public class TestRequestItemEntity {
     @EmbeddedId
     private TestRequestItemEntityId id;

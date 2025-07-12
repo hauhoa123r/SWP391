@@ -55,8 +55,8 @@ public class DoctorAPI {
     }
 
     @GetMapping("/page/{pageIndex}")
-    public ResponseEntity<Map<String, Object>> getAllStaffByPage(@PathVariable int pageIndex) {
-        Page<DoctorResponse> doctorResponsePage = doctorService.getAll(pageIndex, PAGE_SIZE_FOR_LIST);
+    public ResponseEntity<Map<String, Object>> getAllStaffByPage(@PathVariable int pageIndex, @ModelAttribute DoctorDTO doctorDTO) {
+        Page<DoctorResponse> doctorResponsePage = doctorService.getDoctors(doctorDTO, pageIndex, PAGE_SIZE_FOR_LIST);
         return ResponseEntity.ok(
                 Map.of(
                         "doctors", doctorResponsePage.getContent(),

@@ -9,6 +9,8 @@ import java.util.List;
 public interface DoctorService {
     Page<DoctorResponse> getAll(int index, int size);
 
+    Page<DoctorResponse> getDoctors(DoctorDTO doctorDTO, int index, int size);
+
     Page<DoctorResponse> getAllByDepartment(Long departmentId, int index, int size);
 
     Page<DoctorResponse> getAllByHospitalAndDepartment(Long hospitalId, Long departmentId, int index, int size);

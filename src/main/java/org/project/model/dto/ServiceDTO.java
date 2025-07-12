@@ -6,13 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.project.enums.operation.SortDirection;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DoctorDTO {
-    private String staffEntityFullName;
-    private Long staffEntityDepartmentEntityId;
+public class ServiceDTO {
+    private String productEntityName;
+    private BigDecimal minPrice;
+    private BigDecimal maxPrice;
     private Long minStarRating;
     private String sortFieldName;
     private SortDirection sortDirection;
