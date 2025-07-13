@@ -12,11 +12,11 @@ export class DepartmentResponse extends BaseResponse {
 
     static fromJson(json) {
         return new DepartmentResponse(
-            json.id,
-            json.name,
-            json.slogan,
-            json.description,
-            json.bannerUrl
+                json.id,
+                json.name,
+                json.slogan,
+                json.description,
+                json.bannerUrl
         );
     }
 
@@ -78,4 +78,13 @@ export function renderDepartmentResponseForList(departmentResponse, departmentId
         ${departmentResponse.name}
     </button>
     `;
+}
+
+export function renderDepartmentResponseForSelect(departmentResponse, departmentId) {
+    return `
+    <option value="${departmentResponse.id}" ${departmentResponse.id === parseInt(departmentId) ? "selected" : ""}>
+        ${departmentResponse.name}
+    </option>
+    `;
+
 }

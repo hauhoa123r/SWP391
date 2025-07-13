@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.StaffRole;
 import org.project.enums.StaffType;
@@ -21,6 +22,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "staffs", schema = "swp391")
+@FieldNameConstants
 public class StaffEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

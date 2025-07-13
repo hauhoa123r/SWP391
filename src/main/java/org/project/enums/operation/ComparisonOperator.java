@@ -1,6 +1,6 @@
-package org.project.enums;
+package org.project.enums.operation;
 
-public enum Operation {
+public enum ComparisonOperator {
     // Basic operations
     EQUALS,
     NOT_EQUALS,
@@ -57,9 +57,5 @@ public enum Operation {
     MIN_GREATER_THAN,
     MIN_LESS_THAN,
     MIN_GREATER_THAN_OR_EQUAL_TO,
-    MIN_LESS_THAN_OR_EQUAL_TO,
-
-    // AND, OR operations
-    AND,
-    OR
+    MIN_LESS_THAN_OR_EQUAL_TO
 }

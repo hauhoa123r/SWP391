@@ -11,7 +11,7 @@ export class Pagination {
     toHtml() {
 
         let html = `
-        <nav aria-label="Doctor pagination" class="mt-4">
+        <nav aria-label="Pagination" class="mt-4">
             <ul class="pagination justify-content-center">
                 <!-- Previous button -->
                 <li class="page-item ${this.currentPage === 0 ? "disabled" : ""}" data-page="${this.currentPage - 1}">

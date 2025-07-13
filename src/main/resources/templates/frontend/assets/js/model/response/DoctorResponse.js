@@ -118,7 +118,6 @@ export function renderDoctorResponseForList(doctorResponse) {
                      onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
                      src="${doctorResponse.staffEntity.avatarUrl}">
             </div>
-            <!-- Có thể cần thêm phần rating nếu muốn, ví dụ: -->
             <div>${doctorResponse.getRating()}</div>
             <div class="iq-team-info position-absolute d-block w-100">
                 <div class="iq-team-main-detail bg-white">

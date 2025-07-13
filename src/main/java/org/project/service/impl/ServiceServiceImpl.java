@@ -1,19 +1,35 @@
 package org.project.service.impl;
 
+import jakarta.persistence.criteria.JoinType;
 import jakarta.transaction.Transactional;
 import org.project.config.WebConstant;
 import org.project.converter.ServiceConverter;
+import org.project.entity.ProductEntity;
+import org.project.entity.ReviewEntity;
 import org.project.entity.ServiceEntity;
+import org.project.enums.operation.AggregationFunction;
+import org.project.enums.operation.ComparisonOperator;
 import org.project.exception.sql.EntityNotFoundException;
+import org.project.model.dto.ServiceDTO;
 import org.project.model.response.ServiceResponse;
 import org.project.repository.ServiceRepository;
 import org.project.repository.impl.custom.ServiceRepositoryCustom;
 import org.project.service.ServiceService;
+import org.project.utils.FieldNameUtils;
 import org.project.utils.PageUtils;
+import org.project.utils.specification.PageSpecificationUtils;
+import org.project.utils.specification.SpecificationUtils;
+import org.project.utils.specification.search.SearchCriteria;
+import org.project.utils.specification.sort.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,6 +39,8 @@ public class ServiceServiceImpl implements ServiceService {
     private ServiceRepositoryCustom serviceRepositoryCustom;
     private ServiceConverter serviceConverter;
     private PageUtils<ServiceEntity> pageUtils;
+    private PageSpecificationUtils<ServiceEntity> pageSpecificationUtils;
+    private SpecificationUtils<ServiceEntity> specificationUtils;
 
     @Autowired
     public void setServiceConverter(ServiceConverter serviceConverter) {
@@ -44,10 +62,94 @@ public class ServiceServiceImpl implements ServiceService {
         this.pageUtils = pageUtils;
     }
 
+    @Autowired
+    public void setPageSpecificationUtils(PageSpecificationUtils<ServiceEntity> pageSpecificationUtils) {
+        this.pageSpecificationUtils = pageSpecificationUtils;
+    }
+
+    @Autowired
+    public void setSpecificationUtils(SpecificationUtils<ServiceEntity> specificationUtils) {
+        this.specificationUtils = specificationUtils;
+    }
+
     @Override
-    public Page<ServiceResponse> getServices(int index, int size) {
+    public Page<ServiceResponse> getServices(int index, int size, ServiceDTO serviceDTO) {
         Pageable pageable = pageUtils.getPageable(index, size);
-        Page<ServiceEntity> serviceEntityPage = serviceRepositoryCustom.findAllByProductEntityProductStatusOrderByProductEntityAverageRatingAndProductEntityReviewCount(WebConstant.PRODUCT_STATUS_ACTIVE, pageable);
+        List<SearchCriteria> searchCriterias = List.of(
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                ServiceEntity.Fields.productEntity,
+                                ProductEntity.Fields.name
+                        ), ComparisonOperator.CONTAINS, serviceDTO.getProductEntityName(), JoinType.LEFT),
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                ServiceEntity.Fields.productEntity,
+                                ProductEntity.Fields.price
+                        ), ComparisonOperator.GREATER_THAN_OR_EQUAL_TO, serviceDTO.getMinPrice(), JoinType.LEFT),
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                ServiceEntity.Fields.productEntity,
+                                ProductEntity.Fields.price
+                        ), ComparisonOperator.LESS_THAN_OR_EQUAL_TO, serviceDTO.getMaxPrice(), JoinType.LEFT),
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                ServiceEntity.Fields.productEntity,
+                                ProductEntity.Fields.reviewEntities,
+                                ReviewEntity.Fields.rating
+                        ), ComparisonOperator.AVG_GREATER_THAN_OR_EQUAL_TO, serviceDTO.getMinStarRating(), JoinType.LEFT)
+        );
+        List<SortCriteria> sortCriterias = new ArrayList<>();
+        Map<String, SortCriteria> sortCriteriaMap = Map.of(
+                FieldNameUtils.joinFields(
+                        ServiceEntity.Fields.productEntity,
+                        ProductEntity.Fields.name
+                ), new SortCriteria(
+                        serviceDTO.getSortFieldName(),
+                        AggregationFunction.NONE,
+                        serviceDTO.getSortDirection(),
+                        JoinType.LEFT
+                ),
+                FieldNameUtils.joinFields(
+                        ServiceEntity.Fields.productEntity,
+                        ProductEntity.Fields.price
+                ), new SortCriteria(
+                        serviceDTO.getSortFieldName(),
+                        AggregationFunction.NONE,
+                        serviceDTO.getSortDirection(),
+                        JoinType.LEFT
+                ),
+                FieldNameUtils.joinFields(
+                        ServiceEntity.Fields.productEntity,
+                        ProductEntity.Fields.reviewEntities,
+                        ReviewEntity.Fields.rating
+                ), new SortCriteria(
+                        serviceDTO.getSortFieldName(),
+                        AggregationFunction.AVG,
+                        serviceDTO.getSortDirection(),
+                        JoinType.LEFT
+                ),
+                FieldNameUtils.joinFields(
+                        ServiceEntity.Fields.productEntity,
+                        ProductEntity.Fields.reviewEntities,
+                        ReviewEntity.Fields.id
+                ), new SortCriteria(
+                        serviceDTO.getSortFieldName(),
+                        AggregationFunction.COUNT,
+                        serviceDTO.getSortDirection(),
+                        JoinType.LEFT
+                )
+        );
+        if (sortCriteriaMap.containsKey(Optional.of(serviceDTO).map(ServiceDTO::getSortFieldName).orElse(""))) {
+            sortCriterias = List.of(sortCriteriaMap.get(serviceDTO.getSortFieldName()));
+        }
+
+        Page<ServiceEntity> serviceEntityPage = pageSpecificationUtils.getPage(
+                specificationUtils.reset()
+                        .getSpecifications(searchCriterias, sortCriterias),
+                pageable,
+                ServiceEntity.class,
+                true
+        );
         pageUtils.validatePage(serviceEntityPage, ServiceEntity.class);
         return serviceEntityPage.map(serviceConverter::toResponse);
     }

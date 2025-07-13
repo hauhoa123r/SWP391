@@ -104,7 +104,6 @@ export function renderServiceResponseForBooking(serviceResponse) {
  * @returns {string} The HTML string representing the service response for list view.
  */
 export function renderServiceResponseForList(serviceResponse) {
-    console.log("Rendering service response for list:", serviceResponse);
     return `
         <div class="col mt-5 text-center">
             <div class="iq-fancy-box position-relative p-md-5 bg-light rounded h-100">
