@@ -751,11 +751,9 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="input-datatable" class="table" data-toggle="data-table-column-filter">
+                                <table id="input-datatable" class="table">
                                     <thead>
                                         <tr>
-                                            <th>Barcode</th>
-                                            <th>OrderID</th>
                                             <th>Patient Name</th>
                                             <th>Test Type</th>
                                             <th>Scheduled Time</th>
@@ -765,89 +763,32 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>BN123-20240625-01-2</td>
-                                            <td>
-                                                BN123456
-                                            </td>
-                                            <td>Bùi Huy Hùng</td>
-                                            <td>12</td>
-                                            <td>
-                                                <span class="status-badge status-pending">Pending</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip"
-                                                    title="Set Again time"
-                                                    onclick="window.location.href='set-date'">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-arrow-clockwise"
-                                                        viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd"
-                                                            d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
-                                                        <path
-                                                            d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
-                                                    </svg>
-                                                </button></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" title="Reason"
-                                                    data-reason="Thiếu thể tích, phải lấy lại mẫu!"
-                                                    onclick="showReasonModal(this)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                                        <path
-                                                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                            <td class="action-cell">
-                                                <button class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip"
-                                                    title="Submit">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-square-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
-                                                    </svg>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip"
-                                                    title="Set Date Time"
-                                                    onclick="window.location.href='set-date'">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-calendar-week-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M9.5 7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m3 0h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M2 10.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5" />
-                                                    </svg>
-                                                </button>
-
-                                                <button class="btn btn-sm btn-outline-success d-none confirm-btn">Xác
-                                                    nhận</button>
-                                                <button class="btn btn-sm btn-outline-danger ms-1"
-                                                    data-bs-toggle="modal" data-bs-target="#rejectModel" title="Reject">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-x-square-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                                    </svg>
-                                                </button>
-
-                                            </td>
-                                        </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
+                                            <th title="Patient Name">
+                                                Patient Name
+                                                <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" placeholder="Patient Name">
+                                            </th>
+                                            <th title="Test Type">
+                                                Test Type
+                                                <input type="text" id="testType" name="testType" class="form-control form-control-sm" placeholder="Test Type">
+                                            </th>
                                             <td></td>
-                                            <th title="OrderID">OrderID</th>
-                                            <th title="Patient Name">Patient Name</th>
-                                            <th title="Test Type">Test Type</th>
-                                            <th title="Scheduled Time">Scheduled Time</th>
                                             <td></td>
                                             <td></td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
                                 </table>
+                                <div class="mt-4 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span id="total-items"></span>
+                                    </div>
+                                    <nav>
+                                        <ul class="pagination mb-0" id="pagination-container"></ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1804,7 +1745,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-success" onclick="submitRejection()">Xác nhận</button>
+                    <button type="button" class="btn btn-success" onclick="submitRejection()" id="reject">Xác nhận</button>
                 </div>
 
             </div>
@@ -1829,5 +1770,192 @@
     </div>
 
 </body>
+<script>
+    function getFilterParams() {
+        return {
+            patientName: $('#patientName').val(),
+            testType: $('#testType').val(),
+        };
+    }
 
+    function fetchFilteredData(page = 0) {
+        const filters = getFilterParams();
+        filters.page = page;
+
+        $.ajax({
+            url: '/api/sample/filter',
+            type: 'GET',
+            data: filters,
+            success: function (data) {
+                renderTable(data.content);
+                renderPagination(data);
+            },
+            error: function () {
+                alert('Lỗi khi lọc dữ liệu');
+            }
+        });
+    }
+
+    function renderTable(data) {
+        let html = '';
+        data.forEach(item => {
+            let setAgainBtn = '';
+            let reasonBtn = '';
+
+            if (item.reCollectReason && item.reCollectReason.trim() !== '') {
+                setAgainBtn = `
+                <button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip"
+                        title="Set Again time"
+                        onclick="window.location.href='set-date?id=${item.id}'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         fill="currentColor" class="bi bi-arrow-clockwise"
+                         viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+                        <path
+                            d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+                    </svg>
+                </button>`;
+
+                reasonBtn = `
+                <button class="btn btn-sm btn-outline-info" title="Reason"
+                        data-reason="${item.reCollectReason}"
+                        onclick="showReasonModal(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                        <path
+                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                    </svg>
+                </button>`;
+            } else {
+                setAgainBtn = '';
+                reasonBtn = 'Không';
+            }
+            html += `
+        <tr>
+        <input type="hidden" name="id" value="${item.id}" id="testRequestId"></input>
+            <td>${item.patientName || ''}</td>
+            <td>${item.testType || ''}</td>
+            <td><span class="status-badge status-pending">${item.scheduleTime || ''}</span></td>
+            <td>${setAgainBtn}</td>
+            <td>${reasonBtn}</td>
+            <td class="action-cell">
+                <button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip"
+                                                    onclick="window.location.href='set-date?id=${item.id}'" title="Set Date Time">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-calendar-week-fill"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M9.5 7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m3 0h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M2 10.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5" />
+                                                    </svg>
+                                                </button>
+                <button class="btn btn-sm btn-outline-danger ms-1"
+                                                    data-bs-toggle="modal" data-bs-target="#rejectModel" data-id="${item.id}" title="Reject">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-x-square-fill"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                                                    </svg>
+                                                </button>
+            </td>
+        </tr>
+        `;
+        });
+        $('#input-datatable tbody').html(html);
+    }
+
+    function renderPagination(pageData) {
+        const currentPage = pageData.number;
+        const totalPages = pageData.totalPages;
+        let html = '';
+
+        html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a></li>`;
+
+        if (currentPage > 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+            if (currentPage > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+
+        for (let i = Math.max(0, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
+        }
+
+        if (currentPage < totalPages - 3) {
+            html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+        if (currentPage < totalPages - 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
+        }
+
+        html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a></li>`;
+
+        $('#pagination-container').html(html);
+    }
+
+    $(document).on('click', '.pagination a.page-link', function (e) {
+        e.preventDefault();
+        const page = parseInt($(this).data('page'));
+        fetchFilteredData(page);
+    });
+    let typingTimer;
+    const typingDelay = 1000;
+    function attachInputEvents() {
+        $('#patientName, #testType').off('input').on('input', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => fetchFilteredData(0), typingDelay);
+        });
+    }
+    $(document).ready(function () {
+        attachInputEvents();
+    });
+    $(document).on('click', '.submit-btn', function () {
+        const id = $(this).data('id');
+        $.ajax({
+            url: '/api/recollect/' + id,
+            type: 'POST',
+            success: function () {
+                alert('Submitted');
+                fetchFilteredData();
+            },
+            error: function () {
+                alert('Submit Error');
+            }
+        });
+    });
+
+    function showReasonModal(btn) {
+        const reason = $(btn).data('reason');
+        alert('Reason: ' + reason);
+    }
+
+    $(document).ready(() => fetchFilteredData(0));
+
+    function submitRejection() {
+        return {
+          testRequestId: $('#testRequestId').val(),
+          reason: $('#rejectReason').val()
+        };
+    }
+
+    $(document).on('click', '#reject', function () {
+        const reason = submitRejection();
+        $.ajax({
+            url: '/api/sample/reject',
+            type: 'POST',
+            data: JSON.stringify(reason),
+            contentType: 'application/json',
+            success: function () {
+                alert('Submitted');
+            },
+            fail: function () {
+                alert('Submit Error');
+            }
+        })
+    })
+</script>
 </html>

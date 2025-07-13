@@ -9,8 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class AbstractServiceAIDTO {
-    protected int page = 0;
-    protected int size = 10;
-    protected boolean isFormStarted;
+public class SampleFilterDTO extends AbstractServiceDTO {
+    private String patientName;
+    private String testType;
 }

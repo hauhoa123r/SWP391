@@ -24,8 +24,6 @@ public class TestRequestEntity {
     @Column(name = "test_request_id", nullable = false)
     private Long id;
 
-
-
     @Column(name = "request_status")
     @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
@@ -35,8 +33,6 @@ public class TestRequestEntity {
 
     @Column(name = "reason")
     private String reason;
-
-
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -57,5 +53,7 @@ public class TestRequestEntity {
     @JoinColumn(name = "doctor_id", nullable = false)
     private DoctorEntity doctorEntity;
 
+    @OneToMany(mappedBy = "testRequest", fetch = FetchType.LAZY)
+    private Set<SampleEntity> samples = new LinkedHashSet<>();
 
 }

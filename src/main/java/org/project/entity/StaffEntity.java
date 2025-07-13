@@ -106,6 +106,9 @@ public class StaffEntity {
                 .orElse(0.0);
     }
 
+    @OneToOne(mappedBy = "staffEntity", fetch = FetchType.LAZY)
+    private TechnicianEntity technicianEntity;
+
     public Integer getReviewCount() {
         return reviewEntities.size();
     }

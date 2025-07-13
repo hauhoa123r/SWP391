@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "results")
-public class Result {
+public class ResultEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "result_id", nullable = false)
@@ -23,7 +23,7 @@ public class Result {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sample_id", nullable = false)
-    private Sample sample;
+    private SampleEntity sampleEntity;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -51,6 +51,6 @@ public class Result {
     private String notes;
 
     @OneToMany(mappedBy = "result")
-    private Set<ResultDetail> resultDetails = new LinkedHashSet<>();
+    private Set<ResultDetailEntity> resultDetails = new LinkedHashSet<>();
 
 }

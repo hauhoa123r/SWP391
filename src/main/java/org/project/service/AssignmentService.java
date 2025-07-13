@@ -11,4 +11,6 @@ public interface AssignmentService {
     boolean receivePatient(Long id);
 
     boolean reveicePatientByMultileChoise(List<Long> ids);
+
+    Page<AssignmentListDTO> getReceivedPatientBySearch(AssignmentListDTO search) throws IllegalAccessException;
 }

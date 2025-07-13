@@ -7,9 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -43,10 +41,10 @@ public class TestItem {
     private TestType testType;
 
     @OneToMany(mappedBy = "testItem")
-    private Set<ReferenceRange> referenceRanges = new LinkedHashSet<>();
+    private Set<ReferenceRangeEntity> referenceRanges = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "testItem")
-    private Set<ResultDetail> resultDetails = new LinkedHashSet<>();
+    private Set<ResultDetailEntity> resultDetails = new LinkedHashSet<>();
 
 
 }

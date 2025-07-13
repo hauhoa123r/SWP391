@@ -2,15 +2,16 @@ package org.project.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.project.converter.AssignmentListConverter;
+import org.project.converter.SetDateConverter;
 import org.project.entity.StaffEntity;
-import org.project.entity.TestRequestEntity;
-import org.project.enums.RequestStatus;
 import org.project.enums.StaffRole;
 import org.project.model.dto.AssignmentListDTO;
+import org.project.model.response.SetDateGetSampleResponse;
 import org.project.repository.AppointmentRepository;
 import org.project.repository.AssignmentRepository;
 import org.project.repository.PatientRepository;
 import org.project.repository.StaffRepository;
+import org.project.service.SampleScheduleService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,16 +32,22 @@ public class StaffTestLabController {
     private final AppointmentRepository appointmentRepository;
     private final AssignmentListConverter assignmentListConverter;
     private final AssignmentRepository assignmentRepository;
-
+    private final SampleScheduleService sampleScheduleService;
+    private final SetDateConverter setDateConverter;
     public StaffTestLabController(StaffRepository staffRepository,
                                   PatientRepository patientRepository,
                                   AppointmentRepository appointmentRepository,
-                                  AssignmentListConverter assignmentListConverter, AssignmentRepository assignmentRepository) {
+                                  AssignmentListConverter assignmentListConverter, AssignmentRepository assignmentRepository,
+                                  SampleScheduleService sampleScheduleService,
+                                  SetDateConverter setDateConverter) {
         this.staffRepository = staffRepository;
         this.patientRepository = patientRepository;
         this.appointmentRepository = appointmentRepository;
         this.assignmentListConverter = assignmentListConverter;
         this.assignmentRepository = assignmentRepository;
+        this.sampleScheduleService = sampleScheduleService;
+        this.setDateConverter = setDateConverter;
+
     }
 
     @GetMapping("/homepage")
@@ -153,8 +160,11 @@ public class StaffTestLabController {
     }
 
     @GetMapping("/set-date")
-    public ModelAndView setDateView(HttpServletRequest request, Model model) {
+    public ModelAndView setDateView(HttpServletRequest request, Model model, @RequestParam(required = false) Long id) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/set-date-time");
+        SetDateGetSampleResponse setDateGetSampleResponse = setDateConverter.toConverterSetDateGetSampleResponse(id);
+        setDateGetSampleResponse.setTestRequestId(id);
+        modelAndView.addObject("patient", setDateGetSampleResponse);
         modelAndView.addObject("currentURI", request.getRequestURI());
         return modelAndView;
     }

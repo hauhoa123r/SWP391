@@ -29,7 +29,7 @@ public class TestType {
     private ProductEntity product;
 
     @OneToMany(mappedBy = "testType")
-    private Set<Result> results = new LinkedHashSet<>();
+    private Set<ResultEntity> results = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "testType")
     private Set<TestItem> testItems = new LinkedHashSet<>();

@@ -68,4 +68,26 @@ public class AssignmentListConverter {
             return dto;
         });
     }
+
+    public Page<AssignmentListDTO> getAllReceivePatient(AssignmentListDTO search) throws IllegalAccessException {
+        search.setStatus(RequestStatus.pending.getValue());
+        Page<TestRequestEntity> page = testRequestRepository.toGetReceivePatientByStatusPending(search);
+
+        if (page == null) {
+            throw new ResourceNotFoundException("Cam not get assignment by search");
+        }
+
+        return page.map(entity -> {
+            AssignmentListDTO dto = new AssignmentListDTO();
+            dto.setId(entity.getId());
+            dto.setDoctorName(entity.getDoctorEntity().getStaffEntity().getFullName());
+            dto.setRequestAt(entity.getRequestTime());
+            dto.setPatientName(entity.getAppointmentEntity().getPatientEntity().getFullName());
+            dto.setDepartmentName(entity.getAppointmentEntity().getDoctorEntity().getStaffEntity().getDepartmentEntity().getName());
+            dto.setStatus(entity.getRequestStatus().getValue());
+            dto.setTestType(entity.getTestType().getTestTypeName());
+            dto.setReason(entity.getReason() == null ? "N/A" : entity.getReason());
+            return dto;
+        });
+    }
 }

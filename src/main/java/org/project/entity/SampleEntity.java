@@ -8,14 +8,15 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "samples")
-public class Sample {
+@Table(name = "samples", schema = "swp391")
+public class SampleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sample_id", nullable = false)
@@ -42,7 +43,7 @@ public class Sample {
     private String sampleStatus;
 
     @Column(name = "collection_time")
-    private Instant collectionTime;
+    private Date collectionTime;
 
     @Lob
     @Column(name = "recollection_reason")
@@ -55,7 +56,7 @@ public class Sample {
     @Column(name = "retest_time")
     private Instant retestTime;
 
-    @OneToMany(mappedBy = "sample")
-    private Set<Result> results = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "sampleEntity")
+    private Set<ResultEntity> results = new LinkedHashSet<>();
 
 }

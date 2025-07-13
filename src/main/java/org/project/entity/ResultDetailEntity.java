@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name = "result_details")
-public class ResultDetail {
+public class ResultDetailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "detail_id", nullable = false)
@@ -21,7 +21,7 @@ public class ResultDetail {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "result_id", nullable = false)
-    private Result result;
+    private ResultEntity result;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

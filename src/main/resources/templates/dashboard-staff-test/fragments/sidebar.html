@@ -57,7 +57,7 @@
                 <li><hr class="hr-horizontal"></li>
                 <li class="nav-item">
                     <a class="nav-link" th:class="${currentURI
- == '/lab/sampling-schedule'} ? 'nav-link active' : 'nav-link'"
+ == '/lab/sampling-schedule' || currentURI == '/lab/set-date'} ? 'nav-link active' : 'nav-link'"
                        th:href="@{/lab/sampling-schedule}">
                         <i class="icon" data-bs-toggle="tooltip" title="Sampling Schedule" data-bs-placement="right">
                             <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
