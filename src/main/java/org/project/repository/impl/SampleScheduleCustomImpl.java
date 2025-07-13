@@ -47,7 +47,8 @@ public class SampleScheduleCustomImpl implements SampleScheduleCustom{
                     && !fieldName.equals("page")
                     && !fieldName.equals("size")
                     && !fieldName.equals("patientName")
-                    && !fieldName.equals("testType")) {
+                    && !fieldName.equals("testType")
+            && !fieldName.equals("status")) {
                 if (StringUtils.check(value.toString())) {
                     results.append("AND ").append(fieldName).append(" LIKE :").append(fieldName).append("\n");
                     params.put(fieldName, "%" + value + "%");
@@ -66,7 +67,7 @@ public class SampleScheduleCustomImpl implements SampleScheduleCustom{
             params.put("testType", "%" + sampleFilterDTO.getTestType() + "%");
         }
         results.append("AND sp.sample_status LIKE :sampleStatus\n");
-        params.put("sampleStatus", "%" + "pending" + "%");
+        params.put("sampleStatus", "%" + sampleFilterDTO.getStatus() + "%");
         return results.toString();
     }
 

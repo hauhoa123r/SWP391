@@ -1,14 +1,18 @@
 package org.project.converter;
 
 import org.project.entity.SampleEntity;
+import org.project.entity.StaffEntity;
 import org.project.entity.TestRequestEntity;
 import org.project.entity.UserEntity;
+import org.project.enums.RequestStatus;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.SampleFilterDTO;
 import org.project.model.request.CreateSamplePatientRequest;
+import org.project.model.response.SampleConfirmResponse;
 import org.project.model.response.SampleScheduleResponse;
 import org.project.repository.AssignmentRepository;
 import org.project.repository.SampleScheduleRepository;
+import org.project.repository.StaffRepository;
 import org.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,8 +35,13 @@ public class SampleScheduleConverter {
     @Autowired
     private AssignmentRepository assignmentRepository;
 
+    @Autowired
+    private StaffRepository staffRepository;
+
     public Page<SampleScheduleResponse> toConvertSampleScheduleResponse(SampleFilterDTO sampleFilterDTO) throws IllegalAccessException {
+        sampleFilterDTO.setStatus(RequestStatus.pending);
         Page<SampleEntity> sampleEntityEntities = sampleScheduleRepository.filterSampleEntityCustom(sampleFilterDTO);
+
         if (sampleEntityEntities == null) {
             throw new ResourceNotFoundException("Cam not get Sample Schedule by search");
         }
@@ -41,7 +50,6 @@ public class SampleScheduleConverter {
             sampleScheduleResponse.setId(sampleEntity.getTestRequest().getId());
             sampleScheduleResponse.setPatientName(sampleEntity.getTestRequest().getPatientEntity().getFullName());
             sampleScheduleResponse.setScheduleTime(sampleEntity.getSampleStatus());
-            sampleScheduleResponse.setBarCode(sampleEntity.getBarcode());
             sampleScheduleResponse.setTestType(sampleEntity.getTestRequest().getTestType().getTestTypeName());
             return sampleScheduleResponse;
         });
@@ -69,5 +77,26 @@ public class SampleScheduleConverter {
         sampleEntity.get().setTestRequest(testRequestEntity.get());
         sampleEntity.get().setNotes(createSamplePatientRequest.getNote());
         return sampleEntity.get();
+    }
+
+    public Page<SampleConfirmResponse> toConvertSampleConfimResponse(SampleFilterDTO sampleFilterDTO) throws IllegalAccessException {
+        sampleFilterDTO.setStatus(RequestStatus.received);
+        Page<SampleEntity> sampleEntityEntities = sampleScheduleRepository.filterSampleEntityCustom(sampleFilterDTO);
+
+        if (sampleEntityEntities == null) {
+            throw new ResourceNotFoundException("Cam not get Sample Schedule by search");
+        }
+        return sampleEntityEntities.map(sampleEntity -> {
+            SampleConfirmResponse sampleConfirmResponse = new SampleConfirmResponse();
+            sampleConfirmResponse.setSampleTime(String.valueOf(sampleEntity.getCollectionTime()));
+            sampleConfirmResponse.setNote(sampleEntity.getNotes());
+            Optional<StaffEntity> staffEntity = staffRepository.findById(sampleEntity.getSampler().getId());
+            sampleConfirmResponse.setManagerName(staffEntity.get().getFullName());
+            sampleConfirmResponse.setTestType(sampleEntity.getTestRequest().getTestType().getTestTypeName());
+            sampleConfirmResponse.setPatientName(sampleEntity.getTestRequest().getPatientEntity().getFullName());
+            sampleConfirmResponse.setDepartmentName(sampleEntity.getTestRequest().getAppointmentEntity().getDoctorEntity().getStaffEntity().getDepartmentEntity().getName());
+            sampleConfirmResponse.setId(sampleEntity.getId());
+            return sampleConfirmResponse;
+        });
     }
 }

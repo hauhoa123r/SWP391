@@ -763,74 +763,31 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Bùi Huy Hùng</td>
-                                            <td>
-                                                <span class="status-badge status-pending">Pending</span>
-                                            </td>
-                                            <td>Không đủ mẫu</td>
-                                            <td>Nguyen Van A</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" title="Reason"
-                                                    data-reason="Bệnh nhân sợ máu chấn án bệnh nhân"
-                                                    onclick="showReasonModal(this)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                                        <path
-                                                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                            <td class="action-cell">
-                                                <button class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip"
-                                                    title="Submit">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-square-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
-                                                    </svg>
-                                                </button>
 
-                                                <button class="btn btn-sm btn-outline-info" title="Resample"
-                                                    onclick="openResampleReasonModal(this)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-arrow-clockwise"
-                                                        viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd"
-                                                            d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
-                                                        <path
-                                                            d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
-                                                    </svg>
-                                                </button>
-
-                                                <button class="btn btn-sm btn-outline-success d-none confirm-btn">Xác
-                                                    nhận</button>
-                                                <button class="btn btn-sm btn-outline-danger ms-1"
-                                                    data-bs-toggle="modal" data-bs-target="#rejectModel" title="Reject">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-x-square-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                                    </svg>
-                                                </button>
-
-                                            </td>
-                                        </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th title="Patient Name">Patient Name</th>
-                                            <th title="Scheduled Time">Scheduled Time</th>
-                                            <th title="Status">Status</th>
+                                            <th title="Patient Name">
+                                                <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" placeholder="Search Patient Name">
+                                            </th>
+                                            <th title="Test Type">
+                                                <input type="text" id="testType" name="testType" class="form-control form-control-sm" placeholder="Search Test Type">
+                                            </th>
+                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
                                 </table>
+                                <div class="mt-4 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span id="total-items"></span>
+                                    </div>
+                                    <nav>
+                                        <ul class="pagination mb-0" id="pagination-container"></ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1765,7 +1722,7 @@
         let currentResampleBtn = null;
 
         function openResampleReasonModal(btn) {
-            currentResampleBtn = btn; // lưu tham chiếu nút nếu muốn update lại sau
+            currentResampleBtn = btn;
             document.getElementById('resampleReasonInput').value = '';
             var modal = new bootstrap.Modal(document.getElementById('resampleReasonModal'));
             modal.show();
@@ -1813,7 +1770,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-success">Xác nhận</button>
+                    <button type="submit" class="btn btn-success" id="reasonClick">Xác nhận</button>
                 </div>
             </form>
         </div>
@@ -1834,8 +1791,8 @@
                 <div class="modal-body">
                     <form id="rejectForm">
                         <div class="mb-3">
-                            <label for="rejectReason" class="form-label">Lý do</label>
-                            <textarea class="form-control" id="rejectReason" rows="3"
+                            <label for="reject" class="form-label">Lý do</label>
+                            <textarea class="form-control" id="reject" rows="3"
                                 placeholder="Nhập lý do..."></textarea>
                         </div>
                     </form>
@@ -1843,7 +1800,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-success" onclick="submitRejection()">Xác nhận</button>
+                    <button type="button" class="btn btn-success" id="submitReject">Xác nhận</button>
                 </div>
 
             </div>
@@ -1874,5 +1831,205 @@
 
 
 </body>
+<script>
+    function getFilterParams() {
+        return {
+            patientName: $('#patientName').val(),
+            testType: $('#testType').val()
+        };
+    }
 
+    function fetchFilteredData(page = 0) {
+        const filters = getFilterParams();
+        filters.page = page;
+
+        $.ajax({
+            url: '/api/sample/confim/filter',
+            type: 'GET',
+            data: filters,
+            success: function (data) {
+                renderTable(data.content);
+                renderPagination(data);
+                $('#total-items').text(`Tổng: ${data.totalElements} kết quả`);
+            },
+            error: function () {
+                alert('Lỗi khi lọc dữ liệu');
+            }
+        });
+    }
+
+    function renderTable(data) {
+        let html = '';
+        data.forEach(item => {
+            html += `
+        <tr>
+            <input type="hidden" name="id" value="${item.id}" id="testRequestId"></input>
+            <td>${item.patientName || ''}</td>
+            <td>${item.testType}</td>
+            <td>${item.sampleTime || ''}</td>
+            <td>${item.managerName || ''}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-info" title="Reason"
+                    data-reason="${item.note || 'Không có ghi chú'}"
+                    onclick="showReasonModal(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                    </svg>
+                </button>
+            </td>
+            <td class="action-cell">
+                <button class="btn btn-sm btn-outline-success" title="Submit" id="approve">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+                    </svg>
+                </button>
+
+                <button class="btn btn-sm btn-outline-info" title="Resample"
+                    onclick="openResampleReasonModal(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                    </svg>
+                </button>
+
+                <button class="btn btn-sm btn-outline-success d-none confirm-btn">Xác nhận</button>
+
+                <button class="btn btn-sm btn-outline-danger ms-1"
+                        data-bs-toggle="modal" data-bs-target="#rejectModel" title="Reject">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                    </svg>
+                </button>
+            </td>
+        </tr>`;
+        });
+
+        $('#input-datatable tbody').html(html);
+    }
+
+    function renderPagination(pageData) {
+        const currentPage = pageData.number;
+        const totalPages = pageData.totalPages;
+        let html = '';
+
+        html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a></li>`;
+
+        if (currentPage > 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+            if (currentPage > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+
+        for (let i = Math.max(0, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
+        }
+
+        if (currentPage < totalPages - 3) {
+            html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+        if (currentPage < totalPages - 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
+        }
+
+        html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a></li>`;
+
+        $('#pagination-container').html(html);
+    }
+
+    $(document).on('click', '.pagination a.page-link', function (e) {
+        e.preventDefault();
+        const page = parseInt($(this).data('page'));
+        fetchFilteredData(page);
+    });
+
+    let typingTimer;
+    const typingDelay = 600;
+
+    function attachInputEvents() {
+        $('#patientName, #testType').off('input').on('input', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => fetchFilteredData(0), typingDelay);
+        });
+    }
+
+    $(document).ready(function () {
+        attachInputEvents();
+        fetchFilteredData(0);
+    });
+
+    $(document).on('click', '#approve', function () {
+        const id = $('#testRequestId').val()
+        $.ajax({
+            url: '/api/sample/approve/' + id,
+            type: 'GET',
+            success: function () {
+                alert('Approved');
+                window.location.reload();
+            },
+            fail: function () {
+                alert('Submit Error');
+                window.location.reload();
+            }
+        })
+
+    })
+    function submitRejection() {
+        return{
+            reason: $('#resampleReasonInput').val(),
+            testRequestId: $('#testRequestId').val()
+        };
+    }
+
+    $(document).on('click','#reasonClick', function (e) {
+        e.preventDefault();
+
+        const data = submitRejection();
+        $.ajax({
+            url: '/api/sample/reject-collect',
+            type: 'POST',
+            data:  JSON.stringify(data),
+            contentType: 'application/json',
+            success: function () {
+                alert("send sucess")
+                window.location.reload();
+            },
+            fail: function () {
+                alert('Submit Error');
+                window.location.reload();
+            }
+        });
+    });
+
+    function submitRejection2() {
+        return{
+            reason: $('#reject').val(),
+            testRequestId: $('#testRequestId').val()
+        };
+    }
+
+    $(document).on('click','#submitReject', function () {
+        const data = submitRejection2();
+        $.ajax({
+            url: '/api/sample/reject-cofirm',
+            type: 'POST',
+            data:  JSON.stringify(data),
+            contentType: 'application/json',
+            success: function () {
+                alert('Rejected');
+                window.location.reload();
+            },
+            fail: function () {
+                alert('Submit Error');
+            }
+        })
+    })
+</script>
 </html>

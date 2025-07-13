@@ -23,7 +23,7 @@ public class SampleEntity {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "test_request_id", nullable = false)
     private TestRequestEntity testRequest;
 
@@ -32,7 +32,7 @@ public class SampleEntity {
     @Column(name = "barcode", nullable = false, length = 50)
     private String barcode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "sampler_id")
     private UserEntity sampler;
 

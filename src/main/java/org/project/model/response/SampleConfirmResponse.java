@@ -1,5 +1,6 @@
 package org.project.model.response;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SampleScheduleResponse extends SampleServiceResponse {
-    private String scheduleTime;
-    private String reCollected;
-    private String reCollectReason;
+public class SampleConfirmResponse extends SampleServiceResponse {
+    private String sampleTime;
+    private String managerName;
+    private String note;
 }

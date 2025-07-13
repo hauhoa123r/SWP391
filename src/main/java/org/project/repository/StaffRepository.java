@@ -28,4 +28,6 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long> {
     List<StaffEntity> findAllByStaffRoleAndFullNameContainingAndDepartmentEntity_IdAndHospitalEntity_Id(StaffRole staffRole, String fullName, Long departmentId, Long hospitalId);
 
     List<StaffEntity> findByStaffRoleAndHospitalEntity_IdAndTechnicianEntity_TechnicianRank(StaffRole staffRole, Long hospitalEntityId, TechnicianRank technicianEntityTechnicianRank);
+
+    StaffEntity findByUserEntity_Id(Long userEntityId);
 }
