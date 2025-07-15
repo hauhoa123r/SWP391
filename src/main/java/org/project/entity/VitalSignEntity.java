@@ -2,20 +2,20 @@ package org.project.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "cardiac_exams")
-public class CardiacExam {
+@Table(name = "vital_signs")
+public class VitalSignEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -27,24 +27,23 @@ public class CardiacExam {
     @JoinColumn(name = "medical_record_id", nullable = false)
     private MedicalRecordEntity medicalRecord;
 
-    @Column(name = "heart_rate")
-    private Integer heartRate;
+    @Column(name = "pulse_rate")
+    private Integer pulseRate;
 
-    @Lob
-    @Column(name = "heart_sounds")
-    private String heartSounds;
+    @Column(name = "bp_systolic")
+    private Integer bpSystolic;
 
-    @Lob
-    @Column(name = "murmur")
-    private String murmur;
+    @Column(name = "bp_diastolic")
+    private Integer bpDiastolic;
 
-    @Size(max = 100)
-    @Column(name = "jugular_venous_pressure", length = 100)
-    private String jugularVenousPressure;
+    @Column(name = "temperature", precision = 4, scale = 1)
+    private BigDecimal temperature;
 
-    @Size(max = 100)
-    @Column(name = "edema", length = 100)
-    private String edema;
+    @Column(name = "respiratory_rate")
+    private Integer respiratoryRate;
+
+    @Column(name = "spo2")
+    private Integer spo2;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "recorded_at")

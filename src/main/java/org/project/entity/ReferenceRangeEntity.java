@@ -20,7 +20,7 @@ public class ReferenceRangeEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "test_item_id", nullable = false)
-    private TestItem testItem;
+    private TestItemEntity testItemEntity;
 
     @Lob
     @Column(name = "gender")

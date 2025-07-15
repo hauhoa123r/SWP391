@@ -26,7 +26,7 @@ public class ResultDetailEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "test_item_id", nullable = false)
-    private TestItem testItem;
+    private TestItemEntity testItemEntity;
 
     @Column(name = "value", precision = 10, scale = 2)
     private BigDecimal value;

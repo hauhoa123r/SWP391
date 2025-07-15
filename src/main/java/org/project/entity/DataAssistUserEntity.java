@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "data_assist_users")
-public class DataAssistUser {
+public class DataAssistUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "data_assist_user_id", nullable = false)

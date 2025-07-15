@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "test_items")
-public class TestItem {
+public class TestItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,12 +38,12 @@ public class TestItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_type_id")
-    private TestType testType;
+    private TestTypeEntity testTypeEntity;
 
-    @OneToMany(mappedBy = "testItem")
+    @OneToMany(mappedBy = "testItemEntity")
     private Set<ReferenceRangeEntity> referenceRanges = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "testItem")
+    @OneToMany(mappedBy = "testItemEntity")
     private Set<ResultDetailEntity> resultDetails = new LinkedHashSet<>();
 
 

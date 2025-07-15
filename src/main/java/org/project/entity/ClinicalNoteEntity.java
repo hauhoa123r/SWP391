@@ -13,8 +13,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "musculoskeletal_exams")
-public class MusculoskeletalExam {
+@Table(name = "clinical_notes")
+public class ClinicalNoteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -27,16 +27,8 @@ public class MusculoskeletalExam {
     private MedicalRecordEntity medicalRecord;
 
     @Lob
-    @Column(name = "joint_exam")
-    private String jointExam;
-
-    @Lob
-    @Column(name = "muscle_strength")
-    private String muscleStrength;
-
-    @Lob
-    @Column(name = "deformity")
-    private String deformity;
+    @Column(name = "note_text")
+    private String noteText;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "recorded_at")

@@ -8,14 +8,13 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "vital_signs")
-public class VitalSign {
+@Table(name = "dermatologic_exams")
+public class DermatologicExamEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -27,23 +26,17 @@ public class VitalSign {
     @JoinColumn(name = "medical_record_id", nullable = false)
     private MedicalRecordEntity medicalRecord;
 
-    @Column(name = "pulse_rate")
-    private Integer pulseRate;
+    @Lob
+    @Column(name = "skin_appearance")
+    private String skinAppearance;
 
-    @Column(name = "bp_systolic")
-    private Integer bpSystolic;
+    @Lob
+    @Column(name = "rash")
+    private String rash;
 
-    @Column(name = "bp_diastolic")
-    private Integer bpDiastolic;
-
-    @Column(name = "temperature", precision = 4, scale = 1)
-    private BigDecimal temperature;
-
-    @Column(name = "respiratory_rate")
-    private Integer respiratoryRate;
-
-    @Column(name = "spo2")
-    private Integer spo2;
+    @Lob
+    @Column(name = "lesions")
+    private String lesions;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "recorded_at")

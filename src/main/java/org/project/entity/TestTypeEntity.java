@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "test_types")
-public class TestType {
+public class TestTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "test_type_id", nullable = false)
@@ -28,13 +28,13 @@ public class TestType {
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @OneToMany(mappedBy = "testType")
+    @OneToMany(mappedBy = "testTypeEntity")
     private Set<ResultEntity> results = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "testType")
-    private Set<TestItem> testItems = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "testTypeEntity")
+    private Set<TestItemEntity> testItemEntities = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "testType")
+    @OneToMany(mappedBy = "testTypeEntity")
     private Set<TestRequestEntity> testRequests = new LinkedHashSet<>();
 
 }

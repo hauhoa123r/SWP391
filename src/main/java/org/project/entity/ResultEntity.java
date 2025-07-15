@@ -28,7 +28,7 @@ public class ResultEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "test_type_id", nullable = false)
-    private TestType testType;
+    private TestTypeEntity testTypeEntity;
 
     @ColumnDefault("'pending'")
     @Lob

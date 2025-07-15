@@ -2,6 +2,7 @@ package org.project.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -13,8 +14,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "dermatologic_exams")
-public class DermatologicExam {
+@Table(name = "cardiac_exams")
+public class CardiacExamEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -26,17 +27,24 @@ public class DermatologicExam {
     @JoinColumn(name = "medical_record_id", nullable = false)
     private MedicalRecordEntity medicalRecord;
 
-    @Lob
-    @Column(name = "skin_appearance")
-    private String skinAppearance;
+    @Column(name = "heart_rate")
+    private Integer heartRate;
 
     @Lob
-    @Column(name = "rash")
-    private String rash;
+    @Column(name = "heart_sounds")
+    private String heartSounds;
 
     @Lob
-    @Column(name = "lesions")
-    private String lesions;
+    @Column(name = "murmur")
+    private String murmur;
+
+    @Size(max = 100)
+    @Column(name = "jugular_venous_pressure", length = 100)
+    private String jugularVenousPressure;
+
+    @Size(max = 100)
+    @Column(name = "edema", length = 100)
+    private String edema;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "recorded_at")
