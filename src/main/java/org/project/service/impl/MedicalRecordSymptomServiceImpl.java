@@ -10,6 +10,7 @@ import org.project.repository.MedicalRecordSymptomRepository;
 import org.project.service.MedicalRecordSymptomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,5 +53,24 @@ public class MedicalRecordSymptomServiceImpl implements MedicalRecordSymptomServ
             ids.add(id);
         }
         return ids;
+    }
+
+    @Transactional
+    @Override
+    public void updateMedicalRecordSymptom(Long symptomId, MedicalRecordSymptomRequest request) {
+        MedicalRecordSymptomEntity symptom = medicalRecordSymptomRepository.findById(symptomId).orElseThrow(() -> new IllegalArgumentException("Symptom not found with ID: " + symptomId));
+        symptom.setSymptomName(request.getSymptomName());
+        symptom.setDuration(request.getDuration());
+        symptom.setSeverity(request.getSeverity());
+        symptom.setDescription(request.getDescription());
+        symptom.setOnsetDate(LocalDate.now()); // Update onset date
+    }
+    @Transactional
+    @Override
+    public void deleteMedicalRecordSymptom(Long symptomId) {
+        if (!medicalRecordSymptomRepository.existsById(symptomId)) {
+            throw new IllegalArgumentException("Symptom not found with ID: " + symptomId);
+        }
+        medicalRecordSymptomRepository.deleteById(symptomId);
     }
 }

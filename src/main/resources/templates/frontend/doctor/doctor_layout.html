@@ -1,12 +1,321 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${pageTitle ?: 'KiviCare - Doctor Portal'}">KiviCare - Doctor Portal</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/frontend/assets/css/core/libs.min.css}" />
+    <link rel="stylesheet" th:href="@{/frontend/assets/css/kivicare.min.css}" />
+    <link rel="stylesheet" th:href="@{/frontend/assets/vendor/font-awesome/css/all.min.css}" />
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+        }
+
+        .main-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            padding-top: 80px;
+            /* Account for fixed header */
+        }
+
+        .page-container {
+            max-width: 95%;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Smooth transitions */
+        * {
+            transition: all 0.3s ease;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5a6fd8;
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1055;
+        }
+
+        .custom-toast {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: none;
+        }
+
+        .toast-success {
+            background: var(--bs-success);
+            color: white;
+        }
+
+        .toast-error {
+            background: var(--bs-danger);
+            color: white;
+        }
+
+        .toast-warning {
+            background: var(--bs-warning);
+            color: white;
+        }
+
+        .toast-info {
+            background: var(--bs-info);
+            color: white;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding-top: 70px;
+            }
+
+            .page-container {
+                padding: 0 10px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+
+            body {
+                background: white !important;
+            }
+
+            .content-wrapper {
+                padding-top: 0 !important;
+            }
+        }
+    </style>
+
+    <!-- Additional CSS placeholder for page-specific styles -->
+    <th:block th:fragment="additionalCSS"></th:block>
 </head>
+
 <body>
-<div>
-    <div th:replace="/frontend/doctor/doctor_header"></div>
-    <div th:replace="${content}"></div>
-</div>
+    <div class="main-wrapper">
+        <!-- Header -->
+        <div th:replace="~{/frontend/doctor/doctor_header}"></div>
+
+        <!-- Main Content -->
+        <main class="content-wrapper">
+            <div class="page-container">
+                <!-- Page content will be inserted here -->
+                <div th:replace="${content}"></div>
+            </div>
+        </main>
+
+        <!-- Footer (optional) -->
+        <footer class="mt-auto py-3 bg-light text-center no-print" th:if="${showFooter}">
+            <div class="container">
+                <span class="text-muted">
+                    © 2024 KiviCare. All rights reserved. |
+                    <a href="#" class="text-decoration-none">Privacy Policy</a> |
+                    <a href="#" class="text-decoration-none">Terms of Service</a>
+                </span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="text-center">
+            <div class="loading-spinner mb-3"></div>
+            <div class="text-muted">Loading...</div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script th:src="@{/frontend/assets/js/core/libs.min.js}"></script>
+    <script th:src="@{/frontend/assets/js/core/external.min.js}"></script>
+
+    <!-- Global JavaScript utilities -->
+    <script>
+        // Global utility functions
+        window.KiviCare = window.KiviCare || {};
+
+        // Loading overlay functions
+        KiviCare.showLoading = function () {
+            document.getElementById('loadingOverlay').classList.add('show');
+        };
+
+        KiviCare.hideLoading = function () {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        };
+
+        // Toast notification functions
+        KiviCare.showToast = function (message, type = 'info', duration = 5000) {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+
+            const toastHTML = `
+                <div id="${toastId}" class="toast custom-toast toast-${type}" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header border-0">
+                        <i class="fas fa-${getToastIcon(type)} me-2"></i>
+                        <strong class="me-auto">${getToastTitle(type)}</strong>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: duration });
+            toast.show();
+
+            // Clean up after toast is hidden
+            toastElement.addEventListener('hidden.bs.toast', function () {
+                toastElement.remove();
+            });
+        };
+
+        function getToastIcon(type) {
+            const icons = {
+                success: 'check-circle',
+                error: 'exclamation-circle',
+                warning: 'exclamation-triangle',
+                info: 'info-circle'
+            };
+            return icons[type] || 'info-circle';
+        }
+
+        function getToastTitle(type) {
+            const titles = {
+                success: 'Success',
+                error: 'Error',
+                warning: 'Warning',
+                info: 'Information'
+            };
+            return titles[type] || 'Notification';
+        }
+
+        // Global error handler
+        window.addEventListener('error', function (e) {
+            console.error('Global error:', e.error);
+            KiviCare.hideLoading();
+            KiviCare.showToast('An unexpected error occurred. Please try again.', 'error');
+        });
+
+        // Global unhandled promise rejection handler
+        window.addEventListener('unhandledrejection', function (e) {
+            console.error('Unhandled promise rejection:', e.reason);
+            KiviCare.hideLoading();
+            KiviCare.showToast('A network error occurred. Please check your connection.', 'error');
+        });
+
+        // Page load complete
+        document.addEventListener('DOMContentLoaded', function () {
+            // Hide loading overlay if it's still showing
+            setTimeout(() => {
+                KiviCare.hideLoading();
+            }, 500);
+
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Initialize popovers
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl);
+            });
+
+            console.log('KiviCare Doctor Portal loaded successfully');
+        });
+
+        // Additional page-specific JavaScript
+        window.addEventListener('load', function () {
+            // Fire custom event when everything is loaded
+            const loadedEvent = new CustomEvent('kivicare:loaded');
+            document.dispatchEvent(loadedEvent);
+        });
+    </script>
+
+    <!-- Additional JavaScript placeholder for page-specific scripts -->
+    <th:block th:fragment="additionalJS"></th:block>
 </body>
+
 </html>

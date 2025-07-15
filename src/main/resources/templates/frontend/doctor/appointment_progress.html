@@ -1,590 +1,982 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Doctor In-Progress Appointment - KiwiCare</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Appointment In Progress - KiviCare</title>
+    <!-- Enhanced Custom Styles -->
+    <link rel="stylesheet" href="enhanced-buttons.css" />
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      :root {
+        --primary: #4a6cfa;
+        --secondary: #6c757d;
+        --success: #28a745;
+        --warning: #ffc107;
+        --danger: #dc3545;
+        --light: #f8f9fa;
+        --border-radius: 12px;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --shadow-hover: 0 6px 25px rgba(0, 0, 0, 0.12);
+      }
+
+      body {
+        background-color: var(--light);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        padding-top: 40px;
+        line-height: 1.6;
+      }
+
+      .container-fluid {
+        max-width: 100%;
+      }
+
+      .row.g-0 {
+        gap: 2rem 0;
+      }
+
+      .card {
+        border: none;
+        box-shadow: var(--shadow);
+        background: #fff;
+      }
+
+      .card-header {
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        padding: 1.25rem 1.5rem;
+        background: linear-gradient(135deg, var(--bs-primary), #7f9cff);
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+
+      .info-item {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--primary);
+        font-size: 1rem;
+        color: #333;
+      }
+
+      .btn {
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+        filter: brightness(110%);
+      }
+
+      .status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+
+      .status-in-progress {
+        background: var(--warning);
+        color: white;
+      }
+
+      .timeline {
+        position: relative;
+        padding-left: 3rem;
+        margin-bottom: 2rem;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 1.25rem;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: #dee2e6;
+      }
+
+      .timeline-step {
+        position: relative;
+        margin-bottom: 2rem;
+      }
+
+      .timeline-step::before {
+        content: "";
+        position: absolute;
+        left: -2.75rem;
+        top: 0.5rem;
+        width: 20px;
+        height: 20px;
+        background: var(--primary);
+        border-radius: 50%;
+        border: 4px solid white;
+        box-shadow: 0 0 0 4px rgba(74, 108, 250, 0.2);
+      }
+
+      .timeline-step.completed::before {
+        background: var(--success);
+        box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.2);
+      }
+
+      .timeline-step.active::before {
+        background: var(--warning);
+        box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
+      }
+
+      .timeline-step .card-header {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: #f8f9fa;
+        color: var(--primary);
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        font-weight: 600;
+        font-size: 1.05rem;
+      }
+
+      .timeline-step .card-body {
+        display: none;
+        background: #fff;
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+      }
+
+      .timeline-step.active .card-body {
+        display: block;
+      }
+
+      .form-control,
+      .form-select {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        padding: 0.75rem;
+        font-size: 1rem;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.2rem rgba(74, 108, 250, 0.25);
+      }
+
+      .plain-list li {
+        margin-bottom: 0.25rem;
+        font-size: 0.95rem;
+        color: #333;
+        background-color: #f8f9fa;
+        padding: 6px 10px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-right: 6px;
+      }
+
+      .symptom-list .list-group-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-bottom: 1px solid #f0f0f0;
+        background: white;
+      }
+
+      .symptom-list .list-group-item:hover {
+        background: var(--light);
+      }
+
+      #examTab {
+        background: #fff;
+        min-height: 100vh;
+        padding: 1rem 0.2rem;
+        border-radius: 0px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        width: 100%;
+      }
+
+      #examTab .nav-link {
+        background: none;
+        color: #333;
+        border: none;
+        border-left: 3px solid transparent;
+        border-radius: 0 4px 4px 0;
+        font-size: 0.97rem;
+        font-weight: 500;
+        padding: 0.25rem 0.5rem;
+        margin-bottom: 0.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        min-height: 32px;
+        transition: background 0.15s, color 0.15s, border-color 0.15s;
+      }
+
+      #examTab .nav-link i {
+        width: 22px;
+        height: 22px;
+        font-size: 1rem;
+        border: 1px solid #e0e6ed;
+        border-radius: 4px;
+        background: #f8f9fa;
+        color: #4a6cfa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.3rem;
+      }
+
+      #examTab .nav-link.active,
+      #examTab .nav-link:focus,
+      #examTab .nav-link:hover {
+        background: #f4f7ff;
+        color: #4a6cfa;
+        border-left: 3px solid #4a6cfa;
+      }
+
+      #examTab .nav-link.active i,
+      #examTab .nav-link:focus i,
+      #examTab .nav-link:hover i {
+        border-color: #4a6cfa;
+        background: #eaf0ff;
+        color: #4a6cfa;
+      }
+
+      .tab-content {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+      }
+
+      .form-label.fw-semibold {
+        color: #2c3e50;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+      }
+
+      .form-control.bg-light {
+        background-color: #f8f9fa !important;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        height: auto;
+      }
+
+      .form-control.bg-light:focus {
+        box-shadow: 0 0 0 0.2rem rgba(44, 123, 229, 0.1);
+        border-color: #2c7be5;
+      }
+
+      .btn-outline-primary.btn-sm {
+        padding: 5px 12px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        border-width: 1px;
+      }
+
+      .btn-outline-primary.btn-sm:hover {
+        background-color: #2c7be5;
+        color: white;
+      }
+
+      .symptom-list .list-group-item:first-child {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+
+      .symptom-list .list-group-item:last-child {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+
+      @media (max-width: 991.98px) {
+        .col-lg-4,
+        .col-lg-8 {
+          padding-left: 0 !important;
+          padding-right: 0 !important;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7fafc;
-            color: #2d3748;
-            line-height: 1.6;
+        .row.g-0 {
+          gap: 0;
         }
 
-        .appointment_progress-content {
-            max-width: 1280px;
-            margin: 80px auto 0 250px;
-            padding: 32px;
-            min-height: calc(100vh - 80px);
-            background-color: #edf2f7;
-            display: flex;
-            justify-content: space-between;
-            gap: 24px;
+        #examTab {
+          flex-direction: row;
+          min-height: unset;
+          border-radius: 0;
+          box-shadow: none;
+          padding: 0.3rem !important;
         }
 
-        .appointment_progress-patient-info, .appointment_progress-actions {
-            width: 48%;
-            background-color: #ffffff;
-            padding: 32px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: box-shadow 0.3s;
+        #examTab .nav-link {
+          border-left: none;
+          border-bottom: 3px solid transparent;
+          border-radius: 4px 4px 0 0;
+          margin-bottom: 0;
+          margin-right: 0.1rem;
+          font-size: 0.95rem;
+          padding: 0.3rem;
         }
 
-        .appointment_progress-patient-info:hover, .appointment_progress-actions:hover {
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        #examTab .nav-link.active,
+        #examTab .nav-link:focus,
+        #examTab .nav-link:hover {
+          border-bottom: 3px solid #4a6cfa;
+          border-left: none;
+          background: #f4f7ff;
         }
 
-        .appointment_progress-patient-info h2, .appointment_progress-actions h2 {
-            font-size: 1.75rem;
-            font-weight: 600;
-            color: #1a202c;
-            margin-bottom: 24px;
-            text-align: center;
+        .patient-avatar {
+          width: 100px;
+          height: 125px;
+          margin-left: 30px;
+          object-fit: cover;
+          border: 3px solid white;
         }
 
-        .appointment_progress-patient-info .patient-avatar {
-            display: block;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 24px;
-            border: 2px solid #e2e8f0;
-            background-color: #f9fafb;
+        .card-body {
+          width: 100%;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .tab-content {
+          padding: 15px;
         }
 
-        .appointment_progress-patient-info .patient-avatar[src=""] {
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a0aec0"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>') no-repeat center;
-            background-size: 60%;
+        .col-12, .col-md-6, .col-lg-4 {
+          margin-bottom: 10px;
         }
+      }
 
-        .appointment_progress-patient-info label, .appointment_progress-actions label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            font-size: 14px;
-            color: #2d3748;
-        }
-
-        .appointment_progress-patient-info input, .appointment_progress-patient-info textarea,
-        .appointment_progress-actions textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .appointment_progress-patient-info input:focus, .appointment_progress-patient-info textarea:focus,
-        .appointment_progress-actions textarea:focus {
-            border-color: #4299e1;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-        }
-
-        .appointment_progress-patient-info input[readonly] {
-            background-color: #f9fafb;
-            cursor: not-allowed;
-        }
-
-        .appointment_progress-patient-info textarea, .appointment_progress-actions textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .appointment_progress-action-btn {
-            padding: 14px 28px;
-            margin-bottom: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            color: #ffffff;
-            width: 100%;
-            font-size: 15px;
-            font-weight: 500;
-            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-        }
-
-        .appointment_progress-one-shot {
-            background-color: #48bb78;
-        }
-
-        .appointment_progress-one-shot:hover {
-            background-color: #38a169;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
-        }
-
-        .appointment_progress-wait {
-            background-color: #ecc94b;
-        }
-
-        .appointment_progress-wait:hover {
-            background-color: #d69e2e;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(236, 201, 75, 0.3);
-        }
-
-        .appointment_progress-prescribe {
-            background-color: #4299e1;
-        }
-
-        .appointment_progress-prescribe:hover {
-            background-color: #3182ce;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
-        }
-
-        .appointment_progress-back {
-            background-color: #f56565;
-        }
-
-        .appointment_progress-back:hover {
-            background-color: #e53e3e;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
-        }
-
-        .appointment_progress-request-test {
-            background-color: #805ad5;
-        }
-
-        .appointment_progress-request-test:hover {
-            background-color: #6b46c1;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(128, 90, 213, 0.3);
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            overflow-y: auto;
-        }
-
-        .modal-content {
-            background-color: #ffffff;
-            width: 600px;
-            max-width: 90%;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            max-height: 80vh;
-        }
-
-        .modal-content h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1a202c;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .modal-content .search-bar {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 16px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 15px;
-        }
-
-        .modal-content .scrollable-content {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 16px;
-        }
-
-        .modal-content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 16px;
-        }
-
-        .modal-content th, .modal-content td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .modal-content th {
-            font-weight: 600;
-            color: #2d3748;
-            background-color: #f9fafb;
-        }
-
-        .modal-content td input[type="checkbox"] {
-            cursor: pointer;
-        }
-
-        .modal-content .btn-container {
-            position: sticky;
-            bottom: 0;
-            background-color: #ffffff;
-            padding-top: 16px;
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-        }
-
-        .modal-content button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .modal-content .btn-confirm {
-            background-color: #48bb78;
-            color: #ffffff;
-        }
-
-        .modal-content .btn-confirm:hover {
-            background-color: #38a169;
-        }
-
-        .modal-content .btn-cancel {
-            background-color: #f56565;
-            color: #ffffff;
-        }
-
-        .modal-content .btn-cancel:hover {
-            background-color: #e53e3e;
-        }
-
-        @media (max-width: 768px) {
-            .appointment_progress-content {
-                margin-left: 0;
-                padding: 16px;
-                flex-direction: column;
-            }
-
-            .appointment_progress-patient-info, .appointment_progress-actions {
-                width: 100%;
-                padding: 24px;
-            }
-
-            .appointment_progress-patient-info h2, .appointment_progress-actions h2 {
-                font-size: 1.5rem;
-            }
-
-            .appointment_progress-action-btn {
-                padding: 12px 20px;
-                font-size: 14px;
-            }
-
-            .appointment_progress-patient-info .patient-avatar {
-                width: 100px;
-                height: 100px;
-            }
-
-            .modal-content {
-                width: 95%;
-                padding: 16px;
-                max-height: 85vh;
-            }
-
-            .modal-content .btn-container {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .modal-content button {
-                width: 100%;
-            }
-        }
+      .g-4 > [class*="col-"] {
+        padding: 0 12px;
+      }
     </style>
-</head>
-<body>
-<div class="appointment_progress-content">
-    <div class="appointment_progress-patient-info">
-        <h2>Thông tin bệnh nhân</h2>
-        <img id="patientAvatar" class="patient-avatar" src="" alt="Ảnh đại diện bệnh nhân">
-        <label for="patientId">ID Bệnh nhân:</label>
-        <input id="patientId" type="text" readonly>
-        <label for="fullName">Họ và Tên:</label>
-        <input id="fullName" type="text" readonly>
-        <label for="phoneNumber">Số điện thoại:</label>
-        <input id="phoneNumber" type="text" readonly>
-        <label for="email">Email:</label>
-        <input id="email" type="text" readonly>
-        <label for="address">Địa chỉ:</label>
-        <input id="address" type="text" readonly>
-        <label for="birthdate">Ngày sinh:</label>
-        <input id="birthdate" type="text" readonly>
-        <label for="datetime">Thời gian hẹn:</label>
-        <input id="datetime" type="text" readonly>
-    </div>
-    <div class="appointment_progress-actions">
-        <h2>Thao tác bác sĩ</h2>
-        <label for="symptoms">Triệu chứng:</label>
-        <textarea id="symptoms" rows="4"></textarea>
-        <label for="diagnosis">Chẩn đoán:</label>
-        <textarea id="diagnosis" rows="4"></textarea>
-        <button class="appointment_progress-action-btn appointment_progress-one-shot" onclick="oneShotExamination()">Kết thúc phiên khám</button>
-        <button class="appointment_progress-action-btn appointment_progress-wait" onclick="waitForTestResults()">Dừng chờ kết quả xét nghiệm</button>
-        <button class="appointment_progress-action-btn appointment_progress-request-test" onclick="openTestRequestModal()">Yêu cầu xét nghiệm</button>
-        <button class="appointment_progress-action-btn appointment_progress-prescribe" onclick="prescribeMedication()">Kê đơn thuốc</button>
-        <button class="appointment_progress-action-btn appointment_progress-back" onclick="goBack()">Quay lại</button>
-    </div>
-</div>
-<div id="testRequestModal" class="modal-overlay">
-    <div class="modal-content">
-        <h3>Chọn xét nghiệm</h3>
-        <div class="scrollable-content">
-            <input type="text" class="search-bar" id="testSearch" placeholder="Tìm kiếm xét nghiệm..." oninput="searchTests()">
-            <table id="testTable">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tên xét nghiệm</th>
-                    <th>Chọn</th>
-                </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+  </head>
+
+  <body>
+  <div class="container-fluid px-0" style="max-width: 100vw">
+    <div class="row g-0">
+      <div class="col-lg-9 col-12 px-0">
+        <div class="bg-white shadow-sm" style="min-height: 100vh">
+          <div class="border-bottom py-3 px-4 d-flex align-items-center" style="background: var(--bs-primary, #4e73df)">
+            <i class="fas fa-procedures text-white me-2"></i>
+            <span class="fw-bold text-white fs-5">In Progress</span>
+            <span id="examDuration" class="badge bg-warning text-dark ms-auto"></span>
+          </div>
+          <div class="row g-0">
+            <div class="col-12 col-md-3 border-end bg-light">
+              <ul class="nav flex-md-column flex-row nav-pills py-4 px-2 gap-2" id="examTab" role="tablist" style="min-height: 100vh">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active text-start" id="step1-tab" data-bs-toggle="pill" data-bs-target="#step1" type="button" role="tab">
+                    <i class="fas fa-user-md me-2"></i>
+                    <span class="text-primary">Triệu chứng</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link text-start" id="step2-tab" data-bs-toggle="pill" data-bs-target="#step2" type="button" role="tab">
+                    <i class="fas fa-heartbeat me-2"></i>
+                    <span class="text-primary">Khám thể trạng</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link text-start" id="step3-tab" data-bs-toggle="pill" data-bs-target="#step3" type="button" role="tab">
+                    <i class="fas fa-vials me-2"></i>
+                    <span class="text-primary">Thêm xét nghiệm</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link text-start" id="step4-tab" data-bs-toggle="pill" data-bs-target="#step4" type="button" role="tab">
+                    <i class="fas fa-diagnoses me-2"></i>
+                    <span class="text-primary">Chuẩn đoán</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link text-start" id="step5-tab" data-bs-toggle="pill" data-bs-target="#step5" type="button" role="tab">
+                    <i class="fas fa-notes-medical me-2"></i>
+                    <span class="text-primary">Kế hoạch điều trị</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link text-start" id="step6-tab" data-bs-toggle="pill" data-bs-target="#step6" type="button" role="tab">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <span class="text-primary">Kết thúc phiên</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="col-12 col-md-9 px-0">
+              <div class="tab-content" id="examTabContent">
+                <div class="tab-pane fade show active" id="step1" role="tabpanel">
+                  <div id="medicalProfileForm" class="row g-3 p-3">
+                    <div class="col-12 col-md-6 col-xl-4">
+                      <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                          <label class="form-label fw-semibold text-primary mb-2">Lý do đến khám</label>
+                          <div id="mainComplaint"
+                               class="form-control border-primary border-2 bg-light text-dark"
+                               style="min-height: 100px; white-space: pre-wrap; word-break: break-word;">
+                            <!-- Nội dung sẽ được gán bằng JavaScript -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Dị ứng -->
+                    <div class="col-12 col-md-6 col-xl-4">
+                      <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <label class="form-label fw-semibold text-primary mb-0">Dị ứng</label>
+                            <button type="button" class="btn btn-sm btn-outline-primary rounded-circle p-1"
+                                    onclick="openEditAllergiesModal()" title="Chỉnh sửa dị ứng">
+                              <i class="fas fa-pen fs-12"></i>
+                            </button>
+                          </div>
+                          <div id="allergiesContainer" class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-light text-dark border">Đang tải...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Bệnh mãn tính -->
+                    <div class="col-12 col-md-6 col-xl-4">
+                      <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <label class="form-label fw-semibold text-primary mb-0">Bệnh mãn tính</label>
+                            <button type="button" class="btn btn-sm btn-outline-primary rounded-circle p-1"
+                                    onclick="openEditChronicModal()" title="Chỉnh sửa bệnh mãn tính">
+                              <i class="fas fa-pen fs-12"></i>
+                            </button>
+                          </div>
+                          <div id="chronicDiseasesContainer" class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-light text-dark border">Đang tải...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Triệu chứng -->
+                    <div class="col-12">
+                      <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center justify-content-between mb-3">
+                            <label class="form-label fw-semibold text-primary mb-0">Triệu chứng</label>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="openSymptomModal()">
+                              <i class="fas fa-plus me-1"></i> Thêm triệu chứng
+                            </button>
+                          </div>
+                          <div id="symptomsContainer" class="list-group">
+                            <div class="list-group-item text-muted">Đang tải...</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="step2" role="tabpanel">
+                  <div class="p-3">
+                    <!-- Header với nút thêm khám -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                      <h4 class="mb-0">Khám lâm sàng</h4>
+                      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#examTypeModal">
+                        <i class="bi bi-plus-circle"></i> Thêm khám
+                      </button>
+                    </div>
+
+                    <!-- Danh sách khám -->
+                    <div id="examList" class="row"></div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="step3" role="tabpanel">
+                  <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <label class="form-label fw-semibold text-primary">Xét nghiệm được yêu cầu</label>
+                      <button type="button" class="btn btn-primary" onclick="openTestModal()">
+                        <i class="fas fa-plus me-1"></i> Thêm xét nghiệm
+                      </button>
+                    </div>
+                    <div id="testContainer" class="list-group">
+                      <div class="list-group-item text-muted">Chưa có xét nghiệm nào</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="step4" role="tabpanel">
+                  <div class="p-3">
+                    <div class="card border-0 shadow-sm">
+                      <div class="card-body">
+                        <label class="form-label fw-semibold text-primary">Chuẩn đoán sơ bộ</label>
+                        <textarea class="form-control border-primary border-2" id="preliminaryDiagnosis" rows="4"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="step5" role="tabpanel">
+                  <div class="p-3">
+                    <div class="card border-0 shadow-sm">
+                      <div class="card-body">
+                        <label class="form-label fw-semibold text-primary">Kế hoạch điều trị</label>
+                        <textarea class="form-control border-primary border-2" id="treatmentPlan" rows="5"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="step6" role="tabpanel">
+                  <div class="p-3 text-center">
+                    <h5 class="fw-bold mb-3 text-primary">Bạn muốn hoàn tất khám bệnh?</h5>
+                    <p class="text-muted">Nhấn nút bên dưới để lưu và kết thúc phiên khám.</p>
+                    <button class="btn btn-success" onclick="finalizeSession()">
+                      <i class="fas fa-save me-1"></i> Lưu và kết thúc
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="btn-container">
-            <button class="btn-confirm" onclick="submitTestRequest()">Xác nhận</button>
-            <button class="btn-cancel" onclick="closeTestRequestModal()">Hủy</button>
-        </div>
+      </div>
+      <div class="col-lg-3 d-none d-lg-block bg-white border-end" id="patientInfoContainer" ></div>
     </div>
-</div>
+  </div>
 
-<script th:inline="javascript">
-    // Render id from Thymeleaf
-    const id = [[${id}]];
-    console.log("typeof id:", typeof id); // Debug
+  <!-- Modal chỉnh sửa dị ứng -->
+  <div class="modal fade" id="editAllergiesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Chỉnh sửa dị ứng</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Danh sách dị ứng (phân cách bằng dấu phẩy)</label>
+            <textarea class="form-control" id="allergiesInput" rows="4"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" class="btn btn-primary" onclick="saveAllergies()">Lưu thay đổi</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    // Fetch appointment data on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        if (!id) {
-            alert('Không tìm thấy ID cuộc hẹn!');
-            return;
-        }
+  <!-- Modal chỉnh sửa bệnh mãn tính -->
+  <div class="modal fade" id="editChronicModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Chỉnh sửa bệnh mãn tính</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Danh sách bệnh mãn tính (phân cách bằng dấu phẩy)</label>
+            <textarea class="form-control" id="chronicDiseasesInput" rows="4"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" class="btn btn-primary" onclick="saveChronicDiseases()">Lưu thay đổi</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        fetch(`/appointments/in-progress/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
+  <div class="modal fade" id="examTypeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Chọn loại khám</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+        <div class="modal-body">
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action" onclick="openExamModal('vital')">
+              <i class="bi bi-heart-pulse me-2"></i> Dấu hiệu sinh tồn
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" onclick="openExamModal('respiratory')">
+              <i class="bi bi-lungs me-2"></i> Khám hô hấp
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" onclick="openExamModal('cardiac')">
+              <i class="bi bi-heart me-2"></i> Khám tim mạch
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" onclick="openExamModal('neurologic')">
+              <i class="bi bi-activity me-2"></i> Khám thần kinh
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" onclick="openExamModal('gastro')">
+              <i class="bi bi-stomach me-2"></i> Khám tiêu hóa
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" onclick="openExamModal('genitourinary')">
+              <i class="bi bi-droplet me-2"></i> Khám tiết niệu
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" onclick="openExamModal('musculoskeletal')">
+              <i class="bi bi-bone me-2"></i> Khám cơ xương
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" onclick="openExamModal('dermatologic')">
+              <i class="bi bi-bandaid me-2"></i> Khám da liễu
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" onclick="openExamModal('notes')">
+              <i class="bi bi-journal-text me-2"></i> Ghi chú khác
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="examDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="examTitle">Chi tiết khám</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+        <div class="modal-body" id="examFormContainer">
+          <!-- Nội dung form sẽ được thêm động -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" class="btn btn-primary" onclick="saveExam()">Lưu kết quả</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="symptomModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="symptomModalTitle">Thêm triệu chứng</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="symptomId">
+          <div class="mb-3">
+            <label class="form-label">Tên triệu chứng</label>
+            <input type="text" class="form-control" id="symptomName" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Thời gian</label>
+            <input type="text" class="form-control" id="symptomDuration" placeholder="VD: 2 ngày, 1 tuần">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Mức độ</label>
+            <select class="form-select" id="symptomSeverity">
+              <option value="">Chọn mức độ</option>
+              <option value="Nhẹ">Nhẹ</option>
+              <option value="Trung bình">Trung bình</option>
+              <option value="Nặng">Nặng</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Mô tả</label>
+            <textarea class="form-control" id="symptomDescription" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" class="btn btn-primary" id="saveSymptomBtn" onclick="saveSymptom()">Lưu triệu chứng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Toast Container -->
+  <div class="position-fixed  end-0 p-3" style="z-index: 11;top:20%;">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto">Thông báo</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" id="toastBody"></div>
+    </div>
+  </div>
+
+  <div id="modalContainer"></div>
+
+  <th:block th:fragment="additionalJS">
+    <script th:src="@{/frontend/assets/doctor-dashboard-js/symptom.js}"></script>
+  </th:block>
+
+  <script>
+    function openExamModal(examType) {
+      // Đóng modal chọn loại khám
+      bootstrap.Modal.getInstance(document.getElementById('examTypeModal')).hide();
+
+      // Đặt tiêu đề
+      const titles = {
+        vital: 'Dấu hiệu sinh tồn',
+        respiratory: 'Khám hô hấp',
+        cardiac: 'Khám tim mạch',
+        neurologic: 'Khám thần kinh',
+        gastro: 'Khám tiêu hóa',
+        genitourinary: 'Khám tiết niệu',
+        musculoskeletal: 'Khám cơ xương',
+        dermatologic: 'Khám da liễu',
+        notes: 'Ghi chú khác'
+      };
+      document.getElementById('examTitle').textContent = titles[examType];
+
+      // Tải form tương ứng
+      loadExamForm(examType);
+
+      // Hiển thị modal
+      new bootstrap.Modal(document.getElementById('examDetailModal')).show();
+    }
+
+    // Tải form khám
+    function loadExamForm(examType) {
+      const container = document.getElementById('examFormContainer');
+      let formHTML = '';
+
+      switch(examType) {
+        case 'vital':
+          formHTML = `
+        <form id="examForm" data-type="vital">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Nhịp tim (lần/phút)</label>
+              <input type="number" class="form-control" name="pulse">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">HA tâm thu</label>
+              <input type="number" class="form-control" name="systolic">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">HA tâm trương</label>
+              <input type="number" class="form-control" name="diastolic">
+            </div>
+          </div>
+        </form>
+      `;
+          break;
+
+        case 'respiratory':
+          formHTML = `
+        <form id="examForm" data-type="respiratory">
+          <div class="mb-3">
+            <label class="form-label">Kiểu thở</label>
+            <input type="text" class="form-control" name="breathing">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Kết quả nghe phổi</label>
+            <textarea class="form-control" name="auscultation"></textarea>
+          </div>
+        </form>
+      `;
+          break;
+
+              // Thêm các case khác tương tự...
+      }
+
+      container.innerHTML = formHTML;
+    }
+
+    // Lưu kết quả khám
+    function saveExam() {
+      const form = document.getElementById('examForm');
+      const examType = form.dataset.type;
+      const formData = new FormData(form);
+
+      // Xử lý lưu dữ liệu...
+      console.log(`Lưu kết quả ${examType}:`, Object.fromEntries(formData));
+
+      // Đóng modal
+      bootstrap.Modal.getInstance(document.getElementById('examDetailModal')).hide();
+
+      // Thêm vào danh sách
+      addToExamList(examType, formData);
+    }
+    // Lấy appointmentId từ URL
+    const appointmentId = new URLSearchParams(window.location.search).get("id") || 1;
+
+    // Biến toàn cục
+    let symptoms = [];
+    let allergies = [];
+    let chronicDiseases = [];
+    let patientId = null;
+    let medicalRecordId = null;
+
+    // Khởi tạo ứng dụng
+    initApp();
+
+    function initApp() {
+      loadPatientData();
+    }
+
+    function loadPatientData() {
+      fetch(`/api/appointments/in-progress/${appointmentId}`)
+              .then((response) => {
+                if (!response.ok) throw new Error('Failed to load patient data');
+                return response.json();
+              })
+              .then((data) => {
+                renderPatientInfo(data);
+                if (data.patientEntityId) {
+                  patientId = data.patientEntityId;
+                  medicalRecordId = data.medicalRecordEntityId || null; // Assume medicalRecordId is in response
+                  loadMedicalProfile();
+                  if (medicalRecordId) {
+                    loadSymptoms();
+                  }
+                }
+                if (data.durationMinutes) {
+                  startCountdown(data.durationMinutes);
+                }
+              })
+              .catch((error) => {
+                console.error("Error loading patient data:", error);
+                document.getElementById("patientInfoContainer").innerHTML =
+                        '<div class="alert alert-danger">Error loading patient information.</div>';
+              });
+    }
+
+
+
+    function renderPatientInfo(data) {
+      const container = document.getElementById("patientInfoContainer");
+      const mainComplaintInput = document.getElementById("mainComplaint");
+      mainComplaintInput.textContent = data.medicalRecordEntityMainComplaint;
+
+
+      container.innerHTML = `
+                <div class="card mb-3" style="padding-left:0;margin-left:40px;">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-user me-2"></i>Thông tin bệnh nhân
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="${
+              data.patientEntityAvatarUrl ||
+              "https://via.placeholder.com/120x120/667eea/white?text=U"
+      }" class="patient-avatar mb-2">
+                        <h5 class="mb-1">${data.patientEntityFullName || ""}</h5>
+                        <div class="text-muted mb-2">
+                            ${
+              data.patientEntityGender === "MALE"
+                      ? "Nam"
+                      : data.patientEntityGender === "FEMALE"
+                              ? "Nữ"
+                              : ""
+      }
+                            ${
+              data.patientEntityBirthdate
+                      ? ", " +
+                      calculateAge(data.patientEntityBirthdate) +
+                      " tuổi"
+                      : ""
+      }
+                        </div>
+                        <div class="mb-2"><i class="fas fa-phone me-1"></i> ${
+              data.patientEntityPhoneNumber || ""
+      }</div>
+                        <div class="mb-2"><i class="fas fa-envelope me-1"></i> ${
+              data.patientEntityEmail || ""
+      }</div>
+                        <div class="mb-2"><i class="fas fa-map-marker-alt me-1"></i> ${
+              data.patientEntityAddress || ""
+      }</div>
+                        <div class="mb-2"><i class="fas fa-id-card me-1"></i> ID: ${
+              data.patientEntityId || ""
+      }</div>
+                    </div>
+                </div>
+            `;
+    }
+
+    function calculateAge(birthdate) {
+      const birth = new Date(birthdate);
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+        age--;
+      }
+      return age;
+    }
+
+    function finalizeSession() {
+      if (!appointmentId) {
+        showToast('danger', 'Không tìm thấy ID cuộc hẹn');
+        return;
+      }
+      const saveButton = document.querySelector('#step6 .btn-success');
+      const originalButtonContent = saveButton.innerHTML;
+
+      const loadingTimeout = setTimeout(() => {
+        saveButton.disabled = true;
+        saveButton.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Đang lưu...';
+      }, 5000);
+
+      const payload = {
+        id: appointmentId,
+        appointmentStatus: "COMPLETED"
+      };
+
+      fetch(`/api/appointments/${appointmentId}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      })
+              .then(async response => {
+                clearTimeout(loadingTimeout); // Hủy timeout nếu request hoàn thành trước 2s
                 if (!response.ok) {
-                    throw new Error(`Không thể tải thông tin cuộc hẹn: ${response.statusText}`);
+                  const errorData = await response.json();
+                  throw new Error(errorData.message || 'Có lỗi xảy ra khi cập nhật trạng thái');
                 }
                 return response.json();
-            })
-            .then(data => {
-                // Populate patient fields
-                document.getElementById('patientAvatar').src = data.patientEntityAvatarUrl || '';
-                document.getElementById('patientId').value = data.patientEntityId || '';
-                document.getElementById('fullName').value = data.patientEntityFullName || '';
-                document.getElementById('phoneNumber').value = data.patientEntityPhoneNumber || '';
-                document.getElementById('email').value = data.patientEntityEmail || '';
-                document.getElementById('address').value = data.patientEntityAddress || '';
-                document.getElementById('birthdate').value = data.patientEntityBirthdate || '';
-                // Populate appointment fields
-                document.getElementById('datetime').value = data.date || '';
-                document.getElementById('symptoms').value = data.symptoms || '';
-                document.getElementById('diagnosis').value = data.diagnosis || '';
-            })
-            .catch(error => {
-                console.error('Lỗi khi tải thông tin cuộc hẹn:', error);
-                alert('Có lỗi khi tải thông tin bệnh nhân: ' + error.message);
-            });
-    });
+              })
+              .then(data => {
+                // Cập nhật nút khi thành công
+                saveButton.innerHTML = '<i class="fas fa-check-circle me-1"></i> Đã lưu thành công';
+                saveButton.classList.remove('btn-success');
+                saveButton.classList.add('btn-secondary');
 
-    function oneShotExamination() {
-        if (confirm('Xác nhận hoàn tất khám?')) {
-            updateAppointment({ status: 'COMPLETED' });
-        }
+                showToast('success', 'Lưu thành công! Phiên khám đã được kết thúc.');
+
+                // Tự động chuyển hướng sau 3 giây
+                setTimeout(() => {
+                  window.location.href = '/staff/doctor/appointments';
+                }, 3000);
+              })
+              .catch(error => {
+                clearTimeout(loadingTimeout); // Hủy timeout nếu có lỗi
+                console.error('Error:', error);
+                showToast('danger', 'Lỗi khi lưu phiên khám: ' + error.message);
+                saveButton.disabled = false;
+                saveButton.innerHTML = originalButtonContent;
+              });
     }
 
-    function waitForTestResults() {
-        if (confirm('Xác nhận dừng để chờ kết quả xét nghiệm?')) {
-            updateAppointment({ status: 'WAITING_RESULT' });
-        }
+    function showToast(type, message) {
+      const toastElement = document.getElementById('liveToast');
+      const toastBody = document.getElementById('toastBody');
+      toastBody.textContent = message;
+      toastElement.classList.remove('bg-success', 'bg-danger');
+      toastElement.classList.add(type === 'success' ? 'bg-success' : 'bg-danger', 'text-white');
+      const toast = new bootstrap.Toast(toastElement);
+      toast.show();
     }
 
-    function prescribeMedication() {
-        if (confirm('Xác nhận kê đơn thuốc?')) {
-            updateAppointment({ status: 'COMPLETED', type: 'prescribed' });
-        }
+    function startCountdown(minutes) {
+      console.log(`Starting countdown for ${minutes} minutes`);
     }
-
-    function updateAppointment({ status, type = '' }) {
-        const appointmentDTO = {
-            id: id,
-            patient: {
-                id: document.getElementById('patientId').value,
-                fullName: document.getElementById('fullName').value,
-                phoneNumber: document.getElementById('phoneNumber').value,
-                email: document.getElementById('email').value,
-                address: document.getElementById('address').value,
-                birthdate: document.getElementById('birthdate').value,
-                avatarUrl: document.getElementById('patientAvatar').src
-            },
-            date: document.getElementById('datetime').value,
-            symptoms: document.getElementById('symptoms').value,
-            diagnosis: document.getElementById('diagnosis').value,
-            appointmentStatus: status,
-            appointmentType: type
-        };
-
-        fetch(`/appointments/${id}/status`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(appointmentDTO)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Không thể cập nhật cuộc hẹn: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (appointmentDTO.appointmentStatus === 'COMPLETED') {
-                    alert('Đã hoàn thành phiên khám!');
-                    window.location.href = '/doctor/appointments';
-                } else if (appointmentDTO.appointmentStatus === 'WAITING_RESULT') {
-                    alert('Đã tạm dừng phiên khám!');
-                    window.location.href = '/doctor/appointments';
-                }
-            })
-            .catch(error => {
-                console.error('Lỗi khi cập nhật cuộc hẹn:', error);
-                alert('Có lỗi khi cập nhật cuộc hẹn: ' + error.message);
-            });
-    }
-
-    function goBack() {
-        if (confirm('Quay lại danh sách bệnh nhân?')) {
-            window.location.href = '/doctor/dashboard';
-        }
-    }
-
-    // Modal handling
-    const modal = document.getElementById('testRequestModal');
-    const testTableBody = document.querySelector('#testTable tbody');
-
-    function openTestRequestModal() {
-        modal.style.display = 'flex';
-        fetchTests();
-        document.getElementById('testSearch').focus();
-    }
-
-    function closeTestRequestModal() {
-        modal.style.display = 'none';
-        document.getElementById('testSearch').value = '';
-        testTableBody.innerHTML = '';
-    }
-
-    // Close modal on overlay click or Escape key
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeTestRequestModal();
-    });
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.style.display === 'flex') closeTestRequestModal();
-    });
-
-    // Fetch test list
-    function fetchTests(searchTerm = '') {
-        const url = searchTerm ? `/lab-test/search?name=${encodeURIComponent(searchTerm)}` : '/lab-test/test-list';
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Không thể tải danh sách xét nghiệm: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(tests => {
-                testTableBody.innerHTML = '';
-                tests.forEach(test => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                    <td>${test.id}</td>
-                    <td>${test.productEntityName}</td>
-                    <td><input type="checkbox" value="${test.id}"></td>
-                `;
-                    testTableBody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('Lỗi khi tải xét nghiệm:', error);
-                alert('Có lỗi khi tải danh sách xét nghiệm: ' + error.message);
-            });
-    }
-
-    // Search tests
-    function searchTests() {
-        const searchTerm = document.getElementById('testSearch').value;
-        fetchTests(searchTerm);
-    }
-
-    // Submit test request
-    function submitTestRequest() {
-        const selectedTests = Array.from(document.querySelectorAll('#testTable input[type="checkbox"]:checked'))
-            .map(checkbox => checkbox.value);
-        if (!selectedTests.length) {
-            alert('Vui lòng chọn ít nhất một xét nghiệm!');
-            return;
-        }
-
-        if (confirm('Xác nhận gửi yêu cầu xét nghiệm?')) {
-            fetch(`/lab-test/${id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Không thể gửi yêu cầu xét nghiệm: ${response.statusText}`);
-                    }
-                    return response.text();
-                })
-                .then(() => {
-                    // Update appointment status to 'WAITING_RESULT'
-                    updateAppointment({ status: 'WAITING_RESULT', type: 'test-requested' });
-                    closeTestRequestModal();
-                })
-                .catch(error => {
-                    console.error('Lỗi khi gửi yêu cầu xét nghiệm:', error);
-                    alert('Có lỗi khi gửi yêu cầu xét nghiệm: ' + error.message);
-                });
-        }
-    }
-</script>
-</body>
+  </script>
+  </body>
 </html>

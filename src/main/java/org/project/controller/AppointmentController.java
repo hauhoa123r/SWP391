@@ -24,28 +24,28 @@ public class AppointmentController {
 
     @GetMapping("/home-page")
     public String doctorHomePage(Model model, HttpSession session) {
-        Long userId = 588L;
+        Long userId = 8L;
         DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
-        model.addAttribute("content","/frontend/doctorv2/doctor_homepage");
-        return "frontend/doctorv2/doctor_layout";
+        model.addAttribute("content","/frontend/doctor/doctor_homepage");
+        return "frontend/doctor/doctor_layout";
     }
     @GetMapping("/appointments")
     public String doctorAppointments(Model model) {
-        Long userId = 588L;
+        Long userId = 10L;
         DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
-        model.addAttribute("content", "/frontend/doctorv2/doctor_appointments");
-        return "frontend/doctorv2/doctor_layout";
+        model.addAttribute("content", "/frontend/doctor/doctor_appointments");
+        return "frontend/doctor/doctor_layout";
     }
     @GetMapping("/in-progress")
     public String doctorInProgress(Model model, @RequestParam("id") Long id) {
-        Long userId = 588L;
+        Long userId = 8L;
         DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
-        model.addAttribute("content", "/frontend/doctorv2/appointment_progress");
+        model.addAttribute("content", "/frontend/doctor/appointment_progress");
         model.addAttribute("id", id);
-        return "frontend/doctorv2/doctor_layout";
+        return "frontend/doctor/doctor_layout";
     }
     @GetMapping("/test-result")
     public String doctorLabTestResult(Model model) {
