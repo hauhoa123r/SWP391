@@ -92,8 +92,6 @@ public class ProductEntity {
     private final Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
     @OneToMany(mappedBy = "productEntity")
     private final Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
-    @OneToOne(mappedBy = "productEntity")
-    private TestEntity testEntity;
     @ManyToMany
     private final Set<UserEntity> userEntities = new LinkedHashSet<>();
     @Enumerated(EnumType.STRING)
