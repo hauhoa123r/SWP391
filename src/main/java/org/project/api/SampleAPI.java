@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/sample")
 public class SampleAPI {
@@ -82,7 +84,7 @@ public class SampleAPI {
         if(isSuccess) {
             return ResponseEntity.ok().body("Approved successfully");
         }
-        return ResponseEntity.ok("sucess");
+        return ResponseEntity.ok("success");
     }
 
     @PostMapping("/reject-cofirm")
@@ -92,5 +94,11 @@ public class SampleAPI {
             return ResponseEntity.ok().body("Rejected successfully");
         }
         return  ResponseEntity.status(400).body("Rejected failed");
+    }
+
+    @PostMapping("/result")
+    public ResponseEntity<?> getResult(@RequestBody Map<String, String> dataUnit){
+
+        return ResponseEntity.ok("success");
     }
 }

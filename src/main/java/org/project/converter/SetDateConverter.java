@@ -1,9 +1,7 @@
 package org.project.converter;
 
-import org.modelmapper.ModelMapper;
 import org.project.entity.SampleEntity;
 import org.project.entity.StaffEntity;
-import org.project.entity.TechnicianEntity;
 import org.project.entity.TestRequestEntity;
 import org.project.enums.StaffRole;
 import org.project.enums.TechnicianRank;
@@ -53,7 +51,7 @@ public class SetDateConverter {
         SampleEntity sampleEntity = sampleScheduleRepository.findByTestRequest_Id(testRequestEntity.get().getId());
         SetDateGetSampleResponse setDateGetSampleResponse = new SetDateGetSampleResponse();
         setDateGetSampleResponse.setSampleId(sampleEntity.getId());
-        setDateGetSampleResponse.setTestType(testRequestEntity.get().getTestType().getTestTypeName());
+        setDateGetSampleResponse.setTestType(testRequestEntity.get().getTestTypeEntity().getTestTypeName());
         setDateGetSampleResponse.setPatientName(testRequestEntity.get().getAppointmentEntity().getPatientEntity().getFullName());
         setDateGetSampleResponse.setDepartmentName(testRequestEntity.get().getAppointmentEntity().getDoctorEntity().getStaffEntity().getDepartmentEntity().getName());
         setDateGetSampleResponse.setManagerName(managerNameResponses);

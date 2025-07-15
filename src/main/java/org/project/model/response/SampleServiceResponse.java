@@ -15,4 +15,5 @@ public abstract class SampleServiceResponse {
     private String departmentName;
     private String doctorName;
     private long id;
+    private Long patientId;
 }

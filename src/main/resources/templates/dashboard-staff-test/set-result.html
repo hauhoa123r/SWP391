@@ -751,11 +751,9 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="input-datatable" class="table" data-toggle="data-table-column-filter">
+                                <table id="input-datatable" class="table">
                                     <thead>
                                         <tr>
-                                            <th>Barcode</th>
-                                            <th>OrderID</th>
                                             <th>Patient Name</th>
                                             <th>Test Type</th>
                                             <th>Time</th>
@@ -763,60 +761,29 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Dòng mẫu status Pending -->
-                                        <tr>
-                                            <td>BN123-20240625-01-2</td>
-                                            <td>BN123456</td>
-                                            <td>Bùi Huy Hùng</td>
-                                            <td>Glucose</td>
-                                            <td>
-                                                25/6/2025 10:30
-                                            </td>
-                                            <td><button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip"
-                                                    title="Set Again time"
-                                                    onclick="window.location.href='set-date'">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-pencil-square"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                                        <path fill-rule="evenodd"
-                                                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                                                    </svg>
-                                                </button></td>
-                                        </tr>
-                                        <!-- Dòng mẫu status Success -->
-                                        <tr>
-                                            <td>BN124-20240625-02-1</td>
-                                            <td>BN123457</td>
-                                            <td>Nguyễn Thị An</td>
-                                            <td>Cholesterol</td>
-                                            <td>25/6/2025 10:30</td>
-                                            <td><button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip"
-                                                    title="Set Again time"
-                                                    onclick="window.location.href='set-date'">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-pencil-square"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                                        <path fill-rule="evenodd"
-                                                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                                                    </svg>
-                                                </button></td>
-                                        </tr>
+
                                     </tbody>
                                     <tfoot>
                                         <tr>
+                                            <th title="Patient Name">
+                                                <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" placeholder="Search Patient Name">
+                                            </th>
+                                            <th title="Test Type">
+                                                <input type="text" id="testType" name="testType" class="form-control form-control-sm" placeholder="Search Test Type">
+                                            </th>
                                             <td></td>
-                                            <th title="OrderID">OrderID</th>
-                                            <th title="Patient Name">Patient Name</th>
-                                            <th title="Test Type">Test Type</th>
-                                            <th title="Time">Time</th>
                                             <td></td>
                                         </tr>
                                     </tfoot>
                                 </table>
+                                <div class="mt-4 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span id="total-items"></span>
+                                    </div>
+                                    <nav>
+                                        <ul class="pagination mb-0" id="pagination-container"></ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1681,35 +1648,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="testModal" tabindex="-1">
-        <div class="modal-dialog">
-            <form class="modal-content" id="testResultForm" onsubmit="submitTestResult(event)">
-                <div class="modal-header">
-                    <h5 class="modal-title">Nhập kết quả xét nghiệm</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div><strong>Barcode:</strong> <span id="testBarcode"></span></div>
-                    <div><strong>Bệnh nhân:</strong> <span id="testPatient"></span></div>
-                    <div><strong>Loại xét nghiệm:</strong> <span id="testType"></span></div>
-                    <div class="mb-3 mt-3">
-                        <label class="form-label">Kết quả</label>
-                        <input type="text" class="form-control" id="testResultInput" required
-                            placeholder="Nhập kết quả...">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Ghi chú</label>
-                        <textarea class="form-control" id="testResultNote" rows="2"
-                            placeholder="Nhập ghi chú nếu có"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Lưu kết quả</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Library Bundle Script -->
     <script src="./assets/js/core/libs.min.js" th:src="@{/dashboard-staff-test/assets/js/core/libs.min.js}"
@@ -1772,5 +1710,102 @@
  defer></script>
 
 </body>
+<script>
+    function getFilterParams() {
+        return {
+            patientName: $('#patientName').val(),
+            testType: $('#testType').val()
+        };
+    }
 
+    function fetchFilteredData(page = 0) {
+        const filters = getFilterParams();
+        filters.page = page;
+
+        $.ajax({
+            url: '/api/result/filter',
+            type: 'GET',
+            data: filters,
+            success: function (data) {
+                renderTable(data.content);
+                renderPagination(data);
+                $('#total-items').text(`Tổng số: ${data.totalElements} mẫu`);
+            },
+            error: function () {
+                alert('Lỗi khi lọc dữ liệu');
+            }
+        });
+    }
+
+    function renderTable(data) {
+        let html = '';
+        data.forEach(item => {
+            html += `
+        <tr>
+            <input type="hidden" name="id" value="${item.id}" id="testRequestId"></input>
+            <input type="hidden" name="patientId" value="${item.patientId}" id="patientId"></input>
+            <td>${item.patientName || ''}</td>
+            <td>${item.testType || ''}</td>
+            <td>${item.time || ''}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-info" title="Set Again time"
+                onclick="window.location.href='/lab/result/${item.id}'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75
+                        2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0
+                        .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd"
+                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0
+                            1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0
+                            1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0
+                            0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
+                </button>
+            </td>
+        </tr>`;
+        });
+
+        $('#input-datatable tbody').html(html);
+    }
+
+    function renderPagination(pageData) {
+        const currentPage = pageData.number;
+        const totalPages = pageData.totalPages;
+        let html = '';
+
+        html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a></li>`;
+
+        for (let i = 0; i < totalPages; i++) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
+        }
+
+        html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a></li>`;
+
+        $('#pagination-container').html(html);
+    }
+
+    $(document).on('click', '.pagination a.page-link', function (e) {
+        e.preventDefault();
+        const page = parseInt($(this).data('page'));
+        fetchFilteredData(page);
+    });
+
+    let typingTimer;
+    const typingDelay = 800;
+    function attachInputEvents() {
+        $('#patientName, #testType').off('input').on('input', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => fetchFilteredData(0), typingDelay);
+        });
+    }
+
+    $(document).ready(function () {
+        attachInputEvents();
+        fetchFilteredData(0);
+    });
+</script>
 </html>

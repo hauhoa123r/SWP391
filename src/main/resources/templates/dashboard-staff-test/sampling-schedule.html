@@ -1796,13 +1796,26 @@
         });
     }
 
+    function buttonSetDate(check, id){
+        if(check) return '';
+        return `<button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip"
+                    onclick="window.location.href='set-date?id=${id}'" title="Set Date Time">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+             fill="currentColor" class="bi bi-calendar-week-fill"
+             viewBox="0 0 16 16">
+            <path
+                d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M9.5 7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m3 0h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M2 10.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5" />
+        </svg>
+    </button>`;
+    }
+
     function renderTable(data) {
         let html = '';
         data.forEach(item => {
             let setAgainBtn = '';
             let reasonBtn = '';
-
-            if (item.reCollectReason && item.reCollectReason.trim() !== '') {
+            let isHas = false;
+            if (item.reCollectReason != null && item.reCollectReason.trim() !== '') {
                 setAgainBtn = `
                 <button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip"
                         title="Set Again time"
@@ -1828,10 +1841,12 @@
                             d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
                     </svg>
                 </button>`;
+                isHas = true;
             } else {
                 setAgainBtn = '';
                 reasonBtn = 'Không';
             }
+            const setDateButton = buttonSetDate(isHas, item.id);
             html += `
         <tr>
         <input type="hidden" name="id" value="${item.id}" id="testRequestId"></input>
@@ -1841,15 +1856,7 @@
             <td>${setAgainBtn}</td>
             <td>${reasonBtn}</td>
             <td class="action-cell">
-                <button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip"
-                                                    onclick="window.location.href='set-date?id=${item.id}'" title="Set Date Time">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-calendar-week-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M9.5 7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m3 0h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M2 10.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5" />
-                                                    </svg>
-                                                </button>
+              ${setDateButton}
                 <button class="btn btn-sm btn-outline-danger ms-1"
                                                     data-bs-toggle="modal" data-bs-target="#rejectModel" data-id="${item.id}" title="Reject">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

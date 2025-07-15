@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SetDateGetSampleResponse
 {
+
     private Long testRequestId;
     private Long sampleId;
     private String patientName;
