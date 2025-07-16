@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="vi" dir="ltr">
 
 <head>
     <!-- meta data -->
@@ -13,7 +13,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="frontend/assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="frontend/assets/images/favicon.png" type="image/x-icon">
-    <title>Fastkart - Add New Product</title>
+    <title>Fastkart - Hóa đơn xuất kho</title>
 
     <!-- Google font -->
     <link
@@ -92,10 +92,10 @@
                         <div class="Typeahead Typeahead--twitterUsers">
                             <div class="u-posRelative">
                                 <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-                                    placeholder="Search Fastkart .." name="q" title="" autofocus>
+                                    placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
                                 <i class="close-search" data-feather="x"></i>
                                 <div class="spinner-border Typeahead-spinner" role="status">
-                                    <span class="sr-only">Loading...</span>
+                                    <span class="sr-only">Đang tải...</span>
                                 </div>
                             </div>
                             <div class="Typeahead-menu"></div>
@@ -117,34 +117,34 @@
                             <ul class="notification-dropdown onhover-show-div">
                                 <li>
                                     <i class="ri-notification-line"></i>
-                                    <h6 class="f-18 mb-0">Notitications</h6>
+                                    <h6 class="f-18 mb-0">Thông báo</h6>
                                 </li>
                                 <li>
                                     <p>
-                                        <i class="fa fa-circle me-2 font-primary"></i>Delivery processing <span
-                                            class="pull-right">10 min.</span>
+                                        <i class="fa fa-circle me-2 font-primary"></i>Đang xử lý giao hàng <span
+                                            class="pull-right">10 phút</span>
                                     </p>
                                 </li>
                                 <li>
                                     <p>
-                                        <i class="fa fa-circle me-2 font-success"></i>Order Complete<span
-                                            class="pull-right">1 hr</span>
+                                        <i class="fa fa-circle me-2 font-success"></i>Đơn hàng hoàn tất<span
+                                            class="pull-right">1 giờ</span>
                                     </p>
                                 </li>
                                 <li>
                                     <p>
-                                        <i class="fa fa-circle me-2 font-info"></i>Tickets Generated<span
-                                            class="pull-right">3 hr</span>
+                                        <i class="fa fa-circle me-2 font-info"></i>Đã tạo phiếu <span
+                                            class="pull-right">3 giờ</span>
                                     </p>
                                 </li>
                                 <li>
                                     <p>
-                                        <i class="fa fa-circle me-2 font-danger"></i>Delivery Complete<span
-                                            class="pull-right">6 hr</span>
+                                        <i class="fa fa-circle me-2 font-danger"></i>Giao hàng hoàn tất<span
+                                            class="pull-right">6 giờ</span>
                                     </p>
                                 </li>
                                 <li>
-                                    <a class="btn btn-primary" href="javascript:void(0)">Check all notification</a>
+                                    <a class="btn btn-primary" href="javascript:void(0)">Xem tất cả thông báo</a>
                                 </li>
                             </ul>
                         </li>
@@ -166,32 +166,32 @@
                                 <li>
                                     <a href="all-users.html">
                                         <i data-feather="users"></i>
-                                        <span>Users</span>
+                                        <span>Người dùng</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="order-list.html">
                                         <i data-feather="archive"></i>
-                                        <span>Orders</span>
+                                        <span>Đơn hàng</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="support-ticket.html">
                                         <i data-feather="phone"></i>
-                                        <span>Spports Tickets</span>
+                                        <span>Hỗ trợ</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="profile-setting.html">
                                         <i data-feather="settings"></i>
-                                        <span>Settings</span>
+                                        <span>Cài đặt</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                                         href="javascript:void(0)">
                                         <i data-feather="log-out"></i>
-                                        <span>Log out</span>
+                                        <span>Đăng xuất</span>
                                     </a>
                                 </li>
                             </ul>
@@ -435,148 +435,172 @@
             <!-- Page Sidebar Ends-->
 
             <div class="page-body">
-
-                <!-- New Product Add Start -->
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-sm-8 m-auto">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="card-header-2">
-                                                <h5>Category Information</h5>
-                                            </div>
+                        <div class="col-sm-12">
+                            <div class="card card-table">
+                                <div class="card-body">
+                                    <div class="title-header option-title">
+                                        <h5>Danh sách hóa đơn xuất kho</h5>
+                                    </div>
 
-                                            <div class="theme-form theme-form-2 mega-form">
-                                                <div class="mb-4 row align-items-center">
-                                                    <label class="form-label-title col-sm-3 mb-0">Category Name</label>
-                                                    <div class="col-sm-9">
-                                                        <input class="form-control" type="text"
-                                                            placeholder="Category Name">
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-4 row align-items-center">
-                                                    <label class="col-sm-3 col-form-label form-label-title">Category
-                                                        Image</label>
-                                                    <div class="form-group col-sm-9">
-                                                        <form class="dropzone custom-dropzone" id="multiFileUpload"
-                                                            action="/upload.php">
-                                                            <div class="dropzone-wrapper">
-                                                                <div class="dz-message needsclick">
-                                                                    <div>
-                                                                        <i class="icon-cloud-up"></i>
-                                                                        <h6>Drop files here or click to upload.</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row align-items-center">
-                                                    <div class="col-sm-3 form-label-title">Select Category Icon</div>
-                                                    <div class="col-sm-9">
-                                                        <div class="dropdown icon-dropdown">
-                                                            <button class="btn dropdown-toggle" type="button"
-                                                                id="dropdownMenuButton1" data-bs-toggle="dropdown">
-                                                                Select Icon
-                                                            </button>
-                                                            <ul class="dropdown-menu"
-                                                                aria-labelledby="dropdownMenuButton1">
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#">
-                                                                        <img src="frontend/assets/svg/1/vegetable.svg"
-                                                                            class="img-fluid" alt="">
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#">
-                                                                        <img src="frontend/assets/svg/1/cup.svg"
-                                                                            class="blur-up lazyload" alt="">
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#">
-                                                                        <img src="frontend/assets/svg/1/meats.svg"
-                                                                            class="img-fluid" alt="">
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#">
-                                                                        <img src="frontend/assets/svg/1/breakfast.svg"
-                                                                            class="img-fluid" alt="">
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#">
-                                                                        <img src="frontend/assets/svg/1/frozen.svg"
-                                                                            class="img-fluid" alt="">
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#">
-                                                                        <img src="frontend/assets/svg/1/biscuit.svg"
-                                                                            class="img-fluid" alt="">
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#">
-                                                                        <img src="frontend/assets/svg/1/grocery.svg"
-                                                                            class="img-fluid" alt="">
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#">
-                                                                        <img src="frontend/assets/svg/1/drink.svg"
-                                                                            class="img-fluid" alt="">
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#">
-                                                                        <img src="frontend/assets/svg/1/milk.svg"
-                                                                            class="img-fluid" alt="">
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#">
-                                                                        <img src="frontend/assets/svg/1/pet.svg"
-                                                                            class="img-fluid" alt="">
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-submit-button">
-                                            <button class="btn btn-animation ms-auto" type="submit">Submit</button>
-                                        </div>
+                                    <div class="table-responsive">
+                                        <table class="table all-package theme-table" id="table_id">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mã hóa đơn</th>
+                                                    <th>Ngày xuất</th>
+                                                    <th>Bộ phận nhận</th>
+                                                    <th>Lý do xuất</th>
+                                                    <th>Người xuất</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Tùy chọn</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="invoice : ${invoices}">
+                                                    <td th:text="${invoice.id}"></td>
+                                                    <td th:text="${#dates.format(invoice.date, 'dd-MM-yyyy')}"></td>
+                                                    <td th:text="${invoice.department}"></td>
+                                                    <td th:text="${invoice.reason}"></td>
+                                                    <td th:text="${invoice.createdBy}"></td>
+                                                    <td>
+                                                        <span th:class="${invoice.status == 'COMPLETED' ? 'status-success' : 'status-danger'}"
+                                                              th:text="${invoice.status == 'COMPLETED' ? 'Hoàn thành' : 'Chờ duyệt'}">
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            <li>
+                                                                <a th:href="@{/stock-out-invoice/{id}(id=${invoice.id})}">
+                                                                    <i class="ri-eye-line"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                                   data-bs-target="#exampleModalToggle">
+                                                                    <i class="ri-download-2-line"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- New Product Add End -->
 
-                <!-- footer Start -->
-                <div class="container-fluid">
-                    <footer class="footer">
-                        <div class="row">
-                            <div class="col-md-12 footer-copyright text-center">
-                                <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                <!-- Modal xem chi tiết -->
+                <div class="modal fade" id="invoiceDetail" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Chi tiết hóa đơn xuất kho</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-5">
+                                    <div class="col-md-6">
+                                        <h6>Thông tin bộ phận nhận</h6>
+                                        <p><strong>Bộ phận:</strong> <span id="department"></span></p>
+                                        <p><strong>Người nhận:</strong> <span id="recipient"></span></p>
+                                        <p><strong>Lý do xuất:</strong> <span id="reason"></span></p>
+                                        <p><strong>Ghi chú:</strong> <span id="notes"></span></p>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <h6>Thông tin hóa đơn</h6>
+                                        <p><strong>Số hóa đơn:</strong> <span id="invoiceNumber"></span></p>
+                                        <p><strong>Ngày xuất:</strong> <span id="invoiceDate"></span></p>
+                                        <p><strong>Người xuất:</strong> <span id="createdBy"></span></p>
+                                        <p><strong>Trạng thái:</strong> <span id="status"></span></p>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Sản phẩm</th>
+                                                <th>Số lô</th>
+                                                <th>Số lượng</th>
+                                                <th>Đơn giá</th>
+                                                <th>Thành tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="invoiceItems">
+                                            <!-- Nội dung chi tiết -->
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="5" class="text-end">
+                                                    <strong>Tổng cộng:</strong>
+                                                </td>
+                                                <td>
+                                                    <strong id="totalAmount"></strong>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn btn-primary" id="printInvoice">In hóa đơn</button>
                             </div>
                         </div>
-                    </footer>
+                    </div>
                 </div>
-                <!-- footer En -->
+
+                <!-- Modal xác nhận -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Xác nhận duyệt</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Bạn có chắc chắn muốn duyệt hóa đơn này?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không</button>
+                                <button type="button" class="btn btn-primary" id="confirmApprove">Có, duyệt</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 footer-copyright text-center">
+                                <p class="mb-0">Bản quyền 2022 © Giao diện Fastkart bởi pixelstrap</p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
             </div>
-            <!-- Container-fluid End -->
+            <!-- New Product Add End -->
+
+            <!-- footer Start -->
+            <div class="container-fluid">
+                <footer class="footer">
+                    <div class="row">
+                        <div class="col-md-12 footer-copyright text-center">
+                            <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- footer En -->
         </div>
-        <!-- Page Body End -->
+        <!-- Container-fluid End -->
     </div>
     <!-- page-wrapper End -->
 
@@ -643,12 +667,4 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
 

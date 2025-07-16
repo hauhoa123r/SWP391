@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="vi" dir="ltr">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -12,7 +12,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="frontend/assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="frontend/assets/images/favicon.png" type="image/x-icon">
-    <title>Fastkart - All Category</title>
+    <title>Fastkart - Hóa đơn nhập kho</title>
     <!-- Google font-->
     <link
         href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
@@ -79,10 +79,10 @@
                         <div class="Typeahead Typeahead--twitterUsers">
                             <div class="u-posRelative">
                                 <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-                                    placeholder="Search Fastkart .." name="q" title="" autofocus>
+                                    placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
                                 <i class="close-search" data-feather="x"></i>
                                 <div class="spinner-border Typeahead-spinner" role="status">
-                                    <span class="sr-only">Loading...</span>
+                                    <span class="sr-only">Đang tải...</span>
                                 </div>
                             </div>
                             <div class="Typeahead-menu"></div>
@@ -423,526 +423,51 @@
 
             <!-- Container-fluid starts-->
             <div class="page-body">
-                <!-- All User Table Start -->
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card card-table">
                                 <div class="card-body">
                                     <div class="title-header option-title">
-                                        <h5>All Category</h5>
-                                        <form class="d-inline-flex">
-                                            <a href="add-new-category.html"
-                                                class="align-items-center btn btn-theme d-flex">
-                                                <i data-feather="plus-square"></i>Add New
-                                            </a>
-                                        </form>
+                                        <h5>Danh sách hóa đơn nhập kho</h5>
                                     </div>
-
-                                    <div class="table-responsive category-table">
-                                        <div>
+                                    <div>
+                                        <div class="table-responsive">
                                             <table class="table all-package theme-table" id="table_id">
                                                 <thead>
                                                     <tr>
-                                                        <th>Product Name</th>
-                                                        <th>Date</th>
-                                                        <th>Product Image</th>
-                                                        <th>Icon</th>
-                                                        <th>Slug</th>
-                                                        <th>Option</th>
+                                                        <th>Mã hóa đơn</th>
+                                                        <th>Ngày nhập</th>
+                                                        <th>Nhà cung cấp</th>
+                                                        <th>Tổng tiền</th>
+                                                        <th>Người nhập</th>
+                                                        <th>Trạng thái</th>
+                                                        <th>Tùy chọn</th>
                                                     </tr>
                                                 </thead>
-
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Aata Buscuit</td>
-
-                                                        <td>26-12-2021</td>
-
+                                                    <tr th:each="invoice : ${invoices}">
+                                                        <td th:text="${invoice.id}"></td>
+                                                        <td th:text="${#dates.format(invoice.date, 'dd-MM-yyyy')}"></td>
+                                                        <td th:text="${invoice.supplier}"></td>
+                                                        <td th:text="${#numbers.formatDecimal(invoice.total, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+                                                        <td th:text="${invoice.createdBy}"></td>
                                                         <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/1.png" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
+                                                            <span th:class="${invoice.status == 'COMPLETED' ? 'status-success' : 'status-danger'}"
+                                                                  th:text="${invoice.status == 'COMPLETED' ? 'Hoàn thành' : 'Chờ duyệt'}">
+                                                            </span>
                                                         </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/vegetable.svg"
-                                                                    class="img-fluid" alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>buscuit</td>
-
                                                         <td>
                                                             <ul>
                                                                 <li>
-                                                                    <a href="order-detail.html">
+                                                                    <a th:href="@{/stock-in-invoice/{id}(id=${invoice.id})}">
                                                                         <i class="ri-eye-line"></i>
                                                                     </a>
                                                                 </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
                                                                 <li>
                                                                     <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Cold Brew Coffee</td>
-
-                                                        <td>21-05-2022</td>
-
-                                                        <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/2.png" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/cup.svg" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>coffee</td>
-
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="order-detail.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Peanut Butter Cookies</td>
-
-                                                        <td>25-12-2021</td>
-
-                                                        <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/3.png" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/meats.svg" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>cookies</td>
-
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="order-detail.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Wheet Flakes</td>
-
-                                                        <td>10-05-2022</td>
-
-                                                        <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/4.png" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/breakfast.svg"
-                                                                    class="img-fluid" alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>flakes</td>
-
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="order-detail.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Potato Chips</td>
-
-                                                        <td>05-01-2022</td>
-
-                                                        <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/5.png" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/frozen.svg" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>chips</td>
-
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="order-detail.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Tuwer Dal</td>
-
-                                                        <td>20-08-2022</td>
-
-                                                        <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/6.png" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/biscuit.svg" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>dal</td>
-
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="order-detail.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Almond Milk</td>
-
-                                                        <td>11-09-2022</td>
-
-                                                        <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/7.png" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/milk.svg" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>milk</td>
-
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="order-detail.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Wheat Bread</td>
-
-                                                        <td>20-09-2022</td>
-
-                                                        <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/11.png"
-                                                                    class="img-fluid" alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/grocery.svg" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>bread</td>
-
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="order-detail.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Dog Food</td>
-
-                                                        <td>30-08-2022</td>
-
-                                                        <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/8.png" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/drink.svg" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>dog Food</td>
-
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="order-detail.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Fresh Meat</td>
-
-                                                        <td>30-03-2022</td>
-
-                                                        <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/9.png" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/milk.svg" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>meat</td>
-
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="order-detail.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Classic Coffee</td>
-
-                                                        <td>18-02-2022</td>
-
-                                                        <td>
-                                                            <div class="table-image">
-                                                                <img src="frontend/assets/images/product/10.png"
-                                                                    class="img-fluid" alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="category-icon">
-                                                                <img src="frontend/assets/svg/1/pet.svg" class="img-fluid"
-                                                                    alt="">
-                                                            </div>
-                                                        </td>
-
-                                                        <td>coffee</td>
-
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="order-detail.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)">
-                                                                        <i class="ri-pencil-line"></i>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModalToggle">
-                                                                        <i class="ri-delete-bin-line"></i>
+                                                                       data-bs-target="#exampleModalToggle">
+                                                                        <i class="ri-download-2-line"></i>
                                                                     </a>
                                                                 </li>
                                                             </ul>
@@ -957,6 +482,19 @@
                         </div>
                     </div>
                 </div>
+                <!-- Container-fluid Ends-->
+
+                <div class="container-fluid">
+                    <!-- footer start-->
+                    <footer class="footer">
+                        <div class="row">
+                            <div class="col-md-12 footer-copyright text-center">
+                                <p class="mb-0">Bản quyền 2022 © Giao diện Fastkart bởi pixelstrap</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
                 <!-- All User Table Ends-->
 
                 <div class="container-fluid">
@@ -1084,12 +622,4 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
 

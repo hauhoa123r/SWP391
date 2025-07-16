@@ -77,10 +77,10 @@
                         <div class="Typeahead Typeahead--twitterUsers">
                             <div class="u-posRelative">
                                 <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-                                    placeholder="Search Fastkart .." name="q" title="" autofocus>
+                                    placeholder="Tìm kiếm Fastkart .." name="q" title="" autofocus>
                                 <i class="close-search" data-feather="x"></i>
                                 <div class="spinner-border Typeahead-spinner" role="status">
-                                    <span class="sr-only">Loading...</span>
+                                    <span class="sr-only">Đang tải...</span>
                                 </div>
                             </div>
                             <div class="Typeahead-menu"></div>
@@ -102,34 +102,34 @@
                             <ul class="notification-dropdown onhover-show-div">
                                 <li>
                                     <i class="ri-notification-line"></i>
-                                    <h6 class="f-18 mb-0">Notitications</h6>
+                                    <h6 class="f-18 mb-0">Thông báo</h6>
                                 </li>
                                 <li>
                                     <p>
-                                        <i class="fa fa-circle me-2 font-primary"></i>Delivery processing <span
-                                            class="pull-right">10 min.</span>
+                                        <i class="fa fa-circle me-2 font-primary"></i>Đang xử lý giao hàng <span
+                                            class="pull-right">10 phút</span>
                                     </p>
                                 </li>
                                 <li>
                                     <p>
-                                        <i class="fa fa-circle me-2 font-success"></i>Order Complete<span
-                                            class="pull-right">1 hr</span>
+                                        <i class="fa fa-circle me-2 font-success"></i>Đơn hàng hoàn tất<span
+                                            class="pull-right">1 giờ</span>
                                     </p>
                                 </li>
                                 <li>
                                     <p>
-                                        <i class="fa fa-circle me-2 font-info"></i>Tickets Generated<span
-                                            class="pull-right">3 hr</span>
+                                        <i class="fa fa-circle me-2 font-info"></i>Đã tạo phiếu <span
+                                            class="pull-right">3 giờ</span>
                                     </p>
                                 </li>
                                 <li>
                                     <p>
-                                        <i class="fa fa-circle me-2 font-danger"></i>Delivery Complete<span
-                                            class="pull-right">6 hr</span>
+                                        <i class="fa fa-circle me-2 font-danger"></i>Giao hàng hoàn tất<span
+                                            class="pull-right">6 giờ</span>
                                     </p>
                                 </li>
                                 <li>
-                                    <a class="btn btn-primary" href="javascript:void(0)">Check all notification</a>
+                                    <a class="btn btn-primary" href="javascript:void(0)">Xem tất cả thông báo</a>
                                 </li>
                             </ul>
                         </li>
@@ -433,201 +433,67 @@
                                             <div class="title-header option-title">
                                                 <h5>Create Coupon</h5>
                                             </div>
-                                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link active" id="pills-home-tab"
-                                                        data-bs-toggle="pill" data-bs-target="#pills-home"
-                                                        type="button">General</button>
-                                                </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" id="pills-profile-tab"
-                                                        data-bs-toggle="pill" data-bs-target="#pills-profile"
-                                                        type="button">Restriction</button>
-                                                </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" id="pills-usage-tab" data-bs-toggle="pill"
-                                                        data-bs-target="#pills-usage" type="button">Usage</button>
-                                                </li>
-                                            </ul>
-
-                                            <div class="tab-content" id="pills-tabContent">
-                                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
-                                                    <form class="theme-form theme-form-2 mega-form">
-                                                        <div class="card-header-1">
-                                                            <h5>General</h5>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="form-label-title col-lg-2 col-md-3 mb-0">Coupon
-                                                                    Title</label>
-                                                                <div class="col-md-9 col-lg-10">
-                                                                    <input class="form-control" type="text">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="col-lg-2 col-md-3 col-form-label form-label-title">Coupon
-                                                                    Code</label>
-                                                                <div class="col-md-9 col-lg-10">
-                                                                    <input class="form-control" type="number">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="col-lg-2 col-md-3 col-form-label form-label-title">Start
-                                                                    Date</label>
-                                                                <div class="col-md-9 col-lg-10">
-                                                                    <input class="form-control" type="date">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="col-lg-2 col-md-3 col-form-label form-label-title">End
-                                                                    Date</label>
-                                                                <div class="col-md-9 col-lg-10">
-                                                                    <input class="form-control" type="date">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="form-label-title col-lg-2 col-md-3 mb-0">Free
-                                                                    Shipping</label>
-                                                                <div class="col-md-9">
-                                                                    <div class="form-check user-checkbox ps-0">
-                                                                        <input class="checkbox_animated check-it"
-                                                                            type="checkbox" value=""
-                                                                            id="flexCheckDefault">
-                                                                        <label
-                                                                            class="form-label-title col-md-2 mb-0">Allow
-                                                                            Free Shipping</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="col-lg-2 col-md-3 col-form-label form-label-title">Quantity</label>
-                                                                <div class="col-md-9 col-lg-10">
-                                                                    <input class="form-control" type="number">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="col-sm-2 col-form-label form-label-title">Discount
-                                                                    Type</label>
-                                                                <div class="col-sm-10">
-                                                                    <select class="js-example-basic-single"
-                                                                        name="state">
-                                                                        <option disabled>--Select--</option>
-                                                                        <option>Percent</option>
-                                                                        <option>Fixed</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row align-items-center">
-                                                                <label
-                                                                    class="form-label-title col-lg-2 col-md-3 mb-0">Status</label>
-                                                                <div class="col-md-9">
-                                                                    <div class="form-check user-checkbox ps-0">
-                                                                        <input class="checkbox_animated check-it"
-                                                                            type="checkbox" value=""
-                                                                            id="flexCheckDefault1">
-                                                                        <label class="form-label-title col-md-2 mb-0">
-                                                                            Enable the Coupon</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
+                                            
+                                            <!-- Bỏ các tab không cần thiết và giữ lại form chính -->
+                                            <form class="theme-form theme-form-2 mega-form" th:action="@{/save-coupon}" method="post" th:object="${coupon}">
+                                                <div class="card-header-1">
+                                                    <h5>Coupon Information</h5>
                                                 </div>
-
-                                                <div class="tab-pane fade" id="pills-profile" role="tabpanel">
-                                                    <form class="theme-form theme-form-2 mega-form">
-                                                        <div class="card-header-1">
-                                                            <h5>Restriction</h5>
+                                                
+                                                <div class="row">
+                                                    <div class="mb-4 row align-items-center">
+                                                        <label class="form-label-title col-lg-2 col-md-3 mb-0">Coupon Code</label>
+                                                        <div class="col-md-9 col-lg-10">
+                                                            <input class="form-control" type="text" th:field="*{code}" required placeholder="Nhập mã coupon (VD: SAVE10)">
                                                         </div>
-
-                                                        <div class="row">
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="form-label-title col-lg-2 col-md-3 mb-0">Products</label>
-                                                                <div class="col-md-9 col-lg-10">
-                                                                    <input class="form-control" type="text">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="col-sm-2 col-form-label form-label-title">Category</label>
-                                                                <div class="col-sm-10">
-                                                                    <select class="js-example-basic-single"
-                                                                        name="state">
-                                                                        <option disabled>--Select--</option>
-                                                                        <option>Electronics</option>
-                                                                        <option>Clothes</option>
-                                                                        <option>Shoes</option>
-                                                                        <option>Digital</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="col-lg-2 col-md-3 col-form-label form-label-title">Minimum
-                                                                    Spend</label>
-                                                                <div class="col-md-9 col-lg-10">
-                                                                    <input class="form-control" type="number">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row align-items-center">
-                                                                <label
-                                                                    class="col-lg-2 col-md-3 col-form-label form-label-title">Maximum
-                                                                    Spend</label>
-                                                                <div class="col-md-9 col-lg-10">
-                                                                    <input class="form-control" type="number">
-                                                                </div>
-                                                            </div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-4 row align-items-center">
+                                                        <label class="col-lg-2 col-md-3 col-form-label form-label-title">Description</label>
+                                                        <div class="col-md-9 col-lg-10">
+                                                            <textarea class="form-control" th:field="*{description}" rows="3" placeholder="Mô tả về coupon"></textarea>
                                                         </div>
-                                                    </form>
+                                                    </div>
+                                                    
+                                                    <div class="mb-4 row align-items-center">
+                                                        <label class="col-lg-2 col-md-3 col-form-label form-label-title">Value</label>
+                                                        <div class="col-md-9 col-lg-10">
+                                                            <input class="form-control" type="number" step="0.01" th:field="*{value}" required placeholder="Giá trị của coupon">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-4 row align-items-center">
+                                                        <label class="col-lg-2 col-md-3 col-form-label form-label-title">Minimum Order Amount</label>
+                                                        <div class="col-md-9 col-lg-10">
+                                                            <input class="form-control" type="number" step="0.01" th:field="*{minimumOrderAmount}" placeholder="Giá trị đơn hàng tối thiểu để áp dụng coupon">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-4 row align-items-center">
+                                                        <label class="col-lg-2 col-md-3 col-form-label form-label-title">Expiration Date</label>
+                                                        <div class="col-md-9 col-lg-10">
+                                                            <input class="form-control" type="date" th:field="*{expirationDate}" required>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-4 row align-items-center">
+                                                        <label class="col-sm-2 col-form-label form-label-title">Discount Type</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-select" name="discountType">
+                                                                <option value="PERCENTAGE">Percentage</option>
+                                                                <option value="FIXED">Fixed Amount</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-9 offset-md-3">
+                                                            <button type="submit" class="btn btn-primary"><i class="ri-save-line"></i> Save Coupon</button>
+                                                            <a href="coupon-list.html" class="btn btn-secondary"><i class="ri-arrow-go-back-line"></i> Cancel</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
-
-                                                <div class="tab-pane fade" id="pills-usage" role="tabpanel">
-                                                    <form class="theme-form theme-form-2 mega-form">
-                                                        <div class="card-header-1">
-                                                            <h5>Usage Limits</h5>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="mb-4 row align-items-center">
-                                                                <label
-                                                                    class="form-label-title col-lg-2 col-md-3 mb-0">Per
-                                                                    Limited</label>
-                                                                <div class="col-md-9 col-lg-10">
-                                                                    <input class="form-control" type="number">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row align-items-center">
-                                                                <label
-                                                                    class="form-label-title col-lg-2 col-md-3 mb-0">Per
-                                                                    Customer</label>
-                                                                <div class="col-md-9 col-lg-10">
-                                                                    <input class="form-control" type="number">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -713,12 +579,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-

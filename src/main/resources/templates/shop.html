@@ -741,7 +741,7 @@
                                                   <div class="d-flex justify-content-between">
                                                       <div class="d-flex align-items-center">
                                                           <img class="avatar-40 rounded" src="frontend/assets/images/shop/product-1.webp" alt=""
-                                                              loading="lazy" th:src="frontend/assets/images/shop/product-1.webp}" />
+                                                              loading="lazy" th:src="@{/frontend/assets/images/shop/product-1.webp}" />
                                                           <div class="ms-3 flex-grow-1">
                                                               <h6 class="mb-0 ">Electric Toothbrush</h6>
                                                               <div class="d-flex justify-content-between align-items-center">
@@ -2086,7 +2086,8 @@
     <script src="frontend/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
     <!-- Kivicare Pages Script -->
     <script src="frontend/assets/js/slider.js" defer></script>
-    <script src="frontend/assets/js/scroll-text.js" defer></script>      <script th:src="frontend/assets/js/wishlist.js}"></script>
+    <script src="frontend/assets/js/scroll-text.js" defer></script>      
+    <script th:src="@{/frontend/assets/js/wishlist.js}"></script>
 </body>
 </html>
 
