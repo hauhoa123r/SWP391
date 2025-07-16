@@ -63,6 +63,7 @@ public class CartServiceImpl implements CartService {
     //calculate total amount of money in cart (no coupon applied)
 	@Override
 	public BigDecimal calculateTotal(Long userId) {
+		//get items from user
 		List<CartItemEntity> items = cartRepo.findByUserEntityId(userId);
 		return items.stream().map(item -> {
 			BigDecimal price = item.getProductEntity().getPrice();
