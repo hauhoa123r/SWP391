@@ -1777,9 +1777,21 @@
         html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
         <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a></li>`;
 
-        for (let i = 0; i < totalPages; i++) {
+        if (currentPage > 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+            if (currentPage > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+
+        for (let i = Math.max(0, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
             html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
             <a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
+        }
+
+        if (currentPage < totalPages - 3) {
+            html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+        if (currentPage < totalPages - 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
         }
 
         html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
