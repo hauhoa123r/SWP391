@@ -2,7 +2,6 @@ package org.project.api;
 
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.SampleFilterDTO;
-import org.project.model.dto.SetResultDTO;
 import org.project.model.response.ResultSampleResponse;
 import org.project.service.SampleScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;

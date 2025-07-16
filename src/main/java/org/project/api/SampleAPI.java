@@ -1,5 +1,6 @@
 package org.project.api;
 
+import org.project.entity.ResultEntity;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.RejectCollectDTO;
 import org.project.model.dto.RejectSampleScheduleDTO;
@@ -9,6 +10,7 @@ import org.project.model.response.SampleConfirmResponse;
 import org.project.model.response.SampleScheduleResponse;
 import org.project.model.response.SymtomResponse;
 import org.project.service.ReferrenceRangeService;
+import org.project.service.ResultSampleService;
 import org.project.service.SampleScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,9 @@ public class SampleAPI {
 
     @Autowired
     private SampleScheduleService sampleScheduleServiceImpl;
+
+    @Autowired
+    private ResultSampleService resultSampleServiceImpl;
 
     private final ReferrenceRangeService referrenceRangeService;
 
@@ -110,6 +115,7 @@ public class SampleAPI {
 
     @PostMapping("/set-result")
     public ResponseEntity<?> setResultSample(@RequestBody Map<String, String> dataDTO){
+        ResultEntity isCheck = resultSampleServiceImpl.isSaveResultSample(dataDTO);
         return ResponseEntity.ok("ok");
     }
 }
