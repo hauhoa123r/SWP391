@@ -8,7 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface AdminPatientService {
-   Page<AdminPatientResponse> getAllPatients(Pageable pageable, String keyword);
+   Page<AdminPatientResponse> getAllPatients(Pageable pageable);
+   Page<AdminPatientResponse> getAllPatients(Pageable pageable, String keyword, String field);
    AdminPatientDetailResponse getPatientDetail(Long id);
    PatientEntity getPatientById(Long id);
    AdminPatientUpdateRequest getUpdateForm(Long id);

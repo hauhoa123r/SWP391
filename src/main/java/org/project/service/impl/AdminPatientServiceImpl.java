@@ -23,8 +23,25 @@ public class AdminPatientServiceImpl implements AdminPatientService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<AdminPatientResponse> getAllPatients(Pageable pageable, String keyword) {
-        Page<PatientEntity> patientPage = patientRepository.findAll(pageable); // Add filtering later
+    public Page<AdminPatientResponse> getAllPatients(Pageable pageable) {
+        return patientRepository.findAll(pageable).map(patientMapper::toResponse);
+    }
+
+    @Override
+    public Page<AdminPatientResponse> getAllPatients(Pageable pageable, String keyword, String field) {
+        Page<PatientEntity> patientPage;
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            patientPage = patientRepository.findAll(pageable);
+        } else {
+            switch (field == null ? "name" : field.toLowerCase()) {
+                case "email" -> patientPage = patientRepository.findByEmailContainingIgnoreCase(keyword, pageable);
+                case "phone" -> patientPage = patientRepository.findByPhoneNumberContainingIgnoreCase(keyword, pageable);
+                case "address" -> patientPage = patientRepository.findByAddressContainingIgnoreCase(keyword, pageable);
+                default -> patientPage = patientRepository.findByFullNameContainingIgnoreCase(keyword, pageable); // name
+            }
+        }
+
         return patientPage.map(patientMapper::toResponse);
     }
 

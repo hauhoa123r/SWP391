@@ -1860,8 +1860,7 @@
                                                 th:field="*{staffRole}"
                                                 th:classappend="${#fields.hasErrors('staffRole')} ? ' is-invalid' : ''">
                                             <option value="" disabled selected th:if="*{staffRole} == null">-- Vui lòng lựa chọn chức vụ phù hợp --</option>
-                                            <option value="DOCTOR">Bác sĩ</option>
-                                            <option value="STAFF">Nhân viên hành chính</option>
+                                            <option th:each="r : ${roles}" th:value="${r}" th:text="${r}">ROLE</option>
                                         </select>
                                         <div class="text-danger" th:errors="*{staffRole}" th:if="${#fields.hasErrors('staffRole')}"></div>
                                     </div>

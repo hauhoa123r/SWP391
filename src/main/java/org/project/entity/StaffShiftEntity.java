@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.project.enums.StaffShiftSlot;
 
 import java.sql.Date;
 
@@ -29,6 +30,11 @@ public class StaffShiftEntity {
     @NotNull
     @Column(name = "date", nullable = false)
     private Date date;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "shift_type", nullable = false)
+    private StaffShiftSlot shiftType;
+
 
 /*
  TODO [Reverse Engineering] create field to map the 'shift_type' column

@@ -1722,25 +1722,27 @@
    </div>
    <!-- Search / filter form -->
     <form method="get" th:action="@{/payments/search}" class="row g-2 mb-3">
-        <input type="text" name="orderId" class="form-control col" placeholder="Order ID"
+        <input type="text" name="orderId" class="form-control col" placeholder="Mã đơn hàng"
                th:value="${orderId}">
-        <input type="number" step="0.01" name="amount" class="form-control col" placeholder="Amount"
+        <input type="number" step="0.01" name="amount" class="form-control col" placeholder="Số tiền"
                th:value="${amount}">
-        <input type="text" name="customer" class="form-control col" placeholder="Customer email"
+        <input type="text" name="customer" class="form-control col" placeholder="Email người dùng"
                th:value="${customer}">
         <select name="method" class="form-select col">
-            <option value="" th:selected="${method == null || method == ''}">All methods</option>
-            <option th:value="CASH" th:selected="${method == 'CASH'}">Cash</option>
-            <option th:value="VNPAY" th:selected="${method == 'VNPAY'}">VNPay</option>
+            <option value="" th:selected="${method == null || method == ''}">Tất cả phương thức</option>
+            <option th:value="CASH" th:selected="${method == 'CASH'}">Tiền mặt</option>
+            <option th:value="CARD" th:selected="${method == 'CARD'}">Thẻ</option>
+            <option th:value="MOMO" th:selected="${method == 'MOMO'}">Momo</option>
         </select>
         <select name="status" class="form-select col">
-            <option value="" th:selected="${status == null || status == ''}">All status</option>
-            <option th:value="PAID" th:selected="${status == 'PAID'}">Paid</option>
-            <option th:value="REFUND" th:selected="${status == 'REFUND'}">Refund</option>
+            <option value="" th:selected="${status == null || status == ''}">Tất cả trạng thái</option>
+            <option th:value="success" th:selected="${status == 'success'}">SUCCESS</option>
+            <option th:value="pending" th:selected="${status == 'pending'}">PENDING</option>
+            <option th:value="failed" th:selected="${status == 'failed'}">FAILED</option>
         </select>
-        <input type="date" name="from" class="form-control col" th:value="${from}">
-        <input type="date" name="to" class="form-control col" th:value="${to}">
-        <button type="submit" class="btn btn-primary col-auto">Filter</button>
+        <input type="date" name="from" class="form-control col" placeholder="Từ ngày" th:value="${from}">
+        
+        <button type="submit" class="btn btn-primary col-auto">Lọc</button>
     </form>
 
     <div class="card-body pt-0">
@@ -1748,23 +1750,24 @@
           <table class="table border-end border-start align-middle mb-0 rounded">
               <thead class="table-dark">
               <tr>
-                  <th>Payment ID</th>
-                  <th>Email</th>
-                  <th>Date & Time</th>
-                  <th>Payment Method</th>
-                  <th>Amount</th>
-                  <th>Payment Status</th>
-                  <th>Action</th>
+                  <th>Mã thanh toán</th>
+                  <th>Email người dùng</th>
+                  <th>Ngày & Giờ</th>
+                  <th>Phương thức thanh toán</th>
+                  <th>Số tiền</th>
+                  <th>Trạng thái thanh toán</th>
+                  <th>Hành động</th>
               </tr>
+
               </thead>
               <tbody>
               <tr th:each="payment, iterStat : ${payments}">
-                  <td th:text="${iterStat.index + 1 + page.currentPage * page.pageSize}">1</td>
+                  <td th:text="${iterStat.index + 1 + currentPage * pageSize}">1</td>
                   <td th:text="${payment.orderEntity.appointmentEntity.patientEntity.email}">Customer</td>
-                  <td th:text="${#dates.format(payment.paymentTime, 'dd MMM yyyy ''At'' hh:mm a')}">24 May At 10:00 AM</td>
-                  <td th:text="${payment.method}">Cash</td>
+                  <td th:text="${#dates.format(payment.paymentTime, 'dd/MM/yyyy HH:mm')}">24 May At 10:00 AM</td>
+                  <td th:text="${payment.method == 'CASH' ? 'Tiền mặt' : (payment.method == 'CARD' ? 'Thẻ' : (payment.method == 'MOMO' ? 'Momo' : payment.method))}">Phương thức</td>
                   <td th:text="${'$' + payment.amount}">$500</td>
-                  <td th:text="${payment.status}">Completed</td>
+                  <td th:text="${payment.status.equalsIgnoreCase('success') ? 'Thành công' : (payment.status.equalsIgnoreCase('failed') ? 'Thất bại' : payment.status)}">Trạng thái</td>
                   <td>
                       <a th:href="@{'/admin/payments/' + ${payment.id}}" class="d-inline-block pe-2">
                           <span class="text-success">✏️</span>
@@ -1776,48 +1779,28 @@
               </tr>
               </tbody>
           </table>
-          <nav th:if="${page.totalPages > 1}" class="mt-3">
+          <nav th:if="${totalPages > 1}" class="mt-3">
               <ul class="pagination justify-content-center">
-                  <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
-                      th:classappend="${i == page.currentPage} ? 'active'">
-                      <a th:href="@{/payments/search(page=${i}, size=${page.pageSize}, orderId=${orderId}, amount=${amount}, customer=${customer}, method=${method}, status=${status}, from=${from}, to=${to})}"
-                         class="page-link" th:text="${i + 1}">1</a>
+                  <!-- Previous -->
+                  <li class="page-item" th:classappend="${currentPage == 0} ? ' disabled'">
+                      <a class="page-link" th:if="${!isSearch}"
+                         th:href="@{/payments(page=${currentPage - 1}, size=${pageSize})}" aria-label="Previous">&laquo; Previous</a>
+                      <a class="page-link" th:if="${isSearch}"
+                         th:href="@{/payments/search(page=${currentPage - 1}, size=${pageSize}, orderId=${orderId}, amount=${amount}, customer=${customer}, method=${method}, status=${status}, from=${from}, to=${to})}" aria-label="Previous">&laquo; Previous</a>
+                  </li>
+                  <!-- Next -->
+                  <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? ' disabled'">
+                      <a class="page-link" th:if="${!isSearch}"
+                         th:href="@{/payments(page=${currentPage + 1}, size=${pageSize})}" aria-label="Next">Next &raquo;</a>
+                      <a class="page-link" th:if="${isSearch}"
+                         th:href="@{/payments/search(page=${currentPage + 1}, size=${pageSize}, orderId=${orderId}, amount=${amount}, customer=${customer}, method=${method}, status=${status}, from=${from}, to=${to})}" aria-label="Next">Next &raquo;</a>
                   </li>
               </ul>
           </nav>
-
       </div>
    </div>
    <div class="card-footer pt-0">
-      <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-          <ul class="page-number m-0 p-0 list-unstyled d-flex gap-2">
-              <li class="text-center bg-primary text-white rounded">1</li>
-              <li class="text-center bg-primary-subtle text-primary rounded ">2</li>
-              <li class="text-center text-primary rounded fs-1">...</li>
-              <li class="text-center bg-primary-subtle text-primary rounded">6</li>
-          </ul>
-          <div>
-              <button class="btn btn-secondary text-white me-3" type="button">
-                  <span class="btn-inner">
-                      <span class="text d-inline-block align-middle">Previous</span>
-                      <span class="icon d-inline-block align-middle ms-1 ps-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
-                              <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z" fill="currentColor" />
-                          </svg>
-                      </span>
-                  </span>
-               </button>
-               <button class="btn btn-primary me-3" type="button">
-                  <span class="btn-inner">
-                      <span class="text d-inline-block align-middle">Next</span>
-                      <span class="icon d-inline-block align-middle ms-1 ps-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
-                              <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z" fill="currentColor" />
-                          </svg>
-                      </span>
-                  </span>
-               </button>
-          </div>
+      
       </div>   </div>
 </div>
 

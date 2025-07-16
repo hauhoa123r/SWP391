@@ -14,6 +14,8 @@ import java.util.Optional;
 
 @Repository
 public interface StaffRepository extends JpaRepository<StaffEntity, Long>, JpaSpecificationExecutor<StaffEntity>, StaffRepositoryCustom {
+    @org.springframework.data.jpa.repository.Query("SELECT DISTINCT s.staffRole FROM StaffEntity s")
+    java.util.List<org.project.enums.StaffRole> findDistinctStaffRoles();
     Page<StaffEntity> findAllByStaffRole(StaffRole staffRole, Pageable pageable);
 
     Page<StaffEntity> findAllByStaffRoleAndDepartmentEntityName(StaffRole staffRole, String departmentEntityName, Pageable pageable);

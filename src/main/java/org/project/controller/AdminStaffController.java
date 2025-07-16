@@ -27,6 +27,15 @@ public class AdminStaffController {
     private final DepartmentService departmentService;
     private final HospitalService hospitalService;
 
+    private static final java.util.List<String> ROLE_NAMES = java.util.List.of(
+            org.project.enums.StaffRole.DOCTOR,
+            org.project.enums.StaffRole.TECHNICIAN,
+            org.project.enums.StaffRole.SCHEDULING_COORDINATOR,
+            org.project.enums.StaffRole.PHARMACIST,
+            org.project.enums.StaffRole.INVENTORY_MANAGER,
+            org.project.enums.StaffRole.LAB_RECEIVER
+    ).stream().map(Enum::name).toList();
+
     @GetMapping
     public String getStaffList(
             @RequestParam(defaultValue = "0") int page,
@@ -64,7 +73,8 @@ public class AdminStaffController {
         model.addAttribute("staffRequest", adminStaffService.getUpdateForm(id));
         model.addAttribute("departments", departmentService.getAll());
         model.addAttribute("hospitals", hospitalService.getHospitals(0, Integer.MAX_VALUE).getContent());
-                return "admin/staff/edit";
+        model.addAttribute("roles", ROLE_NAMES);
+        return "admin/staff/edit";
     }
 
     @PostMapping("/edit/{id}")

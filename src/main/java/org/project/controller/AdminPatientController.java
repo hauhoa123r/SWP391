@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 
-
 @Controller
 @RequestMapping("/admin/patients")
 @RequiredArgsConstructor
@@ -26,24 +25,38 @@ public class AdminPatientController {
     private final AdminPatientService adminPatientService;
     private final UserService userService;
 
+    // ✅ Danh sách bệnh nhân với tìm kiếm và phân trang
     @GetMapping
     public String getPatientList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "name") String field,
             Model model
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<AdminPatientResponse> patientPage = adminPatientService.getAllPatients(pageable, keyword);
+        Page<AdminPatientResponse> patientPage;
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            // Không có từ khóa → lấy toàn bộ
+            patientPage = adminPatientService.getAllPatients(pageable);
+        } else {
+            // Có từ khóa → lọc theo field
+            patientPage = adminPatientService.getAllPatients(pageable, keyword.trim(), field);
+        }
 
         model.addAttribute("patientPage", patientPage);
         model.addAttribute("currentPage", page);
-        model.addAttribute("keyword", keyword);
         model.addAttribute("totalPages", patientPage.getTotalPages());
+        model.addAttribute("field", field);
+        model.addAttribute("keyword", keyword);
 
         return "dashboard/patient";
     }
 
+
+
+    // ✅ Xem chi tiết bệnh nhân
     @GetMapping("/detail/{id}")
     public String viewPatientDetail(@PathVariable Long id, Model model) {
         AdminPatientDetailResponse patientDetail = adminPatientService.getPatientDetail(id);
@@ -51,6 +64,7 @@ public class AdminPatientController {
         return "admin/patient/detail";
     }
 
+    // ✅ Hiển thị form chỉnh sửa bệnh nhân
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id,
                                @RequestParam(defaultValue = "0") int page,
@@ -62,6 +76,7 @@ public class AdminPatientController {
         return "admin/patient/edit";
     }
 
+    // ✅ Cập nhật thông tin bệnh nhân
     @PostMapping("/edit/{id}")
     public String updatePatient(@PathVariable Long id,
                                 @RequestParam(defaultValue = "0") int page,
@@ -76,6 +91,6 @@ public class AdminPatientController {
         }
         adminPatientService.updatePatient(id, request);
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thành công");
-        return "redirect:/patients/detail/" + id;
+        return "redirect:/admin/patients/detail/" + id;
     }
 }

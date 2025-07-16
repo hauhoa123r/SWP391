@@ -49,9 +49,13 @@ public class AdminPaymentController {
 
         // Gọi service dashboard, nhận PageResponse kèm meta.
         PageResponse<PaymentEntity> res = adminPaymentService.getAllPayments(PageRequest.of(page, size, Sort.by("id").descending()));
-        Page<PaymentEntity> pg = res.getContent(); //trả về 1 Page<PaymentEntity> (tức là 1 trang payment).
-        model.addAttribute("payments", pg.getContent()); //danh sách payment của trang hiện tại
-        model.addAttribute("page", res);// tất cả cacs payment của trang hiện tại
+        Page<PaymentEntity> paymentPage = res.getContent(); //trả về 1 Page<PaymentEntity> (tức là 1 trang payment).
+        model.addAttribute("payments", paymentPage.getContent());
+        model.addAttribute("pageSize", paymentPage.getSize());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", paymentPage.getTotalPages());
+        model.addAttribute("baseUrl", "/payments");
+        model.addAttribute("isSearch", false);
 
         return "dashboard/payment";
     }
@@ -72,6 +76,12 @@ public class AdminPaymentController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             Model model) {
+        boolean noFilter = orderId == null && amount == null && (customer == null || customer.isBlank())
+                && (method == null || method.isBlank()) && (status == null || status.isBlank())
+                && from == null && to == null;
+        if (noFilter) {
+            return "redirect:/payments";
+        }
 
         PageResponse<PaymentEntity> res = adminPaymentService.searchPayments(
                 orderId,
@@ -84,7 +94,13 @@ public class AdminPaymentController {
                 PageRequest.of(page, size, Sort.by("id").descending()));
         Page<PaymentEntity> pg = res.getContent();
         model.addAttribute("payments", pg.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pg.getTotalPages());
+        model.addAttribute("pageSize", pg.getSize());
         model.addAttribute("page", res);
+        model.addAttribute("baseUrl", "/payments/search");
+        model.addAttribute("isSearch", true);
+        // search params
         model.addAttribute("orderId", orderId);
         model.addAttribute("amount", amount);
         model.addAttribute("customer", customer);
@@ -103,6 +119,8 @@ public class AdminPaymentController {
     public String detail(@PathVariable Long id, Model model) {
         PaymentEntity payment = adminPaymentService.getPaymentById(id);
         model.addAttribute("payment", payment);
+        model.addAttribute("baseUrl", "/payments");
+        model.addAttribute("isSearch", false);
         return "dashboard/payment";
     }
 }

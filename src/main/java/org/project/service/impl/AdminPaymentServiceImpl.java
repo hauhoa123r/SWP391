@@ -89,28 +89,39 @@ public class AdminPaymentServiceImpl implements AdminPaymentService {
         // Start with an empty Specification (equivalent to "true" condition)
         Specification<PaymentEntity> spec = Specification.where(null);
 
-        // Apply only the first non-null / non-blank basic filter so that users search by a single field
+        // Áp dụng MỌI bộ lọc được cung cấp (AND)
         if (orderId != null) {
             spec = spec.and((root, q, cb) -> cb.equal(root.get("orderEntity").get("id"), orderId));
-        } else if (amount != null) {
+        }
+        if (amount != null) {
             spec = spec.and((root, q, cb) -> cb.equal(root.get("amount"), amount));
-        } else if (customerEmail != null && !customerEmail.isBlank()) {
+        }
+        if (customerEmail != null && !customerEmail.isBlank()) {
             spec = spec.and((root, q, cb) -> {
                 Join<?, ?> patientJoin = root.join("orderEntity")
                                               .join("appointmentEntity")
                                               .join("patientEntity");
-                return cb.like(cb.lower(patientJoin.get("email")), customerEmail.toLowerCase() + "%");
+                return cb.like(cb.lower(patientJoin.get("email")), "%" + customerEmail.toLowerCase() + "%");
             });
-        } else if (method != null && !method.isBlank()) {
-            spec = spec.and((root, q, cb) -> cb.like(cb.lower(root.get("method")), method.toLowerCase() + "%"));
-        } else if (status != null && !status.isBlank()) {
-            spec = spec.and((root, q, cb) -> cb.like(cb.lower(root.get("status")), status.toLowerCase() + "%"));
         }
-        // Filter by paymentTime between fromDate (start of day) and toDate (end of day)
+        if (method != null && !method.isBlank()) {
+            spec = spec.and((root, q, cb) -> cb.equal(cb.lower(root.get("method")), method.toLowerCase()));
+        }
+        if (status != null && !status.isBlank()) {
+            spec = spec.and((root, q, cb) -> cb.equal(cb.lower(root.get("status")), status.toLowerCase()));
+        }
+        // Filter by paymentTime
         if (fromDate != null || toDate != null) {
-            Timestamp from = fromDate != null ? Timestamp.valueOf(fromDate.atStartOfDay()) : Timestamp.valueOf(LocalDate.of(1970,1,1).atStartOfDay());
-            Timestamp to   = toDate != null ? Timestamp.valueOf(toDate.plusDays(1).atStartOfDay()) : Timestamp.valueOf(LocalDate.of(3000,1,1).atStartOfDay());
-            spec = spec.and((root, q, cb) -> cb.between(root.get("paymentTime"), from, to));
+            // Nếu chỉ chọn 1 ngày (chỉ from hoặc chỉ to) => lấy trọn ngày đó
+            if (fromDate != null && toDate == null) {
+                toDate = fromDate; // cùng 1 ngày
+            }
+            if (toDate != null && fromDate == null) {
+                fromDate = toDate;
+            }
+            Timestamp fromTs = Timestamp.valueOf(fromDate.atStartOfDay());
+            Timestamp toTs   = Timestamp.valueOf(toDate.plusDays(1).atStartOfDay()); // exclusive end next day 00:00
+            spec = spec.and((root, q, cb) -> cb.between(root.get("paymentTime"), fromTs, toTs));
         }
         Page<PaymentEntity> page = adminPaymentRepository.findAll(spec, pageable);
         return new PageResponse<>(page);

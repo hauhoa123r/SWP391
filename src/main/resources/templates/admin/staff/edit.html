@@ -66,19 +66,28 @@
 
                     <div class="col-md-4">
                         <label class="form-label">🎯 Vai trò</label>
+                        <label class="form-label">🎯 Vai trò</label>
                         <select th:field="*{staffRole}" class="form-select">
                             <option value="DOCTOR">Bác sĩ</option>
+                            <option value="TECHNICIAN">Kỹ thuật viên</option>
                             <option value="NURSE">Y tá</option>
-                            <option value="ADMIN">Quản trị</option>
+                            <option value="SCHEDULING_COORDINATOR">Điều phối viên lịch</option>
+                            <option value="PHARMACIST">Dược sĩ</option>
+                            <option value="INVENTORY_MANAGER">Quản lý thiết bị</option>
+                            <option value="LAB_RECEIVER">Tiếp nhận xét nghiệm</option>
                         </select>
+
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">⚙️ Loại</label>
+                        <label class="form-label">🕒 Loại hình làm việc</label>
                         <select th:field="*{staffType}" class="form-select">
                             <option value="FULL_TIME">Toàn thời gian</option>
-                            <option value="PART_TIME">Bán thời gian</option>
-                            <option value="CONTRACT">Hợp đồng</option>
+                            <option value="PART_TIME_CONTRACT">Bán thời gian (hợp đồng)</option>
+                            <option value="INTERN">Thực tập sinh</option>
+                            <option value="CONSULTANT">Tư vấn viên</option>
                         </select>
+
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">⭐ Hạng nhân viên</label>
