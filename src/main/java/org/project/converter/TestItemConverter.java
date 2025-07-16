@@ -39,6 +39,7 @@ public class TestItemConverter {
         result.setManagerName(testRequestEntity.getAppointmentEntity().getDoctorEntity().getStaffEntity().getFullName());
         result.setDepartmentName(testRequestEntity.getAppointmentEntity().getDoctorEntity().getStaffEntity().getDepartmentEntity().getName());
         result.setRequestAt(testRequestEntity.getRequestTime().toString());
+        result.setId(sampleEntity.get().getId());
         List<String> unitName = new ArrayList<>();
         List<String> testItemName = new ArrayList<>();
 

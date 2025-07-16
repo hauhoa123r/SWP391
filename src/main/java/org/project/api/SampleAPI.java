@@ -1,6 +1,5 @@
 package org.project.api;
 
-import org.project.entity.SampleEntity;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.RejectCollectDTO;
 import org.project.model.dto.RejectSampleScheduleDTO;
@@ -8,13 +7,14 @@ import org.project.model.dto.SampleFilterDTO;
 import org.project.model.request.CreateSamplePatientRequest;
 import org.project.model.response.SampleConfirmResponse;
 import org.project.model.response.SampleScheduleResponse;
+import org.project.model.response.SymtomResponse;
+import org.project.service.ReferrenceRangeService;
 import org.project.service.SampleScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @RestController
@@ -23,6 +23,12 @@ public class SampleAPI {
 
     @Autowired
     private SampleScheduleService sampleScheduleServiceImpl;
+
+    private final ReferrenceRangeService referrenceRangeService;
+
+    SampleAPI(ReferrenceRangeService referrenceRangeService){
+        this.referrenceRangeService = referrenceRangeService;
+    }
 
     @GetMapping("/filter")
     public ResponseEntity<?> filter(@ModelAttribute SampleFilterDTO sampleFilterDTO) {
@@ -98,7 +104,12 @@ public class SampleAPI {
 
     @PostMapping("/result")
     public ResponseEntity<?> getResult(@RequestBody Map<String, String> dataUnit){
+        SymtomResponse symtomResponse = referrenceRangeService.getSymtomResponse(dataUnit);
+        return ResponseEntity.ok(symtomResponse);
+    }
 
-        return ResponseEntity.ok("success");
+    @PostMapping("/set-result")
+    public ResponseEntity<?> setResultSample(@RequestBody Map<String, String> dataDTO){
+        return ResponseEntity.ok("ok");
     }
 }

@@ -906,6 +906,7 @@
                                     <form>
                                         <table class="table table-bordered">
                                             <input type="hidden" th:value="${result.getTestTypeId()}" id="testTypeId">
+                                            <input type="hidden" th:value="${result.getId()}" id="sampleId">
                                             <thead>
                                                 <tr>
                                                     <th th:each="test : ${result.getTestItemName()}" th:text="${test}" class="nameUnitData"></th>
@@ -933,6 +934,16 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
+                                            <div id="toast-container" style="
+                                                position: fixed;
+                                                top: 20px;
+                                                right: 20px;
+                                                display: none;
+                                                z-index: 9999;">
+                                                <div class="alert alert-danger mb-0 py-2 px-3 shadow" role="alert" style="min-width: 200px;">
+                                                    Phải nhập số!
+                                                </div>
+                                            </div>
                                         </table>
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#confirmModal">
@@ -1859,7 +1870,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Xác nhận</button>
+                    <button type="button" class="btn btn-success" id="confirmBtn">Xác nhận</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
 
                 </div>
@@ -1946,13 +1957,6 @@
  defer></script>
 </body>
 <script>
-    $(document).ready(function () {
-        getAllNameOfDataUnit();
-        $('.counter').counterUp({
-            delay: 10,
-            time: 1000
-        });
-    })
     function sizeOfUnitTest(data, number) {
         const size = data.length;
         const colOne = Math.floor(size / 2);
@@ -1960,16 +1964,6 @@
 
         return number === 1 ? colOne : colTwo;
     }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const data = [];
-        $('.unitTestInput').each(function(){
-            data.push($(this).val());
-        });
-
-        document.getElementById('leftCol').setAttribute('colspan', sizeOfUnitTest(data,1));
-        document.getElementById('rightCol').setAttribute('colspan', sizeOfUnitTest(data,2));
-    })
 
     function getAllElementDateUnit(){
         const data = [];
@@ -1990,10 +1984,14 @@
         const names = getAllNameOfDataUnit();
         const values = getAllElementDateUnit();
         const testTypeId = $('#testTypeId').val();
+        const sampleId = $('#sampleId').val();
+        const symptom = $('#exampleFormControlTextarea1').val();
         for (let i = 0; i < names.length; i++) {
             result[names[i]] = values[i];
         }
         result['testTypeId'] = testTypeId;
+        result['sampleId'] = sampleId;
+        result['symptom'] = symptom;
         return result;
     }
 
@@ -2006,6 +2004,7 @@
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function (response) {
+                insertDataSafeRate(response);
             },
             fail: function (error) {
                 alert("fail");
@@ -2022,40 +2021,132 @@
     });
 
     document.addEventListener("DOMContentLoaded", function () {
-        insertData();
+        insertDataSafeRate(null);
+
+        const data = [];
+        $('.unitTestInput').each(function(){
+            data.push($(this).val());
+        });
+
+        document.getElementById('leftCol').setAttribute('colspan', sizeOfUnitTest(data,1));
+        document.getElementById('rightCol').setAttribute('colspan', sizeOfUnitTest(data,2));
     })
 
 
-    function insertData(data){
-        let html = '';
-        html += '                                                            <div class="text-center">Safe Rate</div>\n' +
-            '                                                            <div\n' +
-            '                                                                class="d-flex align-items-center justify-content-between mt-3">\n' +
-            '                                                                <div>\n' +
-            '                                                                    <h2 class="counter">2.648</h2>\n' +
-            '                                                                    26.84%\n' +
-            '                                                                </div>\n' +
-            '                                                                <input type="hidden" id="safeRate">\n' +
-            '                                                                <div class="bg-danger-subtle rounded p-3">\n' +
-            '                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20px"\n' +
-            '                                                                        height="20px" fill="none" viewBox="0 0 24 24"\n' +
-            '                                                                        stroke="currentColor">\n' +
-            '                                                                        <path stroke-linecap="round"\n' +
-            '                                                                            stroke-linejoin="round" stroke-width="2"\n' +
-            '                                                                            d="M5 10l7-7m0 0l7 7m-7-7v18" />\n' +
-            '                                                                    </svg>\n' +
-            '                                                                </div>\n' +
-            '                                                            </div>\n' +
-            '                                                            <div class="mt-4">\n' +
-            '                                                                <div class="progress bg-danger-subtle shadow-none w-100"\n' +
-            '                                                                    style="height: 6px">\n' +
-            '                                                                    <div class="progress-bar bg-danger"\n' +
-            '                                                                        data-toggle="progress-bar" role="progressbar"\n' +
-            '                                                                        aria-valuenow="70" aria-valuemin="0"\n' +
-            '                                                                        aria-valuemax="100"></div>\n' +
-            '                                                                </div>\n' +
-            '                                                            </div>'
+    function insertDataSafeRate(data) {
+        let status = '';
+        if (data === null) {
+            status = 'Safe';
+        } else {
+            status = data.status;
+        }
+
+        let percent = 100;
+
+        const isNormal = status === 'Safe';
+        const colorClass = isNormal ? 'success' : 'danger';
+
+        const iconSVG = isNormal
+            ? `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
+                class="bi bi-heart-fill" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                      d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+           </svg>`
+            : `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
+                class="bi bi-exclamation-octagon-fill" viewBox="0 0 16 16">
+                <path
+                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394
+                    4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0
+                    .146-.353V4.893a.5.5 0 0 0-.146-.353zM8 4c.535 0 .954.462.9.995l-.35
+                    3.507a.552.552 0 0 1-1.1 0L7.1
+                    4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+           </svg>`;
+
+        const html = `
+        <div class="text-center">Safe Rate</div>
+        <div class="d-flex align-items-center justify-content-between mt-3">
+            <div>
+                <h2 id="statusText" class="text-${colorClass}">${status}</h2>
+            </div>
+            <input type="hidden" id="safeRate">
+            <div class="bg-${colorClass}-subtle rounded p-3">
+                ${iconSVG}
+            </div>
+        </div>
+        <div class="mt-4">
+            <div class="progress bg-${colorClass}-subtle shadow-none w-100" style="height: 6px;">
+                <div id="progressBar"
+                     class="progress-bar bg-${colorClass}"
+                     role="progressbar"
+                     style="width: 0%;"
+                     aria-valuemin="0"
+                     aria-valuemax="100"
+                     data-label="${percent}">
+                </div>
+            </div>
+        </div>
+    `;
+
         $('#safeZoneBody').html(html);
+
+        setTimeout(() => {
+            const bar = document.getElementById('progressBar');
+            const value = parseInt(bar.getAttribute('data-label')) || 0;
+            bar.style.width = `${value}%`;
+            bar.setAttribute('aria-valuenow', value);
+        }, 100);
+
+        if (data !== null && Array.isArray(data.symtomText)) {
+            const text = data.symtomText.join('\n');
+            document.getElementById("exampleFormControlTextarea1").value = text;
+            const dataDetail = text + '\n' + data.unitDataDetails.join('\n');
+            document.getElementById("exampleFormControlTextarea1").value = dataDetail;
+        } else {
+            document.getElementById("exampleFormControlTextarea1").value = '';
+        }
     }
+
+    function showToast(message) {
+        const toastContainer = document.getElementById("toast-container");
+        toastContainer.querySelector('.alert').textContent = message;
+        toastContainer.style.display = "block";
+        setTimeout(() => {
+            toastContainer.style.display = "none";
+        }, 3000);
+    }
+
+    $(document).on('input', '.unitTestInput', function () {
+        const val = $(this).val();
+        if (val !== '' && !/^\d*\.?\d*$/.test(val)) {
+            showToast("Phải nhập số!");
+            $(this).val('');
+            return;
+        }
+
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            callAPI();
+        }, 3000);
+    });
+
+    $(document).on('click', '#confirmBtn', function (){
+        const data = buildJsonFromInputs();
+        $.ajax({
+            url: '/api/sample/set-result',
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (response) {
+                alert("ok")
+            },
+            fail: function (error) {
+                alert("fail");
+            }
+
+        })
+
+
+
+    });
 </script>
 </html>
