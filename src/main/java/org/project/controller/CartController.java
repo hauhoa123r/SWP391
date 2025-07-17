@@ -8,7 +8,9 @@ import java.util.Optional;
 import org.project.entity.CartItemEntity;
 import org.project.entity.CartItemEntityId;
 import org.project.entity.CouponEntity;
+import org.project.entity.StaffEntity;
 import org.project.service.CartService;
+import org.project.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,25 +25,23 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/cart")
+@RequiredArgsConstructor
 public class CartController {
 
 	// private static final String SESSION_USER_ID = "userId";
 
 	private final CartService cartService;
 
-	public CartController(CartService cartService) {
-		this.cartService = cartService;
-	}
-
 	// view all cart items of the user
 	// including the total amount of money and number of item in cart
 	@GetMapping
 	public String viewCart(Model model) {
 		Long userId = 2l;
-		
+
 		List<CartItemEntity> cartItems = cartService.getCart(userId);
 		model.addAttribute("cartItems", cartItems);
 		model.addAttribute("total", cartService.calculateTotal(userId));
@@ -62,7 +62,7 @@ public class CartController {
 	// change item quantity by pressing + -
 	@PostMapping("/update")
 	public String updateCartItemQuantity(@RequestParam Long cartId, @RequestParam Long userId,
-			@RequestParam("action") String action) {
+			@RequestParam String action) {
 		userId = 2l;
 		CartItemEntityId id = new CartItemEntityId(cartId, userId);
 		CartItemEntity item = cartService.getItemById(id);
@@ -82,7 +82,6 @@ public class CartController {
 		cartService.updateItem(item);
 		return "redirect:/cart";
 	}
-	
 
 	// change item quantity by directly entering value
 	@PostMapping("/update-quantity")
@@ -99,7 +98,6 @@ public class CartController {
 		return "redirect:/cart";
 	}
 
-	// TODO: need to finish (help)
 
 	@GetMapping("/checkout")
 	public String checkout() {

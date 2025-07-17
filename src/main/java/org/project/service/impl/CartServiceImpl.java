@@ -33,8 +33,8 @@ public class CartServiceImpl implements CartService {
 	@Autowired
 	private final UserRepository userRepo;
 
-	
-	public CartServiceImpl(CartRepository cartRepo, ProductRepository productRepo, CouponRepository couponRepo, UserRepository userRepo) {
+	public CartServiceImpl(CartRepository cartRepo, ProductRepository productRepo, CouponRepository couponRepo,
+			UserRepository userRepo) {
 		this.cartRepo = cartRepo;
 		this.productRepo = productRepo;
 		this.couponRepo = couponRepo;
@@ -50,20 +50,21 @@ public class CartServiceImpl implements CartService {
 	public void removeItem(Long userId, Long productId) {
 		cartRepo.deleteByUserEntityIdAndProductEntityId(userId, productId);
 	}
-	
+
 	public CartItemEntity getItemById(CartItemEntityId id) {
 		CartItemEntity item = cartRepo.findById(id).orElse(null);
-	    return item;
+		return item;
 	}
-    @Override
-    public void updateItem(CartItemEntity item) {
-        cartRepo.save(item); // save() updates if ID is present
-    }
 
-    //calculate total amount of money in cart (no coupon applied)
+	@Override
+	public void updateItem(CartItemEntity item) {
+		cartRepo.save(item); // save() updates if ID is present
+	}
+
+	// calculate total amount of money in cart (no coupon applied)
 	@Override
 	public BigDecimal calculateTotal(Long userId) {
-		//get items from user
+		// get items from user
 		List<CartItemEntity> items = cartRepo.findByUserEntityId(userId);
 		return items.stream().map(item -> {
 			BigDecimal price = item.getProductEntity().getPrice();
@@ -74,37 +75,37 @@ public class CartServiceImpl implements CartService {
 			return price.multiply(BigDecimal.valueOf(quantity));
 		}).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
+
 	// add item to cart
 	@Override
 	public void addItem(Long userId, Long productId, Integer quantity) {
-	        // Load the user and product entities
-	        UserEntity user = userRepo.findById(userId)
-	                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-	        ProductEntity product = productRepo.findById(productId)
-	                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+		// Load the user and product entities
+		UserEntity user = userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+		ProductEntity product = productRepo.findById(productId)
+				.orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-	        // Create composite key
-	        CartItemEntityId cartItemId = new CartItemEntityId();
-	        cartItemId.setUserId(userId);
-	        cartItemId.setCartItemId(productId); // Link cartItemId to productId
+		// Create composite key
+		CartItemEntityId cartItemId = new CartItemEntityId();
+		cartItemId.setUserId(userId);
+		cartItemId.setCartItemId(productId); // Link cartItemId to productId
 
-	        // Try to find existing cart item
-	        Optional<CartItemEntity> optionalCartItem = cartRepo.findById(cartItemId);
+		// Try to find existing cart item
+		Optional<CartItemEntity> optionalCartItem = cartRepo.findById(cartItemId);
 
-	        if (optionalCartItem.isPresent()) {
-	            // get quantity
-	            CartItemEntity existingItem = optionalCartItem.get();
-	            existingItem.setQuantity(existingItem.getQuantity() + quantity);
-	        } else {
-	            // Create new cart item
-	            CartItemEntity newItem = new CartItemEntity();
-	            newItem.setId(cartItemId);
-	            newItem.setUserEntity(user);
-	            newItem.setProductEntity(product);
-	            newItem.setQuantity(quantity);
-	            cartRepo.save(newItem);
-	        }
-	    
+		if (optionalCartItem.isPresent()) {
+			// get quantity
+			CartItemEntity existingItem = optionalCartItem.get();
+			existingItem.setQuantity(existingItem.getQuantity() + quantity);
+		} else {
+			// Create new cart item
+			CartItemEntity newItem = new CartItemEntity();
+			newItem.setId(cartItemId);
+			newItem.setUserEntity(user);
+			newItem.setProductEntity(product);
+			newItem.setQuantity(quantity);
+			cartRepo.save(newItem);
+		}
+
 	}
-	
+
 }
