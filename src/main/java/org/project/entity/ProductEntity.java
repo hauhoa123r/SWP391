@@ -54,7 +54,7 @@ public class ProductEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany
+    @OneToMany(mappedBy = "productEntity")
     private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
@@ -72,7 +72,7 @@ public class ProductEntity {
     @OneToOne(mappedBy = "productEntity")
     private PricingPlanEntity pricingPlanEntity;
 
-    @OneToMany(mappedBy = "productEntity")
+    @OneToMany(mappedBy = "productEntity", cascade =  CascadeType.ALL,  orphanRemoval = true)
     private Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "productEntities")
@@ -90,9 +90,9 @@ public class ProductEntity {
     private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
     @OneToMany(mappedBy = "productEntity")
     private Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
-    @OneToOne(mappedBy = "productEntity")
-    private TestEntity testEntity;
-    @ManyToMany
+    //@OneToOne(mappedBy = "productEntity")
+    //private TestEntity testEntity;
+    @ManyToMany(mappedBy = "products")
     private Set<UserEntity> userEntities = new LinkedHashSet<>();
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'MEDICAL_PRODUCT'")

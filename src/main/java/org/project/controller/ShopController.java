@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.project.model.dto.ProductDetailDTO;
 import org.project.model.dto.ReviewDTO;
 import org.project.model.response.PharmacyListResponse;
 import org.project.projection.ProductViewProjection;
@@ -21,14 +22,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-
 @Controller
 public class ShopController {
 
 	@Autowired
 	private PharmacyService pharmacyServiceImpl;
-	
-	
+
 	@GetMapping("/shop")
 	public ModelAndView shop(@RequestParam(value = "search", required = false) String search) {
 		ModelAndView mv = new ModelAndView("frontend/shop");
@@ -41,8 +40,7 @@ public class ShopController {
 		}
 		return mv;
 	}
-	
-	
+
 	@PostMapping("/submit")
 	public String search(@RequestParam("search") String search) {
 		// Redirect to the shop page with the search query
@@ -58,109 +56,146 @@ public class ShopController {
 		ModelAndView mv = new ModelAndView("frontend/product-standard");
 		return mv;
 	}
-	
-	@GetMapping("/product-standard/{id}") 
-	public String getProduct(@PathVariable("id") Long id, Model model) {
-		// Check if the ID is null or less than 1 
-		if (id == null || id < 1) {
-			throw new IllegalArgumentException("Invalid product ID: " + id);
+
+//	@GetMapping("/product-standard/{id}")
+//	public String getProduct(@PathVariable("id") Long id, Model model) {
+//		// Check if the ID is null or less than 1
+//		if (id == null || id < 1) {
+//			throw new IllegalArgumentException("Invalid product ID: " + id);
+//		}
+//		// Fetch the product by ID
+////		PharmacyListResponse product = pharmacyServiceImpl.findById(id);
+//		List<ProductViewProjection> product = pharmacyServiceImpl.findAllProductsWithFullInfo(id);
+//		// Check if the product is null
+//		if (product == null) {
+//			throw new IllegalArgumentException("No product found with ID: " + id);
+//		}
+//		// Map of additional information (name-value pairs)
+//		Map<String, String> additionalInfo = new HashMap<>();
+//		// List of categories name
+//		Set<String> categories = new HashSet<>();
+//		// set of tag
+//		Set<String> tags = new HashSet<>();
+//		// Set of reviews with linkedHashSet to avoid duplicates and keep insertion
+//		// order
+//		Set<ReviewDTO> reviews = new LinkedHashSet<>();
+//		// List of related products
+//		List<PharmacyListResponse> relatedProducts = pharmacyServiceImpl
+//				.findRandomProductsByType(product.get(0).getType());
+//		// iterate through the product's additional information and add it to the map
+//		for (ProductViewProjection info : product) {
+//			// Get name
+//			String name = info.getAdditionalInfoName();
+//			// Get value
+//			String value = info.getAdditionalInfoValue();
+//			// set naem of categories
+//			String categoryName = info.getCategoryName();
+//			// set the tag name
+//			String tagName = info.getTagName();
+//			// set the string of review content
+//			String reviewContent = info.getReviewContent();
+//			// If name is not null, add to the map
+//			if (name != null && !name.isEmpty()) {
+//				// add to the map
+//				additionalInfo.put(name, value);
+//			}
+//			// If category name is not null, add to the list
+//			if (categoryName != null && !categoryName.isEmpty()) {
+//				// add to the list
+//				categories.add(categoryName);
+//			} else {
+//				categories.add("N/A"); // If no category, add "N/A"
+//			}
+//			// If tag name is not null, add to the set
+//			if (tagName != null && !tagName.isEmpty()) {
+//				tags.add(tagName);
+//			} else {
+//				tags.add("N/A"); // If no tag, add "N/A"
+//			}
+//			// If review content is not null, create a ReviewDTO and add to the list
+//			if (reviewContent != null && !reviewContent.isEmpty()) {
+//				// Create a ReviewDTO object
+//				ReviewDTO review = new ReviewDTO();
+//				// Set the patient full name
+//				review.setPatientFullName(info.getPatientFullName());
+//				// Set the patient image URL
+//				review.setPatientImageUrl(info.getPatientAvatarUrl());
+//				// Set the content of the review
+//				review.setContent(reviewContent);
+//				// Set the rating of the review
+//				review.setRating(info.getReviewRating());
+//				// Add the review to the list
+//				reviews.add(review);
+//			}
+//			// If review content is null, add a default review
+//			else {
+//				ReviewDTO review = new ReviewDTO();
+//				review.setPatientFullName("Anonymous");
+//				review.setPatientImageUrl("/frontend_assets/assets/images/general/avatar.png");
+//				review.setContent("No reviews yet.");
+//				review.setRating(0);
+//				reviews.add(review);
+//			}
+//		}
+//		// join the categories set to a string with commas
+//		String categoriesString = String.join(", ", categories);
+//		// join the tags set to a string with commas
+//		String tagsString = String.join(", ", tags);
+//		// If categories is empty, add "N/A"
+//		if (categories.isEmpty()) {
+//			categories.add("N/A");
+//		}
+//		// Add the product to the model
+//		model.addAttribute("product", product.get(0)); // Assuming the projection returns a list, take the first item
+//		// add the additional information map to the model
+//		model.addAttribute("additionalInfo", additionalInfo);
+//		// add the categories list to the model
+//		model.addAttribute("categories", categories);
+//		// add the categories string to the model
+//		model.addAttribute("categoriesString", categoriesString);
+//		// add the tags string to the model
+//		model.addAttribute("tagsString", tagsString);
+//		// Add the reviews list to the model
+//		model.addAttribute("reviews", reviews);
+//		// Add the related products to the model
+//		model.addAttribute("relatedProducts", relatedProducts);
+//		// Return the view name
+//		return "frontend/product-standard";
+//	}
+
+	@GetMapping("/product-standard/{id}")
+	public String getProductDetail(@PathVariable("id") Long productId, Model model) {
+		// get detailDTO by id
+		ProductDetailDTO detailDTO = pharmacyServiceImpl.getProductDetailById(productId);
+		// format categories to string
+		String categoriesString = String.join(", ", detailDTO.getCategories());
+		// format tags to String
+		String tagsString = String.join(", ", detailDTO.getTags());
+		// Check if categories is empty
+		if (detailDTO.getCategories().isEmpty()) {
+			categoriesString = "N/A";
 		}
-		// Fetch the product by ID
-//		PharmacyListResponse product = pharmacyServiceImpl.findById(id);
-		List<ProductViewProjection> product = pharmacyServiceImpl.findAllProductsWithFullInfo(id);  
-		// Check if the product is null
-		if (product == null) {
-			throw new IllegalArgumentException("No product found with ID: " + id);
+		// Check if no tags
+		if (detailDTO.getTags().isEmpty()) {
+			tagsString = "N/A";
 		}
-		//Map of additional information (name-value pairs) 
-		Map<String, String> additionalInfo = new HashMap<>(); 
-		//List of categories name 
-		Set<String> categories = new HashSet<>(); 
-		//set of tag 
-		Set<String> tags = new HashSet<>(); 
-		//Set of reviews with linkedHashSet to avoid duplicates and keep insertion order  
-		Set<ReviewDTO> reviews = new LinkedHashSet<>();  
-		//List of related products 
-		List<PharmacyListResponse> relatedProducts = pharmacyServiceImpl.findRandomProductsByType(product.get(0).getType()); 
-		//iterate through the product's additional information and add it to the map 
-		for (ProductViewProjection info : product) {
-			//Get name 
-			String name = info.getAdditionalInfoName(); 
-			//Get value 
-			String value = info.getAdditionalInfoValue(); 
-			//set naem of categories 
-			String categoryName = info.getCategoryName(); 
-			//set the tag name 
-			String tagName = info.getTagName(); 
-			//set the string of review content 
-			String reviewContent = info.getReviewContent(); 
-			// If name is not null, add to the map 
-			if (name != null && !name.isEmpty()) {
-				//add to the map 
-				additionalInfo.put(name, value);
-			}
-			// If category name is not null, add to the list 
-			if (categoryName != null && !categoryName.isEmpty()) {
-				//add to the list 
-				categories.add(categoryName);
-			}
-			else {
-				categories.add("N/A"); // If no category, add "N/A" 
-			}
-			// If tag name is not null, add to the set 
-			if (tagName != null && !tagName.isEmpty()) {
-				tags.add(tagName);
-			} 
-			else {
-				tags.add("N/A"); // If no tag, add "N/A" 
-			}
-			// If review content is not null, create a ReviewDTO and add to the list 
-			if (reviewContent != null && !reviewContent.isEmpty()) {
-				// Create a ReviewDTO object 
-				ReviewDTO review = new ReviewDTO();
-				// Set the patient full name 
-				review.setPatientFullName(info.getPatientFullName());
-				// Set the patient image URL 
-				review.setPatientImageUrl(info.getPatientAvatarUrl());
-				// Set the content of the review 
-				review.setContent(reviewContent);
-				// Set the rating of the review 
-				review.setRating(info.getReviewRating());
-				// Add the review to the list 
-				reviews.add(review);
-			} 
-			// If review content is null, add a default review 
-			else {
-				ReviewDTO review = new ReviewDTO();
-				review.setPatientFullName("Anonymous");
-				review.setPatientImageUrl("/frontend_assets/assets/images/general/avatar.png");
-				review.setContent("No reviews yet.");
-				review.setRating(0);
-				reviews.add(review);
-			}
-		}
-		//join the categories set to a string with commas 
-		String categoriesString = String.join(", ", categories);
-		//join the tags set to a string with commas 
-		String tagsString = String.join(", ", tags); 
-		// If categories is empty, add "N/A"	
-		if (categories.isEmpty()) {
-			categories.add("N/A");
-		} 
-		// Add the product to the model
-		model.addAttribute("product", product.get(0)); // Assuming the projection returns a list, take the first item
-		//add the additional information map to the model 
-		model.addAttribute("additionalInfo", additionalInfo);
-		//add the categories list to the model 
-		model.addAttribute("categories", categories); 
-		//add the categories string to the model 
+		// add product attribute
+		model.addAttribute("product", detailDTO.getProduct());
+		// add additional info
+		model.addAttribute("additionalInfo", detailDTO.getAdditionalInfos());
+		// add categories
+		model.addAttribute("categories", detailDTO.getCategories());
+		// add categories String
 		model.addAttribute("categoriesString", categoriesString);
-		//add the tags string to the model
-		model.addAttribute("tagsString", tagsString); 
-		//Add the reviews list to the model 
-		model.addAttribute("reviews", reviews); 
-		//Add the related products to the model 
-		model.addAttribute("relatedProducts", relatedProducts); 
+		// add tags
+		model.addAttribute("tags", detailDTO.getTags());
+		// add tagsString
+		model.addAttribute("tagsString", tagsString);
+		// add reviews
+		model.addAttribute("reviews", detailDTO.getReviews());
+		// add related product
+		model.addAttribute("relatedProducts",
+				pharmacyServiceImpl.findRandomProductsByType(detailDTO.getProduct().getType().toString()));
 		// Return the view name
 		return "frontend/product-standard";
 	}
@@ -168,7 +203,7 @@ public class ShopController {
 	@GetMapping("/product-home")
 	public ModelAndView productHome() {
 		ModelAndView mv = new ModelAndView("frontend/product-home");
-		// Fetch top 10 products for the home page 
+		// Fetch top 10 products for the home page
 		mv.addObject("products", pharmacyServiceImpl.findTop10Products());
 		return mv;
 	}

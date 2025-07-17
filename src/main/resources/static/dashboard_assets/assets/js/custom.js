@@ -1,5 +1,5 @@
 /*----------------------------------------------
-Index Of Script
+Index Of Script (jQuery)
 ------------------------------------------------
 
 :: Before After Image
@@ -10,7 +10,20 @@ Index Of Script
 
 ------------------------------------------------
 Index Of Script
-----------------------------------------------*/
+----------------------------------------------*/ 
+
+/*----------------------------------------------
+Index Of Script (Custom JS)
+------------------------------------------------
+
+:: Preview Image 
+:: Auto-fill data in update form 
+
+------------------------------------------------
+Index Of Script
+----------------------------------------------*/ 
+
+
 
 (function (jQuery) {
   "use strict";
@@ -232,4 +245,61 @@ Index Of Script
       }
     });
   });
-})(jQuery);
+})(jQuery); 
+
+//Preview image 
+function previewImage(event) {
+      const file = event.target.files[0];
+      const preview = document.getElementById("imagePreview");
+
+      if (file) {
+         const reader = new FileReader();
+
+         reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+         };
+
+         reader.readAsDataURL(file);
+      } else {
+         preview.src = "#";
+         preview.style.display = "none";
+      }
+   }
+
+//auto-fill data 
+
+//function updateAutofill() {
+  //select all by class btn-edit (each one has a btn, so select all)
+ // document.querySelectorAll('.btn-edit').forEach(
+  //    button => {
+  //      button.addEventListener('click', function () {
+  //        const productId = this.dataset.id;
+
+    //      fetch('/admin/products/update/${productId}')
+ //             .then(response => response.json())
+ //             .then(data => {
+                //get product id
+  //              document.querySelector('#Id').value = data.id;
+                //get name
+  //              document.querySelector("#Name").value = data.name;
+                //get category
+  //              document.querySelector("#Category").value = data.categoryIds[0];
+                //get price
+    //            document.querySelector("#Price").value = data.price;
+                //get stock quantities
+   //             document.querySelector("#stockQuantities").value = data.stockQuantities;
+                //get unit
+   //             document.querySelector("#unit").value = data.unit;
+                //get label
+  //              document.querySelector("#label").value = data.label[0];
+                //get type
+  //              document.querySelector("#type").value = data.type[0];
+                //get status
+    //            document.querySelector("#status").value = data.status[0];
+
+     //         })
+   //     })
+  //    }
+//  )
+//}

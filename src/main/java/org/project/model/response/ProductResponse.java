@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+import org.project.model.dto.ReviewDTO;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,8 +19,4 @@ public class ProductResponse {
     private String description;
     private String imageUrl;
     private Double price;
-    private List<CategoryResponse> categoryEntities;
-    private List<ProductAdditionalInfoResponse> productAdditionalInfoEntities;
-    private Integer reviewCount;
-    private Double averageRating;
 }
