@@ -1,6 +1,7 @@
 package org.project.repository;
 
 import org.project.entity.AppointmentEntity;
+import org.project.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,4 +21,6 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     int countTotalAppointmentsToday();
 
     Collection<? extends AppointmentEntity> findByPatientEntityIdAndStartTimeBetween(Long patientEntityId, Timestamp startTimeAfter, Timestamp startTimeBefore);
+
+    Long countByAppointmentStatusAndServiceEntityDepartmentEntityId(AppointmentStatus appointmentStatus, Long serviceEntityDepartmentEntityId);
 }

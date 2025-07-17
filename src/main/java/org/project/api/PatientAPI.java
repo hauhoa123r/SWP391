@@ -1,5 +1,7 @@
 package org.project.api;
 
+import jakarta.servlet.http.HttpSession;
+import org.project.entity.UserEntity;
 import org.project.model.dto.PatientDTO;
 import org.project.model.response.PatientResponse;
 import org.project.service.PatientService;
@@ -7,13 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/patient")
 public class PatientAPI {
     private final int PAGE_SIZE = 2;
 
@@ -24,9 +23,10 @@ public class PatientAPI {
         this.patientService = patientService;
     }
 
-    @GetMapping("/page/{pageIndex}/user/{userId}")
-    public ResponseEntity<Map<String, Object>> getAllPatients(@PathVariable int pageIndex, @PathVariable Long userId) {
-        Page<PatientResponse> patientResponsePage = patientService.getPatientsByUser(userId, pageIndex, PAGE_SIZE);
+    @GetMapping("/api/patient/booking/patient/page/{pageIndex}")
+    public ResponseEntity<Map<String, Object>> getAllPatients(@PathVariable int pageIndex, HttpSession httpSession) {
+        UserEntity userEntity = (UserEntity) httpSession.getAttribute("user");
+        Page<PatientResponse> patientResponsePage = patientService.getPatientsByUser(userEntity.getId(), pageIndex, PAGE_SIZE);
         return ResponseEntity.ok(
                 Map.of(
                         "patients", patientResponsePage.getContent(),
@@ -36,7 +36,7 @@ public class PatientAPI {
         );
     }
 
-    @GetMapping("/page/{pageIndex}/user/{userId}/search/{keyword}")
+    @GetMapping("/api/patient/booking/patient/page/{pageIndex}/user/{userId}/search/{keyword}")
     public ResponseEntity<Map<String, Object>> getPatientsByUserAndKeyword(
             @PathVariable int pageIndex,
             @PathVariable Long userId,
@@ -51,7 +51,7 @@ public class PatientAPI {
         );
     }
 
-    @PatchMapping("/update/{patientId}")
+    @PatchMapping("/api/patient/update/{patientId}")
     public ResponseEntity<?> updatePatient(@RequestBody PatientDTO patientDTO,
                                            @PathVariable Long patientId) {
         try {
@@ -66,7 +66,7 @@ public class PatientAPI {
         }
     }
 
-    @DeleteMapping("/delete/{patientId}")
+    @DeleteMapping("/api/patient/delete/{patientId}")
     public ResponseEntity<?> deletePatient(@PathVariable Long patientId) {
         try {
             patientService.deletePatient(patientId);
