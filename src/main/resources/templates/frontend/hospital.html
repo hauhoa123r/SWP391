@@ -1,0 +1,72 @@
+<!doctype html>
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        breadCrumbTitle = ${'Danh sách bệnh viện'},
+        breadCrumbTexts = ${{{'Danh sách bệnh viện'}}},
+        breadCrumbLinks = ${{{''}}}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách bệnh viện</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="container mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white mb-0">
+                    <h5 class="mb-4 text-white">Tìm kiếm bệnh viện</h5>
+                </div>
+                <div class="card-body">
+                    <form id="hospital-filter-form">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label" for="hospitalName">Tên bệnh viện</label>
+                                <input class="form-control" id="hospitalName" name="name"
+                                       placeholder="Nhập tên bệnh viện" type="text">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label" for="hospitalAddress">Địa chỉ</label>
+                                <input class="form-control" id="hospitalAddress" name="address"
+                                       placeholder="Nhập địa chỉ" type="text">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label" for="sortField">Sắp xếp theo</label>
+                                <select class="form-select" id="sortField" name="sortFieldName">
+                                    <option value="">Không sắp xếp</option>
+                                    <option value="name">Tên</option>
+                                    <option value="address">Địa chỉ</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label" for="sortOrder">Thứ tự</label>
+                                <select class="form-select" id="sortOrder" name="sortDirection">
+                                    <option value="ASC">Tăng dần</option>
+                                    <option value="DESC">Giảm dần</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-end">
+                                <button class="btn btn-outline-secondary me-2" type="reset">
+                                    <i class="fas fa-undo me-1"></i> Đặt lại
+                                </button>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search me-1"></i> Tìm kiếm
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-xl-3 row-cols-md-2 row-cols-1" id="hospital-list"></div>
+        <nav aria-label="Pagination" class="mt-4">
+            <ul class="pagination justify-content-center" id="pagination"></ul>
+        </nav>
+    </div>
+</section>
+<th:block layout:fragment="custom-js">
+    <script th:src="@{/frontend/assets/js/hospital.js}" type="module"></script>
+</th:block>
+</body>
+</html>
