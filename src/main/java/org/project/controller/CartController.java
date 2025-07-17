@@ -41,6 +41,7 @@ public class CartController {
 	@GetMapping
 	public String viewCart(Model model) {
 		Long userId = 2l;
+		
 		List<CartItemEntity> cartItems = cartService.getCart(userId);
 		model.addAttribute("cartItems", cartItems);
 		model.addAttribute("total", cartService.calculateTotal(userId));
@@ -50,7 +51,7 @@ public class CartController {
 
 	// hard delete from cart
 	@PostMapping("/delete")
-	public String deleteCartItem(@RequestParam("productId") Long productId) {
+	public String deleteCartItem(@RequestParam Long productId) {
 		Long userId = 2l;
 		cartService.removeItem(userId, productId);
 
@@ -60,7 +61,7 @@ public class CartController {
 
 	// change item quantity by pressing + -
 	@PostMapping("/update")
-	public String updateCartItemQuantity(@RequestParam("cartId") Long cartId, @RequestParam("userId") Long userId,
+	public String updateCartItemQuantity(@RequestParam Long cartId, @RequestParam Long userId,
 			@RequestParam("action") String action) {
 		userId = 2l;
 		CartItemEntityId id = new CartItemEntityId(cartId, userId);
@@ -81,11 +82,12 @@ public class CartController {
 		cartService.updateItem(item);
 		return "redirect:/cart";
 	}
+	
 
 	// change item quantity by directly entering value
 	@PostMapping("/update-quantity")
-	public String updateCartItemQuantity(@RequestParam("cartId") Long cartId, @RequestParam("userId") Long userId,
-			@RequestParam("quantity") int quantity) {
+	public String updateCartItemQuantity(@RequestParam Long cartId, @RequestParam Long userId,
+			@RequestParam int quantity) {
 
 		CartItemEntityId id = new CartItemEntityId(cartId, userId);
 		CartItemEntity item = cartService.getItemById(id);
