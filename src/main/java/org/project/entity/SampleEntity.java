@@ -56,7 +56,7 @@ public class SampleEntity {
     @Column(name = "retest_time")
     private Instant retestTime;
 
-    @OneToMany(mappedBy = "sampleEntity")
-    private Set<ResultEntity> results = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "sampleEntity")
+    private ResultEntity results;
 
 }

@@ -43,8 +43,4 @@ public class TestItemEntity {
     @OneToMany(mappedBy = "testItemEntity")
     private Set<ReferenceRangeEntity> referenceRanges = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "testItemEntity")
-    private Set<ResultDetailEntity> resultDetails = new LinkedHashSet<>();
-
-
 }

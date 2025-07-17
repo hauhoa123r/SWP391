@@ -178,7 +178,7 @@ public class StaffTestLabController {
         return modelAndView;
     }
 
-    @GetMapping("result/{id}")
+    @GetMapping("/result/{id}")
     public ModelAndView resultView(HttpServletRequest request, Model model, @PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/result-test-details");
         SetResultResponse result = testItemConverter.toConverterSetResultResponse(id);
@@ -196,9 +196,11 @@ public class StaffTestLabController {
         modelAndView.addObject("currentURI", request.getRequestURI());
         return modelAndView;
     }
-    @GetMapping("/test-detail")
-    public ModelAndView viewTestDetail(HttpServletRequest request, Model model) {
+    @GetMapping("/test-detail/{id}")
+    public ModelAndView viewTestDetail(HttpServletRequest request, Model model,  @PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/lab-test-details");
+        SetResultResponse result = testItemConverter.toConverterSetResultResponse(id);
+        modelAndView.addObject("result", result);
         modelAndView.addObject("currentURI", request.getRequestURI());
         return modelAndView;
     }
