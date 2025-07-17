@@ -86,7 +86,7 @@
                 <li><hr class="hr-horizontal"></li>
                 <li class="nav-item">
                     <a class="nav-link" th:class="${currentURI
- == '/lab/set-result'} ? 'nav-link active' : 'nav-link'"
+ == '/lab/set-result' || currentURI.startsWith('/lab/result')} ? 'nav-link active' : 'nav-link'"
                        th:href="@{/lab/set-result}">
                         <i class="icon" data-bs-toggle="tooltip" title="Enter Result" data-bs-placement="right">
                             <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
@@ -99,7 +99,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:class="${currentURI
- == '/lab/confirm-result'} ? 'nav-link active' : 'nav-link'"
+ == '/lab/confirm-result' || currentURI.startsWith('/lab/test-detail')} ? 'nav-link active' : 'nav-link'"
                        th:href="@{/lab/confirm-result}">
                         <i class="icon" data-bs-toggle="tooltip" title="Approve Result" data-bs-placement="right">
                             <svg width="20" height="20" fill="none" viewBox="0 0 24 24">

@@ -1,6 +1,6 @@
 package org.project.api;
 
-import org.project.entity.SampleEntity;
+import org.project.entity.ResultEntity;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.RejectCollectDTO;
 import org.project.model.dto.RejectSampleScheduleDTO;
@@ -8,12 +8,16 @@ import org.project.model.dto.SampleFilterDTO;
 import org.project.model.request.CreateSamplePatientRequest;
 import org.project.model.response.SampleConfirmResponse;
 import org.project.model.response.SampleScheduleResponse;
+import org.project.model.response.SymtomResponse;
+import org.project.service.ReferrenceRangeService;
+import org.project.service.ResultSampleService;
 import org.project.service.SampleScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/sample")
@@ -21,6 +25,15 @@ public class SampleAPI {
 
     @Autowired
     private SampleScheduleService sampleScheduleServiceImpl;
+
+    @Autowired
+    private ResultSampleService resultSampleServiceImpl;
+
+    private final ReferrenceRangeService referrenceRangeService;
+
+    SampleAPI(ReferrenceRangeService referrenceRangeService){
+        this.referrenceRangeService = referrenceRangeService;
+    }
 
     @GetMapping("/filter")
     public ResponseEntity<?> filter(@ModelAttribute SampleFilterDTO sampleFilterDTO) {
@@ -82,7 +95,7 @@ public class SampleAPI {
         if(isSuccess) {
             return ResponseEntity.ok().body("Approved successfully");
         }
-        return ResponseEntity.ok("sucess");
+        return ResponseEntity.ok("success");
     }
 
     @PostMapping("/reject-cofirm")
@@ -92,5 +105,17 @@ public class SampleAPI {
             return ResponseEntity.ok().body("Rejected successfully");
         }
         return  ResponseEntity.status(400).body("Rejected failed");
+    }
+
+    @PostMapping("/result")
+    public ResponseEntity<?> getResult(@RequestBody Map<String, String> dataUnit){
+        SymtomResponse symtomResponse = referrenceRangeService.getSymtomResponse(dataUnit);
+        return ResponseEntity.ok(symtomResponse);
+    }
+
+    @PostMapping("/set-result")
+    public ResponseEntity<?> setResultSample(@RequestBody Map<String, String> dataDTO){
+        ResultEntity isCheck = resultSampleServiceImpl.isSaveResultSample(dataDTO);
+        return ResponseEntity.ok("ok");
     }
 }

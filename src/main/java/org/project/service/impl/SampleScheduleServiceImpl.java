@@ -9,6 +9,7 @@ import org.project.model.dto.RejectCollectDTO;
 import org.project.model.dto.RejectSampleScheduleDTO;
 import org.project.model.dto.SampleFilterDTO;
 import org.project.model.request.CreateSamplePatientRequest;
+import org.project.model.response.ResultSampleResponse;
 import org.project.model.response.SampleConfirmResponse;
 import org.project.model.response.SampleScheduleResponse;
 import org.project.repository.AssignmentRepository;
@@ -52,7 +53,7 @@ public class SampleScheduleServiceImpl implements SampleScheduleService {
                 .orElseThrow();
         testRequestEntity.setReason(rejectSampleScheduleDTO.getReason());
         testRequestEntity.setRequestTime(Date.from(Instant.now()));
-        testRequestEntity.setRequestStatus(RequestStatus.rejected);
+        testRequestEntity.setRequestStatus(RequestStatus.pending);
         assignmentRepositoryImpl.save(testRequestEntity);
         return true;
     }
@@ -79,9 +80,9 @@ public class SampleScheduleServiceImpl implements SampleScheduleService {
     public Boolean rejectCollect(RejectCollectDTO rejectCollectDTO) {
         SampleEntity sampleEntity = sampleScheduleRepository.findById(rejectCollectDTO.getTestRequestId()).orElseThrow();
         TestRequestEntity testRequestEntity = assignmentRepositoryImpl.findById(sampleEntity.getTestRequest().getId()).orElseThrow();
-        testRequestEntity.setRequestStatus(RequestStatus.rejected);
+        testRequestEntity.setRequestStatus(RequestStatus.pending);
         testRequestEntity.setReason(rejectCollectDTO.getReason());
-        sampleEntity.setSampleStatus("rejected");
+        sampleEntity.setSampleStatus("pending");
         sampleEntity.setRecollectionReason(rejectCollectDTO.getReason());
         assignmentRepositoryImpl.save(testRequestEntity);
         sampleScheduleRepository.save(sampleEntity);
@@ -99,5 +100,11 @@ public class SampleScheduleServiceImpl implements SampleScheduleService {
         assignmentRepositoryImpl.save(testRequestEntity);
         sampleScheduleRepository.save(sampleEntity);
         return true;
+    }
+
+    @Override
+    public Page<ResultSampleResponse> getAllResultSample(SampleFilterDTO sampleFilterDTO) throws IllegalAccessException {
+        Page<ResultSampleResponse> result = sampleScheduleConverter.toConvertResultSampleResponse(sampleFilterDTO);
+        return result;
     }
 }

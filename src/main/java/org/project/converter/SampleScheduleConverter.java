@@ -8,6 +8,7 @@ import org.project.enums.RequestStatus;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.SampleFilterDTO;
 import org.project.model.request.CreateSamplePatientRequest;
+import org.project.model.response.ResultSampleResponse;
 import org.project.model.response.SampleConfirmResponse;
 import org.project.model.response.SampleScheduleResponse;
 import org.project.repository.AssignmentRepository;
@@ -50,7 +51,8 @@ public class SampleScheduleConverter {
             sampleScheduleResponse.setId(sampleEntity.getTestRequest().getId());
             sampleScheduleResponse.setPatientName(sampleEntity.getTestRequest().getPatientEntity().getFullName());
             sampleScheduleResponse.setScheduleTime(sampleEntity.getSampleStatus());
-            sampleScheduleResponse.setTestType(sampleEntity.getTestRequest().getTestType().getTestTypeName());
+            sampleScheduleResponse.setTestType(sampleEntity.getTestRequest().getTestTypeEntity().getTestTypeName());
+            sampleScheduleResponse.setReCollectReason(sampleEntity.getRecollectionReason());
             return sampleScheduleResponse;
         });
     }
@@ -67,7 +69,7 @@ public class SampleScheduleConverter {
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, format);
-        Date scheduledTime = java.sql.Date.valueOf(dateTime.toLocalDate());
+        Date scheduledTime = java.sql.Timestamp.valueOf(dateTime);
 
         Optional<UserEntity> userEntity = userRepository.findById(createSamplePatientRequest.getManagerId());
         Optional<TestRequestEntity> testRequestEntity = assignmentRepository.findById(createSamplePatientRequest.getTestRequestId());
@@ -92,8 +94,28 @@ public class SampleScheduleConverter {
             sampleConfirmResponse.setNote(sampleEntity.getNotes());
             Optional<StaffEntity> staffEntity = staffRepository.findById(sampleEntity.getSampler().getId());
             sampleConfirmResponse.setManagerName(staffEntity.get().getFullName());
-            sampleConfirmResponse.setTestType(sampleEntity.getTestRequest().getTestType().getTestTypeName());
+            sampleConfirmResponse.setTestType(sampleEntity.getTestRequest().getTestTypeEntity().getTestTypeName());
             sampleConfirmResponse.setPatientName(sampleEntity.getTestRequest().getPatientEntity().getFullName());
+            sampleConfirmResponse.setDepartmentName(sampleEntity.getTestRequest().getAppointmentEntity().getDoctorEntity().getStaffEntity().getDepartmentEntity().getName());
+            sampleConfirmResponse.setId(sampleEntity.getId());
+            return sampleConfirmResponse;
+        });
+    }
+
+    public Page<ResultSampleResponse> toConvertResultSampleResponse(SampleFilterDTO sampleFilterDTO) throws IllegalAccessException {
+        sampleFilterDTO.setStatus(RequestStatus.received);
+        Page<SampleEntity> sampleEntityEntities = sampleScheduleRepository.filterSampleEntityCustom(sampleFilterDTO);
+
+        if (sampleEntityEntities == null) {
+            throw new ResourceNotFoundException("Cam not get Sample Schedule by search");
+        }
+        return sampleEntityEntities.map(sampleEntity -> {
+            ResultSampleResponse sampleConfirmResponse = new ResultSampleResponse();
+            sampleConfirmResponse.setPatientId(sampleEntity.getTestRequest().getPatientEntity().getId());
+            sampleConfirmResponse.setTime(String.valueOf(sampleEntity.getCollectionTime()));
+            sampleConfirmResponse.setPatientName(sampleEntity.getTestRequest().getPatientEntity().getFullName());
+            Optional<StaffEntity> staffEntity = staffRepository.findById(sampleEntity.getSampler().getId());
+            sampleConfirmResponse.setTestType(sampleEntity.getTestRequest().getTestTypeEntity().getTestTypeName());
             sampleConfirmResponse.setDepartmentName(sampleEntity.getTestRequest().getAppointmentEntity().getDoctorEntity().getStaffEntity().getDepartmentEntity().getName());
             sampleConfirmResponse.setId(sampleEntity.getId());
             return sampleConfirmResponse;

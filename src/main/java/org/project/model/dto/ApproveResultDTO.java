@@ -1,4 +1,4 @@
-package org.project.model.response;
+package org.project.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,11 +9,9 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class SampleServiceResponse {
+public class ApproveResultDTO extends AbstractServiceDTO{
     private String patientName;
     private String testType;
-    private String departmentName;
-    private String doctorName;
-    private long id;
-    private Long patientId;
+    private String TesterName;
+    private String status;
 }
