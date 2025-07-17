@@ -9,6 +9,7 @@ import org.project.entity.ReviewEntity;
 import org.project.entity.ServiceEntity;
 import org.project.enums.operation.AggregationFunction;
 import org.project.enums.operation.ComparisonOperator;
+import org.project.enums.operation.SortDirection;
 import org.project.exception.sql.EntityNotFoundException;
 import org.project.model.dto.ServiceDTO;
 import org.project.model.response.ServiceResponse;
@@ -152,6 +153,31 @@ public class ServiceServiceImpl implements ServiceService {
         );
         pageUtils.validatePage(serviceEntityPage, ServiceEntity.class);
         return serviceEntityPage.map(serviceConverter::toResponse);
+    }
+
+    @Override
+    public List<ServiceResponse> getTop3ServicesByHospital(Long hospitalId) {
+        Pageable pageable = pageUtils.getPageable(0, 3);
+        Page<ServiceEntity> serviceEntityPage = pageSpecificationUtils.getPage(
+                specificationUtils.reset()
+                        .getSortSpecifications(
+                                new SortCriteria(
+                                        FieldNameUtils.joinFields(
+                                                ServiceEntity.Fields.productEntity,
+                                                ProductEntity.Fields.reviewEntities,
+                                                ReviewEntity.Fields.id
+                                        ), AggregationFunction.COUNT,
+                                        SortDirection.DESC, JoinType.LEFT
+                                ),
+                                new SortCriteria(
+                                        FieldNameUtils.joinFields(
+                                                ServiceEntity.Fields.productEntity,
+                                                ProductEntity.Fields.reviewEntities,
+                                                ReviewEntity.Fields.rating
+                                        ), AggregationFunction.AVG,
+                                        SortDirection.DESC, JoinType.LEFT
+                                )), pageable, ServiceEntity.class, true);
+        return serviceEntityPage.stream().map(serviceConverter::toResponse).toList();
     }
 
     @Override
