@@ -3,7 +3,10 @@ package org.project.utils;
 import jakarta.persistence.TypedQuery;
 import org.project.exception.page.InvalidPageException;
 import org.project.exception.page.PageNotFoundException;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,14 +28,6 @@ public class PageUtils<T> {
         }
 
         return PageRequest.of(index, size);
-    }
-
-    public Pageable getPageable(int index, int size, Sort sort) {
-        if (index < 0 || size <= 0) {
-            throw new InvalidPageException(index, size);
-        }
-
-        return PageRequest.of(index, size, sort);
     }
 
     public void validatePage(Page<T> page, Class<?> entityClass) {

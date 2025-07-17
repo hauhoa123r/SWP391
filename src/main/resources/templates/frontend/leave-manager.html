@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn nghỉ phép</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --border: #e5e7eb;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --modal-bg: rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+            color: #1f2937;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            line-height: 1.2;
+        }
+
+        .logo-text p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 25px;
+        }
+
+        .stats-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats-title i {
+            background: var(--primary-light);
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .pending .stat-value {
+            color: var(--warning);
+        }
+
+        .approved .stat-value {
+            color: var(--success);
+        }
+
+        .rejected .stat-value {
+            color: var(--danger);
+        }
+
+        .total .stat-value {
+            color: var(--primary);
+        }
+
+        .filters-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 25px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .filter-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .filter-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-light);
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .leave-list-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            grid-column: 1 / -1;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .results-info {
+            color: var(--gray);
+        }
+
+        .leave-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leave-table th {
+            text-align: left;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: var(--gray);
+            background-color: var(--light-gray);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .leave-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .leave-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .leave-table tr:hover {
+            background-color: rgba(37, 99, 235, 0.03);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fffbeb;
+            color: #d97706;
+        }
+
+        .status-approved {
+            background-color: #ecfdf5;
+            color: #059669;
+        }
+
+        .status-rejected {
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+
+        .status-cancelled {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .action-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Pagination */
+        .pagination-wrap {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .pagination .page-item {
+            list-style: none;
+        }
+
+        .pagination .page-link {
+            display: inline-block;
+            min-width: 36px;
+            padding: 7px 14px;
+            border-radius: 6px;
+            border: none;
+            background: #f3f6fd;
+            color: #6c8cff;
+            font-weight: 500;
+            font-size: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .pagination .page-link.active,
+        .pagination .page-link:focus {
+            background: #6c8cff;
+            color: #fff;
+        }
+
+        .pagination .page-link[disabled] {
+            background: #f3f6fd;
+            color: #bbb;
+            cursor: not-allowed;
+        }
+
+        .pagination .page-link.ellipsis {
+            background: none;
+            color: #bbb;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .pagination-btn {
+            border: none;
+            border-radius: 6px;
+            padding: 7px 18px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .pagination-btn.prev {
+            background: #ff6b6b;
+            color: #fff;
+        }
+
+        .pagination-btn.next {
+            background: #6c8cff;
+            color: #fff;
+        }
+
+        .pagination-btn[disabled] {
+            background: #eee;
+            color: #bbb;
+            cursor: not-allowed;
+        }
+
+        /* CẢI THIỆN MODAL CHI TIẾT */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-bg);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            animation: modalOpen 0.3s ease;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        @keyframes modalOpen {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-radius: 16px 16px 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-modal:hover {
+            background-color: var(--light-gray);
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .detail-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .detail-section {
+            margin-bottom: 25px;
+        }
+
+        .detail-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .detail-label {
+            width: 120px;
+            font-weight: 500;
+            color: var(--gray);
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            flex: 1;
+            font-weight: 500;
+            min-width: 150px;
+        }
+
+        .attachment {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-top: 10px;
+            background: var(--light-gray);
+        }
+
+        .attachment i {
+            color: var(--danger);
+            font-size: 1.5rem;
+        }
+
+        .attachment-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .attachment-name {
+            font-weight: 500;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .attachment-size {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            background: white;
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
+        }
+
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .user-info {
+                align-self: flex-end;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-item {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .detail-label {
+                width: 100%;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 15px;
+            }
+
+            .logo-text h1 {
+                font-size: 1.5rem;
+            }
+
+            .leave-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .page-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+
+            .modal-header {
+                padding: 15px;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            .detail-grid {
+                gap: 15px;
+            }
+
+            .detail-section {
+                margin-bottom: 15px;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #d1d5db;
+        }
+
+        .empty-state p {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="dashboard">
+            <div class="stats-card">
+                <div class="stats-title">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Thống kê</span>
+                </div>
+                <div class="stat-item total">
+                    <div class="stat-label">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Tổng đơn</span>
+                    </div>
+                    <div class="stat-value" th:text="${leaveRequestStatistic.totalLeaveRequests}">0</div>
+                </div>
+                <div class="stat-item pending">
+                    <div class="stat-label">
+                        <i class="fas fa-clock"></i>
+                        <span>Chờ duyệt</span>
+                    </div>
+                    <div class="stat-value" th:text="${leaveRequestStatistic.pendingLeaveRequests}">0</div>
+                </div>
+                <div class="stat-item approved">
+                    <div class="stat-label">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Đã duyệt</span>
+                    </div>
+                    <div class="stat-value" th:text="${leaveRequestStatistic.approvedLeaveRequests}">0</div>
+                </div>
+                <div class="stat-item rejected">
+                    <div class="stat-label">
+                        <i class="fas fa-times-circle"></i>
+                        <span>Từ chối</span>
+                    </div>
+                    <div class="stat-value" th:text="${leaveRequestStatistic.rejectedLeaveRequests}">0</div>
+                </div>
+            </div>
+
+            <div class="filters-card">
+                <div class="section-title">
+                    <i class="fas fa-filter"></i>
+                    <span>Bộ lọc đơn nghỉ phép</span>
+                </div>
+                <!-- ...giữ nguyên phần filter... -->
+                <div class="filters-grid">
+                    <!-- ...existing filter controls... -->
+                </div>
+                <div class="actions">
+                    <button class="btn btn-primary" id="applyFilters">
+                        <i class="fas fa-filter"></i> Áp dụng bộ lọc
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-sync-alt"></i> Làm mới
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-file-export"></i> Xuất Excel
+                    </button>
+                </div>
+            </div>
+
+            <!-- Danh sách đơn nghỉ phép -->
+            <div class="leave-list-card">
+                <div class="table-header">
+                    <div class="section-title">
+                        <i class="fas fa-list"></i>
+                        <span>Danh sách đơn nghỉ phép</span>
+                    </div>
+                    <div class="results-info">
+                        <span
+                            th:text="'Hiển thị ' + ${leaveRequests.size()} + '/' + ${leaveRequestStatistic.totalLeaveRequests} + ' kết quả'">Hiển
+                            thị 0/0 kết quả</span>
+                    </div>
+                </div>
+
+                <table class="leave-table">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Ngày tạo</th>
+                            <th>Nhân viên</th>
+                            <th>Thời gian nghỉ</th>
+                            <th>Loại phép</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaveRequestsContainer">
+                        <tr th:each="leave : ${leaveRequests}">
+                            <td th:text="'LV' + ${leave.requestId}">LV20231001</td>
+                            <td th:text="${leave.createdAt}">15/07/2023</td>
+                            <td th:text="${leave.staffName}">Trần Văn B</td>
+                            <td>
+                                <span th:if="${leave.startDate == leave.endDate}"
+                                    th:text="${leave.startDate} + (${leave.totalDays} + ' ngày')">20/07/2023 (1
+                                    ngày)</span>
+                                <span th:if="${leave.startDate != leave.endDate}"
+                                    th:text="${leave.startDate} + ' - ' + ${leave.endDate} + ' (' + ${leave.totalDays} + ' ngày)'">20/07
+                                    - 22/07/2023 (3 ngày)</span>
+                            </td>
+                            <td th:text="${leave.leaveType}">Nghỉ phép năm</td>
+                            <td>
+                                <span class="status-badge"
+                                    th:classappend="${leave.status == 'PENDING'} ? ' status-pending' :
+                                              (${leave.status == 'APPROVED'} ? ' status-approved' :
+                                              (${leave.status == 'REJECTED'} ? ' status-rejected' : ' status-cancelled'))" th:text="${leave.status == 'PENDING'} ? 'Chờ duyệt' :
+                                       (leave.status == 'APPROVED' ? 'Đã duyệt' :
+                                       (leave.status == 'REJECTED' ? 'Từ chối' : 'Đã hủy'))">
+                                    Chờ duyệt
+                                </span>
+                            </td>
+                            <td>
+                                <span class="action-link view-detail" th:attr="data-id=${leave.requestId}">
+                                    <i class="fas fa-eye"></i> Xem chi tiết
+                                </span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(leaveRequests)}">
+                            <td colspan="7" style="text-align:center;color:#aaa;">Không có đơn nghỉ phép nào.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination @{${'/patient/showList/' + 1 + '?pageIndex=' + (pageIndex - 1)}} -->
+                <div class="pagination-wrap">
+                    <a class="pagination-btn prev" th:if="${pageIndex > 0}"
+                        th:classappend="${pageIndex == 0} ? 'disabled'"
+                        th:href="@{|/leave-manager/${managerId}?pageIndex=${pageIndex - 1}|}">
+                        Previous&nbsp;&nbsp;+
+                    </a>
+                    <span class="pagination-btn prev disabled" th:if="${pageIndex == 0}">Previous&nbsp;&nbsp;+</span>
+
+                    <ul class="pagination">
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                            th:classappend="${i == pageIndex} ? 'active'">
+                            <a class="page-link" th:href="@{|/leave-manager/${managerId}?pageIndex=${i}|}"
+                                th:text="${i + 1}"></a>
+                        </li>
+                    </ul>
+
+                    <a class="pagination-btn next" th:if="${pageIndex < totalPages - 1}"
+                        th:classappend="${pageIndex == totalPages - 1} ? 'disabled'"
+                        th:href="@{|/leave-manager/${managerId}?pageIndex=${pageIndex + 1}|}">
+                        Next&nbsp;&nbsp;+
+                    </a>
+                    <span class="pagination-btn next disabled"
+                        th:if="${pageIndex == totalPages - 1}">Next&nbsp;&nbsp;+</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Modal chi tiết đơn nghỉ phép -->
+    <div class="modal" id="detailModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Chi tiết đơn nghỉ phép</span>
+                    </h3>
+                    <button class="close-modal" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-grid">
+                        <div>
+                            <div class="detail-section">
+                                <div class="detail-title">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Thông tin chung</span>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Mã đơn:</div>
+                                    <div class="detail-value" id="modalRequestId"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Ngày tạo:</div>
+                                    <div class="detail-value" id="modalCreatedAt"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Nhân viên:</div>
+                                    <div class="detail-value" id="modalStaffName"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Người duyệt:</div>
+                                    <div class="detail-value" id="modalApprovalName"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Trạng thái:</div>
+                                    <div class="detail-value">
+                                        <span class="status-badge" id="modalStatus"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Thời gian nghỉ</span>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Loại nghỉ phép:</div>
+                                    <div class="detail-value" id="modalLeaveType"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Ngày bắt đầu:</div>
+                                    <div class="detail-value" id="modalStartDate"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Ngày kết thúc:</div>
+                                    <div class="detail-value" id="modalEndDate"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Số ngày nghỉ:</div>
+                                    <div class="detail-value" id="modalTotalDays"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Nửa ngày:</div>
+                                    <div class="detail-value" id="modalHalfDay"></div>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Nội dung đơn</span>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Lý do:</div>
+                                    <div class="detail-value" id="modalReason"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Người thay thế:</div>
+                                    <div class="detail-value" id="modalSubstitute"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Liên hệ khẩn:</div>
+                                    <div class="detail-value" id="modalEmergencyContact"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline" id="printBtn">
+                        <i class="fas fa-print"></i> In đơn
+                    </button>
+                    <button class="btn btn-primary" id="approveBtn">
+                        <i class="fas fa-check-circle"></i> Duyệt đơn
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    <script th:inline="javascript">
+        var leaveRequests = /*[[${leaveRequests}]]*/ [];
+        function openModal() {
+            document.getElementById('detailModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        // Đóng modal
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Fill dữ liệu vào modal
+        function fillModal(data) {
+            document.getElementById('modalRequestId').textContent = 'LV' + data.requestId;
+            document.getElementById('modalCreatedAt').textContent = data.createdAt;
+            document.getElementById('modalStaffName').textContent = data.staffName;
+            document.getElementById('modalApprovalName').textContent = data.staffApprovalName;
+            document.getElementById('modalStatus').textContent = (function(){
+                switch(data.status) {
+                    case 'PENDING': return 'Chờ duyệt';
+                    case 'APPROVED': return 'Đã duyệt';
+                    case 'REJECTED': return 'Từ chối';
+                    default: return data.status;
+                }
+            })();
+            document.getElementById('modalStatus').className = 'status-badge ' + (function(){
+                switch(data.status) {
+                    case 'PENDING': return 'status-pending';
+                    case 'APPROVED': return 'status-approved';
+                    case 'REJECTED': return 'status-rejected';
+                    default: return '';
+                }
+            })();
+
+            document.getElementById('modalLeaveType').textContent = data.leaveType;
+            document.getElementById('modalStartDate').textContent = data.startDate;
+            document.getElementById('modalEndDate').textContent = data.endDate;
+            document.getElementById('modalTotalDays').textContent = data.totalDays + ' ngày';
+            document.getElementById('modalHalfDay').textContent = data.halfDayType;
+
+            document.getElementById('modalReason').textContent = data.reason;
+            document.getElementById('modalSubstitute').textContent = data.substituteStaffName;
+            document.getElementById('modalEmergencyContact').textContent = data.emergencyContact;
+        }
+
+        // Gắn sự kiện click cho nút Xem chi tiết
+        document.querySelectorAll('.view-detail').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var id = this.getAttribute('data-id');
+                var resp = leaveRequests.find(function(l) { return l.requestId == id; });
+                if (resp) {
+                    fillModal(resp);
+                    openModal();
+                }
+            });
+        });
+
+        // Xử lý nút áp dụng bộ lọc
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            alert('Bộ lọc đã được áp dụng. Trong thực tế, đây sẽ gọi API để lấy dữ liệu mới.');
+        });
+
+        // Xử lý nút duyệt đơn
+        document.getElementById('approveBtn').addEventListener('click', () => {
+            if (confirm('Bạn có chắc chắn muốn duyệt đơn nghỉ phép này?')) {
+                alert('Đơn đã được duyệt thành công!');
+                closeModal();
+            }
+        });
+
+        // Xử lý nút in đơn
+        document.getElementById('printBtn').addEventListener('click', () => {
+            alert('Chức năng in đơn sẽ được kích hoạt. Trong thực tế, đây sẽ mở cửa sổ in.');
+        });
+
+        // Thiết lập ngày mặc định cho bộ lọc
+        const today = new Date();
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(today.getMonth() - 1);
+
+        document.getElementById('startDateFilter').valueAsDate = oneMonthAgo;
+        document.getElementById('endDateFilter').valueAsDate = today;
+    </script>
+</body>
+
+</html>

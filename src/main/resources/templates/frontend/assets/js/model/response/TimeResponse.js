@@ -16,37 +16,20 @@ export class TimeResponse {
         const hours = date.getHours();
         const minutes = date.getMinutes();
 
-        return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     }
 
-    setRenderStrategy(strategy) {
-        this.renderStrategy = strategy;
-        return this;
-    }
-
-    toHtml(...args) {
-        if (this.renderStrategy) {
-            return this.renderStrategy(this, ...args);
-        }
-        throw new Error("Render strategy is not set for TimeResponse");
-    }
-}
-
-/**
- * Renders the time response for booking in HTML format.
- * @param {TimeResponse} timeResponse - The TimeResponse object to render.
- * @returns {string}
- */
-export function renderTimeResponseForBooking(timeResponse) {
-    return `
+    toHtml() {
+        return `
         <div class="col-md-4 col-sm-6 time-slot time">
-            <input style="display: none" id="date-time-${timeResponse.availableTimes}" type="radio" name="time-slot" value="${timeResponse.availableTimes}">
+            <input style="display: none" id="date-time-${this.availableTimes}" type="radio" name="time-slot" value="${this.availableTimes}">
             <button
-                    class="btn bg-white text-body text-uppercase p-0 w-100 time-slot" data-time="${timeResponse.availableTimes}">
-                <label for="date-time-${timeResponse.availableTimes}" class="w-100 h-100 p-2">
-                    ${timeResponse.formatTime()}
+                    class="btn bg-white text-body text-uppercase p-0 w-100 time-slot" data-time="${this.availableTimes}">
+                <label for="date-time-${this.availableTimes}" class="w-100 h-100 p-2">
+                    ${this.formatTime()}
                 </label>
             </button>
         </div>
         `;
+    }
 }

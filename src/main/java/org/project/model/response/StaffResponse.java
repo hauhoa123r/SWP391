@@ -18,7 +18,7 @@ public class StaffResponse {
     private DepartmentResponse departmentEntity;
     private String userEntityEmail;
     private List<StaffEducationResponse> staffEducationEntities;
-    private List<StaffExperienceResponse> staffExperienceEntities;
+    private List<StaffQualificationResponse> staffExperienceEntities;
     private List<StaffSkillResponse> staffSkillEntities;
     private List<StaffQualificationResponse> staffQualificationEntities;
     private List<StaffSpecialityResponse> staffSpecialityEntities;

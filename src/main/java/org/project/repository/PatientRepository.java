@@ -42,7 +42,4 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
     boolean existsByIdentificationNumber(String identificationNumber);
 
     boolean existsById(Long id);
-
-    @Query("SELECT COUNT(pe.id) FROM PatientEntity pe")
-    int countAllPatients();
 }

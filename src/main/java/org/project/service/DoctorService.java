@@ -1,6 +1,5 @@
 package org.project.service;
 
-import org.project.model.dto.DoctorDTO;
 import org.project.model.response.DoctorResponse;
 import org.springframework.data.domain.Page;
 
@@ -18,6 +17,4 @@ public interface DoctorService {
     List<DoctorResponse> getColleagueDoctorsByDepartment(Long departmentId, Long doctorId);
 
     DoctorResponse getDoctor(Long doctorId);
-
-    List<DoctorResponse> getAllByCriteria(DoctorDTO doctorDTO, int index, int size);
 }

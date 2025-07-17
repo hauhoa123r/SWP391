@@ -15,8 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/service")
 public class ServiceAPI {
-    private final int PAGE_SIZE_FOR_APPOINTMENT = 6;
-    private final int PAGE_SIZE_FOR_LIST = 9;
+    private final int PAGE_SIZE = 6;
 
     private ServiceService serviceService;
 
@@ -27,7 +26,7 @@ public class ServiceAPI {
 
     @GetMapping("/page/{pageIndex}/department/{departmentId}")
     public ResponseEntity<Map<String, Object>> getAllServicesByPageAndStaffId(@PathVariable int pageIndex, @PathVariable Long departmentId) {
-        Page<ServiceResponse> serviceResponsePage = serviceService.getServicesByDepartment(departmentId, pageIndex, PAGE_SIZE_FOR_APPOINTMENT);
+        Page<ServiceResponse> serviceResponsePage = serviceService.getServicesByDepartment(departmentId, pageIndex, PAGE_SIZE);
         return ResponseEntity.ok(
                 Map.of(
                         "services", serviceResponsePage.getContent(),
@@ -42,24 +41,12 @@ public class ServiceAPI {
             @PathVariable int pageIndex,
             @PathVariable Long departmentId,
             @PathVariable String keyword) {
-        Page<ServiceResponse> serviceResponsePage = serviceService.searchServicesByDepartmentAndKeyword(departmentId, keyword, pageIndex, PAGE_SIZE_FOR_APPOINTMENT);
+        Page<ServiceResponse> serviceResponsePage = serviceService.searchServicesByDepartmentAndKeyword(departmentId, keyword, pageIndex, PAGE_SIZE);
         return ResponseEntity.ok(
                 Map.of(
                         "services", serviceResponsePage.getContent(),
                         "totalPages", serviceResponsePage.getTotalPages(),
                         "currentPage", serviceResponsePage.getNumber()
-                )
-        );
-    }
-
-    @GetMapping("/page/{pageIndex}")
-    public ResponseEntity<Map<String, Object>> service(@PathVariable int pageIndex) {
-        Page<ServiceResponse> productRespsonsePage = serviceService.getServices(pageIndex, PAGE_SIZE_FOR_LIST);
-        return ResponseEntity.ok(
-                Map.of(
-                        "services", productRespsonsePage.getContent(),
-                        "currentPage", productRespsonsePage.getNumber(),
-                        "totalPages", productRespsonsePage.getTotalPages()
                 )
         );
     }

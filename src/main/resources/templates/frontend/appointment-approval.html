@@ -251,6 +251,7 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         let allAppointments = /*[[${pendingAppointments}]]*/[];
+        let staffId = /*[[${staffId}]]*/0;
         /*]]>*/
     </script>
     <script>
@@ -339,7 +340,7 @@
                     btn.disabled = true;
                     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang duyệt...';
                     try {
-                        const res = await fetch(`${API_BASE}/appointment/confirm/${btn.dataset.id}?scheduleCoordinatorId=381`, {
+                        const res = await fetch(`${API_BASE}/appointment/confirm/${btn.dataset.id}?scheduleCoordinatorId=${staffId}`, {
                             method: 'PATCH'
                         });
                         if (res.ok) window.location.reload();

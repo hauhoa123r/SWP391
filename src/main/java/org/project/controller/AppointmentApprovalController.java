@@ -24,11 +24,11 @@ public class AppointmentApprovalController {
         this.appointmentService = appointmentService;
     }
 
-    @GetMapping("/showPending/{hospitalId}")
-    public String showPendingAppointmentsByHospitalId(@PathVariable Long hospitalId,
+    @GetMapping("/showPending/{staffId}")
+    public String showPendingAppointmentsByHospitalId(@PathVariable Long staffId,
                                                         Model model) {
-        List<AppointmentApprovalResponse> pendingAppointments = appointmentService.getAppointmentsHaveStatusPendingByHospitalId(hospitalId);
-
+        List<AppointmentApprovalResponse> pendingAppointments = appointmentService.getAppointmentsHaveStatusPendingByStaffId(staffId);
+        model.addAttribute("staffId", staffId);
         model.addAttribute("pendingAppointments", pendingAppointments);
         return "frontend/appointment-approval";
     }

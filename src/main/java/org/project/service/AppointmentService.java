@@ -13,9 +13,9 @@ import java.util.Map;
 
 public interface AppointmentService {
 
-    void saveAppointment(AppointmentDTO appointmentDTO);
+    Map<String, Object> saveAppointment(AppointmentDTO appointmentDTO);
 
-    List<AppointmentApprovalResponse> getAppointmentsHaveStatusPendingByHospitalId(Long hospitalId);
+    List<AppointmentApprovalResponse> getAppointmentsHaveStatusPendingByStaffId(Long staffId);
 
     Boolean changeStatus(Long appointmentId, AppointmentStatus status, Long scheduleCoordinatorId);
 

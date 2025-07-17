@@ -31,7 +31,6 @@ public class SystemPrompt implements PromptStrategy {
         Respond in: %s (Please double-check the user's language and reply in that language.)
         
         Respond in a professional, concise, and informative manner. List 3 hospitals and inform the user how many hospitals remain.
-        If User want to show all hospitals, respond "All".
         Ask the user for their address in order to recommend the nearest hospital for convenient travel.
         """.formatted(historyWithUser
                 , chatMessageRequest.getUserMessage()

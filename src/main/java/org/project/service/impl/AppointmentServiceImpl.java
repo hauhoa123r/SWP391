@@ -9,7 +9,6 @@ import org.project.entity.DoctorEntity;
 import org.project.entity.StaffEntity;
 import org.project.entity.StaffScheduleEntity;
 import org.project.enums.AppointmentStatus;
-import org.project.exception.ErrorResponse;
 import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.ChangeAppointmentDTO;
 import org.project.model.response.AppointmentApprovalResponse;
@@ -17,14 +16,16 @@ import org.project.model.response.AppointmentAvailableResponse;
 import org.project.repository.*;
 import org.project.service.AppointmentService;
 import org.project.service.PatientService;
+import org.project.service.StaffService;
 import org.project.utils.TimestampUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -39,6 +40,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     private TimestampUtils timestampUtils;
     private PatientService patientService;
     private AppointmentApprovalConverter appointmentApprovalConverter;
+    private StaffService staffService;
+
+    @Autowired
+    public void setStaffService(StaffService staffService) {
+        this.staffService = staffService;
+    }
 
     @Autowired
     public void setAppointmentApprovalConverter(AppointmentApprovalConverter appointmentApprovalConverter) {
@@ -155,45 +162,76 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void saveAppointment(AppointmentDTO appointmentDTO) {
+    public Map<String, Object> saveAppointment(AppointmentDTO appointmentDTO) {
         if (!isDoctorExists(appointmentDTO)) {
-            throw new ErrorResponse("Doctor not found");
+            return Map.of(
+                    "success", false,
+                    "message", "Doctor not found"
+            );
         }
         if (!isDoctorSupportService(appointmentDTO)) {
-            throw new ErrorResponse("Doctor does not support this service");
+            return Map.of(
+                    "success", false,
+                    "message", "Service not found"
+            );
         }
         // Validate appointment time
         if (!isStartTimeValid(appointmentDTO)) {
-            throw new ErrorResponse("Invalid appointment time");
+            return Map.of(
+                    "success", false,
+                    "message", "Invalid appointment time"
+            );
         }
         // Check appointment time between staff schedule
         if (!isStartTimeBetweenStaffSchedule(appointmentDTO)) {
-            throw new ErrorResponse("Appointment time is not within staff schedule");
+            return Map.of(
+                    "success", false,
+                    "message", "Appointment time is not within staff schedule"
+            );
         }
         // Check patient have same appointment time (same patient)
         if (isPatientHasAppointmentAtSameTime(appointmentDTO)) {
-            throw new ErrorResponse("You already have an appointment at this time");
+            return Map.of(
+                    "success", false,
+                    "message", "You already have an appointment at this time"
+            );
         }
         // Check appointment time duplicate with other appointment (other patient)
         if (isDoctorBookedByOtherPatient(appointmentDTO)) {
-            throw new ErrorResponse("Doctor is already booked at this time");
+            return Map.of(
+                    "success", false,
+                    "message", "Doctor is already booked at this time"
+            );
         }
         // Check if the user exists and is active
         if (!isUserExistsAndActive(appointmentDTO)) {
-            throw new ErrorResponse("User does not exist or is not active");
+            return Map.of(
+                    "success", false,
+                    "message", "User does not exist or is not active"
+            );
         }
         // Check if the patient does not belong to the user
         if (!isPatientBelongsToUser(appointmentDTO)) {
-            throw new ErrorResponse("Patient does not belong to the user");
+            return Map.of(
+                    "success", false,
+                    "message", "Patient does not belong to the user"
+            );
         }
         AppointmentEntity appointmentEntity = appointmentConverter.toEntity(appointmentDTO);
         appointmentEntity.setAppointmentStatus(AppointmentStatus.PENDING);
-        appointmentRepository.save(appointmentEntity);
+        appointmentEntity = appointmentRepository.save(appointmentEntity);
+        return Map.of(
+                "success", true
+        );
     }
 
     @Override
-    public List<AppointmentApprovalResponse> getAppointmentsHaveStatusPendingByHospitalId(Long hospitalId) {
-        List<AppointmentEntity> appointmentEntities = appointmentRepository.findByDoctorEntity_StaffEntity_HospitalEntity_IdAndAppointmentStatus(hospitalId, AppointmentStatus.PENDING);
+    public List<AppointmentApprovalResponse> getAppointmentsHaveStatusPendingByStaffId(Long staffId) {
+        if (staffId == null) {
+            return Collections.emptyList();
+        }
+        StaffEntity staffEntity = staffService.getStaffByStaffId(staffId);
+        List<AppointmentEntity> appointmentEntities = appointmentRepository.findByDoctorEntity_StaffEntity_HospitalEntity_IdAndAppointmentStatus(staffEntity.getHospitalEntity().getId(), AppointmentStatus.PENDING);
 
         if (appointmentEntities.isEmpty() || appointmentEntities == null) {
             return Collections.emptyList();
@@ -387,4 +425,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void setTimestampUtils(TimestampUtils timestampUtils) {
         this.timestampUtils = timestampUtils;
     }
+
+
 }
