@@ -3,12 +3,10 @@ package org.project.service.impl;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.transaction.Transactional;
 import org.project.converter.DoctorConverter;
-import org.project.entity.DepartmentEntity;
-import org.project.entity.DoctorEntity;
-import org.project.entity.ReviewEntity;
-import org.project.entity.StaffEntity;
+import org.project.entity.*;
 import org.project.enums.operation.AggregationFunction;
 import org.project.enums.operation.ComparisonOperator;
+import org.project.enums.operation.SortDirection;
 import org.project.exception.sql.EntityNotFoundException;
 import org.project.model.dto.DoctorDTO;
 import org.project.model.response.DoctorResponse;
@@ -234,5 +232,57 @@ public class DoctorServiceImpl implements DoctorService {
                 pageable
         );
         return doctorEntityPage.map(doctorConverter::toResponse).getContent();
+    }
+
+    @Override
+    public List<DoctorResponse> getTop6DoctorsByDepartment(Long departmentId) {
+        Pageable pageable = pageUtils.getPageable(0, 6);
+        Page<DoctorEntity> doctorEntityPage = doctorRepositoryCustom.findAllByStaffEntityDepartmentEntityIdOrderByStaffEntityAverageRatingAndStaffEntityReviewCount(departmentId, pageable);
+        pageUtils.validatePage(doctorEntityPage, DoctorEntity.class);
+        return doctorEntityPage.stream()
+                .map(doctorConverter::toResponse)
+                .toList();
+    }
+
+    @Override
+    public List<DoctorResponse> getTop6DoctorsByHospital(Long hospitalId) {
+        Pageable pageable = pageUtils.getPageable(0, 6);
+        List<SearchCriteria> searchCriterias = List.of(
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                DoctorEntity.Fields.staffEntity,
+                                StaffEntity.Fields.hospitalEntity,
+                                HospitalEntity.Fields.id
+                        ),
+                        ComparisonOperator.EQUALS, hospitalId, JoinType.LEFT
+                )
+        );
+        List<SortCriteria> sortCriterias = List.of(
+                new SortCriteria(
+                        FieldNameUtils.joinFields(
+                                DoctorEntity.Fields.staffEntity,
+                                StaffEntity.Fields.reviewEntities,
+                                ReviewEntity.Fields.rating
+                        ),
+                        AggregationFunction.AVG, SortDirection.DESC, JoinType.LEFT
+                ),
+                new SortCriteria(
+                        FieldNameUtils.joinFields(
+                                DoctorEntity.Fields.staffEntity,
+                                StaffEntity.Fields.reviewEntities,
+                                ReviewEntity.Fields.id
+                        ),
+                        AggregationFunction.COUNT, SortDirection.DESC, JoinType.LEFT
+                )
+        );
+
+        Page<DoctorEntity> doctorEntityPage = pageSpecificationUtils.getPage(
+                specificationUtils.reset()
+                        .getSpecifications(searchCriterias, sortCriterias),
+                pageable, DoctorEntity.class, true
+        );
+        return doctorEntityPage.stream()
+                .map(doctorConverter::toResponse)
+                .toList();
     }
 }

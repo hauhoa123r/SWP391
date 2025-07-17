@@ -22,4 +22,8 @@ public interface DoctorService {
     DoctorResponse getDoctor(Long doctorId);
 
     List<DoctorResponse> getAllByCriteria(DoctorDTO doctorDTO, int index, int size);
+
+    List<DoctorResponse> getTop6DoctorsByDepartment(Long departmentId);
+
+    List<DoctorResponse> getTop6DoctorsByHospital(Long hospitalId);
 }
