@@ -5,7 +5,7 @@ Copyright 2014 Brian Grinstead - MIT License.
 See http://github.com/bgrins/filereader.js for documentation.
 */
 
-(function (window, document) {
+(function(window, document) {
 
     var FileReader = window.FileReader;
     var FileReaderSyncSupport = false;
@@ -26,7 +26,7 @@ See http://github.com/bgrins/filereader.js for documentation.
                 checkFileReaderSyncSupport();
             }
         },
-        getSync: function () {
+        getSync: function() {
             return sync && FileReaderSyncSupport;
         },
         output: [],
@@ -34,7 +34,8 @@ See http://github.com/bgrins/filereader.js for documentation.
             dragClass: "drag",
             accept: false,
             readAsDefault: 'DataURL',
-            readAsMap: {},
+            readAsMap: {
+            },
             on: {
                 loadstart: noop,
                 progress: noop,
@@ -51,19 +52,20 @@ See http://github.com/bgrins/filereader.js for documentation.
     };
 
     // Setup jQuery plugin (if available)
-    if (typeof (jQuery) !== "undefined") {
-        jQuery.fn.fileReaderJS = function (opts) {
-            return this.each(function () {
+    if (typeof(jQuery) !== "undefined") {
+        jQuery.fn.fileReaderJS = function(opts) {
+            return this.each(function() {
                 if (jQuery(this).is("input")) {
                     setupInput(this, opts);
-                } else {
+                }
+                else {
                     setupDrop(this, opts);
                 }
             });
         };
 
-        jQuery.fn.fileClipboard = function (opts) {
-            return this.each(function () {
+        jQuery.fn.fileClipboard = function(opts) {
+            return this.each(function() {
                 setupClipboard(this, opts);
             });
         };
@@ -112,7 +114,7 @@ See http://github.com/bgrins/filereader.js for documentation.
 
                     // Create a fake file name for images from clipboard, since this data doesn't get sent
                     var matches = new RegExp("/\(.*\)").exec(file.type);
-                    if (!file.fullName && matches) {
+                    if (!file.name && matches) {
                         var extension = matches[1];
                         file.name = "clipboard" + i + "." + extension;
                     }
@@ -150,32 +152,30 @@ See http://github.com/bgrins/filereader.js for documentation.
             processFileList(e, e.dataTransfer.files, instanceOptions);
         }
     }
-
     // setupFile: bind the 'change' event to an input[type=file]
     function setupBlob(blob, opts) {
-
+       
         if (!FileReaderJS.enabled) {
             return;
         }
 
-        if (blob.constructor !== Array && blob.constructor !== Function) {
-            if (blob.fullName === undefined) {
-                blob.fullName = "blob";
-            }
+        if(blob.constructor !== Array && blob.constructor !== Function){
+            if(blob.name === undefined){
+                blob.name = "blob";
+            }          
             blob = [blob];
-        } else {
+        }else{
 
-            if (blob[0].fullName === undefined) {
-                blob[0].fullName = "blob";
-            }
+            if(blob[0].name === undefined){
+                blob[0].name = "blob";
+            }    
         }
-
+        
         var instanceOptions = extend(extend({}, FileReaderJS.opts), opts);
 
         processFileList(null, blob, instanceOptions);
 
     }
-
     // setupDrop: bind the 'drop' event for a DOM element
     function setupDrop(dropbox, opts) {
 
@@ -206,14 +206,14 @@ See http://github.com/bgrins/filereader.js for documentation.
         }
 
         function bodydrop(e) {
-            if (e.dataTransfer.files && e.dataTransfer.files.length) {
+            if (e.dataTransfer.files && e.dataTransfer.files.length ){
                 e.stopPropagation();
                 e.preventDefault();
             }
         }
 
         function onlyWithFiles(fn) {
-            return function () {
+            return function() {
                 if (!initializedOnBody) {
                     fn.apply(this, arguments);
                 }
@@ -257,8 +257,8 @@ See http://github.com/bgrins/filereader.js for documentation.
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
             file.extra = {
-                nameNoExtension: file.fullName.substring(0, file.fullName.lastIndexOf('.')),
-                extension: file.fullName.substring(file.fullName.lastIndexOf('.') + 1),
+                nameNoExtension: file.name.substring(0, file.name.lastIndexOf('.')),
+                extension: file.name.substring(file.name.lastIndexOf('.') + 1),
                 fileID: i,
                 uniqueID: getUniqueID(),
                 groupID: groupID,
@@ -314,7 +314,7 @@ See http://github.com/bgrins/filereader.js for documentation.
         // Only initialize the synchronous worker if the option is enabled - to prevent the overhead
         if (supportsSync) {
             syncWorker = makeWorker(workerScript);
-            syncWorker.onmessage = function (e) {
+            syncWorker.onmessage = function(e) {
                 var file = e.data.file;
                 var result = e.data.result;
 
@@ -326,12 +326,12 @@ See http://github.com/bgrins/filereader.js for documentation.
                 file.extra.ended = new Date();
 
                 // Call error or load event depending on success of the read from the worker.
-                opts.on[result === "error" ? "error" : "load"]({target: {result: result}}, file);
+                opts.on[result === "error" ? "error" : "load"]({ target: { result: result } }, file);
                 groupFileDone();
             };
         }
 
-        Array.prototype.forEach.call(files, function (file) {
+        Array.prototype.forEach.call(files, function(file) {
 
             file.extra.started = new Date();
 
@@ -355,13 +355,14 @@ See http://github.com/bgrins/filereader.js for documentation.
                     extra: file.extra,
                     readAs: readAs
                 });
-            } else {
+            }
+            else {
 
                 var reader = new FileReader();
                 reader.originalEvent = e;
 
-                fileReaderEvents.forEach(function (eventName) {
-                    reader['on' + eventName] = function (e) {
+                fileReaderEvents.forEach(function(eventName) {
+                    reader['on' + eventName] = function(e) {
                         if (eventName == 'load' || eventName == 'error') {
                             file.extra.ended = new Date();
                         }
@@ -380,7 +381,7 @@ See http://github.com/bgrins/filereader.js for documentation.
     function checkFileReaderSyncSupport() {
         var worker = makeWorker(syncDetectionScript);
         if (worker) {
-            worker.onmessage = function (e) {
+            worker.onmessage =function(e) {
                 FileReaderSyncSupport = e.data;
             };
             worker.postMessage({});
@@ -399,7 +400,8 @@ See http://github.com/bgrins/filereader.js for documentation.
                 source[property].constructor === Object) {
                 destination[property] = destination[property] || {};
                 arguments.callee(destination[property], source[property]);
-            } else {
+            }
+            else {
                 destination[property] = source[property];
             }
         }
@@ -414,35 +416,35 @@ See http://github.com/bgrins/filereader.js for documentation.
     // addClass: add the css class for the element.
     function addClass(el, name) {
         if (!hasClass(el, name)) {
-            el.className = el.className ? [el.className, name].join(' ') : name;
+          el.className = el.className ? [el.className, name].join(' ') : name;
         }
     }
 
     // removeClass: remove the css class from the element.
     function removeClass(el, name) {
         if (hasClass(el, name)) {
-            var c = el.className;
-            el.className = c.replace(new RegExp("(?:^|\\s+)" + name + "(?:\\s+|$)", "g"), " ").replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+          var c = el.className;
+          el.className = c.replace(new RegExp("(?:^|\\s+)" + name + "(?:\\s+|$)", "g"), " ").replace(/^\s\s*/, '').replace(/\s\s*$/, '');
         }
     }
 
     // prettySize: convert bytes to a more readable string.
     function prettySize(bytes) {
         var s = ['bytes', 'kb', 'MB', 'GB', 'TB', 'PB'];
-        var e = Math.floor(Math.log(bytes) / Math.log(1024));
-        return (bytes / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e];
+        var e = Math.floor(Math.log(bytes)/Math.log(1024));
+        return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
     }
 
     // getGroupID: generate a unique int ID for groups.
-    var getGroupID = (function (id) {
-        return function () {
+    var getGroupID = (function(id) {
+        return function() {
             return id++;
         };
     })(0);
 
     // getUniqueID: generate a unique int ID for files
-    var getUniqueID = (function (id) {
-        return function () {
+    var getUniqueID = (function(id) {
+        return function() {
             return id++;
         };
     })(0);

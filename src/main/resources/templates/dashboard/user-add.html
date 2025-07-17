@@ -1906,7 +1906,9 @@
                                                     th:classappend="${#fields.hasErrors('staffType')} ? ' is-invalid' : ''">
                                                 <option value="" disabled selected th:if="*{staffType} == null">-- Vui lòng chọn hình thức làm việc --</option>
                                                 <option value="FULL_TIME">Làm việc toàn thời gian</option>
-                                                <option value="PART_TIME">Làm việc bán thời gian</option>
+                                                <option value="PART_TIME_CONTRACT">Làm việc bán thời gian</option>
+                                                <option value="INTERN">Thực tập sinh</option>
+                                                <option value="CONSULTANT">Tư vấn viên</option>
                                             </select>
                                             <div class="text-danger" th:errors="*{staffType}" th:if="${#fields.hasErrors('staffType')}"></div>
                                         </div>

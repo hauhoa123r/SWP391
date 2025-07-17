@@ -8,15 +8,82 @@ import org.project.model.request.AdminPatientUpdateRequest;
 import org.project.model.response.AdminPatientDetailResponse;
 import org.project.model.response.AdminPatientResponse;
 import org.project.repository.AdminPatientRepository;
+import org.project.specification.AdminPatientSpecifications;
+import org.project.enums.Gender;
+import java.time.LocalDate;
+import java.util.Collection;
 import org.project.repository.UserRepository;
 import org.project.service.AdminPatientService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AdminPatientServiceImpl implements AdminPatientService {
+
+    // Advanced search combining AND / OR / optional / range / IN
+    public Page<AdminPatientResponse> searchPatients(
+            Pageable pageable,
+            String global,
+            String name,
+            String email,
+            String phone,
+            Gender gender,
+            Collection<Long> idIn,
+            LocalDate birthFrom,
+            LocalDate birthTo) {
+
+        Specification<PatientEntity> spec = null;
+
+        if (global != null && !global.isBlank()) {
+            spec = AdminPatientSpecifications.globalKeyword(global);
+        }
+
+        if (name != null && !name.isBlank()) {
+            spec = spec == null
+                    ? AdminPatientSpecifications.fullNameContains(name)
+                    : spec.and(AdminPatientSpecifications.fullNameContains(name));
+        }
+
+        if (email != null && !email.isBlank()) {
+            spec = spec == null
+                    ? AdminPatientSpecifications.emailContains(email)
+                    : spec.and(AdminPatientSpecifications.emailContains(email));
+        }
+
+        if (phone != null && !phone.isBlank()) {
+            spec = spec == null
+                    ? AdminPatientSpecifications.phoneContains(phone)
+                    : spec.and(AdminPatientSpecifications.phoneContains(phone));
+        }
+
+        if (gender != null) {
+            spec = spec == null
+                    ? AdminPatientSpecifications.genderEquals(gender)
+                    : spec.and(AdminPatientSpecifications.genderEquals(gender));
+        }
+
+        if (idIn != null && !idIn.isEmpty()) {
+            spec = spec == null
+                    ? AdminPatientSpecifications.idIn(idIn)
+                    : spec.and(AdminPatientSpecifications.idIn(idIn));
+        }
+
+        if (birthFrom != null || birthTo != null) {
+            spec = spec == null
+                    ? AdminPatientSpecifications.birthdateBetween(birthFrom, birthTo)
+                    : spec.and(AdminPatientSpecifications.birthdateBetween(birthFrom, birthTo));
+        }
+
+        Page<PatientEntity> page = (spec != null)
+                ? patientRepository.findAll(spec, pageable)
+                : patientRepository.findAll(pageable);
+
+        return page.map(patientMapper::toResponse);
+    }
+
 
     private final AdminPatientRepository patientRepository;
     private final AdminPatientMapper patientMapper;

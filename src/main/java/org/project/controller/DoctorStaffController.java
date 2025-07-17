@@ -66,7 +66,7 @@ public class DoctorStaffController {
         model.addAttribute("hospitals", hospitalRepo.findAll());
         model.addAttribute("departments", departmentRepo.findAll());
         model.addAttribute("roles", ROLE_NAMES);
-        model.addAttribute("staffTypes", List.of("FULL_TIME", "PART_TIME"));
+        model.addAttribute("staffTypes", List.of("FULL_TIME", "PART_TIME_CONTRACT"));
         return "dashboard/user-add";
     }
 
@@ -100,7 +100,7 @@ public class DoctorStaffController {
                     org.project.enums.StaffRole.INVENTORY_MANAGER,
                     org.project.enums.StaffRole.LAB_RECEIVER
             ).stream().map(Enum::name).toList());
-            model.addAttribute("staffTypes", List.of("FULL_TIME", "PART_TIME"));
+            model.addAttribute("staffTypes", List.of("FULL_TIME", "PART_TIME_CONTRACT"));
             return "dashboard/user-add";
         }
     }
@@ -128,7 +128,7 @@ public class DoctorStaffController {
                     org.project.enums.StaffRole.INVENTORY_MANAGER,
                     org.project.enums.StaffRole.LAB_RECEIVER
             ).stream().map(Enum::name).toList());
-            model.addAttribute("staffTypes", List.of("FULL_TIME", "PART_TIME"));
+            model.addAttribute("staffTypes", List.of("FULL_TIME", "PART_TIME_CONTRACT"));
             return "admin/staff/edit";
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
