@@ -1,0 +1,268 @@
+<!doctype html>
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        breadCrumbTitle = ${'Phòng ban ' + department.getName()},
+        breadCrumbTexts = ${{{'Phòng ban ' + department.getName()}}},
+        breadCrumbLinks = ${{{''}}}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${'Phòng ban ' + department.getName()}"></title>
+</head>
+<body class=" body-bg landing-pages">
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="mt-5 sidebar-widget-working-hour bg-secondary-subtle text-body p-3 p-md-5">
+                    <div class="icon mb-4">
+                        <i class="far fa-clock"></i>
+                    </div>
+                    <!-- TODO: Chuyển thành tiếng việt -->
+                    <h4 class="mb-3 fw-500">Opening Time</h4>
+                    <ul class="list-inline m-0">
+                        <li class="mb-2 pb-2 border-bottom d-flex align-items-center justify-content-between">
+                            <span>Monday - Friday</span>
+                            <span>6:00 - 7:00 pm</span>
+                        </li>
+                        <li class="mb-2 pb-2 border-bottom d-flex align-items-center justify-content-between">
+                            <span>Saturday</span>
+                            <span>8:00 - 9:00 pm </span>
+                        </li>
+                        <li class="d-flex align-items-center justify-content-between">
+                            <span>Sunday</span>
+                            <span>Closed</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-5 sidebar-widget-services bg-primary-subtle text-body p-3 p-md-5">
+                    <div class="image mb-5">
+                        <img alt="image" class="img-fluid" src="./assets/images/pages/short-logo.png">
+                    </div>
+                    <h4 class="mb-3">KiviCare Services</h4>
+                    <ul class="list-inline m-0">
+                        <li class="mb-2">
+                            <span><b>Call : </b></span>
+                            <span>+123456789</span>
+                        </li>
+                        <li class="mb-2">
+                            <span><b>Mail : </b></span>
+                            <span>support@example.com</span>
+                        </li>
+                        <li>
+                            <span><b>Address : </b></span>
+                            <span>1234 North Avenue Luke Lane, South Bend, IN 360001</span>
+                        </li>
+                    </ul>
+                    <div class="sidebar-widget-social-list mt-5">
+                        <ul class="list-inline m-0 p-0 d-flex align-items-center gap-3 flex-wrap">
+                            <li>
+                                <a class="facebook-icon" href="https://www.facebook.com/">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="twitter-icon" href="https://x.com/">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="youtube-icon" href="https://www.youtube.com/">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="linkedin-icon" href="https://www.linkedin.com/">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 mt-lg-0 mt-5">
+                <div class="about-service">
+                    <div class="position-relative">
+                        <img alt="image" class="img-fluid" th:src="${department.getBannerUrl()}">
+                        <div class="iq-popup-video">
+                            <div class="iq-video-icon position-absolute ">
+                                <div class="iq-video bg-white position-absolute text-center d-inline-block iq-fslightbox-img">
+                                    <a class="d-block" data-fslightbox="html5-video"
+                                       data-video-poster="&lt;i aria-hidden=&quot;true&quot; class=&quot;fas fa-play text-primary&quot;&gt;&lt;/i&gt;"
+                                       th:href="${department.getVideoUrl()}">
+                                        <i aria-hidden="true" class="fas fa-play text-primary"></i>
+                                    </a>
+                                </div>
+                                <div class="iq-waves">
+                                    <div class="waves position-absolute rounded-0 wave-1"></div>
+                                    <div class="waves position-absolute rounded-0 wave-2"></div>
+                                    <div class="waves position-absolute rounded-0 wave-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="iq-title-box mt-5 mb-0">
+                        <span class="iq-subtitle text-uppercase">Phòng Ban</span>
+                        <h3 class="iq-title iq-heading-title mb-2">
+                            <span class="left-text text-capitalize fw-light" th:text="${department.getName()}"></span>
+                        </h3>
+                        <p class="iq-title-desc text-body" th:text="${department.getDescription()}"></p>
+                    </div>
+                    <div class="pt-5">
+                        <div class="row mt-5 align-items-center">
+                            <div class="col-md-12">
+                                <div class="iq-counter iq-counter-no-icon bg-primary-subtle p-3">
+                                    <div class="counter-content text-center">
+                                        <h3 class="counter mt-0 mb-3 text-primary fw-500"
+                                            th:text="${completedAppointmentsCount}"></h3>
+                                        <h4 class="counter-title mb-2 fw-normal">Cuộc hẹn thành công</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <div class="iq-title-box mb-0">
+                            <span class="iq-subtitle">Bác sĩ</span>
+                            <h4 class="iq-title iq-heading-title mb-0">
+                                <span class="right-text text-capitalize">Bác sĩ hàng đầu</span>
+                                <span class="left-text text-capitalize fw-light">Của chúng tôi</span>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="position-relative overflow-hidden swiper swiper-general" data-autoplay="true"
+                             data-laptop="2"
+                             data-loop="true" data-mobile="1" data-mobile-sm="1" data-navigation="true"
+                             data-pagination="true"
+                             data-slide="2" data-tab="2">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" th:each="doctor : ${doctors}">
+                                    <div class="iq-team-block team-overdetail position-relative p-2"
+                                         th:onclick="'window.location.href=\'/doctor/detail/' + ${doctor.id} + '\''">
+                                        <div class="iq-team-img">
+                                            <img alt="team"
+                                                 class="img-fluid w-100"
+                                                 loading="lazy"
+                                                 onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
+                                                 th:src="${doctor.staffEntity.avatarUrl}">
+                                        </div>
+                                        <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${doctor.staffEntity.averageRating}, reviewCount=${doctor.staffEntity.reviewCount})}"></div>
+                                        <div class="iq-team-info position-absolute d-block w-100">
+                                            <div class="iq-team-main-detail bg-white">
+                                                <h5 th:text="${doctor.staffEntity.fullName}"></h5>
+                                                <p class="mb-0 text-uppercase fw-bolder text-primary fw-500"
+                                                   th:text="${doctor.staffEntity.departmentEntity.name}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- TODO: Sửa thành tiếng việt -->
+                    <div class="mt-5 pt-md-3 pb-5 border-bottom">
+                        <div class="iq-title-box mt-5 mb-0">
+                            <span class="iq-subtitle text-uppercase">TIPS & INFO</span>
+                            <h4 class="iq-title iq-heading-title mb-2">
+                                <span class="right-text text-capitalize fw-500">KiviCare Tips For Healthy</span>
+                                <span class="left-text text-capitalize fw-light">Children And
+                        Families</span>
+                            </h4>
+                            <p class="iq-title-desc text-body">
+                                Raising a family isn’t always easy. You are busy, and so are your children. There is
+                                a
+                                lot to do in little time. But the stakes are high. Today, many kids are overweight
+                                or
+                                obese. A healthy, active lifestyle can help maintain weight. It also can prevent
+                                health
+                                issues, such as diabetes, heart disease, asthma, and high blood pressure.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-5 pt-3">
+                        <div class="accordion" id="main-faq">
+                            <div class="accordion-item custom-accordion mb-4 bg-white rounded-0">
+                                <h5 class="accordion-header rounded-0" id="heading01">
+                                    <button aria-controls="collapse01" aria-expanded="true"
+                                            class="accordion-button fw-500 text-capitalize gap-3"
+                                            data-bs-target="#collapse01"
+                                            data-bs-toggle="collapse" type="button">
+                                        Can I trust my tap water?
+                                    </button>
+                                </h5>
+                                <div aria-labelledby="heading01" class="accordion-collapse collapse show"
+                                     data-bs-parent="#main-faq" id="collapse01">
+                                    <div class="accordion-body">
+                                        <p> There are many variations of passages of
+                                            Lorem
+                                            Ipsum available, but the majority have suffered alteration in some form,
+                                            by injected humour,
+                                            or
+                                            randomised words which don’t look even slightly believable. If you are
+                                            going to use a
+                                            passage of
+                                            Lorem Ipsum, you need to be sure there isn’t anything. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item custom-accordion mb-4 bg-white rounded-0">
+                                <h5 class="accordion-header rounded-0" id="heading02">
+                                    <button aria-controls="collapse02"
+                                            aria-expanded="true"
+                                            class="accordion-button fw-500 text-capitalize collapsed gap-3"
+                                            data-bs-target="#collapse02"
+                                            data-bs-toggle="collapse" type="button">
+                                        Is my
+                                        microwave giving me cancer?
+                                    </button>
+                                </h5>
+                                <div aria-labelledby="heading02" class="accordion-collapse collapse"
+                                     data-bs-parent="#main-faq"
+                                     id="collapse02">
+                                    <div class="accordion-body">
+                                        <p>There are many variations of passages of Lorem Ipsum
+                                            available, but the majority have suffered alteration in some form, by
+                                            injected humour, or
+                                            randomised words which don’t look even slightly believable. If you are
+                                            going to use a
+                                            passage of
+                                            Lorem Ipsum, you need to be sure there isn’t anything.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item custom-accordion mb-4 bg-white rounded-0">
+                                <h5 class="accordion-header rounded-0" id="heading03">
+                                    <button aria-controls="collapse03"
+                                            aria-expanded="true"
+                                            class="accordion-button fw-500 text-capitalize collapsed gap-3"
+                                            data-bs-target="#collapse03"
+                                            data-bs-toggle="collapse" type="button">
+                                        How long
+                                        am I
+                                        contagious when I have the flu or a cold?
+                                    </button>
+                                </h5>
+                                <div aria-labelledby="heading03" class="accordion-collapse collapse"
+                                     data-bs-parent="#main-faq"
+                                     id="collapse03">
+                                    <div class="accordion-body">
+                                        <p>There are many variations of passages
+                                            of
+                                            Lorem Ipsum available, but the majority have suffered alteration in some
+                                            form, by injected
+                                            humour, or randomised words which don’t look even slightly believable.
+                                            If you are going to
+                                            use a
+                                            passage of Lorem Ipsum, you need to be sure there isn’t anything.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
