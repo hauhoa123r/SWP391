@@ -87,12 +87,19 @@ public class UserController {
 		//Get total number of products for pagination 
 		Long totalProducts = pharmacyServiceImpl.countProducts(); 
 		//Calculate total pages 
-		Long totalPages = (totalProducts + pageSize - 1) / pageSize; // Ceiling division 
+		Long totalPages = (totalProducts + pageSize - 1) / pageSize; // Ceiling division
+
+		//set startPage and endPage
+		int startPage = Math.max(1, page - 1);
+		int endPage = Math.min((int)(totalPages - 1), page + 1);
 		// Add products and pagination info to the model 
 		mv.addObject("products", products); 
 		mv.addObject("currentPage", page); 
 		mv.addObject("totalPages", totalPages); 
-		mv.addObject("totalProducts", totalProducts); 
+		mv.addObject("totalProducts", totalProducts);
+		//add startPage and endPage for paging
+		mv.addObject("startPage", startPage);
+		mv.addObject("endPage", endPage);
 		
 		//add model for adding product 
 		mv.addObject("productDTO", new ProductCreateDTO()); 
@@ -106,37 +113,7 @@ public class UserController {
 		mv.addObject("labels", Label.values()); 
 		return mv;
 	}
-	
-//	//@GetaMapping for admin's product update
-//	@GetMapping("/admin/products/edit/{id}")
-//	public ModelAndView adminEditProduct(@PathVariable Long id,
-//										 @RequestParam(defaultValue = "1") Integer page) {
-//		ModelAndView mv = new ModelAndView("dashboard/products");
-//
-//		// Lấy lại danh sách sản phẩm như cũ
-//		int pageSize = 7;
-//		int offset = (page - 1) * pageSize;
-//		List<ProductViewDTO> products = pharmacyRepositoryCustom.getPagedProducts(pageSize, offset);
-//		Long totalProducts = pharmacyServiceImpl.countProducts();
-//		Long totalPages = (totalProducts + pageSize - 1) / pageSize;
-//
-//		mv.addObject("products", products);
-//		mv.addObject("currentPage", page);
-//		mv.addObject("totalPages", totalPages);
-//		mv.addObject("totalProducts", totalProducts);
-//
-//
-//		ProductUpdateDTO productUpdate = pharmacyService.getProductUpdateDetailById(id);
-//		mv.addObject("productUpdate", productUpdate);
-//
-//		// Các dữ liệu form cần
-//		mv.addObject("categories", categoryRepo.findAll());
-//		mv.addObject("types", ProductType.values());
-//		mv.addObject("statuses", ProductStatus.values());
-//		mv.addObject("labels", Label.values());
-//
-//		return mv;
-//	}
+
 
 	//get mapping to the update form
 	@GetMapping("admin/product/edit/{id}")
