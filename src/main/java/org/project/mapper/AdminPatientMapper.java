@@ -21,6 +21,7 @@ public interface AdminPatientMapper {
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "familyRelationship", target = "familyRelationship")
     @Mapping(source = "bloodType", target = "bloodType")
+    @Mapping(source = "userEntity.userStatus", target = "status")
     AdminPatientResponse toResponse(PatientEntity patient);
 
     AdminPatientDetailResponse toDetailResponse(PatientEntity patient);

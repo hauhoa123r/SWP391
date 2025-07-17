@@ -12,12 +12,19 @@ import org.springframework.ui.Model;
 
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
+
+    // Root endpoint to handle GET requests to /users
+    @GetMapping("")
+    public String viewUsers() {
+        return "redirect:/users/view";
+    }
 
     private final UserService userService;
 
@@ -61,28 +68,104 @@ public class UserController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserEntity user) {
-        userService.updateUser(id, user);
-        return "redirect:/users/view";
+    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserEntity user, Model model) {
+        try {
+            userService.updateUser(id, user);
+            model.addAttribute("success", "Cập nhật thông tin người dùng thành công");
+            return "redirect:/users/view";
+        } catch (Exception e) {
+            model.addAttribute("error", "Đã xảy ra lỗi khi cập nhật thông tin người dùng: " + e.getMessage());
+            return "redirect:/users/edit/" + id;
+        }
     }
 
-    // ================== Delete User ==================
+    // ================== View User Details ==================
     @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return "redirect:/users/view";
+    public String deactivateUser(@PathVariable Long id, Model model) {
+        try {
+            UserEntity user = userService.getUserById(id);
+            if (user == null) {
+                model.addAttribute("error", "Không tìm thấy người dùng với ID: " + id);
+                return "redirect:/users/view";
+            }
+            
+            // Update user status to INACTIVE
+            user.setUserStatus(UserStatus.INACTIVE);
+            userService.updateUser(id, user);
+            
+            model.addAttribute("success", "Người dùng đã được vô hiệu hóa thành công");
+            return "redirect:/users/view";
+        } catch (Exception e) {
+            model.addAttribute("error", "Đã xảy ra lỗi khi vô hiệu hóa người dùng: " + e.getMessage());
+            return "redirect:/users/view";
+        }
+    }
+
+    // ================== View User Details ==================
+    @GetMapping("/detail/{id}")
+    public String viewUserDetails(@PathVariable Long id, Model model) {
+        try {
+            if (!userService.existsById(id)) {
+                model.addAttribute("error", "Không tìm thấy người dùng với ID: " + id);
+                return "redirect:/users/view";
+            }
+            
+            UserEntity user = userService.getUserDetails(id);
+            model.addAttribute("user", user);
+            model.addAttribute("success", "Đã tải thông tin người dùng thành công");
+            return "dashboard/user-info";
+        } catch (org.project.exception.ResourceNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "redirect:/users/view";
+        } catch (Exception e) {
+            model.addAttribute("error", "Đã xảy ra lỗi khi tải thông tin người dùng");
+            return "redirect:/users/view";
+        }
     }
 
     // Hiển thị tất cả người dùng
-    @GetMapping({ "", "/view" })
+    @GetMapping("/view")
     public String viewUsers(@RequestParam(defaultValue = "0") int page,
-                            @RequestParam(defaultValue = "10") int size,
-                            Model model) {
-        Page<UserEntity> userPage = userService.getAllUsers(page, size);
-        model.addAttribute("users", userPage.getContent());
+                          @RequestParam(defaultValue = "10") int size,
+                          @RequestParam(required = false) String type,
+                          @RequestParam(required = false) String keyword,
+                          Model model) {
+        Page<UserEntity> users;
+        if (type != null && keyword != null) {
+            switch (type.toLowerCase()) {
+                case "email":
+                    users = userService.searchByEmail(keyword, page, size);
+                    break;
+                case "phone":
+                    users = userService.searchByPhoneNumber(keyword, page, size);
+                    break;
+                case "role":
+                    users = userService.searchByRole(keyword, page, size);
+                    break;
+                case "status":
+                    users = userService.searchByStatus(keyword, page, size);
+                    break;
+                default:
+                    users = userService.getAllUsers(page, size);
+            }
+        } else {
+            users = userService.getAllUsers(page, size);
+        }
+
+        model.addAttribute("users", users.getContent());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", userPage.getTotalPages());
+        model.addAttribute("totalPages", users.getTotalPages());
         model.addAttribute("pageSize", size);
+        model.addAttribute("searchType", type);
+        model.addAttribute("keyword", keyword);
+        
+        // Add roles and statuses for form selects
+        model.addAttribute("roles", roles());
+        model.addAttribute("statuses", statuses());
+        
+        // Add CSRF token
+        model.addAttribute("_csrf", "csrf_token");
+        
         return "dashboard/user-list";
     }
 
@@ -130,8 +213,38 @@ public class UserController {
         model.addAttribute("searchType", type);
         model.addAttribute("keyword", keyword);
     }
-
-
-
+    @PostMapping("/soft-delete/{id}")
+    public String softDeleteUser(@PathVariable Long id, RedirectAttributes redirect) {
+        try {
+            userService.deactivateUser(id);
+            redirect.addFlashAttribute("success", "Người dùng đã được xóa tạm thời.");
+        } catch (Exception e) {
+            redirect.addFlashAttribute("error", "Không thể xóa tạm thời người dùng: " + e.getMessage());
+        }
+        return "redirect:/users/deleted";
+    }
+    @GetMapping("/deleted")
+    public String viewDeletedUsers(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   Model model) {
+        Page<UserEntity> deletedUsers = userService.getDeletedUsers(page, size);
+        model.addAttribute("deletedUsers", deletedUsers.getContent());
+        model.addAttribute("currentPage", page + 1);
+        model.addAttribute("totalPages", deletedUsers.getTotalPages());
+        model.addAttribute("pageSize", size);
+        return "dashboard/user-deleted-list";
+    }
+    @PostMapping("/restore/{id}")
+    public String restoreUser(@PathVariable Long id, RedirectAttributes redirect) {
+        userService.restoreUser(id);
+        redirect.addFlashAttribute("success", "Người dùng đã được khôi phục.");
+        return "redirect:/users/deleted";
+    }
+    @PostMapping("/delete-permanent/{id}")
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirect) {
+        userService.deleteUser(id);
+        redirect.addFlashAttribute("success", "Người dùng đã bị xóa vĩnh viễn.");
+        return "redirect:/users/deleted";
+    }
 
 }

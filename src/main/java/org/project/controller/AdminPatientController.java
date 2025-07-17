@@ -93,4 +93,38 @@ public class AdminPatientController {
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thành công");
         return "redirect:/admin/patients/detail/" + id;
     }
+    @GetMapping("/deleted")
+    public String getDeletedPatients(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size,
+                                     Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<AdminPatientResponse> deletedPatients = adminPatientService.getDeletedPatients(pageable);
+
+        model.addAttribute("patientPage", deletedPatients);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", deletedPatients.getTotalPages());
+        return "dashboard/patient-deleted"; // view HTML riêng
+    }
+    @PostMapping("/soft-delete/{id}")
+    public String softDeletePatient(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        adminPatientService.softDeletePatient(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Đã xóa tạm thời bệnh nhân");
+        return "redirect:/admin/patients";
+    }
+    @PostMapping("/restore/{id}")
+    public String restorePatient(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        adminPatientService.restorePatient(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Đã khôi phục bệnh nhân");
+        return "redirect:/admin/patients/deleted";
+    }
+    @PostMapping("/delete-permanent/{id}")
+    public String deletePermanently(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        adminPatientService.deletePermanently(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Đã xóa vĩnh viễn bệnh nhân");
+        return "redirect:/admin/patients/deleted";
+    }
+
+
+
+
 }

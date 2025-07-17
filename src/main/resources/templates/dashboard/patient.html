@@ -2079,6 +2079,18 @@
                                 </div>
                             </div>
                             <div class="card-body px-0">
+                                <!-- Nút điều hướng + tiêu đề -->
+                                <div class="d-flex justify-content-between align-items-center px-3 pb-3 border-bottom">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="fa fa-users text-primary fs-4"></i>
+                                        <h4 class="mb-0 fw-bold text-dark">Danh sách bệnh nhân</h4>
+                                    </div>
+
+                                    <a th:href="@{/admin/patients/deleted}" class="btn btn-sm btn-outline-danger shadow-sm" title="Xem danh sách đã xoá">
+                                        <i class="fa fa-trash me-1"></i> Bệnh nhân đã xoá
+                                    </a>
+                                </div>
+
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="patientTable">
                                         <thead>
@@ -2093,6 +2105,7 @@
                                             <th>Giới tính</th>
                                             <th>Quan hệ</th>
                                             <th>Nhóm máu</th>
+                                            <th>Trạng thái</th>
                                             <th class="text-center">Hành động</th>
                                         </tr>
                                         </thead>
@@ -2105,30 +2118,45 @@
                                             <td th:text="${patient.address}">Hà Nội</td>
                                             <td th:text="${#temporals.format(patient.dateOfBirth, 'dd/MM/yyyy')}">01/01/1990</td>
                                             <td th:text="${patient.age}">33</td>
-                                            <td th:text="${patient.gender}">NAM</td>
-                                            <td th:text="${patient.familyRelationship}">BẢN THÂN</td>
+                                            <td th:text="${patient.gender}">Nam</td>
+                                            <td th:text="${patient.familyRelationship}">Bản thân</td>
                                             <td th:text="${patient.bloodType}">A+</td>
+                                            <td>
+        <span th:classappend="${patient.status == 'ACTIVE'} ? 'badge bg-success text-white' : 'badge bg-secondary text-white'"
+              th:text="${patient.status == 'ACTIVE' ? 'Hoạt động' : 'Ngừng hoạt động'}">Hoạt động</span>
+                                            </td>
                                             <td class="text-center">
+                                                <!-- Xem -->
                                                 <a th:href="@{'/admin/patients/detail/' + ${patient.id}}"
-                                                   class="btn btn-sm btn-outline-info me-1" title="Xem">
+                                                   class="btn btn-sm btn-outline-info me-1"
+                                                   title="Xem chi tiết">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
+
+                                                <!-- Sửa -->
                                                 <a th:href="@{'/admin/patients/edit/' + ${patient.id}}"
-                                                   class="btn btn-sm btn-outline-primary me-1" title="Sửa">
+                                                   class="btn btn-sm btn-outline-primary me-1"
+                                                   title="Chỉnh sửa">
                                                     <i class="fa fa-pen"></i>
                                                 </a>
-                                                <form th:action="@{'/admin/patients/delete/' + ${patient.id}}"
+
+                                                <!-- Xóa tạm thời -->
+                                                <form th:action="@{'/admin/patients/soft-delete/' + ${patient.id}}"
                                                       method="post"
-                                                      th:id="'del' + ${patient.id}" class="d-inline">
-                                                    <button type="button" class="btn btn-sm btn-outline-danger"
-                                                            th:onclick="'confirmDelete(\'del' + ${patient.id} + '\')'"
-                                                            title="Xoá">
+                                                      class="d-inline"
+                                                      th:onsubmit="return confirm('Bạn có chắc chắn muốn xóa tạm thời bệnh nhân này?')">
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-outline-danger"
+                                                            title="Xóa tạm thời">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </form>
                                             </td>
+
                                         </tr>
                                         </tbody>
+
+
                                     </table>
 
                                     <!-- Pagination Controls -->

@@ -27,9 +27,26 @@ public interface UserService {
     // Lấy người dùng theo ID
     UserEntity getUserById(Long id);
 
+    // Lấy chi tiết người dùng với thông tin liên quan
+    UserEntity getUserDetails(Long id) throws org.project.exception.ResourceNotFoundException;
+
+    // Kiểm tra người dùng có tồn tại không
+    boolean existsById(Long id);
+
     // Cập nhật thông tin người dùng
     UserEntity updateUser(Long id, UserEntity updatedUser);
 
-    // Xóa người dùng
+    // Vô hiệu hóa người dùng
+    void deactivateUser(Long id);
+
+    // Xóa người dùng vĩnh viễn
     void deleteUser(Long id);
+    // Lấy danh sách người dùng đã bị xóa tạm
+    Page<UserEntity> getDeletedUsers(int page, int size);
+
+    // Khôi phục người dùng đã bị xóa tạm
+    void restoreUser(Long id);
+
+
+
 }

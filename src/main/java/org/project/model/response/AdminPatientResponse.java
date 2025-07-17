@@ -29,4 +29,5 @@ public class AdminPatientResponse {
     private Gender gender;
     private String familyRelationship;
     private BloodType bloodType;
+    private String status;
 }
