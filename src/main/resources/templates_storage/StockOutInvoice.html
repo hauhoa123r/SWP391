@@ -440,9 +440,40 @@
                         <div class="col-sm-12">
                             <div class="card card-table">
                                 <div class="card-body">
-                                    <div class="title-header option-title">
+                                    <div class="title-header option-title d-flex justify-content-between">
                                         <h5>Danh sách hóa đơn xuất kho</h5>
                                     </div>
+
+                                    <!-- Search and filter section -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" id="searchFilter" placeholder="Tìm kiếm mã hóa đơn, bộ phận...">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-select" id="statusFilter">
+                                                <option value="">Tất cả trạng thái</option>
+                                                <option value="COMPLETED">Hoàn thành</option>
+                                                <option value="PENDING">Chờ duyệt</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-select" id="reasonFilter">
+                                                <option value="">Tất cả lý do</option>
+                                                <option value="SALE">Bán hàng</option>
+                                                <option value="TRANSFER">Chuyển kho</option>
+                                                <option value="RETURN">Trả hàng</option>
+                                                <option value="EXPIRED">Hết hạn</option>
+                                                <option value="DAMAGED">Hư hỏng</option>
+                                                <option value="OTHER">Khác</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-secondary" onclick="clearFilters()">
+                                                <i class="ri-filter-off-line"></i> Xóa bộ lọc
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- End search and filter section -->
 
                                     <div class="table-responsive">
                                         <table class="table all-package theme-table" id="table_id">
@@ -472,8 +503,13 @@
                                                     <td>
                                                         <ul>
                                                             <li>
-                                                                <a th:href="@{/stock-out-invoice/{id}(id=${invoice.id})}">
+                                                                <a th:href="@{'/StockOutDetail.html?id=' + ${invoice.id}}">
                                                                     <i class="ri-eye-line"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a th:href="@{'/invoiceouttracking.html?id=' + ${invoice.id}}" class="btn btn-sm btn-info">
+                                                                    <i class="ri-truck-line"></i> 
                                                                 </a>
                                                             </li>
                                                             <li>
@@ -491,6 +527,38 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="pagination-box" th:if="${totalPages > 0}">
+                        <nav class="ms-auto me-auto" aria-label="...">
+                            <ul class="pagination pagination-primary">
+                                <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                    <a class="page-link" th:href="@{/supplier-in-invoices(page=0, size=10, keyword=${keyword}, status=${status})}" aria-label="First">
+                                        <span aria-hidden="true">&laquo;&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                    <a class="page-link" th:href="@{/supplier-in-invoices(page=${currentPage - 1}, size=10, keyword=${keyword}, status=${status})}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+                                    th:classappend="${i == currentPage ? 'active' : ''}"
+                                    th:if="${i >= currentPage - 2 && i <= currentPage + 2}">
+                                    <a class="page-link" th:href="@{/supplier-in-invoices(page=${i}, size=10, keyword=${keyword}, status=${status})}" th:text="${i + 1}"></a>
+                                </li>
+                                <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                    <a class="page-link" th:href="@{/supplier-in-invoices(page=${currentPage + 1}, size=10, keyword=${keyword}, status=${status})}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                    <a class="page-link" th:href="@{/supplier-in-invoices(page=${totalPages - 1}, size=10, keyword=${keyword}, status=${status})}" aria-label="Last">
+                                        <span aria-hidden="true">&raquo;&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
 
@@ -554,6 +622,7 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
 
                 <!-- Modal xác nhận -->
@@ -664,6 +733,82 @@
 
     <!-- Theme js -->
     <script src="frontend/assets/js/script.js"></script>
+    
+    <script>
+        function trackInvoice(type) {
+            const selectedId = document.querySelector('select').value;
+            if (!selectedId) {
+                alert('Vui lòng chọn đơn hàng cần theo dõi');
+                return;
+            }
+            
+            if (type === 'in') {
+                window.location.href = 'invoiceintracking.html?id=' + selectedId;
+            } else {
+                window.location.href = 'invoiceouttracking.html?id=' + selectedId;
+            }
+        }
+    </script>
+    
+    <!-- Filter functionality -->
+    <script>
+        $(document).ready(function() {
+            // Initialize filter event handlers
+            $('#searchFilter').on('input', filterTable);
+            $('#statusFilter').on('change', filterTable);
+            $('#reasonFilter').on('change', filterTable);
+            
+            // Filter table based on search text and selected options
+            function filterTable() {
+                const searchText = $('#searchFilter').val().toLowerCase();
+                const status = $('#statusFilter').val();
+                const reason = $('#reasonFilter').val();
+                
+                // Loop through all table rows
+                $('#table_id tbody tr').each(function() {
+                    const row = $(this);
+                    const rowText = row.text().toLowerCase();
+                    const rowStatus = row.find('td:nth-child(6)').text().trim();
+                    const rowReason = row.find('td:nth-child(4)').text().trim();
+                    
+                    // Check if row matches all filters
+                    let showRow = true;
+                    
+                    // Text search filter
+                    if (searchText && !rowText.includes(searchText)) {
+                        showRow = false;
+                    }
+                    
+                    // Status filter
+                    if (status) {
+                        if (status === 'COMPLETED' && !rowStatus.includes('Hoàn thành')) {
+                            showRow = false;
+                        } else if (status === 'PENDING' && !rowStatus.includes('Chờ duyệt')) {
+                            showRow = false;
+                        }
+                    }
+                    
+                    // Reason filter
+                    if (reason && !rowReason.includes(reason)) {
+                        showRow = false;
+                    }
+                    
+                    // Show or hide row based on filter results
+                    row.toggle(showRow);
+                });
+            }
+        });
+        
+        // Clear all filters
+        function clearFilters() {
+            $('#searchFilter').val('');
+            $('#statusFilter').val('');
+            $('#reasonFilter').val('');
+            
+            // Trigger filter to show all rows
+            $('#searchFilter').trigger('input');
+        }
+    </script>
 </body>
 
 </html>

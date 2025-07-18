@@ -396,26 +396,18 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>P001</td>
-                                                    <td>Paracetamol 500mg</td>
-                                                    <td>5</td>
-                                                    <td>10</td>
-                                                    <td><span class="badge bg-danger">Sắp hết</span></td>
+                                                <tr th:each="product : ${lowStockReport}">
+                                                    <td th:text="${'P' + product.productId}">P001</td>
+                                                    <td th:text="${product.productName}">Paracetamol 500mg</td>
+                                                    <td th:text="${product.currentStock}">5</td>
+                                                    <td th:text="${product.threshold}">10</td>
+                                                    <td>
+                                                        <span th:if="${product.currentStock <= product.threshold / 2}" class="badge bg-danger">Sắp hết</span>
+                                                        <span th:if="${product.currentStock > product.threshold / 2 && product.currentStock <= product.threshold}" class="badge bg-warning">Cần nhập thêm</span>
+                                                    </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>P002</td>
-                                                    <td>Amoxicillin 250mg</td>
-                                                    <td>8</td>
-                                                    <td>15</td>
-                                                    <td><span class="badge bg-warning">Cần nhập thêm</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>P003</td>
-                                                    <td>Băng y tế</td>
-                                                    <td>7</td>
-                                                    <td>20</td>
-                                                    <td><span class="badge bg-danger">Sắp hết</span></td>
+                                                <tr th:if="${#lists.isEmpty(lowStockReport)}">
+                                                    <td colspan="5" class="text-center">Không có sản phẩm nào sắp hết hàng</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -446,26 +438,19 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>P001</td>
-                                                    <td>Paracetamol 500mg</td>
-                                                    <td>LOT12345</td>
-                                                    <td>30-06-2023</td>
-                                                    <td><span class="badge bg-danger">Sắp hết hạn</span></td>
+                                                <tr th:each="product : ${expiringProducts}">
+                                                    <td th:text="${'P' + product.productId}">P001</td>
+                                                    <td th:text="${product.productName}">Paracetamol 500mg</td>
+                                                    <td th:text="${product.batchNumber != null ? product.batchNumber : 'N/A'}">LOT12345</td>
+                                                    <td th:text="${#dates.format(product.expirationDate, 'dd-MM-yyyy')}">30-06-2023</td>
+                                                    <td>
+                                                        <span th:if="${#dates.createNow() >= product.expirationDate}" class="badge bg-danger">Đã hết hạn</span>
+                                                        <span th:if="${#dates.createNow() < product.expirationDate && #dates.daysBetween(#dates.createNow(), product.expirationDate) <= 15}" class="badge bg-danger">Sắp hết hạn</span>
+                                                        <span th:if="${#dates.createNow() < product.expirationDate && #dates.daysBetween(#dates.createNow(), product.expirationDate) > 15 && #dates.daysBetween(#dates.createNow(), product.expirationDate) <= 30}" class="badge bg-warning">Sắp hết hạn</span>
+                                                    </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>P004</td>
-                                                    <td>Vitamin C 1000mg</td>
-                                                    <td>LOT54321</td>
-                                                    <td>15-07-2023</td>
-                                                    <td><span class="badge bg-warning">Sắp hết hạn</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>P006</td>
-                                                    <td>Dung dịch sát khuẩn</td>
-                                                    <td>LOT78901</td>
-                                                    <td>10-08-2023</td>
-                                                    <td><span class="badge bg-warning">Sắp hết hạn</span></td>
+                                                <tr th:if="${#lists.isEmpty(expiringProducts)}">
+                                                    <td colspan="5" class="text-center">Không có sản phẩm nào sắp hết hạn</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -513,69 +498,34 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>SI-003</td>
-                                                        <td>Nhập kho</td>
-                                                        <td>15-05-2023</td>
-                                                        <td>Lê Văn C</td>
-                                                        <td><span class="status-close">Hoàn thành</span></td>
+                                                    <tr th:each="transaction : ${recentTransactions}">
+                                                        <td th:text="${transaction.transactionType.name() == 'STOCK_IN' ? 'SI-' + transaction.id : 'SO-' + transaction.id}">SI-003</td>
+                                                        <td th:text="${transaction.transactionType.name() == 'STOCK_IN' ? 'Nhập kho' : 'Xuất kho'}">Nhập kho</td>
+                                                        <td th:text="${#dates.format(transaction.transactionDate, 'dd-MM-yyyy')}">15-05-2023</td>
+                                                        <td th:text="${transaction.inventoryManagerName}">Lê Văn C</td>
+                                                        <td>
+                                                            <span th:if="${transaction.status.name() == 'PENDING'}" class="status-pending">Chờ xử lý</span>
+                                                            <span th:if="${transaction.status.name() == 'RECEIVED'}" class="status-received">Đã nhận</span>
+                                                            <span th:if="${transaction.status.name() == 'CHECKED'}" class="status-checked">Đã kiểm tra</span>
+                                                            <span th:if="${transaction.status.name() == 'COMPLETED'}" class="status-close">Hoàn thành</span>
+                                                        </td>
                                                         <td>
                                                             <ul>
                                                                 <li>
-                                                                    <a href="StockInInvoice.html">
+                                                                    <a th:if="${transaction.transactionType.name() == 'STOCK_IN'}" 
+                                                                       th:href="@{'/supplier-ins/' + ${transaction.id}}">
+                                                                        <i class="ri-eye-line"></i>
+                                                                    </a>
+                                                                    <a th:if="${transaction.transactionType.name() == 'STOCK_OUT'}" 
+                                                                       th:href="@{'/supplier-outs/' + ${transaction.id}}">
                                                                         <i class="ri-eye-line"></i>
                                                                     </a>
                                                                 </li>
                                                             </ul>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>SO-003</td>
-                                                        <td>Xuất kho</td>
-                                                        <td>19-05-2023</td>
-                                                        <td>Lê Văn C</td>
-                                                        <td><span class="status-close">Hoàn thành</span></td>
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="StockOutInvoice.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>SI-002</td>
-                                                        <td>Nhập kho</td>
-                                                        <td>18-05-2023</td>
-                                                        <td>Trần Thị B</td>
-                                                        <td><span class="status-close">Hoàn thành</span></td>
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="StockInInvoice.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>SO-002</td>
-                                                        <td>Xuất kho</td>
-                                                        <td>21-05-2023</td>
-                                                        <td>Trần Thị B</td>
-                                                        <td><span class="status-close">Hoàn thành</span></td>
-                                                        <td>
-                                                            <ul>
-                                                                <li>
-                                                                    <a href="StockOutInvoice.html">
-                                                                        <i class="ri-eye-line"></i>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
+                                                    <tr th:if="${#lists.isEmpty(recentTransactions)}">
+                                                        <td colspan="6" class="text-center">Không có giao dịch nào gần đây</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

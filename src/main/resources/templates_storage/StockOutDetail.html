@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fastkart - Quản lý nhập kho</title>
+    <title>Fastkart - Chi tiết xuất kho</title>
 
     <!-- CSS Files -->
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -23,15 +23,16 @@
         .status-pending { background-color: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-received { background-color: #e0f2fe; color: #0288d1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-checked { background-color: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-completed { background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .batch-info { font-size: 0.8em; color: #666; }
     </style>
 </head>
 
 <body>
-<!-- Header và Sidebar giữ nguyên như cũ -->
 <div class="tap-top"><span class="lnr lnr-chevron-up"></span></div>
 
 <div class="page-wrapper compact-wrapper" id="pageWrapper">
-    <!-- Page Header Start-->
+    <!-- Bắt đầu tiêu đề trang -->
     <div class="page-header">
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
@@ -106,11 +107,10 @@
                                 </p>
                             </li>
                             <li>
-                                <a class="btn btn-primary" href="javascript:void(0)">Kiểm tra tất cả thông báo</a>
+                                <a class="btn btn-primary" href="javascript:void(0)">Xem tất cả thông báo</a>
                             </li>
                         </ul>
                     </li>
-
                     <li>
                         <div class="mode">
                             <i class="ri-moon-line"></i>
@@ -162,11 +162,11 @@
             </div>
         </div>
     </div>
-    <!-- Page Header Ends-->
+    <!-- Kết thúc tiêu đề trang -->
 
     <!-- Page Body start -->
     <div class="page-body-wrapper">
-        <!-- Page Sidebar Start-->
+        <!-- Bắt đầu thanh bên -->
         <div class="sidebar-wrapper">
             <div id="sidebarEffect"></div>
             <div>
@@ -196,14 +196,12 @@
                     <div id="sidebar-menu">
                         <ul class="sidebar-links" id="simple-bar">
                             <li class="back-btn"></li>
-
                             <li class="sidebar-list">
                                 <a class="sidebar-link sidebar-title link-nav" href="index.html">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
                             </li>
-
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
                                     <i class="ri-store-3-line"></i>
@@ -213,13 +211,11 @@
                                     <li>
                                         <a href="StockIn.html">Nhập kho</a>
                                     </li>
-
                                     <li>
                                         <a href="StockOut.html">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
-
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
                                     <i class="ri-list-check-2"></i>
@@ -229,17 +225,14 @@
                                     <li>
                                         <a href="StockInInvoice.html">Hóa đơn nhập kho</a>
                                     </li>
-
                                     <li>
                                         <a href="StockOutInvoice.html">Hóa đơn xuất kho</a>
                                     </li>
-
                                     <li>
                                         <a href="CustomerInvoice.html">Hóa đơn khách hàng</a>
                                     </li>
                                 </ul>
                             </li>
-
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
                                     <i class="ri-list-settings-line"></i>
@@ -249,13 +242,11 @@
                                     <li>
                                         <a href="medical-equipment.html">Thiết bị y tế</a>
                                     </li>
-
                                     <li>
                                         <a href="medicine.html">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>
-
                             <li class="sidebar-list">
                                 <a class="sidebar-link sidebar-title" href="javascript:void(0)">
                                     <i class="ri-archive-line"></i>
@@ -273,7 +264,6 @@
                                     </li>
                                 </ul>
                             </li>
-
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
                                     <i class="ri-price-tag-3-line"></i>
@@ -283,20 +273,17 @@
                                     <li>
                                         <a href="coupon-list.html">Danh sách mã giảm giá</a>
                                     </li>
-
                                     <li>
                                         <a href="create-coupon.html">Tạo mã giảm giá</a>
                                     </li>
                                 </ul>
                             </li>
-
                             <li class="sidebar-list">
                                 <a class="sidebar-link sidebar-title link-nav" href="product-review.html">
                                     <i class="ri-star-line"></i>
                                     <span>Đánh giá sản phẩm</span>
                                 </a>
                             </li>
-
                             <li class="sidebar-list">
                                 <a class="sidebar-link sidebar-title link-nav" href="reports.html">
                                     <i class="ri-file-chart-line"></i>
@@ -305,138 +292,138 @@
                             </li>
                         </ul>
                     </div>
-
                     <div class="right-arrow" id="right-arrow">
                         <i data-feather="arrow-right"></i>
                     </div>
                 </nav>
             </div>
         </div>
-        <!-- Page Sidebar Ends-->
-
-        <!-- Main Content -->
+        <!-- Container-fluid starts-->
         <div class="page-body">
             <div class="container-fluid">
-                <!-- Main Table -->
                 <div class="row">
                     <div class="col-12">
-                        <div class="card card-table">
+                        <div class="card">
                             <div class="card-header">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <h5>Danh sách đơn hàng chờ nhập kho</h5>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn-group float-end">
-
-                                            <button class="btn btn-primary" onclick="refreshOrders()">
-                                                <i class="ri-refresh-line"></i> Làm mới
-                                            </button>
-                                        </div>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <h5>Chi tiết đơn xuất kho</h5>
+                                    <button class="btn btn-secondary" onclick="goBack()">
+                                        <i class="ri-arrow-left-line"></i> Quay lại
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Filter Section -->
                             <div class="card-body">
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" id="searchFilter" placeholder="Tìm kiếm mã đơn, nhà cung cấp...">
+                                <!-- Thông tin chung -->
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <h6 class="mb-2">Thông tin đơn xuất kho</h6>
+                                            <p class="mb-1"><strong>Mã đơn:</strong> <span id="orderId">SO-001</span></p>
+                                            <p class="mb-1"><strong>Ngày tạo:</strong> <span id="orderDate">15/07/2025 09:30</span></p>
+                                            <p class="mb-1"><strong>Trạng thái:</strong> 
+                                                <span id="orderStatus" class="status-received">Đã nhận đơn</span>
+                                            </p>
+                                            <p class="mb-1"><strong>Ngày dự kiến giao:</strong> <span id="deliveryDate">20/07/2025</span></p>
+                                            <p class="mb-1"><strong>Ghi chú:</strong> <span id="orderNotes">Giao hàng trong giờ hành chính</span></p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select" id="statusFilter">
-                                            <option value="">Tất cả trạng thái</option>
-                                            <option value="pending">Chờ hàng về</option>
-                                            <option value="received">Đã nhận hàng</option>
-                                            <option value="checked">Đã kiểm tra</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select" id="typeFilter">
-                                            <option value="">Tất cả loại</option>
-                                            <option value="medicine">Thuốc</option>
-                                            <option value="equipment">Thiết bị y tế</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-secondary" onclick="clearFilters()">
-                                            <i class="ri-filter-off-line"></i> Xóa bộ lọc
-                                        </button>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <h6 class="mb-2">Thông tin nhà cung cấp</h6>
+                                            <p class="mb-1"><strong>Nhà cung cấp:</strong> <span id="supplierName">Công ty TNHH Dược phẩm ABC</span></p>
+                                            <p class="mb-1"><strong>Liên hệ:</strong> <span id="supplierContact">0123-456-789</span></p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h6 class="mb-2">Thông tin người quản lý</h6>
+                                            <p class="mb-1"><strong>Người quản lý:</strong> <span id="managerName">Nguyễn Văn Quản</span></p>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="table-responsive">
-                                    <table class="table table-striped" id="stockInTable">
+                                <!-- Danh sách sản phẩm -->
+                                <div class="table-responsive mb-4">
+                                    <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th>Mã đơn nhập</th>
-                                            <th>Loại</th>
-                                            <th>Nhà cung cấp</th>
-                                            <th>Ngày tạo</th>
-                                            <th>Tổng tiền</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thao tác</th>
+                                            <th>STT</th>
+                                            <th>Sản phẩm</th>
+                                            <th>Số lô</th>
+                                            <th>Số lượng</th>
+                                            <th>Đơn giá</th>
+                                            <th>Thành tiền</th>
                                         </tr>
                                         </thead>
-                                        <tbody id="stockInTableBody">
-                                        <!-- Hiển thị dữ liệu động từ controller -->
-                                        <tr th:each="supplierIn : ${supplierIns}" th:data-id="${supplierIn.id}" th:data-type="${supplierIn.type}" th:data-status="${supplierIn.status}">
-                                            <td><strong th:text="${'SI-' + supplierIn.id}">SI-001</strong></td>
+                                        <tbody id="productList">
+                                        <tr>
+                                            <td>1</td>
                                             <td>
-                                                <!-- Simple type implementation -->
-                                                <span th:if="${supplierIn.type == 'MEDICINE'}" class="badge bg-success">Thuốc</span>
-                                                <span th:if="${supplierIn.type != 'MEDICINE'}" class="badge bg-info">Thiết bị y tế</span>
-                                            </td>
-                                            <td th:text="${supplierIn.supplier != null ? supplierIn.supplier.name : 'N/A'}">Nhà cung cấp</td>
-                                            <td th:text="${#temporals.format(supplierIn.createdAt, 'dd-MM-yyyy')}">Ngày tạo</td>
-                                            <td class="text-end"><strong th:text="${#numbers.formatDecimal(supplierIn.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong></td>
-                                            <td>
-                                                <!-- Simple status implementation -->
-                                                <span th:if="${supplierIn.status == 'PENDING'}" class="status-pending">Chờ hàng về</span>
-                                                <span th:if="${supplierIn.status == 'RECEIVED'}" class="status-received">Đã nhận hàng</span>
-                                                <span th:if="${supplierIn.status == 'CHECKED'}" class="status-checked">Đã kiểm tra</span>
-                                                <span th:if="${supplierIn.status == 'COMPLETED'}" class="status-completed">Hoàn thành</span>
-                                                <span th:if="${supplierIn.status != 'PENDING' && supplierIn.status != 'RECEIVED' && supplierIn.status != 'CHECKED' && supplierIn.status != 'COMPLETED'}" class="status-processing">Đang xử lý</span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a th:href="@{'/StockInDetail.html?id=' + ${supplierIn.id}}" class="btn btn-sm btn-primary">
-                                                        <i class="ri-eye-line"></i>
-                                                    </a>
-                                                    <a th:href="@{'/invoiceintracking.html?id=' + ${supplierIn.id}}" class="btn btn-sm btn-info">
-                                                        <i class="ri-truck-line"></i> 
-                                                    </a>
-                                                    <!-- Nút xử lý trạng thái -->
-                                                    <form th:if="${supplierIn.status == 'PENDING'}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
-                                                        <input type="hidden" name="status" value="RECEIVED" />
-                                                        <button type="submit" class="btn btn-sm btn-success" title="Đánh dấu đã nhận">
-                                                            <i class="ri-truck-line"></i>
-                                                        </button>
-                                                    </form>
-                                                    
-                                                    <form th:if="${supplierIn.status == 'RECEIVED'}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
-                                                        <input type="hidden" name="status" value="CHECKED" />
-                                                        <button type="submit" class="btn btn-sm btn-warning" title="Đánh dấu đã kiểm tra">
-                                                            <i class="ri-checkbox-line"></i>
-                                                    </button>
-                                                    </form>
-                                                    
-                                                    <form th:if="${supplierIn.status == 'CHECKED'}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
-                                                        <input type="hidden" name="status" value="COMPLETED" />
-                                                        <button type="submit" class="btn btn-sm btn-success" title="Hoàn thành">
-                                                        <i class="ri-check-line"></i>
-                                                    </button>
-                                                    </form>
+                                                <div>Paracetamol 500mg</div>
+                                                <div class="batch-info">
+                                                    <span>NSX: 01/01/2024</span>
+                                                    <span> | HSD: 01/01/2026</span>
                                                 </div>
                                             </td>
+                                            <td>LOT001</td>
+                                            <td>100</td>
+                                            <td>5,000 VNĐ</td>
+                                            <td>500,000 VNĐ</td>
                                         </tr>
-                                        
-                                        <!-- Hiển thị thông báo khi không có dữ liệu -->
-                                        <tr th:if="${supplierIns.empty}">
-                                            <td colspan="7" class="text-center">Không có dữ liệu nhập kho</td>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>
+                                                <div>Amoxicillin 250mg</div>
+                                                <div class="batch-info">
+                                                    <span>NSX: 15/02/2024</span>
+                                                    <span> | HSD: 15/02/2026</span>
+                                                </div>
+                                            </td>
+                                            <td>LOT002</td>
+                                            <td>50</td>
+                                            <td>8,000 VNĐ</td>
+                                            <td>400,000 VNĐ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>
+                                                <div>Vitamin C 1000mg</div>
+                                                <div class="batch-info">
+                                                    <span>NSX: 10/03/2024</span>
+                                                    <span> | HSD: 10/03/2026</span>
+                                                </div>
+                                            </td>
+                                            <td>LOT003</td>
+                                            <td>30</td>
+                                            <td>12,000 VNĐ</td>
+                                            <td>360,000 VNĐ</td>
                                         </tr>
                                         </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="5" class="text-end"><strong>Tổng tiền:</strong></td>
+                                            <td><strong id="totalAmount">1,260,000 VNĐ</strong></td>
+                                        </tr>
+                                        </tfoot>
                                     </table>
+                                </div>
+
+                                <!-- Cập nhật trạng thái -->
+                                <div class="mt-4">
+                                    <h6 class="mb-3">Cập nhật trạng thái đơn hàng</h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button id="btnPending" class="btn btn-warning" onclick="updateStatus('PENDING')">
+                                            <i class="ri-time-line"></i> Chờ xử lý
+                                        </button>
+                                        <button id="btnReceived" class="btn btn-info" onclick="updateStatus('RECEIVED')">
+                                            <i class="ri-file-list-line"></i> Đã nhận đơn
+                                        </button>
+                                        <button id="btnChecked" class="btn btn-success" onclick="updateStatus('CHECKED')">
+                                            <i class="ri-checkbox-line"></i> Đã chuẩn bị hàng
+                                        </button>
+                                        <button id="btnCompleted" class="btn btn-primary" onclick="updateStatus('COMPLETED')">
+                                            <i class="ri-check-line"></i> Hoàn thành
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -444,26 +431,9 @@
                 </div>
             </div>
         </div>
+        <!-- Container-fluid Ends-->
     </div>
-</div>
-
-<!-- Order Detail Modal -->
-<div class="modal fade" id="orderDetailModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Chi tiết đơn hàng</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="orderDetailContent">
-                <!-- Content will be loaded here -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" id="modalActionBtn">Xử lý</button>
-            </div>
-        </div>
-    </div>
+    
 </div>
 
 <!-- JavaScript Files -->
@@ -480,225 +450,91 @@
 <script src="frontend/assets/js/script.js"></script>
 
 <script>
-    // Dữ liệu mẫu cho đơn hàng
+    // Dữ liệu mẫu đơn hàng
     const orderData = {
-        'SI-ME-001': {
-            id: 'SI-ME-001',
-            type: 'equipment',
-            supplier: 'Công ty Thiết bị XYZ',
-            date: '2024-01-15',
-            status: 'pending',
-            products: [
-                {name: 'Máy đo huyết áp', quantity: 10, price: 1500000, batch: 'LOT001'},
-                {name: 'Nhiệt kế điện tử', quantity: 50, price: 200000, batch: 'LOT002'}
-            ],
-            total: 25500000,
-            source: 'medical-equipment.html'
-        },
-        'SI-MD-001': {
-            id: 'SI-MD-001',
-            type: 'medicine',
-            supplier: 'Công ty Dược ABC',
-            date: '2024-01-14',
-            status: 'received',
-            products: [
-                {name: 'Paracetamol 500mg', quantity: 1000, price: 5000, batch: 'MED001'},
-                {name: 'Amoxicillin 500mg', quantity: 500, price: 15000, batch: 'MED002'}
-            ],
-            total: 12750000,
-            source: 'medicine.html'
-        },
-        'SI-ME-002': {
-            id: 'SI-ME-002',
-            type: 'equipment',
-            supplier: 'Công ty Y tế GHI',
-            date: '2024-01-13',
-            status: 'checked',
-            products: [
-                {name: 'Máy siêu âm', quantity: 2, price: 8000000, batch: 'EQ001'},
-                {name: 'Máy X-quang', quantity: 1, price: 2200000, batch: 'EQ002'}
-            ],
-            total: 18200000,
-            source: 'medical-equipment.html'
-        }
+        id: 'SO-001',
+        date: '15/07/2025 09:30',
+        status: 'RECEIVED',
+        deliveryDate: '20/07/2025',
+        notes: 'Giao hàng trong giờ hành chính',
+        supplierName: 'Công ty TNHH Dược phẩm ABC',
+        supplierContact: '0123-456-789',
+        managerName: 'Nguyễn Văn Quản',
+        totalAmount: '1,260,000 VNĐ'
     };
 
-    // Khởi tạo khi trang load
-    $(document).ready(function() {
-        initializeFilters();
-        loadOrders();
-    });
-
-    // Khởi tạo filters
-    function initializeFilters() {
-        $('#searchFilter').on('input', filterTable);
-        $('#statusFilter').on('change', filterTable);
-        $('#typeFilter').on('change', filterTable);
-    }
-
-    // Load danh sách đơn hàng
-    function loadOrders() {
-        // Simulate loading from API
-        console.log('Loading orders...');
-    }
-
-    // Lọc bảng
-    function filterTable() {
-        const search = $('#searchFilter').val().toLowerCase();
-        const status = $('#statusFilter').val();
-        const type = $('#typeFilter').val();
-
-        $('#stockInTableBody tr').each(function() {
-            const row = $(this);
-            const orderId = row.data('id');
-            const orderType = row.data('type');
-            const orderStatus = row.data('status');
-            const text = row.text().toLowerCase();
-
-            let show = true;
-
-            if (search && !text.includes(search)) show = false;
-            if (status && orderStatus !== status) show = false;
-            if (type && orderType !== type) show = false;
-
-            row.toggle(show);
-        });
-    }
-
-    // Xóa bộ lọc
-    function clearFilters() {
-        $('#searchFilter').val('');
-        $('#statusFilter').val('');
-        $('#typeFilter').val('');
-        filterTable();
-    }
-
-
-
-    // Đánh dấu đã nhận hàng
-    function markAsReceived(orderId) {
-        if (confirm('Xác nhận đã nhận hàng từ nhà cung cấp?')) {
-            updateOrderStatus(orderId, 'received');
-            showNotification('Đã cập nhật trạng thái: Nhận hàng thành công', 'success');
-        }
-    }
-
-    // Gửi về kho để kiểm tra
-    function sendToWarehouse(orderId) {
-        const order = orderData[orderId];
-        if (!order) return;
-
-        if (confirm(`Gửi đơn hàng về ${order.source} để kiểm tra và nhập kho?`)) {
-            // Simulate sending to warehouse
-            updateOrderStatus(orderId, 'sent_to_warehouse');
-            showNotification(`Đã gửi đơn hàng về ${order.source} để xử lý`, 'info');
-
-            // Hide the row as it's now being processed at warehouse
-            $(`tr[data-id="${orderId}"]`).fadeOut();
-        }
-    }
-
-    // Hoàn thành nhập kho
-    function completeStockIn(orderId) {
-        if (confirm('Xác nhận hoàn thành nhập kho và chuyển đến hóa đơn?')) {
-            // Simulate completing stock in
-            updateOrderStatus(orderId, 'completed');
-            showNotification('Đã hoàn thành nhập kho và chuyển đến StockInInvoice', 'success');
-
-            // Remove from current table
-            $(`tr[data-id="${orderId}"]`).fadeOut();
-
-            // Simulate sending to StockInInvoice
-            setTimeout(() => {
-                window.location.href = 'StockInInvoice.html?new=' + orderId;
-            }, 1000);
-        }
-    }
-
-    // Cập nhật trạng thái đơn hàng
-    function updateOrderStatus(orderId, newStatus) {
-        if (orderData[orderId]) {
-            orderData[orderId].status = newStatus;
-
-            // Update table row
-            const row = $(`tr[data-id="${orderId}"]`);
-            row.data('status', newStatus);
-            row.find('td:nth-child(6)').html(`<span class="status-${newStatus}">${getStatusText(newStatus)}</span>`);
-
-            // Update action buttons
-            updateActionButtons(orderId, newStatus);
-        }
-    }
-
-    // Cập nhật nút hành động
-    function updateActionButtons(orderId, status) {
-        const row = $(`tr[data-id="${orderId}"]`);
-        const actionCell = row.find('td:last-child .btn-group');
-
-        let buttons = `<a href="StockInDetail.html?id=${orderId}" class="btn btn-sm btn-primary">
-                            <i class="ri-eye-line"></i>
-                          </a>`;
-
-        switch(status) {
-            case 'pending':
-                buttons += `<button class="btn btn-sm btn-success" onclick="markAsReceived('${orderId}')">
-                                <i class="ri-truck-line"></i>
-                              </button>`;
-                break;
-            case 'received':
-                buttons += `<button class="btn btn-sm btn-warning" onclick="sendToWarehouse('${orderId}')">
-                                <i class="ri-send-plane-line"></i>
-                              </button>`;
-                break;
-            case 'checked':
-                buttons += `<button class="btn btn-sm btn-success" onclick="completeStockIn('${orderId}')">
-                                <i class="ri-check-line"></i>
-                              </button>`;
-                break;
-        }
-
-        actionCell.html(buttons);
-    }
-
-    // Làm mới danh sách
-    function refreshOrders() {
-        showNotification('Đang tải lại danh sách...', 'info');
-        setTimeout(() => {
-            location.reload();
-        }, 1000);
-    }
-
-    // Utility functions
-    function getStatusText(status) {
-        const statusMap = {
-            'pending': 'Chờ hàng về',
-            'received': 'Đã nhận hàng',
-            'checked': 'Đã kiểm tra',
-            'sent_to_warehouse': 'Đã gửi về kho',
-            'completed': 'Hoàn thành'
+    // Hàm cập nhật trạng thái
+    function updateStatus(newStatus) {
+        const statusElement = document.getElementById('orderStatus');
+        const statusTexts = {
+            'PENDING': 'Chờ xử lý',
+            'RECEIVED': 'Đã nhận đơn',
+            'CHECKED': 'Đã chuẩn bị hàng',
+            'COMPLETED': 'Hoàn thành'
         };
-        return statusMap[status] || status;
+        
+        const statusClasses = {
+            'PENDING': 'status-pending',
+            'RECEIVED': 'status-received',
+            'CHECKED': 'status-checked',
+            'COMPLETED': 'status-completed'
+        };
+
+        // Cập nhật trạng thái
+        statusElement.className = statusClasses[newStatus];
+        statusElement.textContent = statusTexts[newStatus];
+        
+        // Cập nhật dữ liệu
+        orderData.status = newStatus;
+        
+        // Hiển thị thông báo
+        showNotification('Cập nhật trạng thái thành công!', 'success');
+        
+        console.log('Trạng thái đã được cập nhật:', newStatus);
     }
 
-    function formatCurrency(amount) {
-        return new Intl.NumberFormat('vi-VN', {
-            style: 'currency',
-            currency: 'VND'
-        }).format(amount);
+    // Hàm quay lại
+    function goBack() {
+        if (confirm('Bạn có chắc chắn muốn quay lại không?')) {
+            window.history.back();
+        }
     }
 
+    // Hàm hiển thị thông báo
     function showNotification(message, type) {
-        $.notify({
-            message: message
-        }, {
-            type: type,
-            placement: {
-                from: 'top',
-                align: 'right'
-            },
-            delay: 3000
-        });
+        // Tạo element thông báo
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.zIndex = '9999';
+        notification.style.minWidth = '300px';
+        
+        notification.innerHTML = `
+            <strong>${type === 'success' ? 'Thành công!' : 'Lỗi!'}</strong> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Tự động ẩn sau 3 giây
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 3000);
     }
+
+    // Khởi tạo khi trang load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Khởi tạo feather icons
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+        
+        console.log('Trang chi tiết đơn hàng đã được tải');
+    });
 </script>
 </body>
 </html>
