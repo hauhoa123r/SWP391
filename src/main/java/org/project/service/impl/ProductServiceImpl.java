@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // ==================== Search & Filter ====================
-    
+
     @Override
     @Transactional(readOnly = true)
     public Page<PharmacyResponse> searchProducts(Optional<String> searchQuery,
@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
             validateInputs(pageable, minPrice, maxPrice, categoryId);
 
             log.debug("Searching products: query={}, categoryId={}, minPrice={}, maxPrice={}, type={}, sortType={}",
-                    processedQuery.orElse(""), categoryId.orElse(null), 
+                    processedQuery.orElse(""), categoryId.orElse(null),
                     minPrice.orElse(null), maxPrice.orElse(null), type.orElse(""), sortType);
 
             Specification<ProductEntity> spec = buildSpecification(processedQuery, categoryId, minPrice, maxPrice, type);
@@ -76,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
             Pageable sortedPageable = createSortedPageable(pageable, sortType);
             Page<ProductEntity> entityPage = productRepository.findAll(spec, sortedPageable);
             List<ProductEntity> filtered = entityPage.getContent().stream()
-                    .filter(p -> !belongsToTestCategory(p) && isAllowedType(p))
+                    .filter(p -> !belongsToType(p) && isAllowedType(p))
                     .collect(Collectors.toList());
             return new PageImpl<>(filtered.stream().map(this::convertToDto).collect(Collectors.toList()),
                     sortedPageable, entityPage.getTotalElements() - (entityPage.getContent().size() - filtered.size()));
@@ -119,7 +119,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             log.debug("Finding all products");
             return productRepository.findAll().stream()
-                    .filter(p -> !belongsToTestCategory(p) && isAllowedType(p))
+                    .filter(p -> !belongsToType(p) && isAllowedType(p))
                     .collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error finding all products: {}", e.getMessage(), e);
@@ -148,7 +148,7 @@ public class ProductServiceImpl implements ProductService {
             log.debug("Finding top 10 products");
             List<ProductEntity> entities = productRepository.findAll(PageRequest.of(0, 100)).getContent()
                     .stream()
-                    .filter(p -> !belongsToTestCategory(p) && isAllowedType(p))
+                    .filter(p -> !belongsToType(p) && isAllowedType(p))
                     .collect(Collectors.toList());
             return entities.stream()
                     .sorted(Comparator.comparingDouble(this::calculateRating).reversed())
@@ -167,9 +167,9 @@ public class ProductServiceImpl implements ProductService {
         try {
             log.debug("Finding product DTO by ID: {}", id);
             return productRepository.findByProductStatusAndId(ProductStatus.ACTIVE, id)
-                     .filter(p -> !belongsToTestCategory(p) && isAllowedType(p))
-                     .map(this::convertToDto)
-                     .orElse(null);
+                    .filter(p -> !belongsToType(p) && isAllowedType(p))
+                    .map(this::convertToDto)
+                    .orElse(null);
         } catch (Exception e) {
             log.error("Error finding product DTO by ID: {}", e.getMessage(), e);
             return null;
@@ -185,13 +185,13 @@ public class ProductServiceImpl implements ProductService {
             if (base == null || base.getCategoryEntities() == null || base.getCategoryEntities().isEmpty()) {
                 return List.of();
             }
-            
+
             Long categoryId = base.getCategoryEntities().iterator().next().getId();
             List<ProductEntity> related = productRepository
-                     .findByProductStatusAndCategoryEntities_Id(ProductStatus.ACTIVE, categoryId,
-                             PageRequest.of(0, limit + 1)).getContent()
-                     .stream().filter(p -> !belongsToTestCategory(p) && isAllowedType(p)).collect(Collectors.toList());
-            
+                    .findByProductStatusAndCategoryEntities_Id(ProductStatus.ACTIVE, categoryId,
+                            PageRequest.of(0, limit + 1)).getContent()
+                    .stream().filter(p -> !belongsToType(p) && isAllowedType(p)).collect(Collectors.toList());
+
             return related.stream()
                     .filter(p -> !p.getId().equals(productId))
                     .sorted(Comparator.comparingDouble(this::calculateRating).reversed())
@@ -223,7 +223,7 @@ public class ProductServiceImpl implements ProductService {
             log.debug("Finding all products by type: {}", productType);
             return productRepository.findAllByProductTypeAndProductStatus(productType, ProductStatus.ACTIVE)
                     .stream()
-                    .filter(p -> !belongsToTestCategory(p) && isAllowedType(p))
+                    .filter(p -> !belongsToType(p) && isAllowedType(p))
                     .collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error finding products by type: {}", e.getMessage(), e);
@@ -253,12 +253,12 @@ public class ProductServiceImpl implements ProductService {
 
     // ==================== Internal Helper Methods ====================
 
-    private boolean belongsToTestCategory(ProductEntity entity) {
-        if (entity == null || entity.getCategoryEntities() == null) {
+    private boolean belongsToType(ProductEntity entity) {
+        if (entity == null || entity.getProductType() == null) {
             return false;
         }
-        return entity.getCategoryEntities().stream()
-                .anyMatch(c -> "TEST".equalsIgnoreCase(c.getName()));
+        ProductType type = entity.getProductType();
+        return type == ProductType.MEDICINE || type == ProductType.MEDICAL_PRODUCT;
     }
 
     private boolean isAllowedType(ProductEntity entity) {
@@ -274,10 +274,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private Specification<ProductEntity> buildSpecification(Optional<String> searchQuery,
-                                                             Optional<Long> categoryId,
-                                                             Optional<BigDecimal> minPrice,
-                                                             Optional<BigDecimal> maxPrice,
-                                                             Optional<String> type) {
+                                                            Optional<Long> categoryId,
+                                                            Optional<BigDecimal> minPrice,
+                                                            Optional<BigDecimal> maxPrice,
+                                                            Optional<String> type) {
         SpecificationUtils<ProductEntity> util = specUtilsProvider.getObject().reset();
 
         // Add search query criteria
@@ -311,11 +311,11 @@ public class ProductServiceImpl implements ProductService {
             BigDecimal min = minPrice.orElse(BigDecimal.ZERO);
             BigDecimal max = maxPrice.orElse(BigDecimal.valueOf(Long.MAX_VALUE));
             util.addSearchCriteria(SearchCriteria.builder()
-                            .fieldName("price")
-                            .comparisonOperator(ComparisonOperator.BETWEEN)
-                            .comparedValue(new BigDecimal[]{min, max})
-                            .joinType(JoinType.INNER)
-                            .build(), LogicalOperator.AND);
+                    .fieldName("price")
+                    .comparisonOperator(ComparisonOperator.BETWEEN)
+                    .comparedValue(new BigDecimal[]{min, max})
+                    .joinType(JoinType.INNER)
+                    .build(), LogicalOperator.AND);
         }
 
         // Add type criteria
@@ -370,7 +370,7 @@ public class ProductServiceImpl implements ProductService {
         if (queryOpt == null || queryOpt.isEmpty()) {
             return null;
         }
-        
+
         String query = queryOpt.get().trim();
         if (query.isEmpty()) {
             return null;
@@ -386,18 +386,18 @@ public class ProductServiceImpl implements ProductService {
         return query.isBlank() ? null : query.toLowerCase();
     }
 
-    private void validateInputs(Pageable pageable, Optional<BigDecimal> minPrice, 
-                               Optional<BigDecimal> maxPrice, Optional<Long> categoryId) {
+    private void validateInputs(Pageable pageable, Optional<BigDecimal> minPrice,
+                                Optional<BigDecimal> maxPrice, Optional<Long> categoryId) {
         Objects.requireNonNull(pageable, "Pageable cannot be null");
-        
+
         if (pageable.getPageSize() <= 0 || pageable.getPageNumber() < 0) {
             throw new IllegalArgumentException("Invalid pageable parameters");
         }
-        
+
         if (minPrice.isPresent() && maxPrice.isPresent() && minPrice.get().compareTo(maxPrice.get()) > 0) {
             throw new IllegalArgumentException("minPrice must be <= maxPrice");
         }
-        
+
         if (categoryId.isPresent() && categoryId.get() <= 0) {
             throw new IllegalArgumentException("Invalid category ID");
         }

@@ -156,4 +156,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>, J
      * @return List of products with the specified status
      */
     List<ProductEntity> findDistinctByProductStatus(ProductStatus productStatus);
+
+    List<ProductEntity> findByProductType(String string);
 }
