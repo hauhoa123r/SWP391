@@ -2065,7 +2065,7 @@
                                         <!-- Tags -->
                                         <div class="form-group">
                                             <label class="form-label">Tags:</label>
-                                            <select th:field="*{tags}" class="form-select">
+                                            <select th:field="*{tags}" class="form-select" multiple>
                                                 <option th:each="tag : ${availableTags}" th:value="${tag}" th:text="${tag}"></option>
                                             </select>
                                             <div th:if="${#fields.hasErrors('tags')}" th:errors="*{tags}" class="text-danger small"></div>
@@ -2146,17 +2146,22 @@
                                             <!-- ADDITIONAL INFO -->
                                             <hr />
                                             <h5 class="mb-3">Additional Info</h5>
-                                            <div class="row" th:each="info, iterStat : *{additionalInfos}">
-                                                <div class="form-group col-md-6">
-                                                    <label class="form-label">Info Name:</label>
-                                                    <input type="text" class="form-control" th:field="*{additionalInfos[__${iterStat.index}__].name}" placeholder="e.g. Size, Color" />
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label class="form-label">Info Value:</label>
-                                                    <input type="text" class="form-control" th:field="*{additionalInfos[__${iterStat.index}__].value}" placeholder="e.g. XL, Red" />
+                                            <div id="additional-info-container">
+                                                <div class="row mb-2 additional-info-row" th:each="info, iterStat : *{additionalInfos}">
+                                                    <div class="form-group col-md-6">
+                                                        <label class="form-label">Info Name:</label>
+                                                        <input type="text" class="form-control" th:field="*{additionalInfos[__${iterStat.index}__].name}" placeholder="e.g. Size, Color" />
+                                                    </div>
+                                                    <div class="form-group col-md-5">
+                                                        <label class="form-label">Info Value:</label>
+                                                        <input type="text" class="form-control" th:field="*{additionalInfos[__${iterStat.index}__].value}" placeholder="e.g. XL, Red" />
+                                                    </div>
+                                                    <div class="col-md-1 d-flex align-items-center">
+                                                        <button type="button" class="btn btn-sm btn-danger remove-info-btn">✖</button>
+                                                    </div>
                                                 </div>
                                             </div>
-
+                                            <button type="button" id="add-info-btn" class="btn btn-success mt-2">➕ Thêm dòng</button>
                                             <!-- BUTTON -->
                                             <div class="text-end mt-4">
                                                 <button type="submit" class="btn btn-primary">Save Product</button>
@@ -3018,33 +3023,18 @@
         </a>        <!-- Live Customizer end -->
         <!-- Wrapper End-->
 
-
         <!-- Library Bundle Script -->
         <script src="/dashboard_assets/assets/js/core/libs.min.js"></script>
         <!-- Plugin Scripts -->
-        
         <!-- Flatpickr Script -->
         <script src="/dashboard_assets/assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
         <script src="/dashboard_assets/assets/js/plugins/flatpickr.js" defer></script>
-        
-        
-        
         <!-- Slider-tab Script -->
         <script src="/dashboard_assets/assets/js/plugins/slider-tabs.js"></script>
-        
-        
         <!-- fslightbox Script -->
         <script src="/dashboard_assets/assets/js/plugins/fslightbox.js" defer></script>
-        
-        
-        
-        
-          <!-- Select2 Script -->
-          <script src="/dashboard_assets/assets/js/plugins/select2.js" defer></script>
-        
-        
-        
-        
+        <!-- Select2 Script -->
+        <script src="/dashboard_assets/assets/js/plugins/select2.js" defer></script>
         <!-- Lodash Utility -->
         <script src="/dashboard_assets/assets/vendor/lodash/lodash.min.js"></script>
         <!-- Utilities Functions -->
@@ -3063,8 +3053,49 @@
         <script src="/dashboard_assets/assets/js/kivicare.js?v=1.4.1" defer></script>
         <script src="/dashboard_assets/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
         <script src="/dashboard_assets/assets/js/sidebar.js?v=1.4.1" defer></script>
-        
         <!-- Icons -->
         <script src="/dashboard_assets/assets/js/solid-icon-search-filter.js?v=1.4.1" defer></script>
+    <comment>
+        Custom script for adding and deleting additional info
+    </comment>
+    <script th:inline="javascript">
+        //find the index
+        let infoIndex = /*[[${#lists.size(productUpdateDTO.additionalInfos)}]]*/ 0;
+        //get element by id and function when clicked
+        document.getElementById("add-info-btn").addEventListener("click", function(){
+            //set container
+            const container = document.getElementById("additional-info-container");
+
+            //new row
+            const row = document.createElement("div");
+            //set class name of row
+            row.className = "row mb-2 additional-info-row";
+            //set new value to row (using inline template literals)
+            row.innerHTML = `<div class="form-group col-md-6">
+            <label class="form-label">Info Name:</label>
+            <input type="text" name="additionalInfos[${infoIndex}].name" class="form-control" placeholder="e.g. Size, Color" />
+        </div>
+        <div class="form-group col-md-5">
+            <label class="form-label">Info Value:</label>
+            <input type="text" name="additionalInfos[${infoIndex}].value" class="form-control" placeholder="e.g. XL, Red" />
+        </div>
+        <div class="col-md-1 d-flex align-items-center">
+            <button type="button" class="btn btn-sm btn-danger remove-info-btn">✖</button>
+        </div>`;
+            //append child into container
+            container.appendChild(row);
+            //increase index if add more
+            infoIndex++;
+        });
+
+        //deleting additional info
+        document.addEventListener("click", function (e) {
+            //Check if e is target and has remove-info
+            if (e.target && e.target.classList.contains("remove-info-btn")) {
+                //remove the nearest target having class "additional-info-row"
+                e.target.closest(".additional-info-row")?.remove();
+            }
+        });
+    </script>
     </body>
 </html>

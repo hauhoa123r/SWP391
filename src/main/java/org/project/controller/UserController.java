@@ -137,7 +137,7 @@ public class UserController {
 		//get labels
 		mv.addObject("labels", Label.values());
 		//get additional info
-		mv.addObject("additionalInfo", productUpdateDTO.getAdditionalInfos());
+//		mv.addObject("additionalInfo", productUpdateDTO.getAdditionalInfos());
 		//get tags
 		mv.addObject("availableTags", productTagRepository.findAllDistinctTagNames());
 		//add object
@@ -203,6 +203,10 @@ public class UserController {
 		//check if result has errors
 		if (result.hasErrors()) {
 			System.out.println(result.getAllErrors());
+			// ✅ Đảm bảo luôn có ít nhất 1 dòng Additional Info
+			if (dto.getAdditionalInfos() == null || dto.getAdditionalInfos().isEmpty()) {
+				dto.setAdditionalInfos(List.of(new ProductAdditionalInfoResponse()));
+			}
 			//keep the dto
 			model.addAttribute("productUpdateDTO", dto);
 			//keep the categories

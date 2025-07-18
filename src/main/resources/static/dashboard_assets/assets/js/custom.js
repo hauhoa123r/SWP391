@@ -267,39 +267,4 @@ function previewImage(event) {
       }
    }
 
-//auto-fill data 
 
-//function updateAutofill() {
-  //select all by class btn-edit (each one has a btn, so select all)
- // document.querySelectorAll('.btn-edit').forEach(
-  //    button => {
-  //      button.addEventListener('click', function () {
-  //        const productId = this.dataset.id;
-
-    //      fetch('/admin/products/update/${productId}')
- //             .then(response => response.json())
- //             .then(data => {
-                //get product id
-  //              document.querySelector('#Id').value = data.id;
-                //get name
-  //              document.querySelector("#Name").value = data.name;
-                //get category
-  //              document.querySelector("#Category").value = data.categoryIds[0];
-                //get price
-    //            document.querySelector("#Price").value = data.price;
-                //get stock quantities
-   //             document.querySelector("#stockQuantities").value = data.stockQuantities;
-                //get unit
-   //             document.querySelector("#unit").value = data.unit;
-                //get label
-  //              document.querySelector("#label").value = data.label[0];
-                //get type
-  //              document.querySelector("#type").value = data.type[0];
-                //get status
-    //            document.querySelector("#status").value = data.status[0];
-
-     //         })
-   //     })
-  //    }
-//  )
-//}
