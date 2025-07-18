@@ -71,6 +71,12 @@ public class ShopController {
         
         // Convert "%23" back to "#" for tag searches if needed
         String tagProcessed = tagRaw != null ? tagRaw.replace("%23", "#") : null;
+        
+        // Log tag information for debugging
+        if (tagProcessed != null && !tagProcessed.isEmpty()) {
+            log.info("Processing tag filter: {}", tagProcessed);
+        }
+        
         SearchContext context = buildSearchContext(searchQuery, sortType, session);
 
         // Search for products with all filters applied
@@ -78,9 +84,15 @@ public class ShopController {
                 context.searchQuery(), Optional.ofNullable(categoryId),
                 Optional.ofNullable(minPrice), Optional.ofNullable(maxPrice),
                 Optional.ofNullable(tagProcessed), context.sortType(), PageRequest.of(page, size));
+        
+        log.info("Search results: found {} products", productPage.getTotalElements());
 
         // Load categories for sidebar
         List<CategoryListResponse> categories = loadCategoriesWithProductCount();
+
+        // Get all available tags for the sidebar
+        List<String> availableTags = productTagRepository.findDistinctTagNames();
+        log.info("Available tags: {}", availableTags);
 
         // Add all data to model
         mv.addObject("products", productPage.getContent());
@@ -94,7 +106,7 @@ public class ShopController {
         
         // Sidebar data
         mv.addObject("topProducts", productService.findTop10Products());
-        mv.addObject("tags", productTagRepository.findDistinctTagNames());
+        mv.addObject("tags", availableTags);
         mv.addObject("minPrice", minPrice);
         mv.addObject("maxPrice", maxPrice);
         mv.addObject("selectedTag", tagProcessed);
@@ -107,23 +119,57 @@ public class ShopController {
      * Process search form submission
      * @param searchQuery Optional search query
      * @param sortType Optional sort type
+     * @param categoryId Optional category ID to preserve
+     * @param tag Optional tag to preserve
+     * @param minPrice Optional minimum price to preserve
+     * @param maxPrice Optional maximum price to preserve
      * @return Redirect to shop page with search parameters
      */
     @PostMapping("/submit")
     public String search(@RequestParam(value = "search", required = false) String searchQuery,
-                         @RequestParam(value = "sort", required = false) String sortType) {
-        log.debug("Processing search form submission: search={}, sort={}", searchQuery, sortType);
+                         @RequestParam(value = "sort", required = false) String sortType,
+                         @RequestParam(value = "categoryId", required = false) Long categoryId,
+                         @RequestParam(value = "tag", required = false) String tag,
+                         @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
+                         @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice) {
+        log.debug("Processing search form submission: search={}, sort={}, categoryId={}, tag={}, minPrice={}, maxPrice={}",
+                searchQuery, sortType, categoryId, tag, minPrice, maxPrice);
         
         StringBuilder redirectUrl = new StringBuilder("redirect:/shop");
-        boolean hasQuery = false;
+        boolean hasParam = false;
 
+        // Add search parameter if valid
         if (isValid(searchQuery)) {
             redirectUrl.append("?search=").append(searchQuery.trim());
-            hasQuery = true;
+            hasParam = true;
         }
 
+        // Add sort parameter if valid
         if (isValid(sortType)) {
-            redirectUrl.append(hasQuery ? "&" : "?").append("sort=").append(sortType);
+            redirectUrl.append(hasParam ? "&" : "?").append("sort=").append(sortType);
+            hasParam = true;
+        }
+        
+        // Add category parameter if valid
+        if (categoryId != null) {
+            redirectUrl.append(hasParam ? "&" : "?").append("categoryId=").append(categoryId);
+            hasParam = true;
+        }
+        
+        // Add tag parameter if valid
+        if (isValid(tag)) {
+            redirectUrl.append(hasParam ? "&" : "?").append("tag=").append(tag);
+            hasParam = true;
+        }
+        
+        // Add price parameters if valid
+        if (minPrice != null) {
+            redirectUrl.append(hasParam ? "&" : "?").append("minPrice=").append(minPrice);
+            hasParam = true;
+        }
+        
+        if (maxPrice != null) {
+            redirectUrl.append(hasParam ? "&" : "?").append("maxPrice=").append(maxPrice);
         }
 
         return redirectUrl.toString();
@@ -166,16 +212,6 @@ public class ShopController {
     }
 
     // ==================== Other page mappings ====================
-
-    /**
-     * Shopping cart page
-     * @return ModelAndView for cart page
-     */
-    @GetMapping("/cart")
-    public ModelAndView cart() {
-        log.debug("Accessing cart page");
-        return new ModelAndView("cart");
-    }
 
     /**
      * Checkout page

@@ -1,5 +1,6 @@
 package org.project.repository;
 
+import jakarta.persistence.EntityManager;
 import org.project.entity.ProductEntity;
 import org.project.enums.ProductLabel;
 import org.project.enums.ProductStatus;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -21,6 +23,15 @@ import java.util.Optional;
  */
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Long>, JpaSpecificationExecutor<ProductEntity> {
+    
+    /**
+     * Get the EntityManager for custom queries
+     * @return EntityManager instance
+     */
+    @Query("SELECT 1")
+    default EntityManager getEntityManager() {
+        throw new UnsupportedOperationException("This method should be overridden by Spring Data JPA");
+    }
     
     // ==================== Basic product operations ====================
     
