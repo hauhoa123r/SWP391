@@ -1,9 +1,8 @@
 package org.project.utils;
 
-import org.project.entity.ProductEntity;
-import org.project.entity.StockRequestEntity;
-import org.project.entity.StockRequestItemEntity;
-import org.project.enums.StockTransactionType;
+import org.project.entity.*;
+import org.project.enums.SupplierTransactionType;
+import org.project.model.dto.SupplierRequestItemDTO;
 import org.project.model.response.ProductStockReportResponse;
 
 import java.math.BigDecimal;
@@ -70,28 +69,31 @@ public class StockReportUtils {
     /**
      * Generates a report of product movement (transactions) during a date range
      * 
-     * @param stockRequests List of stock requests within the date range
+     * @param transactions List of stock requests within the date range
      * @param startDate Start date of the report period
      * @param endDate End date of the report period
      * @return Map of product IDs to their stock movement data
      */
     public static Map<Long, ProductStockReportResponse> generateStockMovementReport(
-            List<StockRequestEntity> stockRequests, Timestamp startDate, Timestamp endDate) {
+            List<SupplierTransactionsEntity> transactions, Timestamp startDate, Timestamp endDate) {
         
         Map<Long, ProductStockReportResponse> reportMap = new HashMap<>();
         
-        for (StockRequestEntity request : stockRequests) {
-            if (request.getRequestDate().after(startDate) && request.getRequestDate().before(endDate)) {
-                for (StockRequestItemEntity item : request.getStockRequestItems()) {
-                    Long productId = item.getProduct().getId();
+        for (SupplierTransactionsEntity transaction : transactions) {
+            if (transaction.getTransactionDate().after(startDate) && transaction.getTransactionDate().before(endDate)) {
+                for (SupplierTransactionItemEntity item : transaction.getSupplierTransactionItemEntities()) {
+                    ProductEntity product = item.getProductEntity();
+                    if (product == null) continue;
+                    
+                    Long productId = product.getId();
                     
                     ProductStockReportResponse report = reportMap.getOrDefault(productId, new ProductStockReportResponse());
                     report.setProductId(productId);
-                    report.setProductName(item.getProduct().getName());
-                    report.setCurrentStock(item.getProduct().getStockQuantities());
+                    report.setProductName(product.getName());
+                    report.setCurrentStock(product.getStockQuantities());
                     
                     int quantity = item.getQuantity();
-                    if (request.getTransactionType() == StockTransactionType.STOCK_IN) {
+                    if (transaction.getTransactionType() == SupplierTransactionType.STOCK_IN) {
                         report.setStockIn(report.getStockIn() + quantity);
                     } else {
                         report.setStockOut(report.getStockOut() + quantity);
@@ -100,7 +102,7 @@ public class StockReportUtils {
                     BigDecimal value = item.getUnitPrice() != null ? 
                             item.getUnitPrice().multiply(BigDecimal.valueOf(quantity)) : BigDecimal.ZERO;
                     
-                    if (request.getTransactionType() == StockTransactionType.STOCK_IN) {
+                    if (transaction.getTransactionType() == SupplierTransactionType.STOCK_IN) {
                         report.setStockInValue(report.getStockInValue().add(value));
                     } else {
                         report.setStockOutValue(report.getStockOutValue().add(value));
@@ -164,4 +166,6 @@ public class StockReportUtils {
                 })
                 .collect(Collectors.toList());
     }
+
+
 } 

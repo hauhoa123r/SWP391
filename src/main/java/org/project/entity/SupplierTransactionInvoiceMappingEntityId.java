@@ -2,7 +2,6 @@ package org.project.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,28 +16,26 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class SupplierTransactionItemEntityId implements Serializable {
-    private static final long serialVersionUID = -574245831273568671L;
+public class SupplierTransactionInvoiceMappingEntityId implements Serializable {
+    private static final long serialVersionUID = -123456789012345678L;
 
-    @NotNull
     @Column(name = "supplier_transaction_id", nullable = false)
     private Long supplierTransactionId;
 
-    @NotNull
-    @Column(name = "product_id", nullable = false)
-    private Long productId;
+    @Column(name = "supplier_invoice_id", nullable = false)
+    private Long supplierInvoiceId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        SupplierTransactionItemEntityId entity = (SupplierTransactionItemEntityId) o;
-        return Objects.equals(this.productId, entity.productId) &&
-                Objects.equals(this.supplierTransactionId, entity.supplierTransactionId);
+        SupplierTransactionInvoiceMappingEntityId entity = (SupplierTransactionInvoiceMappingEntityId) o;
+        return Objects.equals(this.supplierTransactionId, entity.supplierTransactionId) &&
+                Objects.equals(this.supplierInvoiceId, entity.supplierInvoiceId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, supplierTransactionId);
+        return Objects.hash(supplierTransactionId, supplierInvoiceId);
     }
 }

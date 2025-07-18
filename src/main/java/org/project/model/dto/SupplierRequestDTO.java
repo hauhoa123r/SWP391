@@ -1,4 +1,4 @@
-package org.project.model.request;
+package org.project.model.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.project.enums.StockTransactionType;
+import org.project.enums.SupplierTransactionType;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -17,10 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class StockRequestDTO {
+public class SupplierRequestDTO {
     
     @NotNull(message = "Transaction type is required")
-    private StockTransactionType transactionType;
+    private SupplierTransactionType transactionType;
     
     private Long supplierId;
     
@@ -33,5 +33,5 @@ public class StockRequestDTO {
     
     @NotEmpty(message = "At least one item is required")
     @Valid
-    private List<StockRequestItemDTO> items;
+    private List<SupplierRequestItemDTO> items;
 } 
