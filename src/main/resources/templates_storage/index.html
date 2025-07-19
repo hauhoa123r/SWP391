@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -67,14 +67,14 @@
             <div class="header-wrapper m-0">
                 <div class="header-logo-wrapper p-0">
                     <div class="logo-wrapper">
-                        <a href="index.html">
+                        <a th:href="@{/index.html}">
                             <img class="img-fluid main-logo" src="frontend/assets/images/logo/1.png" alt="logo">
                             <img class="img-fluid white-logo" src="frontend/assets/images/logo/1-white.png" alt="logo">
                         </a>
                     </div>
                     <div class="toggle-sidebar">
                         <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                        <a href="index.html">
+                        <a th:href="@{/index.html}">
                             <img src="frontend/assets/images/logo/1.png" class="img-fluid" alt="">
                         </a>
                     </div>
@@ -201,7 +201,7 @@
                 <div id="sidebarEffect"></div>
                 <div>
                     <div class="logo-wrapper logo-wrapper-center">
-                        <a href="index.html" data-bs-original-title="" title="">
+                        <a th:href="@{/index.html}" data-bs-original-title="" title="">
                             <img class="img-fluid for-white" src="frontend/assets/images/logo/full-white.png" alt="logo">
                         </a>
                         <div class="back-btn">
@@ -212,7 +212,7 @@
                         </div>
                     </div>
                     <div class="logo-icon-wrapper">
-                        <a href="index.html">
+                        <a th:href="@{/index.html}">
                             <img class="img-fluid main-logo main-white" src="frontend/assets/images/logo/logo.png" alt="logo">
                             <img class="img-fluid main-logo main-dark" src="frontend/assets/images/logo/logo-white.png"
                                 alt="logo">
@@ -228,10 +228,10 @@
                                     <li class="back-btn"></li>
     
                                     <li class="sidebar-list">
-                                        <a class="sidebar-link sidebar-title link-nav" href="index.html">
-                                            <i class="ri-home-line"></i>
-                                            <span>Dashboard</span>
-                                        </a>
+                                                                            <a class="sidebar-link sidebar-title link-nav" th:href="@{/index.html}">
+                                        <i class="ri-home-line"></i>
+                                        <span>Dashboard</span>
+                                    </a>
                                     </li>
     
                                     <li class="sidebar-list">
@@ -241,11 +241,11 @@
                                         </a>
                                         <ul class="sidebar-submenu">
                                             <li>
-                                                <a href="StockIn.html">Stock In</a>
+                                                <a th:href="@{/StockIn.html}">Stock In</a>
                                             </li>
     
                                             <li>
-                                                <a href="StockOut.html">Stock Out</a>
+                                                <a th:href="@{/StockOut.html}">Stock Out</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -278,11 +278,11 @@
                                         </a>
                                         <ul class="sidebar-submenu">
                                             <li>
-                                                <a href="medical-equipment.html">Medical Equipment</a>
+                                                <a th:href="@{/medical-equipment.html}">Medical Equipment</a>
                                             </li>
     
                                             <li>
-                                                <a href="medicine.html">Medicine</a>
+                                                <a th:href="@{/medicine.html}">Medicine</a>
                                             </li>
 
     
@@ -559,8 +559,8 @@
                                                         <td>
                                                             <div class="best-product-box">
                                                                 <div class="product-image">
-                                                                    <img src="frontend/assets/images/product/1.png"
-                                                                        class="img-fluid" alt="Product">
+                                                                                                                                         <img src="frontend/assets/images/product/1.png"
+                                                                          class="img-fluid" alt="Product">
                                                                 </div>
                                                                 <div class="product-name">
                                                                     <h5>Aata Buscuit</h5>
@@ -602,8 +602,8 @@
                                                         <td>
                                                             <div class="best-product-box">
                                                                 <div class="product-image">
-                                                                    <img src="frontend/assets/images/product/2.png"
-                                                                        class="img-fluid" alt="Product">
+                                                                                                                                         <img src="frontend/assets/images/product/2.png"
+                                                                          class="img-fluid" alt="Product">
                                                                 </div>
                                                                 <div class="product-name">
                                                                     <h5>Aata Buscuit</h5>
@@ -645,8 +645,8 @@
                                                         <td>
                                                             <div class="best-product-box">
                                                                 <div class="product-image">
-                                                                    <img src="frontend/assets/images/product/3.png"
-                                                                        class="img-fluid" alt="Product">
+                                                                                                                                         <img src="frontend/assets/images/product/3.png"
+                                                                          class="img-fluid" alt="Product">
                                                                 </div>
                                                                 <div class="product-name">
                                                                     <h5>Aata Buscuit</h5>
