@@ -10,6 +10,7 @@ import org.project.entity.ProductEntity;
 import org.project.enums.ProductSortType;
 import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
+import org.project.enums.Label;
 import org.project.enums.operation.ComparisonOperator;
 import org.project.enums.operation.LogicalOperator;
 import org.project.model.response.PharmacyResponse;
@@ -62,6 +63,7 @@ public class ProductServiceImpl implements ProductService {
                                                  Optional<BigDecimal> minPrice,
                                                  Optional<BigDecimal> maxPrice,
                                                  Optional<String> type,
+                                                 Optional<String> label,
                                                  ProductSortType sortType,
                                                  Pageable pageable) {
         try {
@@ -96,6 +98,11 @@ public class ProductServiceImpl implements ProductService {
                 jpql += " AND EXISTS (SELECT t FROM p.productTagEntities t WHERE LOWER(t.id.name) = LOWER(:tagName))";
             }
             
+            // Add label filter if present
+            if (label.isPresent() && !label.get().isEmpty()) {
+                jpql += " AND p.label = :label";
+            }
+            
             // Create the query
             TypedQuery<ProductEntity> query = entityManager.createQuery(jpql, ProductEntity.class);
             
@@ -122,6 +129,15 @@ public class ProductServiceImpl implements ProductService {
             
             if (type.isPresent() && !type.get().isEmpty()) {
                 query.setParameter("tagName", type.get());
+            }
+            
+            if (label.isPresent() && !label.get().isEmpty()) {
+                try {
+                    Label labelEnum = Label.valueOf(label.get().trim().toUpperCase());
+                    query.setParameter("label", labelEnum);
+                } catch (IllegalArgumentException e) {
+                    log.error("Invalid label value: {}", label.get(), e);
+                }
             }
             
             // Count total results
@@ -151,6 +167,15 @@ public class ProductServiceImpl implements ProductService {
             
             if (type.isPresent() && !type.get().isEmpty()) {
                 countQuery.setParameter("tagName", type.get());
+            }
+            
+            if (label.isPresent() && !label.get().isEmpty()) {
+                try {
+                    Label labelEnum = Label.valueOf(label.get().trim().toUpperCase());
+                    countQuery.setParameter("label", labelEnum);
+                } catch (IllegalArgumentException e) {
+                    log.error("Invalid label value for count query: {}", label.get(), e);
+                }
             }
             
             Long totalCount = countQuery.getSingleResult();
@@ -189,6 +214,15 @@ public class ProductServiceImpl implements ProductService {
                 
                 if (type.isPresent() && !type.get().isEmpty()) {
                     query.setParameter("tagName", type.get());
+                }
+                
+                if (label.isPresent() && !label.get().isEmpty()) {
+                    try {
+                        Label labelEnum = Label.valueOf(label.get().trim().toUpperCase());
+                        query.setParameter("label", labelEnum);
+                    } catch (IllegalArgumentException e) {
+                        log.error("Invalid label value: {}", label.get(), e);
+                    }
                 }
             }
             

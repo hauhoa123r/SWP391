@@ -26,6 +26,7 @@ public interface ProductService {
      * @param minPrice Optional minimum price
      * @param maxPrice Optional maximum price
      * @param type Optional product type/tag to filter by
+     * @param label Optional product label to filter by (NEW, SALE, etc.)
      * @param sortType Type of sorting to apply
      * @param pageable Pagination information
      * @return Page of products matching the search and filter criteria
@@ -34,7 +35,8 @@ public interface ProductService {
                                           Optional<Long> categoryId,
                                           Optional<BigDecimal> minPrice, 
                                           Optional<BigDecimal> maxPrice,
-                                          Optional<String> type, 
+                                          Optional<String> type,
+                                          Optional<String> label,
                                           ProductSortType sortType, 
                                           Pageable pageable);
     

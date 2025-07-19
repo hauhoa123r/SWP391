@@ -63,9 +63,10 @@ public class ShopController {
             @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
             @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
             @RequestParam(value = "tag", required = false) String tagRaw,
+            @RequestParam(value = "label", required = false) String label,
             HttpSession session) {
-        log.info("Processing shop request: searchQuery={}, sortType={}, page={}, size={}, categoryId={}, minPrice={}, maxPrice={}, tag={}",
-                searchQuery, sortType, page, size, categoryId, minPrice, maxPrice, tagRaw);
+        log.info("Processing shop request: searchQuery={}, sortType={}, page={}, size={}, categoryId={}, minPrice={}, maxPrice={}, tag={}, label={}",
+                searchQuery, sortType, page, size, categoryId, minPrice, maxPrice, tagRaw, label);
 
         ModelAndView mv = new ModelAndView("shop");
         
@@ -83,7 +84,8 @@ public class ShopController {
         Page<PharmacyResponse> productPage = productService.searchProducts(
                 context.searchQuery(), Optional.ofNullable(categoryId),
                 Optional.ofNullable(minPrice), Optional.ofNullable(maxPrice),
-                Optional.ofNullable(tagProcessed), context.sortType(), PageRequest.of(page, size));
+                Optional.ofNullable(tagProcessed), Optional.ofNullable(label),
+                context.sortType(), PageRequest.of(page, size));
         
         log.info("Search results: found {} products", productPage.getTotalElements());
 
@@ -110,6 +112,7 @@ public class ShopController {
         mv.addObject("minPrice", minPrice);
         mv.addObject("maxPrice", maxPrice);
         mv.addObject("selectedTag", tagProcessed);
+        mv.addObject("selectedLabel", label);
         
         log.debug("Shop page prepared with {} products", productPage.getNumberOfElements());
         return mv;
@@ -130,6 +133,7 @@ public class ShopController {
                          @RequestParam(value = "sort", required = false) String sortType,
                          @RequestParam(value = "categoryId", required = false) Long categoryId,
                          @RequestParam(value = "tag", required = false) String tag,
+                         @RequestParam(value = "label", required = false) String label,
                          @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
                          @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice) {
         log.debug("Processing search form submission: search={}, sort={}, categoryId={}, tag={}, minPrice={}, maxPrice={}",
@@ -159,6 +163,12 @@ public class ShopController {
         // Add tag parameter if valid
         if (isValid(tag)) {
             redirectUrl.append(hasParam ? "&" : "?").append("tag=").append(tag);
+            hasParam = true;
+        }
+        
+        // Add label parameter if valid
+        if (isValid(label)) {
+            redirectUrl.append(hasParam ? "&" : "?").append("label=").append(label);
             hasParam = true;
         }
         

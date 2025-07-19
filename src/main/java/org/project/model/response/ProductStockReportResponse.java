@@ -8,10 +8,10 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductStockReportResponse {
     private Long productId;
     private String productName;
@@ -21,10 +21,10 @@ public class ProductStockReportResponse {
     private String recommendedAction;
     private Date expirationDate;
     private String batchNumber;
-    private Integer stockIn = 0;
-    private Integer stockOut = 0;
-    private BigDecimal stockInValue = BigDecimal.ZERO;
-    private BigDecimal stockOutValue = BigDecimal.ZERO;
     private BigDecimal unitPrice;
     private BigDecimal totalValue;
+    private int stockIn;
+    private int stockOut;
+    private BigDecimal stockInValue = BigDecimal.ZERO;
+    private BigDecimal stockOutValue = BigDecimal.ZERO;
 } 
