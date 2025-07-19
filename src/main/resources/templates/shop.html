@@ -1056,6 +1056,11 @@
       </div>
 <div class="section-padding">
    <div class="container">
+      <!-- Add wishlist notification -->
+      <div th:if="${wishlistMessage}" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+         <span th:text="${wishlistMessage}"></span>
+         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
       <div class="row">
          <div class="col-xl-3">
             <div class="widget bg-primary-subtle p-3 p-md-4 mb-5">
@@ -1153,7 +1158,7 @@
          <div class="col-xl-9">
             <div class="top-panel mb-5">
                <div class="row align-items-center">
-                  <div class="col-sm-6 text-center text-sm-start">
+                  <div class="col-sm-3 text-center text-sm-start">
                      <p class="m-0" th:text="'Showing ' + ${productPage.getNumberOfElements() > 0 ? (productPage.getNumber() * productPage.getSize() + 1) : 0} + '–' + ${productPage.getNumberOfElements() + productPage.getNumber() * productPage.getSize()} + ' of ' + ${productPage.getTotalElements()} + ' results'"></p>
                      <form th:action="@{/shop}" method="get" class="d-inline-block mt-2">
                         <input type="hidden" name="search" th:value="${search != null ? search : ''}">
@@ -1168,8 +1173,29 @@
                         </select>
                      </form>
                   </div>
+                  <!-- Product Label Filters -->
+                  <div class="col-sm-6 mb-4">
+                     <div class="d-flex flex-wrap gap-2">
+                        <a th:href="@{/shop(search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}" 
+                           class="btn" th:classappend="${selectedLabel == null ? 'btn-primary' : 'btn-outline-primary'}">
+                           All
+                        </a>
+                        <a th:href="@{/shop(label='NEW', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}" 
+                           class="btn" th:classappend="${selectedLabel == 'NEW' ? 'btn-primary' : 'btn-outline-primary'}">
+                           New Products
+                        </a>
+                        <a th:href="@{/shop(label='SALE', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}" 
+                           class="btn" th:classappend="${selectedLabel == 'SALE' ? 'btn-primary' : 'btn-outline-primary'}">
+                           Sale Products
+                        </a>
+                        <a th:href="@{/shop(label='STANDARD', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}" 
+                           class="btn" th:classappend="${selectedLabel == 'STANDARD' ? 'btn-primary' : 'btn-outline-primary'}">
+                           Standard Products
+                        </a>
+                     </div>
+                  </div>
                   <div
-                     class="col-sm-6 mt-3 mt-sm-0 d-flex align-items-center justify-content-center justify-content-sm-end gap-3">
+                     class="col-sm-3 mt-3 mt-sm-0 d-flex align-items-center justify-content-center justify-content-sm-end gap-3">
                      <ul role="tablist" class="list-inline m-0 nav nav-pills iq-product-filter d-none d-md-flex bg-transparent align-items-center">
                         <li class="nav-item">
                            <button class="nav-link rounded-pill" id="grid-list-tab" data-bs-toggle="pill"
@@ -1304,6 +1330,9 @@
                   </div>
                </div>
             </div>
+            
+            
+            
             <div class="tab-content">
                <div class="tab-pane fade" id="pills-list" role="tabpanel" aria-labelledby="grid-list-tab">
                   <div class="row row-cols-1">
