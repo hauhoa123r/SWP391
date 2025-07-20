@@ -838,7 +838,7 @@
                                              </div>
                                          </div>
                                      </div>
-                                 </div>                     
+                                 </div>
                               </li>
                                <li class="nav-item dropdown" id="itemdropdown1">
                                   <a class="nav-link d-flex align-items-center" href="#"
@@ -1072,7 +1072,7 @@
                      <input type="hidden" name="tag" th:value="${selectedTag}" th:if="${selectedTag != null}">
                      <input type="hidden" name="minPrice" th:value="${minPrice}" th:if="${minPrice != null}">
                      <input type="hidden" name="maxPrice" th:value="${maxPrice}" th:if="${maxPrice != null}">
-                     
+
                      <input type="search" name="search" placeholder="Search Products..." class="form-control rm-cancel-btn mb-5 bg-white border"
                             th:value="${search}">
                      <button type="submit" class="position-absolute  end-0 top-0 text-body p-0 border-0 bg-transparent cursor-pointer">
@@ -1176,19 +1176,19 @@
                   <!-- Product Label Filters -->
                   <div class="col-sm-6 mb-4">
                      <div class="d-flex flex-wrap gap-2">
-                        <a th:href="@{/shop(search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}" 
+                        <a th:href="@{/shop(search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}"
                            class="btn" th:classappend="${selectedLabel == null ? 'btn-primary' : 'btn-outline-primary'}">
                            All
                         </a>
-                        <a th:href="@{/shop(label='NEW', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}" 
+                        <a th:href="@{/shop(label='NEW', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}"
                            class="btn" th:classappend="${selectedLabel == 'NEW' ? 'btn-primary' : 'btn-outline-primary'}">
                            New Products
                         </a>
-                        <a th:href="@{/shop(label='SALE', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}" 
+                        <a th:href="@{/shop(label='SALE', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}"
                            class="btn" th:classappend="${selectedLabel == 'SALE' ? 'btn-primary' : 'btn-outline-primary'}">
                            Sale Products
                         </a>
-                        <a th:href="@{/shop(label='STANDARD', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}" 
+                        <a th:href="@{/shop(label='STANDARD', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}"
                            class="btn" th:classappend="${selectedLabel == 'STANDARD' ? 'btn-primary' : 'btn-outline-primary'}">
                            Standard Products
                         </a>
@@ -1330,9 +1330,9 @@
                   </div>
                </div>
             </div>
-            
-            
-            
+
+
+
             <div class="tab-content">
                <div class="tab-pane fade" id="pills-list" role="tabpanel" aria-labelledby="grid-list-tab">
                   <div class="row row-cols-1">
@@ -2103,7 +2103,7 @@
     <script src="frontend/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
     <!-- Kivicare Pages Script -->
     <script src="frontend/assets/js/slider.js" defer></script>
-    <script src="frontend/assets/js/scroll-text.js" defer></script>      
+    <script src="frontend/assets/js/scroll-text.js" defer></script>
     <script th:src="@{/frontend/assets/js/wishlist.js}"></script>
 </body>
 </html>
