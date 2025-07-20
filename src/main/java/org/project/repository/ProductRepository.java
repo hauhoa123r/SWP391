@@ -2,7 +2,7 @@ package org.project.repository;
 
 import jakarta.persistence.EntityManager;
 import org.project.entity.ProductEntity;
-import org.project.enums.ProductLabel;
+import org.project.enums.Label;
 import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
 import org.springframework.data.domain.Page;
@@ -65,6 +65,14 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>, J
      * @return List of products matching the type and status
      */
     List<ProductEntity> findAllByProductTypeAndProductStatus(ProductType productType, ProductStatus productStatus);
+    
+    /**
+     * Find all products by status and type
+     * @param productStatus Status of product
+     * @param productType Type of product
+     * @return List of products with specified status and type
+     */
+    List<ProductEntity> findByProductStatusAndProductType(ProductStatus productStatus, ProductType productType);
     
     /**
      * Find a product by product type and ID
@@ -146,7 +154,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>, J
      * @param pageable Pagination information
      * @return Page of products with the specified label
      */
-    Page<ProductEntity> findByProductStatusAndLabel(ProductStatus productStatus, ProductLabel label, Pageable pageable);
+    Page<ProductEntity> findByProductStatusAndLabel(ProductStatus productStatus, Label label, Pageable pageable);
     
     // ==================== Tag operations ====================
     
