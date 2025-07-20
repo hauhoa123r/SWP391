@@ -11,8 +11,8 @@
     <meta name="keywords"
           content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="frontend/assets/images/favicon.png" type="image/x-icon">
-    <link rel="shortcut icon" href="frontend/assets/images/favicon.png" type="image/x-icon">
+    <link rel="icon" th:href="@{/templates_storage/assets/images/favicon.png}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/templates_storage/assets/images/favicon.png}" type="image/x-icon">
     <title>Fastkart - Quản lý xuất kho</title>
 
     <!-- Google font -->
@@ -21,40 +21,40 @@
             rel="stylesheet">
 
     <!-- Linear Icon css -->
-    <link rel="stylesheet" href="frontend/assets/css/linearicon.css">
+    <link rel="stylesheet" th:href="@{/templates_storage/assets/css/linearicon.css}">
 
     <!-- Fontawesome css -->
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/font-awesome.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/font-awesome.css}">
 
     <!-- Themify icon css -->
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/themify.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/themify.css}">
 
     <!-- Dropzone css -->
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/dropzone.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/dropzone.css}">
 
     <!-- Feather icon css-->
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/feather-icon.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/feather-icon.css}">
 
     <!-- remixicon css -->
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/remixicon.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/remixicon.css}">
 
     <!-- Select2 css -->
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/select2.min.css}">
 
     <!-- Plugins css -->
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/scrollbar.css">
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/animate.css">
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/chartist.css">
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/date-picker.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/scrollbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/animate.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/chartist.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/date-picker.css}">
 
     <!-- Bootstrap css -->
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/bootstrap.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/bootstrap.css}">
 
     <!-- Bootstrap-tag input css -->
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/bootstrap-tagsinput.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/bootstrap-tagsinput.css}">
 
     <!-- App css -->
-    <link rel="stylesheet" type="text/css" href="frontend/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/style.css}">
 
     <!-- Custom styles -->
     <style>
@@ -100,20 +100,20 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a href="index.html">
-                        <img class="img-fluid main-logo" src="frontend/assets/images/logo/1.png" alt="logo">
-                        <img class="img-fluid white-logo" src="frontend/assets/images/logo/1-white.png" alt="logo">
+                    <a th:href="@{/index.html}">
+                        <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
+                        <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a href="index.html">
-                        <img src="frontend/assets/images/logo/1.png" class="img-fluid" alt="">
+                    <a th:href="@{/index.html}">
+                        <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
             </div>
 
-            <form class="form-inline search-full" action="javascript:void(0)" method="get">
+            <form class="form-inline search-full" action="#" method="get">
                 <div class="form-group w-100">
                     <div class="Typeahead Typeahead--twitterUsers">
                         <div class="u-posRelative">
@@ -170,7 +170,7 @@
                                 </p>
                             </li>
                             <li>
-                                <a class="btn btn-primary" href="javascript:void(0)">Kiểm tra tất cả thông báo</a>
+                                <a class="btn btn-primary" href="#">Kiểm tra tất cả thông báo</a>
                             </li>
                         </ul>
                     </li>
@@ -182,40 +182,40 @@
                     </li>
                     <li class="profile-nav onhover-dropdown pe-0 me-0">
                         <div class="media profile-media">
-                            <img class="user-profile rounded-circle" src="frontend/assets/images/users/4.jpg" alt="">
+                            <img class="user-profile rounded-circle" th:src="@{${currentUser?.avatar ?: '/templates_storage/assets/images/users/default.jpg'}}" alt="">
                             <div class="user-name-hide media-body">
-                                <span>Emay Walter</span>
-                                <p class="mb-0 font-roboto">Quản trị viên<i class="middle ri-arrow-down-s-line"></i></p>
+                                <span th:text="${currentUser?.fullName ?: 'Người dùng'}">Người dùng</span>
+                                <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                             </div>
                         </div>
                         <ul class="profile-dropdown onhover-show-div">
                             <li>
-                                <a href="all-users.html">
+                                <a th:href="@{/all-users.html}">
                                     <i data-feather="users"></i>
                                     <span>Người dùng</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="order-list.html">
+                                <a th:href="@{/order-list.html}">
                                     <i data-feather="archive"></i>
                                     <span>Đơn hàng</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="support-ticket.html">
+                                <a th:href="@{/support-ticket.html}">
                                     <i data-feather="phone"></i>
                                     <span>Vé hỗ trợ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="profile-setting.html">
+                                <a th:href="@{/profile-setting.html}">
                                     <i data-feather="settings"></i>
                                     <span>Cài đặt</span>
                                 </a>
                             </li>
                             <li>
                                 <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                   href="javascript:void(0)">
+                                   href="#">
                                     <i data-feather="log-out"></i>
                                     <span>Đăng xuất</span>
                                 </a>
@@ -235,8 +235,8 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a href="index.html" data-bs-original-title="" title="">
-                        <img class="img-fluid for-white" src="frontend/assets/images/logo/full-white.png" alt="logo">
+                    <a th:href="@{/index.html}" data-bs-original-title="" title="">
+                        <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
                         <i class="fa fa-angle-left"></i>
@@ -246,9 +246,9 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a href="index.html">
-                        <img class="img-fluid main-logo main-white" src="frontend/assets/images/logo/1-white.png" alt="logo">
-                        <img class="img-fluid main-logo main-dark" src="frontend/assets/images/logo/logo-white.png"
+                    <a th:href="@{/index.html}">
+                        <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
+                        <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
                     </a>
                 </div>
@@ -262,107 +262,107 @@
                             <li class="back-btn"></li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" href="index.html">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/index.html}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="#">
                                     <i class="ri-store-3-line"></i>
                                     <span>Giao dịch</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a href="StockIn.html">Nhập kho</a>
+                                        <a th:href="@{/StockIn.html}">Nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a href="StockOut.html">Xuất kho</a>
+                                        <a th:href="@{/StockOut.html}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="#">
                                     <i class="ri-list-check-2"></i>
                                     <span>Hóa đơn</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a href="StockInInvoice.html">Hóa đơn nhập kho</a>
+                                        <a th:href="@{/StockInInvoice.html}">Hóa đơn nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a href="StockOutInvoice.html">Hóa đơn xuất kho</a>
+                                        <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
                                     </li>
 
                                     <li>
-                                        <a href="CustomerInvoice.html">Hóa đơn khách hàng</a>
+                                        <a th:href="@{/CustomerInvoice.html}">Hóa đơn khách hàng</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="#">
                                     <i class="ri-list-settings-line"></i>
                                     <span>Kho hàng</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a href="medical-equipment.html">Thiết bị y tế</a>
+                                        <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
                                     </li>
 
                                     <li>
-                                        <a href="medicine.html">Thuốc</a>
+                                        <a th:href="@{/medicine.html}">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                <a class="sidebar-link sidebar-title" href="#">
                                     <i class="ri-archive-line"></i>
                                     <span>Đơn hàng</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a href="order-list.html">Danh sách đơn hàng</a>
+                                        <a th:href="@{/order-list.html}">Danh sách đơn hàng</a>
                                     </li>
                                     <li>
-                                        <a href="order-detail.html">Chi tiết đơn hàng</a>
+                                        <a th:href="@{/order-detail.html}">Chi tiết đơn hàng</a>
                                     </li>
                                     <li>
-                                        <a href="order-tracking.html">Theo dõi đơn hàng</a>
+                                        <a th:href="@{/order-tracking.html}">Theo dõi đơn hàng</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="#">
                                     <i class="ri-price-tag-3-line"></i>
                                     <span>Mã giảm giá</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a href="coupon-list.html">Danh sách mã giảm giá</a>
+                                        <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
                                     </li>
 
                                     <li>
-                                        <a href="create-coupon.html">Tạo mã giảm giá</a>
+                                        <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" href="product-review.html">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
                                     <i class="ri-star-line"></i>
                                     <span>Đánh giá sản phẩm</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" href="reports.html">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
                                     <i class="ri-file-chart-line"></i>
                                     <span>Báo cáo</span>
                                 </a>
@@ -417,7 +417,7 @@
                                         <select class="form-select" id="statusFilter">
                                             <option value="">Tất cả trạng thái</option>
                                             <option value="pending">Chờ xử lý</option>
-                                            <option value="processing">Đang xử lý</option>
+                                            <option value="approved">Đang xử lý</option>
                                             <option value="completed">Hoàn thành</option>
                                             <option value="cancelled">Đã hủy</option>
                                         </select>
@@ -457,7 +457,7 @@
                                         <!-- Hiển thị dữ liệu động từ controller -->
                                         <tr th:each="supplierOut : ${supplierOuts}" th:data-id="${supplierOut.id}" th:data-status="${supplierOut.status}">
                                             <td><strong th:text="${'SO-' + supplierOut.id}">SO-001</strong></td>
-                                            <td th:text="${#temporals.format(supplierOut.createdAt, 'dd-MM-yyyy')}">Ngày xuất</td>
+                                            <td th:text="${supplierOut.createdAt != null ? #dates.format(supplierOut.createdAt, 'dd-MM-yyyy') : ''}">Ngày xuất</td>
                                             <td th:text="${supplierOut.recipient != null ? supplierOut.recipient : 'N/A'}">Người nhận</td>
                                             <td>
                                                 <!-- Simple badge implementation -->
@@ -472,10 +472,10 @@
                                             <td>
                                                 <!-- Simple status implementation -->
                                                 <span th:if="${supplierOut.status == 'PENDING'}" class="status-pending">Chờ xử lý</span>
-                                                <span th:if="${supplierOut.status == 'PROCESSING'}" class="status-processing">Đang xử lý</span>
+                                                <span th:if="${supplierOut.status == 'APPROVED'}" class="status-processing">Đang xử lý</span>
                                                 <span th:if="${supplierOut.status == 'COMPLETED'}" class="status-completed">Hoàn thành</span>
                                                 <span th:if="${supplierOut.status == 'CANCELLED'}" class="status-cancelled">Đã hủy</span>
-                                                <span th:if="${supplierOut.status != 'PENDING' && supplierOut.status != 'PROCESSING' && supplierOut.status != 'COMPLETED' && supplierOut.status != 'CANCELLED'}" class="status-processing">Đang xử lý</span>
+                                                <span th:if="${supplierOut.status != 'PENDING' && supplierOut.status != 'APPROVED' && supplierOut.status != 'COMPLETED' && supplierOut.status != 'CANCELLED'}" class="status-processing">Đang xử lý</span>
                                             </td>
                                             <td>
                                                 <div class="btn-group">
@@ -483,40 +483,40 @@
                                                         <i class="ri-eye-line"></i>
                                                     </a>
                                                     <a th:href="@{'/invoiceouttracking.html?id=' + ${supplierOut.id}}" class="btn btn-sm btn-info">
-                                                        <i class="ri-truck-line"></i> 
+                                                        <i class="ri-truck-line"></i>
                                                     </a>
-                                                    
+
                                                     <!-- Nút xử lý trạng thái -->
                                                     <form th:if="${supplierOut.status == 'PENDING'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
-                                                        <input type="hidden" name="status" value="PROCESSING" />
+                                                        <input type="hidden" name="status" value="APPROVED" />
                                                         <button type="submit" class="btn btn-sm btn-success" title="Xử lý">
                                                             <i class="ri-play-line"></i>
                                                         </button>
                                                     </form>
-                                                    
-                                                    <form th:if="${supplierOut.status == 'PROCESSING'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+
+                                                    <form th:if="${supplierOut.status == 'APPROVED'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
                                                         <input type="hidden" name="status" value="COMPLETED" />
                                                         <button type="submit" class="btn btn-sm btn-success" title="Hoàn thành">
                                                             <i class="ri-check-line"></i>
                                                         </button>
                                                     </form>
-                                                    
-                                                    <form th:if="${supplierOut.status == 'PENDING' || supplierOut.status == 'PROCESSING'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+
+                                                    <form th:if="${supplierOut.status == 'PENDING' || supplierOut.status == 'APPROVED'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
                                                         <input type="hidden" name="status" value="CANCELLED" />
                                                         <button type="submit" class="btn btn-sm btn-danger" title="Hủy">
                                                             <i class="ri-close-line"></i>
                                                         </button>
                                                     </form>
-                                                    
+
                                                     <button th:if="${supplierOut.status == 'COMPLETED'}" class="btn btn-sm btn-info" th:onclick="'printStockOut(' + ${supplierOut.id} + ')'">
                                                         <i class="ri-printer-line"></i>
                                                     </button>
                                                 </div>
                                             </td>
                                         </tr>
-                                        
+
                                         <!-- Hiển thị thông báo khi không có dữ liệu -->
-                                        <tr th:if="${supplierOuts.empty}">
+                                        <tr th:if="${supplierOuts.isEmpty()}">
                                             <td colspan="7" class="text-center">Không có dữ liệu xuất kho</td>
                                         </tr>
                                         </tbody>
@@ -635,7 +635,7 @@
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-danger btn-sm remove-row">
-                                            <i class="ri-delete-bin-line"></i>
+                                                <i class="ri-delete-bin-line"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -767,50 +767,50 @@
 </div>
 
 <!-- latest js -->
-<script src="frontend/assets/js/jquery-3.6.0.min.js"></script>
+<script th:src="@{/templates_storage/assets/js/jquery-3.6.0.min.js}"></script>
 
 <!-- Bootstrap js -->
-<script src="frontend/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+<script th:src="@{/templates_storage/assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
 
 <!-- feather icon js -->
-<script src="frontend/assets/js/icons/feather-icon/feather.min.js"></script>
-<script src="frontend/assets/js/icons/feather-icon/feather-icon.js"></script>
+<script th:src="@{/templates_storage/assets/js/icons/feather-icon/feather.min.js}"></script>
+<script th:src="@{/templates_storage/assets/js/icons/feather-icon/feather-icon.js}"></script>
 
 <!-- scrollbar simplebar js -->
-<script src="frontend/assets/js/scrollbar/simplebar.js"></script>
-<script src="frontend/assets/js/scrollbar/custom.js"></script>
+<script th:src="@{/templates_storage/assets/js/scrollbar/simplebar.js}"></script>
+<script th:src="@{/templates_storage/assets/js/scrollbar/custom.js}"></script>
 
 <!-- Sidebar js -->
-<script src="frontend/assets/js/config.js"></script>
+<script th:src="@{/templates_storage/assets/js/config.js}"></script>
 
 <!-- bootstrap tag-input js -->
-<script src="frontend/assets/js/bootstrap-tagsinput.min.js"></script>
-<script src="frontend/assets/js/sidebar-menu.js"></script>
+<script th:src="@{/templates_storage/assets/js/bootstrap-tagsinput.min.js}"></script>
+<script th:src="@{/templates_storage/assets/js/sidebar-menu.js}"></script>
 
 <!-- customizer js -->
-<script src="frontend/assets/js/customizer.js"></script>
+<script th:src="@{/templates_storage/assets/js/customizer.js}"></script>
 
 <!-- Dropzone js -->
-<script src="frontend/assets/js/dropzone/dropzone.js"></script>
-<script src="frontend/assets/js/dropzone/dropzone-script.js"></script>
+<script th:src="@{/templates_storage/assets/js/dropzone/dropzone.js}"></script>
+<script th:src="@{/templates_storage/assets/js/dropzone/dropzone-script.js}"></script>
 
 <!-- Plugins js -->
-<script src="frontend/assets/js/notify/bootstrap-notify.min.js"></script>
-<script src="frontend/assets/js/notify/index.js"></script>
+<script th:src="@{/templates_storage/assets/js/notify/bootstrap-notify.min.js}"></script>
+<script th:src="@{/templates_storage/assets/js/notify/index.js}"></script>
 
 <!-- ck editor js -->
-<script src="frontend/assets/js/ckeditor.js"></script>
-<script src="frontend/assets/js/ckeditor-custom.js"></script>
+<script th:src="@{/templates_storage/assets/js/ckeditor.js}"></script>
+<script th:src="@{/templates_storage/assets/js/ckeditor-custom.js}"></script>
 
 <!-- select2 js -->
-<script src="frontend/assets/js/select2.min.js"></script>
-<script src="frontend/assets/js/select2-custom.js"></script>
+<script th:src="@{/templates_storage/assets/js/select2.min.js}"></script>
+<script th:src="@{/templates_storage/assets/js/select2-custom.js}"></script>
 
 <!-- sidebar effect -->
-<script src="frontend/assets/js/sidebareffect.js"></script>
+<script th:src="@{/templates_storage/assets/js/sidebareffect.js}"></script>
 
 <!-- Theme js -->
-<script src="frontend/assets/js/script.js"></script>
+<script th:src="@{/templates_storage/assets/js/script.js}"></script>
 
 <!-- SheetJS for Excel processing -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -975,11 +975,15 @@
 
     // Download template
     function downloadTemplate() {
-        const templateData = [
+        // Get template data from controller or use default
+        let templateData = [];
+        
+        /*<![CDATA[*/
+        templateData = /*[[${templateData}]]*/ [
             ['Ngày xuất', 'Người nhận', 'Lý do xuất', 'Mã sản phẩm', 'Tên sản phẩm', 'Số lô', 'Số lượng', 'Đơn giá', 'Ghi chú'],
-            ['2024-01-15', 'Nguyễn Văn A', 'SALE', 'SP001', 'Paracetamol 500mg', 'LOT001', '10', '5000', ''],
-            ['2024-01-15', 'Nguyễn Văn A', 'SALE', 'SP002', 'Amoxicillin 250mg', 'LOT002', '5', '8000', '']
+            ['YYYY-MM-DD', 'Tên người nhận', 'SALE/TRANSFER/RETURN/EXPIRED/DAMAGED/OTHER', 'XXXXX', 'Tên sản phẩm', 'LXXXX', '0', '0', '']
         ];
+        /*]]>*/
 
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.aoa_to_sheet(templateData);
@@ -989,14 +993,30 @@
 
     // Add product row
     function addProductRow() {
+        // Generate product options from controller data
+        let productOptions = '<option value="">Chọn sản phẩm</option>';
+        
+        /*<![CDATA[*/
+        const products = /*[[${products}]]*/ [];
+        
+        if (products && products.length) {
+            products.forEach(product => {
+                productOptions += `<option value="${product.id}">${product.name}</option>`;
+            });
+        } else {
+            // Fallback options if no data from controller
+            productOptions += `
+                <option value="1">Sản phẩm mẫu 1</option>
+                <option value="2">Sản phẩm mẫu 2</option>
+            `;
+        }
+        /*]]>*/
+        
         const newRow = `
         <tr>
             <td>
                 <select class="form-select product-select" required>
-                    <option value="">Chọn sản phẩm</option>
-                    <option value="1">Paracetamol 500mg</option>
-                    <option value="2">Amoxicillin 250mg</option>
-                    <option value="3">Máy đo huyết áp</option>
+                    ${productOptions}
                 </select>
             </td>
             <td>
@@ -1026,21 +1046,32 @@
 
     // Load batches for selected product
     function loadBatches(productId, row) {
-        // Simulate loading batches from server
-        const batches = {
-            '1': [
-                { id: 'B001', name: 'LOT001 - HSD: 2025-12-31', stock: 100 },
-                { id: 'B002', name: 'LOT002 - HSD: 2025-06-30', stock: 50 }
-            ],
-            '2': [
-                { id: 'B003', name: 'LOT003 - HSD: 2025-08-15', stock: 75 },
-                { id: 'B004', name: 'LOT004 - HSD: 2025-04-20', stock: 25 }
-            ],
-            '3': [
-                { id: 'B005', name: 'LOT005 - HSD: 2027-01-01', stock: 10 },
-                { id: 'B006', name: 'LOT006 - HSD: 2026-12-31', stock: 5 }
-            ]
-        };
+        // In a real application, this would call the server to get batch data
+        // Now we'll get batch data from the controller or use a default
+        let batches = {};
+        
+        /*<![CDATA[*/
+        const allBatches = /*[[${productBatches}]]*/ {};
+        
+        if (allBatches && Object.keys(allBatches).length > 0) {
+            batches = allBatches;
+        } else {
+            // Default data if controller doesn't provide it
+            batches = {
+                '1': [
+                    { id: 'B001', name: 'Lô mẫu 1 - HSD: 2025-12-31', stock: 100 }
+                ],
+                '2': [
+                    { id: 'B002', name: 'Lô mẫu 2 - HSD: 2025-06-30', stock: 50 }
+                ]
+            };
+        }
+        /*]]>*/
+        
+        // Alternatively, make an AJAX call to get the data
+        // $.getJSON(`/api/products/${productId}/batches`, function(data) {
+        //     // process batch data
+        // });
 
         const batchSelect = row.find('.batch-select');
         batchSelect.empty().append('<option value="">Chọn số lô</option>');
@@ -1135,3 +1166,4 @@
 
 </body>
 </html>
+
