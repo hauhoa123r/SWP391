@@ -59,9 +59,10 @@ public class LeaveRequestController {
                                          Model model) {
         Page<LeaveRequestResponse> leaveRequests = leaveRequestService.getLeaveRequestByStaffId(staffId, pageIndex, 8);
         List<LeaveRequestResponse> leaveRequestResponses = leaveRequests.getContent();
+        model.addAttribute("staffId", staffId);
         model.addAttribute("leaveRequests", leaveRequestResponses);
         model.addAttribute("pageIndex", pageIndex);
         model.addAttribute("totalPages", leaveRequests.getTotalPages());
-        return "frontend/leave-staff-list"; // Adjust the view name as necessary
+        return "frontend/staff-leave-list"; // Adjust the view name as necessary
     }
 }

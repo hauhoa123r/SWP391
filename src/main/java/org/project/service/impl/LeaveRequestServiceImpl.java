@@ -5,6 +5,9 @@ import org.project.converter.LeaveRequestConverter;
 import org.project.entity.LeaveBalanceEntity;
 import org.project.entity.LeaveRequestEntity;
 import org.project.enums.LeaveStatus;
+import org.project.enums.LeaveType;
+import org.project.exception.LeaveLeftNotEnoughException;
+import org.project.exception.sql.EntityNotFoundException;
 import org.project.model.dto.LeaveRequestDTO;
 import org.project.model.response.LeaveBalanceResponse;
 import org.project.model.response.LeaveRequestResponse;
@@ -80,30 +83,57 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     public boolean saveLeaveRequest(LeaveRequestDTO leaveRequestDTO) {
         try {
             if (staffService.isStaffExist(leaveRequestDTO.getStaffId())) {
-                LeaveRequestEntity leaveRequestEntity = leaveRequestConverter.toEntity(leaveRequestDTO);
+                if (hasLeaveAvailable(leaveRequestDTO).compareTo(BigDecimal.ZERO) >= 0) {
+                    LeaveRequestEntity leaveRequestEntity = leaveRequestConverter.toEntity(leaveRequestDTO);
 
-                leaveRequestEntity.setStaffEntity(staffService.getStaffByStaffId(leaveRequestDTO.getStaffId()));
+                    leaveRequestEntity.setStaffEntity(staffService.getStaffByStaffId(leaveRequestDTO.getStaffId()));
 
-                leaveRequestEntity.setApprovedBy(staffService.getManagerByStaffId(leaveRequestDTO.getStaffId()));
+                    leaveRequestEntity.setApprovedBy(staffService.getManagerByStaffId(leaveRequestDTO.getStaffId()));
 
-                if (leaveRequestDTO.getSubstituteStaffId() != null) {
-                    if (staffService.isStaffExist(leaveRequestDTO.getSubstituteStaffId())) {
-                        leaveRequestEntity.setStaffSubstitute(staffService.getStaffByStaffId(leaveRequestDTO.getSubstituteStaffId()));
-                    } else {
-                        leaveRequestEntity.setStaffSubstitute(null);
+                    if (leaveRequestDTO.getSubstituteStaffId() != null) {
+                        if (staffService.isStaffExist(leaveRequestDTO.getSubstituteStaffId())) {
+                            leaveRequestEntity.setStaffSubstitute(staffService.getStaffByStaffId(leaveRequestDTO.getSubstituteStaffId()));
+                        } else {
+                            leaveRequestEntity.setStaffSubstitute(null);
+                        }
                     }
+                    Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+                    leaveRequestEntity.setCreatedAt(currentTimestamp);
+
+                    if (leaveRequestRepository.save(leaveRequestEntity) != null) {
+                        updateLeaveBalance(leaveRequestDTO.getStaffId()
+                                , leaveRequestDTO.getStartDate()
+                                , leaveRequestDTO.getEndDate()
+                                , LeaveType.valueOf(leaveRequestDTO.getLeaveType())
+                                , "CREATE");
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    throw new LeaveLeftNotEnoughException("Staff with ID " + leaveRequestDTO.getStaffId() + " not enough leave balance");
                 }
-
-                Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-                leaveRequestEntity.setCreatedAt(currentTimestamp);
-
-                return leaveRequestRepository.save(leaveRequestEntity) != null;
             } else {
                 throw new IllegalArgumentException("Staff with ID " + leaveRequestDTO.getStaffId() + " does not exist.");
             }
         } catch (Exception e) {
             throw new RuntimeException("Error saving leave request: " + e.getMessage(), e);
         }
+    }
+
+    public void updateLeaveBalance(Long staffId, Timestamp startTime, Timestamp endTime, LeaveType type, String status) {
+        Year year = Year.now();
+        BigDecimal req = calculateLeaveDays(startTime, endTime);
+        LeaveBalanceEntity leaveBalanceEntity = leaveBalanceRepository.findByStaffEntity_IdAndYearAndLeaveType(staffId, year, type);
+        if ("CREATE".equals(status)) {
+            leaveBalanceEntity.setPendingBalance(leaveBalanceEntity.getPendingBalance().add(req));
+        } else if ("APPROVAL".equals(status)) {
+            leaveBalanceEntity.setPendingBalance(leaveBalanceEntity.getPendingBalance().subtract(req));
+            leaveBalanceEntity.setUsedBalance(leaveBalanceEntity.getUsedBalance().add(req));
+        } else if ("REJECT".equals(status)) {
+            leaveBalanceEntity.setPendingBalance(leaveBalanceEntity.getPendingBalance().subtract(req));
+        }
+        leaveBalanceRepository.save(leaveBalanceEntity);
     }
 
     @Override
@@ -170,6 +200,46 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         List<LeaveBalanceEntity> leaveBalanceEntities = leaveBalanceRepository.findAllByStaffEntity_IdAndYear(staffId, year);
         LeaveBalanceResponse leaveBalanceResponse = leaveBalanceConverter.toResponse(leaveBalanceEntities);
         return leaveBalanceResponse;
+    }
+
+    @Override
+    public BigDecimal calculateRequestedDays(LeaveRequestDTO leaveRequestDTO) {
+
+        BigDecimal requested = calculateLeaveDays(leaveRequestDTO.getStartDate(), leaveRequestDTO.getEndDate());
+
+        return requested.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    @Override
+    public BigDecimal getLeaveDayLeft(LeaveRequestDTO dto) {
+        Year year = Year.now();
+        LeaveBalanceEntity bal = leaveBalanceRepository
+                .findByStaffEntity_IdAndYearAndLeaveType(
+                        dto.getStaffId(), year, LeaveType.valueOf(dto.getLeaveType())
+                );
+        BigDecimal total = bal.getTotalEntitlement() != null ? bal.getTotalEntitlement() : BigDecimal.ZERO;
+        BigDecimal used = bal.getUsedBalance() != null ? bal.getUsedBalance() : BigDecimal.ZERO;
+        BigDecimal pending = bal.getPendingBalance() != null ? bal.getPendingBalance() : BigDecimal.ZERO;
+
+        return total.subtract(used).subtract(pending).setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    @Override
+    public LeaveRequestResponse getLeaveRequestById(Long leaveRequestId) {
+        LeaveRequestEntity leaveRequestEntity = leaveRequestRepository.getById(leaveRequestId);
+
+        LeaveRequestResponse leaveRequestResponse = leaveRequestConverter.toResponse(leaveRequestEntity);
+
+        leaveRequestResponse = convertTotalDaysAndHalfDayType(leaveRequestEntity, leaveRequestResponse);
+
+        return leaveRequestResponse;
+    }
+
+    public BigDecimal hasLeaveAvailable(LeaveRequestDTO dto) {
+        BigDecimal left = getLeaveDayLeft(dto);
+        BigDecimal req = calculateRequestedDays(dto);
+
+        return left.subtract(req).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal calculateLeaveDays(Timestamp startDate, Timestamp endDate) {

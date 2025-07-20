@@ -839,13 +839,20 @@
                             </td>
                             <td th:text="${leave.leaveType}">Nghỉ phép năm</td>
                             <td>
-                                <span class="status-badge"
-                                    th:classappend="${leave.status == 'PENDING'} ? ' status-pending' :
-                                              (${leave.status == 'APPROVED'} ? ' status-approved' :
-                                              (${leave.status == 'REJECTED'} ? ' status-rejected' : ' status-cancelled'))" th:text="${leave.status == 'PENDING'} ? 'Chờ duyệt' :
-                                       (leave.status == 'APPROVED' ? 'Đã duyệt' :
-                                       (leave.status == 'REJECTED' ? 'Từ chối' : 'Đã hủy'))">
-                                    Chờ duyệt
+                                <span th:switch="${leave.status}"
+                                      class="status-badge">
+                                  <span th:case="'PENDING'"
+                                        class="status-pending"
+                                        th:text="'Chờ duyệt'">Chờ duyệt</span>
+                                  <span th:case="'APPROVED'"
+                                        class="status-approved"
+                                        th:text="'Đã duyệt'">Đã duyệt</span>
+                                  <span th:case="'REJECTED'"
+                                        class="status-rejected"
+                                        th:text="'Từ chối'">Từ chối</span>
+                                  <span th:case="*"
+                                        class="status-cancelled"
+                                        th:text="'Đã hủy'">Đã hủy</span>
                                 </span>
                             </td>
                             <td>
@@ -1019,7 +1026,7 @@
                     case 'PENDING': return 'Chờ duyệt';
                     case 'APPROVED': return 'Đã duyệt';
                     case 'REJECTED': return 'Từ chối';
-                    default: return data.status;
+                    default: return 'Đã Huỷ';
                 }
             })();
             document.getElementById('modalStatus').className = 'status-badge ' + (function(){
@@ -1027,7 +1034,7 @@
                     case 'PENDING': return 'status-pending';
                     case 'APPROVED': return 'status-approved';
                     case 'REJECTED': return 'status-rejected';
-                    default: return '';
+                    default: return 'status-cancelled';
                 }
             })();
 
