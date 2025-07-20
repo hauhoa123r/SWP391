@@ -1,16 +1,9 @@
 package org.project.api;
 
-import org.project.model.request.AddCardiac;
-import org.project.model.request.AddNeurologicRequest;
-import org.project.model.request.AddRespiratoryRequest;
-import org.project.model.request.AddVitalSignRequest;
-import org.project.model.response.CardiacResponse;
-import org.project.model.response.NeurologicResponse;
-import org.project.model.response.RespiratoryResponse;
-import org.project.model.response.VitalSignResponse;
-import org.project.service.CardiacExamService;
-import org.project.service.RespiratoryExamService;
-import org.project.service.VitalSignService;
+import org.project.model.request.*;
+import org.project.model.response.*;
+import org.project.repository.GenitourinaryExamRepository;
+import org.project.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -82,58 +75,63 @@ public class ClinalAPI {
     public ResponseEntity<Boolean> deleteCardiac(@PathVariable Long cardiacId) {
         return ResponseEntity.ok(cardiacExamService.deleteCardiac(cardiacId));
     }
-
+    @Autowired
+    private NeurologicExamService neurologicExamService;
     //Neurologic
     @GetMapping("/neurologic/{medicalRecordId}")
     public ResponseEntity<List<NeurologicResponse>> getNeurologic(@PathVariable Long medicalRecordId) {
-        return ResponseEntity.ok(respiratoryExamService.getRespiratory(medicalRecordId));
+        return ResponseEntity.ok(neurologicExamService.getNeurologic(medicalRecordId));
     }
     @PostMapping("/neurologic/{medicalRecordId}/add")
     public ResponseEntity<Boolean> addNeurologic(@PathVariable Long medicalRecordId, @RequestBody AddNeurologicRequest addNeurologicRequest) {
-        return ResponseEntity.ok(respiratoryExamService.addRespiratory(medicalRecordId,addNeurologicRequest));
+        return ResponseEntity.ok(neurologicExamService.addNeurologic(medicalRecordId,addNeurologicRequest));
     }
     @PutMapping("/neurologic/{neurologicId}")
     public ResponseEntity<Boolean> updateNeurologic(@PathVariable Long neurologicId, @RequestBody AddNeurologicRequest addNeurologicRequest) {
-        return ResponseEntity.ok(respiratoryExamService.updateRespiratory(respiratoryId,addNeurologicRequest));
+        return ResponseEntity.ok(neurologicExamService.updateNeurologic(neurologicId,addNeurologicRequest));
     }
     @DeleteMapping("/neurologic/{neurologicId}")
     public ResponseEntity<Boolean> deleteNeurologic(@PathVariable Long neurologicId) {
-        return ResponseEntity.ok(respiratoryExamService.deleteRespiratory(respiratoryId));
+        return ResponseEntity.ok(neurologicExamService.deleteNeurologic(neurologicId));
     }
-//    //Gastro
-//    @GetMapping("/cardiac/{medicalRecordId}")
-//    public ResponseEntity<List<RespiratoryResponse>> getGastro(@PathVariable Long medicalRecordId) {
-//        return ResponseEntity.ok(respiratoryExamService.getRespiratory(medicalRecordId));
-//    }
-//    @PostMapping("/cardiac/{medicalRecordId}/add")
-//    public ResponseEntity<Boolean> addGastro(@PathVariable Long medicalRecordId, @RequestBody AddRespiratoryRequest addRespiratoryRequest) {
-//        return ResponseEntity.ok(respiratoryExamService.addRespiratory(medicalRecordId,addRespiratoryRequest));
-//    }
-//    @PutMapping("/cardiac/{cardiacId}")
-//    public ResponseEntity<Boolean> updateGastro(@PathVariable Long cardiacId, @RequestBody AddRespiratoryRequest request) {
-//        return ResponseEntity.ok(respiratoryExamService.updateRespiratory(respiratoryId,request));
-//    }
-//    @DeleteMapping("/cardiac/{cardiacId}")
-//    public ResponseEntity<Boolean> deleteGastro(@PathVariable Long cardiacId) {
-//        return ResponseEntity.ok(respiratoryExamService.deleteRespiratory(respiratoryId));
-//    }
-//    //Genitourinary
-//    @GetMapping("/cardiac/{medicalRecordId}")
-//    public ResponseEntity<List<RespiratoryResponse>> getGenitourinary(@PathVariable Long medicalRecordId) {
-//        return ResponseEntity.ok(respiratoryExamService.getRespiratory(medicalRecordId));
-//    }
-//    @PostMapping("/cardiac/{medicalRecordId}/add")
-//    public ResponseEntity<Boolean> addGenitourinary(@PathVariable Long medicalRecordId, @RequestBody AddRespiratoryRequest addRespiratoryRequest) {
-//        return ResponseEntity.ok(respiratoryExamService.addRespiratory(medicalRecordId,addRespiratoryRequest));
-//    }
-//    @PutMapping("/cardiac/{cardiacId}")
-//    public ResponseEntity<Boolean> updateGenitourinary(@PathVariable Long cardiacId, @RequestBody AddRespiratoryRequest request) {
-//        return ResponseEntity.ok(respiratoryExamService.updateRespiratory(respiratoryId,request));
-//    }
-//    @DeleteMapping("/cardiac/{cardiacId}")
-//    public ResponseEntity<Boolean> deleteGenitourinary(@PathVariable Long cardiacId) {
-//        return ResponseEntity.ok(respiratoryExamService.deleteRespiratory(respiratoryId));
-//    }
+    //Gastro
+    @Autowired
+    private GastrointestinalExamService gastrointestinalExamService;
+    @GetMapping("/gastro/{medicalRecordId}")
+    public ResponseEntity<List<GastrointestinalResponse>> getGastro(@PathVariable Long medicalRecordId) {
+        return ResponseEntity.ok(gastrointestinalExamService.getGastrointestinal(medicalRecordId));
+    }
+    @PostMapping("/gastro/{medicalRecordId}/add")
+    public ResponseEntity<Boolean> addGastro(@PathVariable Long medicalRecordId, @RequestBody AddGastrointestinalRequest addGastrointestinalRequest) {
+        return ResponseEntity.ok(gastrointestinalExamService.addGastrointestinal(medicalRecordId,addGastrointestinalRequest));
+    }
+    @PutMapping("/gastro/{gastroId}")
+    public ResponseEntity<Boolean> updateGastro(@PathVariable Long gastroId, @RequestBody AddGastrointestinalRequest addGastrointestinalRequest) {
+        return ResponseEntity.ok(gastrointestinalExamService.updateGastrointestinal(gastroId,addGastrointestinalRequest));
+    }
+    @DeleteMapping("/gastro/{gastroId}")
+    public ResponseEntity<Boolean> deleteGastro(@PathVariable Long gastroId) {
+        return ResponseEntity.ok(gastrointestinalExamService.deleteGastrointestinal(gastroId));
+    }
+    //Genitourinary
+    @Autowired
+    private GenitourinaryExamService genitourinaryExamService;
+    @GetMapping("/genitourinary/{medicalRecordId}")
+    public ResponseEntity<List<GenitourinaryResponse>> getGenitourinary(@PathVariable Long medicalRecordId) {
+        return ResponseEntity.ok(genitourinaryExamService.getGenitourinary(medicalRecordId));
+    }
+    @PostMapping("/genitourinary/{medicalRecordId}/add")
+    public ResponseEntity<Boolean> addGenitourinary(@PathVariable Long medicalRecordId, @RequestBody AddGenitourinaryRequest addGenitourinaryRequest) {
+        return ResponseEntity.ok(genitourinaryExamService.addGenitourinary(medicalRecordId,addGenitourinaryRequest));
+    }
+    @PutMapping("/genitourinary/{genitourinaryId}")
+    public ResponseEntity<Boolean> updateGenitourinary(@PathVariable Long genitourinaryId, @RequestBody AddGenitourinaryRequest addGenitourinaryRequest) {
+        return ResponseEntity.ok(genitourinaryExamService.updateGenitourinary(genitourinaryId,addGenitourinaryRequest));
+    }
+    @DeleteMapping("/genitourinary/{genitourinaryId}")
+    public ResponseEntity<Boolean> deleteGenitourinary(@PathVariable Long genitourinaryId) {
+        return ResponseEntity.ok(genitourinaryExamService.deleteGenitourinary(genitourinaryId));
+    }
 //    //Musculoskeletal
 //    @GetMapping("/cardiac/{medicalRecordId}")
 //    public ResponseEntity<List<RespiratoryResponse>> getMusculoskeletal(@PathVariable Long medicalRecordId) {

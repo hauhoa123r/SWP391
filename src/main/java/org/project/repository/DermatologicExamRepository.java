@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface DermatologicExamRepository extends JpaRepository<DermatologicExamEntity,Long> {
-    List<DermatologicExamRepository> findByMedicalRecordId(Long medicalRecordId);
+    List<DermatologicExamEntity> findByMedicalRecordId(Long medicalRecordId);
 
 }
