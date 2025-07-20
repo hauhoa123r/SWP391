@@ -1,19 +1,16 @@
 package org.project.enums;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum AppointmentStatus {
     PENDING("Pending"),
     CONFIRMED("Confirmed"),
+    CANCELLED("Cancelled"),
     IN_PROGRESS("In Progress"),
-    WAITING_RESULT("Waiting Result"),
-    COMPLETED("Completed"),
-    CANCELLED("Cancelled");
+    COMPLETED("Completed");
 
-    private final String value;
-
-    AppointmentStatus(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
+    private final String status;
 }

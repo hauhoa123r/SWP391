@@ -6,13 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "OrderItemEntityEntity")
+@Entity
 @Table(name = "order_items", schema = "swp391")
+@FieldNameConstants
 public class OrderItemEntity {
     @EmbeddedId
     private OrderItemEntityId id;

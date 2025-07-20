@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/frontend/assets/css/kivicare.min.css}" />
     <link rel="stylesheet" th:href="@{/frontend/assets/vendor/font-awesome/css/all.min.css}" />
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="enhanced-buttons.css" />
     <style>
         body {
             background-color: #f8f9fa;
@@ -199,121 +200,21 @@
         </div>
     </div>
 
-    <!-- Toast Container -->
-    <div class="toast-container"></div>
+    <div class="position-fixed end-0 p-3" style="z-index: 11; top: 20%;">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header align-items-center">
+                <i id="toastIcon" class="me-2"></i>
+                <strong id="toastTitle" class="me-auto"></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+
 
     <!-- Scripts -->
     <script th:src="@{/frontend/assets/js/core/libs.min.js}"></script>
     <script th:src="@{/frontend/assets/js/core/external.min.js}"></script>
-
-    <!-- Global JavaScript utilities -->
-    <script>
-        // Global utility functions
-        window.KiviCare = window.KiviCare || {};
-
-        // Loading overlay functions
-        KiviCare.showLoading = function () {
-            document.getElementById('loadingOverlay').classList.add('show');
-        };
-
-        KiviCare.hideLoading = function () {
-            document.getElementById('loadingOverlay').classList.remove('show');
-        };
-
-        // Toast notification functions
-        KiviCare.showToast = function (message, type = 'info', duration = 5000) {
-            const toastContainer = document.querySelector('.toast-container');
-            const toastId = 'toast-' + Date.now();
-
-            const toastHTML = `
-                <div id="${toastId}" class="toast custom-toast toast-${type}" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header border-0">
-                        <i class="fas fa-${getToastIcon(type)} me-2"></i>
-                        <strong class="me-auto">${getToastTitle(type)}</strong>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        ${message}
-                    </div>
-                </div>
-            `;
-
-            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
-
-            const toastElement = document.getElementById(toastId);
-            const toast = new bootstrap.Toast(toastElement, { delay: duration });
-            toast.show();
-
-            // Clean up after toast is hidden
-            toastElement.addEventListener('hidden.bs.toast', function () {
-                toastElement.remove();
-            });
-        };
-
-        function getToastIcon(type) {
-            const icons = {
-                success: 'check-circle',
-                error: 'exclamation-circle',
-                warning: 'exclamation-triangle',
-                info: 'info-circle'
-            };
-            return icons[type] || 'info-circle';
-        }
-
-        function getToastTitle(type) {
-            const titles = {
-                success: 'Success',
-                error: 'Error',
-                warning: 'Warning',
-                info: 'Information'
-            };
-            return titles[type] || 'Notification';
-        }
-
-        // Global error handler
-        window.addEventListener('error', function (e) {
-            console.error('Global error:', e.error);
-            KiviCare.hideLoading();
-            KiviCare.showToast('An unexpected error occurred. Please try again.', 'error');
-        });
-
-        // Global unhandled promise rejection handler
-        window.addEventListener('unhandledrejection', function (e) {
-            console.error('Unhandled promise rejection:', e.reason);
-            KiviCare.hideLoading();
-            KiviCare.showToast('A network error occurred. Please check your connection.', 'error');
-        });
-
-        // Page load complete
-        document.addEventListener('DOMContentLoaded', function () {
-            // Hide loading overlay if it's still showing
-            setTimeout(() => {
-                KiviCare.hideLoading();
-            }, 500);
-
-            // Initialize tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-
-            // Initialize popovers
-            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-                return new bootstrap.Popover(popoverTriggerEl);
-            });
-
-            console.log('KiviCare Doctor Portal loaded successfully');
-        });
-
-        // Additional page-specific JavaScript
-        window.addEventListener('load', function () {
-            // Fire custom event when everything is loaded
-            const loadedEvent = new CustomEvent('kivicare:loaded');
-            document.dispatchEvent(loadedEvent);
-        });
-    </script>
-
     <!-- Additional JavaScript placeholder for page-specific scripts -->
     <th:block th:fragment="additionalJS"></th:block>
 </body>

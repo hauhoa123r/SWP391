@@ -1,18 +1,15 @@
 package org.project.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum StaffType {
-    PART_TIME_CONTRACT("PART_TIME_CONTRACT"),
-    INTERN("INTERN"),
-    CONSULTANT("CONSULTANT"),
-    FULL_TIME("FULL_TIME"),;
+    PART_TIME_CONTRACT("part_time_contract"),
+    INTERN("intern"),
+    CONSULTANT("consultant"),
+    FULL_TIME("full_time");
 
     private final String value;
-
-    StaffType(String value) {
-        this.value = value;
-    }
-    public String getValue() {
-        return value;
-    }
-
 }

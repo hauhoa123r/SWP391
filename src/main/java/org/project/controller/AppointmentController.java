@@ -32,7 +32,7 @@ public class AppointmentController {
     }
     @GetMapping("/appointments")
     public String doctorAppointments(Model model) {
-        Long userId = 10L;
+        Long userId = 8L;
         DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
         model.addAttribute("content", "/frontend/doctor/doctor_appointments");

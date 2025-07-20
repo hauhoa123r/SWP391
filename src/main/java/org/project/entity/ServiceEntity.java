@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -14,15 +15,16 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "ServiceEntityEntity")
+@Entity
 @Table(name = "services", schema = "swp391")
+@FieldNameConstants
 public class ServiceEntity {
     @Id
     @Column(name = "service_id", nullable = false)
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne
     @JoinColumn(name = "service_id", nullable = false)
     private ProductEntity productEntity;
 
@@ -32,9 +34,9 @@ public class ServiceEntity {
     private DepartmentEntity departmentEntity;
 
     @OneToMany(mappedBy = "serviceEntity")
-    private Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
+    private final Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "serviceEntity")
-    private Set<ServiceFeatureEntity> serviceFeatureEntities = new LinkedHashSet<>();
+    private final Set<ServiceFeatureEntity> serviceFeatureEntities = new LinkedHashSet<>();
 
 }

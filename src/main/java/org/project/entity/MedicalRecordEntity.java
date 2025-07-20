@@ -7,20 +7,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import lombok.experimental.FieldNameConstants;
 
 import java.sql.Date;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "MedicalRecordEntityEntity")
+@Entity
 @Table(name = "medical_records", schema = "swp391")
+@FieldNameConstants
 public class MedicalRecordEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,13 +25,13 @@ public class MedicalRecordEntity {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private PatientEntity patientEntity;
 
     @NotNull
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "appointment_id", nullable = false, unique = true)
+    @JoinColumn(name = "appointment_id", nullable = false)
     private AppointmentEntity appointmentEntity;
 
     @NotNull
@@ -63,8 +60,5 @@ public class MedicalRecordEntity {
     @Size(max = 255)
     @Column(name = "outcome")
     private String outcome;
-
-    @OneToMany(mappedBy = "medicalRecordEntity")
-    private Set<MedicalRecordSymptomEntity> medicalRecordSymptomEntities = new LinkedHashSet<>();
 
 }

@@ -22,6 +22,6 @@ public class AppointmentListResponse {
     String schedulingCoordinatorEntityName;
     AppointmentStatus appointmentStatus;
     public String getAppointmentStatus() {
-        return appointmentStatus != null ? appointmentStatus.getValue() : null;
+        return appointmentStatus != null ? appointmentStatus.getStatus() : null;
     }
 }

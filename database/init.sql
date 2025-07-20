@@ -21,13 +21,15 @@ CREATE TABLE `patients`
     `user_id`      BIGINT,
     `phone_number` VARCHAR(255),
     `email`        VARCHAR(255),
+    `identification_number` VARCHAR(255) UNIQUE,
     `full_name`    VARCHAR(255),
     `avatar_url`   VARCHAR(255),
-    `relationship` ENUM ('SELF', 'FATHER', 'MOTHER', 'BROTHER', 'SISTER', 'DAUGHTER', 'SON', 'GRAND_FATHER', 'GRAND_MOTHER', 'UNCLE', 'AUNT', 'CAUSIN', 'OTHER') DEFAULT 'SELF',
+    `relationship` ENUM ('SELF', 'FATHER', 'MOTHER', 'HUSBAND', 'WIFE', 'BROTHER', 'SISTER', 'DAUGHTER', 'SON', 'GRAND_FATHER', 'GRAND_MOTHER', 'UNCLE', 'AUNT', 'CAUSIN', 'OTHER') DEFAULT 'SELF',
     `address`      VARCHAR(255),
     `gender`       ENUM ('MALE', 'FEMALE', 'OTHER')                                                                                                              DEFAULT 'OTHER',
     `birthdate`    DATE,
     `blood_type`   ENUM ('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
+    `patient_status` ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -250,7 +252,7 @@ CREATE TABLE `appointments`
     `service_id`                BIGINT,
     `start_time`                TIMESTAMP,
     `duration_minutes`          INT,
-    `appointment_status`        ENUM ('PENDING', 'CONFIRMED', 'COMPLETED', 'IN_PROGRESS','WAITING_RESULT', 'CANCELLED'),
+    `appointment_status`        ENUM ('PENDING', 'CONFIRMED', 'COMPLETED', 'IN_PROGRESS', 'CANCELLED'),
     `scheduling_coordinator_id` BIGINT,
     FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -258,21 +260,136 @@ CREATE TABLE `appointments`
     FOREIGN KEY (`scheduling_coordinator_id`) REFERENCES `scheduling_coordinators` (`scheduling_coordinator_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-CREATE TABLE `medical_records`
+CREATE TABLE `medical_records` (
+                                   medical_record_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                   patient_id BIGINT NOT NULL,
+                                   appointment_id BIGINT UNIQUE NOT NULL,
+                                   admission_date DATE,
+                                   discharge_date DATE,
+                                   main_complaint VARCHAR(255),
+                                   diagnosis TEXT,
+                                   treatment_plan TEXT,
+                                   outcome VARCHAR(255),
+                                   FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
+                                   FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id)
+);
+
+CREATE TABLE vital_signs (
+                             id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                             medical_record_id BIGINT NOT NULL,
+                             pulse_rate INT,
+                             bp_systolic INT,
+                             bp_diastolic INT,
+                             temperature DECIMAL(4,1),
+                             respiratory_rate INT,
+                             spo2 INT,
+                             recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                             FOREIGN KEY (medical_record_id) REFERENCES medical_records(medical_record_id) ON DELETE CASCADE
+);
+
+-- Khám hô hấp
+CREATE TABLE respiratory_exams (
+                                   id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                   medical_record_id BIGINT NOT NULL,
+                                   breathing_pattern VARCHAR(50),
+                                   fremitus VARCHAR(50),
+                                   percussion_note VARCHAR(100),
+                                   auscultation TEXT,
+                                   recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                   FOREIGN KEY (medical_record_id) REFERENCES medical_records(medical_record_id) ON DELETE CASCADE
+);
+
+-- Khám tim mạch
+CREATE TABLE cardiac_exams (
+                               id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                               medical_record_id BIGINT NOT NULL,
+                               heart_rate INT,
+                               heart_sounds TEXT,
+                               murmur TEXT,
+                               jugular_venous_pressure VARCHAR(100),
+                               edema VARCHAR(100),
+                               recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                               FOREIGN KEY (medical_record_id) REFERENCES medical_records(medical_record_id) ON DELETE CASCADE
+);
+
+-- Khám thần kinh
+CREATE TABLE neurologic_exams (
+                                  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                  medical_record_id BIGINT NOT NULL,
+                                  consciousness VARCHAR(100),
+                                  cranial_nerves TEXT,
+                                  motor_function TEXT,
+                                  sensory_function TEXT,
+                                  reflexes TEXT,
+                                  recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                  FOREIGN KEY (medical_record_id) REFERENCES medical_records(medical_record_id) ON DELETE CASCADE
+);
+
+-- Khám tiêu hóa
+CREATE TABLE gastrointestinal_exams (
+                                        id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                        medical_record_id BIGINT NOT NULL,
+                                        abdominal_inspection TEXT,
+                                        palpation TEXT,
+                                        percussion TEXT,
+                                        auscultation TEXT,
+                                        recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                        FOREIGN KEY (medical_record_id) REFERENCES medical_records(medical_record_id) ON DELETE CASCADE
+);
+
+-- Khám tiết niệu - sinh dục
+CREATE TABLE genitourinary_exams (
+                                     id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                     medical_record_id BIGINT NOT NULL,
+                                     kidney_area TEXT,
+                                     bladder TEXT,
+                                     genital_inspection TEXT,
+                                     recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                     FOREIGN KEY (medical_record_id) REFERENCES medical_records(medical_record_id) ON DELETE CASCADE
+);
+
+-- Khám cơ xương khớp
+CREATE TABLE musculoskeletal_exams (
+                                       id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                       medical_record_id BIGINT NOT NULL,
+                                       joint_exam TEXT,
+                                       muscle_strength TEXT,
+                                       deformity TEXT,
+                                       recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                       FOREIGN KEY (medical_record_id) REFERENCES medical_records(medical_record_id) ON DELETE CASCADE
+);
+
+-- Khám da liễu
+CREATE TABLE dermatologic_exams (
+                                    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                    medical_record_id BIGINT NOT NULL,
+                                    skin_appearance TEXT,
+                                    rash TEXT,
+                                    lesions TEXT,
+                                    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                    FOREIGN KEY (medical_record_id) REFERENCES medical_records(medical_record_id) ON DELETE CASCADE
+);
+
+-- Ghi chú khác
+CREATE TABLE clinical_notes (
+                                id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                medical_record_id BIGINT NOT NULL,
+                                note_text TEXT,
+                                recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                FOREIGN KEY (medical_record_id) REFERENCES medical_records(medical_record_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE `medical_record_symptoms`
 (
-    `medical_record_id` BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT,
-    `patient_id`        BIGINT,
-    `appointment_id`    BIGINT,
-    `admission_date`    DATE,
-    `discharge_date`    DATE,
-    `main_complaint`    VARCHAR(255),
-    `allergies`         JSON,
-    `chronic_diseases`  JSON,
-    `diagnosis`         TEXT,
-    `treatment_plan`    TEXT,
-    `outcome`           VARCHAR(255),
-    FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`appointment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    `id` BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT,
+    `medical_record_id` BIGINT,
+    `symptom_name` VARCHAR(255),
+    `onset_date` DATE,
+    `duration` VARCHAR(100),
+    `severity` VARCHAR(100),
+    `description` TEXT,
+    FOREIGN KEY (`medical_record_id`) REFERENCES `medical_records` (`medical_record_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `medical_profiles`
@@ -280,7 +397,8 @@ CREATE TABLE `medical_profiles`
     `medical_profile_id` BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT,
     `patient_id`         BIGINT UNIQUE,
     `allergies`          JSON,
-    `chronic_diseases`   JSON
+    `chronic_diseases`   JSON,
+    FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 CREATE TABLE `test_requests`
@@ -645,7 +763,7 @@ SET @@cte_max_recursion_depth = 2147483647;
 -- hoặc một giá trị phù hợp lớn hơn
 -- Tao cac bien so luong ban ghi
 SET @user_count = 5000; -- Tổng số người dùng
-SET @appointment_count = 10000;
+SET @appointment_count = 1000;
 SET @product_count = 2000;
 SET @test_result_count = 5;
 SET @review_count = 10000;
@@ -716,10 +834,10 @@ SELECT
 
 FROM user_generator;
 
--- Generate sample data for patients table
 INSERT INTO patients (user_id,
                       phone_number,
                       email,
+                      identification_number,
                       full_name,
                       avatar_url,
                       relationship,
@@ -728,43 +846,43 @@ INSERT INTO patients (user_id,
                       birthdate,
                       blood_type)
 -- Get user_ids from users table (only those with PATIENT role)
-WITH user_list AS (SELECT user_id
-                   FROM users
-                   WHERE user_role = 'PATIENT')
+WITH user_list AS (
+    SELECT user_id
+    FROM users
+    WHERE user_role = 'PATIENT'
+)
 SELECT
     -- user_id: From existing users table
     u.user_id,
 
     -- phone_number: Random 10-digit number starting with '0'
-    CONCAT('0',
-           LPAD(FLOOR(RAND() * 100000000), 9, '0')
-    ),
+    CONCAT('0', LPAD(FLOOR(RAND() * 100000000), 9, '0')),
 
     -- email: Random email
     CONCAT('patient_', u.user_id, '@gmail.com'),
 
-    -- full_name: Random name from common English names
+    -- identification_number: Giả lập CCCD 12 chữ số
+    CONCAT('0', LPAD(FLOOR(RAND() * 100000000000), 11, '0')),
+
+    -- full_name: Random name từ danh sách
     CONCAT(
-            ELT(FLOOR(1 + RAND() * 10), 'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Miller', 'Davis', 'Garcia',
-                'Wilson', 'Anderson'), ' ',
-            ELT(FLOOR(1 + RAND() * 10), 'John', 'Robert', 'Michael', 'David', 'James', 'Mary', 'Jennifer', 'Sarah',
-                'Elizabeth', 'Emma')
+            ELT(FLOOR(1 + RAND() * 10), 'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Miller', 'Davis', 'Garcia', 'Wilson', 'Anderson'), ' ',
+            ELT(FLOOR(1 + RAND() * 10), 'John', 'Robert', 'Michael', 'David', 'James', 'Mary', 'Jennifer', 'Sarah', 'Elizabeth', 'Emma')
     ),
 
-    -- avatar_url: Sample avatar URL
+    -- avatar_url: URL hình đại diện
     CONCAT('https://api.dicebear.com/6.x/avataaars/svg?seed=', u.user_id, '.jpg'),
 
-    -- relationship: Random relationship (more SELF, fewer others)
+    -- relationship: SELF chiếm ưu thế
     ELT(
             CASE
-                WHEN RAND() < 0.6 THEN 1 -- 60% SELF
-                ELSE FLOOR(2 + RAND() * 12) -- 40% distributed among other relationships
+                WHEN RAND() < 0.6 THEN 1
+                ELSE FLOOR(2 + RAND() * 12)
                 END,
-            'SELF', 'FATHER', 'MOTHER', 'BROTHER', 'SISTER', 'DAUGHTER', 'SON',
-            'GRAND_FATHER', 'GRAND_MOTHER', 'UNCLE', 'AUNT', 'CAUSIN', 'OTHER'
+            'SELF', 'FATHER', 'MOTHER', 'HUSBAND', 'WIFE', 'BROTHER', 'SISTER', 'DAUGHTER', 'SON', 'GRAND_FATHER', 'GRAND_MOTHER', 'UNCLE', 'AUNT', 'CAUSIN', 'OTHER'
     ),
 
-    -- address: Random English address
+    -- address: Địa chỉ ngẫu nhiên
     CONCAT(
             FLOOR(1 + RAND() * 200), ' ',
             ELT(FLOOR(1 + RAND() * 5), 'Main Street', 'Park Avenue', 'Oak Road', 'Maple Drive', 'Pine Lane'), ', ',
@@ -772,22 +890,20 @@ SELECT
             ELT(FLOOR(1 + RAND() * 5), 'New York', 'California', 'Texas', 'Florida', 'Washington')
     ),
 
-    -- gender: Random gender (40% MALE, 40% FEMALE, 20% Other)
+    -- gender
     ELT(
             CASE
-                WHEN RAND() < 0.4 THEN 1 -- 40% MALE
-                WHEN RAND() < 0.8 THEN 2 -- 40% FEMALE
-                ELSE 3 -- 20% OTHER
+                WHEN RAND() < 0.4 THEN 1
+                WHEN RAND() < 0.8 THEN 2
+                ELSE 3
                 END,
             'MALE', 'FEMALE', 'OTHER'
     ),
 
-    -- birthdate: Random date within past 80 years
-    DATE_SUB(CURDATE(),
-             INTERVAL FLOOR(RAND() * 80 * 365) DAY
-    ),
+    -- birthdate: ngẫu nhiên trong 80 năm
+    DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 80 * 365) DAY),
 
-    -- blood_type: Random blood type
+    -- blood_type: nhóm máu ngẫu nhiên
     ELT(FLOOR(1 + RAND() * 8), 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-')
 
 FROM user_list u;
@@ -859,7 +975,7 @@ SELECT
     CONCAT('https://api.dicebear.com/6.x/identicon/svg?seed=', id)
 FROM temp_hospitals
 ORDER BY RAND()
-LIMIT 10;
+    LIMIT 10;
 
 -- Thêm dữ liệu vào bảng departments
 INSERT INTO departments (name, description, video_url, banner_url, slogan)
@@ -922,13 +1038,25 @@ SELECT
                  )
         ELSE NULL
         END,
-    CONCAT('https://api.dicebear.com/9.x/initials/svg?seed=', d.name),
-    ELT(FLOOR(1 + RAND() * 5),
-        'Dedicated care - Professional service',
-        'Your health is our priority',
-        'Effective treatment - Reliable safety',
-        'Quality is honor - Compassion is responsibility',
-        'Trust - Professionalism - Innovation')
+    -- banner_url (90% có banner)
+    CASE
+        WHEN RAND() < 0.9
+            THEN CONCAT('https://api.dicebear.com/9.x/initials/svg?seed=', d.name)
+        ELSE NULL
+        END,
+    -- slogan (80% có slogan)
+    CASE
+        WHEN RAND() < 0.8
+            THEN ELT(
+                FLOOR(1 + RAND() * 5),
+                'Chăm sóc tận tâm - Dịch vụ chuyên nghiệp',
+                'Sức khỏe của bạn là ưu tiên của chúng tôi',
+                'Điều trị hiệu quả - An toàn tin cậy',
+                'Chất lượng là danh dự - Lòng trắc ẩn là trách nhiệm',
+                'Tin cậy - Chuyên nghiệp - Đổi mới'
+                 )
+        ELSE NULL
+        END
 FROM department_data d;
 
 -- Tạo bảng tạm chứa tất cả các cặp (hospital, department)
@@ -937,7 +1065,6 @@ SELECT h.hospital_id, d.department_id,
        ROW_NUMBER() OVER () AS pair_row_num -- Đánh số thứ tự cho mỗi cặp
 FROM hospitals h
          CROSS JOIN departments d;
-select * from temp_hospital_departments;
 
 -- Tạo bảng tạm chứa tất cả user STAFF chưa được phân công
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_staff_users AS
@@ -946,6 +1073,7 @@ SELECT user_id,
 FROM users
 WHERE user_role = 'STAFF'
   AND user_id NOT IN (SELECT user_id FROM staffs);
+select count(*) from temp_staff_users;
 
 -- Ghép cặp (hospital, department) với user duy nhất
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_doctor_assignments AS
@@ -953,7 +1081,6 @@ SELECT hd.hospital_id, hd.department_id, u.user_id
 FROM temp_hospital_departments hd
          LEFT JOIN temp_staff_users u ON hd.pair_row_num = u.user_row_num -- Ghép 1-1
 WHERE u.user_id IS NOT NULL;
-select * from temp_doctor_assignments;
 
 -- Chèn bác sĩ vào staffs (dùng đúng hospital_id từ bảng temp)
 INSERT INTO staffs (user_id, staff_role, department_id, hospital_id,
@@ -969,7 +1096,7 @@ SELECT t.user_id,
        CONCAT('https://api.dicebear.com/6.x/avataaars/svg?seed=', FLOOR(1 + RAND() * 70)),
        DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 3650) DAY),
        'FULL_TIME',
-       5 + (RAND() * 3) -- Cấp cao (5-7) cho bác sĩ trưởng phòng
+       FLOOR(5 + RAND() * 3) -- Cấp cao (5-7) cho bác sĩ trưởng phòng
 FROM temp_doctor_assignments t;
 
 -- Xóa các bảng tạm
@@ -994,7 +1121,7 @@ SELECT u.user_id,
                           WHEN RAND() < 0.7 THEN 'PHARMACIST'
                           WHEN RAND() < 0.85 THEN 'INVENTORY_MANAGER'
                           ELSE 'SCHEDULING_COORDINATOR'
-           END,
+END,
        d.department_id,
        (SELECT hospital_id FROM hospitals ORDER BY RAND() LIMIT 1), -- Chọn hospital_id ngẫu nhiên
        CONCAT(
@@ -1016,7 +1143,7 @@ SELECT u.user_id,
                FLOOR(1 + RAND() * 6) -- Cấp 1-6 cho dược sĩ
            ELSE
                FLOOR(1 + RAND() * 5) -- Cấp 1-5 cho các vai trò khác
-           END
+END
 FROM remaining_users u
          JOIN
      all_departments d
@@ -1038,7 +1165,7 @@ GROUP BY department_id, hospital_id;
 -- Bước 3: Cập nhật manager_id từ bảng tạm
 UPDATE staffs s
     JOIN temp_managers m ON s.department_id = m.department_id AND s.hospital_id = m.hospital_id
-SET s.manager_id = IF(s.staff_id = m.manager_staff_id, NULL, m.manager_staff_id);
+    SET s.manager_id = IF(s.staff_id = m.manager_staff_id, NULL, m.manager_staff_id);
 
 -- Bước 4: Xóa bảng tạm
 DROP TEMPORARY TABLE temp_managers;
@@ -1430,11 +1557,11 @@ SELECT
 
     -- start_time: Thời gian bắt đầu (8:00, 9:00, hoặc 10:00)
     TIMESTAMP(sb.available_date,
-              CONCAT(8 + FLOOR(RAND() * 3), ':00:00')),
+    CONCAT(8 + FLOOR(RAND() * 3), ':00:00')),
 
     -- end_time: Thời gian kết thúc (4-8 giờ sau khi bắt đầu)
     TIMESTAMP(sb.available_date,
-              CONCAT(12 + FLOOR(RAND() * 5), ':00:00'))
+    CONCAT(12 + FLOOR(RAND() * 5), ':00:00'))
 
 FROM schedule_base sb
 WHERE sb.has_schedule = TRUE;
@@ -1475,50 +1602,50 @@ SELECT
 
     -- department: Khoa phòng
     ELT(FLOOR(1 + RAND() * 10),
-        'Emergency Department',
-        'Internal Medicine',
-        'Surgery',
-        'Pediatrics',
-        'Obstetrics & Gynecology',
-        'Cardiology',
-        'Neurology',
-        'Oncology',
-        'Radiology',
-        'Intensive Care Unit'),
+    'Emergency Department',
+    'Internal Medicine',
+    'Surgery',
+    'Pediatrics',
+    'Obstetrics & Gynecology',
+    'Cardiology',
+    'Neurology',
+    'Oncology',
+    'Radiology',
+    'Intensive Care Unit'),
 
     -- position: Vị trí công việc
     ELT(FLOOR(1 + RAND() * 10),
-        'Resident Physician',
-        'Attending Physician',
-        'Medical Officer',
-        'Department Head',
-        'Clinical Specialist',
-        'Senior Consultant',
-        'Junior Doctor',
-        'Medical Researcher',
-        'Chief Resident',
-        'Medical Technician'),
+    'Resident Physician',
+    'Attending Physician',
+    'Medical Officer',
+    'Department Head',
+    'Clinical Specialist',
+    'Senior Consultant',
+    'Junior Doctor',
+    'Medical Researcher',
+    'Chief Resident',
+    'Medical Technician'),
 
     -- hospital: Nơi làm việc
     ELT(FLOOR(1 + RAND() * 10),
-        'Mayo Clinic',
-        'Cleveland Clinic',
-        'Johns Hopkins Hospital',
-        'Massachusetts General Hospital',
-        'New York-Presbyterian Hospital',
-        'UCSF Medical Center',
-        'Stanford Health Care',
-        'Northwestern Memorial Hospital',
-        'UCLA Medical Center',
-        'Cedars-Sinai Medical Center'),
+    'Mayo Clinic',
+    'Cleveland Clinic',
+    'Johns Hopkins Hospital',
+    'Massachusetts General Hospital',
+    'New York-Presbyterian Hospital',
+    'UCSF Medical Center',
+    'Stanford Health Care',
+    'Northwestern Memorial Hospital',
+    'UCLA Medical Center',
+    'Cedars-Sinai Medical Center'),
 
     -- result: Thành tựu/kết quả
     ELT(FLOOR(1 + RAND() * 5),
-        'Successfully treated over 1000 patients',
-        'Reduced department error rate by 15%',
-        'Led team of medical professionals',
-        'Published research in peer-reviewed journals',
-        'Implemented new treatment protocols')
+    'Successfully treated over 1000 patients',
+    'Reduced department error rate by 15%',
+    'Led team of medical professionals',
+    'Published research in peer-reviewed journals',
+    'Implemented new treatment protocols')
 
 FROM experience_rows er;
 
@@ -1561,7 +1688,7 @@ SELECT eg.staff_id,
                            'Master of Science in Nursing', 'Master of Clinical Research')
            ELSE ELT(1 + FLOOR(RAND() * 5), 'Bachelor of Pharmacy', 'Bachelor of Science in Nursing',
                     'Bachelor of Medicine', 'Bachelor of Health Sciences', 'Bachelor of Biomedical Science')
-           END as degree,
+END as degree,
        -- Various prestigious medical and pharmacy schools
        CASE FLOOR(RAND() * 10)
            WHEN 0 THEN 'Harvard Medical School'
@@ -1574,7 +1701,7 @@ SELECT eg.staff_id,
            WHEN 7 THEN 'Mayo Clinic School of Medicine'
            WHEN 8 THEN 'Duke University'
            ELSE 'Yale University'
-           END as institute,
+END as institute,
        -- Academic results
        CASE FLOOR(RAND() * 10)
            WHEN 0 THEN 'Summa Cum Laude'
@@ -1587,7 +1714,7 @@ SELECT eg.staff_id,
            WHEN 7 THEN '3.9 GPA'
            WHEN 8 THEN '3.8 GPA'
            ELSE 'Excellence Award'
-           END as result
+END as result
 FROM education_generator eg
 ORDER BY eg.staff_id, eg.edu_level DESC;
 -- Order by staff ID and education level
@@ -5851,10 +5978,10 @@ WITH random_data AS (
                  END AS appointment_date,
              -- Giờ từ 8:00 đến 17:00
              8 + MOD(num, 9) AS hour,
-             -- Phút: 15, 30
-             15 * (1 + MOD(num, 2)) AS minute
-         FROM counter
-     )
+     -- Phút: 15, 30
+    15 * (1 + MOD(num, 2)) AS minute
+FROM counter
+    )
 SELECT
     -- Bác sĩ ngẫu nhiên
     (SELECT doctor_id FROM random_data ORDER BY RAND() LIMIT 1),
@@ -5881,7 +6008,7 @@ SELECT
         -- Tương lai xa (chờ xác nhận hoặc đã xác nhận)
         ELSE
             IF(RAND() < 0.7, 'PENDING', 'CONFIRMED')
-        END,
+END,
     -- Điều phối viên ngẫu nhiên
     (SELECT scheduling_coordinator_id FROM random_schedulers ORDER BY RAND() LIMIT 1)
 FROM appointment_times at;
@@ -5917,7 +6044,6 @@ SELECT a.patient_id,
 FROM appointments a
 WHERE a.appointment_status = 'COMPLETED'
 GROUP BY a.patient_id;
-
 INSERT INTO medical_records (
     patient_id,
     appointment_id,
@@ -5929,118 +6055,392 @@ INSERT INTO medical_records (
     outcome
 )
 SELECT
-    a.patient_id,
-    a.appointment_id,
+    pd.patient_id,
+    pd.appointment_id,
+    pd.admission_date,
+    pd.discharge_date,
+    pd.main_complaint,
 
-    -- admission_date: ngày bắt đầu cuộc hẹn
-    DATE(a.start_time) AS admission_date,
-
-    -- discharge_date: 80% cùng ngày, 10% +1 ngày, 10% +2–4 ngày
-    CASE
-        WHEN RAND() < 0.8
-            THEN DATE(a.start_time)
-        WHEN RAND() < 0.9
-            THEN DATE_ADD(DATE(a.start_time), INTERVAL 1 DAY)
-        ELSE DATE_ADD(DATE(a.start_time), INTERVAL 2 + FLOOR(RAND() * 3) DAY)
-        END AS discharge_date,
-
-    -- main_complaint: triệu chứng chính
-    ELT(
-            FLOOR(1 + RAND() * 15),
-            'Severe persistent headache',
-            'Sore throat with high fever',
-            'Upper abdominal pain',
-            'Persistent cough with difficulty breathing',
-            'Knee joint pain during movement',
-            'Dizziness and nausea',
-            'Prolonged fatigue of unknown cause',
-            'Skin rash with itching',
-            'Left chest pain radiating to shoulder',
-            'Chronic sleep disorder',
-            'Unexplained weight loss',
-            'Chronic lower back pain',
-            'Diarrhea and abdominal pain',
-            'Shortness of breath during exertion',
-            'Tinnitus and hearing loss'
-    ) AS main_complaint,
-
-    -- diagnosis: chẩn đoán chi tiết
-    CASE
-        WHEN FLOOR(RAND() * 15) = 0
+    -- diagnosis dựa vào main_complaint
+    CASE pd.main_complaint
+        WHEN 'Severe persistent headache'
             THEN 'Migraine headache: common type, episodic, moderate severity. Group II according to international classification.'
-        WHEN FLOOR(RAND() * 15) = 1
+        WHEN 'Sore throat with high fever'
             THEN 'Acute tonsillitis due to Streptococcus, with persistent fever >38.5°C, purulent exudate on tonsillar surface.'
-        WHEN FLOOR(RAND() * 15) = 2
+        WHEN 'Upper abdominal pain'
             THEN 'Acute gastritis: gastric mucosa congestion, mild gastroesophageal reflux present.'
-        WHEN FLOOR(RAND() * 15) = 3
+        WHEN 'Persistent cough with difficulty breathing'
             THEN 'Acute bronchitis: increased sputum production, airway edema, no signs of pneumonia.'
-        WHEN FLOOR(RAND() * 15) = 4
+        WHEN 'Knee joint pain during movement'
             THEN 'Primary knee osteoarthritis, grade II cartilage damage, small osteophyte formation.'
-        WHEN FLOOR(RAND() * 15) = 5
+        WHEN 'Dizziness and nausea'
             THEN 'Peripheral vestibular disorder: benign paroxysmal positional vertigo (BPPV), right semicircular canal.'
-        WHEN FLOOR(RAND() * 15) = 6
+        WHEN 'Prolonged fatigue of unknown cause'
             THEN 'Chronic fatigue syndrome, no organic cause identified, prolonged psychological stress factors present.'
-        WHEN FLOOR(RAND() * 15) = 7
+        WHEN 'Skin rash with itching'
             THEN 'Allergic contact dermatitis, type IV reaction, with erythema, itching, scaling in contact areas.'
-        WHEN FLOOR(RAND() * 15) = 8
+        WHEN 'Left chest pain radiating to shoulder'
             THEN 'Unstable angina, suspected myocardial ischemia, further cardiac function assessment needed.'
-        WHEN FLOOR(RAND() * 15) = 9
+        WHEN 'Chronic sleep disorder'
             THEN 'Primary sleep disorder: initial insomnia, difficulty maintaining sleep, early waking. Moderate severity.'
-        WHEN FLOOR(RAND() * 15) = 10
+        WHEN 'Unexplained weight loss'
             THEN 'Physical asthenia, mild nutritional deficiency, suspected vitamin D and iron deficiency.'
-        WHEN FLOOR(RAND() * 15) = 11
+        WHEN 'Chronic lower back pain'
             THEN 'Lumbar disc herniation L4-L5, mild nerve root compression, no motor function impairment.'
-        WHEN FLOOR(RAND() * 15) = 12
+        WHEN 'Diarrhea and abdominal pain'
             THEN 'Irritable bowel syndrome, diarrhea-predominant, related to psychological stress factors.'
-        WHEN FLOOR(RAND() * 15) = 13
+        WHEN 'Shortness of breath during exertion'
             THEN 'Chronic obstructive pulmonary disease (COPD) stage II, mild respiratory function impairment, FEV1/FVC < 70%, FEV1 60% predicted.'
         ELSE
             'Serous otitis media, intact tympanic membrane, middle ear fluid effusion, conductive hearing loss of 30dB.'
         END AS diagnosis,
 
-    -- treatment_plan: phác đồ điều trị
-    CASE
-        WHEN FLOOR(RAND() * 15) = 0
+    -- treatment_plan tương ứng
+    CASE pd.main_complaint
+        WHEN 'Severe persistent headache'
             THEN 'Sumatriptan 50mg for acute attacks. Propranolol 40mg daily for prevention. Avoid triggers. Follow-up in 4 weeks.'
-        WHEN FLOOR(RAND() * 15) = 1
+        WHEN 'Sore throat with high fever'
             THEN 'Amoxicillin 500mg three times daily for 7 days. Paracetamol 500mg for fever >38.5°C. Salt water gargles. Rest and hydration.'
-        WHEN FLOOR(RAND() * 15) = 2
+        WHEN 'Upper abdominal pain'
             THEN 'Omeprazole 20mg once daily before breakfast for 14 days. Light diet, avoid spicy foods, caffeine, alcohol. Follow-up in 2 weeks.'
-        WHEN FLOOR(RAND() * 15) = 3
+        WHEN 'Persistent cough with difficulty breathing'
             THEN 'Ambroxol 30mg three times daily. Salbutamol inhaler as needed. Antibiotics if bacterial infection suspected. Increased fluid intake, rest.'
-        WHEN FLOOR(RAND() * 15) = 4
+        WHEN 'Knee joint pain during movement'
             THEN 'Glucosamine sulfate 1500mg daily for 3 months. Physical therapy twice weekly for 1 month. Weight reduction, gentle exercise. Follow-up in 1 month.'
-        WHEN FLOOR(RAND() * 15) = 5
+        WHEN 'Dizziness and nausea'
             THEN 'Epley maneuver exercises three times daily. Betahistine 16mg three times daily for 14 days. Avoid sudden position changes. Follow-up in 2 weeks.'
-        WHEN FLOOR(RAND() * 15) = 6
+        WHEN 'Prolonged fatigue of unknown cause'
             THEN 'Work-rest schedule adjustment. Multivitamin and mineral supplements. Psychological counseling. Light exercise. Tests to exclude organic causes.'
-        WHEN FLOOR(RAND() * 15) = 7
+        WHEN 'Skin rash with itching'
             THEN 'Methylprednisolone 4mg with tapering dose over 7 days. Loratadine 10mg each morning. Mometasone 0.1% cream twice daily. Avoid allergen contact. Follow-up in 1 week.'
-        WHEN FLOOR(RAND() * 15) = 8
+        WHEN 'Left chest pain radiating to shoulder'
             THEN 'Refer to Cardiology. Aspirin 81mg daily. Sublingual nitroglycerin as needed. Stress ECG and echocardiogram. Home blood pressure monitoring.'
-        WHEN FLOOR(RAND() * 15) = 9
+        WHEN 'Chronic sleep disorder'
             THEN 'Sleep hygiene. Zolpidem 5mg before bedtime (for 5 days). Relaxation techniques counseling. Follow-up in 2 weeks.'
-        WHEN FLOOR(RAND() * 15) = 10
-            THEN 'Multivitamin and mineral supplements. Iron 60mg daily. Vitamin D3 1000 IU daily. Nutrition counseling. Blood tests in 1 month.'
-        WHEN FLOOR(RAND() * 15) = 11
-            THEN 'Meloxicam 7.5mg once daily after meals for 10 days. Physical therapy. Avoid heavy lifting and prolonged sitting. Follow-up in 2 weeks with MRI results.'
-        WHEN FLOOR(RAND() * 15) = 12
-            THEN 'Loperamide 2mg as needed for diarrhea. Mebeverine 135mg three times daily 30 minutes before meals. Diet rich in soluble fiber. Stress reduction. Follow-up in 1 month.'
-        WHEN FLOOR(RAND() * 15) = 13
-            THEN 'Tiotropium 18mcg inhaler once daily. Budesonide inhaler as needed. Breathing exercises. Smoking cessation. Influenza and pneumococcal vaccines.'
+        WHEN 'Unexplained weight loss'
+            THEN 'Multivitamin và mineral supplements. Iron 60mg daily. Vitamin D3 1000 IU daily. Nutrition counseling. Blood tests in 1 month.'
+        WHEN 'Chronic lower back pain'
+            THEN 'Meloxicam 7.5mg once daily after meals for 10 days. Physical therapy. Avoid heavy lifting và prolonged sitting. Follow-up in 2 weeks with MRI results.'
+        WHEN 'Diarrhea and abdominal pain'
+            THEN 'Loperamide 2mg as needed for diarrhea. Mebeverine 135mg three times daily 30 minutes trước meals. Diet rich in soluble fiber. Stress reduction. Follow-up in 1 month.'
+        WHEN 'Shortness of breath during exertion'
+            THEN 'Tiotropium 18mcg inhaler once daily. Budesonide inhaler as needed. Breathing exercises. Smoking cessation. Influenza và pneumococcal vaccines.'
         ELSE
             'Cefuroxime 250mg twice daily for 5 days. Fluticasone nasal spray twice daily. Saline solution for sinus irrigation. Follow-up in 1 week.'
         END AS treatment_plan,
 
-    -- outcome: kết quả điều trị
-    CASE
-        WHEN RAND() < 0.7 THEN 'Condition resolved, good response to treatment'
-        WHEN RAND() < 0.9 THEN 'Partially improved, continued monitoring required'
-        ELSE 'No significant improvement, treatment plan adjustment needed'
+    -- outcome ngẫu nhiên
+    CASE FLOOR(RAND() * 10)
+        WHEN 0 THEN 'Condition worsened, urgent intervention required'
+        WHEN 1 THEN 'No significant improvement, treatment plan adjustment needed'
+        WHEN 2 THEN 'Partially improved, continued monitoring required'
+        ELSE   'Condition resolved, good response to treatment'
         END AS outcome
 
-FROM appointments a
-WHERE a.appointment_status = 'COMPLETED';
+FROM (
+         -- bước 2: tính discharge_date và main_complaint
+         SELECT
+             ca.patient_id,
+             ca.appointment_id,
+             ca.appt_date           AS admission_date,
+             CASE FLOOR(RAND() * 10)
+                 WHEN 0 THEN DATE_ADD(ca.appt_date, INTERVAL 1 DAY)
+                 WHEN 1 THEN DATE_ADD(ca.appt_date, INTERVAL 2 DAY)
+                 WHEN 2 THEN DATE_ADD(ca.appt_date, INTERVAL 3 DAY)
+                 WHEN 3 THEN DATE_ADD(ca.appt_date, INTERVAL 4 DAY)
+                 ELSE ca.appt_date
+                 END                    AS discharge_date,
+             ELT(
+                     FLOOR(1 + RAND() * 15),
+                     'Severe persistent headache',
+                     'Sore throat with high fever',
+                     'Upper abdominal pain',
+                     'Persistent cough with difficulty breathing',
+                     'Knee joint pain during movement',
+                     'Dizziness và nausea',
+                     'Prolonged fatigue of unknown cause',
+                     'Skin rash with itching',
+                     'Left chest pain radiating to shoulder',
+                     'Chronic sleep disorder',
+                     'Unexplained weight loss',
+                     'Chronic lower back pain',
+                     'Diarrhea và abdominal pain',
+                     'Shortness of breath during exertion',
+                     'Tinnitus and hearing loss'
+             )                      AS main_complaint
+         FROM (
+                  -- bước 1: lọc completed appointments
+                  SELECT
+                      appointment_id,
+                      patient_id,
+                      DATE(start_time) AS appt_date
+             FROM appointments
+         WHERE appointment_status = 'COMPLETED'
+     ) AS ca
+    ) AS pd;
+
+-- 1. Thêm dữ liệu cho vital_signs
+INSERT INTO vital_signs (
+    medical_record_id,
+    pulse_rate,
+    bp_systolic,
+    bp_diastolic,
+    temperature,
+    respiratory_rate,
+    spo2,
+    recorded_at
+)
+SELECT
+    mr.medical_record_id,
+    FLOOR(60 + RAND() * 60)            AS pulse_rate,         -- 60–120 bpm
+    FLOOR(100 + RAND() * 40)           AS bp_systolic,        -- 100–140 mmHg
+    FLOOR(60 + RAND() * 30)            AS bp_diastolic,       -- 60–90 mmHg
+    ROUND(36.5 + RAND() * 2.5, 1)      AS temperature,        -- 36.5–39.0 °C
+    FLOOR(12 + RAND() * 20)            AS respiratory_rate,   -- 12–32 breaths/min
+    FLOOR(90 + RAND() * 10)            AS spo2,               -- 90–99%
+    -- recorded_at: admission_date + random offset days up to discharge_date
+    DATE_ADD(
+            mr.admission_date,
+            INTERVAL FLOOR(
+        RAND() * (DATEDIFF(mr.discharge_date, mr.admission_date) + 1)
+      ) DAY
+    ) AS recorded_at
+FROM medical_records mr
+WHERE RAND() > 0.3;
+
+-- 2. Thêm dữ liệu cho respiratory_exams
+INSERT INTO respiratory_exams (
+    medical_record_id,
+    breathing_pattern,
+    fremitus,
+    percussion_note,
+    auscultation,
+    recorded_at
+)
+SELECT
+    mr.medical_record_id,
+    ELT(FLOOR(1 + RAND() * 4), 'Normal', 'Tachypneic', 'Bradypneic', 'Kussmaul'),
+    ELT(FLOOR(1 + RAND() * 3), 'Normal', 'Increased', 'Decreased'),
+    ELT(FLOOR(1 + RAND() * 4), 'Resonant', 'Dull', 'Hyperresonant', 'Tympanic'),
+    ELT(FLOOR(1 + RAND() * 5), 'Clear', 'Crackles', 'Wheezes', 'Rhonchi', 'Stridor'),
+    DATE_ADD(
+            mr.admission_date,
+            INTERVAL FLOOR(RAND() * (DATEDIFF(mr.discharge_date, mr.admission_date) + 1)) DAY
+    ) AS recorded_at
+FROM medical_records mr
+WHERE RAND() > 0.5;  -- 50% bệnh án có khám hô hấp
+
+
+-- 3. Thêm dữ liệu cho cardiac_exams
+INSERT INTO cardiac_exams (
+    medical_record_id,
+    heart_rate,
+    heart_sounds,
+    murmur,
+    jugular_venous_pressure,
+    edema,
+    recorded_at
+)
+SELECT
+    mr.medical_record_id,
+    FLOOR(60 + RAND() * 80),  -- 60–140 bpm
+    ELT(FLOOR(1 + RAND() * 3), 'Normal', 'S3 gallop', 'S4 gallop'),
+    ELT(FLOOR(1 + RAND() * 4), 'None', 'Systolic', 'Diastolic', 'Continuous'),
+    ELT(FLOOR(1 + RAND() * 4), 'Normal', 'Elevated', 'Not assessed', 'Decreased'),
+    ELT(FLOOR(1 + RAND() * 4), 'None', 'Mild', 'Moderate', 'Severe'),
+    DATE_ADD(
+            mr.admission_date,
+            INTERVAL FLOOR(RAND() * (DATEDIFF(mr.discharge_date, mr.admission_date) + 1)) DAY
+    ) AS recorded_at
+FROM medical_records mr
+WHERE RAND() > 0.4;  -- 60% bệnh án có khám tim
+
+
+-- 4. Thêm dữ liệu cho neurologic_exams
+INSERT INTO neurologic_exams (
+    medical_record_id,
+    consciousness,
+    cranial_nerves,
+    motor_function,
+    sensory_function,
+    reflexes,
+    recorded_at
+)
+SELECT
+    mr.medical_record_id,
+    ELT(FLOOR(1 + RAND() * 4), 'Alert', 'Confused', 'Lethargic', 'Stuporous'),
+    ELT(FLOOR(1 + RAND() * 3), 'Intact', 'Impaired', 'Not assessed'),
+    ELT(FLOOR(1 + RAND() * 4), 'Normal', 'Weakness', 'Paralysis', 'Spasticity'),
+    ELT(FLOOR(1 + RAND() * 3), 'Intact', 'Decreased', 'Absent'),
+    ELT(FLOOR(1 + RAND() * 4), 'Normal', 'Hyperreflexia', 'Hyporeflexia', 'Areflexia'),
+    DATE_ADD(
+            mr.admission_date,
+            INTERVAL FLOOR(RAND() * (DATEDIFF(mr.discharge_date, mr.admission_date) + 1)) DAY
+    ) AS recorded_at
+FROM medical_records mr
+WHERE RAND() > 0.6;  -- 40% bệnh án có khám thần kinh
+
+
+-- 5. Thêm dữ liệu cho gastrointestinal_exams
+INSERT INTO gastrointestinal_exams (
+    medical_record_id,
+    abdominal_inspection,
+    palpation,
+    percussion,
+    auscultation,
+    recorded_at
+)
+SELECT
+    mr.medical_record_id,
+    ELT(FLOOR(1 + RAND() * 4), 'Normal', 'Distended', 'Scars', 'Hernia'),
+    ELT(FLOOR(1 + RAND() * 4), 'Soft', 'Tender', 'Guarding', 'Rigid'),
+    ELT(FLOOR(1 + RAND() * 3), 'Tympanic', 'Dull', 'Hyperresonant'),
+    ELT(FLOOR(1 + RAND() * 3), 'Normal', 'Hypoactive', 'Hyperactive'),
+    DATE_ADD(
+            mr.admission_date,
+            INTERVAL FLOOR(RAND() * (DATEDIFF(mr.discharge_date, mr.admission_date) + 1)) DAY
+    ) AS recorded_at
+FROM medical_records mr
+WHERE RAND() > 0.5;  -- 50% bệnh án có khám tiêu hóa
+
+
+-- 6. Thêm dữ liệu cho genitourinary_exams
+INSERT INTO genitourinary_exams (
+    medical_record_id,
+    kidney_area,
+    bladder,
+    genital_inspection,
+    recorded_at
+)
+SELECT
+    mr.medical_record_id,
+    ELT(FLOOR(1 + RAND() * 3), 'Non-tender', 'Tender', 'Mass'),
+    ELT(FLOOR(1 + RAND() * 3), 'Not palpable', 'Distended', 'Tender'),
+    ELT(FLOOR(1 + RAND() * 3), 'Normal', 'Rash', 'Discharge'),
+    DATE_ADD(
+            mr.admission_date,
+            INTERVAL FLOOR(RAND() * (DATEDIFF(mr.discharge_date, mr.admission_date) + 1)) DAY
+    ) AS recorded_at
+FROM medical_records mr
+WHERE RAND() > 0.7;  -- 30% bệnh án có khám tiết niệu
+
+
+-- 7. Thêm dữ liệu cho musculoskeletal_exams
+INSERT INTO musculoskeletal_exams (
+    medical_record_id,
+    joint_exam,
+    muscle_strength,
+    deformity,
+    recorded_at
+)
+SELECT
+    mr.medical_record_id,
+    ELT(FLOOR(1 + RAND() * 4), 'Normal', 'Swelling', 'Redness', 'Deformity'),
+    ELT(FLOOR(1 + RAND() * 5), '5/5', '4/5', '3/5', '2/5', '1/5'),
+    ELT(FLOOR(1 + RAND() * 4), 'None', 'Scoliosis', 'Kyphosis', 'Lordosis'),
+    DATE_ADD(
+            mr.admission_date,
+            INTERVAL FLOOR(RAND() * (DATEDIFF(mr.discharge_date, mr.admission_date) + 1)) DAY
+    ) AS recorded_at
+FROM medical_records mr
+WHERE RAND() > 0.6;  -- 40% bệnh án có khám cơ xương
+
+
+-- 8. Thêm dữ liệu cho dermatologic_exams
+INSERT INTO dermatologic_exams (
+    medical_record_id,
+    skin_appearance,
+    rash,
+    lesions,
+    recorded_at
+)
+SELECT
+    mr.medical_record_id,
+    ELT(FLOOR(1 + RAND() * 4), 'Normal', 'Pale', 'Jaundiced', 'Cyanotic'),
+    ELT(FLOOR(1 + RAND() * 4), 'None', 'Maculopapular', 'Vesicular', 'Pustular'),
+    ELT(FLOOR(1 + RAND() * 4), 'None', 'Ulcer', 'Nodule', 'Plaque'),
+    DATE_ADD(
+            mr.admission_date,
+            INTERVAL FLOOR(RAND() * (DATEDIFF(mr.discharge_date, mr.admission_date) + 1)) DAY
+    ) AS recorded_at
+FROM medical_records mr
+WHERE RAND() > 0.7;  -- 30% bệnh án có khám da liễu
+
+
+-- 9. Thêm dữ liệu cho clinical_notes (nhiều ghi chú cho mỗi bệnh án)
+INSERT INTO clinical_notes (
+    medical_record_id,
+    note_text,
+    recorded_at
+)
+SELECT
+    t.medical_record_id,
+    t.note_text,
+    t.recorded_at
+FROM (
+         -- lồng 2 cấp: tạo note_count rồi sinh note_num
+         SELECT
+             nr.medical_record_id,
+             ELT(
+                     FLOOR(1 + RAND() * 10),
+                     'Patient reported improvement in symptoms',
+                     'No adverse effects from medication',
+                     'Vital signs stable',
+                     'Plan: Continue current management',
+                     'Patient education provided',
+                     'Follow-up scheduled',
+                     'Laboratory results reviewed',
+                     'Dietary recommendations given',
+                     'Pain well controlled with current meds',
+                     'Physical therapy initiated'
+             ) AS note_text,
+             DATE_ADD(
+                     nr.admission_date,
+                     INTERVAL FLOOR(RAND() * (DATEDIFF(nr.discharge_date, nr.admission_date) + 1)) DAY
+      ) AS recorded_at
+         FROM (
+                  SELECT
+                      mr.medical_record_id,
+                      mr.admission_date,
+                      mr.discharge_date,
+                      FLOOR(1 + RAND() * 3) AS note_count
+                  FROM medical_records mr
+              ) AS nr
+                  JOIN (
+             SELECT 1 AS note_num UNION ALL SELECT 2 UNION ALL SELECT 3
+         ) AS nums ON nums.note_num <= nr.note_count
+     ) AS t;
+
+
+-- 10. Thêm dữ liệu cho medical_record_symptoms
+INSERT INTO medical_record_symptoms (
+    medical_record_id,
+    symptom_name,
+    onset_date,
+    duration,
+    severity,
+    description
+)
+SELECT
+    mr.medical_record_id,
+    ELT(FLOOR(1 + RAND() * 20),
+        'Headache', 'Fever', 'Cough', 'Shortness of breath', 'Chest pain',
+        'Abdominal pain', 'Nausea', 'Vomiting', 'Diarrhea', 'Constipation',
+        'Dizziness', 'Fatigue', 'Muscle pain', 'Joint pain', 'Rash',
+        'Sore throat', 'Runny nose', 'Sneezing', 'Chills', 'Sweating'
+    ) AS symptom_name,
+    DATE_SUB(mr.admission_date, INTERVAL FLOOR(1 + RAND() * 30) DAY) AS onset_date,
+    CONCAT(FLOOR(1 + RAND() * 30), ' days') AS duration,
+    ELT(FLOOR(1 + RAND() * 5), 'Mild', 'Moderate', 'Severe', 'Very severe', 'Worst possible') AS severity,
+    ELT(FLOOR(1 + RAND() * 5),
+        'Worsens with activity',
+        'Relieved by rest',
+        'Aggravated by certain foods',
+        'Occurs mostly at night',
+        'No specific pattern'
+    ) AS description
+FROM medical_records mr
+WHERE RAND() > 0.2;
 
 
 INSERT INTO test_requests (appointment_id)
@@ -6076,7 +6476,7 @@ SELECT
                            FROM test_request_items
                            WHERE test_request_id = tre.test_request_id)
      ORDER BY RAND()
-     LIMIT 1),
+        LIMIT 1),
 
     -- test_request_id
     tre.test_request_id,
@@ -6085,7 +6485,7 @@ SELECT
     (
         SELECT t.technician_id
         FROM technicians t
-                 JOIN staffs s ON t.technician_id = s.staff_id
+        JOIN staffs s ON t.technician_id = s.staff_id
         ORDER BY RAND()
         LIMIT 1
     ) AS technician_id,
@@ -6107,10 +6507,10 @@ SELECT
         WHEN 10 THEN 'Rule out urinary tract infection. Patient presents with dysuria and frequency.'
         WHEN 11
             THEN 'Assess blood oxygen saturation levels. Patient reports shortness of breath during minimal exertion.'
-        WHEN 12 THEN 'Monitor therapeutic drug levels. Patient on medication requiring narrow therapeutic range.'
+WHEN 12 THEN 'Monitor therapeutic drug levels. Patient on medication requiring narrow therapeutic range.'
         WHEN 13 THEN 'Evaluate for potential allergic reactions. Patient reports seasonal symptoms and skin reactions.'
         ELSE 'Complete blood count for preoperative assessment. Standard protocol for surgical preparation.'
-        END,
+END,
 
     -- Create JSON test results based on test type (randomly assigned)
     CASE FLOOR(RAND() * 5)
@@ -6160,7 +6560,7 @@ SELECT
             JSON_OBJECT(
                     'test_date', DATE_FORMAT(DATE_ADD('2025-06-08', INTERVAL -FLOOR(RAND() * 5) DAY), '%Y-%m-%d'),
                     'test_name', 'Lipid Profile',
-                    'fasting_status', 'Fasting (12 hours)',
+'fasting_status', 'Fasting (12 hours)',
                     'results', JSON_OBJECT(
                             'total_cholesterol', JSON_OBJECT(
                             'value', ROUND(150 + RAND() * 100, 0),
@@ -6212,7 +6612,7 @@ SELECT
                                    ),
                             'Total Bilirubin', JSON_OBJECT(
                                     'value', ROUND(0.1 + RAND() * 1.0, 1),
-                                    'unit', 'mg/dL',
+'unit', 'mg/dL',
                                     'reference_range', JSON_OBJECT('min', 0.1, 'max', 1.2)
                                                )
                                ),
@@ -6245,7 +6645,7 @@ SELECT
                     'interpretation', 'Thyroid function within normal parameters.',
                     'comments', 'No evidence of hyper- or hypothyroidism.'
             )
-        END
+END
 
 FROM test_request_expanded tre
 WHERE NOT EXISTS (
@@ -6610,7 +7010,7 @@ SELECT a.appointment_id,
            WHEN 12 THEN 'Control of cardiovascular disease and prevent myocardial infarction'
            WHEN 13 THEN 'Treatment of chronic sleep disorders'
            ELSE 'Treatment of chronic obstructive pulmonary disease (COPD) and prevention of acute attacks'
-           END
+END
 
 FROM appointments a
 WHERE a.appointment_status = 'COMPLETED'
@@ -6658,10 +7058,10 @@ ORDER BY ingredient_request_id;
 -- Generate sample data for prescription_items table
 -- 1) Sinh & chèn vào prescription_items chỉ với một biến duy nhất (@review_count không còn dùng)
 INSERT IGNORE INTO prescription_items (prescription_id,
-                                       medicine_id,
-                                       dosage,
-                                       quantity,
-                                       duration_days)
+                                medicine_id,
+                                dosage,
+                                quantity,
+                                duration_days)
 WITH
     -- A. Các cặp đã tồn tại để tránh trùng
     existing_pairs AS (SELECT prescription_id, medicine_id
@@ -6901,8 +7301,8 @@ WITH patient_list AS (SELECT patient_id
                                                                 FROM plan_list
                                                                 WHERE plan_type = 'MONTHLY'
                                                                 ORDER BY RAND()
-                                                                LIMIT 1)
-                                        WHEN RAND() < 0.7 THEN (SELECT pricing_plan_id
+                                            LIMIT 1)
+    WHEN RAND() < 0.7 THEN (SELECT pricing_plan_id
                                                                 FROM plan_list
                                                                 WHERE plan_type = 'YEARLY'
                                                                 ORDER BY RAND()
@@ -6917,7 +7317,7 @@ WITH patient_list AS (SELECT patient_id
                                               WHERE plan_type = 'CUSTOM'
                                               ORDER BY RAND()
                                               LIMIT 1)
-                                        END AS assigned_plan_id
+END AS assigned_plan_id
                              FROM patient_list p)
 -- Only insert patients who have been assigned a plan (not NULL)
 SELECT patient_id, assigned_plan_id
@@ -7827,12 +8227,12 @@ order_base AS (SELECT fr.row_id,
                           WHEN RAND() < 0.75 THEN 'FULLFILED'
                           WHEN RAND() < 0.95 THEN 'PENDING'
                           ELSE 'CANCELLED'
-                          END                                                                as order_status,
+END                                                                as order_status,
                       CASE
                           WHEN RAND() < 0.3
                               THEN (SELECT coupon_id FROM coupon_list ORDER BY RAND() LIMIT 1)
                           ELSE NULL
-                          END                                                                as coupon_id
+END                                                                as coupon_id
                FROM filtered_rows fr),
 order_item_counts AS (SELECT row_id,
                              order_type,
@@ -8017,10 +8417,10 @@ WITH wallet_list AS (SELECT wallet_id, user_id
                                   ROUND(25000 + RAND() * 475000, -3)                            as amount,
                                   -- Sequence number (to create multiple transactions)
                                   ROW_NUMBER() OVER (PARTITION BY w.wallet_id ORDER BY RAND())  as seq_num
-                           FROM wallet_list w
-                                    CROSS JOIN (SELECT 1 as n UNION ALL SELECT 2 UNION ALL SELECT 3) numbers
-                           -- Ensure different number of transactions per wallet
-                           WHERE MOD(w.wallet_id + FLOOR(RAND() * 10), 4) < numbers.n)
+FROM wallet_list w
+    CROSS JOIN (SELECT 1 as n UNION ALL SELECT 2 UNION ALL SELECT 3) numbers
+-- Ensure different number of transactions per wallet
+WHERE MOD(w.wallet_id + FLOOR(RAND() * 10), 4) < numbers.n)
 SELECT dg.wallet_id,
        dg.payment_id,
        dg.amount,
@@ -8055,7 +8455,7 @@ FROM wallets w;
 -- Update the wallets table
 UPDATE wallets w
     JOIN temp_wallet_balances twb ON w.wallet_id = twb.wallet_id
-SET w.balance = twb.new_balance;
+    SET w.balance = twb.new_balance;
 
 -- Clean up
 DROP TEMPORARY TABLE temp_wallet_balances;
@@ -8088,7 +8488,7 @@ SELECT u.user_id,
 FROM (SELECT user_id FROM users WHERE MOD(user_id, @nguoi_dung_co_gio) = 0) u
          CROSS JOIN
      (SELECT product_id FROM products ORDER BY RAND()) p
-LIMIT 1000;
+    LIMIT 1000;
 -- Tạo nhiều hơn để đảm bảo đủ sau khi lọc
 
 -- Chèn vào bảng chính với số lượng chính xác từ biến (dùng WHERE thay vì LIMIT)
@@ -8120,7 +8520,7 @@ FROM (SELECT user_id FROM users WHERE MOD(user_id, @nguoi_dung_co_yeu_thich) = 0
          LEFT JOIN
      cart_items ci ON u.user_id = ci.user_id AND p.product_id = ci.product_id
 WHERE ci.user_id IS NULL -- Đảm bảo sản phẩm chưa có trong giỏ hàng
-LIMIT 1000;
+    LIMIT 1000;
 -- Tạo nhiều hơn để đảm bảo đủ
 
 -- Chèn vào bảng chính với số lượng chính xác từ biến (dùng WHERE thay vì LIMIT)

@@ -86,10 +86,10 @@ function updateMedicalProfileUI() {
             buttonDiv.className = 'mt-2 mt-md-0 text-end';
             buttonDiv.innerHTML = `
     <button class="btn btn-sm btn-outline-primary me-2" onclick="editSymptom('${symptom.id}')">
-      <i class="bi bi-pencil"></i> Sửa
+      <i class="fas fa-pencil-alt"></i>
     </button>
-    <button class="btn btn-sm btn-outline-danger" onclick="deleteSymptom('${symptom.id}')">
-      <i class="bi bi-trash"></i> Xóa
+    <button class="btn btn-sm btn-outline-danger me-2"  onclick="deleteSymptom('${symptom.id}')">
+      <i class="fas fa-trash-alt"></i> 
     </button>
   `;
 
@@ -167,7 +167,6 @@ function editSymptom(symptomId) {
 
 async function saveSymptom() {
     const symptomId = document.getElementById('symptomId').value;
-    console.log(symptomId)
     const symptomName = document.getElementById('symptomName').value.trim();
     const duration = document.getElementById('symptomDuration').value.trim();
     const severity = document.getElementById('symptomSeverity').value;

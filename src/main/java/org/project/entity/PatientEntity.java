@@ -7,47 +7,50 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.BloodType;
+import org.project.enums.FamilyRelationship;
 import org.project.enums.Gender;
-import org.project.enums.Relationship;
+import org.project.enums.PatientStatus;
+import org.project.enums.converter.BloodTypeConverter;
 
 import java.sql.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "PatientEntityEntity")
+@Entity
 @Table(name = "patients", schema = "swp391")
+@FieldNameConstants
 public class PatientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "patient_id", nullable = false)
+    @Column(name = "patient_id")
     private Long id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
     @Size(max = 255)
-    @NotNull
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Size(max = 255)
-    @NotNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     private String fullName;
 
-    @Size(max = 255)
     @Column(name = "avatar_url")
     private String avatarUrl;
 
@@ -56,49 +59,44 @@ public class PatientEntity {
     private String address;
 
     @NotNull
-    @Column(name = "birthdate", nullable = false)
+    @Column(name = "birthdate")
     private Date birthdate;
-    @OneToMany
+
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'ACTIVE'")
+    @Column(name = "patient_status", columnDefinition = "enum not null")
+    private PatientStatus patientStatus;
+
+    @OneToMany(mappedBy = "patientEntity")
     private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
 
-    @ManyToMany
-    private Set<PricingPlanEntity> pricingPlanEntities = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "patientEntity")
+    private Set<PricingPlanSubscriptionEntity> pricingPlanSubscriptionEntities = new LinkedHashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "patientEntity")
     private Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
-    @OneToMany
+
+    @OneToMany(mappedBy = "patientEntity")
     private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
-    private Gender gender;
-
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "blood_type")
-//    private BloodType bloodType;
+    @ColumnDefault("'SELF'")
+    @Column(name = "relationship")
+    private FamilyRelationship familyRelationship;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "relationship")
-    private Relationship relationship;
-
-/*
- TODO [Reverse Engineering] create field to map the 'relationship' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @ColumnDefault("'SELF'")
-    @Column(name = "relationship", columnDefinition = "enum not null")
-    private Object relationship;
-*/
-/*
- TODO [Reverse Engineering] create field to map the 'gender' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
     @ColumnDefault("'OTHER'")
     @Column(name = "gender", columnDefinition = "enum not null")
-    private Object gender;
-*/
-/*
- TODO [Reverse Engineering] create field to map the 'blood_type' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
+    private Gender gender;
+
     @Column(name = "blood_type", columnDefinition = "enum")
-    private Object bloodType;
-*/
+    @Convert(converter = BloodTypeConverter.class)
+    private BloodType bloodType;
+
+    @OneToOne(mappedBy = "patientEntity")
+    private MedicalProfileEntity medicalProfileEntity;
+
+    @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY)
+    private List<TestRequestEntity> testRequestEntity;
+
 }

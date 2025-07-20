@@ -16,4 +16,37 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         MedicalRecordEntity medicalRecord = medicalRecordRepository.findMedicalRecordEntityByAppointmentEntityId(appointmentId);
         return medicalRecord.getMainComplaint();
     }
+
+    @Override
+    public String getDiagnosis(Long appointmentId) {
+        MedicalRecordEntity medicalRecord = medicalRecordRepository.findMedicalRecordEntityByAppointmentEntityId(appointmentId);
+        return medicalRecord.getDiagnosis();
+    }
+
+    @Override
+    public String getPlan(Long appointmentId) {
+        MedicalRecordEntity medicalRecord = medicalRecordRepository.findMedicalRecordEntityByAppointmentEntityId(appointmentId);
+        return medicalRecord.getTreatmentPlan();
+    }
+
+    @Override
+    public boolean addMainReason(Long appointmentId, String diagnosis) {
+        return false;
+    }
+
+    @Override
+    public boolean addDiagnosis(Long appointmentId, String diagnosis) {
+        MedicalRecordEntity medicalRecord = medicalRecordRepository.findMedicalRecordEntityByAppointmentEntityId(appointmentId);
+        medicalRecord.setDiagnosis(diagnosis);
+        medicalRecordRepository.save(medicalRecord);
+        return true;
+    }
+
+    @Override
+    public boolean addPlan(Long appointmentId, String plan) {
+        MedicalRecordEntity medicalRecord = medicalRecordRepository.findMedicalRecordEntityByAppointmentEntityId(appointmentId);
+        medicalRecord.setTreatmentPlan(plan);
+        medicalRecordRepository.save(medicalRecord);
+        return true;
+    }
 }

@@ -17,7 +17,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity,L
     List<AppointmentEntity> findByDoctorEntityIdAndAppointmentStatusIn(Long dortorId, List<AppointmentStatus> statuses);
 
     @Query("""
-        FROM AppointmentEntityEntity a
+        FROM AppointmentEntity a
         WHERE a.doctorEntity.id = :doctorId
           AND a.startTime >= :start
           AND a.startTime < :end

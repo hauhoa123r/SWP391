@@ -7,13 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "ServiceFeatureEntityEntity")
+@Entity
 @Table(name = "service_features", schema = "swp391")
+@FieldNameConstants
 public class ServiceFeatureEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

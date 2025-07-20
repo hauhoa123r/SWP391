@@ -7,13 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "PricingPlanFeatureEntityEntity")
+@Entity
 @Table(name = "pricing_plan_features", schema = "swp391")
+@FieldNameConstants
 public class PricingPlanFeatureEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

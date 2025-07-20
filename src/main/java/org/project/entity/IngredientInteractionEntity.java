@@ -5,13 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "IngredientInteractionEntityEntity")
+@Entity
 @Table(name = "ingredient_interactions", schema = "swp391")
+@FieldNameConstants
 public class IngredientInteractionEntity {
     @EmbeddedId
     private IngredientInteractionEntityId id;

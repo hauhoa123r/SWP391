@@ -520,8 +520,13 @@
                   <div class="p-3">
                     <div class="card border-0 shadow-sm">
                       <div class="card-body">
-                        <label class="form-label fw-semibold text-primary">Chuẩn đoán sơ bộ</label>
+                        <label class="form-label fw-semibold text-primary">Chẩn đoán sơ bộ</label>
                         <textarea class="form-control border-primary border-2" id="preliminaryDiagnosis" rows="4"></textarea>
+                        <div class="d-flex justify-content-end mt-3">
+                          <button type="button" class="btn btn-primary" id="saveDiagnosisBtn" onClick="savePreliminaryDiagnosis()">
+                            <i class="fas fa-save me-1"></i> Lưu
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -532,6 +537,11 @@
                       <div class="card-body">
                         <label class="form-label fw-semibold text-primary">Kế hoạch điều trị</label>
                         <textarea class="form-control border-primary border-2" id="treatmentPlan" rows="5"></textarea>
+                        <div class="d-flex justify-content-end mt-3">
+                          <button type="button" class="btn btn-primary" id="saveTreatmentPlanBtn" onclick="saveTreatmentPlan()">
+                            <i class="fas fa-save me-1"></i> Lưu
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -648,7 +658,6 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
         </div>
         <div class="modal-body" id="examFormContainer">
-          <!-- Nội dung form sẽ được thêm động -->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -696,6 +705,65 @@
       </div>
     </div>
   </div>
+
+  <!-- Test Selection Modal -->
+  <div class="modal fade" id="testModal" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="testModalLabel">Chọn xét nghiệm</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <input type="text" id="testSearch" class="form-control" placeholder="Tìm kiếm xét nghiệm...">
+            <button class="btn btn-outline-secondary" type="button" id="searchTestBtn">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <div class="row">
+            <!-- Left side: Test list -->
+            <div class="col-md-6">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên xét nghiệm</th>
+                    <th width="50px"><input type="checkbox" id="selectAllTests"></th>
+                  </tr>
+                  </thead>
+                  <tbody id="testListBody">
+                  <!-- Test items will be loaded here -->
+                  </tbody>
+                </table>
+              </div>
+              <!-- Pagination -->
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center" id="pagination">
+                  <!-- Pagination will be inserted here by JavaScript -->
+                </ul>
+              </nav>
+            </div>
+            <!-- Right side: Selected tests -->
+            <div class="col-md-6">
+              <div class="me-auto">
+                <span id="selectedCount">0</span> xét nghiệm được chọn
+              </div>
+              <div id="selectedTestsContainer" class="list-group">
+                <div class="list-group-item text-muted">Không có gì, hãy chọn test</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" class="btn btn-primary" id="confirmTestsBtn">Gửi yêu cầu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div class="position-fixed  end-0 p-3" style="z-index: 11;top:20%;">
     <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -711,97 +779,14 @@
 
   <th:block th:fragment="additionalJS">
     <script th:src="@{/frontend/assets/doctor-dashboard-js/symptom.js}"></script>
+    <script th:src="@{/frontend/assets/doctor-dashboard-js/toast.js}"></script>
+    <script th:src="@{/frontend/assets/doctor-dashboard-js/test-list.js}"></script>
+    <script th:src="@{/frontend/assets/doctor-dashboard-js/medical-record.js}"></script>
+    <script th:src="@{/frontend/assets/doctor-dashboard-js/clinal-exam.js}"></script>
   </th:block>
 
   <script>
-    function openExamModal(examType) {
-      // Đóng modal chọn loại khám
-      bootstrap.Modal.getInstance(document.getElementById('examTypeModal')).hide();
 
-      // Đặt tiêu đề
-      const titles = {
-        vital: 'Dấu hiệu sinh tồn',
-        respiratory: 'Khám hô hấp',
-        cardiac: 'Khám tim mạch',
-        neurologic: 'Khám thần kinh',
-        gastro: 'Khám tiêu hóa',
-        genitourinary: 'Khám tiết niệu',
-        musculoskeletal: 'Khám cơ xương',
-        dermatologic: 'Khám da liễu',
-        notes: 'Ghi chú khác'
-      };
-      document.getElementById('examTitle').textContent = titles[examType];
-
-      // Tải form tương ứng
-      loadExamForm(examType);
-
-      // Hiển thị modal
-      new bootstrap.Modal(document.getElementById('examDetailModal')).show();
-    }
-
-    // Tải form khám
-    function loadExamForm(examType) {
-      const container = document.getElementById('examFormContainer');
-      let formHTML = '';
-
-      switch(examType) {
-        case 'vital':
-          formHTML = `
-        <form id="examForm" data-type="vital">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Nhịp tim (lần/phút)</label>
-              <input type="number" class="form-control" name="pulse">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">HA tâm thu</label>
-              <input type="number" class="form-control" name="systolic">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">HA tâm trương</label>
-              <input type="number" class="form-control" name="diastolic">
-            </div>
-          </div>
-        </form>
-      `;
-          break;
-
-        case 'respiratory':
-          formHTML = `
-        <form id="examForm" data-type="respiratory">
-          <div class="mb-3">
-            <label class="form-label">Kiểu thở</label>
-            <input type="text" class="form-control" name="breathing">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Kết quả nghe phổi</label>
-            <textarea class="form-control" name="auscultation"></textarea>
-          </div>
-        </form>
-      `;
-          break;
-
-              // Thêm các case khác tương tự...
-      }
-
-      container.innerHTML = formHTML;
-    }
-
-    // Lưu kết quả khám
-    function saveExam() {
-      const form = document.getElementById('examForm');
-      const examType = form.dataset.type;
-      const formData = new FormData(form);
-
-      // Xử lý lưu dữ liệu...
-      console.log(`Lưu kết quả ${examType}:`, Object.fromEntries(formData));
-
-      // Đóng modal
-      bootstrap.Modal.getInstance(document.getElementById('examDetailModal')).hide();
-
-      // Thêm vào danh sách
-      addToExamList(examType, formData);
-    }
     // Lấy appointmentId từ URL
     const appointmentId = new URLSearchParams(window.location.search).get("id") || 1;
 
@@ -812,12 +797,40 @@
     let patientId = null;
     let medicalRecordId = null;
 
-    // Khởi tạo ứng dụng
-    initApp();
-
-    function initApp() {
+    document.addEventListener('DOMContentLoaded', () => {
       loadPatientData();
-    }
+
+
+      document.getElementById('testSearch').addEventListener('input', function() {
+        currentSearchTerm = this.value.trim();
+        loadTestTypes(0);
+      });
+
+      document.getElementById('searchTestBtn').addEventListener('click', function() {
+        currentSearchTerm = document.getElementById('testSearch').value.trim();
+        loadTestTypes(0);
+      });
+
+      document.getElementById('selectAllTests').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.test-checkbox:not(#selectAllTests)');
+        checkboxes.forEach(checkbox => {
+          checkbox.checked = this.checked;
+          const testId = checkbox.dataset.testId;
+          const testName = checkbox.dataset.testName;
+          if (this.checked) {
+            selectedTests.set(testId, testName);
+          } else {
+            selectedTests.delete(testId);
+          }
+        });
+        updateSelectedCount();
+        updateSelectedTestsDisplay();
+      });
+      document.getElementById('confirmTestsBtn').addEventListener('click', submitTestRequests);
+      loadTestRequests();
+      loadPreliminaryDiagnosis();
+      loadTreatmentPlan();
+    });
 
     function loadPatientData() {
       fetch(`/api/appointments/in-progress/${appointmentId}`)
@@ -829,10 +842,13 @@
                 renderPatientInfo(data);
                 if (data.patientEntityId) {
                   patientId = data.patientEntityId;
-                  medicalRecordId = data.medicalRecordEntityId || null; // Assume medicalRecordId is in response
+                  medicalRecordId = data.medicalRecordEntityId;
+                  console.log("add"+medicalRecordId)
                   loadMedicalProfile();
                   if (medicalRecordId) {
                     loadSymptoms();
+                    fetchExams();
+
                   }
                 }
                 if (data.durationMinutes) {
@@ -852,7 +868,7 @@
       const container = document.getElementById("patientInfoContainer");
       const mainComplaintInput = document.getElementById("mainComplaint");
       mainComplaintInput.textContent = data.medicalRecordEntityMainComplaint;
-
+      console.log(data.medicalRecordEntityMainComplaint);
 
       container.innerHTML = `
                 <div class="card mb-3" style="padding-left:0;margin-left:40px;">
@@ -964,15 +980,6 @@
               });
     }
 
-    function showToast(type, message) {
-      const toastElement = document.getElementById('liveToast');
-      const toastBody = document.getElementById('toastBody');
-      toastBody.textContent = message;
-      toastElement.classList.remove('bg-success', 'bg-danger');
-      toastElement.classList.add(type === 'success' ? 'bg-success' : 'bg-danger', 'text-white');
-      const toast = new bootstrap.Toast(toastElement);
-      toast.show();
-    }
 
     function startCountdown(minutes) {
       console.log(`Starting countdown for ${minutes} minutes`);

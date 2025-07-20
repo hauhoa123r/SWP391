@@ -24,4 +24,14 @@ public class MedicalRecordSymptomAPI {
     public ResponseEntity<List<Long>> addSymptoms(@PathVariable Long medicalRecordId, @RequestBody List<MedicalRecordSymptomRequest> symptomIds) {
         return ResponseEntity.ok(medicalRecordSymptomService.addMedicalRecordSymptom(medicalRecordId,symptomIds));
     }
+    @PutMapping("/{symptomId}")
+    public ResponseEntity<String> updateSymptoms(@PathVariable Long symptomId, @RequestBody MedicalRecordSymptomRequest symptomRequest) {
+        medicalRecordSymptomService.updateMedicalRecordSymptom(symptomId,symptomRequest);
+        return ResponseEntity.ok("Symptom Updated");
+    }
+    @DeleteMapping("/{symptomId}")
+    public ResponseEntity<String> deleteSymptoms(@PathVariable Long symptomId) {
+        medicalRecordSymptomService.deleteMedicalRecordSymptom(symptomId);
+        return ResponseEntity.ok("Symptom Deleted");
+    }
 }

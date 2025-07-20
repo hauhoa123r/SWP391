@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "medical_record_symptoms", schema = "swp391")
+@Table(name = "medical_record_symptoms")
 public class MedicalRecordSymptomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

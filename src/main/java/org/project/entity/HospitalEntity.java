@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -15,8 +16,9 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "HospitalEntityEntity")
+@Entity
 @Table(name = "hospitals", schema = "swp391")
+@FieldNameConstants
 public class HospitalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +48,6 @@ public class HospitalEntity {
     @Size(max = 255)
     @Column(name = "avatar_url")
     private String avatarUrl;
-
-    @OneToMany(mappedBy = "hospital")
-    private Set<DepartmentEntity> departmentEntities = new LinkedHashSet<>();
 
     @OneToMany
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();

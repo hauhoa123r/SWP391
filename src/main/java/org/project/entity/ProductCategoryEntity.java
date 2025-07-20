@@ -5,13 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "ProductCategoryEntityEntity")
+@Entity
 @Table(name = "product_categories", schema = "swp391")
+@FieldNameConstants
 public class ProductCategoryEntity {
     @EmbeddedId
     private ProductCategoryEntityId id;

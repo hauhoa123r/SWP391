@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -17,16 +18,12 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "departments", schema = "swp391")
+@FieldNameConstants
 public class DepartmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "department_id", nullable = false)
     private Long id;
-
-    @NotNull
-    @OneToOne
-    @JoinColumn(name = "manager_id", nullable = false)
-    private StaffEntity staffEntity;
 
     @NotNull
     @OneToMany(mappedBy = "departmentEntity")
@@ -53,11 +50,6 @@ public class DepartmentEntity {
     @Size(max = 255)
     @Column(name = "slogan")
     private String slogan;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "hospital_id", nullable = false)
-    private HospitalEntity hospital;
 
     @OneToMany(mappedBy = "departmentEntity")
     private Set<ServiceEntity> serviceEntities = new LinkedHashSet<>();

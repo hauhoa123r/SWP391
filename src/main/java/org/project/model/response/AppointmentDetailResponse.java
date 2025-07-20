@@ -14,6 +14,7 @@ import java.sql.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AppointmentDetailResponse {
     Long id;
+    Long medicalRecordEntityId;
     Long patientEntityId;
     String patientEntityPhoneNumber;
     String patientEntityEmail;
@@ -24,7 +25,7 @@ public class AppointmentDetailResponse {
 //    BloodType patientEntityBloodType;
     Gender patientEntityGender;
     Integer durationMinutes;
-    String medicalReportEntityMainComplaint;
+    String medicalRecordEntityMainComplaint;
 //    public String getPatientEntityBloodTypeValue() {
 //        return patientEntityBloodType != null ? patientEntityBloodType.getValue() : null;
 //    }
