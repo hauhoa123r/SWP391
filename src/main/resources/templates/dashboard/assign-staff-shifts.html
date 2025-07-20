@@ -7,7 +7,59 @@
 <body class="bg-light">
 
 <div class="container py-4">
-    <h2 class="text-primary mb-4">📋 Quản lý ca trực hôm nay</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-primary mb-0">📋 Quản lý ca trực từng ngày</h3>
+        <div class="d-flex gap-2">
+            <!-- Date Filter -->
+            <form method="GET" class="d-flex align-items-center gap-2">
+                <label for="dateFilter" class="form-label mb-0 fw-bold">Chọn ngày:</label>
+                <input type="date" id="dateFilter" name="date" class="form-control" 
+                       th:value="${selectedDate}" onchange="this.form.submit()">
+                <input type="hidden" name="page" th:value="${currentPage}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" name="sortBy" th:value="${sortBy}">
+                <input type="hidden" name="sortDir" th:value="${sortDir}">
+            </form>
+            <a th:href="@{/admin/staff-shifts/assign(date=${selectedDate})}" class="btn btn-success">
+                ➕ Gán ca trực
+            </a>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Pagination Info and Page Size Selector -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <span class="me-3">Hiển thị 
+                    <span th:text="${staffShifts.numberOfElements}"></span> 
+                    trong tổng số 
+                    <span th:text="${staffShifts.totalElements}"></span> 
+                    nhân viên
+                </span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end align-items-center">
+                <label for="pageSize" class="form-label me-2 mb-0">Số dòng/trang:</label>
+                <select id="pageSize" class="form-select" style="width: auto;" onchange="changePageSize(this.value)">
+                    <option value="5" th:selected="${pageSize == 5}">5</option>
+                    <option value="10" th:selected="${pageSize == 10}">10</option>
+                    <option value="20" th:selected="${pageSize == 20}">20</option>
+                    <option value="50" th:selected="${pageSize == 50}">50</option>
+                </select>
+            </div>
+        </div>
+    </div>
 
     <div class="card shadow-sm">
         <div class="card-body">
@@ -15,10 +67,22 @@
                 <table class="table table-bordered align-middle text-center">
                     <thead class="table-dark">
                     <tr>
-                        <th>Tên nhân viên</th>
+                        <th>
+                            <a th:href="@{/admin/staff-shifts(page=${currentPage}, size=${size}, sortBy='fullName', sortDir=${sortBy == 'fullName' and sortDir == 'asc' ? 'desc' : 'asc'})}" 
+                               class="text-white text-decoration-none">
+                                Tên nhân viên
+                                <span th:if="${sortBy == 'fullName'}" th:text="${sortDir == 'asc' ? '↑' : '↓'}"></span>
+                            </a>
+                        </th>
                         <th>Phòng ban</th>
                         <th>Bệnh viện</th>
-                        <th>Tổng ca tháng</th>
+                        <th>
+                            <a th:href="@{/admin/staff-shifts(page=${currentPage}, size=${size}, sortBy='totalWorkingDaysThisMonth', sortDir=${sortBy == 'totalWorkingDaysThisMonth' and sortDir == 'asc' ? 'desc' : 'asc'})}" 
+                               class="text-white text-decoration-none">
+                                Tổng ca tháng
+                                <span th:if="${sortBy == 'totalWorkingDaysThisMonth'}" th:text="${sortDir == 'asc' ? '↑' : '↓'}"></span>
+                            </a>
+                        </th>
                         <th>Ca sáng 🌅</th>
                         <th>Chiều ☀️</th>
                         <th>Tối 🌇</th>
@@ -27,7 +91,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="s : ${shifts}">
+                    <tr th:each="s : ${staffShifts.content}">
                         <td th:text="${s.fullName}"></td>
                         <td th:text="${s.departmentName}"></td>
                         <td th:text="${s.hospitalName}"></td>
@@ -55,8 +119,9 @@
                             </span>
                         </td>
                         <td>
-                            <a th:href="@{'/admin/staff-shifts/weekly/' + ${s.staffId}}"
-                               class="btn btn-sm btn-outline-primary">👁 Xem lịch</a>
+                            <a th:href="@{'/admin/staff-shifts/monthly/' + ${s.staffId}}"
+                               class="btn btn-sm btn-outline-primary monthly-link"
+                               th:data-staff-id="${s.staffId}">📅 Xem lịch tháng</a>
                         </td>
                     </tr>
                     </tbody>
@@ -64,7 +129,95 @@
             </div>
         </div>
     </div>
+
+    <!-- Pagination Controls -->
+    <div class="d-flex justify-content-center mt-4" th:if="${staffShifts.totalPages > 1}">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <!-- First Page -->
+                <li class="page-item" th:classappend="${staffShifts.first} ? 'disabled'">
+                    <a class="page-link" th:href="@{/admin/staff-shifts(page=0, size=${pageSize}, sortBy=${sortBy}, sortDir=${sortDir}, date=${selectedDate})}">
+                        Đầu
+                    </a>
+                </li>
+
+                <!-- Page Numbers -->
+                <li class="page-item" 
+                    th:each="pageNum : ${#numbers.sequence(T(java.lang.Math).max(0, currentPage - 2), T(java.lang.Math).min(staffShifts.totalPages - 1, currentPage + 2))}"
+                    th:classappend="${pageNum == currentPage} ? 'active'">
+                    <a class="page-link" 
+                       th:href="@{/admin/staff-shifts(page=${pageNum}, size=${pageSize}, sortBy=${sortBy}, sortDir=${sortDir}, date=${selectedDate})}"
+                       th:text="${pageNum + 1}">
+                    </a>
+                </li>
+                
+                <!-- Last Page -->
+                <li class="page-item" th:classappend="${staffShifts.last} ? 'disabled'">
+                    <a class="page-link" th:href="@{/admin/staff-shifts(page=${staffShifts.totalPages - 1}, size=${pageSize}, sortBy=${sortBy}, sortDir=${sortDir}, date=${selectedDate})}">
+                        Cuối
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
+
+
+
+<script>
+function changePageSize(newSize) {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('size', newSize);
+    urlParams.set('page', '0'); // Reset to first page when changing page size
+    window.location.search = urlParams.toString();
+}
+
+
+
+// Function to calculate month offset from selected date
+function calculateMonthOffset(selectedDate) {
+    if (!selectedDate) {
+        return 0; // Default to current month if no date selected
+    }
+    
+    const selected = new Date(selectedDate);
+    const today = new Date();
+    
+    // Calculate difference in months
+    const yearDiff = selected.getFullYear() - today.getFullYear();
+    const monthDiff = selected.getMonth() - today.getMonth();
+    
+    return yearDiff * 12 + monthDiff;
+}
+
+// Update monthly schedule links when page loads or date changes
+function updateMonthlyLinks() {
+    const selectedDate = document.getElementById('dateFilter')?.value;
+    const monthOffset = calculateMonthOffset(selectedDate);
+    
+    // Update all monthly schedule links
+    document.querySelectorAll('.monthly-link').forEach(link => {
+        const staffId = link.getAttribute('data-staff-id');
+        if (staffId) {
+            link.href = `/admin/staff-shifts/monthly/${staffId}?month=${monthOffset}`;
+        }
+    });
+}
+
+// Update links when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    updateMonthlyLinks();
+    
+    // Update links when date changes
+    const dateInput = document.getElementById('dateFilter');
+    if (dateInput) {
+        dateInput.addEventListener('change', updateMonthlyLinks);
+    }
+});
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

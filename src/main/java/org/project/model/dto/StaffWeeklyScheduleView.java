@@ -14,4 +14,7 @@ public class StaffWeeklyScheduleView {
 
     // Ví dụ: 2025-07-17 → [MORNING, NIGHT]
     private Map<LocalDate, List<StaffShiftSlot>> shiftsPerDay;
+    
+    // Tổng số ngày làm việc trong tuần này
+    private int totalWorkingDaysThisWeek;
 }

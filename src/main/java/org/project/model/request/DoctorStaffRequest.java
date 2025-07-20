@@ -8,13 +8,14 @@ public class DoctorStaffRequest {
 
     private Long userId;
     @NotBlank(message = "Email không được để trống")
-    @Pattern(regexp = "^[A-Za-z0-9]+(?:\\.[A-Za-z0-9]+)*@gmail\\.com$", message = "Email phải thuộc miền gmail.com và không chứa ký tự đặc biệt")
+    @Email(message = "Email không đúng định dạng")
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "Email phải có định dạng hợp lệ")
     private String email;
     @NotBlank(message = "Số điện thoại không được để trống")
     @Pattern(regexp = "^[0-9]{10}$", message = "Số điện thoại phải gồm đúng 10 chữ số")
     private String phoneNumber;
     @NotBlank(message = "Họ tên không được để trống")
-    @Size(min = 5, message = "Họ tên phải có ít nhất 5 ký tự")
+    @Size(min = 2, message = "Tên người dùng cần ít nhất 2 ký tự trở lên. Vui lòng nhập họ tên đầy đủ.")
     private String fullName;
     @NotBlank(message = "Vui lòng chọn vai trò nhân viên")
     private String staffRole;

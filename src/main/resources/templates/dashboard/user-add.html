@@ -1219,27 +1219,63 @@
                                                            stroke-linecap="round" stroke-linejoin="round"></path>
                                                      </svg>
                                                   </i>
-                                               </a>
-                                               <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
-                                                  id="iconsPages">
-                                                  <li class="nav-item"><a
-                                                        class="nav-link "
-                                                        href="../icons/solid.html">Solid</a></li>
-                                                  <li class="nav-item"><a
-                                                        class="nav-link "
-                                                        href="../icons/outline.html">Outlined</a></li>
-                                                  <li class="nav-item"><a
-                                                        class="nav-link "
-                                                        href="../icons/dual-tone.html">Dual Tone</a></li>
-                                               </ul>
-                                            </li>
                                          </ul>
                                       </li>
                                       <li class="nav-item">
-                                         <a class="nav-link menu-arrow justify-content-start "
-                                            href="../setting.html">
-                                            <span class="nav-text">Setting </span>
+                                         <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#tablesPages" role="button"
+                                            aria-expanded="false" aria-controls="tablesPages">
+                                            Table
+                                            <i class="right-icon">
+                                               <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                                  xmlns="http://www.w3.org/2000/svg">
+                                                  <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
+                                                     stroke-linecap="round" stroke-linejoin="round"></path>
+                                               </svg>
+                                            </i>
                                          </a>
+                                         <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
+                                            id="tablesPages">
+                                            <li class="nav-item"><a
+                                                  class="nav-link "
+                                                  href="../table/bootstrap-table.html">Bootstrap Table</a></li>
+                                            <li class="nav-item"><a
+                                                  class="nav-link "
+                                                  href="../table/table-data.html">Data Table</a></li>
+                                            <li class="nav-item"><a
+                                                  class="nav-link "
+                                                  href="../table/border-table.html">Bordered Table</a></li>
+                                            <li class="nav-item"><a
+                                                  class="nav-link "
+                                                  href="../table/fancy-table.html">Fancy Table</a></li>
+                                            <li class="nav-item"><a
+                                                  class="nav-link "
+                                                  href="../table/fixed-table.html">Fixed Table</a></li>
+                                         </ul>
+                                      </li>
+                                      <li class="nav-item">
+                                         <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#iconsPages" role="button"
+                                            aria-expanded="false" aria-controls="iconsPages">
+                                            Icons
+                                            <i class="right-icon">
+                                               <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                                  xmlns="http://www.w3.org/2000/svg">
+                                                  <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
+                                                     stroke-linecap="round" stroke-linejoin="round"></path>
+                                               </svg>
+                                            </i>
+                                         </a>
+                                         <ul aria-expanded="false" class="iq-header-sub-menu left list-unstyled collapse"
+                                            id="iconsPages">
+                                            <li class="nav-item"><a
+                                                  class="nav-link "
+                                                  href="../icons/solid.html">Solid</a></li>
+                                            <li class="nav-item"><a
+                                                  class="nav-link "
+                                                  href="../icons/outline.html">Outlined</a></li>
+                                            <li class="nav-item"><a
+                                                  class="nav-link "
+                                                  href="../icons/dual-tone.html">Dual Tone</a></li>
+                                         </ul>
                                       </li>
                                    </ul>
                                 </div>
@@ -1833,7 +1869,7 @@
             <body>
             <div class="container-fluid">
                 <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
-                <form th:action="@{/admin/doctor-staffs/create}" th:object="${staff}" method="post">
+                <form th:action="@{/admin/doctor-staffs/create}" th:object="${staff}" method="post" enctype="multipart/form-data">
                     <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
                         <ul>
                             <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
@@ -1849,10 +1885,23 @@
                                 <div class="card-body">
                                     <div class="mb-3">
                                         <label class="form-label">Ảnh đại diện:</label>
-                                        <input class="form-control" type="text" th:field="*{avatarUrl}" maxlength="512"
-                                               placeholder="Nhập URL hình ảnh"
-                                               th:classappend="${#fields.hasErrors('avatarUrl')} ? ' is-invalid' : ''" />
-                                        <div class="text-danger" th:errors="*{avatarUrl}" th:if="${#fields.hasErrors('avatarUrl')}"></div>
+                                        <div class="avatar-upload-container">
+                                            <!-- Avatar Preview -->
+                                            <div class="avatar-preview mb-2 text-center">
+                                                <div id="avatarPreview" style="width: 100px; height: 100px; border-radius: 50%; border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa; margin: 0 auto; color: #6c757d; font-size: 12px; text-align: center; line-height: 1.2;">
+                                                    <span>Chưa có ảnh<br>đại diện</span>
+                                                </div>
+                                            </div>
+                                            <!-- File Input -->
+                                            <input class="form-control" type="file" id="avatarFile" name="avatarFile" 
+                                                   accept=".jpg,.jpeg,.png"
+                                                   onchange="previewAvatar(this)" />
+                                            <small class="form-text text-muted">
+                                                <i class="fas fa-info-circle"></i> Chọn file ảnh định dạng JPG, JPEG hoặc PNG (tối đa 5MB)
+                                            </small>
+                                        </div>
+                                        <!-- Hidden field to preserve existing avatar URL if any -->
+                                        <input type="hidden" th:field="*{avatarUrl}" />
                                     </div>
                                     <div class="mb-3">
                                         <label for="staffRole" class="form-label required">Chức vụ nhân sự:</label>
@@ -2923,6 +2972,31 @@
     </script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Reset form completely on page load (except when there are validation errors)
+        const hasValidationErrors = document.querySelectorAll('.is-invalid').length > 0;
+        const hasSuccessMessage = document.querySelector('.alert-success');
+        
+        if (!hasValidationErrors && !hasSuccessMessage) {
+            // Reset all form fields
+            const form = document.querySelector('form[th\\:object]');
+            if (form) {
+                form.reset();
+            }
+            
+            // Reset avatar preview
+            const avatarPreview = document.getElementById('avatarPreview');
+            if (avatarPreview) {
+                avatarPreview.innerHTML = '<span>Chưa có ảnh<br>đại diện</span>';
+                avatarPreview.style.border = '2px dashed #ccc';
+            }
+            
+            // Reset file input
+            const avatarFile = document.getElementById('avatarFile');
+            if (avatarFile) {
+                avatarFile.value = '';
+            }
+        }
+        
         const fields = document.querySelectorAll('.is-invalid');
         fields.forEach(function (el) {
             el.addEventListener('input', clearError);
@@ -2939,6 +3013,44 @@
             input.removeEventListener('change', clearError);
         }
     });
+    
+    // Avatar Preview Function
+    function previewAvatar(input) {
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File quá lớn! Vui lòng chọn file nhỏ hơn 5MB.');
+                input.value = '';
+                return;
+            }
+            
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Định dạng file không được hỗ trợ! Vui lòng chọn file JPG, JPEG hoặc PNG.');
+                input.value = '';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('avatarPreview');
+                if (preview) {
+                    // Clear existing content and create img element
+                    preview.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = 'Avatar Preview';
+                    img.style.cssText = 'width: 100%; height: 100%; border-radius: 50%; object-fit: cover;';
+                    preview.appendChild(img);
+                    preview.style.border = '2px solid #28a745'; // Green border when image loaded
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 </script>
 </body>
 </html>

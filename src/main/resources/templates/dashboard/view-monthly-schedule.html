@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch làm việc tháng - Quản lý nhân viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+        .day-cell {
+            border: 1px solid #dee2e6;
+            min-height: 100px;
+            padding: 5px;
+            background: white;
+        }
+        .day-number {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        .weekend {
+            background-color: #f8f9fa;
+        }
+        .today {
+            background-color: #e3f2fd;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <h3 class="text-primary mb-0">
+                    📅 Lịch làm việc của <span class="fw-bold" th:text="${schedule.staffName}">Tên nhân viên</span>
+                </h3>
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="navigateMonth(-1)">← Tháng trước</button>
+                    <div class="badge bg-primary fs-6 px-3 py-2">
+                        Tháng <span th:text="${schedule.month}">0</span>/<span th:text="${schedule.year}">0</span>
+                    </div>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="navigateMonth(1)">Tháng sau →</button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="navigateMonth(0)">Hôm nay</button>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="badge bg-success fs-6 px-3 py-2">
+                    📊 Tổng ngày làm: <span th:text="${schedule.totalWorkingDaysThisMonth}">0</span> ngày
+                </span>
+                <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                    🌅 Ca Sáng: <span th:text="${schedule.shiftTypeCounts['MORNING'] ?: 0}">0</span> ca
+                </span>
+                <span class="badge bg-info fs-6 px-3 py-2">
+                    ☀️ Ca Chiều: <span th:text="${schedule.shiftTypeCounts['AFTERNOON'] ?: 0}">0</span> ca
+                </span>
+                <span class="badge bg-primary fs-6 px-3 py-2">
+                    🌆 Ca Tối: <span th:text="${schedule.shiftTypeCounts['EVENING'] ?: 0}">0</span> ca
+                </span>
+                <span class="badge bg-dark fs-6 px-3 py-2">
+                    🌙 Ca Đêm: <span th:text="${schedule.shiftTypeCounts['NIGHT'] ?: 0}">0</span> ca
+                </span>
+            </div>
+        </div>
+        <a th:href="@{/admin/staff-shifts}" class="btn btn-outline-primary">← Quay lại danh sách</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-3">
+            <!-- Calendar Grid Header -->
+            <div class="calendar-grid mb-2">
+                <div class="text-center fw-bold text-danger">Chủ nhật</div>
+                <div class="text-center fw-bold">Thứ 2</div>
+                <div class="text-center fw-bold">Thứ 3</div>
+                <div class="text-center fw-bold">Thứ 4</div>
+                <div class="text-center fw-bold">Thứ 5</div>
+                <div class="text-center fw-bold">Thứ 6</div>
+                <div class="text-center fw-bold text-primary">Thứ 7</div>
+            </div>
+
+            <!-- Calendar Grid Body -->
+            <div class="calendar-grid">
+                <div th:each="date : ${dates}"
+                     class="day-cell"
+                     th:classappend="${#strings.substring(date, 8, 10) == '01' or #strings.substring(date, 8, 10) == '07' or #strings.substring(date, 8, 10) == '08' or #strings.substring(date, 8, 10) == '14' or #strings.substring(date, 8, 10) == '15' or #strings.substring(date, 8, 10) == '21' or #strings.substring(date, 8, 10) == '22' or #strings.substring(date, 8, 10) == '28' or #strings.substring(date, 8, 10) == '29'} ? 'weekend' : ''">
+
+                    <!-- Hiển thị số ngày -->
+                    <div class="day-number fw-bold text-end pe-1" th:text="${#strings.substring(date, 8, 10)}">01</div>
+
+                    <!-- Nếu có ca trực -->
+                    <div th:if="${shiftsMap[date] != null and !#lists.isEmpty(shiftsMap[date])}">
+                        <div th:each="slot : ${shiftsMap[date]}" class="mb-1">
+                            <span class="badge w-100 text-center py-1"
+                                  style="font-size: 0.7rem; font-weight: bold;"
+                                  th:classappend="${slot.name() == 'MORNING'} ? 'bg-warning text-dark' :
+                                                 (${slot.name() == 'AFTERNOON'} ? 'bg-info text-white' :
+                                                 (${slot.name() == 'EVENING'} ? 'bg-primary text-white' : 'bg-dark text-white'))"
+                                  th:text="${slot.name() == 'MORNING'} ? 'SÁNG' :
+                                           (${slot.name() == 'AFTERNOON'} ? 'CHIỀU' :
+                                           (${slot.name() == 'EVENING'} ? 'TỐI' : 'ĐÊM'))">
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Nếu không có ca trực -->
+                    <div th:if="${shiftsMap[date] == null or #lists.isEmpty(shiftsMap[date])}"
+                         class="text-muted text-center">
+                        <small><em>Nghỉ</em></small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chú thích ca -->
+            <div class="mt-3 d-flex justify-content-center gap-3 flex-wrap">
+                <span class="badge bg-warning text-dark px-3 py-2">🌅 Ca Sáng (6:00-12:00)</span>
+                <span class="badge bg-info text-white px-3 py-2">☀️ Ca Chiều (12:00-18:00)</span>
+                <span class="badge bg-primary text-white px-3 py-2">🌆 Ca Tối (18:00-24:00)</span>
+                <span class="badge bg-dark text-white px-3 py-2">🌙 Ca Đêm (24:00-6:00)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function navigateMonth(offset) {
+        const currentUrl = new URL(window.location.href);
+        const currentMonth = parseInt(currentUrl.searchParams.get('month') || '0');
+        const newMonth = offset === 0 ? 0 : currentMonth + offset;
+        currentUrl.searchParams.set('month', newMonth.toString());
+        window.location.href = currentUrl.toString();
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey) {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    event.preventDefault();
+                    navigateMonth(-1);
+                    break;
+                case 'ArrowRight':
+                    event.preventDefault();
+                    navigateMonth(1);
+                    break;
+                case 'Home':
+                    event.preventDefault();
+                    navigateMonth(0);
+                    break;
+            }
+        }
+    });
+</script>
+</body>
+</html>

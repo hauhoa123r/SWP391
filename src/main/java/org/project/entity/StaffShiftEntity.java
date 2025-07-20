@@ -35,11 +35,6 @@ public class StaffShiftEntity {
     @Column(name = "shift_type", nullable = false)
     private StaffShiftSlot shiftType;
 
-
-/*
- TODO [Reverse Engineering] create field to map the 'shift_type' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @Column(name = "shift_type", columnDefinition = "enum not null")
-    private Object shiftType;
-*/
+    // Note: Hospital information can be accessed via staffEntity.hospitalEntity
+    // Removed hospital field to avoid database schema mismatch
 }

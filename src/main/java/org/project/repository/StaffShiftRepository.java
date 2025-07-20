@@ -2,6 +2,8 @@ package org.project.repository;
 
 import org.project.entity.StaffShiftEntity;
 import org.project.enums.StaffShiftSlot;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.Date;
@@ -14,6 +16,9 @@ public interface StaffShiftRepository extends JpaRepository<StaffShiftEntity, Lo
 
     // Lấy danh sách ca trực theo ngày
     List<StaffShiftEntity> findByDate(Date date);
+
+    // Lấy tất cả ca trực trong khoảng ngày với phân trang
+    Page<StaffShiftEntity> findByDateBetween(Date start, Date end, Pageable pageable);
 
     // Đếm tổng số ca trực trong tháng
     int countByStaffEntity_IdAndDateBetween(Long staffId, Date start, Date end);

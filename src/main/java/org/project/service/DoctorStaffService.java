@@ -2,7 +2,8 @@ package org.project.service;
 
 import org.project.model.request.DoctorStaffRequest;
 import org.project.model.response.DoctorStaffResponse;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.List;
 
 public interface DoctorStaffService {
@@ -24,4 +25,6 @@ public interface DoctorStaffService {
 
     // Tìm kiếm theo trường cụ thể ("fullName", "email", "phoneNumber")
     List<DoctorStaffResponse> searchDoctorStaff(String field, String keyword);
+
+    String handleAvatarUpload(MultipartFile avatarFile) throws IOException;
 }
