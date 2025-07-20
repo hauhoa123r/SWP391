@@ -1,6 +1,7 @@
 <!doctype html>
 <html layout:decorate="~{/frontend/layouts/main-layout}"
       th:with="
+        navActive = ${5},
         breadCrumbTitle = ${'Danh sách bác sĩ'},
         breadCrumbTexts = ${{{'Danh sách bác sĩ'}}},
         breadCrumbLinks = ${{{''}}}"
@@ -94,7 +95,6 @@
             </div>
         </div>
     </section>
-
 </main>
 <th:block layout:fragment="custom-js">
     <script th:src="@{/frontend/assets/js/doctor.js}" type="module"></script>
