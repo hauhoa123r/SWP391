@@ -22,7 +22,14 @@ public class ConverterPharmacyProduct {
             destination.setRating(calculateRating(source));
             destination.setLabel(source.getLabel() != null ? source.getLabel().name() : null);
             destination.setStatus(source.getProductStatus() != null ? source.getProductStatus().name() : null);
-            destination.setStockQuantity(source.getStockQuantities());
+                
+            // Đảm bảo stockQuantity được đặt đúng cách
+            if (source.getStockQuantities() != null) {
+                destination.setStockQuantity(source.getStockQuantities());
+            } else {
+                destination.setStockQuantity(0); // Default value
+            }
+            
             // Join all category names by comma for detail page display
             String joinedCategories = source.getCategoryEntities() != null && !source.getCategoryEntities().isEmpty()
                     ? source.getCategoryEntities().stream().map(cat -> cat.getName()).toList().stream().reduce((a,b)->a + ", " + b).orElse(null)
@@ -38,8 +45,16 @@ public class ConverterPharmacyProduct {
     }
 
     public PharmacyResponse toDto(ProductEntity productEntity) {
+        if (productEntity == null) return null;
+        
         Optional<PharmacyResponse> pharmacyResponseOptional = Optional.ofNullable(modelMapperConfig.mapper().map(productEntity, PharmacyResponse.class));
-        return pharmacyResponseOptional.orElse(null);
+        PharmacyResponse response = pharmacyResponseOptional.orElse(new PharmacyResponse());
+        
+        // Đảm bảo stockQuantity được đặt ngay cả khi mapper không thực hiện
+        if (response.getStockQuantity() == null && productEntity.getStockQuantities() != null) {
+            response.setStockQuantity(productEntity.getStockQuantities());
+        }
+        return response;
     }
 
     private double calculateRating(ProductEntity entity) {
