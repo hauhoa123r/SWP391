@@ -1,6 +1,11 @@
 package org.project.controller;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.project.entity.StaffEntity;
+import org.project.enums.StaffRole;
 import org.project.service.StaffService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +25,17 @@ public class StaffController {
 	private final StaffService staffService;
 	
 	
-	@GetMapping("/checkin")
-	public String showCheckInForm(Model model) {
-		return "frontend/staff-menu";
-	}
+	// Show all staff
+    @GetMapping
+    public String showStaffList(Model model) {
+        List<StaffEntity> staffList = staffService.getAllStaff();
+        Map<StaffRole, List<StaffEntity>> groupedByRole = staffList.stream()
+                .collect(Collectors.groupingBy(StaffEntity::getStaffRole));
+
+        model.addAttribute("staffs", groupedByRole); // Add to Thymeleaf model
+        return "/frontend/staff-menu"; // Thymeleaf view name (e.g., templates/staff-list.html)
+    }
+    
 	@PostMapping("/checkin")
     public String processCheckIn(@RequestParam Long employeeId,
                                  RedirectAttributes redirectAttributes) {
@@ -45,13 +57,4 @@ public class StaffController {
         }
     }
 
-    @GetMapping("/checkin-success")
-    public String checkInSuccess() {
-        return "checkin-success";
-    }
-
-    @GetMapping("/checkin-error")
-    public String checkInError() {
-        return "checkin-error";
-    }
 }

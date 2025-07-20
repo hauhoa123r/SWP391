@@ -1,8 +1,7 @@
 package org.project.service.impl;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 import org.project.entity.StaffEntity;
 import org.project.entity.StaffScheduleEntity;
@@ -40,6 +39,11 @@ public class StaffServiceImpl implements StaffService{
         }
         return false; // Staff not found
     }
+
+	@Override
+	public List<StaffEntity> getAllStaff() {
+		return staffRepository.findAll();
+	}
 
 
 }

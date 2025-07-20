@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.StaffRole;
 import org.project.enums.StaffType;
@@ -20,6 +22,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "staffs", schema = "swp391")
 public class StaffEntity {
     @Id

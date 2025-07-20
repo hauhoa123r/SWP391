@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum StaffRole {
-    DOCTOR("doctor"),
-    TECHNICIAN("technician"),
-    SCHEDULING_COORDINATOR("scheduling_coordinator"),
-    PHARMACIST("pharmacist"),
-    INVENTORY_MANAGER("inventory_manager");
+    DOCTOR("Doctor"),
+    TECHNICIAN("Technician"),
+    SCHEDULING_COORDINATOR("Scheduling Coordinator"),
+    PHARMACIST("Pharmacist"),
+    INVENTORY_MANAGER("Inventory Manager");
     private final String value;
 }
