@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum StockTransactionType {
+public enum SupplierTransactionType {
     STOCK_IN("stock_in"),
     STOCK_OUT("stock_out");
 
