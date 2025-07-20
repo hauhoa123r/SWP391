@@ -1,10 +1,11 @@
 package org.project.service;
 
+import org.project.model.dto.ServiceDTO;
 import org.project.model.response.ServiceResponse;
 import org.springframework.data.domain.Page;
 
 public interface ServiceService {
-    Page<ServiceResponse> getServices(int index, int size);
+    Page<ServiceResponse> getServices(int index, int size, ServiceDTO serviceDTO);
 
     Page<ServiceResponse> getServicesByDepartment(Long departmentId, int index, int size);
 

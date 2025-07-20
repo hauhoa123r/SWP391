@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class DepartmentResponse {
     private Long id;
     private String name;
-    private String slogan;
     private String description;
-    private String bannerUrl;
 }

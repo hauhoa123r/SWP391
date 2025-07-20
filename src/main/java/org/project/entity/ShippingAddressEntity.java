@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "shipping_addresses", schema = "swp391")
+@FieldNameConstants
 public class ShippingAddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

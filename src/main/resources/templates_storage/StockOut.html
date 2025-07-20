@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="vi" dir="ltr">
+
+<head>
+    <!-- meta data -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="Fastkart admin is super flexible, powerful, clean & modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+          content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" href="frontend/assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="frontend/assets/images/favicon.png" type="image/x-icon">
+    <title>Fastkart - Quản lý xuất kho</title>
+
+    <!-- Google font -->
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet">
+
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" href="frontend/assets/css/linearicon.css">
+
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/font-awesome.css">
+
+    <!-- Themify icon css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/themify.css">
+
+    <!-- Dropzone css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/dropzone.css">
+
+    <!-- Feather icon css-->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/feather-icon.css">
+
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/remixicon.css">
+
+    <!-- Select2 css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/select2.min.css">
+
+    <!-- Plugins css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/animate.css">
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/chartist.css">
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/date-picker.css">
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/bootstrap.css">
+
+    <!-- Bootstrap-tag input css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/bootstrap-tagsinput.css">
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/style.css">
+
+    <!-- Custom styles -->
+    <style>
+        .file-upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .file-upload-area:hover {
+            border-color: #007bff;
+            background-color: #e7f3ff;
+        }
+        .file-upload-area.dragover {
+            border-color: #007bff;
+            background-color: #e7f3ff;
+        }
+        .status-pending { color: #fd7e14; }
+        .status-processing { color: #0d6efd; }
+        .status-completed { color: #198754; }
+        .status-cancelled { color: #dc3545; }
+        .excel-preview {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+<!-- tap on top start -->
+<div class="tap-top">
+    <span class="lnr lnr-chevron-up"></span>
+</div>
+<!-- tap on tap end -->
+
+<!-- page-wrapper start -->
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <!-- Page Header Start-->
+    <div class="page-header">
+        <div class="header-wrapper m-0">
+            <div class="header-logo-wrapper p-0">
+                <div class="logo-wrapper">
+                    <a href="index.html">
+                        <img class="img-fluid main-logo" src="frontend/assets/images/logo/1.png" alt="logo">
+                        <img class="img-fluid white-logo" src="frontend/assets/images/logo/1-white.png" alt="logo">
+                    </a>
+                </div>
+                <div class="toggle-sidebar">
+                    <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
+                    <a href="index.html">
+                        <img src="frontend/assets/images/logo/1.png" class="img-fluid" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <form class="form-inline search-full" action="javascript:void(0)" method="get">
+                <div class="form-group w-100">
+                    <div class="Typeahead Typeahead--twitterUsers">
+                        <div class="u-posRelative">
+                            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
+                                   placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
+                            <i class="close-search" data-feather="x"></i>
+                            <div class="spinner-border Typeahead-spinner" role="status">
+                                <span class="sr-only">Đang tải...</span>
+                            </div>
+                        </div>
+                        <div class="Typeahead-menu"></div>
+                    </div>
+                </div>
+            </form>
+            <div class="nav-right col-6 pull-right right-header p-0">
+                <ul class="nav-menus">
+                    <li>
+                            <span class="header-search">
+                                <i class="ri-search-line"></i>
+                            </span>
+                    </li>
+                    <li class="onhover-dropdown">
+                        <div class="notification-box">
+                            <i class="ri-notification-line"></i>
+                            <span class="badge rounded-pill badge-theme">4</span>
+                        </div>
+                        <ul class="notification-dropdown onhover-show-div">
+                            <li>
+                                <i class="ri-notification-line"></i>
+                                <h6 class="f-18 mb-0">Thông báo</h6>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-primary"></i>Đang xử lý giao hàng <span
+                                        class="pull-right">10 phút</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-success"></i>Hoàn thành đơn hàng <span
+                                        class="pull-right">1 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-info"></i>Tạo vé hỗ trợ <span
+                                        class="pull-right">3 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-danger"></i>Hoàn thành giao hàng <span
+                                        class="pull-right">6 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary" href="javascript:void(0)">Kiểm tra tất cả thông báo</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <div class="mode">
+                            <i class="ri-moon-line"></i>
+                        </div>
+                    </li>
+                    <li class="profile-nav onhover-dropdown pe-0 me-0">
+                        <div class="media profile-media">
+                            <img class="user-profile rounded-circle" src="frontend/assets/images/users/4.jpg" alt="">
+                            <div class="user-name-hide media-body">
+                                <span>Emay Walter</span>
+                                <p class="mb-0 font-roboto">Quản trị viên<i class="middle ri-arrow-down-s-line"></i></p>
+                            </div>
+                        </div>
+                        <ul class="profile-dropdown onhover-show-div">
+                            <li>
+                                <a href="all-users.html">
+                                    <i data-feather="users"></i>
+                                    <span>Người dùng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="order-list.html">
+                                    <i data-feather="archive"></i>
+                                    <span>Đơn hàng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="support-ticket.html">
+                                    <i data-feather="phone"></i>
+                                    <span>Vé hỗ trợ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="profile-setting.html">
+                                    <i data-feather="settings"></i>
+                                    <span>Cài đặt</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                   href="javascript:void(0)">
+                                    <i data-feather="log-out"></i>
+                                    <span>Đăng xuất</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header Ends-->
+
+    <!-- Page Body start -->
+    <div class="page-body-wrapper">
+        <!-- Page Sidebar Start-->
+        <div class="sidebar-wrapper">
+            <div id="sidebarEffect"></div>
+            <div>
+                <div class="logo-wrapper logo-wrapper-center">
+                    <a href="index.html" data-bs-original-title="" title="">
+                        <img class="img-fluid for-white" src="frontend/assets/images/logo/full-white.png" alt="logo">
+                    </a>
+                    <div class="back-btn">
+                        <i class="fa fa-angle-left"></i>
+                    </div>
+                    <div class="toggle-sidebar">
+                        <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                    </div>
+                </div>
+                <div class="logo-icon-wrapper">
+                    <a href="index.html">
+                        <img class="img-fluid main-logo main-white" src="frontend/assets/images/logo/1-white.png" alt="logo">
+                        <img class="img-fluid main-logo main-dark" src="frontend/assets/images/logo/logo-white.png"
+                             alt="logo">
+                    </a>
+                </div>
+                <nav class="sidebar-main">
+                    <div class="left-arrow" id="left-arrow">
+                        <i data-feather="arrow-left"></i>
+                    </div>
+
+                    <div id="sidebar-menu">
+                        <ul class="sidebar-links" id="simple-bar">
+                            <li class="back-btn"></li>
+
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" href="index.html">
+                                    <i class="ri-home-line"></i>
+                                    <span>Bảng điều khiển</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                    <i class="ri-store-3-line"></i>
+                                    <span>Giao dịch</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a href="StockIn.html">Nhập kho</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="StockOut.html">Xuất kho</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                    <i class="ri-list-check-2"></i>
+                                    <span>Hóa đơn</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a href="StockInInvoice.html">Hóa đơn nhập kho</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="StockOutInvoice.html">Hóa đơn xuất kho</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="CustomerInvoice.html">Hóa đơn khách hàng</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                    <i class="ri-list-settings-line"></i>
+                                    <span>Kho hàng</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a href="medical-equipment.html">Thiết bị y tế</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="medicine.html">Thuốc</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                    <i class="ri-archive-line"></i>
+                                    <span>Đơn hàng</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a href="order-list.html">Danh sách đơn hàng</a>
+                                    </li>
+                                    <li>
+                                        <a href="order-detail.html">Chi tiết đơn hàng</a>
+                                    </li>
+                                    <li>
+                                        <a href="order-tracking.html">Theo dõi đơn hàng</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                    <i class="ri-price-tag-3-line"></i>
+                                    <span>Mã giảm giá</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a href="coupon-list.html">Danh sách mã giảm giá</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="create-coupon.html">Tạo mã giảm giá</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" href="product-review.html">
+                                    <i class="ri-star-line"></i>
+                                    <span>Đánh giá sản phẩm</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" href="reports.html">
+                                    <i class="ri-file-chart-line"></i>
+                                    <span>Báo cáo</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="right-arrow" id="right-arrow">
+                        <i data-feather="arrow-right"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Page Sidebar Ends-->
+
+        <!-- Main Content -->
+        <div class="page-body">
+            <div class="container-fluid">
+                <!-- Main Table - Danh sách xuất kho -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card card-table">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h5>Danh sách phiếu xuất kho</h5>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn-group float-end">
+                                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createStockOutModal">
+                                                <i class="ri-add-line"></i> Tạo phiếu xuất kho
+                                            </button>
+                                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#uploadExcelModal">
+                                                <i class="ri-file-excel-line"></i> Import Excel
+                                            </button>
+
+                                            <button class="btn btn-primary" onclick="refreshStockOut()">
+                                                <i class="ri-refresh-line"></i> Làm mới
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Filter Section -->
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" id="searchFilter" placeholder="Tìm kiếm mã phiếu, người nhận...">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-select" id="statusFilter">
+                                            <option value="">Tất cả trạng thái</option>
+                                            <option value="pending">Chờ xử lý</option>
+                                            <option value="processing">Đang xử lý</option>
+                                            <option value="completed">Hoàn thành</option>
+                                            <option value="cancelled">Đã hủy</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-select" id="reasonFilter">
+                                            <option value="">Tất cả lý do</option>
+                                            <option value="SALE">Bán hàng</option>
+                                            <option value="TRANSFER">Chuyển kho</option>
+                                            <option value="RETURN">Trả hàng</option>
+                                            <option value="EXPIRED">Hết hạn</option>
+                                            <option value="DAMAGED">Hư hỏng</option>
+                                            <option value="OTHER">Khác</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-secondary" onclick="clearFilters()">
+                                            <i class="ri-filter-off-line"></i> Xóa bộ lọc
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="stockOutTable">
+                                        <thead>
+                                        <tr>
+                                            <th>Mã phiếu xuất</th>
+                                            <th>Ngày xuất</th>
+                                            <th>Người nhận</th>
+                                            <th>Lý do xuất</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Trạng thái</th>
+                                            <th>Thao tác</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="stockOutTableBody">
+                                        <!-- Hiển thị dữ liệu động từ controller -->
+                                        <tr th:each="supplierOut : ${supplierOuts}" th:data-id="${supplierOut.id}" th:data-status="${supplierOut.status}">
+                                            <td><strong th:text="${'SO-' + supplierOut.id}">SO-001</strong></td>
+                                            <td th:text="${#temporals.format(supplierOut.createdAt, 'dd-MM-yyyy')}">Ngày xuất</td>
+                                            <td th:text="${supplierOut.recipient != null ? supplierOut.recipient : 'N/A'}">Người nhận</td>
+                                            <td>
+                                                <!-- Simple badge implementation -->
+                                                <span th:if="${supplierOut.reason == 'SALE'}" class="badge bg-primary">Bán hàng</span>
+                                                <span th:if="${supplierOut.reason == 'TRANSFER'}" class="badge bg-warning">Chuyển kho</span>
+                                                <span th:if="${supplierOut.reason == 'RETURN'}" class="badge bg-danger">Trả hàng</span>
+                                                <span th:if="${supplierOut.reason == 'EXPIRED'}" class="badge bg-secondary">Hết hạn</span>
+                                                <span th:if="${supplierOut.reason == 'DAMAGED'}" class="badge bg-danger">Hư hỏng</span>
+                                                <span th:if="${supplierOut.reason != 'SALE' && supplierOut.reason != 'TRANSFER' && supplierOut.reason != 'RETURN' && supplierOut.reason != 'EXPIRED' && supplierOut.reason != 'DAMAGED'}" class="badge bg-info">Khác</span>
+                                            </td>
+                                            <td class="text-end"><strong th:text="${#numbers.formatDecimal(supplierOut.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong></td>
+                                            <td>
+                                                <!-- Simple status implementation -->
+                                                <span th:if="${supplierOut.status == 'PENDING'}" class="status-pending">Chờ xử lý</span>
+                                                <span th:if="${supplierOut.status == 'PROCESSING'}" class="status-processing">Đang xử lý</span>
+                                                <span th:if="${supplierOut.status == 'COMPLETED'}" class="status-completed">Hoàn thành</span>
+                                                <span th:if="${supplierOut.status == 'CANCELLED'}" class="status-cancelled">Đã hủy</span>
+                                                <span th:if="${supplierOut.status != 'PENDING' && supplierOut.status != 'PROCESSING' && supplierOut.status != 'COMPLETED' && supplierOut.status != 'CANCELLED'}" class="status-processing">Đang xử lý</span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a th:href="@{'/StockOutDetail.html?id=' + ${supplierOut.id}}" class="btn btn-sm btn-primary">
+                                                        <i class="ri-eye-line"></i>
+                                                    </a>
+                                                    <a th:href="@{'/invoiceouttracking.html?id=' + ${supplierOut.id}}" class="btn btn-sm btn-info">
+                                                        <i class="ri-truck-line"></i> 
+                                                    </a>
+                                                    
+                                                    <!-- Nút xử lý trạng thái -->
+                                                    <form th:if="${supplierOut.status == 'PENDING'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                        <input type="hidden" name="status" value="PROCESSING" />
+                                                        <button type="submit" class="btn btn-sm btn-success" title="Xử lý">
+                                                            <i class="ri-play-line"></i>
+                                                        </button>
+                                                    </form>
+                                                    
+                                                    <form th:if="${supplierOut.status == 'PROCESSING'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                        <input type="hidden" name="status" value="COMPLETED" />
+                                                        <button type="submit" class="btn btn-sm btn-success" title="Hoàn thành">
+                                                            <i class="ri-check-line"></i>
+                                                        </button>
+                                                    </form>
+                                                    
+                                                    <form th:if="${supplierOut.status == 'PENDING' || supplierOut.status == 'PROCESSING'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                        <input type="hidden" name="status" value="CANCELLED" />
+                                                        <button type="submit" class="btn btn-sm btn-danger" title="Hủy">
+                                                            <i class="ri-close-line"></i>
+                                                        </button>
+                                                    </form>
+                                                    
+                                                    <button th:if="${supplierOut.status == 'COMPLETED'}" class="btn btn-sm btn-info" th:onclick="'printStockOut(' + ${supplierOut.id} + ')'">
+                                                        <i class="ri-printer-line"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                        <!-- Hiển thị thông báo khi không có dữ liệu -->
+                                        <tr th:if="${supplierOuts.empty}">
+                                            <td colspan="7" class="text-center">Không có dữ liệu xuất kho</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page Body End -->
+</div>
+<!-- page-wrapper End -->
+
+<!-- Modal tạo phiếu xuất kho -->
+<div class="modal fade" id="createStockOutModal" tabindex="-1" aria-labelledby="createStockOutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createStockOutModalLabel">Tạo phiếu xuất kho mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createStockOutForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Mã phiếu xuất</label>
+                                <input class="form-control" type="text" id="stockOutId" readonly value="SO-AUTO-001">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Ngày xuất <span class="text-danger">*</span></label>
+                                <input class="form-control" type="date" id="stockOutDate" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Người nhận <span class="text-danger">*</span></label>
+                                <select class="form-select" id="recipientId" required>
+                                    <option value="">Chọn người nhận</option>
+                                    <option value="1">Nguyễn Văn A</option>
+                                    <option value="2">Trần Thị B</option>
+                                    <option value="3">Lê Văn C</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Lý do xuất <span class="text-danger">*</span></label>
+                                <select class="form-select" id="reason" required>
+                                    <option value="">Chọn lý do xuất kho</option>
+                                    <option value="SALE">Bán hàng</option>
+                                    <option value="TRANSFER">Chuyển kho</option>
+                                    <option value="RETURN">Trả hàng</option>
+                                    <option value="EXPIRED">Hết hạn</option>
+                                    <option value="DAMAGED">Hư hỏng</option>
+                                    <option value="OTHER">Khác</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Ghi chú</label>
+                        <textarea class="form-control" id="notes" rows="3" placeholder="Nhập ghi chú (nếu có)"></textarea>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Chi tiết sản phẩm xuất kho</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table" id="productTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Sản phẩm</th>
+                                        <th>Số lô</th>
+                                        <th>Số lượng</th>
+                                        <th>Đơn giá</th>
+                                        <th>Thành tiền</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <select class="form-select product-select" required>
+                                                <option value="">Chọn sản phẩm</option>
+                                                <option value="1">Paracetamol 500mg</option>
+                                                <option value="2">Amoxicillin 250mg</option>
+                                                <option value="3">Máy đo huyết áp</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-select batch-select" required>
+                                                <option value="">Chọn số lô</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control quantity" min="1" required>
+                                            <small class="text-muted">Tồn kho: <span class="stock-qty">0</span></small>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control price" min="0" required>
+                                        </td>
+                                        <td>
+                                            <span class="total">0</span>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm remove-row">
+                                            <i class="ri-delete-bin-line"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-end">
+                                            <strong>Tổng cộng:</strong>
+                                        </td>
+                                        <td>
+                                            <strong class="grand-total">0</strong>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <button type="button" class="btn btn-primary mt-3" id="addRow">
+                                <i class="ri-add-line"></i> Thêm sản phẩm
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="saveStockOut">Lưu phiếu xuất</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal upload Excel -->
+<div class="modal fade" id="uploadExcelModal" tabindex="-1" aria-labelledby="uploadExcelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadExcelModalLabel">Import danh sách xuất kho từ Excel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Chọn file Excel</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <input type="file" id="excelFile" accept=".xlsx,.xls" style="display: none;">
+                        <i class="ri-file-excel-line" style="font-size: 48px; color: #28a745;"></i>
+                        <h6 class="mt-2">Kéo thả file Excel vào đây hoặc click để chọn</h6>
+                        <p class="text-muted">Chỉ hỗ trợ file .xlsx, .xls</p>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <a href="#" class="btn btn-outline-primary btn-sm" id="downloadTemplate">
+                        <i class="ri-download-line"></i> Tải template mẫu
+                    </a>
+                </div>
+
+                <div id="excelPreview" class="excel-preview" style="display: none;">
+                    <h6>Xem trước dữ liệu:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm" id="previewTable">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="processExcel" disabled>Xử lý dữ liệu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal chi tiết phiếu xuất -->
+<div class="modal fade" id="stockOutDetailModal" tabindex="-1" aria-labelledby="stockOutDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="stockOutDetailModalLabel">Chi tiết phiếu xuất kho</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="stockOutDetailContent">
+                <!-- Nội dung chi tiết sẽ được load động -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xác nhận xóa -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa sản phẩm này khỏi phiếu xuất?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Có, xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal cảnh báo số lượng -->
+<div class="modal fade" id="quantityWarningModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cảnh báo số lượng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <p>Số lượng xuất không được vượt quá số lượng tồn kho!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đã hiểu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- latest js -->
+<script src="frontend/assets/js/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap js -->
+<script src="frontend/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+<!-- feather icon js -->
+<script src="frontend/assets/js/icons/feather-icon/feather.min.js"></script>
+<script src="frontend/assets/js/icons/feather-icon/feather-icon.js"></script>
+
+<!-- scrollbar simplebar js -->
+<script src="frontend/assets/js/scrollbar/simplebar.js"></script>
+<script src="frontend/assets/js/scrollbar/custom.js"></script>
+
+<!-- Sidebar js -->
+<script src="frontend/assets/js/config.js"></script>
+
+<!-- bootstrap tag-input js -->
+<script src="frontend/assets/js/bootstrap-tagsinput.min.js"></script>
+<script src="frontend/assets/js/sidebar-menu.js"></script>
+
+<!-- customizer js -->
+<script src="frontend/assets/js/customizer.js"></script>
+
+<!-- Dropzone js -->
+<script src="frontend/assets/js/dropzone/dropzone.js"></script>
+<script src="frontend/assets/js/dropzone/dropzone-script.js"></script>
+
+<!-- Plugins js -->
+<script src="frontend/assets/js/notify/bootstrap-notify.min.js"></script>
+<script src="frontend/assets/js/notify/index.js"></script>
+
+<!-- ck editor js -->
+<script src="frontend/assets/js/ckeditor.js"></script>
+<script src="frontend/assets/js/ckeditor-custom.js"></script>
+
+<!-- select2 js -->
+<script src="frontend/assets/js/select2.min.js"></script>
+<script src="frontend/assets/js/select2-custom.js"></script>
+
+<!-- sidebar effect -->
+<script src="frontend/assets/js/sidebareffect.js"></script>
+
+<!-- Theme js -->
+<script src="frontend/assets/js/script.js"></script>
+
+<!-- SheetJS for Excel processing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<!-- Custom JavaScript -->
+<script>
+    $(document).ready(function() {
+        // Set current date as default
+        $('#stockOutDate').val(new Date().toISOString().split('T')[0]);
+
+        // File upload handling
+        $('#fileUploadArea').on('click', function() {
+            $('#excelFile').click();
+        });
+
+        $('#excelFile').on('change', function(e) {
+            handleFileSelect(e.target.files[0]);
+        });
+
+        // Drag and drop functionality
+        $('#fileUploadArea').on('dragover', function(e) {
+            e.preventDefault();
+            $(this).addClass('dragover');
+        });
+
+        $('#fileUploadArea').on('dragleave', function(e) {
+            e.preventDefault();
+            $(this).removeClass('dragover');
+        });
+
+        $('#fileUploadArea').on('drop', function(e) {
+            e.preventDefault();
+            $(this).removeClass('dragover');
+            const files = e.originalEvent.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        // Add row functionality
+        $('#addRow').on('click', function() {
+            addProductRow();
+        });
+
+        // Remove row functionality
+        $(document).on('click', '.remove-row', function() {
+            if ($('#productTable tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+                calculateTotal();
+            }
+        });
+
+        // Calculate total when quantity or price changes
+        $(document).on('input', '.quantity, .price', function() {
+            calculateRowTotal($(this).closest('tr'));
+            calculateTotal();
+        });
+
+        // Product select change
+        $(document).on('change', '.product-select', function() {
+            const productId = $(this).val();
+            const row = $(this).closest('tr');
+            loadBatches(productId, row);
+        });
+
+        // Batch select change
+        $(document).on('change', '.batch-select', function() {
+            const batchId = $(this).val();
+            const row = $(this).closest('tr');
+            loadBatchInfo(batchId, row);
+        });
+
+        // Save stock out
+        $('#saveStockOut').on('click', function() {
+            saveStockOut();
+        });
+
+        // Process Excel
+        $('#processExcel').on('click', function() {
+            processExcelData();
+        });
+
+        // Download template
+        $('#downloadTemplate').on('click', function(e) {
+            e.preventDefault();
+            downloadTemplate();
+        });
+
+        // Filter functionality
+        $('#searchFilter, #statusFilter, #reasonFilter').on('change input', function() {
+            filterTable();
+        });
+    });
+
+    // Handle file selection
+    function handleFileSelect(file) {
+        if (!file) return;
+
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!['xlsx', 'xls'].includes(fileExtension)) {
+            alert('Chỉ hỗ trợ file Excel (.xlsx, .xls)');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+            displayExcelPreview(jsonData);
+            $('#processExcel').prop('disabled', false);
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    // Display Excel preview
+    function displayExcelPreview(data) {
+        const previewTable = $('#previewTable');
+        previewTable.find('thead, tbody').empty();
+
+        if (data.length === 0) return;
+
+        // Header row
+        const headerRow = data[0];
+        let headerHtml = '<tr>';
+        headerRow.forEach(header => {
+            headerHtml += `<th>${header}</th>`;
+        });
+        headerHtml += '</tr>';
+        previewTable.find('thead').html(headerHtml);
+
+        // Data rows (show first 10 rows)
+        let bodyHtml = '';
+        const maxRows = Math.min(data.length, 11);
+        for (let i = 1; i < maxRows; i++) {
+            bodyHtml += '<tr>';
+            data[i].forEach(cell => {
+                bodyHtml += `<td>${cell || ''}</td>`;
+            });
+            bodyHtml += '</tr>';
+        }
+        previewTable.find('tbody').html(bodyHtml);
+
+        $('#excelPreview').show();
+    }
+
+    // Process Excel data
+    function processExcelData() {
+        // Here you would process the Excel data and create stock out records
+        alert('Đang xử lý dữ liệu Excel...');
+
+        // Simulate processing
+        setTimeout(() => {
+            alert('Đã xử lý thành công dữ liệu Excel!');
+            $('#uploadExcelModal').modal('hide');
+            refreshStockOut();
+        }, 2000);
+    }
+
+    // Download template
+    function downloadTemplate() {
+        const templateData = [
+            ['Ngày xuất', 'Người nhận', 'Lý do xuất', 'Mã sản phẩm', 'Tên sản phẩm', 'Số lô', 'Số lượng', 'Đơn giá', 'Ghi chú'],
+            ['2024-01-15', 'Nguyễn Văn A', 'SALE', 'SP001', 'Paracetamol 500mg', 'LOT001', '10', '5000', ''],
+            ['2024-01-15', 'Nguyễn Văn A', 'SALE', 'SP002', 'Amoxicillin 250mg', 'LOT002', '5', '8000', '']
+        ];
+
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(templateData);
+        XLSX.utils.book_append_sheet(wb, ws, 'Template');
+        XLSX.writeFile(wb, 'template_xuat_kho.xlsx');
+    }
+
+    // Add product row
+    function addProductRow() {
+        const newRow = `
+        <tr>
+            <td>
+                <select class="form-select product-select" required>
+                    <option value="">Chọn sản phẩm</option>
+                    <option value="1">Paracetamol 500mg</option>
+                    <option value="2">Amoxicillin 250mg</option>
+                    <option value="3">Máy đo huyết áp</option>
+                </select>
+            </td>
+            <td>
+                <select class="form-select batch-select" required>
+                    <option value="">Chọn số lô</option>
+                </select>
+            </td>
+            <td>
+                <input type="number" class="form-control quantity" min="1" required>
+                <small class="text-muted">Tồn kho: <span class="stock-qty">0</span></small>
+            </td>
+            <td>
+                <input type="number" class="form-control price" min="0" required>
+            </td>
+            <td>
+                <span class="total">0</span>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm remove-row">
+                    <i class="ri-delete-bin-line"></i>
+                </button>
+            </td>
+        </tr>
+    `;
+        $('#productTable tbody').append(newRow);
+    }
+
+    // Load batches for selected product
+    function loadBatches(productId, row) {
+        // Simulate loading batches from server
+        const batches = {
+            '1': [
+                { id: 'B001', name: 'LOT001 - HSD: 2025-12-31', stock: 100 },
+                { id: 'B002', name: 'LOT002 - HSD: 2025-06-30', stock: 50 }
+            ],
+            '2': [
+                { id: 'B003', name: 'LOT003 - HSD: 2025-08-15', stock: 75 },
+                { id: 'B004', name: 'LOT004 - HSD: 2025-04-20', stock: 25 }
+            ],
+            '3': [
+                { id: 'B005', name: 'LOT005 - HSD: 2027-01-01', stock: 10 },
+                { id: 'B006', name: 'LOT006 - HSD: 2026-12-31', stock: 5 }
+            ]
+        };
+
+        const batchSelect = row.find('.batch-select');
+        batchSelect.empty().append('<option value="">Chọn số lô</option>');
+
+        if (batches[productId]) {
+            batches[productId].forEach(batch => {
+                batchSelect.append(`<option value="${batch.id}" data-stock="${batch.stock}">${batch.name}</option>`);
+            });
+        }
+    }
+
+    // Load batch info
+    function loadBatchInfo(batchId, row) {
+        const selectedOption = row.find('.batch-select option:selected');
+        const stock = selectedOption.data('stock') || 0;
+        row.find('.stock-qty').text(stock);
+
+        // Set max quantity
+        row.find('.quantity').attr('max', stock);
+    }
+
+    // Calculate row total
+    function calculateRowTotal(row) {
+        const quantity = parseFloat(row.find('.quantity').val()) || 0;
+        const price = parseFloat(row.find('.price').val()) || 0;
+        const total = quantity * price;
+        row.find('.total').text(total.toLocaleString('vi-VN'));
+    }
+
+    // Calculate grand total
+    function calculateTotal() {
+        let grandTotal = 0;
+        $('#productTable tbody tr').each(function() {
+            const quantity = parseFloat($(this).find('.quantity').val()) || 0;
+            const price = parseFloat($(this).find('.price').val()) || 0;
+            grandTotal += quantity * price;
+        });
+        $('.grand-total').text(grandTotal.toLocaleString('vi-VN'));
+    }
+
+    // Print stock out
+    function printStockOut(stockOutId) {
+        alert('Đang chuẩn bị in phiếu xuất kho ' + stockOutId + '...');
+        // Implement print functionality
+    }
+
+    // Filter table
+    function filterTable() {
+        const searchTerm = $('#searchFilter').val().toLowerCase();
+        const statusFilter = $('#statusFilter').val();
+        const reasonFilter = $('#reasonFilter').val();
+
+        $('#stockOutTableBody tr').each(function() {
+            const row = $(this);
+            const text = row.text().toLowerCase();
+            const status = row.data('status');
+            const reason = row.find('.badge').text();
+
+            let show = true;
+
+            if (searchTerm && !text.includes(searchTerm)) {
+                show = false;
+            }
+
+            if (statusFilter && status !== statusFilter) {
+                show = false;
+            }
+
+            if (reasonFilter && !reason.includes(reasonFilter)) {
+                show = false;
+            }
+
+            row.toggle(show);
+        });
+    }
+
+    // Clear filters
+    function clearFilters() {
+        $('#searchFilter').val('');
+        $('#statusFilter').val('');
+        $('#reasonFilter').val('');
+        filterTable();
+    }
+
+    // Refresh stock out list
+    function refreshStockOut() {
+        alert('Đang làm mới danh sách...');
+        // Implement refresh functionality
+        location.reload();
+    }
+</script>
+
+</body>
+</html>

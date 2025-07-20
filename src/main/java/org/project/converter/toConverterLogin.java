@@ -1,17 +1,18 @@
 package org.project.converter;
 
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.project.config.ModelMapperConfig;
 import org.project.entity.UserEntity;
 import org.project.model.response.UserLoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import lombok.NoArgsConstructor;
-
 @Component
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class toConverterLogin {
-	@Autowired
+    @Autowired
     private ModelMapperConfig modelMapper;
 
     public UserLoginResponse toConverterUserLoginResponse(UserEntity userEntity) {

@@ -5,8 +5,7 @@
         breadCrumbTexts = ${{{'Dịch vụ'}}},
         breadCrumbLinks = ${{{''}}}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org"
->
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Danh sách dịch vụ</title>
 </head>
@@ -14,6 +13,78 @@
 <main class="main-content">
     <section class="section-padding" layout:fragment="content">
         <div class="container">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white mb-0">
+                    <h5 class="mb-4 text-white">Tìm kiếm dịch vụ</h5>
+                </div>
+                <div class="card-body">
+                    <form class="mb-4" id="filter-form">
+                        <!-- Hàng 1: Tên dịch vụ + Khoảng giá -->
+                        <div class="row mb-3">
+                            <div class="col-md-7">
+                                <label class="form-label" for="serviceName">Tên dịch vụ</label>
+                                <input class="form-control" id="serviceName" name="productEntityName"
+                                       placeholder="Nhập tên dịch vụ"
+                                       type="text">
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label">Khoảng giá</label>
+                                <div class="input-group">
+                                    <input class="form-control" id="minPrice" name="minPrice" placeholder="Giá từ"
+                                           type="number">
+                                    <span class="input-group-text">-</span>
+                                    <input class="form-control" id="maxPrice" name="maxPrice" placeholder="Đến"
+                                           type="number">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hàng 2: Đánh giá + Sắp xếp -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label" for="rating">Đánh giá tối thiểu</label>
+                                <select class="form-select" id="rating" name="minStarRating">
+                                    <option value="">Tất cả đánh giá</option>
+                                    <option value="5">5 sao</option>
+                                    <option value="4">4 sao trở lên</option>
+                                    <option value="3">3 sao trở lên</option>
+                                    <option value="2">2 sao trở lên</option>
+                                    <option value="1">1 sao trở lên</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label" for="sortField">Sắp xếp theo</label>
+                                <select class="form-select" id="sortField" name="sortFieldName">
+                                    <option value="">Không sắp xếp</option>
+                                    <option value="productEntity.name">Tên</option>
+                                    <option value="productEntity.price">Giá</option>
+                                    <option value="productEntity.reviewEntities.rating">Đánh giá</option>
+                                    <option value="productEntity.reviewEntities.id">Lượt đánh giá</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label" for="sortOrder">Thứ tự</label>
+                                <select class="form-select" id="sortOrder" name="sortDirection">
+                                    <option value="ASC">Tăng dần</option>
+                                    <option value="DESC">Giảm dần</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Hàng 3: Các nút -->
+                        <div class="row">
+                            <div class="col-12 text-end">
+                                <button class="btn btn-outline-secondary me-2" type="reset">
+                                    <i class="fas fa-undo me-1"></i> Đặt lại
+                                </button>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search me-1"></i> Tìm kiếm
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="row row-cols-xl-3 row-cols-md-2 row-cols-1" id="service-list">
             </div>
         </div>

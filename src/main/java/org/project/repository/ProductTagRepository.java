@@ -21,4 +21,6 @@ public interface ProductTagRepository extends JpaRepository<ProductTagEntity, Pr
 
 	@Query("SELECT t FROM ProductTagEntity t WHERE t.id.productId = :productId AND t.id.name = :name")
 	Optional<ProductTagEntity> findTagByIdCustom(@Param("productId") Long productId, @Param("name") String name);
+    @Query("SELECT DISTINCT pt.id.name FROM ProductTagEntity pt")
+    List<String> findDistinctTagNames();
 }

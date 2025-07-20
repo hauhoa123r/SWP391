@@ -15,4 +15,5 @@ public interface ProductAdditionalInfoRepository extends JpaRepository<ProductAd
 			+ "(pai.id, pai.name, pai.value) FROM ProductAdditionalInfoEntity pai"
 			+ " WHERE pai.productEntity.id = :productId") 
 	List<ProductAdditionalInfoResponse> findAdditionalInfoByProductId(@Param("productId") Long productId); 
+    List<ProductAdditionalInfoEntity> findByProductEntityId(Long productId);
 }

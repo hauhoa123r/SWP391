@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fastkart - Quản lý thuốc</title>
+
+    <!-- CSS Files -->
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/font-awesome.css">
+    <link rel="stylesheet" href="frontend/assets/css/linearicon.css">
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/themify.css">
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/feather-icon.css">
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/remixicon.css">
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/datatables.css">
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/vendors/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="frontend/assets/css/style.css">
+
+    <style>
+        .medicine-card { border: 1px solid #e0e0e0; border-radius: 8px; transition: all 0.3s; }
+        .medicine-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .stock-low { color: #ff6b6b; font-weight: bold; }
+        .stock-normal { color: #51cf66; }
+        .expired-soon { color: #ff922b; }
+        .expired { color: #ff6b6b; }
+        .workflow-tabs { margin-bottom: 20px; }
+        .tab-content { min-height: 400px; }
+        .order-item { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; padding: 15px; }
+        .order-pending { border-left: 4px solid #ffc107; }
+        .order-preparing { border-left: 4px solid #17a2b8; }
+        .order-ready { border-left: 4px solid #28a745; }
+        .batch-info { font-size: 0.8em; color: #666; }
+    </style>
+</head>
+
+<body>
+<div class="tap-top"><span class="lnr lnr-chevron-up"></span></div>
+
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <!-- Bắt đầu tiêu đề trang -->
+    <div class="page-header">
+        <div class="header-wrapper m-0">
+            <div class="header-logo-wrapper p-0">
+                <div class="logo-wrapper">
+                    <a href="index.html">
+                        <img class="img-fluid main-logo" src="frontend/assets/images/logo/1.png" alt="logo">
+                        <img class="img-fluid white-logo" src="frontend/assets/images/logo/1-white.png" alt="logo">
+                    </a>
+                </div>
+                <div class="toggle-sidebar">
+                    <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
+                    <a href="index.html">
+                        <img src="frontend/assets/images/logo/1.png" class="img-fluid" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <form class="form-inline search-full" action="javascript:void(0)" method="get">
+                <div class="form-group w-100">
+                    <div class="Typeahead Typeahead--twitterUsers">
+                        <div class="u-posRelative">
+                            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
+                                   placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
+                            <i class="close-search" data-feather="x"></i>
+                            <div class="spinner-border Typeahead-spinner" role="status">
+                                <span class="sr-only">Đang tải...</span>
+                            </div>
+                        </div>
+                        <div class="Typeahead-menu"></div>
+                    </div>
+                </div>
+            </form>
+            <div class="nav-right col-6 pull-right right-header p-0">
+                <ul class="nav-menus">
+                    <li>
+                        <span class="header-search">
+                            <i class="ri-search-line"></i>
+                        </span>
+                    </li>
+                    <li class="onhover-dropdown">
+                        <div class="notification-box">
+                            <i class="ri-notification-line"></i>
+                            <span class="badge rounded-pill badge-theme">4</span>
+                        </div>
+                        <ul class="notification-dropdown onhover-show-div">
+                            <li>
+                                <i class="ri-notification-line"></i>
+                                <h6 class="f-18 mb-0">Thông báo</h6>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-primary"></i>Đang xử lý giao hàng <span
+                                        class="pull-right">10 phút</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-success"></i>Hoàn thành đơn hàng <span
+                                        class="pull-right">1 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-info"></i>Tạo vé hỗ trợ <span
+                                        class="pull-right">3 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-danger"></i>Hoàn thành giao hàng <span
+                                        class="pull-right">6 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary" href="javascript:void(0)">Xem tất cả thông báo</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="mode">
+                            <i class="ri-moon-line"></i>
+                        </div>
+                    </li>
+                    <li class="profile-nav onhover-dropdown pe-0 me-0">
+                        <div class="media profile-media">
+                            <img class="user-profile rounded-circle" src="frontend/assets/images/users/4.jpg" alt="">
+                            <div class="user-name-hide media-body">
+                                <span>Emay Walter</span>
+                                <p class="mb-0 font-roboto">Quản trị viên<i class="middle ri-arrow-down-s-line"></i></p>
+                            </div>
+                        </div>
+                        <ul class="profile-dropdown onhover-show-div">
+                            <li>
+                                <a href="all-users.html">
+                                    <i data-feather="users"></i>
+                                    <span>Người dùng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="order-list.html">
+                                    <i data-feather="archive"></i>
+                                    <span>Đơn hàng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="support-ticket.html">
+                                    <i data-feather="phone"></i>
+                                    <span>Vé hỗ trợ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="profile-setting.html">
+                                    <i data-feather="settings"></i>
+                                    <span>Cài đặt</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                   href="javascript:void(0)">
+                                    <i data-feather="log-out"></i>
+                                    <span>Đăng xuất</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Kết thúc tiêu đề trang -->
+
+
+    <!-- Sidebar -->
+    <div class="page-body-wrapper">
+        <!-- Bắt đầu thanh bên -->
+        <div class="sidebar-wrapper">
+            <div id="sidebarEffect"></div>
+            <div>
+                <div class="logo-wrapper logo-wrapper-center">
+                    <a href="index.html" data-bs-original-title="" title="">
+                        <img class="img-fluid for-white" src="frontend/assets/images/logo/full-white.png" alt="logo">
+                    </a>
+                    <div class="back-btn">
+                        <i class="fa fa-angle-left"></i>
+                    </div>
+                    <div class="toggle-sidebar">
+                        <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                    </div>
+                </div>
+                <div class="logo-icon-wrapper">
+                    <a href="index.html">
+                        <img class="img-fluid main-logo main-white" src="frontend/assets/images/logo/1-white.png" alt="logo">
+                        <img class="img-fluid main-logo main-dark" src="frontend/assets/images/logo/logo-white.png"
+                             alt="logo">
+                    </a>
+                </div>
+                <nav class="sidebar-main">
+                    <div class="left-arrow" id="left-arrow">
+                        <i data-feather="arrow-left"></i>
+                    </div>
+
+                    <div id="sidebar-menu">
+                        <ul class="sidebar-links" id="simple-bar">
+                            <li class="back-btn"></li>
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" href="index.html">
+                                    <i class="ri-home-line"></i>
+                                    <span>Bảng điều khiển</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                    <i class="ri-store-3-line"></i>
+                                    <span>Giao dịch</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a href="StockIn.html">Nhập kho</a>
+                                    </li>
+                                    <li>
+                                        <a href="StockOut.html">Xuất kho</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                    <i class="ri-list-check-2"></i>
+                                    <span>Hóa đơn</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a href="StockInInvoice.html">Hóa đơn nhập kho</a>
+                                    </li>
+                                    <li>
+                                        <a href="StockOutInvoice.html">Hóa đơn xuất kho</a>
+                                    </li>
+                                    <li>
+                                        <a href="CustomerInvoice.html">Hóa đơn khách hàng</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                    <i class="ri-list-settings-line"></i>
+                                    <span>Kho hàng</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a href="medical-equipment.html">Thiết bị y tế</a>
+                                    </li>
+                                    <li>
+                                        <a href="medicine.html">Thuốc</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                    <i class="ri-archive-line"></i>
+                                    <span>Đơn hàng</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a href="order-list.html">Danh sách đơn hàng</a>
+                                    </li>
+                                    <li>
+                                        <a href="order-detail.html">Chi tiết đơn hàng</a>
+                                    </li>
+                                    <li>
+                                        <a href="order-tracking.html">Theo dõi đơn hàng</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                    <i class="ri-price-tag-3-line"></i>
+                                    <span>Mã giảm giá</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a href="coupon-list.html">Danh sách mã giảm giá</a>
+                                    </li>
+                                    <li>
+                                        <a href="create-coupon.html">Tạo mã giảm giá</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" href="product-review.html">
+                                    <i class="ri-star-line"></i>
+                                    <span>Đánh giá sản phẩm</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" href="reports.html">
+                                    <i class="ri-file-chart-line"></i>
+                                    <span>Báo cáo</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="right-arrow" id="right-arrow">
+                        <i data-feather="arrow-right"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Kết thúc thanh bên -->
+
+        <!-- Main Content -->
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Quản lý thuốc</h5>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMedicineModal">
+                                        <i class="ri-add-line"></i> Thêm thuốc
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Workflow Tabs -->
+                            <div class="workflow-tabs">
+                                <ul class="nav nav-tabs" id="workflowTabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="medicines-tab" data-bs-toggle="tab" href="#medicines" role="tab">
+                                            <i class="ri-medicine-bottle-line"></i> Thuốc <span class="badge bg-primary" id="medicineCount">0</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="expiry-tab" data-bs-toggle="tab" href="#expiry" role="tab">
+                                            <i class="ri-time-line"></i> Hết hạn <span class="badge bg-danger" id="expiryCount">0</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="stock-in-tab" data-bs-toggle="tab" href="#stock-in" role="tab">
+                                            <i class="ri-download-line"></i> Đơn nhập <span class="badge bg-success" id="stockInCount">0</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="stock-out-tab" data-bs-toggle="tab" href="#stock-out" role="tab">
+                                            <i class="ri-upload-line"></i> Đơn xuất <span class="badge bg-warning" id="stockOutCount">0</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="tab-content">
+                                <!-- Medicines Tab -->
+                                <div class="tab-pane fade show active" id="medicines" role="tabpanel">
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" id="searchMedicines" placeholder="Tìm kiếm thuốc...">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-select" id="categoryFilter">
+                                                    <option value="">Tất cả danh mục</option>
+                                                    <option value="antibiotic">Kháng sinh</option>
+                                                    <option value="painkiller">Giảm đau</option>
+                                                    <option value="vitamin">Vitamin</option>
+                                                    <option value="heart">Tim mạch</option>
+                                                    <option value="digestive">Tiêu hóa</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-select" id="stockFilter">
+                                                    <option value="">Tất cả</option>
+                                                    <option value="low">Sắp hết hàng</option>
+                                                    <option value="normal">Còn hàng</option>
+                                                    <option value="out">Hết hàng</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-success" onclick="createStockInOrder()">
+                                                    <i class="ri-add-circle-line"></i> Tạo đơn nhập
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" id="medicinesGrid">
+                                            <!-- Display medicines from database -->
+                                            <div th:each="medicine : ${medicines}" class="col-md-4 col-sm-6 mb-4">
+                                                <div class="card medicine-card h-100">
+                                                    <div class="card-body">
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <h6 class="card-title" th:text="${medicine.name}">Paracetamol 500mg</h6>
+                                                            <span th:class="${medicine.stockQuantities <= 10 ? 'stock-low' : 'stock-normal'}" 
+                                                                  th:text="${medicine.stockQuantities + ' ' + medicine.unit}">100 Viên</span>
+                                                        </div>
+                                                        <p class="card-text small" th:text="${medicine.description}">Thuốc giảm đau hạ sốt</p>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span class="fw-bold" th:text="${#numbers.formatDecimal(medicine.price, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">15,000 VNĐ</span>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-sm btn-outline-primary" onclick="viewMedicineDetails(this)" th:data-id="${medicine.id}">
+                                                                    <i class="ri-eye-line"></i>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-outline-success" onclick="editMedicine(this)" th:data-id="${medicine.id}">
+                                                                    <i class="ri-edit-line"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Show message if no medicines -->
+                                            <div th:if="${#lists.isEmpty(medicines)}" class="col-12 text-center py-5">
+                                                <i class="ri-medicine-bottle-line fs-1 text-muted"></i>
+                                                <p class="mt-3">Không có thuốc nào trong kho. Hãy thêm thuốc mới.</p>
+                                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMedicineModal">
+                                                    <i class="ri-add-line"></i> Thêm thuốc
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Expiry Tab -->
+                                <div class="tab-pane fade" id="expiry" role="tabpanel">
+                                    <div class="card-body">
+                                        <h6>Thuốc sắp hết hạn và đã hết hạn</h6>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>Tên thuốc</th>
+                                                    <th>Số lô</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Ngày hết hạn</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Thao tác</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="expiryTableBody">
+                                                <!-- Expiry data will be loaded here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Stock In Tab -->
+                                <div class="tab-pane fade" id="stock-in" role="tabpanel">
+                                    <div class="card-body">
+                                        <h6>Đơn nhập từ StockIn cần xử lý</h6>
+                                        <div id="stockInOrders">
+                                            <!-- Stock in orders will be loaded here -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Stock Out Tab -->
+                                <div class="tab-pane fade" id="stock-out" role="tabpanel">
+                                    <div class="card-body">
+                                        <h6>Đơn xuất từ StockOut cần chuẩn bị</h6>
+                                        <div id="stockOutOrders">
+                                            <!-- Stock out orders will be loaded here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Medicine Modal -->
+<div class="modal fade" id="addMedicineModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm thuốc</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addMedicineForm">
+                    <div class="mb-3">
+                        <label class="form-label">Tên thuốc</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mã thuốc</label>
+                        <input type="text" class="form-control" name="code" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Danh mục</label>
+                        <select class="form-select" name="category" required>
+                            <option value="">Chọn danh mục</option>
+                            <option value="antibiotic">Kháng sinh</option>
+                            <option value="painkiller">Giảm đau</option>
+                            <option value="vitamin">Vitamin</option>
+                            <option value="heart">Tim mạch</option>
+                            <option value="digestive">Tiêu hóa</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Đơn vị tính</label>
+                        <select class="form-select" name="unit" required>
+                            <option value="">Chọn đơn vị</option>
+                            <option value="viên">Viên</option>
+                            <option value="vỉ">Vỉ</option>
+                            <option value="hộp">Hộp</option>
+                            <option value="chai">Chai</option>
+                            <option value="tuýp">Tuýp</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số lượng tồn kho</label>
+                        <input type="number" class="form-control" name="stock" min="0" value="0">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Đơn giá</label>
+                        <input type="number" class="form-control" name="price" min="0" step="100">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số lượng tối thiểu</label>
+                        <input type="number" class="form-control" name="minStock" min="0" value="50">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hướng dẫn sử dụng</label>
+                        <textarea class="form-control" name="instructions" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="saveMedicine()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Process Stock In Modal -->
+<div class="modal fade" id="processStockInModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xử lý nhập kho thuốc</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="processStockInContent">
+                <!-- Content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-success" onclick="confirmStockIn()">Xác nhận nhập kho</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Files -->
+<script src="frontend/assets/js/jquery-3.6.0.min.js"></script>
+<script src="frontend/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="frontend/assets/js/icons/feather-icon/feather.min.js"></script>
+<script src="frontend/assets/js/icons/feather-icon/feather-icon.js"></script>
+<script src="frontend/assets/js/scrollbar/simplebar.js"></script>
+<script src="frontend/assets/js/scrollbar/custom.js"></script>
+<script src="frontend/assets/js/config.js"></script>
+<script src="frontend/assets/js/sidebar-menu.js"></script>
+<script src="frontend/assets/js/notify/bootstrap-notify.min.js"></script>
+<script src="frontend/assets/js/notify/index.js"></script>
+<script src="frontend/assets/js/script.js"></script>
+
+<script>
+    // Sample medicine data
+    let medicines = [
+        {
+                id: 1,
+                name: 'Paracetamol 500mg',
+                code: 'PAR001',
+                category: 'painkiller',
+                unit: 'viên',
+                stock: 5000,
+                price: 500,
+                minStock: 1000,
+                instructions: 'Uống 1-2 viên khi đau đầu, sốt',
+                batches: [
+                    {batchNo: 'PAR001-2024-01', quantity: 3000, mfgDate: '2024-01-01', expDate: '2025-01-01'},
+                    {batchNo: 'PAR001-2024-02', quantity: 2000, mfgDate: '2024-02-01', expDate: '2025-02-01'}
+                ]
+            },
+            {
+                id: 2,
+                name: 'Amoxicillin 500mg',
+                code: 'AMX001',
+                category: 'antibiotic',
+                unit: 'viên',
+                stock: 2000,
+                price: 2000,
+                minStock: 500,
+                instructions: 'Uống 1 viên x 3 lần/ngày sau ăn',
+                batches: [
+                    {batchNo: 'AMX001-2024-01', quantity: 1500, mfgDate: '2024-01-15', expDate: '2025-01-15'},
+                    {batchNo: 'AMX001-2024-02', quantity: 500, mfgDate: '2024-02-15', expDate: '2025-02-15'}
+                ]
+            },
+            {
+                id: 3,
+                name: 'Vitamin C 1000mg',
+                code: 'VIT001',
+                category: 'vitamin',
+                unit: 'viên',
+                stock: 8000,
+                price: 1000,
+                minStock: 2000,
+                instructions: 'Uống 1 viên/ngày sau ăn sáng',
+                batches: [
+                    {batchNo: 'VIT001-2024-01', quantity: 5000, mfgDate: '2024-01-10', expDate: '2025-01-10'},
+                    {batchNo: 'VIT001-2024-02', quantity: 3000, mfgDate: '2024-02-10', expDate: '2025-02-10'}
+                ]
+            },
+            {
+                id: 4,
+                name: 'Omeprazole 20mg',
+                code: 'OME001',
+                category: 'digestive',
+                unit: 'viên',
+                stock: 1500,
+                price: 3000,
+                minStock: 500,
+                instructions: 'Uống 1 viên/ngày trước ăn sáng',
+                batches: [
+                    {batchNo: 'OME001-2024-01', quantity: 1000, mfgDate: '2024-01-20', expDate: '2024-12-20'},
+                    {batchNo: 'OME001-2024-02', quantity: 500, mfgDate: '2024-02-20', expDate: '2025-02-20'}
+                ]
+            }
+        ];
+
+        let stockInOrders = [
+            {
+                id: 'SI-MD-001',
+                supplier: 'Công ty Dược ABC',
+                status: 'received',
+                date: '2024-01-15',
+                products: [
+                    {productId: 1, quantity: 2000, price: 500},
+                    {productId: 2, quantity: 1000, price: 2000}
+                ]
+            }
+        ];
+
+        let stockOutOrders = [
+            {
+                id: 'SO-MD-001',
+                department: 'Khoa Nhi',
+                status: 'preparing',
+                date: '2024-01-16',
+                products: [
+                    {productId: 1, quantity: 100},
+                    {productId: 3, quantity: 200}
+                ]
+            }
+        ];
+
+        // Initialize page
+        $(document).ready(function() {
+            loadMedicines();
+            loadExpiryData();
+            loadStockInOrders();
+            loadStockOutOrders();
+            updateCounts();
+
+            // Initialize filters
+            $('#searchMedicines').on('input', filterMedicines);
+            $('#categoryFilter').on('change', filterMedicines);
+            $('#stockFilter').on('change', filterMedicines);
+        });
+
+        // Load medicines
+        function loadMedicines() {
+            const grid = $('#medicinesGrid');
+            grid.empty();
+
+            medicines.forEach(medicine => {
+                const stockStatus = getStockStatus(medicine.stock, medicine.minStock);
+                const stockClass = stockStatus.class;
+                const nearExpiry = checkNearExpiry(medicine.batches);
+
+                const card = `
+                <div class="col-md-6 col-lg-4 mb-3 medicine-item" data-category="${medicine.category}" data-stock="${stockStatus.status}">
+                <div class="card medicine-card">
+                <div class="card-body">
+                <h6 class="card-title">${medicine.name}</h6>
+    <p class="card-text">
+        <small class="text-muted">Mã: ${medicine.code}</small><br>
+        <small class="text-muted">Danh mục: ${getCategoryName(medicine.category)}</small><br>
+        <small class="text-muted">Đơn vị: ${medicine.unit}</small>
+    </p>
+    <div class="row">
+        <div class="col-6">
+            <strong class="${stockClass}">Tồn kho: ${medicine.stock}</strong>
+        </div>
+        <div class="col-6 text-end">
+            <strong>${formatCurrency(medicine.price)}</strong>
+        </div>
+    </div>
+    ${nearExpiry ? `<div class="mt-1"><small class="expired-soon">⚠️ Có lô sắp hết hạn</small></div>` : ''}
+    <div class="mt-2">
+        <button class="btn btn-sm btn-info" onclick="viewBatches(${medicine.id})">
+            <i class="ri-eye-line"></i> Lô hàng
+        </button>
+        <button class="btn btn-sm btn-primary" onclick="editMedicine(${medicine.id})">
+            <i class="ri-edit-line"></i>
+        </button>
+        <button class="btn btn-sm btn-danger" onclick="deleteMedicine(${medicine.id})">
+            <i class="ri-delete-bin-line"></i>
+        </button>
+    </div>
+    </div>
+    </div>
+    </div>
+    `;
+                grid.append(card);
+            });
+        }
+
+        // Load expiry data
+        function loadExpiryData() {
+            const tbody = $('#expiryTableBody');
+            tbody.empty();
+
+            medicines.forEach(medicine => {
+                medicine.batches.forEach(batch => {
+                    const expDate = new Date(batch.expDate);
+                    const today = new Date();
+                    const daysToExpiry = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+
+                    let statusClass = '';
+                    let statusText = '';
+
+                    if (daysToExpiry < 0) {
+                        statusClass = 'expired';
+                        statusText = 'Đã hết hạn';
+                    } else if (daysToExpiry <= 30) {
+                        statusClass = 'expired-soon';
+                        statusText = `Còn ${daysToExpiry} ngày`;
+                    } else {
+                        return; // Skip if not expiring soon
+                    }
+
+                    const row = `
+    <tr>
+    <td>${medicine.name}</td>
+    <td>${batch.batchNo}</td>
+    <td>${batch.quantity}</td>
+    <td>${batch.expDate}</td>
+    <td><span class="${statusClass}">${statusText}</span></td>
+    <td>
+        <button class="btn btn-sm btn-warning" onclick="handleExpiredBatch('${batch.batchNo}')">
+            <i class="ri-alert-line"></i> Xử lý
+        </button>
+    </td>
+    </tr>
+    `;
+                    tbody.append(row);
+                });
+            });
+        }
+
+        // Load stock in orders
+        function loadStockInOrders() {
+            const container = $('#stockInOrders');
+            container.empty();
+
+            stockInOrders.forEach(order => {
+                const orderDiv = `
+    <div class="order-item order-${order.status}">
+        <div class="row">
+        <div class="col-md-8">
+        <h6>Đơn nhập: ${order.id}</h6>
+    <p>Nhà cung cấp: ${order.supplier}</p>
+    <p>Ngày: ${order.date}</p>
+    <p>Trạng thái: <span class="badge bg-info">${getOrderStatusText(order.status)}</span></p>
+    </div>
+    <div class="col-md-4 text-end">
+        <button class="btn btn-primary btn-sm" onclick="viewStockInOrder('${order.id}')">
+            <i class="ri-eye-line"></i> Xem
+        </button>
+        <button class="btn btn-success btn-sm" onclick="processStockInOrder('${order.id}')">
+            <i class="ri-check-line"></i> Xử lý
+        </button>
+    </div>
+    </div>
+    </div>
+    `;
+                container.append(orderDiv);
+            });
+        }
+
+        // Load stock out orders
+        function loadStockOutOrders() {
+            const container = $('#stockOutOrders');
+            container.empty();
+
+            stockOutOrders.forEach(order => {
+                const orderDiv = `
+    <div class="order-item order-${order.status}">
+        <div class="row">
+        <div class="col-md-8">
+        <h6>Đơn xuất: ${order.id}</h6>
+    <p>Khoa: ${order.department}</p>
+    <p>Ngày: ${order.date}</p>
+    <p>Trạng thái: <span class="badge bg-warning">${getOrderStatusText(order.status)}</span></p>
+    </div>
+    <div class="col-md-4 text-end">
+        <button class="btn btn-primary btn-sm" onclick="viewStockOutOrder('${order.id}')">
+            <i class="ri-eye-line"></i> Xem
+        </button>
+        <button class="btn btn-warning btn-sm" onclick="prepareStockOutOrder('${order.id}')">
+            <i class="ri-package-line"></i> Chuẩn bị
+        </button>
+    </div>
+    </div>
+    </div>
+    `;
+                container.append(orderDiv);
+            });
+        }
+
+        // Update counts
+        function updateCounts() {
+            $('#medicineCount').text(medicines.length);
+
+            let expiryCount = 0;
+            medicines.forEach(medicine => {
+                medicine.batches.forEach(batch => {
+                    const expDate = new Date(batch.expDate);
+                    const today = new Date();
+                    const daysToExpiry = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+                    if (daysToExpiry <= 30) expiryCount++;
+                });
+            });
+            $('#expiryCount').text(expiryCount);
+
+            $('#stockInCount').text(stockInOrders.length);
+            $('#stockOutCount').text(stockOutOrders.length);
+        }
+
+        // Filter medicines
+        function filterMedicines() {
+            const search = $('#searchMedicines').val().toLowerCase();
+            const category = $('#categoryFilter').val();
+            const stock = $('#stockFilter').val();
+
+            $('.medicine-item').each(function() {
+                const item = $(this);
+                const text = item.text().toLowerCase();
+                const itemCategory = item.data('category');
+                const itemStock = item.data('stock');
+
+                let show = true;
+
+                if (search && !text.includes(search)) show = false;
+                if (category && itemCategory !== category) show = false;
+                if (stock && itemStock !== stock) show = false;
+
+                item.toggle(show);
+            });
+        }
+
+        // Create stock in order
+        function createStockInOrder() {
+            // Similar to medical-equipment but for medicines
+            const modalContent = `
+    <div class="modal fade" id="createStockInModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title">Tạo đơn nhập thuốc</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body">
+        <form id="createStockInForm">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Nhà cung cấp</label>
+                        <select class="form-select" name="supplier" required>
+                            <option value="">Chọn nhà cung cấp</option>
+                            <option value="Công ty Dược ABC">Công ty Dược ABC</option>
+                            <option value="Công ty Dược DEF">Công ty Dược DEF</option>
+                            <option value="Công ty Dược GHI">Công ty Dược GHI</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Ngày dự kiến nhận</label>
+                        <input type="date" class="form-control" name="expectedDate" required>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Ghi chú</label>
+                <textarea class="form-control" name="notes" rows="3"></textarea>
+            </div>
+
+            <h6>Danh sách thuốc cần nhập</h6>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Chọn</th>
+                        <th>Thuốc</th>
+                        <th>Tồn kho</th>
+                        <th>Số lượng nhập</th>
+                        <th>Đơn giá</th>
+                    </tr>
+                    </thead>
+                    <tbody id="stockInMedicineList">
+                    ${medicines.map(medicine => `
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" class="form-check-input" name="selectedMedicines" value="${medicine.id}">
+                                                        </td>
+                                                        <td>
+                                                            <strong>${medicine.name}</strong><br>
+                                                            <small class="text-muted">${medicine.code}</small>
+                                                        </td>
+                                                        <td class="${getStockStatus(medicine.stock, medicine.minStock).class}">${medicine.stock}</td>
+                                                        <td>
+                                                            <input type="number" class="form-control" name="quantity_${medicine.id}" min="1" value="100">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" class="form-control" name="price_${medicine.id}" value="${medicine.price}" step="100">
+                                                        </td>
+                                                    </tr>
+                                                `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-success" onclick="submitStockInOrder()">Tạo đơn nhập</button>
+    </div>
+    </div>
+    </div>
+    </div>
+    `;
+
+            $('body').append(modalContent);
+            $('#createStockInModal').modal('show');
+        }
+
+        // Submit stock in order
+        function submitStockInOrder() {
+            const formData = new FormData(document.getElementById('createStockInForm'));
+            const selectedMedicines = [];
+
+            $('input[name="selectedMedicines"]:checked').each(function() {
+                const medicineId = $(this).val();
+                const quantity = $(`input[name="quantity_${medicineId}"]`).val();
+                const price = $(`input[name="price_${medicineId}"]`).val();
+
+                selectedMedicines.push({
+                    productId: parseInt(medicineId),
+                    quantity: parseInt(quantity),
+                    price: parseFloat(price)
+                });
+            });
+
+            if (selectedMedicines.length === 0) {
+                alert('Vui lòng chọn ít nhất một thuốc!');
+                return;
+            }
+
+            const orderData = {
+                id: 'SI-MD-' + Date.now(),
+                supplier: formData.get('supplier'),
+                expectedDate: formData.get('expectedDate'),
+                notes: formData.get('notes'),
+                products: selectedMedicines,
+                status: 'pending',
+                type: 'medicine'
+            };
+
+            // Send to StockIn
+            sendToStockIn(orderData);
+
+            $('#createStockInModal').modal('hide');
+            $('#createStockInModal').remove();
+            showNotification('Đã tạo đơn nhập và gửi đến StockIn!', 'success');
+        }
+
+        // Process stock in order
+        function processStockInOrder(orderId) {
+            const order = stockInOrders.find(o => o.id === orderId);
+            if (!order) return;
+
+            const content = `
+    <h6>Thông tin đơn nhập</h6>
+    <p><strong>Mã đơn:</strong> ${order.id}</p>
+    <p><strong>Nhà cung cấp:</strong> ${order.supplier}</p>
+    <p><strong>Ngày:</strong> ${order.date}</p>
+
+    <h6>Danh sách thuốc</h6>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Thuốc</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Số lô</th>
+                <th>Ngày SX</th>
+                <th>Hạn SD</th>
+            </tr>
+            </thead>
+            <tbody>
+            ${order.products.map(item => {
+                const medicine = medicines.find(m => m.id === item.productId);
+                return `
+                                    <tr>
+                                        <td>
+                                            <strong>${medicine.name}</strong><br>
+                                            <small class="text-muted">${medicine.code}</small>
+                                        </td>
+                                        <td>${item.quantity}</td>
+                                        <td>${formatCurrency(item.price)}</td>
+                                        <td><input type="text" class="form-control" name="batch_${item.productId}" placeholder="Nhập số lô" required></td>
+                                        <td><input type="date" class="form-control" name="mfg_${item.productId}" required></td>
+                                        <td><input type="date" class="form-control" name="exp_${item.productId}" required></td>
+                                    </tr>
+                                `;
+            }).join('')}
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" id="currentOrderId" value="${orderId}">
+        `;
+
+        $('#processStockInContent').html(content);
+        $('#processStockInModal').modal('show');
+        }
+
+        // Confirm stock in
+        function confirmStockIn() {
+        const orderId = $('#currentOrderId').val();
+        const order = stockInOrders.find(o => o.id === orderId);
+
+        if (!order) return;
+
+        // Validate batch information
+        let valid = true;
+        order.products.forEach(item => {
+        const batch = $(`input[name="batch_${item.productId}"]`).val();
+        const mfgDate = $(`input[name="mfg_${item.productId}"]`).val();
+        const expDate = $(`input[name="exp_${item.productId}"]`).val();
+
+        if (!batch || !mfgDate || !expDate) {
+        valid = false;
+    }
+    });
+
+        if (!valid) {
+        alert('Vui lòng điền đầy đủ thông tin số lô, ngày sản xuất và hạn sử dụng!');
+        return;
+    }
+
+        // Update medicine stock and add new batches
+        order.products.forEach(item => {
+        const medicine = medicines.find(m => m.id === item.productId);
+        if (medicine) {
+        medicine.stock += item.quantity;
+
+        // Add new batch
+        const newBatch = {
+        batchNo: $(`input[name="batch_${item.productId}"]`).val(),
+        quantity: item.quantity,
+        mfgDate: $(`input[name="mfg_${item.productId}"]`).val(),
+        expDate: $(`input[name="exp_${item.productId}"]`).val()
+    };
+
+        medicine.batches.push(newBatch);
+    }
+    });
+
+        // Remove from stock in orders
+        stockInOrders = stockInOrders.filter(o => o.id !== orderId);
+
+        // Send invoice to StockInInvoice
+        sendToStockInInvoice(order);
+
+        $('#processStockInModal').modal('hide');
+        loadMedicines();
+        loadExpiryData();
+        loadStockInOrders();
+        updateCounts();
+        showNotification('Đã nhập kho thành công và tạo hóa đơn!', 'success');
+    }
+
+        // Prepare stock out order
+        function prepareStockOutOrder(orderId) {
+        const order = stockOutOrders.find(o => o.id === orderId);
+        if (!order) return;
+
+        // Check stock availability and prepare
+        let canPrepare = true;
+        order.products.forEach(item => {
+        const medicine = medicines.find(m => m.id === item.productId);
+        if (!medicine || medicine.stock < item.quantity) {
+        canPrepare = false;
+    }
+    });
+
+        if (!canPrepare) {
+        alert('Không đủ hàng để chuẩn bị đơn xuất!');
+        return;
+    }
+
+        // Update stock
+        order.products.forEach(item => {
+        const medicine = medicines.find(m => m.id === item.productId);
+        if (medicine) {
+        medicine.stock -= item.quantity;
+
+        // Update batches (FIFO - First In First Out)
+        let remainingQuantity = item.quantity;
+        medicine.batches.forEach(batch => {
+        if (remainingQuantity > 0) {
+        if (batch.quantity >= remainingQuantity) {
+        batch.quantity -= remainingQuantity;
+        remainingQuantity = 0;
+    } else {
+        remainingQuantity -= batch.quantity;
+        batch.quantity = 0;
+    }
+    }
+    });
+
+        // Remove empty batches
+        medicine.batches = medicine.batches.filter(batch => batch.quantity > 0);
+    }
+    });
+
+        // Update order status
+        order.status = 'ready';
+
+        // Send back to StockOut
+        sendToStockOut(order);
+
+        loadMedicines();
+        loadStockOutOrders();
+        updateCounts();
+        showNotification('Đã chuẩn bị hàng và gửi lại StockOut!', 'success');
+    }
+
+        // View batches
+        function viewBatches(medicineId) {
+        const medicine = medicines.find(m => m.id === medicineId);
+        if (!medicine) return;
+
+        const batchesInfo = medicine.batches.map(batch => {
+        const expDate = new Date(batch.expDate);
+        const today = new Date();
+        const daysToExpiry = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+
+        let statusClass = '';
+        if (daysToExpiry < 0) statusClass = 'expired';
+        else if (daysToExpiry <= 30) statusClass = 'expired-soon';
+
+        return `
+                    <tr>
+                        <td>${batch.batchNo}</td>
+                        <td>${batch.quantity}</td>
+                        <td>${batch.mfgDate}</td>
+                        <td class="${statusClass}">${batch.expDate}</td>
+                        <td class="${statusClass}">${daysToExpiry < 0 ? 'Đã hết hạn' : daysToExpiry <= 30 ? `Còn ${daysToExpiry} ngày` : 'Còn hạn'}</td>
+                    </tr>
+                `;
+    }).join('');
+
+        const modalContent = `
+                <div class="modal fade" id="batchesModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Lô hàng - ${medicine.name}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Số lô</th>
+                                                <th>Số lượng</th>
+                                                <th>Ngày SX</th>
+                                                <th>Hạn SD</th>
+                                                <th>Trạng thái</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${batchesInfo}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+        $('body').append(modalContent);
+        $('#batchesModal').modal('show');
+
+        $('#batchesModal').on('hidden.bs.modal', function () {
+        $(this).remove();
+    });
+    }
+
+        // Handle expired batch
+        function handleExpiredBatch(batchNo) {
+        if (confirm(`Xử lý lô hàng hết hạn: ${batchNo}?\nHành động này sẽ đánh dấu lô hàng cần được thu hồi.`)) {
+        // In real application, this would create a disposal order
+        showNotification(`Đã đánh dấu lô ${batchNo} cần thu hồi!`, 'warning');
+    }
+    }
+
+        // Save medicine
+        function saveMedicine() {
+        const form = document.getElementById('addMedicineForm');
+        const formData = new FormData(form);
+
+        const medicine = {
+        id: medicines.length + 1,
+        name: formData.get('name'),
+        code: formData.get('code'),
+        category: formData.get('category'),
+        unit: formData.get('unit'),
+        stock: parseInt(formData.get('stock')),
+        price: parseFloat(formData.get('price')),
+        minStock: parseInt(formData.get('minStock')),
+        instructions: formData.get('instructions'),
+        batches: []
+    };
+
+        medicines.push(medicine);
+        loadMedicines();
+        updateCounts();
+
+        $('#addMedicineModal').modal('hide');
+        form.reset();
+        showNotification('Đã thêm thuốc thành công!', 'success');
+    }
+
+        // Edit medicine
+        function editMedicine(button) {
+        const medicineId = parseInt($(button).data('id'));
+        const medicine = medicines.find(m => m.id === medicineId);
+        if (!medicine) return;
+
+        // Create and show edit modal (similar to add modal)
+        const editModalContent = `
+                <div class="modal fade" id="editMedicineModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Chỉnh sửa thuốc</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editMedicineForm">
+                                    <input type="hidden" name="id" value="${medicine.id}">
+                                    <div class="mb-3">
+                                        <label class="form-label">Tên thuốc</label>
+                                        <input type="text" class="form-control" name="name" value="${medicine.name}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Mã thuốc</label>
+                                        <input type="text" class="form-control" name="code" value="${medicine.code}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Danh mục</label>
+                                        <select class="form-select" name="category" required>
+                                            <option value="">Chọn danh mục</option>
+                                            <option value="antibiotic" ${medicine.category === 'antibiotic' ? 'selected' : ''}>Kháng sinh</option>
+                                            <option value="painkiller" ${medicine.category === 'painkiller' ? 'selected' : ''}>Giảm đau</option>
+                                            <option value="vitamin" ${medicine.category === 'vitamin' ? 'selected' : ''}>Vitamin</option>
+                                            <option value="heart" ${medicine.category === 'heart' ? 'selected' : ''}>Tim mạch</option>
+                                            <option value="digestive" ${medicine.category === 'digestive' ? 'selected' : ''}>Tiêu hóa</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Đơn vị tính</label>
+                                        <select class="form-select" name="unit" required>
+                                            <option value="">Chọn đơn vị</option>
+                                            <option value="viên" ${medicine.unit === 'viên' ? 'selected' : ''}>Viên</option>
+                                            <option value="vỉ" ${medicine.unit === 'vỉ' ? 'selected' : ''}>Vỉ</option>
+                                            <option value="hộp" ${medicine.unit === 'hộp' ? 'selected' : ''}>Hộp</option>
+                                            <option value="chai" ${medicine.unit === 'chai' ? 'selected' : ''}>Chai</option>
+                                            <option value="tuýp" ${medicine.unit === 'tuýp' ? 'selected' : ''}>Tuýp</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Đơn giá</label>
+                                        <input type="number" class="form-control" name="price" min="0" step="100" value="${medicine.price}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Số lượng tối thiểu</label>
+                                        <input type="number" class="form-control" name="minStock" min="0" value="${medicine.minStock}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Hướng dẫn sử dụng</label>
+                                        <textarea class="form-control" name="instructions" rows="3">${medicine.instructions}</textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <button type="button" class="btn btn-primary" onclick="updateMedicine()">Lưu thay đổi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+        $('body').append(editModalContent);
+        $('#editMedicineModal').modal('show');
+
+        $('#editMedicineModal').on('hidden.bs.modal', function () {
+            $(this).remove();
+        });
+    }
+
+        // Update medicine
+        function updateMedicine() {
+            const form = document.getElementById('editMedicineForm');
+            const formData = new FormData(form);
+            const id = parseInt(formData.get('id'));
+
+            const medicineIndex = medicines.findIndex(m => m.id === id);
+            if (medicineIndex === -1) return;
+
+            // Keep the original batches and stock
+            const originalBatches = medicines[medicineIndex].batches;
+            const originalStock = medicines[medicineIndex].stock;
+
+            // Update medicine with new values
+            medicines[medicineIndex] = {
+                id: id,
+                name: formData.get('name'),
+                code: formData.get('code'),
+                category: formData.get('category'),
+                unit: formData.get('unit'),
+                stock: originalStock,
+                price: parseFloat(formData.get('price')),
+                minStock: parseInt(formData.get('minStock')),
+                instructions: formData.get('instructions'),
+                batches: originalBatches
+            };
+
+            loadMedicines();
+            $('#editMedicineModal').modal('hide');
+            showNotification('Đã cập nhật thuốc thành công!', 'success');
+        }
+
+        // View medicine details
+        function viewMedicineDetails(button) {
+            const medicineId = parseInt($(button).data('id'));
+            const medicine = medicines.find(m => m.id === medicineId);
+            if (!medicine) return;
+
+            // Calculate total stock and check expiry
+            let totalStock = 0;
+            let hasExpired = false;
+            let hasExpiringBatches = false;
+            
+            medicine.batches.forEach(batch => {
+                totalStock += batch.quantity;
+                const expDate = new Date(batch.expDate);
+                const today = new Date();
+                const daysToExpiry = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+                
+                if (daysToExpiry < 0) hasExpired = true;
+                else if (daysToExpiry <= 30) hasExpiringBatches = true;
+            });
+
+            // Format batch information
+            const batchesInfo = medicine.batches.map(batch => {
+                const expDate = new Date(batch.expDate);
+                const today = new Date();
+                const daysToExpiry = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+                
+                let statusClass = '';
+                if (daysToExpiry < 0) statusClass = 'expired';
+                else if (daysToExpiry <= 30) statusClass = 'expired-soon';
+                
+                return `
+                    <tr>
+                        <td>${batch.batchNo}</td>
+                        <td>${batch.quantity}</td>
+                        <td>${batch.mfgDate}</td>
+                        <td class="${statusClass}">${batch.expDate}</td>
+                        <td class="${statusClass}">${daysToExpiry < 0 ? 'Đã hết hạn' : daysToExpiry <= 30 ? `Còn ${daysToExpiry} ngày` : 'Còn hạn'}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const detailsModalContent = `
+                <div class="modal fade" id="medicineDetailsModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Chi tiết thuốc</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <h6>${medicine.name}</h6>
+                                        <p class="text-muted">${medicine.code}</p>
+                                        <p><strong>Danh mục:</strong> ${getCategoryName(medicine.category)}</p>
+                                        <p><strong>Đơn giá:</strong> ${formatCurrency(medicine.price)}</p>
+                                        <p><strong>Đơn vị tính:</strong> ${medicine.unit}</p>
+                                        <p><strong>Tồn kho:</strong> ${medicine.stock} ${medicine.unit}</p>
+                                        <p><strong>Số lượng tối thiểu:</strong> ${medicine.minStock} ${medicine.unit}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6>Hướng dẫn sử dụng</h6>
+                                                <p>${medicine.instructions || 'Không có thông tin'}</p>
+                                                
+                                                <div class="mt-3">
+                                                    <div class="alert ${medicine.stock <= medicine.minStock ? 'alert-danger' : 'alert-success'}">
+                                                        <i class="ri-information-line"></i>
+                                                        ${medicine.stock <= medicine.minStock ? 'Cần nhập thêm hàng!' : 'Số lượng đủ.'}
+                                                    </div>
+                                                    ${hasExpired ? `<div class="alert alert-danger">
+                                                        <i class="ri-alert-line"></i> Có lô thuốc đã hết hạn!
+                                                    </div>` : ''}
+                                                    ${hasExpiringBatches ? `<div class="alert alert-warning">
+                                                        <i class="ri-time-line"></i> Có lô thuốc sắp hết hạn!
+                                                    </div>` : ''}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h6>Danh sách lô thuốc</h6>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Số lô</th>
+                                                <th>Số lượng</th>
+                                                <th>Ngày SX</th>
+                                                <th>Hạn SD</th>
+                                                <th>Trạng thái</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${batchesInfo || `<tr><td colspan="5" class="text-center">Không có dữ liệu lô thuốc</td></tr>`}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn btn-primary" onclick="editMedicine(this)" data-id="${medicine.id}">
+                                    <i class="ri-edit-line"></i> Chỉnh sửa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            $('body').append(detailsModalContent);
+            $('#medicineDetailsModal').modal('show');
+
+            $('#medicineDetailsModal').on('hidden.bs.modal', function () {
+                $(this).remove();
+            });
+        }
+
+        // Get category name
+        function getCategoryName(categoryCode) {
+            const categories = {
+                'antibiotic': 'Kháng sinh',
+                'painkiller': 'Giảm đau',
+                'vitamin': 'Vitamin',
+                'heart': 'Tim mạch',
+                'digestive': 'Tiêu hóa'
+            };
+            
+            return categories[categoryCode] || categoryCode;
+        }
+
+        // Format currency
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+        }
+
+        // Load medicines
+        function loadMedicines() {
+            const medicineGrid = $('#medicinesGrid');
+            medicineGrid.empty();
+
+            if (medicines.length === 0) {
+                medicineGrid.html(`
+                    <div class="col-12 text-center py-5">
+                        <i class="ri-medicine-bottle-line fs-1 text-muted"></i>
+                        <p class="mt-3">Không có thuốc nào trong kho. Hãy thêm thuốc mới.</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMedicineModal">
+                            <i class="ri-add-line"></i> Thêm thuốc
+                        </button>
+                    </div>
+                `);
+                return;
+            }
+
+            // Filter medicines based on search and filters
+            const searchTerm = $('#searchMedicines').val().toLowerCase();
+            const categoryFilter = $('#categoryFilter').val();
+            const stockFilter = $('#stockFilter').val();
+
+            const filteredMedicines = medicines.filter(medicine => {
+                // Search term filter
+                if (searchTerm && !medicine.name.toLowerCase().includes(searchTerm) && 
+                    !medicine.code.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+                
+                // Category filter
+                if (categoryFilter && medicine.category !== categoryFilter) {
+                    return false;
+                }
+                
+                // Stock filter
+                if (stockFilter === 'low' && medicine.stock > medicine.minStock) {
+                    return false;
+                } else if (stockFilter === 'normal' && medicine.stock <= medicine.minStock) {
+                    return false;
+                } else if (stockFilter === 'out' && medicine.stock > 0) {
+                    return false;
+                }
+                
+                return true;
+            });
+
+            // Display filtered medicines
+            if (filteredMedicines.length === 0) {
+                medicineGrid.html(`
+                    <div class="col-12 text-center py-5">
+                        <i class="ri-filter-3-line fs-1 text-muted"></i>
+                        <p class="mt-3">Không tìm thấy thuốc nào phù hợp với điều kiện lọc.</p>
+                        <button class="btn btn-secondary" onclick="clearFilters()">
+                            <i class="ri-filter-off-line"></i> Xóa bộ lọc
+                        </button>
+                    </div>
+                `);
+                return;
+            }
+
+            // Display filtered medicines
+            filteredMedicines.forEach(medicine => {
+                const medicineCard = `
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <div class="card medicine-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h6 class="card-title">${medicine.name}</h6>
+                                    <span class="${medicine.stock <= medicine.minStock ? 'stock-low' : 'stock-normal'}">
+                                        ${medicine.stock} ${medicine.unit}
+                                    </span>
+                                </div>
+                                <p class="card-text small">${medicine.code} - ${getCategoryName(medicine.category)}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold">${formatCurrency(medicine.price)}</span>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewMedicineDetails(this)" data-id="${medicine.id}">
+                                            <i class="ri-eye-line"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" onclick="editMedicine(this)" data-id="${medicine.id}">
+                                            <i class="ri-edit-line"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-info" onclick="viewBatches(${medicine.id})">
+                                            <i class="ri-stack-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                medicineGrid.append(medicineCard);
+            });
+        }
+
+        // Load expiry data
+        function loadExpiryData() {
+            const expiryTableBody = $('#expiryTableBody');
+            expiryTableBody.empty();
+
+            let expiringItems = [];
+            
+            // Find all batches that are expired or expiring soon
+            medicines.forEach(medicine => {
+                medicine.batches.forEach(batch => {
+                    const expDate = new Date(batch.expDate);
+                    const today = new Date();
+                    const daysToExpiry = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (daysToExpiry <= 90) { // Show items expiring in the next 3 months
+                        expiringItems.push({
+                            medicineId: medicine.id,
+                            medicineName: medicine.name,
+                            batchNo: batch.batchNo,
+                            quantity: batch.quantity,
+                            expDate: batch.expDate,
+                            daysToExpiry: daysToExpiry
+                        });
+                    }
+                });
+            });
+
+            // Sort by expiry date (soonest first)
+            expiringItems.sort((a, b) => a.daysToExpiry - b.daysToExpiry);
+
+            // Render table rows
+            expiringItems.forEach(item => {
+                let statusClass = '';
+                let statusText = '';
+                
+                if (item.daysToExpiry < 0) {
+                    statusClass = 'expired';
+                    statusText = 'Đã hết hạn';
+                } else if (item.daysToExpiry <= 30) {
+                    statusClass = 'expired-soon';
+                    statusText = `Còn ${item.daysToExpiry} ngày`;
+                } else {
+                    statusText = `Còn ${item.daysToExpiry} ngày`;
+                }
+                
+                const row = `
+                    <tr>
+                        <td>${item.medicineName}</td>
+                        <td>${item.batchNo}</td>
+                        <td>${item.quantity}</td>
+                        <td class="${statusClass}">${item.expDate}</td>
+                        <td class="${statusClass}">${statusText}</td>
+                        <td>
+                            ${item.daysToExpiry < 0 ? 
+                                `<button class="btn btn-sm btn-danger" onclick="handleExpiredBatch('${item.batchNo}')">
+                                    <i class="ri-delete-bin-line"></i> Thu hồi
+                                </button>` : 
+                                `<button class="btn btn-sm btn-warning" onclick="viewMedicineDetails($('[data-id=${item.medicineId}]'))">
+                                    <i class="ri-eye-line"></i> Xem chi tiết
+                                </button>`
+                            }
+                        </td>
+                    </tr>
+                `;
+                
+                expiryTableBody.append(row);
+            });
+
+            // Update expiry count
+            $('#expiryCount').text(expiringItems.length);
+        }
+
+        // Load stock in orders
+        function loadStockInOrders() {
+            const stockInOrdersDiv = $('#stockInOrders');
+            stockInOrdersDiv.empty();
+
+            if (stockInOrders.length === 0) {
+                stockInOrdersDiv.html(`
+                    <div class="text-center py-5">
+                        <i class="ri-inbox-line fs-1 text-muted"></i>
+                        <p class="mt-3">Không có đơn nhập kho nào cần xử lý.</p>
+                    </div>
+                `);
+                return;
+            }
+
+            stockInOrders.forEach(order => {
+                const items = order.products.map(item => {
+                    const medicine = medicines.find(m => m.id === item.productId);
+                    return `
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>${medicine ? medicine.name : 'Không xác định'} x ${item.quantity}</span>
+                            <span>${formatCurrency(item.price)} / ${medicine ? medicine.unit : 'đơn vị'}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                const orderHtml = `
+                    <div class="order-item order-pending mb-3">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6>Đơn nhập #${order.id}</h6>
+                            <span class="badge bg-warning">Chờ xử lý</span>
+                        </div>
+                        <p><strong>Nhà cung cấp:</strong> ${order.supplier}</p>
+                        <p><strong>Ngày đặt:</strong> ${order.date}</p>
+                        <div class="items-list mb-3 p-2 bg-light rounded">
+                            ${items}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>Tổng cộng: ${formatCurrency(order.total)}</strong>
+                            <button class="btn btn-primary" onclick="processStockIn('${order.id}')">
+                                <i class="ri-check-line"></i> Xử lý nhập kho
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                stockInOrdersDiv.append(orderHtml);
+            });
+
+            // Update stock in count
+            $('#stockInCount').text(stockInOrders.length);
+        }
+
+        // Load stock out orders
+        function loadStockOutOrders() {
+            const stockOutOrdersDiv = $('#stockOutOrders');
+            stockOutOrdersDiv.empty();
+
+            if (stockOutOrders.length === 0) {
+                stockOutOrdersDiv.html(`
+                    <div class="text-center py-5">
+                        <i class="ri-inbox-line fs-1 text-muted"></i>
+                        <p class="mt-3">Không có đơn xuất kho nào cần chuẩn bị.</p>
+                    </div>
+                `);
+                return;
+            }
+
+            stockOutOrders.forEach(order => {
+                const items = order.products.map(item => {
+                    const medicine = medicines.find(m => m.id === item.productId);
+                    let statusClass = medicine && medicine.stock < item.quantity ? 'text-danger' : '';
+                    
+                    return `
+                        <div class="d-flex justify-content-between mb-2 ${statusClass}">
+                            <span>${medicine ? medicine.name : 'Không xác định'} x ${item.quantity}</span>
+                            <span>${medicine && medicine.stock < item.quantity ? '(Không đủ hàng)' : ''}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                const canPrepare = order.products.every(item => {
+                    const medicine = medicines.find(m => m.id === item.productId);
+                    return medicine && medicine.stock >= item.quantity;
+                });
+
+                const orderHtml = `
+                    <div class="order-item ${canPrepare ? 'order-ready' : 'order-preparing'} mb-3">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6>Đơn xuất #${order.id}</h6>
+                            <span class="badge ${canPrepare ? 'bg-success' : 'bg-danger'}">
+                                ${canPrepare ? 'Sẵn sàng xuất' : 'Thiếu hàng'}
+                            </span>
+                        </div>
+                        <p><strong>Người nhận:</strong> ${order.recipient}</p>
+                        <p><strong>Lý do xuất:</strong> ${order.reason}</p>
+                        <div class="items-list mb-3 p-2 bg-light rounded">
+                            ${items}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>Tổng cộng: ${formatCurrency(order.total)}</strong>
+                            <button class="btn btn-primary" onclick="prepareStockOutOrder('${order.id}')" ${canPrepare ? '' : 'disabled'}>
+                                <i class="ri-check-line"></i> Chuẩn bị hàng
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                stockOutOrdersDiv.append(orderHtml);
+            });
+
+            // Update stock out count
+            $('#stockOutCount').text(stockOutOrders.length);
+        }
+
+        // Update counts
+        function updateCounts() {
+            $('#medicineCount').text(medicines.length);
+
+            // Count expiring items
+            let expiringCount = 0;
+            medicines.forEach(medicine => {
+                medicine.batches.forEach(batch => {
+                    const expDate = new Date(batch.expDate);
+                    const today = new Date();
+                    const daysToExpiry = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (daysToExpiry <= 90) {
+                        expiringCount++;
+                    }
+                });
+            });
+            $('#expiryCount').text(expiringCount);
+
+            // Stock in and out counts are updated in their respective load functions
+        }
+
+        // Clear filters
+        function clearFilters() {
+            $('#searchMedicines').val('');
+            $('#categoryFilter').val('');
+            $('#stockFilter').val('');
+            
+            loadMedicines();
+        }
+
+        // Create stock in order
+        function createStockInOrder() {
+            // Get low stock items
+            const lowStockItems = medicines.filter(m => m.stock <= m.minStock);
+            
+            if (lowStockItems.length === 0) {
+                showNotification('Không có thuốc nào cần nhập thêm!', 'warning');
+                return;
+            }
+
+            // Create stock in order
+            const order = {
+                id: 'SO' + Date.now().toString().slice(-6),
+                supplier: 'Nhà thuốc ABC',
+                date: new Date().toISOString().split('T')[0],
+                products: lowStockItems.map(m => ({
+                    productId: m.id,
+                    quantity: m.minStock - m.stock > 0 ? m.minStock - m.stock : m.minStock,
+                    price: m.price
+                })),
+                status: 'pending',
+                total: 0
+            };
+
+            // Calculate total
+            order.total = order.products.reduce((sum, item) => {
+                return sum + (item.quantity * item.price);
+            }, 0);
+
+            // Send to StockIn
+            sendToStockIn(order);
+            showNotification('Đã tạo đơn nhập kho thành công!', 'success');
+        }
+
+        // Process stock in
+        function processStockIn(orderId) {
+            const order = stockInOrders.find(o => o.id === orderId);
+            if (!order) return;
+
+            // Create modal content
+            const content = `
+            <h6>Thông tin đơn nhập</h6>
+            <p><strong>Mã đơn:</strong> ${order.id}</p>
+            <p><strong>Nhà cung cấp:</strong> ${order.supplier}</p>
+            <p><strong>Ngày:</strong> ${order.date}</p>
+
+            <h6>Danh sách thuốc</h6>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Thuốc</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Số lô</th>
+                        <th>Ngày SX</th>
+                        <th>Hạn SD</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    ${order.products.map(item => {
+                        const medicine = medicines.find(m => m.id === item.productId);
+                        return `
+                                    <tr>
+                                        <td>
+                                            <strong>${medicine.name}</strong><br>
+                                            <small class="text-muted">${medicine.code}</small>
+                                        </td>
+                                        <td>${item.quantity}</td>
+                                        <td>${formatCurrency(item.price)}</td>
+                                        <td><input type="text" class="form-control" name="batch_${item.productId}" placeholder="Nhập số lô" required></td>
+                                        <td><input type="date" class="form-control" name="mfg_${item.productId}" required></td>
+                                        <td><input type="date" class="form-control" name="exp_${item.productId}" required></td>
+                                    </tr>
+                                `;
+                    }).join('')}
+                    </tbody>
+                </table>
+            </div>
+            <input type="hidden" id="currentOrderId" value="${orderId}">
+                `;
+
+            $('#processStockInContent').html(content);
+            $('#processStockInModal').modal('show');
+        }
+
+        // Send to StockIn
+        function sendToStockIn(order) {
+            // In a real application, this would send data to the StockIn module
+            console.log('Sending to StockIn:', order);
+        }
+
+        // Send to StockOut
+        function sendToStockOut(order) {
+            // In a real application, this would send data to the StockOut module
+            console.log('Sending to StockOut:', order);
+        }
+
+        // Send to StockInInvoice
+        function sendToStockInInvoice(order) {
+            // In a real application, this would send data to the StockInInvoice module
+            console.log('Sending to StockInInvoice:', order);
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            $.notify({
+                icon: type === 'success' ? 'ri-check-line' : type === 'warning' ? 'ri-alert-line' : 'ri-information-line',
+                message: message
+            }, {
+                type: type,
+                allow_dismiss: true,
+                placement: {
+                    from: 'top',
+                    align: 'right'
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 3000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInDown',
+                    exit: 'animated fadeOutUp'
+                }
+            });
+        }
+
+        // Sample data for stock in orders
+        const stockInOrders = [
+            {
+                id: 'SI001',
+                supplier: 'Công ty Dược ABC',
+                date: '2024-06-05',
+                products: [
+                    { productId: 1, quantity: 1000, price: 500 },
+                    { productId: 2, quantity: 500, price: 2000 }
+                ],
+                status: 'pending',
+                total: 1500000
+            },
+            {
+                id: 'SI002',
+                supplier: 'Nhà thuốc XYZ',
+                date: '2024-06-04',
+                products: [
+                    { productId: 3, quantity: 100, price: 15000 }
+                ],
+                status: 'pending',
+                total: 1500000
+            }
+        ];
+
+        // Sample data for stock out orders
+        const stockOutOrders = [
+            {
+                id: 'SO001',
+                recipient: 'Khoa Nội',
+                reason: 'TRANSFER',
+                date: '2024-06-05',
+                products: [
+                    { productId: 1, quantity: 200, price: 500 },
+                    { productId: 2, quantity: 50, price: 2000 }
+                ],
+                status: 'pending',
+                total: 200000
+            },
+            {
+                id: 'SO002',
+                recipient: 'Khoa Nhi',
+                reason: 'TRANSFER',
+                date: '2024-06-04',
+                products: [
+                    { productId: 3, quantity: 20, price: 15000 }
+                ],
+                status: 'pending',
+                total: 300000
+            }
+        ];
+
+        // Initialize on document ready
+        $(document).ready(function() {
+            // Initial load
+            loadMedicines();
+            loadExpiryData();
+            loadStockInOrders();
+            loadStockOutOrders();
+            updateCounts();
+            
+            // Set up event listeners for filters
+            $('#searchMedicines').on('input', loadMedicines);
+            $('#categoryFilter').on('change', loadMedicines);
+            $('#stockFilter').on('change', loadMedicines);
+            
+            // Set up tabs event listeners
+            $('#workflowTabs a').on('click', function(e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+        });
+</script>

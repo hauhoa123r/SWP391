@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "suppliers", schema = "swp391")
+@FieldNameConstants
 public class SupplierEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +38,6 @@ public class SupplierEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToMany
+    @OneToMany(mappedBy = "supplierEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SupplierTransactionsEntity> supplierTransactionEntities = new LinkedHashSet<>();
-
 }

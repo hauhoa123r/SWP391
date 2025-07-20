@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "ingredient_request_items", schema = "swp391")
+@FieldNameConstants
 public class IngredientRequestItemEntity {
     @EmbeddedId
     private IngredientRequestItemEntityId id;

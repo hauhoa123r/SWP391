@@ -1,17 +1,27 @@
 package org.project.model.response;
 
-import org.project.enums.Label;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import lombok.Data;
+import java.math.BigDecimal;
+import java.util.List;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PharmacyListResponse {
-	private Long id;
+    private Long id;
     private String name;
-    private String type; 
-    private Long price;
-    private String unit;
-    private String imageUrl; 
     private String description;
-    private Label label; 
+    private BigDecimal price;
+    private Double rating;
+    private String label; // ProductLabel (NEW, SALE, ...)
+    private String status; // ACTIVE, INACTIVE
+    private Integer stockQuantity;
+    private String category ; // chỉ là tên
+    private List<String> tags; // Danh sách tên tag
+    private String imageUrl;
 }

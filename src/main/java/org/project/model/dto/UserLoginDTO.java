@@ -1,14 +1,14 @@
 package org.project.model.dto;
 
 public class UserLoginDTO {
-	//login just using username and password 
-    private String email;
-    private String passwordHash;
-    
-    public UserLoginDTO() {
+	//login just using username and password
+	private String email;
+	private String passwordHash;
+
+	public UserLoginDTO() {
 	}
-    
-    public UserLoginDTO(String email, String passwordHash) {
+
+	public UserLoginDTO(String email, String passwordHash) {
 		this.email = email;
 		this.passwordHash = passwordHash;
 	}
@@ -28,5 +28,5 @@ public class UserLoginDTO {
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
 	}
-   
+
 }

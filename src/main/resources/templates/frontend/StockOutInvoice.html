@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="frontend/fragments/head :: head('Stock Out Invoices')"></head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header th:replace="frontend/fragments/header :: header"></header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <div class="col-lg-2 col-md-3">
+                        <div th:replace="frontend/fragments/sidebar :: sidebar"></div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="col-lg-10 col-md-9">
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Stock Out Invoices</h5>
+                                <div>
+                                    <a href="/inventory/stock-out" class="btn btn-outline-primary">
+                                        <i class="fas fa-arrow-left"></i> Back to Stock Out
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!-- Filter and Search -->
+                                <div class="row mb-3">
+                                    <div class="col-md-8">
+                                        <div class="d-flex">
+                                            <div class="input-group me-2" style="max-width: 200px;">
+                                                <span class="input-group-text">From</span>
+                                                <input type="date" id="startDate" class="form-control">
+                                            </div>
+                                            <div class="input-group me-2" style="max-width: 200px;">
+                                                <span class="input-group-text">To</span>
+                                                <input type="date" id="endDate" class="form-control">
+                                            </div>
+                                            <div class="input-group" style="max-width: 250px;">
+                                                <input type="text" id="searchInput" class="form-control" placeholder="Search invoices...">
+                                                <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex justify-content-end">
+                                            <button class="btn btn-primary" id="refreshBtn">
+                                                <i class="fas fa-sync-alt"></i> Refresh
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Invoices Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover" id="stockOutInvoicesTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Invoice #</th>
+                                                <th>Date</th>
+                                                <th>Department</th>
+                                                <th>Items</th>
+                                                <th>Total Value</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Data will be loaded dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Pagination -->
+                                <nav aria-label="Page navigation" class="mt-4">
+                                    <ul class="pagination justify-content-center" id="pagination">
+                                        <!-- Pagination will be generated dynamically -->
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer th:replace="frontend/fragments/footer :: footer"></footer>
+    </div>
+
+    <!-- View Invoice Modal -->
+    <div class="modal fade" id="viewInvoiceModal" tabindex="-1" aria-labelledby="viewInvoiceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewInvoiceModalLabel">Stock Out Invoice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <h4>Stock Out Invoice</h4>
+                            <h6 id="invoiceNumber" class="text-muted"></h6>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6>Invoice Information</h6>
+                            <table class="table">
+                                <tr>
+                                    <th>Invoice Date:</th>
+                                    <td id="invoiceDate"></td>
+                                </tr>
+                                <tr>
+                                    <th>Status:</th>
+                                    <td id="invoiceStatus"></td>
+                                </tr>
+                                <tr>
+                                    <th>Processed By:</th>
+                                    <td id="processedBy"></td>
+                                </tr>
+                                <tr>
+                                    <th>Request ID:</th>
+                                    <td id="requestId"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Department Information</h6>
+                            <table class="table">
+                                <tr>
+                                    <th>Department:</th>
+                                    <td id="departmentName"></td>
+                                </tr>
+                                <tr>
+                                    <th>Location:</th>
+                                    <td id="departmentLocation"></td>
+                                </tr>
+                                <tr>
+                                    <th>Contact:</th>
+                                    <td id="departmentContact"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h6>Items</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered" id="invoiceItemsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Unit Price</th>
+                                            <th>Total</th>
+                                            <th>Batch/Serial</th>
+                                            <th>Storage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Items will be loaded dynamically -->
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="3" class="text-end">Total:</th>
+                                            <th id="itemsTotal"></th>
+                                            <th colspan="2"></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <h6>Notes</h6>
+                            <p id="invoiceNotes" class="p-2 bg-light rounded"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="printInvoiceBtn">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Invoice Template (hidden) -->
+    <div id="printSection" style="display: none;">
+        <div class="invoice-print">
+            <!-- Print content will be dynamically generated -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <div th:replace="frontend/fragments/scripts :: scripts"></div>
+    
+    <script>
+        $(document).ready(function() {
+            // Set default date range to last 30 days
+            const today = new Date();
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+            
+            $('#endDate').val(today.toISOString().split('T')[0]);
+            $('#startDate').val(thirtyDaysAgo.toISOString().split('T')[0]);
+            
+            // Check if there's an ID in the URL query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const invoiceId = urlParams.get('id');
+            
+            if (invoiceId) {
+                // Load and show specific invoice
+                loadInvoiceDetails(invoiceId);
+            } else {
+                // Load all invoices
+                loadStockOutInvoices();
+            }
+            
+            // Refresh button
+            $('#refreshBtn').click(function() {
+                loadStockOutInvoices();
+            });
+            
+            // Date filter change
+            $('#startDate, #endDate').change(function() {
+                loadStockOutInvoices();
+            });
+            
+            // Search button
+            $('#searchButton').click(function() {
+                loadStockOutInvoices();
+            });
+            
+            // View invoice details
+            $(document).on('click', '.viewInvoiceBtn', function() {
+                const invoiceId = $(this).data('id');
+                loadInvoiceDetails(invoiceId);
+            });
+            
+            // Print invoice
+            $('#printInvoiceBtn').click(function() {
+                printInvoice();
+            });
+        });
+        
+        function loadStockOutInvoices(page = 0) {
+            const startDate = $('#startDate').val() ? new Date($('#startDate').val()).toISOString() : null;
+            const endDate = $('#endDate').val() ? new Date($('#endDate').val()).toISOString() : null;
+            const search = $('#searchInput').val();
+            
+            $.ajax({
+                url: '/inventory/api/stock-invoices',
+                type: 'GET',
+                data: {
+                    page: page,
+                    size: 10,
+                    sort: 'invoiceDate,desc',
+                    type: 'STOCK_OUT',
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                success: function(response) {
+                    displayStockOutInvoices(response);
+                    createPagination(response.totalPages, page);
+                },
+                error: function(error) {
+                    console.error('Error loading stock out invoices:', error);
+                    alert('Failed to load stock out invoices. Please try again.');
+                }
+            });
+        }
+        
+        function displayStockOutInvoices(data) {
+            const tbody = $('#stockOutInvoicesTable tbody');
+            tbody.empty();
+            
+            if (data.content.length === 0) {
+                tbody.append('<tr><td colspan="7" class="text-center">No stock out invoices found</td></tr>');
+                return;
+            }
+            
+            data.content.forEach(function(invoice) {
+                const invoiceDate = new Date(invoice.invoiceDate).toLocaleDateString();
+                const status = getStatusBadge(invoice.status);
+                
+                const row = `
+                    <tr>
+                        <td>${invoice.invoiceNumber}</td>
+                        <td>${invoiceDate}</td>
+                        <td>${invoice.department ? invoice.department.name : 'N/A'}</td>
+                        <td>${invoice.items.length}</td>
+                        <td>$${calculateTotal(invoice.items).toFixed(2)}</td>
+                        <td>${status}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info viewInvoiceBtn" data-id="${invoice.id}">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        }
+        
+        function getStatusBadge(status) {
+            switch(status) {
+                case 'COMPLETED':
+                    return '<span class="badge bg-success">Completed</span>';
+                default:
+                    return '<span class="badge bg-secondary">Unknown</span>';
+            }
+        }
+        
+        function calculateTotal(items) {
+            return items.reduce((total, item) => {
+                return total + (item.quantity * (item.unitPrice || 0));
+            }, 0);
+        }
+        
+        function createPagination(totalPages, currentPage) {
+            const pagination = $('#pagination');
+            pagination.empty();
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            pagination.append(`
+                <li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage - 1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `);
+            
+            // Page numbers
+            for (let i = 0; i < totalPages; i++) {
+                pagination.append(`
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" data-page="${i}">${i + 1}</a>
+                    </li>
+                `);
+            }
+            
+            // Next button
+            pagination.append(`
+                <li class="page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage + 1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            `);
+            
+            // Add click event for pagination
+            $('.page-link').click(function(e) {
+                e.preventDefault();
+                const page = $(this).data('page');
+                loadStockOutInvoices(page);
+            });
+        }
+        
+        function loadInvoiceDetails(invoiceId) {
+            $.ajax({
+                url: `/inventory/api/stock-invoices/${invoiceId}`,
+                type: 'GET',
+                success: function(invoice) {
+                    // Basic invoice info
+                    $('#invoiceNumber').text(invoice.invoiceNumber);
+                    $('#invoiceDate').text(new Date(invoice.invoiceDate).toLocaleString());
+                    $('#invoiceStatus').html(getStatusBadge(invoice.status));
+                    $('#processedBy').text(invoice.processedBy ? `${invoice.processedBy.name} (ID: ${invoice.processedBy.id})` : 'N/A');
+                    $('#requestId').text(invoice.stockRequest ? invoice.stockRequest.id : 'N/A');
+                    
+                    // Department info
+                    $('#departmentName').text(invoice.department ? invoice.department.name : 'N/A');
+                    $('#departmentLocation').text(invoice.department ? (invoice.department.location || 'N/A') : 'N/A');
+                    $('#departmentContact').text(invoice.department ? (invoice.department.contactPerson || 'N/A') : 'N/A');
+                    
+                    // Notes
+                    $('#invoiceNotes').text(invoice.notes || 'No notes provided');
+                    
+                    // Items
+                    displayInvoiceItems(invoice.items);
+                    
+                    $('#viewInvoiceModal').modal('show');
+                },
+                error: function(error) {
+                    console.error('Error loading invoice details:', error);
+                    alert('Failed to load invoice details. Please try again.');
+                }
+            });
+        }
+        
+        function displayInvoiceItems(items) {
+            const tbody = $('#invoiceItemsTable tbody');
+            tbody.empty();
+            
+            let total = 0;
+            
+            items.forEach(function(item) {
+                const itemTotal = item.quantity * (item.unitPrice || 0);
+                total += itemTotal;
+                
+                const row = `
+                    <tr>
+                        <td>${item.product.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>$${(item.unitPrice || 0).toFixed(2)}</td>
+                        <td>$${itemTotal.toFixed(2)}</td>
+                        <td>${item.batchNumber || 'N/A'}</td>
+                        <td>${item.storageLocation || 'N/A'}</td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+            
+            $('#itemsTotal').text('$' + total.toFixed(2));
+        }
+        
+        function printInvoice() {
+            // Get current invoice data from modal
+            const invoiceNumber = $('#invoiceNumber').text();
+            const invoiceDate = $('#invoiceDate').text();
+            const departmentName = $('#departmentName').text();
+            const departmentLocation = $('#departmentLocation').text();
+            const departmentContact = $('#departmentContact').text();
+            const processedBy = $('#processedBy').text();
+            const notes = $('#invoiceNotes').text();
+            
+            // Clone the items table
+            const itemsTable = $('#invoiceItemsTable').clone();
+            
+            // Create print content
+            const printContent = `
+                <div class="container mt-4 mb-4">
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <h3>Stock Out Invoice</h3>
+                            <h5>${invoiceNumber}</h5>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6>Invoice Information</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Invoice Date:</th>
+                                    <td>${invoiceDate}</td>
+                                </tr>
+                                <tr>
+                                    <th>Processed By:</th>
+                                    <td>${processedBy}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Department Information</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Department:</th>
+                                    <td>${departmentName}</td>
+                                </tr>
+                                <tr>
+                                    <th>Location:</th>
+                                    <td>${departmentLocation}</td>
+                                </tr>
+                                <tr>
+                                    <th>Contact:</th>
+                                    <td>${departmentContact}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h6>Items</h6>
+                            ${itemsTable.prop('outerHTML')}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h6>Notes</h6>
+                            <p class="p-2 border rounded">${notes}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-5">
+                        <div class="col-md-6 text-center">
+                            <p>____________________________</p>
+                            <p>Inventory Manager Signature</p>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <p>____________________________</p>
+                            <p>Department Representative Signature</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Set print content
+            $('#printSection').html(printContent);
+            
+            // Print
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = originalContents;
+            
+            // Reload the page to restore functionality
+            location.reload();
+        }
+    </script>
+</body>
+</html> 

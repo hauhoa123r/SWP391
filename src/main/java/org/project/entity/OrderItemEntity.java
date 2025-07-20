@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "order_items", schema = "swp391")
+@FieldNameConstants
 public class OrderItemEntity {
     @EmbeddedId
     private OrderItemEntityId id;
@@ -30,5 +32,4 @@ public class OrderItemEntity {
     @NotNull
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
-
 }
