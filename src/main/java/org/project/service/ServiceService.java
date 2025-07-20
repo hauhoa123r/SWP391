@@ -18,4 +18,8 @@ public interface ServiceService {
     boolean isActiveServiceExist(Long id);
 
     ServiceResponse getActiveService(Long id);
+
+    Long countActiveService();
+
+    List<ServiceResponse> getTopServices(int top);
 }

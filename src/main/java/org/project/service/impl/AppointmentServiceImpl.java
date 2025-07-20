@@ -177,6 +177,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 AppointmentStatus.COMPLETED, departmentId);
     }
 
+    @Override
+    public Long countCompletedAppointments() {
+        return appointmentRepository.countByAppointmentStatus(AppointmentStatus.COMPLETED);
+    }
+
     @Autowired
     public void setTimestampUtils(TimestampUtils timestampUtils) {
         this.timestampUtils = timestampUtils;

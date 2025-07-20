@@ -23,4 +23,6 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     Collection<? extends AppointmentEntity> findByPatientEntityIdAndStartTimeBetween(Long patientEntityId, Timestamp startTimeAfter, Timestamp startTimeBefore);
 
     Long countByAppointmentStatusAndServiceEntityDepartmentEntityId(AppointmentStatus appointmentStatus, Long serviceEntityDepartmentEntityId);
+
+    Long countByAppointmentStatus(AppointmentStatus appointmentStatus);
 }

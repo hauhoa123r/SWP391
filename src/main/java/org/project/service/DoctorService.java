@@ -26,4 +26,8 @@ public interface DoctorService {
     List<DoctorResponse> getTop6DoctorsByDepartment(Long departmentId);
 
     List<DoctorResponse> getTop6DoctorsByHospital(Long hospitalId);
+
+    DoctorResponse getTop1Doctor();
+
+    List<DoctorResponse> getTop6Doctors();
 }

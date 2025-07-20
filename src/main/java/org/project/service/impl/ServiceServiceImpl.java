@@ -4,9 +4,7 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.transaction.Transactional;
 import org.project.config.WebConstant;
 import org.project.converter.ServiceConverter;
-import org.project.entity.ProductEntity;
-import org.project.entity.ReviewEntity;
-import org.project.entity.ServiceEntity;
+import org.project.entity.*;
 import org.project.enums.operation.AggregationFunction;
 import org.project.enums.operation.ComparisonOperator;
 import org.project.enums.operation.SortDirection;
@@ -158,25 +156,38 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public List<ServiceResponse> getTop3ServicesByHospital(Long hospitalId) {
         Pageable pageable = pageUtils.getPageable(0, 3);
+        List<SearchCriteria> searchCriterias = List.of(
+                new SearchCriteria(
+                        FieldNameUtils.joinFields(
+                                ServiceEntity.Fields.departmentEntity,
+                                DepartmentEntity.Fields.staffEntities,
+                                StaffEntity.Fields.hospitalEntity,
+                                HospitalEntity.Fields.id
+                        ),
+                        ComparisonOperator.EQUALS, hospitalId, JoinType.LEFT
+                )
+        );
+        List<SortCriteria> sortCriterias = List.of(
+                new SortCriteria(
+                        FieldNameUtils.joinFields(
+                                ServiceEntity.Fields.productEntity,
+                                ProductEntity.Fields.reviewEntities,
+                                ReviewEntity.Fields.id
+                        ), AggregationFunction.COUNT,
+                        SortDirection.DESC, JoinType.LEFT
+                ),
+                new SortCriteria(
+                        FieldNameUtils.joinFields(
+                                ServiceEntity.Fields.productEntity,
+                                ProductEntity.Fields.reviewEntities,
+                                ReviewEntity.Fields.rating
+                        ), AggregationFunction.AVG,
+                        SortDirection.DESC, JoinType.LEFT
+                )
+        );
         Page<ServiceEntity> serviceEntityPage = pageSpecificationUtils.getPage(
                 specificationUtils.reset()
-                        .getSortSpecifications(
-                                new SortCriteria(
-                                        FieldNameUtils.joinFields(
-                                                ServiceEntity.Fields.productEntity,
-                                                ProductEntity.Fields.reviewEntities,
-                                                ReviewEntity.Fields.id
-                                        ), AggregationFunction.COUNT,
-                                        SortDirection.DESC, JoinType.LEFT
-                                ),
-                                new SortCriteria(
-                                        FieldNameUtils.joinFields(
-                                                ServiceEntity.Fields.productEntity,
-                                                ProductEntity.Fields.reviewEntities,
-                                                ReviewEntity.Fields.rating
-                                        ), AggregationFunction.AVG,
-                                        SortDirection.DESC, JoinType.LEFT
-                                )), pageable, ServiceEntity.class, true);
+                        .getSpecifications(searchCriterias, sortCriterias), pageable, ServiceEntity.class, true);
         return serviceEntityPage.stream().map(serviceConverter::toResponse).toList();
     }
 
@@ -206,5 +217,35 @@ public class ServiceServiceImpl implements ServiceService {
         return serviceRepository.findByIdAndProductEntityProductStatus(id, WebConstant.PRODUCT_STATUS_ACTIVE)
                 .map(serviceConverter::toResponse)
                 .orElseThrow(() -> new EntityNotFoundException(ServiceEntity.class, id));
+    }
+
+    @Override
+    public Long countActiveService() {
+        return serviceRepository.countByProductEntityProductStatus(WebConstant.PRODUCT_STATUS_ACTIVE);
+    }
+
+    @Override
+    public List<ServiceResponse> getTopServices(int top) {
+        Pageable pageable = pageUtils.getPageable(0, top);
+        Page<ServiceEntity> serviceEntityPage = pageSpecificationUtils.getPage(
+                specificationUtils.reset()
+                        .getSortSpecifications(
+                                new SortCriteria(
+                                        FieldNameUtils.joinFields(
+                                                ServiceEntity.Fields.productEntity,
+                                                ProductEntity.Fields.reviewEntities,
+                                                ReviewEntity.Fields.id
+                                        ), AggregationFunction.COUNT,
+                                        SortDirection.DESC, JoinType.LEFT
+                                ),
+                                new SortCriteria(
+                                        FieldNameUtils.joinFields(
+                                                ServiceEntity.Fields.productEntity,
+                                                ProductEntity.Fields.reviewEntities,
+                                                ReviewEntity.Fields.rating
+                                        ), AggregationFunction.AVG,
+                                        SortDirection.DESC, JoinType.LEFT
+                                )), pageable, ServiceEntity.class, true);
+        return serviceEntityPage.stream().map(serviceConverter::toResponse).toList();
     }
 }
