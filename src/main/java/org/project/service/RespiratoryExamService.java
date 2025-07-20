@@ -12,4 +12,5 @@ public interface RespiratoryExamService {
     boolean updateRespiratory(Long respiratoryId, AddRespiratoryRequest addRespiratoryRequest);
     boolean deleteRespiratory(Long respiratoryId);
     List<RespiratoryResponse> getRespiratory(Long medicalRecordId);
+
 }
