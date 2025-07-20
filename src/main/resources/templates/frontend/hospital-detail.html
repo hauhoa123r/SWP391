@@ -1,7 +1,8 @@
 <!doctype html>
 <html layout:decorate="~{/frontend/layouts/main-layout}"
       th:with="
-        breadCrumbTitle = ${hospital.name},
+       navActive = ${3},
+       breadCrumbTitle = ${hospital.name},
         breadCrumbTexts = ${{{hospital.name}}},
         breadCrumbLinks = ${{{''}}}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
@@ -36,7 +37,7 @@
                             </div>
                             <div class="padding-top-60">
                                 <div class="iq-btn-container">
-                                    <a class="iq-button text-capitalize" th:href="@{/appointment}">
+                                    <a class="iq-button text-capitalize" th:href="@{/pateint/appointment}">
                                         <span class="iq-btn-text-holder position-relative">Get appointment</span>
                                         <span class="iq-btn-icon-holder">
                            <svg fill="none" height="10" viewBox="0 0 8 8" width="10" xmlns="http://www.w3.org/2000/svg">
@@ -77,7 +78,11 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="scrolling-text position-absolute">
-                        <div class="iq-title text-uppercase">Dịch vụ của chúng tôi</div>
+                        <div class="iq-title text-uppercase">Dịch vụ
+                            <br>
+                            <br>
+                            của chúng tôi
+                        </div>
                     </div>
                     <div class="iq-title-box">
                         <span class="iq-subtitle text-uppercase">Dịch vụ</span>
@@ -145,7 +150,11 @@
         <div class="container">
             <div class="text-center position-relative">
                 <div class="scrolling-text position-absolute">
-                    <div class="iq-title text-uppercase">Bác sĩ của chúng tôi</div>
+                    <div class="iq-title text-uppercase">Bác sĩ
+                        <br>
+                        <br>
+                        của chúng tôi
+                    </div>
                 </div>
                 <div class="iq-title-box">
                     <span class="iq-subtitle text-uppercase">Danh sách bác sĩ</span>
