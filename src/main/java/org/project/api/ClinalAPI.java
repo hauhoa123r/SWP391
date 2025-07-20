@@ -132,55 +132,61 @@ public class ClinalAPI {
     public ResponseEntity<Boolean> deleteGenitourinary(@PathVariable Long genitourinaryId) {
         return ResponseEntity.ok(genitourinaryExamService.deleteGenitourinary(genitourinaryId));
     }
-//    //Musculoskeletal
-//    @GetMapping("/cardiac/{medicalRecordId}")
-//    public ResponseEntity<List<RespiratoryResponse>> getMusculoskeletal(@PathVariable Long medicalRecordId) {
-//        return ResponseEntity.ok(respiratoryExamService.getRespiratory(medicalRecordId));
-//    }
-//    @PostMapping("/cardiac/{medicalRecordId}/add")
-//    public ResponseEntity<Boolean> addMusculoskeletal(@PathVariable Long medicalRecordId, @RequestBody AddRespiratoryRequest addRespiratoryRequest) {
-//        return ResponseEntity.ok(respiratoryExamService.addRespiratory(medicalRecordId,addRespiratoryRequest));
-//    }
-//    @PutMapping("/cardiac/{cardiacId}")
-//    public ResponseEntity<Boolean> updateMusculoskeletal(@PathVariable Long cardiacId, @RequestBody AddRespiratoryRequest request) {
-//        return ResponseEntity.ok(respiratoryExamService.updateRespiratory(respiratoryId,request));
-//    }
-//    @DeleteMapping("/cardiac/{cardiacId}")
-//    public ResponseEntity<Boolean> deleteMusculoskeletal(@PathVariable Long cardiacId) {
-//        return ResponseEntity.ok(respiratoryExamService.deleteRespiratory(respiratoryId));
-//    }
-//    //Dermatologic
-//    @GetMapping("/cardiac/{medicalRecordId}")
-//    public ResponseEntity<List<RespiratoryResponse>> getDermatologic(@PathVariable Long medicalRecordId) {
-//        return ResponseEntity.ok(respiratoryExamService.getRespiratory(medicalRecordId));
-//    }
-//    @PostMapping("/cardiac/{medicalRecordId}/add")
-//    public ResponseEntity<Boolean> addDermatologic(@PathVariable Long medicalRecordId, @RequestBody AddRespiratoryRequest addRespiratoryRequest) {
-//        return ResponseEntity.ok(respiratoryExamService.addRespiratory(medicalRecordId,addRespiratoryRequest));
-//    }
-//    @PutMapping("/cardiac/{cardiacId}")
-//    public ResponseEntity<Boolean> updateDermatologic(@PathVariable Long cardiacId, @RequestBody AddRespiratoryRequest request) {
-//        return ResponseEntity.ok(respiratoryExamService.updateRespiratory(respiratoryId,request));
-//    }
-//    @DeleteMapping("/cardiac/{cardiacId}")
-//    public ResponseEntity<Boolean> deleteDermatologic(@PathVariable Long cardiacId) {
-//        return ResponseEntity.ok(respiratoryExamService.deleteRespiratory(respiratoryId));
-//    }
-//    //Notes
-//    @GetMapping("/cardiac/{medicalRecordId}")
-//    public ResponseEntity<List<RespiratoryResponse>> getNotes(@PathVariable Long medicalRecordId) {
-//        return ResponseEntity.ok(respiratoryExamService.getRespiratory(medicalRecordId));
-//    }
-//    @PostMapping("/cardiac/{medicalRecordId}/add")
-//    public ResponseEntity<Boolean> addNotes(@PathVariable Long medicalRecordId, @RequestBody AddRespiratoryRequest addRespiratoryRequest) {
-//        return ResponseEntity.ok(respiratoryExamService.addRespiratory(medicalRecordId,addRespiratoryRequest));
-//    }
-//    @PutMapping("/cardiac/{cardiacId}")
-//    public ResponseEntity<Boolean> updateNotes(@PathVariable Long cardiacId, @RequestBody AddRespiratoryRequest request) {
-//        return ResponseEntity.ok(respiratoryExamService.updateRespiratory(respiratoryId,request));
-//    }
-//    @DeleteMapping("/cardiac/{cardiacId}")
-//    public ResponseEntity<Boolean> deleteNotes(@PathVariable Long cardiacId) {
-//        return ResponseEntity.ok(respiratoryExamService.deleteRespiratory(respiratoryId));
-//    }
+    //Musculoskeletal
+    @Autowired
+    private MusculoskeletalExamService musculoskeletalExamService;
+    @GetMapping("/musculoskeletal/{medicalRecordId}")
+    public ResponseEntity<List<MusculoskeletalResponse>> getMusculoskeletal(@PathVariable Long medicalRecordId) {
+        return ResponseEntity.ok(musculoskeletalExamService.getMusculoskeletal(medicalRecordId));
+    }
+    @PostMapping("/musculoskeletal/{medicalRecordId}/add")
+    public ResponseEntity<Boolean> addMusculoskeletal(@PathVariable Long medicalRecordId, @RequestBody AddMusculoskeletalRequest addMusculoskeletalRequest) {
+        return ResponseEntity.ok(musculoskeletalExamService.addMusculoskeletal(medicalRecordId,addMusculoskeletalRequest));
+    }
+    @PutMapping("/musculoskeletal/{musculoskeletalId}")
+    public ResponseEntity<Boolean> updateMusculoskeletal(@PathVariable Long musculoskeletalId, @RequestBody AddMusculoskeletalRequest addMusculoskeletalRequest) {
+        return ResponseEntity.ok(musculoskeletalExamService.updateMusculoskeletal(musculoskeletalId,addMusculoskeletalRequest));
+    }
+    @DeleteMapping("/musculoskeletal/{musculoskeletalId}")
+    public ResponseEntity<Boolean> deleteMusculoskeletal(@PathVariable Long musculoskeletalId) {
+        return ResponseEntity.ok(musculoskeletalExamService.deleteMusculoskeletal(musculoskeletalId));
+    }
+    //Dermatologic
+    @Autowired
+    private DermatologicExamService dermatologicExamService;
+    @GetMapping("/dermatologic/{medicalRecordId}")
+    public ResponseEntity<List<DermatologicResponse>> getDermatologic(@PathVariable Long medicalRecordId) {
+        return ResponseEntity.ok(dermatologicExamService.getDermatologic(medicalRecordId));
+    }
+    @PostMapping("/dermatologic/{medicalRecordId}/add")
+    public ResponseEntity<Boolean> addDermatologic(@PathVariable Long medicalRecordId, @RequestBody AddDermatologicRequest addDermatologicRequest) {
+        return ResponseEntity.ok(dermatologicExamService.addDermatologic(medicalRecordId,addDermatologicRequest));
+    }
+    @PutMapping("/dermatologic/{dermatologicId}")
+    public ResponseEntity<Boolean> updateDermatologic(@PathVariable Long dermatologicId, @RequestBody AddDermatologicRequest addDermatologicRequest) {
+        return ResponseEntity.ok(dermatologicExamService.updateDermatologic(dermatologicId,addDermatologicRequest));
+    }
+    @DeleteMapping("/dermatologic/{dermatologicId}")
+    public ResponseEntity<Boolean> deleteDermatologic(@PathVariable Long dermatologicId) {
+        return ResponseEntity.ok(dermatologicExamService.deleteDermatologic(dermatologicId));
+    }
+    //Notes
+    @Autowired
+    private ClinicalNoteService clinicalNoteService;
+    @GetMapping("/notes/{medicalRecordId}")
+    public ResponseEntity<List<ClinalNoteResponse>> getNotes(@PathVariable Long medicalRecordId) {
+        return ResponseEntity.ok(clinicalNoteService.getClinicalNote(medicalRecordId));
+    }
+    @PostMapping("/notes/{medicalRecordId}/add")
+    public ResponseEntity<Boolean> addNotes(@PathVariable Long medicalRecordId, @RequestBody AddClinalNoteRequest addClinalNoteRequest) {
+        return ResponseEntity.ok(clinicalNoteService.addClinicalNote(medicalRecordId,addClinalNoteRequest));
+    }
+    @PutMapping("/notes/{notesId}")
+    public ResponseEntity<Boolean> updateNotes(@PathVariable Long notesId, @RequestBody AddClinalNoteRequest addClinalNoteRequest) {
+        return ResponseEntity.ok(clinicalNoteService.updateClinicalNote(notesId,addClinalNoteRequest));
+    }
+    @DeleteMapping("/notes/{notesId}")
+    public ResponseEntity<Boolean> deleteNotes(@PathVariable Long notesId) {
+        return ResponseEntity.ok(clinicalNoteService.deleteClinicalNote(notesId));
+    }
 }
