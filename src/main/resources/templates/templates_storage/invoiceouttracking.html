@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+          content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" th:href="@{/templates_storage/assets/images/favicon.png}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/templates_storage/assets/images/favicon.png}" type="image/x-icon">
+    <title>Fastkart - Theo dõi hóa đơn xuất kho</title>
+
+    <!-- Google font-->
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet">
+
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/font-awesome.css}">
+
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" th:href="@{/templates_storage/assets/css/linearicon.css}">
+
+    <!-- Themify icon css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/themify.css}">
+
+    <!--Dropzon css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/dropzone.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/feather-icon.css}">
+
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/remixicon.css}">
+
+    <!-- Plugins css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/scrollbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/animate.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/chartist.css}">
+
+    <!-- Bootstrap css-->
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/bootstrap.css}">
+
+    <!-- Bootstrap-tag input css-->
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/bootstrap-tagsinput.css}">
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/style.css}">
+
+    <style>
+        .status-pending { background-color: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-processing { background-color: #dbeafe; color: #2563eb; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-completed { background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-cancelled { background-color: #fee2e2; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+    </style>
+</head>
+
+<body>
+<!-- tap on top start-->
+<div class="tap-top">
+    <span class="lnr lnr-chevron-up"></span>
+</div>
+<!-- tap on tap end-->
+
+<!-- page-wrapper Start-->
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <!-- Page Header Start-->
+    <div class="page-header">
+        <div class="header-wrapper m-0">
+            <div class="header-logo-wrapper p-0">
+                <div class="logo-wrapper">
+                    <a th:href="@{/index.html}">
+                        <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
+                        <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
+                    </a>
+                </div>
+                <div class="toggle-sidebar">
+                    <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
+                    <a th:href="@{/index.html}">
+                        <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <form class="form-inline search-full" action="#" method="get">
+                <div class="form-group w-100">
+                    <div class="Typeahead Typeahead--twitterUsers">
+                        <div class="u-posRelative">
+                            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
+                                   placeholder="Tìm kiếm Fastkart .." name="q" title="" autofocus>
+                            <i class="close-search" data-feather="x"></i>
+                            <div class="spinner-border Typeahead-spinner" role="status">
+                                <span class="sr-only">Đang tải...</span>
+                            </div>
+                        </div>
+                        <div class="Typeahead-menu"></div>
+                    </div>
+                </div>
+            </form>
+            <div class="nav-right col-6 pull-right right-header p-0">
+                <ul class="nav-menus">
+                    <li>
+                            <span class="header-search">
+                                <i class="ri-search-line"></i>
+                            </span>
+                    </li>
+                    <li class="onhover-dropdown">
+                        <div class="notification-box">
+                            <i class="ri-notification-line"></i>
+                            <span class="badge rounded-pill badge-theme">4</span>
+                        </div>
+                        <ul class="notification-dropdown onhover-show-div">
+                            <li>
+                                <i class="ri-notification-line"></i>
+                                <h6 class="f-18 mb-0">Thông báo</h6>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-primary"></i>Đang xử lý xuất kho <span
+                                        class="pull-right">10 phút</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-success"></i>Hoàn thành xuất kho<span
+                                        class="pull-right">1 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-info"></i>Đã tạo phiếu<span
+                                        class="pull-right">3 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-danger"></i>Đã hủy đơn<span
+                                        class="pull-right">6 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary" href="#">Xem tất cả thông báo</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <div class="mode">
+                            <i class="ri-moon-line"></i>
+                        </div>
+                    </li>
+                    <li class="profile-nav onhover-dropdown pe-0 me-0">
+                        <div class="media profile-media">
+                            <img class="user-profile rounded-circle" th:src="@{/templates_storage/assets/images/users/4.jpg}" alt="">
+                            <div class="user-name-hide media-body">
+                                <span th:text="${currentUser?.fullName ?: 'Người dùng'}">Người dùng</span>
+                                <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
+                            </div>
+                        </div>
+                        <ul class="profile-dropdown onhover-show-div">
+                            <li>
+                                <a th:href="@{/all-users.html}">
+                                    <i data-feather="users"></i>
+                                    <span>Người dùng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/order-list.html}">
+                                    <i data-feather="archive"></i>
+                                    <span>Đơn hàng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/support-ticket.html}">
+                                    <i data-feather="phone"></i>
+                                    <span>Hỗ trợ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/profile-setting.html}">
+                                    <i data-feather="settings"></i>
+                                    <span>Cài đặt</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                   href="#">
+                                    <i data-feather="log-out"></i>
+                                    <span>Đăng xuất</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header Ends-->
+
+    <!-- Page Body Start-->
+    <div class="page-body-wrapper">
+        <!-- Page Sidebar Start-->
+        <div class="sidebar-wrapper">
+            <div id="sidebarEffect"></div>
+            <div>
+                <div class="logo-wrapper logo-wrapper-center">
+                    <a th:href="@{/index.html}" data-bs-original-title="" title="">
+                        <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
+                    </a>
+                    <div class="back-btn">
+                        <i class="fa fa-angle-left"></i>
+                    </div>
+                    <div class="toggle-sidebar">
+                        <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                    </div>
+                </div>
+                <div class="logo-icon-wrapper">
+                    <a th:href="@{/index.html}">
+                        <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
+                        <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
+                             alt="logo">
+                    </a>
+                </div>
+                <nav class="sidebar-main">
+                    <div class="left-arrow" id="left-arrow">
+                        <i data-feather="arrow-left"></i>
+                    </div>
+
+                    <div id="sidebar-menu">
+                        <ul class="sidebar-links" id="simple-bar">
+                            <li class="back-btn"></li>
+
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/index.html}">
+                                    <i class="ri-home-line"></i>
+                                    <span>Bảng điều khiển</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                    <i class="ri-store-3-line"></i>
+                                    <span>Giao dịch</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a th:href="@{/StockIn.html}">Nhập kho</a>
+                                    </li>
+
+                                    <li>
+                                        <a th:href="@{/StockOut.html}">Xuất kho</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                    <i class="ri-list-check-2"></i>
+                                    <span>Hóa đơn</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a th:href="@{/StockInInvoice.html}">Hóa đơn nhập kho</a>
+                                    </li>
+
+                                    <li>
+                                        <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
+                                    </li>
+
+                                    <li>
+                                        <a th:href="@{/CustomerInvoice.html}">Hóa đơn khách hàng</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                    <i class="ri-list-settings-line"></i>
+                                    <span>Kho hàng</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                    </li>
+
+                                    <li>
+                                        <a th:href="@{/medicine.html}">Thuốc</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title" href="#">
+                                    <i class="ri-archive-line"></i>
+                                    <span>Theo dõi</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a th:href="@{/invoiceintracking.html}">Theo dõi nhập kho</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/invoiceouttracking.html}">Theo dõi xuất kho</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                    <i class="ri-price-tag-3-line"></i>
+                                    <span>Mã giảm giá</span>
+                                </a>
+                                <ul class="sidebar-submenu">
+                                    <li>
+                                        <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
+                                    </li>
+
+                                    <li>
+                                        <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
+                                    <i class="ri-star-line"></i>
+                                    <span>Đánh giá sản phẩm</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
+                                    <i class="ri-file-chart-line"></i>
+                                    <span>Báo cáo</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="right-arrow" id="right-arrow">
+                        <i data-feather="arrow-right"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Page Sidebar Ends-->
+
+        <!-- Tracking Section starts-->
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="title-header option-title">
+                                            <h5>Theo dõi hóa đơn xuất kho</h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 overflow-hidden">
+                                                <div class="order-left-image">
+                                                    <div class="tracking-product-image">
+                                                        <img th:src="@{/templates_storage/assets/images/product/2.png}"
+                                                             class="img-fluid w-100 blur-up lazyload" alt="">
+                                                    </div>
+
+                                                    <div class="order-image-contain">
+                                                        <h4>Phiếu xuất kho cho khoa Nhi</h4>
+                                                        <div class="tracker-number">
+                                                            <p>Mã phiếu xuất : <span>SO-00456</span></p>
+                                                            <p>Đơn vị nhận : <span>Khoa Nhi - BV Đa khoa</span></p>
+                                                            <p>Ngày tạo đơn : <span>15/06/2023</span></p>
+                                                        </div>
+                                                        <h5>Phiếu xuất kho của bạn đang được xử lý. Thông tin cập nhật trong vòng 24 giờ.</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <ol class="progtrckr">
+                                                <li class="progtrckr-done">
+                                                    <h5>Đơn đã tạo</h5>
+                                                    <h6>08:10 AM</h6>
+                                                </li>
+                                                <li class="progtrckr-done">
+                                                    <h5>Đang xử lý</h5>
+                                                    <h6>09:15 AM</h6>
+                                                </li>
+                                                <li class="progtrckr-todo">
+                                                    <h5>Đã chuẩn bị hàng</h5>
+                                                    <h6>Đang xử lý</h6>
+                                                </li>
+                                                <li class="progtrckr-todo">
+                                                    <h5>Đã xuất kho</h5>
+                                                    <h6>Chờ xử lý</h6>
+                                                </li>
+                                                <li class="progtrckr-todo">
+                                                    <h5>Đã giao hàng</h5>
+                                                    <h6>Chờ xử lý</h6>
+                                                </li>
+                                            </ol>
+
+                                            <div class="col-12 overflow-visible">
+                                                <div class="tracker-table">
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <thead>
+                                                            <tr class="table-head">
+                                                                <th scope="col">Ngày</th>
+                                                                <th scope="col">Thời gian</th>
+                                                                <th scope="col">Trạng thái</th>
+                                                                <th scope="col">Người xử lý</th>
+                                                            </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <h6>15/06/2023</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <h6>09:15 AM</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <p class="fw-bold">Đang xử lý</p>
+                                                                </td>
+                                                                <td>
+                                                                    <h6>Nguyễn Văn A - Nhân viên kho</h6>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <h6>15/06/2023</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <h6>08:10 AM</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <p class="fw-bold">Đơn đã tạo</p>
+                                                                </td>
+                                                                <td>
+                                                                    <h6>Trần Thị B - Quản lý kho</h6>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-end border-0 pb-0 d-flex justify-content-end">
+                                        <button class="btn btn-primary me-3" onclick="printInvoiceTracking()">In thông tin</button>
+                                        <button class="btn btn-outline" onclick="goBack()">Quay lại</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Container-fluid Ends-->
+
+            <!-- footer start-->
+            <div class="container-fluid">
+                <footer class="footer">
+                    <div class="row">
+                        <div class="col-md-12 footer-copyright text-center">
+                            <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- footer end-->
+        </div>
+        <!-- Order Tracking Seation End-->
+    </div>
+    <!-- Page Body End-->
+</div>
+<!-- page-wrapper End-->
+
+<!-- Modal Start -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="modal-title" id="staticBackdropLabel">Đăng xuất</h5>
+                <p>Bạn có chắc chắn muốn đăng xuất?</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="button-box">
+                    <button type="button" class="btn btn--no" data-bs-dismiss="modal">Không</button>
+                    <button type="button" onclick="location.href = 'login.html';"
+                            class="btn  btn--yes btn-primary">Có</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal End -->
+
+<!-- latest js -->
+<script th:src="@{/templates_storage/assets/js/jquery-3.6.0.min.js}"></script>
+
+<!-- Bootstrap js -->
+<script th:src="@{/templates_storage/assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/templates_storage/assets/js/notify/bootstrap-notify.min.js}"></script>
+
+<!-- feather icon js -->
+<script th:src="@{/templates_storage/assets/js/icons/feather-icon/feather.min.js}"></script>
+<script th:src="@{/templates_storage/assets/js/icons/feather-icon/feather-icon.js}"></script>
+
+<!-- scrollbar simplebar js -->
+<script th:src="@{/templates_storage/assets/js/scrollbar/simplebar.js}"></script>
+<script th:src="@{/templates_storage/assets/js/scrollbar/custom.js}"></script>
+
+<!-- Sidebar js -->
+<script th:src="@{/templates_storage/assets/js/config.js}"></script>
+
+<!-- bootstrap tag-input js -->
+<script th:src="@{/templates_storage/assets/js/bootstrap-tagsinput.min.js}"></script>
+
+<!-- customizer js -->
+<script th:src="@{/templates_storage/assets/js/customizer.js}"></script>
+
+<!-- customizer js -->
+<script th:src="@{/templates_storage/assets/js/sidebar-menu.js}"></script>
+
+<!--Dropzon js -->
+<script th:src="@{/templates_storage/assets/js/dropzone/dropzone.js}"></script>
+<script th:src="@{/templates_storage/assets/js/dropzone/dropzone-script.js}"></script>
+
+<!-- Plugins js -->
+<script th:src="@{/templates_storage/assets/js/notify/index.js}"></script>
+
+<!-- sidebar effect -->
+<script th:src="@{/templates_storage/assets/js/sidebareffect.js}"></script>
+
+<!-- Theme js -->
+<script th:src="@{/templates_storage/assets/js/script.js}"></script>
+
+<script>
+    function printInvoiceTracking() {
+        window.print();
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>
+
