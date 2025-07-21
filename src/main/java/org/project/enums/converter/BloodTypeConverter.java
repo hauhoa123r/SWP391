@@ -10,14 +10,14 @@ public class BloodTypeConverter implements AttributeConverter<BloodType, String>
     @Override
     public String convertToDatabaseColumn(BloodType bloodType) {
         if (bloodType == null) return null;
-        return bloodType.getValue();
+        return bloodType.getType();
     }
 
     @Override
     public BloodType convertToEntityAttribute(String dbData) {
         if (dbData == null) return null;
         for (BloodType type : BloodType.values()) {
-            if (type.getValue().equals(dbData)) {
+            if (type.getType().equals(dbData)) {
                 return type;
             }
         }

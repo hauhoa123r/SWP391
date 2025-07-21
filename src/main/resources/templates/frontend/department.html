@@ -1,0 +1,69 @@
+<!doctype html>
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+      navActive = ${4},
+        breadCrumbTitle = ${'Danh sách phòng ban'},
+        breadCrumbTexts = ${{{'Danh sách phòng ban'}}},
+        breadCrumbLinks = ${{{''}}}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>
+        Danh sách phòng ban
+    </title>
+</head>
+<body class=" body-bg landing-pages">
+<section layout:fragment="content">
+    <div class="container">
+        <div class="container mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white mb-0">
+                    <h5 class="mb-4 text-white">Tìm kiếm phòng ban</h5>
+                </div>
+                <div class="card-body">
+                    <form id="department-filter-form">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="departmentName">Tên phòng ban</label>
+                                <input class="form-control" id="departmentName" name="name"
+                                       placeholder="Nhập tên phòng ban" type="text">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="sortField">Sắp xếp theo</label>
+                                <select class="form-select" id="sortField" name="sortFieldName">
+                                    <option value="">Không sắp xếp</option>
+                                    <option value="name">Tên</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="sortOrder">Thứ tự</label>
+                                <select class="form-select" id="sortOrder" name="sortDirection">
+                                    <option value="ASC">Tăng dần</option>
+                                    <option value="DESC">Giảm dần</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-end">
+                                <button class="btn btn-outline-secondary me-2" type="reset">
+                                    <i class="fas fa-undo me-1"></i> Đặt lại
+                                </button>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search me-1"></i> Tìm kiếm
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-xl-3 row-cols-md-2 row-cols-1" id="department-list"></div>
+        <nav aria-label="Pagination" class="mt-4">
+            <ul class="pagination justify-content-center" id="pagination"></ul>
+        </nav>
+    </div>
+</section>
+<th:block layout:fragment="custom-js">
+    <script th:src="@{/frontend/assets/js/department.js}" type="module"></script>
+</th:block>
+</body>
+</html>

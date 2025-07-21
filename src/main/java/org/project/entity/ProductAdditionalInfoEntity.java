@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "product_additional_infos", schema = "swp391")
+@FieldNameConstants
 public class ProductAdditionalInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

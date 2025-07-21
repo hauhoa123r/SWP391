@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "pricing_plans", schema = "swp391")
+@FieldNameConstants
 public class PricingPlanEntity {
     @Id
     @Column(name = "pricing_plan_id", nullable = false)
@@ -27,8 +29,9 @@ public class PricingPlanEntity {
 
     @OneToMany
     private Set<PricingPlanFeatureEntity> pricingPlanFeatureEntities = new LinkedHashSet<>();
-    @ManyToMany(mappedBy = "pricingPlanEntities")
-    private Set<PatientEntity> patientEntities = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "pricingPlanEntity")
+    private Set<PricingPlanSubscriptionEntity> pricingPlanSubscriptionEntities = new LinkedHashSet<>();
 
 /*
  TODO [Reverse Engineering] create field to map the 'plan_type' column

@@ -1,17 +1,17 @@
 package org.project.service;
 
+import org.project.entity.StaffEntity;
+import org.project.model.dto.AvailabilityRequestDTO;
+import org.project.model.response.StaffSubstituteResponse;
+
 import java.util.List;
 
-import org.project.entity.StaffEntity;
-import org.springframework.stereotype.Service;
-@Service
 public interface StaffService {
-	StaffEntity getStaffById(Long id);
+    List<StaffSubstituteResponse> getAllStaffSubstitutes(AvailabilityRequestDTO availability);
 
-	boolean hasCheckedInToday(Long employeeId);
+    boolean isStaffExist(Long staffId);
 
-	boolean processCheckIn(Long employeeId);
+    StaffEntity getManagerByStaffId(Long staffId);
 
-	List<StaffEntity> getAllStaff();
-	
+    StaffEntity getStaffByStaffId(Long staffId);
 }

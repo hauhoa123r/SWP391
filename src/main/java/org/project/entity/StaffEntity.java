@@ -7,14 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.StaffRole;
 import org.project.enums.StaffType;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -22,8 +23,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@ToString
 @Table(name = "staffs", schema = "swp391")
+@FieldNameConstants
 public class StaffEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +38,7 @@ public class StaffEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
-    private StaffEntity staffEntity;
+    private StaffEntity manager;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -85,7 +86,7 @@ public class StaffEntity {
     @Column(name = "staff_type")
     private StaffType staffType;
 
-    @OneToMany(mappedBy = "staffEntity")
+    @OneToMany(mappedBy = "manager")
     private Set<StaffEntity> staffs = new LinkedHashSet<>();
 
     @NotNull
@@ -93,4 +94,38 @@ public class StaffEntity {
     @JoinColumn(name = "hospital_id", nullable = false)
     private HospitalEntity hospitalEntity;
 
+    @ManyToMany()
+    @JoinTable(name = "staff_reviews",
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "staff_review_id"))
+    private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+
+    @OneToOne(mappedBy = "staffEntity")
+    private DoctorEntity doctorEntity;
+
+    @OneToMany(mappedBy = "manager")
+    private List<StaffEntity> subordinates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "staffEntity")
+    private List<LeaveRequestEntity> leaveRequestEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "staffSubstitute")
+    private List<LeaveRequestEntity> leaveRequestSubstituteEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "staffEntity")
+    private List<LeaveBalanceEntity> leaveBalanceEntities = new ArrayList<>();
+
+    public Double getAverageRating() {
+        return reviewEntities.stream()
+                .mapToDouble(ReviewEntity::getRating)
+                .average()
+                .orElse(0.0);
+    }
+
+    @OneToOne(mappedBy = "staffEntity", fetch = FetchType.LAZY)
+    private TechnicianEntity technicianEntity;
+
+    public Integer getReviewCount() {
+        return reviewEntities.size();
+    }
 }

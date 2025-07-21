@@ -1,5 +1,10 @@
 package org.project.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum BloodType {
     A_POSITIVE("A+"),
     A_NEGATIVE("A-"),
@@ -8,14 +13,7 @@ public enum BloodType {
     AB_POSITIVE("AB+"),
     AB_NEGATIVE("AB-"),
     O_POSITIVE("O+"),
-    O_NAGATIVE("O-");
+    O_NEGATIVE("O-");
 
-    private final String value;
-
-    BloodType(String value) {
-        this.value = value;
-    }
-    public String getValue() {
-        return value;
-    }
+    private final String type;
 }
