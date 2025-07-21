@@ -1,7 +1,7 @@
 package org.project.controller;
 
 import jakarta.servlet.http.HttpSession;
-import org.project.model.response.DoctorResponse;
+import org.project.model.response.DoctorHeaderResponse;
 import org.project.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/staff/doctor")
-public class AppointmentController {
+public class AppointmentsController {
     @Autowired
     private DoctorService doctorService;
 
     @GetMapping
-    public ResponseEntity<DoctorResponse> getDoctorId(){
+    public ResponseEntity<DoctorHeaderResponse> getDoctorId(){
         return ResponseEntity.ok(doctorService.getDoctorByUserId(9l));
     }
 
     @GetMapping("/home-page")
     public String doctorHomePage(Model model, HttpSession session) {
         Long userId = 8L;
-        DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
+        DoctorHeaderResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
         model.addAttribute("content","dashboard-doctor/doctor_homepage");
         return "dashboard-doctor/doctor_layout";
@@ -33,7 +33,7 @@ public class AppointmentController {
     @GetMapping("/appointments")
     public String doctorAppointments(Model model) {
         Long userId = 8L;
-        DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
+        DoctorHeaderResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
         model.addAttribute("content", "dashboard-doctor/doctor_appointments");
         return "dashboard-doctor/doctor_layout";
@@ -41,7 +41,7 @@ public class AppointmentController {
     @GetMapping("/in-progress")
     public String doctorInProgress(Model model, @RequestParam("id") Long id) {
         Long userId = 8L;
-        DoctorResponse doctorResponse = doctorService.getDoctorByUserId(userId);
+        DoctorHeaderResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
         model.addAttribute("content", "dashboard-doctor/appointment_progress");
         model.addAttribute("id", id);

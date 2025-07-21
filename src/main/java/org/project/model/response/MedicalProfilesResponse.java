@@ -1,15 +1,17 @@
-package org.project.model.dto;
+package org.project.model.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.project.enums.AppointmentStatus;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AppointmentDTO {
+public class MedicalProfilesResponse {
     Long id;
-    AppointmentStatus appointmentStatus;
+    List<String> allergies;
+    List<String> chronicDiseases;
 }

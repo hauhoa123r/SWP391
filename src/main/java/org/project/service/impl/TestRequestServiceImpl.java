@@ -6,7 +6,7 @@ import org.project.entity.TestRequestEntity;
 import org.project.enums.RequestStatus;
 import org.project.model.request.TestListRequest;
 import org.project.model.response.TestRequestInAppointment;
-import org.project.repository.AppointmentRepository;
+import org.project.repository.AppointmentsRepository;
 import org.project.repository.TestRequestRepository;
 import org.project.repository.TestTypeRepository;
 import org.project.service.TestRequestService;
@@ -15,16 +15,14 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TestRequestServiceImpl implements TestRequestService {
     @Autowired
     private TestRequestRepository testRequestRepository;
     @Autowired
-    private AppointmentRepository appointmentRepository;
+    private AppointmentsRepository appointmentRepository;
     @Autowired
     private TestTypeRepository testTypeRepository;
     @Autowired

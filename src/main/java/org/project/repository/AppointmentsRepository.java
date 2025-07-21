@@ -2,7 +2,6 @@ package org.project.repository;
 
 import org.project.entity.AppointmentEntity;
 import org.project.enums.AppointmentStatus;
-import org.project.model.response.AppointmentListResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +12,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
-public interface AppointmentRepository extends JpaRepository<AppointmentEntity,Long>, JpaSpecificationExecutor<AppointmentEntity> {
+public interface AppointmentsRepository extends JpaRepository<AppointmentEntity,Long>, JpaSpecificationExecutor<AppointmentEntity> {
     List<AppointmentEntity> findByDoctorEntityIdAndAppointmentStatusIn(Long dortorId, List<AppointmentStatus> statuses);
 
     @Query("""

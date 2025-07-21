@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DoctorResponse {
+public class DoctorHeaderResponse {
     Long id;
     String staffEntityFullName;
     String staffEntityAvatarUrl;

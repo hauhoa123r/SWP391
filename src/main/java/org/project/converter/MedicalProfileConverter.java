@@ -3,8 +3,7 @@ package org.project.converter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.project.entity.MedicalProfileEntity;
-import org.project.model.response.MedicalProfileResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.project.model.response.MedicalProfilesResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -15,10 +14,10 @@ import java.util.List;
 public class MedicalProfileConverter {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public MedicalProfileResponse toMedicalProfileResponse(MedicalProfileEntity entity) {
+    public MedicalProfilesResponse toMedicalProfileResponse(MedicalProfileEntity entity) {
         List<String> allergies = parseJsonList(entity.getAllergies());
         List<String> chronicDiseases = parseJsonList(entity.getChronicDiseases());
-        return new MedicalProfileResponse(
+        return new MedicalProfilesResponse(
                 entity.getId(),
                 allergies,
                 chronicDiseases

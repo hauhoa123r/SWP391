@@ -4,23 +4,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.project.converter.MedicalProfileConverter;
 import org.project.entity.MedicalProfileEntity;
-import org.project.model.response.MedicalProfileResponse;
-import org.project.repository.MedicalProfileRepository;
-import org.project.service.MedicalProfileService;
+import org.project.model.response.MedicalProfilesResponse;
+import org.project.repository.MedicalProfilesRepository;
+import org.project.service.MedicalProfilesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MedicalProfileServiceImpl implements MedicalProfileService {
+public class MedicalProfilesServiceImpl implements MedicalProfilesService {
     @Autowired
-    private MedicalProfileRepository medicalProfileRepository;
+    private MedicalProfilesRepository medicalProfileRepository;
     @Autowired
     private MedicalProfileConverter medicalProfileConverter;
 
     @Override
-    public MedicalProfileResponse getMedicalProfileOfPatient(Long patientId) {
+    public MedicalProfilesResponse getMedicalProfileOfPatient(Long patientId) {
         MedicalProfileEntity medicalProfileEntity = medicalProfileRepository.findByPatientEntityId(patientId);
         if (medicalProfileEntity == null) {
             throw new RuntimeException("Medical profile not found for patient ID: " + patientId);
@@ -29,7 +29,7 @@ public class MedicalProfileServiceImpl implements MedicalProfileService {
     }
 
     @Override
-    public MedicalProfileResponse updateAllergiesAndChronicDiseases(Long patientId, List<String> allergies, List<String> chronicDiseases) {
+    public MedicalProfilesResponse updateAllergiesAndChronicDiseases(Long patientId, List<String> allergies, List<String> chronicDiseases) {
         MedicalProfileEntity entity = medicalProfileRepository.findByPatientEntityId(patientId);
         if (entity == null) {
             throw new RuntimeException("Medical profile not found for patient ID: " + patientId);

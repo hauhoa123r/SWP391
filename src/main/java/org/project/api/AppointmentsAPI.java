@@ -1,9 +1,9 @@
 package org.project.api;
 
-import org.project.model.dto.AppointmentDTO;
+import org.project.model.dto.AppointmentChangeStatusDTO;
 import org.project.model.response.AppointmentDetailResponse;
 import org.project.model.response.AppointmentListResponse;
-import org.project.service.AppointmentService;
+import org.project.service.AppointmentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/appointments")
-public class AppointmentAPI {
+public class AppointmentsAPI {
     @Autowired
-    private AppointmentService appointmentService;
+    private AppointmentsService appointmentService;
 
     @GetMapping("/{doctorId}")
     public Page<AppointmentListResponse> getAppointments(
@@ -35,9 +35,9 @@ public class AppointmentAPI {
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<AppointmentDTO> updateAppointmentStatus(@PathVariable Long id, @RequestBody AppointmentDTO appointmentDTO) {
+    public ResponseEntity<AppointmentChangeStatusDTO> updateAppointmentStatus(@PathVariable Long id, @RequestBody AppointmentChangeStatusDTO appointmentDTO) {
         appointmentDTO.setId(id);
-        AppointmentDTO updatedAppointmentDTO = appointmentService.updateAppointmentStatus(appointmentDTO);
+        AppointmentChangeStatusDTO updatedAppointmentDTO = appointmentService.updateAppointmentStatus(appointmentDTO);
         return new ResponseEntity<>(updatedAppointmentDTO, HttpStatus.OK);
     }
 

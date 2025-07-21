@@ -1,13 +1,13 @@
 package org.project.service.impl;
 
-import org.project.converter.AppointmentConverter;
+import org.project.converter.AppointmentsConverter;
 import org.project.entity.AppointmentEntity;
 import org.project.enums.AppointmentStatus;
-import org.project.model.dto.AppointmentDTO;
+import org.project.model.dto.AppointmentChangeStatusDTO;
 import org.project.model.response.AppointmentDetailResponse;
 import org.project.model.response.AppointmentListResponse;
-import org.project.repository.AppointmentRepository;
-import org.project.service.AppointmentService;
+import org.project.repository.AppointmentsRepository;
+import org.project.service.AppointmentsService;
 import org.project.spec.AppointmentSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,14 +22,13 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class AppointmentServiceImpl implements AppointmentService {
+public class AppointmentsServiceImpl implements AppointmentsService {
     @Autowired
-    private AppointmentRepository appointmentRepository;
+    private AppointmentsRepository appointmentRepository;
     @Autowired
-    private AppointmentConverter appointmentConverter;
+    private AppointmentsConverter appointmentConverter;
 
 
     @Override
@@ -40,7 +39,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentDTO updateAppointmentStatus(AppointmentDTO appointmentDTO) {
+    public AppointmentChangeStatusDTO updateAppointmentStatus(AppointmentChangeStatusDTO appointmentDTO) {
         Optional<AppointmentEntity> appointmentEntity = appointmentRepository.findById(appointmentDTO.getId());
         if (!appointmentEntity.isPresent()) {
             throw new RuntimeException("Không tìm thấy !");

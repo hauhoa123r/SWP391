@@ -1,7 +1,7 @@
 package org.project.service;
 
-import org.project.model.response.DoctorResponse;
+import org.project.model.response.DoctorHeaderResponse;
 
 public interface DoctorService {
-    DoctorResponse getDoctorByUserId(Long userId);
+    DoctorHeaderResponse getDoctorByUserId(Long userId);
 }
