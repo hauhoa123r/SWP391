@@ -6,9 +6,9 @@ import org.project.converter.AppointmentApprovalConverter;
 import org.project.converter.AppointmentConverter;
 import org.project.entity.AppointmentEntity;
 import org.project.entity.DoctorEntity;
-import org.project.entity.StaffEntity;
 import org.project.entity.StaffScheduleEntity;
 import org.project.enums.AppointmentStatus;
+import org.project.exception.ErrorResponse;
 import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.ChangeAppointmentDTO;
 import org.project.model.response.AppointmentApprovalResponse;
@@ -16,14 +16,12 @@ import org.project.model.response.AppointmentAvailableResponse;
 import org.project.repository.*;
 import org.project.service.AppointmentService;
 import org.project.service.PatientService;
-import org.project.service.StaffService;
 import org.project.utils.TimestampUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,12 +38,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     private TimestampUtils timestampUtils;
     private PatientService patientService;
     private AppointmentApprovalConverter appointmentApprovalConverter;
-    private StaffService staffService;
-
-    @Autowired
-    public void setStaffService(StaffService staffService) {
-        this.staffService = staffService;
-    }
 
     @Autowired
     public void setAppointmentApprovalConverter(AppointmentApprovalConverter appointmentApprovalConverter) {
@@ -162,76 +154,56 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Map<String, Object> saveAppointment(AppointmentDTO appointmentDTO) {
+    public void saveAppointment(AppointmentDTO appointmentDTO) {
         if (!isDoctorExists(appointmentDTO)) {
-            return Map.of(
-                    "success", false,
-                    "message", "Doctor not found"
-            );
+            throw new ErrorResponse("Doctor not found");
         }
         if (!isDoctorSupportService(appointmentDTO)) {
-            return Map.of(
-                    "success", false,
-                    "message", "Service not found"
-            );
+            throw new ErrorResponse("Doctor does not support this service");
         }
         // Validate appointment time
         if (!isStartTimeValid(appointmentDTO)) {
-            return Map.of(
-                    "success", false,
-                    "message", "Invalid appointment time"
-            );
+            throw new ErrorResponse("Invalid appointment time");
         }
         // Check appointment time between staff schedule
         if (!isStartTimeBetweenStaffSchedule(appointmentDTO)) {
-            return Map.of(
-                    "success", false,
-                    "message", "Appointment time is not within staff schedule"
-            );
+            throw new ErrorResponse("Appointment time is not within staff schedule");
         }
         // Check patient have same appointment time (same patient)
         if (isPatientHasAppointmentAtSameTime(appointmentDTO)) {
-            return Map.of(
-                    "success", false,
-                    "message", "You already have an appointment at this time"
-            );
+            throw new ErrorResponse("You already have an appointment at this time");
         }
         // Check appointment time duplicate with other appointment (other patient)
         if (isDoctorBookedByOtherPatient(appointmentDTO)) {
-            return Map.of(
-                    "success", false,
-                    "message", "Doctor is already booked at this time"
-            );
+            throw new ErrorResponse("Doctor is already booked at this time");
         }
         // Check if the user exists and is active
         if (!isUserExistsAndActive(appointmentDTO)) {
-            return Map.of(
-                    "success", false,
-                    "message", "User does not exist or is not active"
-            );
+            throw new ErrorResponse("User does not exist or is not active");
         }
         // Check if the patient does not belong to the user
         if (!isPatientBelongsToUser(appointmentDTO)) {
-            return Map.of(
-                    "success", false,
-                    "message", "Patient does not belong to the user"
-            );
+            throw new ErrorResponse("Patient does not belong to the user");
         }
         AppointmentEntity appointmentEntity = appointmentConverter.toEntity(appointmentDTO);
         appointmentEntity.setAppointmentStatus(AppointmentStatus.PENDING);
-        appointmentEntity = appointmentRepository.save(appointmentEntity);
-        return Map.of(
-                "success", true
-        );
+        appointmentRepository.save(appointmentEntity);
     }
 
     @Override
-    public List<AppointmentApprovalResponse> getAppointmentsHaveStatusPendingByStaffId(Long staffId) {
-        if (staffId == null) {
-            return Collections.emptyList();
-        }
-        StaffEntity staffEntity = staffService.getStaffByStaffId(staffId);
-        List<AppointmentEntity> appointmentEntities = appointmentRepository.findByDoctorEntity_StaffEntity_HospitalEntity_IdAndAppointmentStatus(staffEntity.getHospitalEntity().getId(), AppointmentStatus.PENDING);
+    public Long countCompletedAppointmentsByDepartment(Long departmentId) {
+        return appointmentRepository.countByAppointmentStatusAndServiceEntityDepartmentEntityId(
+                AppointmentStatus.COMPLETED, departmentId);
+    }
+
+    @Override
+    public Long countCompletedAppointments() {
+        return appointmentRepository.countByAppointmentStatus(AppointmentStatus.COMPLETED);
+    }
+
+    @Override
+    public List<AppointmentApprovalResponse> getAppointmentsHaveStatusPendingByHospitalId(Long hospitalId) {
+        List<AppointmentEntity> appointmentEntities = appointmentRepository.findByDoctorEntity_StaffEntity_HospitalEntity_IdAndAppointmentStatus(hospitalId, AppointmentStatus.PENDING);
 
         if (appointmentEntities.isEmpty() || appointmentEntities == null) {
             return Collections.emptyList();
@@ -397,6 +369,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElse(Collections.emptyList());
     }
 
+    @Autowired
+    public void setTimestampUtils(TimestampUtils timestampUtils) {
+        this.timestampUtils = timestampUtils;
+    }
+
     private static class AppointmentKey {
         private final Long doctorEntityId;
         private final Timestamp startTime;
@@ -409,10 +386,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof AppointmentKey)) return false;
-            AppointmentKey that = (AppointmentKey) o;
+            if (!(o instanceof AppointmentKey that)) return false;
             return Objects.equals(doctorEntityId, that.doctorEntityId) &&
-                   Objects.equals(startTime, that.startTime);
+                    Objects.equals(startTime, that.startTime);
         }
 
         @Override
@@ -420,11 +396,4 @@ public class AppointmentServiceImpl implements AppointmentService {
             return Objects.hash(doctorEntityId, startTime);
         }
     }
-
-    @Autowired
-    public void setTimestampUtils(TimestampUtils timestampUtils) {
-        this.timestampUtils = timestampUtils;
-    }
-
-
 }
