@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
+import org.project.enums.AppointmentStatus;
 
 import java.sql.Timestamp;
 import java.util.LinkedHashSet;
@@ -17,6 +19,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "appointments", schema = "swp391")
+@FieldNameConstants
 public class AppointmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,26 +48,24 @@ public class AppointmentEntity {
     @Column(name = "duration_minutes")
     private Integer durationMinutes;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "scheduling_coordinator_id", nullable = false)
     private SchedulingCoordinatorEntity schedulingCoordinatorEntity;
 
-    @OneToMany
-    private Set<IngredientRequestEntity> ingredientRequestEntities = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "appointmentEntity")
+    private final Set<IngredientRequestEntity> ingredientRequestEntities = new LinkedHashSet<>();
 
-    @OneToMany
-    private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "appointmentEntity")
+    private final Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
 
-    @OneToMany
-    private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
-    @OneToMany
-    private Set<TestRequestEntity> testRequestEntities = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "appointmentEntity")
+    private final Set<OrderEntity> orderEntities = new LinkedHashSet<>();
 
-/*
- TODO [Reverse Engineering] create field to map the 'appointment_status' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @Column(name = "appointment_status", columnDefinition = "enum not null")
-    private Object appointmentStatus;
-*/
+    @OneToMany(mappedBy = "appointmentEntity")
+    private final Set<TestRequestEntity> testRequestEntities = new LinkedHashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "appointment_status")
+    private AppointmentStatus appointmentStatus;
+
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.DiscountType;
 
@@ -21,6 +22,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "coupons", schema = "swp391")
+@FieldNameConstants
 public class CouponEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +37,11 @@ public class CouponEntity {
     @Lob
     @Column(name = "description")
     private String description;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(name = "discount_type")
     private DiscountType discountType;
+
 
     @NotNull
     @Column(name = "value", nullable = false, precision = 10, scale = 2)
@@ -56,10 +59,10 @@ public class CouponEntity {
     private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
     @OneToMany
     private Set<UserCouponEntity> userCouponEntities = new LinkedHashSet<>();
-}
 /*
  TODO [Reverse Engineering] create field to map the 'discount_type' column
  Available actions: Define target Java type | Uncomment as is | Remove column mapping
     @Column(name = "discount_type", columnDefinition = "enum not null")
     private Object discountType;
 */
+}

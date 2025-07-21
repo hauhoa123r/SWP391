@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "orders", schema = "swp391")
+@FieldNameConstants
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
