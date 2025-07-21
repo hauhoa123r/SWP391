@@ -108,7 +108,7 @@
                     </div>
 
                     <!-- Nếu không có ca trực -->
-                    <div th:if="${shiftsMap[date] == null or #lists.isEmpty(shiftsMap[date])}"
+                    <div th:if="${shiftsMap[date.toString()] == null or #lists.isEmpty(shiftsMap[date.toString()])}"
                          class="text-muted text-center">
                         <small><em>Nghỉ</em></small>
                     </div>
