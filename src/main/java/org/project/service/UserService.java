@@ -184,7 +184,7 @@ public class UserService implements IUserService {
                             redirectUrl = "redirect:/staff/pharmacy";
                             break;
                         case TECHNICIAN:
-                            redirectUrl = "redirect:/staff/lab";
+                            redirectUrl = "redirect:/lab/homepage";
                             break;
                         case SCHEDULING_COORDINATOR:
                             redirectUrl = "redirect:/staff/schedule";
@@ -192,9 +192,7 @@ public class UserService implements IUserService {
                         case INVENTORY_MANAGER:
                             redirectUrl = "redirect:/staff/inventory";
                             break;
-                        case LAB_RECEIVER:
-                            redirectUrl = "redirect:/staff/lab-receive";
-                            break;
+
                         default:
                             throw new RuntimeException("Unknown staff role");
                     }

@@ -26,4 +26,5 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     Long countByAppointmentStatusAndServiceEntityDepartmentEntityId(AppointmentStatus appointmentStatus, Long serviceEntityDepartmentEntityId);
 
     Long countByAppointmentStatus(AppointmentStatus appointmentStatus);
+
 }
