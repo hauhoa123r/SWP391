@@ -1,20 +1,27 @@
 package org.project.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.project.entity.MedicalProfileEntity;
 import org.project.entity.PatientEntity;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.MedicalProfileDTO;
+import org.project.model.dto.PatientDTO;
 import org.project.model.response.MedicalProfileResponse;
+import org.project.model.response.PatientResponse;
 import org.project.repository.MedicalProfileRepository;
 import org.project.repository.PatientRepository;
 import org.project.service.MedicalProfileService;
+import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Transactional
 @Service
 public class MedicalProfileServiceImpl implements MedicalProfileService {
 
@@ -22,18 +29,30 @@ public class MedicalProfileServiceImpl implements MedicalProfileService {
 
     private MedicalProfileRepository medicalProfileRepositoryImpl;
 
+    private PatientService patientServiceImpl;
+
     @Autowired
-    public MedicalProfileServiceImpl(PatientRepository patientRepository, MedicalProfileRepository medicalProfileRepository) {
+    public MedicalProfileServiceImpl(PatientRepository patientRepository, MedicalProfileRepository medicalProfileRepository, PatientService patientService) {
         this.patientRepositoryImpl = patientRepository;
         this.medicalProfileRepositoryImpl = medicalProfileRepository;
+        this.patientServiceImpl = patientService;
     }
 
     @Override
     public void createMedicalProfile(MedicalProfileDTO medicalProfileDTO) {
         MedicalProfileEntity medicalProfileEntity = new MedicalProfileEntity();
 
-        medicalProfileEntity.setAllergies(medicalProfileDTO.getAllergies().toString());
-        medicalProfileEntity.setChronicDiseases(medicalProfileDTO.getChronicDiseases().toString());
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            String jsonAllergies = mapper.writeValueAsString(medicalProfileDTO.getAllergies());
+            String jsonChronicDiseases = mapper.writeValueAsString(medicalProfileDTO.getChronicDiseases());
+
+            medicalProfileEntity.setAllergies(jsonAllergies);
+            medicalProfileEntity.setChronicDiseases(jsonChronicDiseases);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Json mapping error", e);
+        }
 
         PatientEntity patientEntity = patientRepositoryImpl.findById(medicalProfileDTO.getPatientId())
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + medicalProfileDTO.getPatientId()));
@@ -100,5 +119,16 @@ public class MedicalProfileServiceImpl implements MedicalProfileService {
         } else {
             throw new ResourceNotFoundException("Medical profile not found with id: " + medicalProfileId);
         }
+    }
+
+    @Override
+    public PatientResponse addPatientAndMedicalProfile(MedicalProfileDTO medicalProfileDTO, PatientDTO patientDTO) {
+    Long patientId = patientServiceImpl.createPatient(patientDTO);
+
+    medicalProfileDTO.setPatientId(patientId);
+
+    createMedicalProfile(medicalProfileDTO);
+
+    return patientServiceImpl.getPatientById(patientId);
     }
 }

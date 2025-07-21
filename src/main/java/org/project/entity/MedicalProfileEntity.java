@@ -6,19 +6,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Set;
+import lombok.experimental.FieldNameConstants;
 
 @Entity
-@Table(name = "medical_profile")
+@Table(name = "medical_profiles")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldNameConstants
 public class MedicalProfileEntity {
     @Column(name = "medical_profile_id")
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

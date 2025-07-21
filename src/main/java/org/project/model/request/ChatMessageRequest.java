@@ -20,4 +20,6 @@ public class ChatMessageRequest {
     private String prompt;
 
     private String language;
+
+    private boolean intentType;
 }

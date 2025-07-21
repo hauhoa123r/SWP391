@@ -1,0 +1,232 @@
+<!doctype html>
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        navActive = ${5},
+        breadCrumbTitle = ${'Bác sĩ ' + doctor.staffEntity.fullName},
+        breadCrumbTexts = ${{{'Bác sĩ ' + doctor.staffEntity.fullName}}},
+        breadCrumbLinks = ${{{''}}}
+      "
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title th:text="${'Bác sĩ ' + doctor.staffEntity.fullName}"></title>
+</head>
+<body>
+<div class="section-padding team-detail" layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="team-member-info">
+                    <div class="iq-team-block team-overdetail position-relative p-2">
+                        <div class="iq-team-img">
+                            <img alt="Doctor Avatar"
+                                 class="img-fluid w-100"
+                                 loading="lazy"
+                                 onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
+                                 th:src="${doctor.staffEntity.avatarUrl}">
+                        </div>
+                        <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${doctor.staffEntity.averageRating}, reviewCount=${doctor.staffEntity.reviewCount})}"></div>
+                        <div class="iq-team-info position-absolute d-block w-100">
+                            <div class="iq-team-main-detail bg-white">
+                                <h5 th:text="${doctor.staffEntity.fullName}">Gunner Peha</h5>
+                                <p class="mb-0 text-uppercase fw-bolder text-primary fw-500"
+                                   th:text="${doctor.staffEntity.departmentEntity.name}">Cardiologist</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- TODO: Đổi thành tiếng việt -->
+                <div class="mt-5 sidebar-widget-working-hour bg-secondary-subtle text-body p-3 p-md-5">
+                    <div class="icon mb-4">
+                        <i class="far fa-clock"></i>
+                    </div>
+                    <h4 class="mb-3 fw-500">Opening Time</h4>
+                    <ul class="list-inline m-0">
+                        <li class="mb-2 pb-2 border-bottom d-flex align-items-center justify-content-between">
+                            <span>Monday - Friday</span>
+                            <span>6:00 - 7:00 pm</span>
+                        </li>
+                        <li class="mb-2 pb-2 border-bottom d-flex align-items-center justify-content-between">
+                            <span>Saturday</span>
+                            <span>8:00 - 9:00 pm </span>
+                        </li>
+                        <li class="d-flex align-items-center justify-content-between">
+                            <span>Sunday</span>
+                            <span>Closed</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- TODO: Đổi thành tiếng việt -->
+                <div class="mt-5 sidebar-widget-services bg-primary-subtle text-body p-3 p-md-5">
+                    <div class="image mb-5">
+                        <img
+                                th:src="@{/frontend/assets/images/pages/short-logo.png}">
+                    </div>
+                    <h4 class="mb-3">KiviCare Services</h4>
+                    <ul class="list-inline m-0">
+                        <li class="mb-2">
+                            <span><b>Call :</b></span>
+                            <span>+123456789</span>
+                        </li>
+                        <li class="mb-2">
+                            <span><b>Mail :</b></span>
+                            <span>support@example.com</span>
+                        </li>
+                        <li>
+                            <span><b>Address :</b></span>
+                            <span>1234, North Avenue, Luke Lane, South Bend, IN 360001</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-8 mt-lg-0 mt-5">
+                <div class="iq-title-box">
+                    <h3 class="iq-title iq-heading-title mb-3">
+                            <span class="right-text text-capitalize"
+                                  th:text="${doctor.staffEntity.departmentEntity.name}">General</span>
+                    </h3>
+                    <p class="iq-title-desc text-body" th:text="${doctor.staffEntity.hospitalEntityName}">
+                        Dr. Mantooth has done Basic and Advanced training in Reproductive Medicine and IVF- Homerton
+                        University hospital London UK. He is an active member of London Fertility Society and has
+                        helped
+                        in conducting workshops in IFS conference.
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="fw-normal">Giải thưởng</h5>
+                        <div class="row mt-5 g-3">
+                            <div class="col-sm-6 mt-0"
+                                 th:each="qualification : ${doctor.staffEntity.staffQualificationEntities}">
+                                <div class="h-100 px-3 pt-2 pb-3 border">
+                                    <div class="text-primary">
+                                        <i aria-hidden="true" class="flaticon flaticon-flaticon flaticon-award"></i>
+                                    </div>
+                                    <h6 class="mt-1 mb-0"
+                                        th:text="${qualification.issueDate + ' ' + qualification.title}">2020 World
+                                        Health Organization Vaccine Research Award</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-md-0 mt-5">
+                        <h5 class="fw-normal">Bộ kỹ năng</h5>
+                        <div class="mt-5" th:each="skill : ${doctor.staffEntity.staffSkillEntities}">
+                            <div class="wrapper-progress">
+                                <div class="percentage-progress d-flex justify-content-between">
+                                    <h6 class="mb-2 text-body" th:text="${skill.name}">Technique</h6>
+                                    <div><span class="counter"
+                                               th:text="${skill.proficiencyPercentage + '%'}">70%</span></div>
+                                </div>
+                            </div>
+                            <div class="progress mb-3" style="height:10px">
+                                <div aria-valuemax="100"
+                                     aria-valuemin="0"
+                                     class="progress-bar"
+                                     role="progressbar"
+                                     th:aria-valuenow="${skill.proficiencyPercentage}"
+                                     th:classappend="${skill.proficiencyPercentage < 25} ? 'bg-danger' : (${skill.proficiencyPercentage < 50} ? 'bg-warning' : (${skill.proficiencyPercentage < 75} ? 'bg-info' : 'bg-success'))"
+                                     th:style="'width:' + ${skill.proficiencyPercentage + '%'}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 px-5 py-3 border">
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <h5 class="m-0">Lĩnh vực</h5>
+                        </div>
+                        <div class="col-md-10 mt-md-0 mt-2">
+                            <ul class="list-inline m-0">
+                                <li class="mb-2"
+                                    th:each="speciality : ${doctor.staffEntity.staffSpecialityEntities}">
+                                    <span class="text-primary"><i class="far fa-star"></i></span>
+                                    <span class="ms-1" th:text="${speciality.title}">Gynecologist</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 px-5 py-3 border">
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <h5 class="m-0">Học vấn</h5>
+                        </div>
+                        <div class="col-md-10 mt-md-0 mt-2">
+                            <ul class="list-inline m-0">
+                                <li class="mb-2"
+                                    th:each="education : ${doctor.staffEntity.staffEducationEntities}">
+                                    <span class="text-primary"><i class="fas fa-check"></i></span>
+                                    <span class="ms-1"
+                                          th:text="${education.degree + ', ' + education.institute + ' (' + education.year + ')'}">Embryology</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 px-5 py-3 border">
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <h5 class="m-0">Kinh nghiệm</h5>
+                        </div>
+                        <div class="col-md-10 mt-md-0 mt-2">
+                            <ul class="list-inline m-0">
+                                <li class="mb-2"
+                                    th:each="experience : ${doctor.staffEntity.staffExperienceEntities}">
+                                    <span class="text-primary"><i class="fas fa-file-alt"></i></span>
+                                    <span class="ms-1"
+                                          th:text="${experience.year + ' In ' + experience.position}">15 Years of experience in medicine</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <div class="iq-title-box mb-0">
+                        <span class="iq-subtitle">Bác sĩ</span>
+                        <h4 class="iq-title iq-heading-title mb-0">
+                            <span class="right-text text-capitalize">Các bác sĩ</span>
+                            <span class="left-text text-capitalize fw-light">Được đề xuất</span>
+                        </h4>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="position-relative overflow-hidden swiper swiper-general" data-autoplay="true"
+                         data-laptop="2"
+                         data-loop="true" data-mobile="1" data-mobile-sm="1" data-navigation="true"
+                         data-pagination="true"
+                         data-slide="2" data-tab="2">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" th:each="colleague : ${colleagueDoctors}">
+                                <div class="iq-team-block team-overdetail position-relative p-2"
+                                     th:onclick="'window.location.href=\'/doctor/detail/' + ${colleague.id} + '\''">
+                                    <div class="iq-team-img">
+                                        <img alt="team"
+                                             class="img-fluid w-100"
+                                             loading="lazy"
+                                             onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
+                                             th:src="${colleague.staffEntity.avatarUrl}">
+                                    </div>
+                                    <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${colleague.staffEntity.averageRating}, reviewCount=${colleague.staffEntity.reviewCount})}"></div>
+                                    <div class="iq-team-info position-absolute d-block w-100">
+                                        <div class="iq-team-main-detail bg-white">
+                                            <h5 th:text="${colleague.staffEntity.fullName}">Gunner Peha</h5>
+                                            <p class="mb-0 text-uppercase fw-bolder text-primary fw-500"
+                                               th:text="${colleague.staffEntity.departmentEntity.name}">
+                                                Cardiologist</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
