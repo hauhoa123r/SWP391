@@ -7,12 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.project.enums.BloodType;
-import org.project.enums.PatientStatus;
 import org.project.enums.FamilyRelationship;
 import org.project.enums.Gender;
+import org.project.enums.PatientStatus;
 import org.project.enums.converter.BloodTypeConverter;
 
 import java.sql.Date;
@@ -26,6 +27,7 @@ import java.util.Set;
 @Entity
 @DynamicInsert
 @Table(name = "patients", schema = "swp391")
+@FieldNameConstants
 public class PatientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

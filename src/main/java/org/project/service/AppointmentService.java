@@ -13,7 +13,11 @@ import java.util.Map;
 
 public interface AppointmentService {
 
-    Map<String, Object> saveAppointment(AppointmentDTO appointmentDTO);
+    void saveAppointment(AppointmentDTO appointmentDTO);
+
+    Long countCompletedAppointmentsByDepartment(Long departmentId);
+
+    Long countCompletedAppointments();
 
     List<AppointmentApprovalResponse> getAppointmentsHaveStatusPendingByStaffId(Long staffId);
 

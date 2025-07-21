@@ -9,6 +9,9 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class AbstractServiceAIDTO {
-    protected boolean isFormStarted;
+public class ApproveResultDTO extends AbstractServiceDTO{
+    private String patientName;
+    private String testType;
+    private String TesterName;
+    private String status;
 }

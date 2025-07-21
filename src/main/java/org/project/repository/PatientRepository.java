@@ -39,6 +39,11 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
 
     PatientEntity findByUserEntity_IdAndFullName(Long userId, String patientName);
 
+    @Query("SELECT COUNT(pe.id) FROM PatientEntity pe")
+    int countAllPatients();
+
+    @Query("FROM PatientEntity pe ORDER BY RAND() LIMIT 1")
+    PatientEntity getRandom();
     boolean existsByIdentificationNumber(String identificationNumber);
 
     boolean existsById(Long id);

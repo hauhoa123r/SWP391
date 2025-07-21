@@ -16,6 +16,7 @@ public class StaffResponse {
     private String fullName;
     private String avatarUrl;
     private DepartmentResponse departmentEntity;
+    private HospitalResponse hospitalEntity;
     private String userEntityEmail;
     private List<StaffEducationResponse> staffEducationEntities;
     private List<StaffQualificationResponse> staffExperienceEntities;

@@ -168,7 +168,7 @@ private static final String AVATAR_DIR_RELATIVE =
                     } else {
                         response.setBirthdate("N/A");
                     }
-                    if(entity.getAvatarUrl() != null) {
+                    if (entity.getAvatarUrl() != null) {
                         response.setAvatarUrl(toConvertFileToBase64(entity.getAvatarUrl()));
                     } else {
                         response.setAvatarUrl(null);
@@ -186,12 +186,12 @@ private static final String AVATAR_DIR_RELATIVE =
 
         PatientResponse response = patientConverter.toConvertResponse(patientEntity);
 
-        if(response.getBirthdate() != null) {
+        if (response.getBirthdate() != null) {
             response.setBirthdate(patientEntity.getBirthdate().toString());
         } else {
             response.setBirthdate("N/A");
         }
-        if(patientEntity.getAvatarUrl() != null) {
+        if (patientEntity.getAvatarUrl() != null) {
             response.setAvatarUrl(toConvertFileToBase64(patientEntity.getAvatarUrl()));
         } else {
             response.setAvatarUrl(null);
@@ -203,14 +203,11 @@ private static final String AVATAR_DIR_RELATIVE =
     @Transactional
     @Override
     public PatientResponse updatePatient(Long patientId, PatientDTO patientDTO) {
-        if (patientId == null || patientDTO == null) {
-            throw new IllegalArgumentException("Patient ID and DTO must not be null");
-        }
         PatientEntity patientEntity = patientRepository.findById(patientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found with ID: " + patientId));
 
         Method[] methods = PatientDTO.class.getMethods();
-        
+
         for (Method method : methods) {
             String name = method.getName();
 
@@ -362,6 +359,11 @@ private static final String AVATAR_DIR_RELATIVE =
         } catch ( IOException e) {
             return null;
         }
+    }
+
+    @Override
+    public UserEntity getUserHasPatient() {
+        return patientRepository.getRandom().getUserEntity();
     }
 
     @Override
