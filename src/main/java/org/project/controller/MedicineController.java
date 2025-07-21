@@ -30,12 +30,19 @@ public class MedicineController {
             @RequestParam(required = false) String sortField,
             Model model) {
         Page<MedicineDTO> medicinePage = medicineService.getAllMedicines(page, size, name, sortDirection, sortField);
+        int totalPages = medicinePage.getTotalPages();
+        int startPage = Math.max(0, page - 2);
+        int endPage = Math.min(startPage + 4, totalPages - 1);
         model.addAttribute("medicines", medicinePage.getContent());
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", medicinePage.getTotalPages());
         model.addAttribute("newMedicine", new MedicineDTO());
         model.addAttribute("supplierIn", new SupplierInDTO());
-        return "medicine";
+        //add medicine page for paging
+        model.addAttribute("medicinePage", medicinePage);
+        return "templates_storage/medicine";
     }
 
     @PostMapping("/create")

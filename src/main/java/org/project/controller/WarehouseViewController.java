@@ -394,7 +394,7 @@ public class WarehouseViewController {
         
         // Create sample supplier ins with different statuses
         String[] statuses = {
-            "PENDING", "RECEIVED", "CHECKED", "COMPLETED"
+            "PENDING", "RECEIVED", "COMPLETED", "DELIVERED", "CANCELLED"
         };
         
         String[] suppliers = {
