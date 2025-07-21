@@ -46,13 +46,14 @@ class BookingManager {
         this.tabConfigs = {
             hospital: {
                 ...defaultTabConfigs,
-                rootUrl: "/api/hospital",
+                rootUrl: "/api/patient/booking/hospital",
                 objectJsonName: "hospitals",
                 object: HospitalResponse,
                 renderStrategy: renderHospitalResponseForBooking,
                 prefix: "hospital",
                 nextTab: "department"
-            }, department: {
+            },
+            department: {
                 ...defaultTabConfigs,
                 rootUrl: "/api/department",
                 objectJsonName: "departments",
@@ -61,7 +62,8 @@ class BookingManager {
                 prefix: "department",
                 prevTab: "hospital",
                 nextTab: "doctor"
-            }, doctor: {
+            },
+            doctor: {
                 ...defaultTabConfigs,
                 rootUrl: "/api/doctor",
                 objectJsonName: "doctors",
@@ -70,7 +72,8 @@ class BookingManager {
                 prefix: "doctor",
                 prevTab: "department",
                 nextTab: "service"
-            }, service: {
+            },
+            service: {
                 ...defaultTabConfigs,
                 rootUrl: "/api/service",
                 objectJsonName: "services",
@@ -79,16 +82,18 @@ class BookingManager {
                 prefix: "service",
                 prevTab: "doctor",
                 nextTab: "patient"
-            }, patient: {
+            },
+            patient: {
                 ...defaultTabConfigs,
-                rootUrl: "/api/patient",
+                rootUrl: "/api/patient/booking/patient",
                 objectJsonName: "patients",
                 object: PatientResponse,
                 renderStrategy: renderPatientResponseForBooking,
                 prefix: "patient",
                 prevTab: "service",
                 nextTab: "dateTime"
-            }, dateTime: {
+            },
+            dateTime: {
                 ...defaultTabConfigs,
                 rootUrl: "/api/schedule",
                 objectJsonName: "availableTimes",
@@ -100,30 +105,41 @@ class BookingManager {
                 customUrlBuilder: function (manager) {
                     let apiUrl = `/api/schedule/staff/${manager.selectedIds.doctor}/patient/${manager.selectedIds.patient}`;
                     if (!manager.searchKeywords.dateTime) {
-                        manager.searchKeywords.dateTime = new Date().toISOString().split("T")[0];
+                        manager.searchKeywords.dateTime = new Date()
+                                .toISOString()
+                                .split("T")[0];
                     }
-                    apiUrl += `/date/${encodeURIComponent(manager.searchKeywords.dateTime)}`;
+                    apiUrl += `/date/${encodeURIComponent(
+                            manager.searchKeywords.dateTime
+                    )}`;
 
                     return apiUrl;
                 },
                 customSearch: function (manager) {
-                    document.querySelector("#date-input").addEventListener("change", function (event) {
-                        const selectedDate = event.target.value;
-                        if (selectedDate) {
-                            manager.searchKeywords.dateTime = selectedDate;
-                            manager.loadData(0);
-                        } else {
-                            toast.warning("Please select a date first.", {
-                                position: "top-right", icon: true, duration: 3000, progress: true
+                    document
+                            .querySelector("#date-input")
+                            .addEventListener("change", function (event) {
+                                const selectedDate = event.target.value;
+                                if (selectedDate) {
+                                    manager.searchKeywords.dateTime = selectedDate;
+                                    manager.loadData(0);
+                                } else {
+                                    toast.warning("Please select a date first.", {
+                                        position: "top-right",
+                                        icon: true,
+                                        duration: 3000,
+                                        progress: true
+                                    });
+                                }
                             });
-                        }
-                    });
                 },
                 customSelect: function (id) {
                     return document.querySelector(`input[value="${id}"]`);
                 }
-            }, confirmation: {
-                ...defaultTabConfigs, prevTab: "patient"
+            },
+            confirmation: {
+                ...defaultTabConfigs,
+                prevTab: "patient"
             }
         };
         this.currentTab = null;
@@ -131,22 +147,30 @@ class BookingManager {
         this.selectedIds = {};
         this.bookingSummary = {
             hospital: {
-                name: null, address: null
-            }, patient: {
-                name: null, phone: null, email: null
-            }, doctor: {
+                name: null,
+                address: null
+            },
+            patient: {
+                name: null,
+                phone: null,
+                email: null
+            },
+            doctor: {
                 name: null
-            }, dateTime: {
-                date: null, time: null
-            }, service: {
-                name: null, price: null
+            },
+            dateTime: {
+                date: null,
+                time: null
+            },
+            service: {
+                name: null,
+                price: null
             }
         };
-        Object.keys(this.tabConfigs).forEach(tabKey => {
+        Object.keys(this.tabConfigs).forEach((tabKey) => {
             this.searchKeywords[tabKey] = null;
             this.selectedIds[tabKey] = null;
         });
-
     }
 
     async init() {
@@ -155,11 +179,15 @@ class BookingManager {
     }
 
     async setupEventListeners() {
-        Object.keys(this.tabConfigs).forEach(tabName => {
+        Object.keys(this.tabConfigs).forEach((tabName) => {
             const config = this.tabConfigs[tabName];
             if (!config.customSearch) {
-                const searchButton = document.querySelector(`#${config.prefix}-search-button`);
-                const searchInput = document.querySelector(`#${config.prefix}-search-input`);
+                const searchButton = document.querySelector(
+                        `#${config.prefix}-search-button`
+                );
+                const searchInput = document.querySelector(
+                        `#${config.prefix}-search-input`
+                );
                 if (searchInput && searchButton) {
                     searchInput.addEventListener("keyup", (e) => {
                         if (e.key === "Enter") {
@@ -179,198 +207,282 @@ class BookingManager {
             }
         });
 
-        document.querySelector("#hospital-next-button").addEventListener("click", async (event) => {
-            const inputHospitalElement = document.querySelector("#hospital-list input:checked");
-            if (inputHospitalElement) {
-                const selectedHospitalElement = inputHospitalElement.closest(".hospital");
-                this.bookingSummary.hospital = {
-                    name: selectedHospitalElement.querySelector(".hospital-name").textContent.trim(),
-                    address: selectedHospitalElement.querySelector(".hospital-address").textContent.trim()
-                };
-                if (this.selectedIds.hospital !== inputHospitalElement.value) {
-                    this.selectedIds.department = null; // Reset doctor selection if a new hospital is selected
-                }
-                this.selectedIds.hospital = inputHospitalElement.value;
-                this.tabConfigs.department.urlFilter = `/hospital/${this.selectedIds.hospital}`;
-                await this.nextTab();
-            } else {
-                toast.warning("Please select a hospital first.", {
-                    position: "top-right", icon: true, duration: 3000
+        document
+                .querySelector("#hospital-next-button")
+                .addEventListener("click", async (event) => {
+                    const inputHospitalElement = document.querySelector(
+                            "#hospital-list input:checked"
+                    );
+                    if (inputHospitalElement) {
+                        const selectedHospitalElement =
+                                      inputHospitalElement.closest(".hospital");
+                        this.bookingSummary.hospital = {
+                            name: selectedHospitalElement
+                                    .querySelector(".hospital-name")
+                                    .textContent.trim(),
+                            address: selectedHospitalElement
+                                    .querySelector(".hospital-address")
+                                    .textContent.trim()
+                        };
+                        if (
+                                this.selectedIds.hospital !== inputHospitalElement.value
+                        ) {
+                            this.selectedIds.department = null; // Reset doctor selection if a new hospital is selected
+                        }
+                        this.selectedIds.hospital = inputHospitalElement.value;
+                        this.tabConfigs.department.urlFilter = `/hospital/${this.selectedIds.hospital}`;
+                        await this.nextTab();
+                    } else {
+                        toast.warning("Please select a hospital first.", {
+                            position: "top-right",
+                            icon: true,
+                            duration: 3000
+                        });
+                        event.stopImmediatePropagation();
+                    }
+                }, {capture: true});
+
+        document
+                .querySelector("#department-next-button")
+                .addEventListener("click", async (event) => {
+                    const inputDepartmentElement = document.querySelector(
+                            "#department-list input:checked"
+                    );
+                    if (inputDepartmentElement) {
+                        if (
+                                this.selectedIds.department !==
+                                inputDepartmentElement.value
+                        ) {
+                            this.selectedIds.doctor = null; // Reset doctor selection if a new department is selected
+                        }
+
+                        this.selectedIds.department = inputDepartmentElement.value;
+                        this.tabConfigs.doctor.urlFilter = `/hospital/${this.selectedIds.hospital}/department/${this.selectedIds.department}`;
+                        await this.nextTab();
+                    } else {
+                        toast.warning("Please select a department first.", {
+                            position: "top-right",
+                            icon: true,
+                            duration: 3000
+                        });
+                        event.stopImmediatePropagation();
+                    }
+                }, {capture: true});
+
+        document
+                .querySelector("#department-previous-button")
+                .addEventListener("click", async () => {
+                    await this.previousTab();
                 });
-                event.stopImmediatePropagation();
-            }
-            this.isLoading = true;
-        });
 
-        document.querySelector("#department-next-button").addEventListener("click", async (event) => {
-            const inputDepartmentElement = document.querySelector("#department-list input:checked");
-            if (inputDepartmentElement) {
-                if (this.selectedIds.department !== inputDepartmentElement.value) {
-                    this.selectedIds.doctor = null; // Reset doctor selection if a new department is selected
-                }
+        document
+                .querySelector("#doctor-next-button")
+                .addEventListener("click", async (event) => {
+                    const inputDoctorElement = document.querySelector(
+                            "#doctor-list input:checked"
+                    );
+                    if (inputDoctorElement) {
+                        const selectedDoctorElement =
+                                      inputDoctorElement.closest(".doctor");
+                        this.bookingSummary.doctor = {
+                            name: selectedDoctorElement
+                                    .querySelector(".doctor-name")
+                                    .textContent.trim()
+                        };
+                        if (this.selectedIds.doctor !== inputDoctorElement.value) {
+                            this.selectedIds.service = null; // Reset service selection if a new doctor is selected
+                            this.selectedIds.dateTime = null;
+                        }
+                        this.selectedIds.doctor = inputDoctorElement.value;
+                        this.tabConfigs.service.urlFilter = `/department/${this.selectedIds.department}`;
+                        await this.nextTab();
+                    } else {
+                        toast.warning("Please select a doctor first.", {
+                            position: "top-right",
+                            icon: true,
+                            duration: 3000
+                        });
+                        event.stopImmediatePropagation();
+                    }
+                }, {capture: true});
 
-                this.selectedIds.department = inputDepartmentElement.value;
-                this.tabConfigs.doctor.urlFilter = `/hospital/${this.selectedIds.hospital}/department/${this.selectedIds.department}`;
-                await this.nextTab();
-            } else {
-                toast.warning("Please select a department first.", {
-                    position: "top-right", icon: true, duration: 3000
+        document
+                .querySelector("#doctor-previous-button")
+                .addEventListener("click", async () => {
+                    await this.previousTab();
                 });
-                event.stopImmediatePropagation();
-            }
-        });
 
-        document.querySelector("#department-previous-button").addEventListener("click", async () => {
-            await this.previousTab();
-        });
+        document
+                .querySelector("#service-next-button")
+                .addEventListener("click", async (event) => {
+                    const inputServiceElement = document.querySelector(
+                            "#service-list input:checked"
+                    );
+                    if (inputServiceElement) {
+                        const selectedServiceElement =
+                                      inputServiceElement.closest(".service");
+                        this.bookingSummary.service = {
+                            name: selectedServiceElement
+                                    .querySelector(".service-name")
+                                    .textContent.trim(),
+                            price: selectedServiceElement
+                                    .querySelector(".service-price")
+                                    .textContent.trim()
+                        };
+                        this.selectedIds.service = inputServiceElement.value;
+                        await this.nextTab();
+                    } else {
+                        toast.warning("Please select a service first.", {
+                            position: "top-right",
+                            icon: true,
+                            duration: 3000
+                        });
+                        event.stopImmediatePropagation();
+                    }
+                }, {capture: true});
 
-        document.querySelector("#doctor-next-button").addEventListener("click", async (event) => {
-            const inputDoctorElement = document.querySelector("#doctor-list input:checked");
-            if (inputDoctorElement) {
-                const selectedDoctorElement = inputDoctorElement.closest(".doctor");
-                this.bookingSummary.doctor = {
-                    name: selectedDoctorElement.querySelector(".doctor-name").textContent.trim()
-                };
-                if (this.selectedIds.doctor !== inputDoctorElement.value) {
-                    this.selectedIds.service = null; // Reset service selection if a new doctor is selected
-                    this.selectedIds.dateTime = null;
-                }
-                this.selectedIds.doctor = inputDoctorElement.value;
-                this.tabConfigs.service.urlFilter = `/department/${this.selectedIds.department}`;
-                await this.nextTab();
-            } else {
-                toast.warning("Please select a doctor first.", {
-                    position: "top-right", icon: true, duration: 3000
+        document
+                .querySelector("#service-previous-button")
+                .addEventListener("click", async () => {
+                    await this.previousTab();
                 });
-                event.stopImmediatePropagation();
-            }
-        });
 
-        document.querySelector("#doctor-previous-button").addEventListener("click", async () => {
-            await this.previousTab();
-        });
+        document
+                .querySelector("#patient-next-button")
+                .addEventListener("click", async (event) => {
+                    const inputPatientElement = document.querySelector(
+                            "#patient-list input:checked"
+                    );
+                    if (inputPatientElement) {
+                        const selectedPatientElement =
+                                      inputPatientElement.closest(".patient");
+                        this.bookingSummary.patient = {
+                            name: selectedPatientElement
+                                    .querySelector(".patient-name")
+                                    .textContent.trim(),
+                            phone: selectedPatientElement
+                                    .querySelector(".patient-phone")
+                                    .textContent.trim(),
+                            email: selectedPatientElement
+                                    .querySelector(".patient-email")
+                                    .textContent.trim()
+                        };
+                        this.selectedIds.patient = inputPatientElement.value;
+                        await this.nextTab();
+                    } else {
+                        toast.warning("Please select a patient first.", {
+                            position: "top-right",
+                            icon: true,
+                            duration: 3000
+                        });
+                        event.stopImmediatePropagation();
+                    }
+                }, {capture: true});
 
-        document.querySelector("#service-next-button").addEventListener("click", async (event) => {
-            const inputServiceElement = document.querySelector("#service-list input:checked");
-            if (inputServiceElement) {
-                const selectedServiceElement = inputServiceElement.closest(".service");
-                this.bookingSummary.service = {
-                    name: selectedServiceElement.querySelector(".service-name").textContent.trim(),
-                    price: selectedServiceElement.querySelector(".service-price").textContent.trim()
-                };
-                this.selectedIds.service = inputServiceElement.value;
-                const userId = document.querySelector("#user-id").value;
-                this.tabConfigs.patient.urlFilter = `/user/${userId}`;
-                await this.nextTab();
-            } else {
-                toast.warning("Please select a service first.", {
-                    position: "top-right", icon: true, duration: 3000
+        document
+                .querySelector("#patient-previous-button")
+                .addEventListener("click", async () => {
+                    await this.previousTab();
+                    const flatpickrInstance =
+                                  document.querySelector(".inline_flatpickr")._flatpickr;
+                    const selectedDate = new Date(
+                            this.searchKeywords.dateTime ||
+                            new Date().toISOString().split("T")[0]
+                    );
+                    flatpickrInstance.setDate(selectedDate, true);
                 });
-                event.stopImmediatePropagation();
-            }
-        });
 
-        document.querySelector("#service-previous-button").addEventListener("click", async () => {
-            await this.previousTab();
-        });
+        document
+                .querySelector("#date-time-next-button")
+                .addEventListener("click", (event) => {
+                    const inputTimeElement = document.querySelector(
+                            "#date-time-list input:checked"
+                    );
+                    if (inputTimeElement) {
+                        const date = new Date(inputTimeElement.value);
+                        this.bookingSummary.dateTime = {
+                            date: date.toLocaleDateString("en-US", {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric"
+                            }),
+                            time: date.toLocaleTimeString("en-US", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: true
+                            })
+                        };
+                        this.selectedIds.dateTime = inputTimeElement.value;
+                        this.showConfirmation();
+                    } else {
+                        toast.warning("Please select a time slot first.", {
+                            position: "top-right",
+                            icon: true,
+                            duration: 3000
+                        });
+                        event.stopImmediatePropagation();
+                    }
+                }, {capture: true});
 
-        document.querySelector("#patient-next-button").addEventListener("click", async () => {
-            const inputPatientElement = document.querySelector("#patient-list input:checked");
-            if (inputPatientElement) {
-                const selectedPatientElement = inputPatientElement.closest(".patient");
-                this.bookingSummary.patient = {
-                    name: selectedPatientElement.querySelector(".patient-name").textContent.trim(),
-                    phone: selectedPatientElement.querySelector(".patient-phone").textContent.trim(),
-                    email: selectedPatientElement.querySelector(".patient-email").textContent.trim()
-                };
-                this.selectedIds.patient = inputPatientElement.value;
-                await this.nextTab();
-            } else {
-                toast.warning("Please select a patient first.", {
-                    position: "top-right", icon: true, duration: 3000
+        document
+                .querySelector("#date-time-previous-button")
+                .addEventListener("click", async () => {
+                    await this.previousTab();
                 });
-            }
-        });
 
-        document.querySelector("#patient-previous-button").addEventListener("click", async () => {
-            await this.previousTab();
-            const flatpickrInstance = document.querySelector(".inline_flatpickr")._flatpickr;
-            const selectedDate = new Date(this.searchKeywords.dateTime || new Date().toISOString().split("T")[0]);
-            flatpickrInstance.setDate(selectedDate, true);
-        });
+        document
+                .querySelector("#confirm-button")
+                .addEventListener("click", async (event) => {
+                    if (this.isProcessing) {
+                        return;
+                    } else {
+                        event.stopImmediatePropagation();
+                    }
 
-        document.querySelector("#date-time-next-button").addEventListener("click", (event) => {
-            const inputTimeElement = document.querySelector("#date-time-list input:checked");
-            if (inputTimeElement) {
+                    const appointment = new AppointmentDTO(
+                            this.selectedIds.doctor,
+                            this.selectedIds.patient,
+                            this.selectedIds.service,
+                            this.selectedIds.dateTime
+                    );
 
-                const date = new Date(inputTimeElement.value);
-                this.bookingSummary.dateTime = {
-                    date: date.toLocaleDateString("en-US", {
-                        month: "long", day: "numeric", year: "numeric"
-                    }), time: date.toLocaleTimeString("en-US", {
-                        hour: "2-digit", minute: "2-digit", hour12: true
-                    })
-                };
-                this.selectedIds.dateTime = inputTimeElement.value;
-                this.showConfirmation();
-            } else {
-                toast.warning("Please select a time slot first.", {
-                    position: "top-right", icon: true, duration: 3000
+                    const data = await FetchingUtils.fetch(
+                            "/api/patient/appointment",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(appointment)
+                            },
+                            "text"
+                    );
+
+                    if (data !== null) {
+                        toast.success("Booking confirmed successfully!", {
+                            position: "top-right",
+                            icon: true,
+                            duration: 3000
+                        });
+                        this.isProcessing = true;
+                        event.target.click();
+                    }
+                }, {capture: true});
+
+        document
+                .querySelector("#confirmation-previous-button")
+                .addEventListener("click", async () => {
+                    this.currentTab = "confirmation";
+                    await this.previousTab();
                 });
-                event.stopImmediatePropagation();
-            }
-        });
-
-        document.querySelector("#date-time-previous-button").addEventListener("click", async () => {
-            await this.previousTab();
-        });
-
-        document.querySelector("#confirm-button").addEventListener("click", async (event) => {
-            if (this.isProcessing) {
-                return;
-            } else {
-                event.stopImmediatePropagation();
-            }
-
-            const appointment = new AppointmentDTO(
-                    this.selectedIds.doctor,
-                    this.selectedIds.patient,
-                    this.selectedIds.service,
-                    this.selectedIds.dateTime
-            );
-
-            const data = await FetchingUtils.fetch("/api/patient/appointment", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(appointment)
-            }, "text");
-
-            if (data !== null) {
-                toast.success("Booking confirmed successfully!", {
-                    position: "top-right", icon: true, duration: 3000
-                });
-                this.isProcessing = true;
-                event.target.click();
-            } else {
-                toast.danger(data, {
-                    position: "top-right", icon: true, duration: 3000
-                });
-            }
-        });
-
-        document.querySelector("#confirmation-previous-button").addEventListener("click", async () => {
-            this.currentTab = "confirmation";
-            await this.previousTab();
-        });
     }
 
     async previousTab() {
         if (!this.isLoading) {
             this.isLoading = true;
             this.changeButtonStatus();
-            this.currentTab = this.tabConfigs[this.currentTab].prevTab || "hospital";
+            this.currentTab =
+                    this.tabConfigs[this.currentTab].prevTab || "hospital";
             await this.loadData();
         }
     }
@@ -382,7 +494,8 @@ class BookingManager {
 
         this.changeButtonStatus();
         if (this.currentTab) {
-            this.currentTab = this.tabConfigs[this.currentTab].nextTab || "confirmation";
+            this.currentTab =
+                    this.tabConfigs[this.currentTab].nextTab || "confirmation";
         } else {
             this.currentTab = "hospital"; // Reset to hospital if no next tab is defined
         }
@@ -427,8 +540,14 @@ class BookingManager {
 
     renderListObject(config, objects) {
         const objectList = config.object.fromJsonArray(objects);
-        const htmlContent = objectList.map(item => item.setRenderStrategy(config.renderStrategy).toHtml()).join("");
-        const objectListElement = document.querySelector(`#${config.prefix}-list`);
+        const htmlContent = objectList
+                .map((item) =>
+                        item.setRenderStrategy(config.renderStrategy).toHtml()
+                )
+                .join("");
+        const objectListElement = document.querySelector(
+                `#${config.prefix}-list`
+        );
         if (!objectListElement) return;
         objectListElement.innerHTML = htmlContent;
     }
@@ -449,7 +568,9 @@ class BookingManager {
     renderPagination(config, data) {
         const pagination = new Pagination(data.currentPage, data.totalPages);
         const paginationHtml = pagination.toHtml();
-        const paginationElement = document.querySelector(`#${config.prefix}-pagination`);
+        const paginationElement = document.querySelector(
+                `#${config.prefix}-pagination`
+        );
         if (paginationElement) {
             paginationElement.innerHTML = paginationHtml;
         }
@@ -457,8 +578,10 @@ class BookingManager {
     }
 
     changeButtonStatus() {
-        const buttons = document.querySelectorAll("[id$='-next-button'], [id$='-previous-button']");
-        buttons.forEach(button => {
+        const buttons = document.querySelectorAll(
+                "[id$='-next-button'], [id$='-previous-button']"
+        );
+        buttons.forEach((button) => {
             button.disabled = this.isLoading;
             if (this.isLoading) {
                 button.classList.add("disabled");

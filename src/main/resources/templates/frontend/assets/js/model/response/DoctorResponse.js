@@ -108,7 +108,7 @@ export function renderDoctorResponseForBooking(doctorResponse) {
  */
 export function renderDoctorResponseForList(doctorResponse) {
     return `
-    <div class="col mb-5">
+    <div class="col mb-5 cursor-pointer">
         <div class="iq-team-block team-overdetail position-relative p-2"
              onclick="window.location.href='/doctor/detail/${doctorResponse.id}'">
             <div class="iq-team-img">

@@ -836,28 +836,23 @@
                                             </div>
 
                                         </div>
-                                        <div class="form-group">
-                                            <label class="form-label" for="orderId">Order Id:</label>
-                                            <input type="text" class="form-control readonly-input" id="orderId"
-                                                placeholder="Order Id" readonly>
-                                        </div>
 
                                         <div class="form-group">
-                                            <label class="form-label" for="patientName">Patient Name:</label>
+                                            <label class="form-label" for="patientName">Patient Name</label>
                                             <input type="text" class="form-control readonly-input" id="patientName"
-                                                placeholder="Patient Name" readonly>
+                                                placeholder="Patient Name" readonly th:value="${patient.getPatientName()}">
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="form-label" for="department">Referring Department:</label>
+                                            <label class="form-label" for="department" >Department</label>
                                             <input type="text" class="form-control readonly-input" id="department"
-                                                placeholder="Referring Department" readonly>
+                                                placeholder="Referring Department" readonly th:value="${patient.getDepartmentName()}">
                                         </div>
 
                                         <div class="form-group">
                                             <label class="form-label" for="testType">Test Type:</label>
                                             <input type="text" class="form-control readonly-input" id="testType"
-                                                placeholder="Test Type" readonly>
+                                                placeholder="Test Type" readonly th:value="${patient.getTestType()}">
                                         </div>
 
                                     </form>
@@ -873,7 +868,9 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="new-user-info">
-                                        <form>
+                                        <form id="create-sample-form">
+                                            <input type="hidden" name="sampleId" th:value="${patient.getSampleId()}">
+                                            <input type="hidden" name="testRequestId" th:value="${patient.getTestRequestId()}">
                                             <div class="row">
                                                 <div class="form-group col-md-4">
                                                     <label class="form-label" for="fname">Date</label>
@@ -881,7 +878,7 @@
                                                         onclick="showDatePicker(this)">
                                                         <span class="date-text">Click to select date</span>
                                                         <i class="bi bi-x-circle-fill status-icon"></i>
-                                                        <input type="hidden" id="selectedDateValue">
+                                                        <input type="hidden" id="selectedDateValue" name="date">
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-4">
@@ -889,6 +886,7 @@
                                                     <div class="time-select-box invalid" onclick="showTimePicker(this)">
                                                         <span class="time-text">Click to select time</span>
                                                         <i class="bi bi-x-circle-fill status-icon"></i>
+                                                        <input type="hidden" id="selectedTimeValue" name="time">
                                                     </div>
                                                 </div>
 
@@ -896,10 +894,12 @@
                                                     <label class="form-label" for="managerSelect">Manager:</label>
                                                     <div class="manager-select-group">
                                                         <select class="form-select manager-select" id="managerSelect"
-                                                            required>
+                                                            required name="managerId">
                                                             <option value="">-- Chọn người quản lý --</option>
-                                                            <option value="Nguyen Van a">Nguyen Van A</option>
-                                                            <option value="Nguyen Van b">Nguyen Van B</option>
+                                                            <option th:each="item : ${patient.getManagerName()}"
+                                                                    th:text="${item.getName()}"
+                                                                    th:value="${item.getId()}">
+                                                            </option>
                                                         </select>
                                                         <i id="manager-status-icon"
                                                             class="bi bi-x-circle-fill manager-status-icon text-danger"></i>
@@ -911,7 +911,7 @@
                                                         style="position: relative;">
                                                         <textarea id="note" class="form-control border-0" rows="4"
                                                             placeholder="Enter your note here..." required
-                                                            style="resize: vertical; box-shadow: none;"></textarea>
+                                                            style="resize: vertical; box-shadow: none;" name = "note"></textarea>
                                                         <i id="note-status-icon" class="bi bi-x-circle-fill status-icon"
                                                             style="position: absolute; top: 10px; right: 10px; color: #dc3545; font-size: 1.3em;"></i>
                                                     </div>
@@ -938,7 +938,7 @@
                                                     </span>
                                                 </button>
                                                 <button type="button" class="btn btn-secondary ms-2"
-                                                    onclick="window.location.href='set-result'">
+                                                    onclick="window.location.href='sampling-schedule'">
                                                     Cancel
                                                 </button>
 
@@ -1853,17 +1853,16 @@
         </div>
     </div>
 
-    <div id="calendarTarget" onclick="showDatePicker(this)">Click để chọn ngày</div>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <div id="calendarTarget" onclick="showDatePicker(this)">Click để chọn ngày</div>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
+
         function showDatePicker(el) {
             if (el._flatpickr) {
                 el._flatpickr.open();
@@ -1892,7 +1891,6 @@
                     icon.style.color = "#28a745";
                     hiddenInput.value = dateStr;
 
-                    // Kiểm tra lại giờ đã chọn
                     const timeTrigger = document.querySelector(".time-select-box");
                     const timeSpan = timeTrigger.querySelector(".time-text");
                     const timeIcon = timeTrigger.querySelector(".status-icon");
@@ -1975,6 +1973,7 @@
                         icon.classList.add("bi-x-circle-fill");
                         icon.style.color = "#dc3545";
                         timeSpan.textContent = "Can not select past time";
+                        document.getElementById('selectedTimeValue').value = "";
                     } else {
                         el.classList.remove("invalid");
                         el.classList.add("valid");
@@ -1982,6 +1981,7 @@
                         icon.classList.add("bi-check-circle-fill");
                         icon.style.color = "#28a745";
                         timeSpan.textContent = timeStr;
+                        document.getElementById('selectedTimeValue').value = timeStr;
                     }
                 }
             }).open();
@@ -1990,7 +1990,6 @@
         const noteIcon = document.getElementById('note-status-icon');
         const noteError = document.querySelector('.note-error');
 
-        // Kiểm tra khi thay đổi nội dung
         note.addEventListener('input', function () {
             if (note.value.trim() === '') {
                 noteIcon.className = 'bi bi-x-circle-fill status-icon';
@@ -2098,5 +2097,30 @@
     <script src="./assets/js/solid-icon-search-filter.js?v=1.4.1" th:src="@{/dashboard-staff-test/assets/js/solid-icon-search-filter.js?v=1.4.1}"
  defer></script>
 </body>
+<script>
+    document.getElementById('create-sample-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch('/api/sample/create', {
+            method: 'POST',
+            body: formData
+        })
+            .then(async response => {
+                const message = await response.text();
+                if (response.ok) {
+                    window.location.href = '/lab/sampling-schedule';
+                } else {
+                    alert("Tạo không thành công: " + message);
+                }
+            })
+            .catch(error => {
+                console.error("Lỗi khi gửi request:", error);
+                alert("Đã có lỗi xảy ra trong quá trình gửi dữ liệu");
+            });
+    });
+</script>
 
 </html>

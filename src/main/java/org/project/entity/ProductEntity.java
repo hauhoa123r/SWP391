@@ -25,7 +25,6 @@ import java.util.Set;
 @Table(name = "products", schema = "swp391")
 @FieldNameConstants
 public class ProductEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id", nullable = false)
@@ -57,8 +56,8 @@ public class ProductEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(mappedBy = "productEntity")
-    private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
+    @OneToMany
+    private final Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
     private ServiceEntity serviceEntity;
@@ -70,50 +69,42 @@ public class ProductEntity {
     private MedicineEntity medicineEntity;
 
     @OneToMany(mappedBy = "productEntity")
-    private Set<OrderItemEntity> orderItemEntities = new LinkedHashSet<>();
+    private final Set<OrderItemEntity> orderItemEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
     private PricingPlanEntity pricingPlanEntity;
 
     @OneToMany(mappedBy = "productEntity")
-    private Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities = new LinkedHashSet<>();
+    private final Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "productEntities")
-    private Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
+    private final Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
             name = "product_reviews",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "product_review_id")
     )
-    private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+    private final Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "productEntity")
-    private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
-
+    private final Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
     @OneToMany(mappedBy = "productEntity")
-    private Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
-
-    @OneToOne(mappedBy = "productEntity")
-    private TestEntity testEntity;
-
-    @ManyToMany(mappedBy = "products")
-    private Set<UserEntity> userEntities = new LinkedHashSet<>();
-
+    private final Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
+    @ManyToMany
+    private final Set<UserEntity> userEntities = new LinkedHashSet<>();
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'MEDICAL_PRODUCT'")
-    @Column(name = "product_type", nullable = false)
+    @Column(name = "product_type", columnDefinition = "enum not null")
     private ProductType productType;
-
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
-    @Column(name = "product_status", nullable = false)
+    @Column(name = "product_status", columnDefinition = "enum not null")
     private ProductStatus productStatus;
-
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'STANDARD'")
-    @Column(name = "label", nullable = false)
+    @Column(name = "label", columnDefinition = "enum not null")
     private Label label;
 
     public Double getAverageRating() {
@@ -123,6 +114,7 @@ public class ProductEntity {
                 .orElse(0.0);
     }
 
-
-
+    public Long getReviewCount() {
+        return (long) reviewEntities.size();
+    }
 }

@@ -15,4 +15,5 @@ public class DepartmentResponse {
     private String slogan;
     private String description;
     private String bannerUrl;
+    private String videoUrl;
 }

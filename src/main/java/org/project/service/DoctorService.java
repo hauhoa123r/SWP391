@@ -22,4 +22,12 @@ public interface DoctorService {
     DoctorResponse getDoctor(Long doctorId);
 
     List<DoctorResponse> getAllByCriteria(DoctorDTO doctorDTO, int index, int size);
+
+    List<DoctorResponse> getTop6DoctorsByDepartment(Long departmentId);
+
+    List<DoctorResponse> getTop6DoctorsByHospital(Long hospitalId);
+
+    DoctorResponse getTop1Doctor();
+
+    List<DoctorResponse> getTop6Doctors();
 }

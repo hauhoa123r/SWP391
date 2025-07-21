@@ -254,269 +254,6 @@
                             </svg>
                         </i>
                     </div>
-                    <div class="d-flex align-items-center justify-content-between product-offcanvas">
-                        <div class="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabindex="-1"
-                            id="offcanvasBottomNav">
-                            <div class="offcanvas-body">
-                                <ul class="iq-nav-menu list-unstyled">
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start active" href="./index.html" th:href="@{/dashboard-staff-test/index.html}"
->
-                                            <span class="nav-text">Home</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
-                                            href="#allPagesData" role="button" aria-expanded="false"
-                                            aria-controls="allPagesData">
-                                            <span class="nav-text">Pages</span>
-                                        </a>
-                                        <ul class="iq-header-sub-menu list-unstyled collapse" id="allPagesData">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="./component.html" th:href="@{/dashboard-staff-test/component.html}"
->Components</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="./ui-color.html" th:href="@{/dashboard-staff-test/ui-color.html}"
->UI Color</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#authSkins" role="button" aria-expanded="false">
-                                                    Auth skins
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="defaultAuth">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/sign-in.html" th:href="@{/dashboard-staff-test/auth/sign-in.html}"
->Sign In</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/sign-up.html" th:href="@{/dashboard-staff-test/auth/sign-up.html}"
->Sign Up</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/confirm-mail.html" th:href="@{/dashboard-staff-test/auth/confirm-mail.html}"
->Email Verified</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/recoverpw.html" th:href="@{/dashboard-staff-test/auth/recoverpw.html}"
->Reset
-                                                            Password</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/lock-screen.html" th:href="@{/dashboard-staff-test/auth/lock-screen.html}"
->Lock Screen</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#userApps" role="button" aria-expanded="false"
-                                                    aria-controls="userApps">
-                                                    User
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="userApps">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-profile.html" th:href="@{/dashboard-staff-test/app/user-profile.html}"
->User Profile</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-add.html" th:href="@{/dashboard-staff-test/app/user-add.html}"
->User Add</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-list.html" th:href="@{/dashboard-staff-test/app/user-list.html}"
->User List</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#utilities" role="button" aria-expanded="false"
-                                                    aria-controls="utilities">
-                                                    Utilities
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="utilities">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/maintenance.html" th:href="@{/dashboard-staff-test/errors/maintenance.html}"
->Maintenance</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/error404.html" th:href="@{/dashboard-staff-test/errors/error404.html}"
->404</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/error500.html" th:href="@{/dashboard-staff-test/errors/error500.html}"
->500</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#widgetsPage" role="button" aria-expanded="false"
-                                                    aria-controls="widgetsPage">
-                                                    Widgets
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="widgetsPage">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetbasic.html" th:href="@{/dashboard-staff-test/widget/widgetbasic.html}"
->Widget Basic</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetchart.html" th:href="@{/dashboard-staff-test/widget/widgetchart.html}"
->Widget Chart</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetcard.html" th:href="@{/dashboard-staff-test/widget/widgetcard.html}"
->Widget Card</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#mapPages" role="button" aria-expanded="false"
-                                                    aria-controls="mapPages">
-                                                    Map
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="mapPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./maps/google.html" th:href="@{/dashboard-staff-test/maps/google.html}"
->Google</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./maps/vector.html" th:href="@{/dashboard-staff-test/maps/vector.html}"
->Vector</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#formsPages" role="button" aria-expanded="false"
-                                                    aria-controls="formsPages">
-                                                    Form
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="formsPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./form/form-element.html" th:href="@{/dashboard-staff-test/form/form-element.html}"
->Element</a></li>
-
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./form/form-validation.html" th:href="@{/dashboard-staff-test/form/form-validation.html}"
->Validation</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#tablesPages" role="button" aria-expanded="false"
-                                                    aria-controls="tablesPages">
-                                                    Table
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="tablesPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/bootstrap-table.html" th:href="@{/dashboard-staff-test/table/bootstrap-table.html}"
->Bootstrap Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/table-data.html" th:href="@{/dashboard-staff-test/table/table-data.html}"
->Data Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/border-table.html" th:href="@{/dashboard-staff-test/table/border-table.html}"
->Bordered Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/fancy-table.html" th:href="@{/dashboard-staff-test/table/fancy-table.html}"
->Fancy Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/fixed-table.html" th:href="@{/dashboard-staff-test/table/fixed-table.html}"
->Fixed Table</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#iconsPages" role="button" aria-expanded="false"
-                                                    aria-controls="iconsPages">
-                                                    Icons
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="iconsPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/solid.html" th:href="@{/dashboard-staff-test/icons/solid.html}"
->Solid</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/outline.html" th:href="@{/dashboard-staff-test/icons/outline.html}"
->Outlined</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/dual-tone.html" th:href="@{/dashboard-staff-test/icons/dual-tone.html}"
->Dual Tone</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                     <div class="d-flex align-items-center">
                         <button id="navbar-toggle" class="navbar-toggler px-0" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -736,91 +473,50 @@
                                 </div>
                                 <table id="input-datatable" class="table">
                                     <thead>
-                                        <tr>
-                                            <th><input type="checkbox" id="select-all"></th>
-                                            <th>Patient Name</th>
-                                            <th>Doctor Name</th>
-                                            <th>Referring Department</th>
-                                            <th>Test Type</th>
-                                            <th>Requested At</th>
-                                            <th>Action</th>
-                                        </tr>
+                                    <tr>
+                                        <th><input type="checkbox" id="select-all"></th>
+                                        <th>Patient Name</th>
+                                        <th>Doctor Name</th>
+                                        <th>Referring Department</th>
+                                        <th>Test Type</th>
+                                        <th>Requested At</th>
+                                        <th>Action</th>
+                                    </tr>
                                     </thead>
                                     <tbody id="table-body">
-                                        <tr th:each="item : ${assignments}">
-                                            <td><input type="checkbox" class="row-checkbox" th:value="${item.getId()}"></td>
-                                            <td th:text="${item.getPatientName()}"></td>
-                                            <td th:text="${item.getDoctorName()}"></td>
-                                            <td th:text="${item.getDepartmentName()}"></td>
-                                            <td th:text="${item.getTestType()}">61</td>
-                                            <td th:text="${item.getRequestAt()}"></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-success" title="Approve" th:data-id="${item.id}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check-circle-fill"
-                                                        viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                                                          5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                                                          0 0 0-.01-1.05z" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                    <!-- Filled by JS -->
                                     </tbody>
                                     <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th title="Patient Name">Patient Name
-                                                <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" />
-                                            </th>
-                                            <th title="Doctor Name">Patient Name
-                                                <input type="text" id="doctorName" name="doctorName" class="form-control form-control-sm" />
-                                            </th>
-                                            <th title="Referring Department">Referring Department
-                                                <input type="text" id="referringDepartment" name="referringDepartment" class="form-control form-control-sm" />
-                                            </th>
-                                            <th title="Test Type">Test Type
-                                                <input type="text" id="testType" name="testType" class="form-control form-control-sm" />
-                                            </th>
-                                            <th title="Request At">Request At</th>
-                                            <td>
-                                            </td>
-
-                                        </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th title="Patient Name">
+                                            Patient Name
+                                            <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" />
+                                        </th>
+                                        <th title="Doctor Name">
+                                            Doctor Name
+                                            <input type="text" id="doctorName" name="doctorName" class="form-control form-control-sm" />
+                                        </th>
+                                        <th title="Department">
+                                            Department
+                                            <input type="text" id="referringDepartment" name="referringDepartment" class="form-control form-control-sm" />
+                                        </th>
+                                        <th title="Test Type">
+                                            Test Type
+                                            <input type="text" id="testType" name="testType" class="form-control form-control-sm" />
+                                        </th>
+                                        <th></th>
+                                        <td></td>
+                                    </tr>
                                     </tfoot>
                                 </table>
                                 <div class="mt-4 d-flex justify-content-between align-items-center">
                                     <div>
-                                        <span th:text="'Tổng số bản ghi: ' + ${totalItems}"></span>
+                                        <span id="total-items"></span>
                                     </div>
                                     <nav>
-                                        <ul class="pagination mb-0">
-                                            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                                                <a class="page-link" th:href="@{/lab/receive-items(page=${currentPage - 1})}">Previous</a>
-                                            </li>
-                                            <li class="page-item"
-                                                th:each="i : ${#numbers.sequence(currentPage, currentPage + 1)}"
-                                                th:if="${i < totalPages - 2}"
-                                                th:classappend="${i == currentPage} ? 'active'">
-                                                <a class="page-link" th:href="@{/lab/receive-items(page=${i})}" th:text="${i + 1}"></a>
-                                            </li>
-
-                                            <li class="page-item disabled" th:if="${currentPage < totalPages - 3}">
-                                                <span class="page-link">...</span>
-                                            </li>
-                                            <li class="page-item"
-                                                th:each="i : ${#numbers.sequence(totalPages - 2, totalPages - 1)}"
-                                                th:if="${i >= 0}"
-                                                th:classappend="${i == currentPage} ? 'active'">
-                                                <a class="page-link" th:href="@{/lab/receive-items(page=${i})}" th:text="${i + 1}"></a>
-                                            </li>
-
-                                            <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
-                                                <a class="page-link" th:href="@{/lab/receive-items(page=${currentPage + 1})}">Next</a>
-                                            </li>
-                                        </ul>
+                                        <ul class="pagination mb-0" id="pagination-container"></ul>
                                     </nav>
-
                                 </div>
                             </div>
                         </div>
@@ -1676,21 +1372,6 @@
             </div>
         </div>
     </div>
-    <!-- Settings sidebar end here -->
-
-    <a class="btn btn-fixed-end btn-warning btn-icon btn-setting" id="settingbutton" data-bs-toggle="offcanvas"
-        data-bs-target="#live-customizer" role="button" aria-controls="live-customizer">
-        <svg class="icon-24 animated-rotate" width="24" viewBox="0 0 24 24" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M20.8064 7.62361L20.184 6.54352C19.6574 5.6296 18.4905 5.31432 17.5753 5.83872V5.83872C17.1397 6.09534 16.6198 6.16815 16.1305 6.04109C15.6411 5.91402 15.2224 5.59752 14.9666 5.16137C14.8021 4.88415 14.7137 4.56839 14.7103 4.24604V4.24604C14.7251 3.72922 14.5302 3.2284 14.1698 2.85767C13.8094 2.48694 13.3143 2.27786 12.7973 2.27808H11.5433C11.0367 2.27807 10.5511 2.47991 10.1938 2.83895C9.83644 3.19798 9.63693 3.68459 9.63937 4.19112V4.19112C9.62435 5.23693 8.77224 6.07681 7.72632 6.0767C7.40397 6.07336 7.08821 5.98494 6.81099 5.82041V5.82041C5.89582 5.29601 4.72887 5.61129 4.20229 6.52522L3.5341 7.62361C3.00817 8.53639 3.31916 9.70261 4.22975 10.2323V10.2323C4.82166 10.574 5.18629 11.2056 5.18629 11.8891C5.18629 12.5725 4.82166 13.2041 4.22975 13.5458V13.5458C3.32031 14.0719 3.00898 15.2353 3.5341 16.1454V16.1454L4.16568 17.2346C4.4124 17.6798 4.82636 18.0083 5.31595 18.1474C5.80554 18.2866 6.3304 18.2249 6.77438 17.976V17.976C7.21084 17.7213 7.73094 17.6516 8.2191 17.7822C8.70725 17.9128 9.12299 18.233 9.37392 18.6717C9.53845 18.9489 9.62686 19.2646 9.63021 19.587V19.587C9.63021 20.6435 10.4867 21.5 11.5433 21.5H12.7973C13.8502 21.5001 14.7053 20.6491 14.7103 19.5962V19.5962C14.7079 19.088 14.9086 18.6 15.2679 18.2407C15.6272 17.8814 16.1152 17.6807 16.6233 17.6831C16.9449 17.6917 17.2594 17.7798 17.5387 17.9394V17.9394C18.4515 18.4653 19.6177 18.1544 20.1474 17.2438V17.2438L20.8064 16.1454C21.0615 15.7075 21.1315 15.186 21.001 14.6964C20.8704 14.2067 20.55 13.7894 20.1108 13.5367V13.5367C19.6715 13.284 19.3511 12.8666 19.2206 12.3769C19.09 11.8873 19.16 11.3658 19.4151 10.928C19.581 10.6383 19.8211 10.3982 20.1108 10.2323V10.2323C21.0159 9.70289 21.3262 8.54349 20.8064 7.63277V7.63277V7.62361Z"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            <circle cx="12.1747" cy="11.8891" r="2.63616" stroke="currentColor" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round"></circle>
-        </svg>
-    </a> <!-- Live Customizer end -->
-    <!-- Wrapper End-->
-
 
     <!-- Library Bundle Script -->
     <script src="./assets/js/core/libs.min.js" th:src="@{/dashboard-staff-test/assets/js/core/libs.min.js}"
@@ -1762,78 +1443,18 @@
     <script src="./assets/js/solid-icon-search-filter.js?v=1.4.1" th:src="@{/dashboard-staff-test/assets/js/solid-icon-search-filter.js?v=1.4.1}"
  defer></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const selectAll = document.getElementById("select-all");
-            const checkboxes = document.querySelectorAll(".row-checkbox");
-
-            selectAll.addEventListener("change", function () {
-                checkboxes.forEach(cb => cb.checked = selectAll.checked);
-            });
-
-            document.getElementById("submit-selection").addEventListener("click", function () {
-                const selectedRows = [];
-                checkboxes.forEach(cb => {
-                    if (cb.checked) {
-                        const row = cb.closest("tr");
-                        const orderId = row.children[1].innerText;
-                        selectedRows.push(orderId);
-                    }
-                });
-
-                if (selectedRows.length === 0) {
-                    alert("No rows selected.");
-                } else {
-                    console.log("Submitting:", selectedRows);
-                }
-            });
-        });
-
-
-        $(document).on('click', '.btn-outline-success', function () {
-            const id = $(this).data('id');
-            $.ajax({
-                url: '/api/receive/' + id,
-                type: 'GET',
-                success: function (data) {
-                    alert('Received');
-                    window.location.href='/lab/receive-items'
-                },
-                error: function (data) {
-                    alert('Error');
-                }
-            });
-        });
-        $('#submit-selection').click(function () {
-            const ids = [];
-
-            $('.row-checkbox:checked').each(function () {
-                ids.push($(this).val());
-            })
-            if(ids.length === 0) {
-                alert('No rows selected');
-            }
-            const convertId = ids.join(',');
-
-            $.ajax({
-                url: '/api/receives/' + convertId,
-                type: 'GET',
-                success: function (data) {
-                    alert('Received');
-                    window.location.href='/lab/receive-items'
-                },
-                error: function (data) {
-                    alert('Error');
-                }
-            })
-        })
-
-        function fetchFilteredData() {
-            const filters = {
+        function getFilterParams() {
+            return {
                 patientName: $('#patientName').val(),
                 doctorName: $('#doctorName').val(),
                 departmentName: $('#referringDepartment').val(),
                 testType: $('#testType').val()
             };
+        }
+
+        function fetchFilteredData(page = 0) {
+            const filters = getFilterParams();
+            filters.page = page;
 
             $.ajax({
                 url: '/api/receive/filter',
@@ -1841,22 +1462,14 @@
                 data: filters,
                 success: function (data) {
                     renderTable(data.content);
+                    renderPagination(data);
                 },
                 error: function () {
                     alert('Lỗi khi lọc dữ liệu');
                 }
             });
         }
-        let typingTimer;
-        const typingDelay = 1000;
 
-        $('#patientName, #doctorName, #referringDepartment, #testType').on('input', function () {
-            clearTimeout(typingTimer);
-
-            typingTimer = setTimeout(function () {
-                fetchFilteredData();
-            }, typingDelay);
-        });
         function renderTable(assignments) {
             let html = '';
             assignments.forEach(item => {
@@ -1867,23 +1480,163 @@
                     <td>${item.doctorName || ''}</td>
                     <td>${item.departmentName || ''}</td>
                     <td>${item.testType || ''}</td>
-                    <td>${item.requestAt || ''}</td>
-                     <td>
-                     <button class="btn btn-sm btn-outline-success" title="Approve" data-id="${item.id}">
-                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                      fill="currentColor" class="bi bi-check-circle-fill"
-                      viewBox="0 0 16 16">
-                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417
-                      5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75
-                      0 0 0-.01-1.05z" />
-                        </svg>
-                       </button>
-                        </td>
+                    <td>${formatTime(item.requestAt)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-success receive-btn" data-id="${item.id}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor" class="bi bi-check-circle-fill"
+                                 viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75
+                                         0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75
+                                         0 0 0-1.06 1.06L6.97 11.03a.75.75
+                                         0 0 0 1.079-.02l3.992-4.99a.75.75
+                                         0 0 0-.01-1.05z" />
+                            </svg>
+                        </button>
+                    </td>
                 </tr>
             `;
             });
-
             $('#table-body').html(html);
+
+            $('#select-all').off('change').on('change', function () {
+                $('.row-checkbox').prop('checked', this.checked);
+            });
+        }
+        function formatTime(isoString) {
+            if (!isoString) return '';
+            const date = new Date(isoString);
+            return date.toLocaleTimeString('vi-VN', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+        }
+        function renderPagination(pageData) {
+            const currentPage = pageData.number;
+            const totalPages = pageData.totalPages;
+
+            if (totalPages <= 1) {
+                $('#pagination-container').html('');
+                return;
+            }
+
+            let html = '';
+
+            html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+            <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>
+        </li>`;
+
+            for (let i = 0; i < totalPages; i++) {
+                html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="${i}">${i + 1}</a>
+            </li>`;
+            }
+
+            html += `<li class="page-item ${currentPage + 1 >= totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>
+        </li>`;
+
+            $('#pagination-container').html(html);
+        }
+
+        $(document).on('click', '.pagination a.page-link', function (e) {
+            e.preventDefault();
+            const page = parseInt($(this).data('page'));
+            fetchFilteredData(page);
+        });
+
+        $(document).on('click', '#submit-selection', function () {
+            const ids = [];
+            $('.row-checkbox:checked').each(function () {
+                ids.push($(this).val());
+            });
+
+            if (ids.length === 0) {
+                alert('No rows selected');
+                return;
+            }
+
+            const convertId = ids.join(',');
+
+            $.ajax({
+                url: '/api/receives/' + convertId,
+                type: 'GET',
+                success: function () {
+                    alert('Received');
+                    fetchFilteredData();
+                },
+                error: function () {
+                    alert('Error');
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-outline-success', function () {
+            const id = $(this).data('id');
+            $.ajax({
+                url: '/api/receive/' + id,
+                type: 'GET',
+                success: function () {
+                    alert('Received');
+                    fetchFilteredData();
+                },
+                error: function () {
+                    alert('Error');
+                }
+            });
+        });
+
+        let typingTimer;
+        const typingDelay = 1000;
+
+        $('#patientName, #doctorName, #referringDepartment, #testType').on('input', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => fetchFilteredData(0), typingDelay);
+        });
+
+        $(document).ready(() => fetchFilteredData(0));
+        function renderPagination(pageData) {
+            const currentPage = pageData.number;
+            const totalPages = pageData.totalPages;
+            const totalItems = pageData.totalElements;
+
+            $('#total-items').text('Tổng số bản ghi: ' + totalItems);
+
+            if (totalPages <= 1) {
+                $('#pagination-container').html('');
+                return;
+            }
+
+            let html = '';
+
+            html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>
+    </li>`;
+
+            if (currentPage > 2) {
+                html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+                if (currentPage > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            }
+
+            for (let i = Math.max(0, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+                html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i + 1}</a>
+        </li>`;
+            }
+
+            if (currentPage < totalPages - 3) {
+                html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            }
+            if (currentPage < totalPages - 2) {
+                html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
+            }
+
+            html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>
+    </li>`;
+
+            $('#pagination-container').html(html);
         }
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

@@ -39,7 +39,7 @@ public class ReceiveAPI {
     @GetMapping("/receive/filter")
     public ResponseEntity<?> filterFiledsInformation(@ModelAttribute AssignmentListDTO assignmentListDTO){
         try {
-            Page<AssignmentListDTO> results = (Page<AssignmentListDTO>) assignmentService.getAssignmentBySearch(assignmentListDTO);
+            Page<AssignmentListDTO> results = (Page<AssignmentListDTO>) assignmentService.getReceivedPatientBySearch(assignmentListDTO);
             return ResponseEntity.ok(results);
         } catch (IllegalAccessException e) {
             return ResponseEntity.badRequest().body("Invalid search parameters");
