@@ -10,42 +10,27 @@ import org.project.exception.ErrorResponse;
 import org.project.model.dto.AppointmentDTO;
 import org.project.repository.*;
 import org.project.service.AppointmentService;
-import org.project.utils.TimestampUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
-@Transactional
 public class AppointmentServiceImpl implements AppointmentService {
+    @Autowired
     private AppointmentRepository appointmentRepository;
-    private DoctorRepository doctorRepository;
-    private ServiceRepository serviceRepository;
-    private StaffScheduleRepository staffScheduleRepository;
-    private UserRepository userRepository;
-    private PatientRepository patientRepository;
-    private AppointmentConverter appointmentConverter;
-    private TimestampUtils timestampUtils;
-
-    @Autowired
-    public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
-        this.appointmentRepository = appointmentRepository;
-    }
-
-    @Autowired
     public void setDoctorRepository(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
     }
 
     @Autowired
+    private toAppointmentsResponse toAppoint;
     public void setServiceRepository(ServiceRepository serviceRepository) {
         this.serviceRepository = serviceRepository;
     }
 
     @Autowired
+    private toAppointmentDetailsResponse toAppointDetails;
     public void setStaffScheduleRepository(StaffScheduleRepository staffScheduleRepository) {
         this.staffScheduleRepository = staffScheduleRepository;
     }
@@ -135,6 +120,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public List<AppointmentsResponse> getAllAppointments(Long doctorId) {
+        List<AppointmentsEntity> appointments = appointmentRepository.findByDoctorId(doctorId);
+        return appointments.stream().map(appointment ->
+            toAppoint.toAppointmentResponse(appointment)
+        ).collect(Collectors.toList());
     public void saveAppointment(AppointmentDTO appointmentDTO) {
         if (!isDoctorExists(appointmentDTO)) {
             throw new ErrorResponse("Doctor not found");

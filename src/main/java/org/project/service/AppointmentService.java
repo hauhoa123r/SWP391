@@ -1,8 +1,11 @@
 package org.project.service;
 
-import org.project.model.dto.AppointmentDTO;
+import org.project.model.response.AppointmentDetailsResponse;
+import org.project.model.response.AppointmentsResponse;
+
+import java.util.List;
 
 public interface AppointmentService {
-
-    void saveAppointment(AppointmentDTO appointmentDTO);
+    List<AppointmentsResponse> getAllAppointments(Long id);
+    AppointmentDetailsResponse getAppointment(Long id);
 }
