@@ -327,6 +327,7 @@
 
                             <!-- Filter Section -->
                             <div class="card-body">
+                            
                                 <div class="row mb-3">
                                     <div class="col-md-3">
                                         <input type="text" class="form-control" id="searchFilter" placeholder="Tìm kiếm mã đơn, nhà cung cấp...">
@@ -369,7 +370,8 @@
                                         <tbody id="stockInTableBody">
                                         <!-- Hiển thị dữ liệu động từ controller -->
                                         <tr th:each="supplierIn : ${supplierIns}" th:data-id="${supplierIn.id}" th:data-type="${supplierIn.type}" th:data-status="${supplierIn.status}">
-                                            <td><strong th:text="${'SI-' + supplierIn.id}">SI-001</strong></td>
+                                            <!-- Debug: Hiển thị giá trị status -->
+                                            <td><strong th:text="${'SI-' + supplierIn.id + ' (' + supplierIn.status + ')'}">SI-001</strong></td>
                                             <td>
                                                 <!-- Simple type implementation -->
                                                 <span th:if="${supplierIn.type == 'MEDICINE'}" class="badge bg-success">Thuốc</span>
@@ -380,41 +382,49 @@
                                             <td class="text-end"><strong th:text="${#numbers.formatDecimal(supplierIn.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong></td>
                                             <td>
                                                 <!-- Simple status implementation -->
-                                                <span th:if="${supplierIn.status == 'PENDING'}" class="status-pending">Chờ hàng về</span>
-                                                <span th:if="${supplierIn.status == 'RECEIVED'}" class="status-received">Đã nhận hàng</span>
-                                                <span th:if="${supplierIn.status == 'CHECKED'}" class="status-checked">Đã kiểm tra</span>
-                                                <span th:if="${supplierIn.status == 'COMPLETED'}" class="status-completed">Hoàn thành</span>
-                                                <span th:if="${supplierIn.status != 'PENDING' && supplierIn.status != 'RECEIVED' && supplierIn.status != 'CHECKED' && supplierIn.status != 'COMPLETED'}" class="status-processing">Đang xử lý</span>
+                                                <span th:if="${#strings.equalsIgnoreCase(supplierIn.status, 'PENDING')}" class="status-pending">Chờ hàng về</span>
+                                                <span th:if="${#strings.equalsIgnoreCase(supplierIn.status, 'RECEIVED')}" class="status-received">Đã nhận hàng</span>
+                                                <span th:if="${#strings.equalsIgnoreCase(supplierIn.status, 'CHECKED')}" class="status-checked">Đã kiểm tra</span>
+                                                <span th:if="${#strings.equalsIgnoreCase(supplierIn.status, 'COMPLETED')}" class="status-completed">Hoàn thành</span>
+                                                <span th:if="${!#strings.equalsIgnoreCase(supplierIn.status, 'PENDING') && !#strings.equalsIgnoreCase(supplierIn.status, 'RECEIVED') && !#strings.equalsIgnoreCase(supplierIn.status, 'CHECKED') && !#strings.equalsIgnoreCase(supplierIn.status, 'COMPLETED')}" class="status-processing">Đang xử lý</span>
                                             </td>
                                             <td>
-                                                <div class="btn-group">
+                                                <div class="btn-group" style="display: flex !important;">
                                                     <a th:href="@{'/StockInDetail.html?id=' + ${supplierIn.id}}" class="btn btn-sm btn-primary">
-                                                        <i class="ri-eye-line"></i>
+                                                        <i class="ri-eye-line text-white"></i>
                                                     </a>
                                                     <a th:href="@{'/invoiceintracking.html?id=' + ${supplierIn.id}}" class="btn btn-sm btn-info">
-                                                        <i class="ri-truck-line"></i>
+                                                        <i class="ri-route-line text-white"></i>
                                                     </a>
                                                     <!-- Nút xử lý trạng thái -->
-                                                    <form th:if="${supplierIn.status == 'PENDING'}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
+                                                    <form th:data-id="${supplierIn.id}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline-block !important;" onsubmit="updateStatus(event, 'RECEIVED')">
+                                                        <input type="hidden" name="_csrf" th:value="${_csrf != null ? _csrf.token : ''}" />
                                                         <input type="hidden" name="status" value="RECEIVED" />
-                                                        <button type="submit" class="btn btn-sm btn-success" title="Đánh dấu đã nhận">
-                                                            <i class="ri-truck-line"></i>
+                                                        <button type="submit" class="btn btn-sm btn-success" title="Đánh dấu đã nhận" style="display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                                            <i class="ri-truck-line text-white"></i>
                                                         </button>
                                                     </form>
 
-                                                    <form th:if="${supplierIn.status == 'RECEIVED'}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
+                                                    <form th:data-id="${supplierIn.id}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline-block !important;" onsubmit="updateStatus(event, 'CHECKED')">
+                                                        <input type="hidden" name="_csrf" th:value="${_csrf != null ? _csrf.token : ''}" />
                                                         <input type="hidden" name="status" value="CHECKED" />
-                                                        <button type="submit" class="btn btn-sm btn-warning" title="Đánh dấu đã kiểm tra">
-                                                            <i class="ri-checkbox-line"></i>
+                                                        <button type="submit" class="btn btn-sm btn-warning" title="Đánh dấu đã kiểm tra" style="display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                                            <i class="ri-checkbox-line text-white"></i>
                                                         </button>
                                                     </form>
 
-                                                    <form th:if="${supplierIn.status == 'CHECKED'}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
+                                                    <form th:data-id="${supplierIn.id}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline-block !important;" onsubmit="updateStatus(event, 'COMPLETED')">
+                                                        <input type="hidden" name="_csrf" th:value="${_csrf != null ? _csrf.token : ''}" />
                                                         <input type="hidden" name="status" value="COMPLETED" />
-                                                        <button type="submit" class="btn btn-sm btn-success" title="Hoàn thành">
-                                                            <i class="ri-check-line"></i>
+                                                        <button type="submit" class="btn btn-sm btn-success" title="Hoàn thành" style="display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                                            <i class="ri-check-line text-white"></i>
                                                         </button>
                                                     </form>
+                                                    
+                                                    <!-- Nút từ chối đơn hàng -->
+                                                    <button class="btn btn-sm btn-danger" title="Từ chối đơn hàng" th:onclick="'showRejectModal(\'' + ${supplierIn.id} + '\')'" style="display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                                        <i class="ri-close-line text-white"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -454,8 +464,35 @@
     </div>
 </div>
 
+<!-- Modal từ chối đơn hàng -->
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Từ chối đơn hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="rejectForm">
+                    <input type="hidden" id="rejectOrderId" name="orderId">
+                    <div class="mb-3">
+                        <label for="rejectReason" class="form-label">Lý do từ chối</label>
+                        <textarea class="form-control" id="rejectReason" name="reason" rows="3" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" onclick="rejectOrder()">Xác nhận từ chối</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- JavaScript Files -->
 <script th:src="@{/templates_storage/assets/js/jquery-3.6.0.min.js}"></script>
+
+<!-- End Debug Status -->
 <script th:src="@{/templates_storage/assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/templates_storage/assets/js/icons/feather-icon/feather.min.js}"></script>
 <script th:src="@{/templates_storage/assets/js/icons/feather-icon/feather-icon.js}"></script>
@@ -475,6 +512,11 @@
     /*<![CDATA[*/
     const supplierInsData = /*[[${supplierIns}]]*/ [];
     
+    // Debug information
+    console.log("Raw supplier data: ", supplierInsData);
+    
+
+    
     // Chuyển đổi dữ liệu từ controller vào định dạng orderData
     if (supplierInsData) {
         supplierInsData.forEach(function(supplierIn) {
@@ -484,7 +526,7 @@
                 type: supplierIn.type || 'unknown',
                 supplier: supplierIn.supplierName || 'Không xác định',
                 date: supplierIn.createdDate,
-                status: supplierIn.status ? supplierIn.status.toLowerCase() : 'pending',
+                status: supplierIn.status ? supplierIn.status : 'pending',
                 products: supplierIn.items || [],
                 total: supplierIn.totalAmount || 0,
                 source: supplierIn.type === 'medicine' ? 'medicine.html' : 'medical-equipment.html'
@@ -497,6 +539,36 @@
     $(document).ready(function() {
         initializeFilters();
         loadOrders();
+        
+        // Debug helper
+        console.log("Initializing debug helper...");
+        
+        // Hiển thị data-id và trạng thái của tất cả hàng
+        $('tr[data-id]').each(function() {
+            const $row = $(this);
+            const id = $row.data('id');
+            const status = $row.data('status');
+            const type = $row.data('type');
+            
+            console.log(`Row ${id}: status=${status}, type=${type}`);
+        });
+        
+        // Check form data
+        $('form').each(function(index) {
+            const $form = $(this);
+            const action = $form.attr('action');
+            const dataId = $form.data('id');
+            
+            if (action && action.includes('/status')) {
+                console.log(`Form ${index}: action=${action}, data-id=${dataId}`);
+                
+                // Check inputs
+                const status = $form.find('input[name="status"]').val();
+                if (status) {
+                    console.log(`  Status input: ${status}`);
+                }
+            }
+        });
     });
 
     // Khởi tạo filters
@@ -609,18 +681,18 @@
                             <i class="ri-eye-line"></i>
                           </a>`;
 
-        switch(status) {
-            case 'pending':
+        switch(status.toUpperCase()) {
+            case 'PENDING':
                 buttons += `<button class="btn btn-sm btn-success" onclick="markAsReceived('${orderId}')">
                                 <i class="ri-truck-line"></i>
                               </button>`;
                 break;
-            case 'received':
+            case 'RECEIVED':
                 buttons += `<button class="btn btn-sm btn-warning" onclick="sendToWarehouse('${orderId}')">
                                 <i class="ri-send-plane-line"></i>
                               </button>`;
                 break;
-            case 'checked':
+            case 'CHECKED':
                 buttons += `<button class="btn btn-sm btn-success" onclick="completeStockIn('${orderId}')">
                                 <i class="ri-check-line"></i>
                               </button>`;
@@ -641,13 +713,13 @@
     // Utility functions
     function getStatusText(status) {
         const statusMap = {
-            'pending': 'Chờ hàng về',
-            'received': 'Đã nhận hàng',
-            'checked': 'Đã kiểm tra',
-            'sent_to_warehouse': 'Đã gửi về kho',
-            'completed': 'Hoàn thành'
+            'PENDING': 'Chờ hàng về',
+            'RECEIVED': 'Đã nhận hàng',
+            'CHECKED': 'Đã kiểm tra',
+            'SENT_TO_WAREHOUSE': 'Đã gửi về kho',
+            'COMPLETED': 'Hoàn thành'
         };
-        return statusMap[status] || status;
+        return statusMap[status.toUpperCase()] || status;
     }
 
     function formatCurrency(amount) {
@@ -667,6 +739,144 @@
                 align: 'right'
             },
             delay: 3000
+        });
+    }
+
+    // Xử lý form cập nhật trạng thái
+    function updateStatus(event, newStatus) {
+        event.preventDefault(); // Ngăn chặn form submit mặc định
+        
+        const form = event.target;
+        
+        // Lấy ID trực tiếp từ data-id của form
+        const orderId = $(form).data('id');
+        console.log("Order ID from data attribute:", orderId);
+        
+        // Hiển thị xác nhận
+        if (!confirm(`Xác nhận cập nhật trạng thái đơn hàng sang "${getStatusText(newStatus)}"?`)) {
+            return; // Người dùng hủy
+        }
+        
+        // Xử lý đặc biệt khi hoàn thành
+        if (newStatus === 'COMPLETED') {
+            // Lấy loại đơn hàng (MEDICINE hoặc EQUIPMENT)
+            const orderType = $(`tr[data-id="${orderId}"]`).data('type');
+            console.log("Order type:", orderType);
+            
+            // Chuyển hướng đến trang xử lý tương ứng
+            let targetUrl = orderType === 'MEDICINE' ? 'medicine.html' : 'medical-equipment.html';
+            targetUrl += `?stockin=${orderId}`;
+            
+            showNotification(`Đang chuyển đến trang xử lý ${orderType === 'MEDICINE' ? 'thuốc' : 'thiết bị y tế'}...`, 'info');
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 1500);
+            return;
+        }
+        
+        // Chuẩn bị data
+        const formData = new FormData(form);
+        console.log("Status being set:", formData.get('status'));
+        
+        // Tạo URL API endpoint
+        const apiUrl = `/supplier-ins/${orderId}/status`;
+        console.log("API URL:", apiUrl);
+        
+        // Gửi request AJAX để cập nhật trạng thái
+        fetch(apiUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            console.log("Response status:", response.status);
+            if (response.ok) {
+                showNotification(`Đã cập nhật trạng thái: ${getStatusText(newStatus)}`, 'success');
+                // Làm mới trang sau 1 giây
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                return response.text().then(text => {
+                    console.error("Error response:", text);
+                    throw new Error('Cập nhật trạng thái thất bại: ' + text);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+            showNotification('Lỗi khi cập nhật trạng thái: ' + error.message, 'danger');
+        });
+    }
+    
+    // Hiển thị modal từ chối đơn hàng
+    function showRejectModal(orderId) {
+        console.log("Show reject modal for order ID:", orderId);
+        
+        // Set order ID vào form
+        $('#rejectOrderId').val(orderId);
+        
+        // Hiển thị modal
+        $('#rejectModal').modal('show');
+    }
+    
+    // Xử lý từ chối đơn hàng
+    function rejectOrder() {
+        const orderId = $('#rejectOrderId').val();
+        const reason = $('#rejectReason').val();
+        
+        console.log("Processing reject for order ID:", orderId);
+        
+        if (!reason.trim()) {
+            alert('Vui lòng nhập lý do từ chối!');
+            return;
+        }
+        
+        // Tạo form data
+        const formData = new FormData();
+        formData.append('status', 'REJECTED');
+        formData.append('reason', reason);
+        
+        // CSRF token nếu có
+        const csrfToken = $('input[name="_csrf"]').val();
+        if (csrfToken) {
+            formData.append('_csrf', csrfToken);
+        }
+        
+        // Tạo URL API endpoint
+        const apiUrl = `/supplier-ins/${orderId}/status`;
+        console.log("API URL for reject:", apiUrl);
+        
+        // Gửi request từ chối
+        fetch(apiUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            console.log("Reject response status:", response.status);
+            if (response.ok) {
+                $('#rejectModal').modal('hide');
+                showNotification('Đã từ chối đơn hàng', 'success');
+                
+                // Chuyển đến trang hóa đơn nhập kho để lưu trữ
+                setTimeout(() => {
+                    window.location.href = `StockInInvoice.html?rejected=${orderId}`;
+                }, 1500);
+            } else {
+                return response.text().then(text => {
+                    console.error("Error response:", text);
+                    throw new Error('Từ chối đơn hàng thất bại: ' + text);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+            showNotification('Lỗi khi từ chối đơn hàng: ' + error.message, 'danger');
         });
     }
 </script>
