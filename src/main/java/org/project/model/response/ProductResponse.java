@@ -28,4 +28,5 @@ public class ProductResponse {
     private Label label;
     private Double averageRating;
     private Long reviewCount;
+    private List<ProductAdditionalInfoResponse> productAdditionalInfoEntities;
 }

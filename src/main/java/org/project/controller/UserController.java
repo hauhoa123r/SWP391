@@ -57,10 +57,10 @@ public class UserController {
 		this.productTagRepository = productTagRepository;
 	}
 	
-	@GetMapping("")
-	public String hello(Model model) {
-		return "redirect:/product-home";
-	}
+//	@GetMapping("")
+//	public String hello(Model model) {
+//		return "redirect:/product-home";
+//	}
 
 	// mapping for admin's dashboard
 	@GetMapping("/admin/dashboard")

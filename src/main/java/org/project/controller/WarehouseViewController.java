@@ -258,7 +258,7 @@ public class WarehouseViewController {
      * @param model Spring MVC Model
      * @return View name for dashboard page
      */
-    @GetMapping({"/", "/index.html"})
+    @GetMapping( "/index.html")
     public String indexPage(Model model) {
         log.info("Direct navigation to index.html or root path");
         return "templates_storage/index";
