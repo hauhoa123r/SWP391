@@ -7,8 +7,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,7 +21,7 @@ public class ResultEntity {
     private Long id;
 
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sample_id", nullable = false)
     private SampleEntity sampleEntity;
 
@@ -50,13 +50,7 @@ public class ResultEntity {
     @Column(name = "notes")
     private String notes;
 
-    @Column(name = "status")
-    private String status;
+    @OneToMany(mappedBy = "result")
+    private Set<ResultDetailEntity> resultDetails = new LinkedHashSet<>();
 
-    @Lob
-    @Column(name = "dataunit")
-    private String dataunit;
-
-    @OneToMany(mappedBy = "resultEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ResultDetailEntity> resultDetailEntities = new ArrayList<>();
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 
@@ -20,7 +21,7 @@ public class ResultDetailEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "result_id", nullable = false)
-    private ResultEntity resultEntity;
+    private ResultEntity result;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -29,5 +30,14 @@ public class ResultDetailEntity {
 
     @Column(name = "value", precision = 10, scale = 2)
     private BigDecimal value;
+
+    @ColumnDefault("'normal'")
+    @Lob
+    @Column(name = "flag")
+    private String flag;
+
+    @Lob
+    @Column(name = "suspected_condition")
+    private String suspectedCondition;
 
 }

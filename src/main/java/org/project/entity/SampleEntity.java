@@ -23,7 +23,7 @@ public class SampleEntity {
     private Long id;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "test_request_id", nullable = false)
     private TestRequestEntity testRequest;
 
@@ -56,7 +56,7 @@ public class SampleEntity {
     @Column(name = "retest_time")
     private Instant retestTime;
 
-    @OneToOne(mappedBy = "sampleEntity")
-    private ResultEntity results;
+    @OneToMany(mappedBy = "sampleEntity")
+    private Set<ResultEntity> results = new LinkedHashSet<>();
 
 }

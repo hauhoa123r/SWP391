@@ -3,18 +3,21 @@ package org.project.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "cardiac_exams")
+@Builder
 public class CardiacExamEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +51,6 @@ public class CardiacExamEntity {
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "recorded_at")
-    private Instant recordedAt;
+    private Timestamp recordedAt;
 
 }

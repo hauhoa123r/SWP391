@@ -10,9 +10,7 @@ import lombok.experimental.FieldNameConstants;
 import org.project.enums.AppointmentStatus;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -57,8 +55,8 @@ public class AppointmentEntity {
     @OneToMany(mappedBy = "appointmentEntity")
     private final Set<IngredientRequestEntity> ingredientRequestEntities = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "appointmentEntity")
-    private final Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "appointmentEntity")
+    private MedicalRecordEntity medicalRecordEntity;
 
     @OneToMany(mappedBy = "appointmentEntity")
     private final Set<OrderEntity> orderEntities = new LinkedHashSet<>();
