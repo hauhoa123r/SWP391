@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,6 +85,71 @@ public class SupplierOutServiceImpl implements SupplierOutService {
                     SupplierTransactionType.STOCK_OUT, pageable);
         }
         
+        List<SupplierOutDTO> dtoList = transactionsPage.getContent().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        
+        return new PageImpl<>(dtoList, pageable, transactionsPage.getTotalElements());
+    }
+    
+    @Override
+    public Page<SupplierOutDTO> getFilteredSupplierOuts(int page, int size, String status, String search, String type) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        Page<SupplierTransactionsEntity> transactionsPage;
+        
+        // Build filtering logic
+        if (status != null && !status.isEmpty()) {
+            // If status is COMPLETED, we should exclude it from StockOut (it should go to StockOutInvoice)
+            if ("COMPLETED".equalsIgnoreCase(status) || "REJECTED".equalsIgnoreCase(status)) {
+                // Filter specifically by the requested status
+                SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status.toUpperCase());
+                
+                if (search != null && !search.isEmpty()) {
+                    // Search with status and search term
+                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusAndSupplierEntityNameContainingIgnoreCase(
+                            SupplierTransactionType.STOCK_OUT, statusEnum, search, pageable);
+                } else {
+                    // Just by status
+                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatus(
+                            SupplierTransactionType.STOCK_OUT, statusEnum, pageable);
+                }
+            } else {
+                // Filter by specific status that's not COMPLETED or REJECTED
+                SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status.toUpperCase());
+                
+                if (search != null && !search.isEmpty()) {
+                    // Search with status and search term
+                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusAndSupplierEntityNameContainingIgnoreCase(
+                            SupplierTransactionType.STOCK_OUT, statusEnum, search, pageable);
+                } else {
+                    // Just by status
+                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatus(
+                            SupplierTransactionType.STOCK_OUT, statusEnum, pageable);
+                }
+            }
+        } else {
+            // Default behavior: show all except COMPLETED and REJECTED
+            List<SupplierTransactionStatus> excludedStatuses = new ArrayList<>();
+            excludedStatuses.add(SupplierTransactionStatus.COMPLETED);
+            excludedStatuses.add(SupplierTransactionStatus.REJECTED);
+            
+            if (search != null && !search.isEmpty()) {
+                // Search in non-completed/non-rejected transactions
+                transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusNotInAndSupplierEntityNameContainingIgnoreCase(
+                        SupplierTransactionType.STOCK_OUT, 
+                        excludedStatuses,
+                        search, 
+                        pageable);
+            } else {
+                // Just get all non-completed/non-rejected transactions
+                transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusNotIn(
+                        SupplierTransactionType.STOCK_OUT,
+                        excludedStatuses,
+                        pageable);
+            }
+        }
+        
+        // Convert to DTOs
         List<SupplierOutDTO> dtoList = transactionsPage.getContent().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());

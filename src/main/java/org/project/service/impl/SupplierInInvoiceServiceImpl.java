@@ -159,6 +159,47 @@ public class SupplierInInvoiceServiceImpl implements SupplierInInvoiceService {
         
         return convertToDTO(savedInvoice);
     }
+    
+    @Override
+    @Transactional
+    public void saveInvoiceWithRejection(SupplierInDTO supplierIn, String rejectionReason) {
+        // Tạo hóa đơn mới
+        SupplierInvoiceEntity invoice = new SupplierInvoiceEntity();
+        
+        // Thiết lập thông tin cơ bản
+        invoice.setInvoiceNumber(supplierIn.getInvoiceNumber());
+        invoice.setInvoiceDate(Timestamp.from(Instant.now()));
+        
+        // Lấy supplier entity từ transaction
+        SupplierTransactionsEntity transaction = supplierTransactionRepository.findById(supplierIn.getId())
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+        
+        invoice.setTransactionType(SupplierTransactionType.STOCK_IN);
+        invoice.setStatus(SupplierTransactionStatus.REJECTED);
+        invoice.setTotalAmount(supplierIn.getTotalAmount());
+        invoice.setNotes(supplierIn.getNotes());
+        
+        // Thêm supplier entity
+        invoice.setSupplierEntity(transaction.getSupplierEntity());
+        
+        // Thêm lý do từ chối
+        invoice.setRejectionReason(rejectionReason);
+        
+        // Lưu hóa đơn
+        SupplierInvoiceEntity savedInvoice = supplierInvoiceRepository.save(invoice);
+        
+        // Tạo mapping giữa giao dịch và hóa đơn
+        SupplierTransactionInvoiceMappingEntity mapping = new SupplierTransactionInvoiceMappingEntity();
+        SupplierTransactionInvoiceMappingEntityId mappingId = new SupplierTransactionInvoiceMappingEntityId();
+        mappingId.setSupplierTransactionId(supplierIn.getId());
+        mappingId.setSupplierInvoiceId(savedInvoice.getId());
+        mapping.setId(mappingId);
+        
+        mapping.setSupplierTransactionEntity(transaction);
+        mapping.setSupplierInvoiceEntity(savedInvoice);
+        
+        mappingRepository.save(mapping);
+    }
 
     @Override
     @Transactional

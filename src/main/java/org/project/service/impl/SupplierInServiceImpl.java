@@ -91,6 +91,132 @@ public class SupplierInServiceImpl implements SupplierInService {
         
         return new PageImpl<>(dtoList, pageable, transactionsPage.getTotalElements());
     }
+    
+    @Override
+    public Page<SupplierInDTO> getFilteredSupplierIns(int page, int size, String status, String search, String type) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        Page<SupplierTransactionsEntity> transactionsPage;
+        
+        // Build filtering logic
+        if (status != null && !status.isEmpty()) {
+            // If status is COMPLETED, we should exclude it from StockIn (it should go to StockInInvoice)
+            if ("COMPLETED".equalsIgnoreCase(status) || "REJECTED".equalsIgnoreCase(status)) {
+                // Filter specifically by the requested status
+                SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status.toUpperCase());
+                
+                if (search != null && !search.isEmpty()) {
+                    // Search with status and search term
+                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusAndSupplierEntityNameContainingIgnoreCase(
+                            SupplierTransactionType.STOCK_IN, statusEnum, search, pageable);
+                } else {
+                    // Just by status
+                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatus(
+                            SupplierTransactionType.STOCK_IN, statusEnum, pageable);
+                }
+            } else {
+                // Filter by specific status that's not COMPLETED or REJECTED
+                SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status.toUpperCase());
+                
+                if (search != null && !search.isEmpty()) {
+                    // Search with status and search term
+                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusAndSupplierEntityNameContainingIgnoreCase(
+                            SupplierTransactionType.STOCK_IN, statusEnum, search, pageable);
+                } else {
+                    // Just by status
+                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatus(
+                            SupplierTransactionType.STOCK_IN, statusEnum, pageable);
+                }
+            }
+        } else {
+            // Default behavior: show all except COMPLETED and REJECTED
+            List<SupplierTransactionStatus> excludedStatuses = new ArrayList<>();
+            excludedStatuses.add(SupplierTransactionStatus.COMPLETED);
+            excludedStatuses.add(SupplierTransactionStatus.REJECTED);
+            
+            if (search != null && !search.isEmpty()) {
+                // Search in non-completed/non-rejected transactions
+                transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusNotInAndSupplierEntityNameContainingIgnoreCase(
+                        SupplierTransactionType.STOCK_IN, 
+                        excludedStatuses,
+                        search, 
+                        pageable);
+            } else {
+                // Just get all non-completed/non-rejected transactions
+                transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusNotIn(
+                        SupplierTransactionType.STOCK_IN,
+                        excludedStatuses,
+                        pageable);
+            }
+        }
+        
+        // Convert to DTOs
+        List<SupplierInDTO> dtoList = transactionsPage.getContent().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        
+        return new PageImpl<>(dtoList, pageable, transactionsPage.getTotalElements());
+    }
+
+    @Override
+    public Page<SupplierInDTO> getFilteredSupplierInsForStockIn(int page, int size, String status, String search, 
+                                                       String type, List<SupplierTransactionStatus> allowedStatuses) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        Page<SupplierTransactionsEntity> transactionsPage;
+        
+        // Build filtering logic
+        if (status != null && !status.isEmpty()) {
+            try {
+                // Filter by a specific allowed status
+                SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status.toUpperCase());
+                
+                // Check if the requested status is in the allowed list
+                if (!allowedStatuses.contains(statusEnum)) {
+                    // If not allowed, default to showing all allowed statuses
+                    if (search != null && !search.isEmpty()) {
+                        transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusInAndSupplierEntityNameContainingIgnoreCase(
+                                SupplierTransactionType.STOCK_IN, allowedStatuses, search, pageable);
+                    } else {
+                        transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusIn(
+                                SupplierTransactionType.STOCK_IN, allowedStatuses, pageable);
+                    }
+                } else {
+                    // Filter by the specific allowed status
+                    if (search != null && !search.isEmpty()) {
+                        transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusAndSupplierEntityNameContainingIgnoreCase(
+                                SupplierTransactionType.STOCK_IN, statusEnum, search, pageable);
+                    } else {
+                        transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatus(
+                                SupplierTransactionType.STOCK_IN, statusEnum, pageable);
+                    }
+                }
+            } catch (IllegalArgumentException e) {
+                // Invalid status, show all allowed statuses
+                if (search != null && !search.isEmpty()) {
+                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusInAndSupplierEntityNameContainingIgnoreCase(
+                            SupplierTransactionType.STOCK_IN, allowedStatuses, search, pageable);
+                } else {
+                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusIn(
+                            SupplierTransactionType.STOCK_IN, allowedStatuses, pageable);
+                }
+            }
+        } else {
+            // No status specified, show all allowed statuses
+            if (search != null && !search.isEmpty()) {
+                transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusInAndSupplierEntityNameContainingIgnoreCase(
+                        SupplierTransactionType.STOCK_IN, allowedStatuses, search, pageable);
+            } else {
+                transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusIn(
+                        SupplierTransactionType.STOCK_IN, allowedStatuses, pageable);
+            }
+        }
+        
+        // Convert to DTOs
+        List<SupplierInDTO> dtoList = transactionsPage.getContent().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        
+        return new PageImpl<>(dtoList, pageable, transactionsPage.getTotalElements());
+    }
 
     @Override
     public SupplierInDTO getSupplierInById(Long id) {
@@ -120,14 +246,40 @@ public class SupplierInServiceImpl implements SupplierInService {
         transaction.setPaymentDate(supplierInDTO.getPaymentDate());
         
         // Set supplier
-        SupplierEntity supplier = supplierEntityRepository.findById(supplierInDTO.getSupplierId())
-                .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + supplierInDTO.getSupplierId()));
-        transaction.setSupplierEntity(supplier);
+        if (supplierInDTO.getSupplierId() != null) {
+            SupplierEntity supplier = supplierEntityRepository.findById(supplierInDTO.getSupplierId())
+                    .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + supplierInDTO.getSupplierId()));
+            transaction.setSupplierEntity(supplier);
+        }
         
-        // Set inventory manager
-        InventoryManagerEntity manager = inventoryManagerRepository.findById(supplierInDTO.getInventoryManagerId())
-                .orElseThrow(() -> new RuntimeException("Inventory Manager not found with id: " + supplierInDTO.getInventoryManagerId()));
-        transaction.setInventoryManagerEntity(manager);
+        // Set inventory manager - use a default one if not found
+        if (supplierInDTO.getInventoryManagerId() != null) {
+            try {
+                InventoryManagerEntity manager = inventoryManagerRepository.findById(supplierInDTO.getInventoryManagerId())
+                        .orElse(null);
+                if (manager != null) {
+                    transaction.setInventoryManagerEntity(manager);
+                } else {
+                    // Try to get the first available inventory manager
+                    List<InventoryManagerEntity> managers = inventoryManagerRepository.findAll();
+                    if (!managers.isEmpty()) {
+                        transaction.setInventoryManagerEntity(managers.get(0));
+                    } else {
+                        throw new RuntimeException("No inventory manager available in the system");
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Error setting inventory manager: " + e.getMessage());
+            }
+        } else {
+            // Try to get the first available inventory manager
+            List<InventoryManagerEntity> managers = inventoryManagerRepository.findAll();
+            if (!managers.isEmpty()) {
+                transaction.setInventoryManagerEntity(managers.get(0));
+            } else {
+                throw new RuntimeException("No inventory manager available in the system and none provided");
+            }
+        }
         
         // Save transaction first to get ID
         SupplierTransactionsEntity savedTransaction = supplierTransactionRepository.save(transaction);
@@ -215,14 +367,42 @@ public class SupplierInServiceImpl implements SupplierInService {
         Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
         if (transactionOpt.isPresent() && transactionOpt.get().getTransactionType() == SupplierTransactionType.STOCK_IN) {
             SupplierTransactionsEntity transaction = transactionOpt.get();
-            transaction.setStatus(SupplierTransactionStatus.valueOf(status));
+            SupplierTransactionStatus newStatus = SupplierTransactionStatus.valueOf(status);
             
-            // If status is APPROVED, set approvedDate
+            // Kiểm tra trạng thái hiện tại và trạng thái mới
+            if (!isValidStatusTransition(transaction.getStatus(), newStatus)) {
+                throw new IllegalStateException("Không thể chuyển từ trạng thái " + 
+                        transaction.getStatus() + " sang " + newStatus);
+            }
+            
+            transaction.setStatus(newStatus);
+            
+            // Xử lý các trường hợp đặc biệt
             if (SupplierTransactionStatus.APPROVED.name().equals(status)) {
                 transaction.setApprovedDate(Timestamp.from(Instant.now()));
             }
             
             supplierTransactionRepository.save(transaction);
+        }
+    }
+
+    private boolean isValidStatusTransition(SupplierTransactionStatus current, SupplierTransactionStatus next) {
+        // Kiểm tra các chuyển đổi trạng thái hợp lệ
+        switch (current) {
+            case PENDING:
+                return next == SupplierTransactionStatus.RECEIVED || 
+                       next == SupplierTransactionStatus.REJECTED;
+            case RECEIVED:
+                return next == SupplierTransactionStatus.INSPECTED || 
+                       next == SupplierTransactionStatus.REJECTED;
+            case INSPECTED:
+                return next == SupplierTransactionStatus.CHECKED || 
+                       next == SupplierTransactionStatus.REJECTED;
+            case CHECKED:
+                return next == SupplierTransactionStatus.COMPLETED || 
+                       next == SupplierTransactionStatus.REJECTED;
+            default:
+                return next == SupplierTransactionStatus.REJECTED; // Luôn có thể từ chối
         }
     }
 
@@ -239,14 +419,22 @@ public class SupplierInServiceImpl implements SupplierInService {
         SupplierInDTO dto = new SupplierInDTO();
         
         dto.setId(entity.getId());
-        dto.setSupplierId(entity.getSupplierEntity().getId());
-        dto.setSupplierName(entity.getSupplierEntity().getName());
-        dto.setSupplierContact(entity.getSupplierEntity().getPhoneNumber());
-        dto.setInventoryManagerId(entity.getInventoryManagerEntity().getId());
         
-        // Get staff name from inventory manager's staff entity
-        if (entity.getInventoryManagerEntity().getStaffEntity() != null) {
-            dto.setInventoryManagerName(entity.getInventoryManagerEntity().getStaffEntity().getFullName());
+        // Safely set supplier details
+        if (entity.getSupplierEntity() != null) {
+            dto.setSupplierId(entity.getSupplierEntity().getId());
+            dto.setSupplierName(entity.getSupplierEntity().getName());
+            dto.setSupplierContact(entity.getSupplierEntity().getPhoneNumber());
+        }
+        
+        // Safely set inventory manager details
+        if (entity.getInventoryManagerEntity() != null) {
+            dto.setInventoryManagerId(entity.getInventoryManagerEntity().getId());
+            
+            // Get staff name from inventory manager's staff entity
+            if (entity.getInventoryManagerEntity().getStaffEntity() != null) {
+                dto.setInventoryManagerName(entity.getInventoryManagerEntity().getStaffEntity().getFullName());
+            }
         }
         
         dto.setTotalAmount(entity.getTotalAmount());

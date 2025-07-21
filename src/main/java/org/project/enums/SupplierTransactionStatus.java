@@ -7,6 +7,7 @@ public enum SupplierTransactionStatus {
     WAITING_FOR_DELIVERY,
     DELIVERED,
     INSPECTED,
+    CHECKED,
     COMPLETED,
     PROBLEM,
     PARTIALLY_COMPLETED,
