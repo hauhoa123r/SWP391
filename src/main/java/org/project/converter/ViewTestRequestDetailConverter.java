@@ -1,19 +1,16 @@
 package org.project.converter;
 
 import org.project.entity.AppointmentEntity;
-import org.project.entity.SampleEntity;
 import org.project.entity.TestRequestEntity;
 import org.project.exception.ResourceNotFoundException;
-import org.project.model.response.SampleResponse;
 import org.project.model.response.ViewResultResponse;
 import org.project.model.response.ViewTestRequestDetailResponse;
 import org.project.repository.AppointmentRepository;
 import org.project.repository.AssignmentRepository;
-import org.project.service.TestTypeRepository;
+import org.project.repository.TestTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

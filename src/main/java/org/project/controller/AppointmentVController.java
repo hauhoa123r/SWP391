@@ -24,7 +24,7 @@ public class AppointmentVController {
 
     @GetMapping("/home-page")
     public String doctorHomePage(Model model, HttpSession session) {
-        Long userId = 8L;
+        Long userId = 60L;
         DoctorHeaderResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
         model.addAttribute("content","dashboard-doctor/doctor_homepage");
@@ -32,7 +32,7 @@ public class AppointmentVController {
     }
     @GetMapping("/appointments")
     public String doctorAppointments(Model model) {
-        Long userId = 8L;
+        Long userId = 60L;
         DoctorHeaderResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
         model.addAttribute("content", "dashboard-doctor/doctor_appointments");
@@ -40,7 +40,7 @@ public class AppointmentVController {
     }
     @GetMapping("/in-progress")
     public String doctorInProgress(Model model, @RequestParam("id") Long id) {
-        Long userId = 8L;
+        Long userId = 60L;
         DoctorHeaderResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
         model.addAttribute("content", "dashboard-doctor/appointment_progress");

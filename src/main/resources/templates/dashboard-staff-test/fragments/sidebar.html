@@ -113,7 +113,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:class="${currentURI
- == '/lab/send-result'} ? 'nav-link active' : 'nav-link'"
+ == '/lab/send-result' || currentURI.startsWith('/lab/view-test-request')} ? 'nav-link active' : 'nav-link'"
                        th:href="@{/lab/send-result}">
                         <i class="icon" data-bs-toggle="tooltip" title="Send Result" data-bs-placement="right">
                             <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
