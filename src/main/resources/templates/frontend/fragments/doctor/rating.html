@@ -1,18 +1,20 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<div class="share iq-team-social position-absolute" th:fragment="rating(averageRating, reviewCount)">
-    <div class="p-2 bg-light rounded">
-        <div class="stars" th:if="${reviewCount > 0}">
-            <i class="fas fa-star text-warning"></i>
-            <span class="ms-1" th:text="${#numbers.formatDecimal(averageRating,1 , 1, 'POINT')}">4.5</span>
+<div th:fragment="rating(averageRating, reviewCount)">
+    <div class="share iq-team-social position-absolute">
+        <div class="p-2 bg-light rounded">
+            <div class="stars" th:if="${reviewCount > 0}">
+                <i class="fas fa-star text-warning"></i>
+                <span class="ms-1" th:text="${#numbers.formatDecimal(averageRating,1 , 1, 'POINT')}">4.5</span>
+            </div>
+            <div class="stars" th:if="${reviewCount == 0}">
+                <i class="fas fa-star text-primary"></i>
+                <span class="ms-1" th:text="0">No reviews yet</span>
+            </div>
+            <small th:text="${reviewCount == 0 ? 'Chưa có đánh giá' : reviewCount + ' đánh giá'}">Chưa có đánh
+                giá</small>
         </div>
-        <div class="stars" th:if="${reviewCount == 0}">
-            <i class="fas fa-star text-primary"></i>
-            <span class="ms-1" th:text="0">No reviews yet</span>
-        </div>
-        <small th:text="${reviewCount == 0 ? 'Chưa có đánh giá' : reviewCount + ' đánh giá'}">Chưa có đánh
-            giá</small>
     </div>
 </div>
 </body>

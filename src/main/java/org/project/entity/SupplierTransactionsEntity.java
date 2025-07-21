@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -19,7 +18,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "supplier_transactions", schema = "swp391")
-@FieldNameConstants
 public class SupplierTransactionsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,7 @@
 package org.project.repository;
 
 import jakarta.transaction.Transactional;
-import jakarta.transaction.Transactional;
 import org.project.entity.AppointmentEntity;
-import org.project.enums.AppointmentStatus;
 import org.project.entity.SchedulingCoordinatorEntity;
 import org.project.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -43,8 +41,4 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             @Param("startTime") Timestamp startTime,
             @Param("endTime") Timestamp endTime
     );
-
-    Long countByAppointmentStatusAndServiceEntityDepartmentEntityId(AppointmentStatus appointmentStatus, Long serviceEntityDepartmentEntityId);
-
-    Long countByAppointmentStatus(AppointmentStatus appointmentStatus);
 }

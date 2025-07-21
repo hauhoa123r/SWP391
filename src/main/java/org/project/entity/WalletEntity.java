@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
@@ -18,7 +17,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "wallets", schema = "swp391")
-@FieldNameConstants
 public class WalletEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -29,7 +28,11 @@ public class TechnicianEntity {
     @OneToMany
     private Set<TestRequestItemEntity> testRequestItemEntities = new LinkedHashSet<>();
 
+/*
+ TODO [Reverse Engineering] create field to map the 'technician_rank' column
+ Available actions: Define target Java type | Uncomment as is | Remove column mapping
     @ColumnDefault("'JUNIOR_TECHNICIAN'")
     @Column(name = "technician_rank", columnDefinition = "enum not null")
     private Object technicianRank;
+*/
 }

@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 
 import java.sql.Date;
 
@@ -16,7 +15,6 @@ import java.sql.Date;
 @Setter
 @Entity
 @Table(name = "staff_shifts", schema = "swp391")
-@FieldNameConstants
 public class StaffShiftEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

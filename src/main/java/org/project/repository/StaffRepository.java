@@ -2,8 +2,6 @@ package org.project.repository;
 
 import org.project.entity.StaffEntity;
 import org.project.enums.StaffRole;
-import org.project.enums.TechnicianRank;
-import org.project.model.response.ManagerNameResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,10 +27,6 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long> {
     boolean existsByStaffRoleAndId(StaffRole staffRole, Long id);
 
     List<StaffEntity> findAllByStaffRoleAndFullNameContainingAndDepartmentEntity_IdAndHospitalEntity_Id(StaffRole staffRole, String fullName, Long departmentId, Long hospitalId);
-
-    List<StaffEntity> findByStaffRoleAndHospitalEntity_IdAndTechnicianEntity_TechnicianRank(StaffRole staffRole, Long hospitalEntityId, TechnicianRank technicianEntityTechnicianRank);
-
-    StaffEntity findByUserEntity_Id(Long userEntityId);
 
     @Query(value = """
                     SELECT s.*

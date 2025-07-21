@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
@@ -20,7 +19,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "users")
-@FieldNameConstants
 public class UserEntity {
     @Id
     @Column(name = "user_id", nullable = false)

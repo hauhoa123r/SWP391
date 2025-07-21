@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +12,6 @@ import lombok.experimental.FieldNameConstants;
 @Setter
 @Entity
 @Table(name = "medical_products", schema = "swp391")
-@FieldNameConstants
 public class MedicalProductEntity {
     @Id
     @Column(name = "medical_product_id", nullable = false)

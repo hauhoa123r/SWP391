@@ -7,9 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.sql.Date;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +19,6 @@ import java.sql.Date;
 @Setter
 @Entity
 @Table(name = "medical_records", schema = "swp391")
-@FieldNameConstants
 public class MedicalRecordEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

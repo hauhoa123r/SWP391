@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 import org.project.enums.AppointmentStatus;
 
 import java.sql.Timestamp;
@@ -19,7 +18,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "appointments", schema = "swp391")
-@FieldNameConstants
 public class AppointmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,16 +51,16 @@ public class AppointmentEntity {
     private SchedulingCoordinatorEntity schedulingCoordinatorEntity;
 
     @OneToMany(mappedBy = "appointmentEntity")
-    private final Set<IngredientRequestEntity> ingredientRequestEntities = new LinkedHashSet<>();
+    private Set<IngredientRequestEntity> ingredientRequestEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "appointmentEntity")
-    private final Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
+    private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "appointmentEntity")
-    private final Set<OrderEntity> orderEntities = new LinkedHashSet<>();
+    private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "appointmentEntity")
-    private final Set<TestRequestEntity> testRequestEntities = new LinkedHashSet<>();
+    private Set<TestRequestEntity> testRequestEntities = new LinkedHashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "appointment_status")

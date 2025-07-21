@@ -644,71 +644,6 @@
 </head>
 <body>
 <div class="container">
-    <!-- Header -->
-    <header>
-        <div class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-hospital"></i>
-            </div>
-            <div class="logo-text">
-                <h1>Bệnh viện Đa khoa</h1>
-                <p>Hệ thống quản lý nghỉ phép</p>
-            </div>
-        </div>
-        <div class="user-info">
-            <div class="user-avatar">NV</div>
-            <div>
-                <div class="user-name">Nguyễn Văn An</div>
-                <div class="user-role">Bác sĩ khoa Nội</div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="page-title">
-            <i class="fas fa-calendar-alt"></i>
-            <span>Đơn nghỉ phép của tôi</span>
-        </div>
-        <button class="btn btn-primary" id="createLeaveBtn">
-            <i class="fas fa-plus"></i> Tạo đơn mới
-        </button>
-    </div>
-
-    <!-- Leave Statistics -->
-    <div class="leave-stats">
-        <div class="stat-card total-days">
-            <div class="stat-icon">
-                <i class="fas fa-calendar-check"></i>
-            </div>
-            <div class="stat-number">15</div>
-            <div class="stat-label">Tổng ngày phép</div>
-        </div>
-
-        <div class="stat-card used-days">
-            <div class="stat-icon">
-                <i class="fas fa-calendar-minus"></i>
-            </div>
-            <div class="stat-number">5</div>
-            <div class="stat-label">Đã sử dụng</div>
-        </div>
-
-        <div class="stat-card remaining-days">
-            <div class="stat-icon">
-                <i class="fas fa-calendar-day"></i>
-            </div>
-            <div class="stat-number">10</div>
-            <div class="stat-label">Còn lại</div>
-        </div>
-
-        <div class="stat-card pending-days">
-            <div class="stat-icon">
-                <i class="fas fa-hourglass-half"></i>
-            </div>
-            <div class="stat-number">2</div>
-            <div class="stat-label">Đang chờ duyệt</div>
-        </div>
-    </div>
 
     <!-- Leave List -->
     <div class="leave-list-card">
@@ -717,7 +652,9 @@
                 <i class="fas fa-list"></i>
                 <span>Danh sách đơn nghỉ phép</span>
             </div>
-            <div class="results-info">Hiển thị 8/12 kết quả</div>
+            <div class="results-info">
+                Hiển thị <span th:text="${leaveRequests.size()}"></span> kết quả
+            </div>
         </div>
 
         <table class="leave-table">
@@ -732,91 +669,77 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Đơn 1 -->
-            <tr>
-                <td>LV20231001</td>
-                <td>15/07/2023</td>
-                <td>20/07 - 22/07/2023 (3 ngày)</td>
-                <td>Nghỉ phép năm</td>
-                <td><span class="status-badge status-approved">Đã duyệt</span></td>
-                <td><span class="action-link view-detail"><i class="fas fa-eye"></i> Xem chi tiết</span></td>
+            <!-- Hiển thị khi không có dữ liệu -->
+            <tr th:if="${leaveRequests.isEmpty()}">
+                <td colspan="6" class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Không có đơn nghỉ phép nào</p>
+                </td>
             </tr>
-            <!-- Đơn 2 -->
-            <tr>
-                <td>LV20231002</td>
-                <td>16/07/2023</td>
-                <td>25/07/2023 (1 ngày)</td>
-                <td>Việc riêng</td>
-                <td><span class="status-badge status-pending">Chờ duyệt</span></td>
-                <td><span class="action-link view-detail"><i class="fas fa-eye"></i> Xem chi tiết</span></td>
-            </tr>
-            <!-- Đơn 3 -->
-            <tr>
-                <td>LV20231003</td>
-                <td>17/07/2023</td>
-                <td>18/07 - 19/07/2023 (2 ngày)</td>
-                <td>Nghỉ ốm</td>
-                <td><span class="status-badge status-rejected">Từ chối</span></td>
-                <td><span class="action-link view-detail"><i class="fas fa-eye"></i> Xem chi tiết</span></td>
-            </tr>
-            <!-- Đơn 4 -->
-            <tr>
-                <td>LV20231004</td>
-                <td>18/07/2023</td>
-                <td>28/07 - 30/07/2023 (3 ngày)</td>
-                <td>Nghỉ phép năm</td>
-                <td><span class="status-badge status-approved">Đã duyệt</span></td>
-                <td><span class="action-link view-detail"><i class="fas fa-eye"></i> Xem chi tiết</span></td>
-            </tr>
-            <!-- Đơn 5 -->
-            <tr>
-                <td>LV20231005</td>
-                <td>19/07/2023</td>
-                <td>22/07/2023 (0.5 ngày)</td>
-                <td>Khám sức khỏe</td>
-                <td><span class="status-badge status-approved">Đã duyệt</span></td>
-                <td><span class="action-link view-detail"><i class="fas fa-eye"></i> Xem chi tiết</span></td>
-            </tr>
-            <!-- Đơn 6 -->
-            <tr>
-                <td>LV20231006</td>
-                <td>20/07/2023</td>
-                <td>01/08 - 04/08/2023 (4 ngày)</td>
-                <td>Việc gia đình</td>
-                <td><span class="status-badge status-pending">Chờ duyệt</span></td>
-                <td><span class="action-link view-detail"><i class="fas fa-eye"></i> Xem chi tiết</span></td>
-            </tr>
-            <!-- Đơn 7 -->
-            <tr>
-                <td>LV20231007</td>
-                <td>21/07/2023</td>
-                <td>25/07 - 26/07/2023 (2 ngày)</td>
-                <td>Nghỉ ốm</td>
-                <td><span class="status-badge status-rejected">Từ chối</span></td>
-                <td><span class="action-link view-detail"><i class="fas fa-eye"></i> Xem chi tiết</span></td>
-            </tr>
-            <!-- Đơn 8 -->
-            <tr>
-                <td>LV20231008</td>
-                <td>22/07/2023</td>
-                <td>30/07/2023 (1 ngày)</td>
-                <td>Việc riêng</td>
-                <td><span class="status-badge status-approved">Đã duyệt</span></td>
-                <td><span class="action-link view-detail"><i class="fas fa-eye"></i> Xem chi tiết</span></td>
+
+            <!-- Lặp qua danh sách đơn nghỉ phép -->
+            <tr th:each="leave : ${leaveRequests}">
+                <td th:text="${leave.requestId}">20231001</td>
+                <td th:text="${leave.createdAt}">15/07/2023</td>
+                <td>
+                    <span th:text="${leave.startDate} + ' - ' + ${leave.endDate}"></span>
+                    (<span th:text="${leave.totalDays}"></span> ngày)
+                </td>
+                <td th:text="${leave.leaveType}">Nghỉ phép năm</td>
+                <td>
+                    <span th:switch="${leave.status}" class="status-badge">
+                              <span th:case="'APPROVED'"
+                                    class="status-approved"
+                                    th:text="'Đã duyệt'">Đã duyệt</span>
+                              <span th:case="'REJECTED'"
+                                    class="status-rejected"
+                                    th:text="'Từ chối'">Từ chối</span>
+                              <span th:case="'PENDING'"
+                                    class="status-pending"
+                                    th:text="'Chờ duyệt'">Chờ duyệt</span>
+                              <span th:case="*"
+                                    class="status-cancelled"
+                                    th:text="'Đã hủy'">Đã hủy</span>
+                            </span>
+                </td>
+                <td>
+                    <span class="action-link view-detail"
+                          th:attr="data-id=${leave.requestId}">
+                      <i class="fas fa-eye"></i> Xem chi tiết
+                    </span>
+                </td>
             </tr>
             </tbody>
         </table>
 
-        <div class="pagination">
-            <button class="page-btn">
+        <!-- Phân trang -->
+        <div class="pagination" th:if="${totalPages > 1}">
+            <!-- Prev -->
+            <a th:href="@{/leave-staff-list/{staffId}(staffId=${staffId}, pageIndex=${pageIndex > 0 ? pageIndex - 1 : 0})}"
+               class="page-btn"
+               th:classappend="${pageIndex == 0} ? ' disabled' : ''">
                 <i class="fas fa-chevron-left"></i>
-            </button>
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn">
+            </a>
+
+            <!-- Số trang -->
+            <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+               th:href="@{/leave-staff-list/{staffId}(staffId=${staffId}, pageIndex=${i})}"
+               class="page-btn"
+               th:text="${i + 1}"
+               th:classappend="${i == pageIndex} ? ' active' : ''">
+            </a>
+
+            <!-- Next -->
+            <a th:href="@{/leave-staff-list/{staffId}(staffId=${staffId}, pageIndex=${pageIndex < totalPages - 1 ? pageIndex + 1 : totalPages - 1})}"
+               class="page-btn"
+               th:classappend="${pageIndex == totalPages - 1} ? ' disabled' : ''">
                 <i class="fas fa-chevron-right"></i>
-            </button>
-            <div class="page-info">Trang 1/2 - 12 đơn</div>
+            </a>
+
+            <!-- Thông tin trang -->
+            <div class="page-info">
+                Trang <span th:text="${pageIndex + 1}"></span> / <span th:text="${totalPages}"></span>
+            </div>
         </div>
     </div>
 </div>
@@ -839,20 +762,20 @@
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Mã đơn:</div>
-                    <div class="detail-value">LV20231002</div>
+                    <div class="detail-value" id="modal-requestId">LV20231002</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Ngày tạo:</div>
-                    <div class="detail-value">16/07/2023</div>
+                    <div class="detail-value" id="modal-createdAt">16/07/2023</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Người duyệt:</div>
-                    <div class="detail-value">Trần Văn B (Trưởng khoa)</div>
+                    <div class="detail-value" id="modal-staffApprovalName">Trần Văn B (Trưởng khoa)</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Trạng thái:</div>
                     <div class="detail-value">
-                        <span class="status-badge status-pending">Chờ duyệt</span>
+                        <span class="status-badge" id="modal-status">Chờ duyệt</span>
                     </div>
                 </div>
             </div>
@@ -864,23 +787,23 @@
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Loại nghỉ phép:</div>
-                    <div class="detail-value">Việc riêng</div>
+                    <div class="detail-value" id="modal-leaveType">Việc riêng</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Ngày bắt đầu:</div>
-                    <div class="detail-value">25/07/2023</div>
+                    <div class="detail-value" id="modal-startDate">25/07/2023</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Ngày kết thúc:</div>
-                    <div class="detail-value">25/07/2023</div>
+                    <div class="detail-value" id="modal-endDate">25/07/2023</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Số ngày nghỉ:</div>
-                    <div class="detail-value">1 ngày</div>
+                    <div class="detail-value" id="modal-totalDays">1 ngày</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Nửa ngày:</div>
-                    <div class="detail-value">Buổi chiều</div>
+                    <div class="detail-value" id="modal-halfDayType">Buổi chiều</div>
                 </div>
             </div>
 
@@ -891,47 +814,15 @@
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Lý do:</div>
-                    <div class="detail-value">Tôi cần nghỉ buổi chiều ngày 25/07 để đưa con đi khám bệnh theo lịch hẹn của bệnh viện Nhi Đồng.</div>
+                    <div class="detail-value" id="modal-reason">Tôi cần nghỉ buổi chiều...</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Người thay thế:</div>
-                    <div class="detail-value">Lê Văn D (Khoa Nội)</div>
+                    <div class="detail-value" id="modal-substituteStaffName">Lê Văn D (Khoa Nội)</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Liên hệ khẩn:</div>
-                    <div class="detail-value">Chị Nguyễn Thị H - 0909123456</div>
-                </div>
-            </div>
-
-            <div class="detail-section">
-                <div class="detail-title">
-                    <i class="fas fa-paperclip"></i>
-                    <span>Tài liệu đính kèm</span>
-                </div>
-                <div class="attachment">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="attachment-info">
-                        <div class="attachment-name">LichHenKhamBenh_NhiDong.pdf</div>
-                        <div class="attachment-size">1.2 MB</div>
-                    </div>
-                    <button class="btn btn-outline btn-icon">
-                        <i class="fas fa-download"></i> Tải xuống
-                    </button>
-                </div>
-            </div>
-
-            <div class="detail-section">
-                <div class="detail-title">
-                    <i class="fas fa-history"></i>
-                    <span>Lịch sử xử lý</span>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">16/07 08:30:</div>
-                    <div class="detail-value">Bạn đã tạo đơn</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">16/07 09:15:</div>
-                    <div class="detail-value">Đơn đã gửi đến Trần Văn B</div>
+                    <div class="detail-value" id="modal-emergencyContact">Chị Nguyễn Thị H - 0909123456</div>
                 </div>
             </div>
         </div>
@@ -968,51 +859,69 @@
     </div>
 </div>
 
-<script>
-    // Mở modal chi tiết khi click vào nút "Xem chi tiết"
-    document.querySelectorAll('.view-detail').forEach(button => {
-        button.addEventListener('click', () => {
-            document.getElementById('detailModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        });
-    });
-
-    // Đóng modal
+<script >
+    function openModal() {
+        document.getElementById('detailModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
     function closeModal() {
         document.getElementById('detailModal').style.display = 'none';
         document.body.style.overflow = 'auto';
     }
-
     document.getElementById('closeModal').addEventListener('click', closeModal);
-
-    // Đóng modal khi click bên ngoài nội dung modal
-    document.getElementById('detailModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('detailModal')) {
-            closeModal();
-        }
+    document.getElementById('detailModal').addEventListener('click', e => {
+        if (e.target.id === 'detailModal') closeModal();
     });
 
-    // Xử lý nút tạo đơn mới
-    document.getElementById('createLeaveBtn').addEventListener('click', () => {
-        alert('Chức năng tạo đơn mới sẽ được mở. Trong thực tế, đây sẽ là form tạo đơn.');
+    // 2. Khi click vào nút "Xem chi tiết"
+    document.querySelectorAll('.view-detail').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;  // data-id đã có sẵn từ Thymeleaf
+
+            try {
+                const resp = await fetch(`/api/leave-request/get-modal/${id}`);
+                if (!resp.ok) throw new Error('Không tải được dữ liệu');
+                const leave = await resp.json();
+
+                // 3. Điền dữ liệu vào modal
+                document.getElementById('modal-requestId').textContent         = leave.requestId;
+                document.getElementById('modal-createdAt').textContent         = leave.createdAt;
+                document.getElementById('modal-staffApprovalName').textContent = leave.staffApprovalName;
+                document.getElementById('modal-leaveType').textContent         = leave.leaveType;
+                document.getElementById('modal-startDate').textContent         = leave.startDate;
+                document.getElementById('modal-endDate').textContent           = leave.endDate;
+                document.getElementById('modal-totalDays').textContent         = leave.totalDays + ' ngày';
+                document.getElementById('modal-halfDayType').textContent       = leave.halfDayType || 'Không áp dụng';
+                document.getElementById('modal-reason').textContent            = leave.reason;
+                document.getElementById('modal-substituteStaffName').textContent = leave.substituteStaffName;
+                document.getElementById('modal-emergencyContact').textContent  = leave.emergencyContact;
+
+                // 4. Cập nhật trạng thái và class
+                const statusBadge = document.getElementById('modal-status');
+                let label, cls;
+                switch (leave.status) {
+                    case 'PENDING':  label='Chờ duyệt';   cls='status-pending';  break;
+                    case 'APPROVED': label='Đã duyệt';    cls='status-approved'; break;
+                    case 'REJECTED': label='Đã từ chối';  cls='status-rejected'; break;
+                    default:         label='Đã hủy';      cls='status-cancelled';
+                }
+                statusBadge.textContent = label;
+                statusBadge.className   = 'status-badge ' + cls;
+
+                // 5. Hiển thị modal
+                openModal();
+            } catch (err) {
+                alert('Lỗi khi tải chi tiết: ' + err.message);
+            }
+        });
     });
 
-    // Xử lý nút hủy đơn
+    // 6. (Tuỳ chọn) nút hủy đơn trong modal
     document.getElementById('cancelBtn').addEventListener('click', () => {
         if (confirm('Bạn có chắc chắn muốn hủy đơn nghỉ phép này?')) {
             alert('Đơn đã được hủy thành công!');
             closeModal();
         }
-    });
-
-    // Xử lý nút in đơn
-    document.getElementById('printBtn').addEventListener('click', () => {
-        alert('Chức năng in đơn sẽ được kích hoạt.');
-    });
-
-    // Xử lý nút tải tài liệu
-    document.querySelector('.btn-icon').addEventListener('click', () => {
-        alert('Tài liệu đã bắt đầu tải xuống.');
     });
 </script>
 </body>

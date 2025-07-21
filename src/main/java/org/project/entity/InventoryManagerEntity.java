@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -16,7 +15,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "inventory_managers", schema = "swp391")
-@FieldNameConstants
 public class InventoryManagerEntity {
     @Id
     @Column(name = "inventory_manager_id", nullable = false)

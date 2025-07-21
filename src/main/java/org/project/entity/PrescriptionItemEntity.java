@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +13,6 @@ import lombok.experimental.FieldNameConstants;
 @Setter
 @Entity
 @Table(name = "prescription_items", schema = "swp391")
-@FieldNameConstants
 public class PrescriptionItemEntity {
     @EmbeddedId
     private PrescriptionItemEntityId id;

@@ -1,7 +1,6 @@
 package org.project.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,17 +14,16 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "test_requests", schema = "swp391")
-public class TestRequestEntity {
+@Table(name = "tests", schema = "swp391")
+public class TestEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "test_request_id", nullable = false)
+    @Column(name = "test_id", nullable = false)
     private Long id;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "appointment_id", nullable = false)
-    private AppointmentEntity appointmentEntity;
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "test_id", nullable = false)
+    private ProductEntity productEntity;
 
     @OneToMany
     private Set<TestRequestItemEntity> testRequestItemEntities = new LinkedHashSet<>();

@@ -11,19 +11,19 @@ export class Pagination {
     toHtml() {
 
         let html = `
-        <nav aria-label="Pagination" class="mt-4">
+        <nav aria-label="Doctor pagination" class="mt-4">
             <ul class="pagination justify-content-center">
                 <!-- Previous button -->
-                <li class="page-item ${this.currentPage === 0 ? "disabled" : ""}" data-page="${this.currentPage - 1}">
-                    <a href aria-disabled="${this.currentPage === 0 ? "true" : "false"}"
+                <li class="page-item ${this.currentPage === 0 ? 'disabled' : ''}" data-page="${this.currentPage - 1}">
+                    <a aria-disabled="${this.currentPage === 0 ? 'true' : 'false'}"
                        class="page-link"
-                       tabindex="-1">Trang trước</a>
+                       tabindex="-1">Previous</a>
                 </li>`;
 
         if (this.currentPage > 1) {
             html += `
                 <li class="page-item" data-page="0">
-                    <a href class="page-link">1</a>
+                    <a class="page-link">1</a>
                 </li>
             `;
         }
@@ -38,8 +38,8 @@ export class Pagination {
 
         for (let i = Math.max(0, this.currentPage - 1); i <= Math.min(this.totalPages - 1, this.currentPage + 1); i++) {
             html += `
-                <li class="page-item ${i === this.currentPage ? "active" : ""}" data-page="${i}">
-                    <a href class="page-link">${i + 1}</a>
+                <li class="page-item ${i === this.currentPage ? 'active' : ''}" data-page="${i}">
+                    <a class="page-link">${i + 1}</a>
                 </li>
             `;
         }
@@ -55,17 +55,15 @@ export class Pagination {
         if (this.currentPage < this.totalPages - 2) {
             html += `
                 <li class="page-item" data-page="${this.totalPages - 1}">
-                    <a href class="page-link">${this.totalPages}</a>
+                    <a class="page-link">${this.totalPages}</a>
                 </li>
             `;
         }
 
         html += `
-               <li class="page-item ${this.currentPage === this.totalPages - 1 ? "disabled" : ""}" data-page="${this.currentPage + 1}">
-                    <a href class="page-link"
-                          aria-disabled="${this.currentPage === this.totalPages - 1 ? "true" : "false"}">
-                          Trang sau
-                          </a>
+               <li class="page-item ${this.currentPage === this.totalPages - 1 ? 'disabled' : ''}" data-page="${this.currentPage + 1}">
+                    <a class="page-link"
+                          aria-disabled="${this.currentPage === this.totalPages - 1 ? 'true' : 'false'}">Next</a>
                 </li>
             </ul>
         </nav>   
@@ -76,10 +74,8 @@ export class Pagination {
 
     setEvent(callback) {
         document.querySelectorAll(".page-item[data-page]").forEach(element => {
-            element.addEventListener("click", (event) => {
-                if (element.classList.contains("disabled")) return; // Ignore clicks on disabled items
-                event.preventDefault();
-                const pageIndex = parseInt(event.currentTarget.getAttribute("data-page"));
+            element.addEventListener("click", function () {
+                const pageIndex = parseInt(this.getAttribute("data-page"));
                 if (callback) {
                     callback(pageIndex);
                 }

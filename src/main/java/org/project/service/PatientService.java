@@ -1,7 +1,5 @@
 package org.project.service;
 
-import org.project.entity.UserEntity;
-import org.project.entity.UserEntity;
 import org.project.model.dto.PatientDTO;
 import org.project.model.response.PatientResponse;
 import org.springframework.data.domain.Page;
@@ -32,8 +30,6 @@ public interface PatientService {
     String toConvertAvatarUrl(String avatarBase64);
 
     String toConvertFileToBase64(String avatarUrl);
-
-    UserEntity getUserHasPatient();
 
     boolean isPatientExist(Long patientId);
 
