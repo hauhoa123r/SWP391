@@ -11,6 +11,7 @@ import org.project.entity.UserEntity;
 import org.project.enums.FamilyRelationship;
 import org.project.enums.PatientStatus;
 import org.project.enums.UserRole;
+import org.project.enums.UserStatus;
 import org.project.exception.OurException;
 import org.project.repository.PatientRepository;
 import org.project.repository.UserRepository;
@@ -94,6 +95,9 @@ public class UserService implements IUserService {
             if (Date.valueOf(dto.getBirthdate()).after(new java.util.Date())) {
                 throw new OurException("Ngày sinh không được lớn hơn ngày hiện tại.");
             }
+            if (dto.getFamilyRelationship() == null) {
+                throw new OurException("Vui lòng chọn quan hệ với bệnh nhân.");
+            }
 
 
             UserEntity user = new UserEntity();
@@ -102,6 +106,7 @@ public class UserService implements IUserService {
             user.setPhoneNumber(dto.getPhoneNumber());
             user.setUserRole(UserRole.PATIENT);
             user.setIsVerified(true);
+            user.setUserStatus(UserStatus.ACTIVE);
             UserEntity savedUser = userRepository.save(user);
 
             PatientEntity patient = new PatientEntity();
@@ -113,7 +118,8 @@ public class UserService implements IUserService {
             patient.setBirthdate(Date.valueOf(dto.getBirthdate()));
             patient.setPatientStatus(PatientStatus.ACTIVE);
             patient.setGender(dto.getGender());
-            patient.setFamilyRelationship(FamilyRelationship.SELF);
+            patient.setFamilyRelationship(dto.getFamilyRelationship());
+
             patientRepository.save(patient);
 
             Map<String, Object> userInfo = new HashMap<>();
@@ -142,38 +148,13 @@ public class UserService implements IUserService {
     }
 
 
-    @Override
-    public Response login(LoginRequest loginRequest) {
-        Response response = new Response();
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-            );
 
-            UserEntity user = userRepository.findByEmail(loginRequest.getEmail())
-                    .orElseThrow(() -> new OurException("User not found"));
-
-            String token = jwtUtils.generateToken(user);
-
-            response.setStatusCode(200);
-            response.setToken(token);
-            response.setRole(user.getUserRole().name());
-            response.setExpirationTime("7 Days");
-            response.setMessage("Login successful");
-
-        } catch (OurException e) {
-            response.setStatusCode(404);
-            response.setMessage(e.getMessage());
-        } catch (Exception e) {
-            response.setStatusCode(500);
-            response.setMessage("Error during login: " + e.getMessage());
-        }
-        return response;
-    }
-
-    public String login1(String email, String password, String redirectTo, HttpServletResponse response) throws Exception {
+    public String login(String email, String password, String redirectTo, HttpServletResponse response) throws Exception {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         UserEntity user = userRepository.findByEmail(email).orElseThrow();
+        if ("INACTIVE".equals(user.getUserStatus())) {
+            throw new OurException("Tài khoản bị vô hiệu hoá");
+        }
 
         String token = jwtUtils.generateToken(user);
         Cookie cookie = new Cookie("token", token);
@@ -186,12 +167,44 @@ public class UserService implements IUserService {
             return "redirect:" + redirectTo;
         }
 
-        return switch (user.getUserRole()) {
-            case ADMIN -> "redirect:/admin";
-            case DOCTOR -> "redirect:/doctor";
-            case PATIENT -> "redirect:/home";
-            case STAFF -> "redirect:/staff";
-            default -> throw new RuntimeException("Unknown role.");
-        };
+        String redirectUrl;
+        switch (user.getUserRole()) {
+            case ADMIN:
+                redirectUrl = "redirect:/admin";
+                break;
+            case PATIENT:
+                redirectUrl = "redirect:/home";
+                break;
+            case STAFF:
+                if (user.getStaffEntity() != null && user.getStaffEntity().getStaffRole() != null) {
+                    switch (user.getStaffEntity().getStaffRole()) {
+
+                        case PHARMACIST:
+                            redirectUrl = "redirect:/staff/pharmacy";
+                            break;
+                        case TECHNICIAN:
+                            redirectUrl = "redirect:/staff/lab";
+                            break;
+                        case SCHEDULING_COORDINATOR:
+                            redirectUrl = "redirect:/staff/schedule";
+                            break;
+                        case INVENTORY_MANAGER:
+                            redirectUrl = "redirect:/staff/inventory";
+                            break;
+                        case LAB_RECEIVER:
+                            redirectUrl = "redirect:/staff/lab-receive";
+                            break;
+                        default:
+                            throw new RuntimeException("Unknown staff role");
+                    }
+                } else {
+                    throw new RuntimeException("Missing staff role for staff user");
+                }
+                break;
+            default:
+                throw new RuntimeException("Unknown user role");
+        }
+
+        return redirectUrl;
     }
 }

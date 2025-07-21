@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.project.enums.FamilyRelationship;
 import org.project.enums.Gender;
 
 @Data
@@ -36,4 +37,7 @@ public class RegisterDTO {
 
     @NotNull(message = "Vui lòng chọn giới tính.")
     private Gender gender;
+
+    @NotBlank(message = "Vui lòng chọn quan hệ với bệnh nhân.")
+    private FamilyRelationship familyRelationship;
 }

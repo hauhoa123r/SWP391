@@ -7,16 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.project.enums.StaffRole;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -96,6 +94,7 @@ public class UserEntity implements UserDetails {
     @Column(name = "user_status")
     private UserStatus userStatus;
 
+
     public void addPatientEntity(PatientEntity patientEntity) {
         this.patientEntities.add(patientEntity);
         patientEntity.setUserEntity(this);
@@ -103,7 +102,14 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + userRole.name()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.name()));
+
+        if (userRole == UserRole.STAFF && staffEntity != null && staffEntity.getStaffRole() != null) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_STAFF_" + staffEntity.getStaffRole().name()));
+        }
+
+        return authorities;
     }
     @Override
     public boolean isAccountNonExpired() { return true; }

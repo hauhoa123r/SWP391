@@ -3,8 +3,8 @@ package org.project.enums;
 public enum UserRole {
     PATIENT("PATIENT"),
     STAFF("STAFF"),
-    ADMIN("ADMIN"),
-    DOCTOR("DOCTOR");
+    ADMIN("ADMIN");
+
 
     private final String name;
 

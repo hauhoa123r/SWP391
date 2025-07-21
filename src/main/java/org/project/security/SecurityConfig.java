@@ -48,9 +48,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(publicEndpoints).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/doctor/**").hasRole("DOCTOR")
                         .requestMatchers("/patient/**").hasRole("PATIENT")
-                        .requestMatchers("/home").hasAnyRole("ADMIN", "DOCTOR", "PATIENT")
+                        .requestMatchers("/staff/pharmacy/**").hasRole("STAFF_PHARMACIST")
+                        .requestMatchers("/staff/lab/**").hasRole("STAFF_TECHNICIAN")
+                        .requestMatchers("/staff/schedule/**").hasRole("STAFF_SCHEDULING_COORDINATOR")
+                        .requestMatchers("/staff/inventory/**").hasRole("STAFF_INVENTORY_MANAGER")
+                        .requestMatchers("/staff/lab-receive/**").hasRole("STAFF_LAB_RECEIVER")
+                        .requestMatchers("/staff/doctor/**").hasRole("STAFF_DOCTOR")
+                        .requestMatchers("/home").hasAnyRole("ADMIN", "PATIENT", "STAFF")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -61,7 +66,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

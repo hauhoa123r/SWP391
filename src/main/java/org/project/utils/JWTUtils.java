@@ -32,20 +32,28 @@ public class JWTUtils {
     public String generateToken(UserDetails userDetails) {
         Long userId = null;
         String role = null;
+        String staffSubRole = null; // ✅ Thêm khai báo
 
         if (userDetails instanceof UserEntity userEntity) {
             userId = userEntity.getId();
             role = userEntity.getUserRole().name();
+            if (role.equals("STAFF") && userEntity.getStaffEntity() != null) {
+                staffSubRole = userEntity.getStaffEntity().getStaffRole().name();
+            }
         }
 
-        return Jwts.builder()
+        var builder = Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .claim("userId", userId)
-                .claim("role", role)
-                .signWith(key)
-                .compact();
+                .claim("role", role);
+
+        if (staffSubRole != null) {
+            builder.claim("staffRole", staffSubRole);
+        }
+
+        return builder.signWith(key).compact();
     }
 
     public String extractUsername(String token) {
@@ -58,6 +66,9 @@ public class JWTUtils {
 
     public String extractUserRole(String token) {
         return extractClaims(token, claims -> claims.get("role", String.class));
+    }
+    public String extractStaffRole(String token) {
+        return extractClaims(token, claims -> claims.get("staffRole", String.class));
     }
 
     public boolean isValidToken(String token, UserDetails userDetails) {

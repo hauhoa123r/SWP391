@@ -28,7 +28,6 @@ public class AuthController {
 
         int status = response.getStatusCode();
 
-        // ✅ Nếu status code không hợp lệ, fallback về 500
         if (status < 100 || status > 599) {
             status = 500;
         }
@@ -36,11 +35,7 @@ public class AuthController {
         return ResponseEntity.status(status).body(response);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Response> login(@RequestBody LoginRequest loginRequest) {
-        Response response = userService.login(loginRequest);
-        return ResponseEntity.status(response.getStatusCode()).body(response);
-    }
+
 
     @PostMapping("/google")
     public ResponseEntity<?> loginWithGoogle(@RequestBody Map<String, String> body,

@@ -92,7 +92,7 @@
           <div class="text-danger" th:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}"></div>
         </div>
 
-        <div class="col-md-6 mb-4">
+        <div class="col-md-6 mb-3">
           <label class="form-label">Giới tính <span>*</span></label>
           <select th:field="*{gender}" class="form-select">
             <option value="" disabled selected>Chọn giới tính</option>
@@ -101,6 +101,29 @@
             <option value="OTHER">Khác</option>
           </select>
           <div class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Quan hệ với bệnh nhân <span>*</span></label>
+          <select th:field="*{familyRelationship}" class="form-select">
+            <option value="" disabled selected>Chọn quan hệ</option>
+            <option value="Self">Bản thân</option>
+            <option value="Wife">Vợ</option>
+            <option value="Husband">Chồng</option>
+            <option value="Father">Cha</option>
+            <option value="Mother">Mẹ</option>
+            <option value="Brother">Anh trai</option>
+            <option value="Sister">Chị gái</option>
+            <option value="Son">Con trai</option>
+            <option value="Daughter">Con gái</option>
+            <option value="Grandfather">Ông</option>
+            <option value="Grandmother">Bà</option>
+            <option value="Cousin">Anh/Chị/Em họ</option>
+            <option value="Aunt">Dì/Cô</option>
+            <option value="Uncle">Chú/Bác</option>
+            <option value="Other">Khác</option>
+          </select>
+          <div class="text-danger" th:if="${#fields.hasErrors('familyRelationship')}" th:errors="*{familyRelationship}"></div>
         </div>
       </div>
 

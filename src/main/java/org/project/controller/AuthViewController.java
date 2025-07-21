@@ -1,5 +1,6 @@
 package org.project.controller;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class AuthViewController {
                               Model model,
                               HttpServletResponse response) {
         try {
-            String view = userService.login1(email, password, redirectTo, response);
+            String view = userService.login(email, password, redirectTo, response);
             return view;
 
         } catch (Exception e) {
@@ -46,6 +47,17 @@ public class AuthViewController {
             model.addAttribute("redirectTo", redirectTo);
             return "frontend/login";
         }
+    }
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response) {
+
+        Cookie cookie = new Cookie("token", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0); // xóa ngay lập tức
+        response.addCookie(cookie);
+
+        return "redirect:/auth-view/login";
     }
 
     @GetMapping("/register")
