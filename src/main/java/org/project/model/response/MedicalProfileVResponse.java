@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MedicalProfilesResponse {
+public class MedicalProfileVResponse {
     Long id;
     List<String> allergies;
     List<String> chronicDiseases;

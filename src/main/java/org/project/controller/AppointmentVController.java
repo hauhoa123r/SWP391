@@ -2,7 +2,7 @@ package org.project.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.project.model.response.DoctorHeaderResponse;
-import org.project.service.DoctorService;
+import org.project.service.DoctorVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/staff/doctor")
-public class AppointmentsController {
+public class AppointmentVController {
     @Autowired
-    private DoctorService doctorService;
+    private DoctorVService doctorService;
 
     @GetMapping
     public ResponseEntity<DoctorHeaderResponse> getDoctorId(){

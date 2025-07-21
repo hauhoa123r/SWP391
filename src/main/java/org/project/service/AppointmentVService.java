@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface AppointmentsService {
+public interface AppointmentVService {
     List<AppointmentListResponse> getAllAppointmentIsPendingOrConfirmed(Long doctorId);
     AppointmentChangeStatusDTO updateAppointmentStatus(AppointmentChangeStatusDTO appointmentDTO);
     AppointmentDetailResponse getAppointmentDetail(Long id);

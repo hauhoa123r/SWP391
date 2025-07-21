@@ -6,8 +6,8 @@ import org.project.enums.AppointmentStatus;
 import org.project.model.dto.AppointmentChangeStatusDTO;
 import org.project.model.response.AppointmentDetailResponse;
 import org.project.model.response.AppointmentListResponse;
-import org.project.repository.AppointmentsRepository;
-import org.project.service.AppointmentsService;
+import org.project.repository.AppointmentVRepository;
+import org.project.service.AppointmentVService;
 import org.project.spec.AppointmentSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AppointmentsServiceImpl implements AppointmentsService {
+public class AppointmentVServiceImpl implements AppointmentVService {
     @Autowired
-    private AppointmentsRepository appointmentRepository;
+    private AppointmentVRepository appointmentRepository;
     @Autowired
     private AppointmentsConverter appointmentConverter;
 

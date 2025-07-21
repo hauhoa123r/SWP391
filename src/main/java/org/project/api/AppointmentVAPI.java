@@ -3,7 +3,7 @@ package org.project.api;
 import org.project.model.dto.AppointmentChangeStatusDTO;
 import org.project.model.response.AppointmentDetailResponse;
 import org.project.model.response.AppointmentListResponse;
-import org.project.service.AppointmentsService;
+import org.project.service.AppointmentVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/appointments")
-public class AppointmentsAPI {
+public class AppointmentVAPI {
     @Autowired
-    private AppointmentsService appointmentService;
+    private AppointmentVService appointmentService;
 
     @GetMapping("/{doctorId}")
     public Page<AppointmentListResponse> getAppointments(

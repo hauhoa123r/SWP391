@@ -9,7 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/medical-record")
-public class MedicalRecordAPI {
+public class MedicalRecordVAPI {
 
     @Autowired
     private MedicalRecordService medicalRecordService;

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.project.converter.MedicalProfileConverter;
 import org.project.entity.MedicalProfileEntity;
-import org.project.model.response.MedicalProfilesResponse;
+import org.project.model.response.MedicalProfileVResponse;
 import org.project.repository.MedicalProfilesRepository;
 import org.project.service.MedicalProfilesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class MedicalProfilesServiceImpl implements MedicalProfilesService {
     private MedicalProfileConverter medicalProfileConverter;
 
     @Override
-    public MedicalProfilesResponse getMedicalProfileOfPatient(Long patientId) {
+    public MedicalProfileVResponse getMedicalProfileOfPatient(Long patientId) {
         MedicalProfileEntity medicalProfileEntity = medicalProfileRepository.findByPatientEntityId(patientId);
         if (medicalProfileEntity == null) {
             throw new RuntimeException("Medical profile not found for patient ID: " + patientId);
@@ -29,7 +29,7 @@ public class MedicalProfilesServiceImpl implements MedicalProfilesService {
     }
 
     @Override
-    public MedicalProfilesResponse updateAllergiesAndChronicDiseases(Long patientId, List<String> allergies, List<String> chronicDiseases) {
+    public MedicalProfileVResponse updateAllergiesAndChronicDiseases(Long patientId, List<String> allergies, List<String> chronicDiseases) {
         MedicalProfileEntity entity = medicalProfileRepository.findByPatientEntityId(patientId);
         if (entity == null) {
             throw new RuntimeException("Medical profile not found for patient ID: " + patientId);

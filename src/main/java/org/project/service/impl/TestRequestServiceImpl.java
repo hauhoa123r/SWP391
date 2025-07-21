@@ -6,7 +6,7 @@ import org.project.entity.TestRequestEntity;
 import org.project.enums.RequestStatus;
 import org.project.model.request.TestListRequest;
 import org.project.model.response.TestRequestInAppointment;
-import org.project.repository.AppointmentsRepository;
+import org.project.repository.AppointmentVRepository;
 import org.project.repository.TestRequestRepository;
 import org.project.repository.TestTypeRepository;
 import org.project.service.TestRequestService;
@@ -22,7 +22,7 @@ public class TestRequestServiceImpl implements TestRequestService {
     @Autowired
     private TestRequestRepository testRequestRepository;
     @Autowired
-    private AppointmentsRepository appointmentRepository;
+    private AppointmentVRepository appointmentRepository;
     @Autowired
     private TestTypeRepository testTypeRepository;
     @Autowired

@@ -14,6 +14,7 @@ import java.util.List;
 public class TestRequestAPI {
     @Autowired
     private TestRequestService testRequestService;
+
     @GetMapping("/test-request/{appointmentId}")
     public ResponseEntity<List<TestRequestInAppointment>> getTestRequests(@PathVariable Long appointmentId) {
         return ResponseEntity.ok(testRequestService.getListTestRequest(appointmentId));

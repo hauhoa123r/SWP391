@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
-public interface AppointmentsRepository extends JpaRepository<AppointmentEntity,Long>, JpaSpecificationExecutor<AppointmentEntity> {
+public interface AppointmentVRepository extends JpaRepository<AppointmentEntity,Long>, JpaSpecificationExecutor<AppointmentEntity> {
     List<AppointmentEntity> findByDoctorEntityIdAndAppointmentStatusIn(Long dortorId, List<AppointmentStatus> statuses);
 
     @Query("""

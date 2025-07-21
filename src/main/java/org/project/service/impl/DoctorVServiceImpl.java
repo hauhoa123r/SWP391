@@ -4,18 +4,18 @@ import org.project.converter.DoctorsConverter;
 import org.project.entity.DoctorEntity;
 import org.project.entity.StaffEntity;
 import org.project.model.response.DoctorHeaderResponse;
-import org.project.repository.DoctorRepository;
-import org.project.repository.StaffRepository;
-import org.project.service.DoctorService;
+import org.project.repository.DoctorVRepository;
+import org.project.repository.StaffVRepository;
+import org.project.service.DoctorVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DoctorServiceImpl implements DoctorService {
+public class DoctorVServiceImpl implements DoctorVService {
     @Autowired
-    private DoctorRepository doctorRepository;
+    private DoctorVRepository doctorRepository;
     @Autowired
-    private StaffRepository staffRepository;
+    private StaffVRepository staffRepository;
     @Autowired
     private DoctorsConverter doctorConverter;
     @Override
