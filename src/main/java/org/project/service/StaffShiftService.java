@@ -1,10 +1,12 @@
 package org.project.service;
 
+import org.project.dto.AssignShiftPageData;
 import org.project.entity.StaffShiftEntity;
 import org.project.enums.StaffShiftSlot;
 import org.project.model.dto.StaffShiftViewModel;
 import org.project.model.dto.StaffMonthlyScheduleView;
 import org.project.model.request.AssignShiftRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -40,9 +42,18 @@ public interface StaffShiftService {
     // Thêm dữ liệu test cho tháng hiện tại
     void generateTestShiftsForCurrentMonth(Long staffId);
 
+   
+    AssignShiftPageData prepareAssignShiftPage(String date, Long hospitalId, Long departmentId);
+
 
     // Xoá ca trực
     void deleteShift(Long shiftId);
+
+    // Tìm kiếm ca trực với AND/OR logic
+    Page<StaffShiftViewModel> searchStaffShifts(String staffName, String dateFrom, String dateTo, 
+                                               List<StaffShiftSlot> shiftTypes, String hospitalName, 
+                                               String departmentName, Long hospitalId, Long departmentId, 
+                                               Long staffId, String searchOperation, Pageable pageable);
 
     // Lấy tất cả bệnh viện
     List<org.project.entity.HospitalEntity> getAllHospitals();

@@ -36,16 +36,32 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <!-- Pagination Info and Page Size Selector -->
+    <!-- Search Box -->
     <div class="row mb-3">
         <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <span class="me-3">Hiển thị 
+            <div class="input-group">
+                <span class="input-group-text">🔍</span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm theo tên nhân viên, phòng ban, bệnh viện..." onkeyup="filterTable()">
+                <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">Xóa</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end align-items-center">
+                <span class="me-3" id="searchResults">Hiển thị 
                     <span th:text="${staffShifts.numberOfElements}"></span> 
                     trong tổng số 
                     <span th:text="${staffShifts.totalElements}"></span> 
                     nhân viên
                 </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination Info and Page Size Selector -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <span class="me-3">Kết quả tìm kiếm: <span id="filteredCount">0</span> nhân viên</span>
             </div>
         </div>
         <div class="col-md-6">
@@ -64,9 +80,16 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered align-middle text-center">
+                <table id="staffTable" class="table table-bordered align-middle text-center">
                     <thead class="table-dark">
                     <tr>
+                        <th>
+                            <a th:href="@{/admin/staff-shifts(page=${currentPage}, size=${size}, sortBy='id', sortDir=${sortBy == 'id' and sortDir == 'asc' ? 'desc' : 'asc'})}" 
+                               class="text-white text-decoration-none">
+                                ID
+                                <span th:if="${sortBy == 'id'}" th:text="${sortDir == 'asc' ? '↑' : '↓'}"></span>
+                            </a>
+                        </th>
                         <th>
                             <a th:href="@{/admin/staff-shifts(page=${currentPage}, size=${size}, sortBy='fullName', sortDir=${sortBy == 'fullName' and sortDir == 'asc' ? 'desc' : 'asc'})}" 
                                class="text-white text-decoration-none">
@@ -90,11 +113,12 @@
                         <th>Hành động</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr th:each="s : ${staffShifts.content}">
-                        <td th:text="${s.fullName}"></td>
-                        <td th:text="${s.departmentName}"></td>
-                        <td th:text="${s.hospitalName}"></td>
+                    <tbody id="staffTableBody">
+                    <tr th:each="s : ${staffShifts.content}" class="staff-row">
+                        <td th:text="${s.staffId}" class="staff-id"></td>
+                        <td th:text="${s.fullName}" class="staff-name"></td>
+                        <td th:text="${s.departmentName}" class="department-name"></td>
+                        <td th:text="${s.hospitalName}" class="hospital-name"></td>
                         <td>
                             <span class="badge bg-info" th:text="${s.totalWorkingDaysThisMonth}"></span>
                         </td>
@@ -204,14 +228,52 @@ function updateMonthlyLinks() {
     });
 }
 
+// Search functionality
+function filterTable() {
+    const searchInput = document.getElementById('searchInput');
+    const filter = searchInput.value.toLowerCase();
+    const table = document.getElementById('staffTable');
+    const rows = table.getElementsByClassName('staff-row');
+    let visibleCount = 0;
+    
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const staffName = row.querySelector('.staff-name').textContent.toLowerCase();
+        const departmentName = row.querySelector('.department-name').textContent.toLowerCase();
+        const hospitalName = row.querySelector('.hospital-name').textContent.toLowerCase();
+        
+        if (staffName.includes(filter) || departmentName.includes(filter) || hospitalName.includes(filter)) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    }
+    
+    // Update filtered count
+    document.getElementById('filteredCount').textContent = visibleCount;
+}
+
+function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    filterTable();
+}
+
 // Update links when page loads
 document.addEventListener('DOMContentLoaded', function() {
     updateMonthlyLinks();
     
-    // Update links when date changes
-    const dateInput = document.getElementById('dateFilter');
-    if (dateInput) {
-        dateInput.addEventListener('change', updateMonthlyLinks);
+    // Initialize search count
+    const totalRows = document.getElementsByClassName('staff-row').length;
+    document.getElementById('filteredCount').textContent = totalRows;
+    
+    // Also update when date changes
+    const dateFilter = document.getElementById('dateFilter');
+    if (dateFilter) {
+        dateFilter.addEventListener('change', function() {
+            // Small delay to allow form submission to complete
+            setTimeout(updateMonthlyLinks, 100);
+        });
     }
 });
 </script>

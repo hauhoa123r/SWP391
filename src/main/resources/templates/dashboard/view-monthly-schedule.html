@@ -137,6 +137,7 @@
         window.location.href = currentUrl.toString();
     }
 
+    // Keyboard shortcuts
     document.addEventListener('keydown', function(event) {
         if (event.ctrlKey) {
             switch(event.key) {
@@ -152,7 +153,22 @@
                     event.preventDefault();
                     navigateMonth(0);
                     break;
+                case 'f':
+                case 'F':
+                    event.preventDefault();
+                    const searchCollapse = document.getElementById('searchCollapse');
+                    const bsCollapse = new bootstrap.Collapse(searchCollapse, {
+                        toggle: true
+                    });
+                    break;
             }
+        }
+    });
+    
+    // Auto-set current month range when search is opened
+    document.getElementById('searchCollapse').addEventListener('shown.bs.collapse', function () {
+        if (!document.getElementById('searchDateFrom').value && !document.getElementById('searchDateTo').value) {
+            setCurrentMonthRange();
         }
     });
 </script>

@@ -2,12 +2,16 @@ package org.project.service.impl;
 
 import lombok.RequiredArgsConstructor;
 
+import org.project.dto.AssignShiftPageData;
+import org.project.entity.DepartmentEntity;
+import org.project.entity.HospitalEntity;
 import org.project.entity.StaffEntity;
 import org.project.entity.StaffShiftEntity;
 import org.project.enums.StaffShiftSlot;
 import org.project.model.dto.StaffShiftViewModel;
 import org.project.model.dto.StaffMonthlyScheduleView;
 import org.project.model.request.AssignShiftRequest;
+
 
 import org.project.repository.HospitalRepository;
 import org.project.repository.StaffRepository;
@@ -355,6 +359,45 @@ public class StaffShiftServiceImpl implements StaffShiftService {
         System.out.println("[DEBUG] Kết quả shiftsMap có " + result.size() + " ngày");
         return result;
     }
+    @Override
+    public AssignShiftPageData prepareAssignShiftPage(String date, Long hospitalId, Long departmentId) {
+        AssignShiftPageData dto = new AssignShiftPageData();
+
+        // Xử lý ngày được chọn
+        LocalDate selectedDate = (date != null && !date.isEmpty()) ? LocalDate.parse(date) : LocalDate.now();
+        dto.setSelectedDate(selectedDate);
+
+        // Load danh sách bệnh viện
+        List<HospitalEntity> hospitals = hospitalRepository.findAll();
+        dto.setAllHospitals(hospitals);
+
+        // Load phòng ban từ tất cả bệnh viện
+        List<DepartmentEntity> departments = hospitals.stream()
+                .flatMap(h -> getDepartmentsByHospital(h.getId()).stream())
+                .distinct()
+                .collect(Collectors.toList());
+        dto.setAllDepartments(departments);
+
+        // Load tất cả staff
+        List<StaffEntity> staffList = new ArrayList<>();
+        try {
+            staffList = staffRepository.findAll();
+        } catch (Exception e) {
+            System.err.println("[ERROR] Không thể load staff: " + e.getMessage());
+        }
+        dto.setAllStaff(staffList);
+
+        // Shift slot enum
+        dto.setShiftSlots(StaffShiftSlot.values());
+
+        // Gán giá trị chọn sẵn (nếu có)
+        dto.setSelectedHospitalId(hospitalId);
+        dto.setSelectedDepartmentId(departmentId);
+
+        return dto;
+    }
+
+
 
 
 
@@ -366,5 +409,117 @@ public class StaffShiftServiceImpl implements StaffShiftService {
     @Override
     public void deleteShift(Long shiftId) {
         staffShiftRepository.deleteById(shiftId);
+    }
+
+    @Override
+    public Page<StaffShiftViewModel> searchStaffShifts(String staffName, String dateFrom, String dateTo, 
+                                                      List<StaffShiftSlot> shiftTypes, String hospitalName, 
+                                                      String departmentName, Long hospitalId, Long departmentId, 
+                                                      Long staffId, String searchOperation, Pageable pageable) {
+        
+        // Build dynamic specification inline
+        return staffShiftRepository.findAll((root, query, criteriaBuilder) -> {
+            List<jakarta.persistence.criteria.Predicate> predicates = new ArrayList<>();
+            
+            // Join with Staff entity
+            jakarta.persistence.criteria.Join<StaffShiftEntity, StaffEntity> staffJoin = root.join("staffEntity", jakarta.persistence.criteria.JoinType.LEFT);
+            
+            // Join with Hospital entity (through staff)
+            jakarta.persistence.criteria.Join<StaffEntity, HospitalEntity> hospitalJoin = staffJoin.join("hospitalEntity", jakarta.persistence.criteria.JoinType.LEFT);
+            
+            // Join with Department entity (through staff)
+            jakarta.persistence.criteria.Join<StaffEntity, DepartmentEntity> departmentJoin = staffJoin.join("departmentEntity", jakarta.persistence.criteria.JoinType.LEFT);
+            
+            // Staff name search
+            if (staffName != null && !staffName.trim().isEmpty()) {
+                predicates.add(criteriaBuilder.like(
+                    criteriaBuilder.lower(staffJoin.get("fullName")),
+                    "%" + staffName.toLowerCase() + "%"
+                ));
+            }
+            
+            // Date range search
+            if (dateFrom != null && !dateFrom.isEmpty()) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(
+                    root.get("date"), 
+                    Date.valueOf(LocalDate.parse(dateFrom))
+                ));
+            }
+            
+            if (dateTo != null && !dateTo.isEmpty()) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(
+                    root.get("date"), 
+                    Date.valueOf(LocalDate.parse(dateTo))
+                ));
+            }
+            
+            // Shift types search
+            if (shiftTypes != null && !shiftTypes.isEmpty()) {
+                predicates.add(root.get("shiftType").in(shiftTypes));
+            }
+            
+            // Hospital name search
+            if (hospitalName != null && !hospitalName.trim().isEmpty()) {
+                predicates.add(criteriaBuilder.like(
+                    criteriaBuilder.lower(hospitalJoin.get("name")),
+                    "%" + hospitalName.toLowerCase() + "%"
+                ));
+            }
+            
+            // Department name search
+            if (departmentName != null && !departmentName.trim().isEmpty()) {
+                predicates.add(criteriaBuilder.like(
+                    criteriaBuilder.lower(departmentJoin.get("name")),
+                    "%" + departmentName.toLowerCase() + "%"
+                ));
+            }
+            
+            // Hospital ID filter
+            if (hospitalId != null) {
+                predicates.add(criteriaBuilder.equal(hospitalJoin.get("id"), hospitalId));
+            }
+            
+            // Department ID filter
+            if (departmentId != null) {
+                predicates.add(criteriaBuilder.equal(departmentJoin.get("id"), departmentId));
+            }
+            
+            // Staff ID filter
+            if (staffId != null) {
+                predicates.add(criteriaBuilder.equal(staffJoin.get("id"), staffId));
+            }
+            
+            // Combine predicates with AND or OR
+            if (predicates.isEmpty()) {
+                return criteriaBuilder.conjunction(); // Return all if no criteria
+            }
+            
+            if ("OR".equalsIgnoreCase(searchOperation)) {
+                return criteriaBuilder.or(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
+            } else {
+                return criteriaBuilder.and(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
+            }
+        }, pageable).map(this::convertToViewModel);
+    }
+    
+    private StaffShiftViewModel convertToViewModel(StaffShiftEntity entity) {
+        StaffShiftViewModel viewModel = new StaffShiftViewModel();
+        viewModel.setStaffId(entity.getStaffEntity().getId());
+        viewModel.setFullName(entity.getStaffEntity().getFullName());
+        
+        // Set hospital and department info if available
+        if (entity.getStaffEntity().getHospitalEntity() != null) {
+            viewModel.setHospitalName(entity.getStaffEntity().getHospitalEntity().getName());
+        }
+        if (entity.getStaffEntity().getDepartmentEntity() != null) {
+            viewModel.setDepartmentName(entity.getStaffEntity().getDepartmentEntity().getName());
+        }
+        
+        // Create status map for today's shift
+        Map<StaffShiftSlot, String> statusMap = new HashMap<>();
+        statusMap.put(entity.getShiftType(), "Working");
+        viewModel.setStatusPerSlotToday(statusMap);
+        
+        return viewModel;
     }
 }

@@ -1,12 +1,14 @@
 package org.project.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.project.dto.AssignShiftPageData;
 import org.project.entity.StaffEntity;
 import org.project.entity.StaffShiftEntity;
 import org.project.enums.StaffShiftSlot;
 import org.project.model.dto.StaffMonthlyScheduleView;
 import org.project.model.dto.StaffShiftViewModel;
 import org.project.model.request.AssignShiftRequest;
+
 import org.project.repository.StaffRepository;
 
 import org.project.service.StaffShiftService;
@@ -92,48 +94,19 @@ public class StaffShiftController {
                                       @RequestParam(required = false) Long hospitalId,
                                       @RequestParam(required = false) Long departmentId,
                                       Model model) {
-        LocalDate selectedDate = (date != null && !date.isEmpty()) ? LocalDate.parse(date) : LocalDate.now();
+        AssignShiftPageData pageData = staffShiftService.prepareAssignShiftPage(date, hospitalId, departmentId);
 
-        // Load all hospitals for selection
-        model.addAttribute("allHospitals", staffShiftService.getAllHospitals());
-        
-        // Load all departments initially (not filtered by hospital)
-        // This ensures departments are always available for selection
-        List<org.project.entity.DepartmentEntity> allDepartments = new ArrayList<>();
-        try {
-            // Get all departments from all hospitals
-            for (org.project.entity.HospitalEntity hospital : staffShiftService.getAllHospitals()) {
-                allDepartments.addAll(staffShiftService.getDepartmentsByHospital(hospital.getId()));
-            }
-        } catch (Exception e) {
-            // Fallback: empty list if there's an error
-            allDepartments = java.util.Collections.emptyList();
-        }
-        model.addAttribute("allDepartments", allDepartments);
-        
-        // Load all staff initially (not filtered)
-        // This ensures staff are always available for selection
-        List<org.project.entity.StaffEntity> allStaff = new ArrayList<>();
-        try {
-            allStaff = staffRepository.findAll();
-        } catch (Exception e) {
-            // Fallback: empty list if there's an error
-            allStaff = java.util.Collections.emptyList();
-        }
-        model.addAttribute("allStaff", allStaff);
+        model.addAttribute("allHospitals", pageData.getAllHospitals());
+        model.addAttribute("allDepartments", pageData.getAllDepartments());
+        model.addAttribute("allStaff", pageData.getAllStaff());
+        model.addAttribute("shiftSlots", pageData.getShiftSlots());
+        model.addAttribute("selectedDate", pageData.getSelectedDate().toString());
+        model.addAttribute("selectedHospitalId", pageData.getSelectedHospitalId());
+        model.addAttribute("selectedDepartmentId", pageData.getSelectedDepartmentId());
 
-        // Set selected values if provided
-        if (hospitalId != null) {
-            model.addAttribute("selectedHospitalId", hospitalId);
-        }
-        if (departmentId != null) {
-            model.addAttribute("selectedDepartmentId", departmentId);
-        }
-
-        model.addAttribute("shiftSlots", StaffShiftSlot.values());
-        model.addAttribute("selectedDate", selectedDate.toString());
         return "dashboard/assign-shift-page";
     }
+
 
     // ✅ 3b. Xử lý gán ca trực
     @PostMapping("/assign")
@@ -207,9 +180,64 @@ public class StaffShiftController {
     }
 
     // ✅ 6. Sinh dữ liệu mẫu
-    @GetMapping("/test-data/{staffId}")
+    @PostMapping("/test-data/{staffId}")
     public String addTestData(@PathVariable Long staffId) {
         staffShiftService.generateTestShiftsForCurrentMonth(staffId);
-        return "redirect:/admin/staff-shifts/monthly/" + staffId;
+        return "redirect:/admin/staff-shifts";
+    }
+
+    // ✅ 7. Tìm kiếm ca trực với AND/OR logic
+    @GetMapping("/search")
+    public String searchStaffShifts(@RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "10") int size,
+                                    @RequestParam(defaultValue = "id") String sortBy,
+                                    @RequestParam(defaultValue = "asc") String sortDir,
+                                    @RequestParam(required = false) String staffName,
+                                    @RequestParam(required = false) String dateFrom,
+                                    @RequestParam(required = false) String dateTo,
+                                    @RequestParam(required = false) List<StaffShiftSlot> shiftTypes,
+                                    @RequestParam(required = false) String hospitalName,
+                                    @RequestParam(required = false) String departmentName,
+                                    @RequestParam(required = false) Long hospitalId,
+                                    @RequestParam(required = false) Long departmentId,
+                                    @RequestParam(required = false) Long staffId,
+                                    @RequestParam(defaultValue = "AND") String searchOperation,
+                                    Model model) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        // Execute search - all logic is in service
+        Page<StaffShiftViewModel> searchResults = staffShiftService.searchStaffShifts(
+            staffName, dateFrom, dateTo, shiftTypes, hospitalName, departmentName, 
+            hospitalId, departmentId, staffId, searchOperation, pageable);
+
+        // Add pagination and search data to model
+        model.addAttribute("staffShifts", searchResults);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("totalPages", searchResults.getTotalPages());
+        model.addAttribute("totalElements", searchResults.getTotalElements());
+        
+        // Add search parameters for form persistence
+        model.addAttribute("searchOperation", searchOperation);
+        model.addAttribute("staffName", staffName);
+        model.addAttribute("dateFrom", dateFrom);
+        model.addAttribute("dateTo", dateTo);
+        model.addAttribute("shiftTypes", shiftTypes);
+        model.addAttribute("hospitalName", hospitalName);
+        model.addAttribute("departmentName", departmentName);
+        model.addAttribute("selectedHospitalId", hospitalId);
+        model.addAttribute("selectedDepartmentId", departmentId);
+        model.addAttribute("selectedStaffId", staffId);
+        
+        // Add reference data
+        model.addAttribute("allStaff", staffRepository.findAll());
+        model.addAttribute("allHospitals", staffShiftService.getAllHospitals());
+        model.addAttribute("shiftSlots", StaffShiftSlot.values());
+
+        return "dashboard/staff-shift-search";
     }
 }

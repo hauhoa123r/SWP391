@@ -5,11 +5,12 @@ import org.project.enums.StaffShiftSlot;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.sql.Date;
 import java.util.List;
 
-public interface StaffShiftRepository extends JpaRepository<StaffShiftEntity, Long> {
+public interface StaffShiftRepository extends JpaRepository<StaffShiftEntity, Long>, JpaSpecificationExecutor<StaffShiftEntity> {
 
     // Lấy các ca trực của 1 staff theo khoảng ngày
     List<StaffShiftEntity> findByStaffEntity_IdAndDateBetween(Long staffId, Date start, Date end);
