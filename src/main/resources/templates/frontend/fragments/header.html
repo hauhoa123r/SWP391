@@ -107,7 +107,7 @@
                         </button>
                     </div>
                     <!--Logo -->
-                    <a class="navbar-brand m-0" th:href="@{/templates/frontend/home.html}">
+                    <a class="navbar-brand m-0" th:href="@{/templates/frontend/abc.html}">
                             <span class="logo-normal">
                                <img alt="logo" class="img-fluid" loading="lazy"
                                     th:src="@{/frontend/assets/images/logo/logo.png}">
@@ -119,7 +119,7 @@
                         <div class="container-fluid p-lg-0">
                             <div class="offcanvas-header px-0">
                                 <div class="navbar-brand ms-3">
-                                    <a class="navbar-brand m-0" th:href="@{/templates/frontend/home.html}">
+                                    <a class="navbar-brand m-0" th:href="@{/templates/frontend/abc.html}">
                                         <span class="logo-normal">
                                            <img alt="logo" class="img-fluid"
                                                 loading="lazy"
@@ -144,7 +144,7 @@
                                     </a>
                                     <ul class="sub-nav collapse  list-unstyled" id="homePages">
                                         <li class="nav-item">
-                                            <a class="nav-link " th:href="@{/templates/frontend/home.html}">
+                                            <a class="nav-link " th:href="@{/templates/frontend/abc.html}">
                                                 general doctor
                                             </a>
                                         </li>
@@ -926,15 +926,10 @@
                                         </span>
                                     </div>
                                 </a>
-                                <ul
-                                        aria-labelledby="navbarDropdown"
-                                        class="dropdown-menu dropdown-menu-end dropdown-user">
-                                    <li><a class="dropdown-item border-bottom"
-                                           th:href="@{/frontend/login.html}">Sign in</a></li>
-                                    <li><a class="dropdown-item"
-                                           th:href="@{/frontend/registration.html}">Sign
-                                        up</a>
-                                    </li>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-user">
+                                    <li><a class="dropdown-item border-bottom" th:href="@{/auth-view/login}">Sign in</a></li>
+                                    <li><a class="dropdown-item border-bottom" th:href="@{/auth-view/register}">Sign up</a></li>
+                                    <li><a class="dropdown-item text-danger" th:href="@{/auth-view/logout}">Logout</a></li>
                                 </ul>
                             </li>
                             <li>

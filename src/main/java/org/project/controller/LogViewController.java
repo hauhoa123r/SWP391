@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class LogViewController {
 
     private static final String LOG_FILE_PATH = "logs/request.log";
-    private static final int PAGE_SIZE = 10; // Số log mỗi trang
+    private static final int PAGE_SIZE = 10;
 
     @GetMapping
     public String viewLogs(
@@ -47,7 +47,6 @@ public class LogViewController {
                     .filter(group -> {
                         for (String line : group) {
                             if (line.contains("Người dùng:")) {
-                                // Trích xuất email từ dòng "Người dùng: email (vai trò: ROLE_PATIENT)"
                                 int startIndex = line.indexOf("Người dùng:") + "Người dùng:".length();
                                 int endIndex = line.indexOf(" (vai trò:");
                                 if (startIndex >= 0 && endIndex > startIndex) {
@@ -61,16 +60,15 @@ public class LogViewController {
                     .collect(Collectors.toList());
         }
 
-        // Tính toán phân trang
+
         int totalLogs = logBlocks.size();
         int totalPages = (int) Math.ceil((double) totalLogs / PAGE_SIZE);
         int startIndex = page * PAGE_SIZE;
         int endIndex = Math.min(startIndex + PAGE_SIZE, totalLogs);
 
-        // Lấy danh sách log cho trang hiện tại
+
         List<List<String>> pagedLogs = (totalLogs > 0) ? logBlocks.subList(startIndex, endIndex) : new ArrayList<>();
 
-        // Truyền dữ liệu vào model
         model.addAttribute("logs", pagedLogs);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);

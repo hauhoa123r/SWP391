@@ -173,12 +173,13 @@ public class UserService implements IUserService {
                 redirectUrl = "redirect:/admin";
                 break;
             case PATIENT:
-                redirectUrl = "redirect:/home";
+                redirectUrl = "redirect:/";
                 break;
             case STAFF:
                 if (user.getStaffEntity() != null && user.getStaffEntity().getStaffRole() != null) {
                     switch (user.getStaffEntity().getStaffRole()) {
-
+                        case DOCTOR:
+                            redirectUrl = "redirect:/doctor";
                         case PHARMACIST:
                             redirectUrl = "redirect:/staff/pharmacy";
                             break;

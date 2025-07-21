@@ -11,6 +11,8 @@ spring:
           starttls:
             enable: true
 
+
+
 #  thymeleaf:
 #    prefix: classpath:/templates/frontend/
 #    suffix: .html

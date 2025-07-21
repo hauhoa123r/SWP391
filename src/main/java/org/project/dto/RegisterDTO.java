@@ -38,6 +38,6 @@ public class RegisterDTO {
     @NotNull(message = "Vui lòng chọn giới tính.")
     private Gender gender;
 
-    @NotBlank(message = "Vui lòng chọn quan hệ với bệnh nhân.")
+    @NotNull(message = "Vui lòng chọn quan hệ với bệnh nhân.")
     private FamilyRelationship familyRelationship;
 }

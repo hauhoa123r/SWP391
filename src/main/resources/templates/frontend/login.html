@@ -39,7 +39,7 @@
     <div class="auth-card">
 
         <div class="logo-img text-center mb-4">
-            <a href="home.html" class="navbar-brand m-0">
+            <a href="abc.html" class="navbar-brand m-0">
                 <img src="/assets/images/logo/logo.png" alt="logo" class="img-fluid">
             </a>
         </div>
@@ -118,7 +118,7 @@
             });
 
             if (res.ok) {
-                window.location.href = "/home";
+                window.location.href = "/";
             } else {
                 const data = await res.json().catch(() => ({}));
                 alert("Google login failed: " + (data.message || "Unknown error"));
