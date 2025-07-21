@@ -93,8 +93,8 @@
                     <div class="day-number fw-bold text-end pe-1" th:text="${#strings.substring(date, 8, 10)}">01</div>
 
                     <!-- Nếu có ca trực -->
-                    <div th:if="${shiftsMap[date] != null and !#lists.isEmpty(shiftsMap[date])}">
-                        <div th:each="slot : ${shiftsMap[date]}" class="mb-1">
+                    <div th:if="${shiftsMap[date.toString()] != null and !#lists.isEmpty(shiftsMap[date.toString()])}">
+                        <div th:each="slot : ${shiftsMap[date.toString()]}" class="mb-1">
                             <span class="badge w-100 text-center py-1"
                                   style="font-size: 0.7rem; font-weight: bold;"
                                   th:classappend="${slot.name() == 'MORNING'} ? 'bg-warning text-dark' :

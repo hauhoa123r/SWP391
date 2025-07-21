@@ -70,7 +70,7 @@
             <p><span class="info-label">Ngày khám:</span> <span class="info-value" th:text="${#dates.format(appointment.startTime, 'dd/MM/yyyy HH:mm')}" th:if="${appointment.startTime != null}"></span></p>
         </div>
         <div class="col-md-6">
-            <p><span class="info-label">Phòng khám:</span> <span class="info-value" th:text="${appointment.roomName}"></span></p>
+            <p><span class="info-label">Phòng khám:</span> <span class="info-value" th:text="${appointment.doctorEntity.staffEntity.hospitalEntity.name}"></span></p>
         </div>
     </div>
 </div>
@@ -79,7 +79,7 @@
 <div class="card p-4" th:if="${order != null}">
     <h5><i class="fas fa-receipt section-icon"></i>Thông tin đơn hàng</h5>
     <p><span class="info-label">Mã đơn:</span> <span class="info-value" th:text="${order.id}"></span></p>
-    <p><span class="info-label">Trạng thái đơn:</span> <span class="info-value" th:text="${order.status}"></span></p>
+    <p><span class="info-label">Trạng thái đơn:</span> <span class="info-value" th:text="${order.orderStatus}"></span></p>
 </div>
 
 <!-- Nút quay lại -->

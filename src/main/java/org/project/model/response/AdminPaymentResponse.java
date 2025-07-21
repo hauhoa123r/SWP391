@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.project.enums.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -21,6 +22,7 @@ public class AdminPaymentResponse {
     private Long orderId;
     private BigDecimal amount;
     private Timestamp paymentTime;
+    private PaymentStatus paymentStatus;
     // Có thể thêm method, status, v.v nếu database có cột.
 
 }
