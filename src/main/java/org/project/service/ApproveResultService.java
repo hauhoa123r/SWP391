@@ -7,4 +7,7 @@ import org.springframework.data.domain.Page;
 public interface ApproveResultService
 {
     Page<ApproveResultFilterResponse> getAllApproveResult(ApproveResultDTO approveResultDTO) throws IllegalAccessException;
+
+
+    Boolean isApproveResultExist(Long id);
 }
