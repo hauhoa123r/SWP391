@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Nhân viên Đã bị Vô hiệu hóa</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+</head>
+<body>
+<div class="container mt-4">
+    <h2 class="mb-4 text-danger">Danh sách Nhân viên Đã bị Vô hiệu hóa</h2>
+
+    <div th:if="${staffPage.content.size() == 0}" class="alert alert-warning">
+        Không có nhân viên nào đã bị vô hiệu hóa.
+    </div>
+
+    <div th:if="${staffPage.content.size() > 0}">
+        <table class="table table-bordered table-hover shadow-sm">
+            <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Điện thoại</th>
+                <th>Vai trò</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="staff, iter : ${staffPage.content}">
+                <td th:text="${iter.index + 1 + currentPage * 10}">1</td>
+                <td th:text="${staff.fullName}">Nguyễn Văn A</td>
+                <td th:text="${staff.email}">email@example.com</td>
+                <td th:text="${staff.phoneNumber}">0123456789</td>
+                <td th:text="${staff.staffRole}">DOCTOR</td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <!-- Khôi phục -->
+                        <form th:action="@{'/admin/staffs/restore/' + ${staff.id}}" method="post">
+                            <button type="submit" class="btn btn-success btn-sm">
+                                <i class="bi bi-arrow-counterclockwise"></i> Khôi phục
+                            </button>
+                        </form>
+
+                        <!-- Xóa vĩnh viễn -->
+                        <form th:action="@{'/admin/staffs/delete-permanent/' + ${staff.id}}" method="post"
+                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa vĩnh viễn nhân viên này?');">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash-fill"></i> Xóa vĩnh viễn
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+        <nav th:if="${totalPages > 1}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/admin/staffs/deleted(page=${currentPage - 1})}">Trước</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{/admin/staffs/deleted(page=${i})}"
+                       th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{/admin/staffs/deleted(page=${currentPage + 1})}">Tiếp</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

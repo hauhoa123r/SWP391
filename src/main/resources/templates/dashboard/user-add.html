@@ -2,77 +2,73 @@
 
 <!doctype html>
 <html lang="en" class="theme-fs-sm" data-bs-theme="light" data-bs-theme-color="default" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title data-setting="app_name" data-rightJoin=" Clinic And Patient Management Dashboard">KiviCare  Clinic And Patient Management Dashboard</title>
-        <meta name="description" content="KiviCare is a revolutionary Bootstrap Admin Dashboard Template and UI Components Library. The Admin Dashboard Template and UI Component features 8 modules.">
-        <meta name="keywords" content="premium, admin, dashboard, template, bootstrap 5, clean ui, Kivicare, admin dashboard,responsive dashboard, optimized dashboard,">
-        <meta name="author" content="Iqonic Design">
-        <meta name="DC.title" content="KiviCare Clinic And Patient Management Dashboard">
-        <!-- Config Options -->
-        <meta name="setting_options" content='{&quot;saveLocal&quot;:&quot;sessionStorage&quot;,&quot;storeKey&quot;:&quot;kivicare&quot;,&quot;setting&quot;:{&quot;app_name&quot;:{&quot;value&quot;:&quot;KiviCare&quot;},&quot;theme_scheme_direction&quot;:{&quot;value&quot;:&quot;ltr&quot;},&quot;theme_scheme&quot;:{&quot;value&quot;:&quot;light&quot;},&quot;theme_style_appearance&quot;:{&quot;value&quot;:[&quot;theme-default&quot;]},&quot;theme_color&quot;:{&quot;value&quot;:&quot;default&quot;},&quot;theme_transition&quot;:{&quot;value&quot;:&quot;theme-with-animation&quot;},&quot;theme_font_size&quot;:{&quot;value&quot;:&quot;theme-fs-sm&quot;},&quot;page_layout&quot;:{&quot;value&quot;:&quot;container-fluid&quot;},&quot;header_navbar&quot;:{&quot;value&quot;:&quot;default&quot;},&quot;header_banner&quot;:{&quot;value&quot;:&quot;default&quot;},&quot;sidebar_color&quot;:{&quot;value&quot;:&quot;sidebar-white&quot;},&quot;card_color&quot;:{&quot;value&quot;:&quot;card-default&quot;},&quot;sidebar_type&quot;:{&quot;value&quot;:[]},&quot;sidebar_menu_style&quot;:{&quot;value&quot;:&quot;text-hover&quot;},&quot;footer&quot;:{&quot;value&quot;:&quot;default&quot;},&quot;body_font_family&quot;:{&quot;value&quot;:null},&quot;heading_font_family&quot;:{&quot;value&quot;:null}}}'>
-        <!-- Google Font Api KEY-->
-        <meta name="google_font_api" content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
-        <!-- Favicon -->
-        <link rel="shortcut icon" th:href="@{/assets/images/favicon.ico}" />
+<head>
+    <meta name="description"
+          content="KiviCare is a revolutionary Bootstrap Admin Dashboard Template and UI Components Library. The Admin Dashboard Template and UI Component features 8 modules.">
+    <meta name="keywords"
+          content="premium, admin, dashboard, template, bootstrap 5, clean ui, Kivicare, admin dashboard,responsive dashboard, optimized dashboard,">
+    <meta name="author" content="Iqonic Design">
+    <meta name="DC.title" content="KiviCare Clinic And Patient Management Dashboard">
+    <!-- Config Options -->
+    <meta name="setting_options"
+          content='{&quot;saveLocal&quot;:&quot;sessionStorage&quot;,&quot;storeKey&quot;:&quot;kivicare&quot;,&quot;setting&quot;:{&quot;app_name&quot;:{&quot;value&quot;:&quot;KiviCare&quot;},&quot;theme_scheme_direction&quot;:{&quot;value&quot;:&quot;ltr&quot;},&quot;theme_scheme&quot;:{&quot;value&quot;:&quot;light&quot;},&quot;theme_style_appearance&quot;:{&quot;value&quot;:[&quot;theme-default&quot;]},&quot;theme_color&quot;:{&quot;value&quot;:&quot;default&quot;},&quot;theme_transition&quot;:{&quot;value&quot;:&quot;theme-with-animation&quot;},&quot;theme_font_size&quot;:{&quot;value&quot;:&quot;theme-fs-sm&quot;},&quot;page_layout&quot;:{&quot;value&quot;:&quot;container-fluid&quot;},&quot;header_navbar&quot;:{&quot;value&quot;:&quot;default&quot;},&quot;header_banner&quot;:{&quot;value&quot;:&quot;default&quot;},&quot;sidebar_color&quot;:{&quot;value&quot;:&quot;sidebar-white&quot;},&quot;card_color&quot;:{&quot;value&quot;:&quot;card-default&quot;},&quot;sidebar_type&quot;:{&quot;value&quot;:[]},&quot;sidebar_menu_style&quot;:{&quot;value&quot;:&quot;text-hover&quot;},&quot;footer&quot;:{&quot;value&quot;:&quot;default&quot;},&quot;body_font_family&quot;:{&quot;value&quot;:null},&quot;heading_font_family&quot;:{&quot;value&quot;:null}}}'>
+    <!-- Google Font Api KEY-->
+    <meta name="google_font_api" content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/dashboard/assets/images/favicon.ico"/>
 
-        <!-- Library / Plugin Css Build -->
-        <link rel="stylesheet" th:href="@{/assets/css/core/libs.min.css}" />
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/dashboard/assets/css/core/libs.min.css"/>
 
-        <!-- flaticon css -->
-        <link rel="stylesheet" th:href="@{/assets/vendor/flaticon/css/flaticon.css}" />
+    <!-- flaticon css -->
+    <link rel="stylesheet" href="/dashboard/assets/vendor/flaticon/css/flaticon.css"/>
 
-        <!-- font-awesome css -->
-        <link rel="stylesheet" th:href="@{/assets/vendor/font-awesome/css/all.min.css}" />
+    <!-- font-awesome css -->
+    <link rel="stylesheet" href="/dashboard/assets/vendor/font-awesome/css/all.min.css"/>
 
-        <!-- Flatpickr css -->
-        <link rel="stylesheet" th:href="@{/assets/vendor/flatpickr/dist/flatpickr.min.css}" />
-
-
+    <!-- Flatpickr css -->
+    <link rel="stylesheet" href="/dashboard/assets/vendor/flatpickr/dist/flatpickr.min.css"/>
 
 
+    <!-- Kivicare Design System Css -->
+    <link rel="stylesheet" href="/dashboard/assets/css/kivicare.min.css?v=1.4.1"/>
 
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/dashboard/assets/css/custom.min.css?v=1.4.1"/>
 
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/dashboard/assets/css/rtl.min.css?v=1.4.1"/>
 
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/dashboard/assets/css/customizer.min.css?v=1.4.1"/>
 
-        <!-- Kivicare Design System Css -->
-        <link rel="stylesheet" th:href="@{/assets/css/kivicare.min.css?v=1.4.1}" />
-
-        <!-- Custom Css -->
-        <link rel="stylesheet" th:href="@{/assets/css/custom.min.css?v=1.4.1}" />
-
-        <!-- RTL Css -->
-        <link rel="stylesheet" th:href="@{/assets/css/rtl.min.css?v=1.4.1}"/>
-
-        <!-- Customizer Css -->
-        <link rel="stylesheet" th:href="@{/assets/css/customizer.min.css?v=1.4.1}"/>
-
-        <!-- Google Font -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">    </head>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap"
+          rel="stylesheet">
+</head>
     <body class="  ">
         <!-- loader Start -->
         <div id="loading">
         <div class="loader simple-loader">
             <div class="loader-body">
-                <img th:src="@{/assets/images/loader.gif}" alt="loader" class="light-loader img-fluid " width="200">
+                <img src="/dashboard/assets/images/loader.gif" alt="loader" class="light-loader img-fluid " width="200">
             </div>
         </div>        </div>
         <!-- loader END -->
             <aside class="sidebar sidebar-base " id="first-tour" data-toggle="main-sidebar" data-sidebar="responsive">
                 <div class="sidebar-header d-flex align-items-center justify-content-start position-relative">
-                    <a href="../index.html" class="navbar-brand">
+                    <a href="/dashboard/index.html" class="navbar-brand">
 
                         <!--Logo start-->
                         <div class="logo-main">
-                            <img class="logo-normal img-fluid" src="../assets/images/logo.png" height="30" alt="logo">
-                            <img class="logo-normal dark-normal img-fluid" src="../assets/images/logo-dark.png" height="30" alt="logo">
-                            <img class="logo-normal white-normal img-fluid" src="../assets/images/logo-white.png" height="30" alt="logo">
-                            <img class="logo-mini img-fluid" src="../assets/images/logo-mini.png" height="30" alt="logo">
-                            <img class="logo-mini dark-mini img-fluid" src="../assets/images/logo-mini-dark.png" height="30" alt="logo">
-                            <img class="logo-mini white-mini img-fluid" src="../assets/images/logo-mini-white.png" height="30" alt="logo">
+                            <img class="logo-normal img-fluid" src="/dashboard/assets/images/logo.png" height="30" alt="logo">
+                            <img class="logo-normal dark-normal img-fluid" src="/dashboard/assets/images/logo-dark.png" height="30" alt="logo">
+                            <img class="logo-normal white-normal img-fluid" src="/dashboard/assets/images/logo-white.png" height="30" alt="logo">
+                            <img class="logo-mini img-fluid" src="/dashboard/assets/images/logo-mini.png" height="30" alt="logo">
+                            <img class="logo-mini dark-mini img-fluid" src="/dashboard/assets/images/logo-mini-dark.png" height="30" alt="logo">
+                            <img class="logo-mini white-mini img-fluid" src="/dashboard/assets/images/logo-mini-white.png" height="30" alt="logo">
                         </div>
                         <!--logo End-->        </a>
                     <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
@@ -116,7 +112,7 @@
                                 <ul class="sub-nav collapse" id="dashboard" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link " aria-current="page"
-                                            href="../index.html">
+                                            href="/dashboard/index.html">
                                             <i class="icon" data-bs-toggle="tooltip" title="Dashboard" data-bs-placement="right">
                                                 <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -132,7 +128,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link " aria-current="page"
-                                            href="../patient-dashboard.html">
+                                            href="/dashboard/patient-dashboard.html">
                                             <i class="icon" data-bs-toggle="tooltip" title="Dashboard" data-bs-placement="right">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" fill="none">
                                                     <path opacity="0.4"
@@ -155,7 +151,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="../appointment.html">
+                                    href="/dashboard/appointment.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Appointment" data-bs-placement="right">
                                         <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -177,7 +173,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="../report.html">
+                                    href="/dashboard/report.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Report" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -278,7 +274,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="../helpsupport.html">
+                                    href="/dashboard/helpsupport.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Help & Support" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -294,7 +290,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="../setting.html">
+                                    href="/dashboard/setting.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Setting" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -319,7 +315,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="../component.html">
+                                    href="/dashboard/component.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Components" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -338,7 +334,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="../ui-color.html">
+                                    href="/dashboard/ui-color.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Colors" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -375,7 +371,7 @@
                                 <ul class="sub-nav collapse" id="auth-skins" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../auth/sign-in.html">
+                                            href="/dashboard/auth/sign-in.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -391,7 +387,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../auth/sign-up.html">
+                                            href="/dashboard/auth/sign-up.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -407,7 +403,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../auth/confirm-mail.html">
+                                            href="/dashboard/auth/confirm-mail.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -423,7 +419,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../auth/recoverpw.html">
+                                            href="/dashboard/auth/recoverpw.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -439,7 +435,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../auth/lock-screen.html">
+                                            href="/dashboard/auth/lock-screen.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -476,7 +472,7 @@
                                 </a>
                                 <ul class="sub-nav collapse" id="sidebar-user" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
-                                        <a class="nav-link " href="../app/user-profile.html">
+                                        <a class="nav-link " href="/dashboard/app/user-profile.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -489,7 +485,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" href="../app/user-add.html">
+                                        <a class="nav-link active" href="/dashboard/app/user-add.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -502,7 +498,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link " href="../app/user-list.html">
+                                        <a class="nav-link " href="/dashboard/app/user-list.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -540,7 +536,7 @@
                                 <ul class="sub-nav collapse" id="utilities-error" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../errors/maintenance.html">
+                                            href="/dashboard/errors/maintenance.html">
                                             <i class="icon" data-bs-toggle="tooltip" title="Maintenance" data-bs-placement="right">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -556,7 +552,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../errors/error404.html">
+                                            href="/dashboard/errors/error404.html">
                                             <i class="icon" data-bs-toggle="tooltip" title="Error 404" data-bs-placement="right">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -572,7 +568,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../errors/error500.html">
+                                            href="/dashboard/errors/error500.html">
                                             <i class="icon" data-bs-toggle="tooltip" title="Error 500" data-bs-placement="right">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -612,7 +608,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-widget" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../widget/widgetbasic.html">
+                                            href="/dashboard/widget/widgetbasic.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -628,7 +624,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../widget/widgetchart.html">
+                                            href="/dashboard/widget/widgetchart.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -644,7 +640,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../widget/widgetcard.html">
+                                            href="/dashboard/widget/widgetcard.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -682,7 +678,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-maps" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../maps/google.html">
+                                            href="/dashboard/maps/google.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -698,7 +694,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../maps/vector.html">
+                                            href="/dashboard/maps/vector.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -738,7 +734,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-form" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../form/form-element.html">
+                                            href="/dashboard/form/form-element.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -754,7 +750,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../form/form-validation.html">
+                                            href="/dashboard/form/form-validation.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -793,7 +789,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-table" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../table/bootstrap-table.html">
+                                            href="/dashboard/table/bootstrap-table.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -809,7 +805,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../table/table-data.html">
+                                            href="/dashboard/table/table-data.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -825,7 +821,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../table/border-table.html">
+                                            href="/dashboard/table/border-table.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -841,7 +837,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../table/fancy-table.html">
+                                            href="/dashboard/table/fancy-table.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -857,7 +853,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../table/fixed-table.html">
+                                            href="/dashboard/table/fixed-table.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -896,7 +892,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-icons" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../icons/solid.html">
+                                            href="/dashboard/icons/solid.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -912,7 +908,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../icons/outline.html">
+                                            href="/dashboard/icons/outline.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -928,7 +924,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="../icons/dual-tone.html">
+                                            href="/dashboard/icons/dual-tone.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -960,16 +956,16 @@
             <!--Nav Start-->
                     <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar">
                        <div class="container-fluid navbar-inner">
-                          <a href="../index.html" class="navbar-brand">
+                          <a href="/dashboard/index.html" class="navbar-brand">
 
                              <!--Logo start-->
                              <div class="logo-main">
-                                 <img class="logo-normal img-fluid" src="../assets/images/logo.png" height="30" alt="logo">
-                                 <img class="logo-normal dark-normal img-fluid" src="../assets/images/logo-dark.png" height="30" alt="logo">
-                                 <img class="logo-normal white-normal img-fluid" src="../assets/images/logo-white.png" height="30" alt="logo">
-                                 <img class="logo-mini img-fluid" src="../assets/images/logo-mini.png" height="30" alt="logo">
-                                 <img class="logo-mini dark-mini img-fluid" src="../assets/images/logo-mini-dark.png" height="30" alt="logo">
-                                 <img class="logo-mini white-mini img-fluid" src="../assets/images/logo-mini-white.png" height="30" alt="logo">
+                                 <img class="logo-normal img-fluid" src="/dashboard/assets/images/logo.png" height="30" alt="logo">
+                                 <img class="logo-normal dark-normal img-fluid" src="/dashboard/assets/images/logo-dark.png" height="30" alt="logo">
+                                 <img class="logo-normal white-normal img-fluid" src="/dashboard/assets/images/logo-white.png" height="30" alt="logo">
+                                 <img class="logo-mini img-fluid" src="/dashboard/assets/images/logo-mini.png" height="30" alt="logo">
+                                 <img class="logo-mini dark-mini img-fluid" src="/dashboard/assets/images/logo-mini-dark.png" height="30" alt="logo">
+                                 <img class="logo-mini white-mini img-fluid" src="/dashboard/assets/images/logo-mini-white.png" height="30" alt="logo">
                              </div>
                              <!--logo End-->      </a>
                           <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
@@ -1079,7 +1075,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../assets/images/shapes/01.png" loading="lazy" />
+                                                     src="/dashboard/assets/images/shapes/01.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Biker’s Jacket</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1101,7 +1097,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../assets/images/shapes/02.png" loading="lazy" />
+                                                     src="/dashboard/assets/images/shapes/02.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Casual Shoes</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1123,7 +1119,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../assets/images/shapes/03.png" loading="lazy" />
+                                                     src="/dashboard/assets/images/shapes/03.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Knitted Shrug</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1145,7 +1141,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../assets/images/shapes/04.png" loading="lazy" />
+                                                     src="/dashboard/assets/images/shapes/04.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Blue Handbag</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1167,7 +1163,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../assets/images/shapes/01.png" loading="lazy" />
+                                                     src="/dashboard/assets/images/shapes/01.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Biker’s Jacket</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1189,7 +1185,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../assets/images/shapes/02.png" loading="lazy" />
+                                                     src="/dashboard/assets/images/shapes/02.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Casual Shoes</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1211,7 +1207,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../assets/images/shapes/03.png" loading="lazy" />
+                                                     src="/dashboard/assets/images/shapes/03.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Knitted Shrug</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1233,7 +1229,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../assets/images/shapes/04.png" loading="lazy" />
+                                                     src="/dashboard/assets/images/shapes/04.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Blue Handbag</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1582,9 +1578,9 @@
                                             <input type="radio" value="ltr" class="btn-check" name="theme_scheme_direction"
                                                 data-prop="dir" id="theme-scheme-direction-ltr" checked>
                                             <label class="btn btn-border d-block p-0" for="theme-scheme-direction-ltr">
-                                                <img src="../assets/images/settings/dark/01.png" alt="ltr"
+                                                <img src="/dashboard/assets/images/settings/dark/01.png" alt="ltr"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/01.png" alt="ltr"
+                                                <img src="/dashboard/assets/images/settings/light/01.png" alt="ltr"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class=" mt-2"> LTR </span>
@@ -1593,9 +1589,9 @@
                                             <input type="radio" value="rtl" class="btn-check" name="theme_scheme_direction"
                                                 data-prop="dir" id="theme-scheme-direction-rtl">
                                             <label class="btn btn-border d-block p-0" for="theme-scheme-direction-rtl">
-                                                <img src="../assets/images/settings/dark/02.png" alt="ltr"
+                                                <img src="/dashboard/assets/images/settings/dark/02.png" alt="ltr"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/02.png" alt="ltr"
+                                                <img src="/dashboard/assets/images/settings/light/02.png" alt="ltr"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class=" mt-2"> RTL </span>
@@ -1841,9 +1837,9 @@
                                             <input type="checkbox" value="sidebar-mini" class="btn-check" name="sidebar_type"
                                                 id="sidebar-mini">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-mini">
-                                                <img src="../assets/images/settings/dark/03.png" alt="mini"
+                                                <img src="/dashboard/assets/images/settings/dark/03.png" alt="mini"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/03.png" alt="mini"
+                                                <img src="/dashboard/assets/images/settings/light/03.png" alt="mini"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Mini</span>
@@ -1853,9 +1849,9 @@
                                                 data-extra="{target: '.sidebar', ClassListAdd: 'sidebar-mini'}"
                                                 class="btn-check" name="sidebar_type" id="sidebar-hover">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-hover">
-                                                <img src="../assets/images/settings/dark/04.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/dark/04.png" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/04.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/light/04.png" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Hover</span>
@@ -1864,9 +1860,9 @@
                                             <input type="checkbox" value="sidebar-boxed" class="btn-check" name="sidebar_type"
                                                 id="sidebar-boxed">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-boxed">
-                                                <img src="../assets/images/settings/dark/05.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/dark/05.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/05.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/light/05.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Boxed</span>
@@ -1875,9 +1871,9 @@
                                             <input type="checkbox" value="sidebar-soft" class="btn-check" name="sidebar_type"
                                                 id="sidebar-soft">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-soft">
-                                                <img src="../assets/images/settings/dark/05.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/dark/05.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/05.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/light/05.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Soft</span>
@@ -1898,9 +1894,9 @@
                                             <input type="radio" value="sidebar-default navs-rounded" class="btn-check" name="sidebar_menu_style"
                                                 id="navs-rounded">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-rounded">
-                                                <img src="../assets/images/settings/dark/06.png" alt="mini"
+                                                <img src="/dashboard/assets/images/settings/dark/06.png" alt="mini"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/06.png" alt="mini"
+                                                <img src="/dashboard/assets/images/settings/light/06.png" alt="mini"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Rounded One Side</span>
@@ -1909,9 +1905,9 @@
                                             <input type="radio" value="sidebar-default navs-rounded-all" class="btn-check"
                                                 name="sidebar_menu_style" id="navs-rounded-all">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-rounded-all">
-                                                <img src="../assets/images/settings/dark/07.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/dark/07.png" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/07.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/light/07.png" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Rounded All</span>
@@ -1920,9 +1916,9 @@
                                             <input type="radio" value="sidebar-default navs-pill" class="btn-check" name="sidebar_menu_style"
                                                 id="navs-pill">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-pill">
-                                                <img src="../assets/images/settings/dark/08.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/dark/08.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/08.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/light/08.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Pill One Side</span>
@@ -1931,9 +1927,9 @@
                                             <input type="radio" value="sidebar-default navs-pill-all" class="btn-check"
                                                 name="sidebar_menu_style" id="navs-pill-all">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-pill-all">
-                                                <img src="../assets/images/settings/dark/09.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/dark/09.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/09.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/light/09.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Pill All</span>
@@ -1942,9 +1938,9 @@
                                             <input type="radio" value="text-hover" class="btn-check"
                                                 name="sidebar_menu_style" id="text-hover" checked>
                                             <label class="btn btn-border position-relative p-0 d-block overflow-hidden" for="text-hover">
-                                                <img src="../assets/images/settings/dark/14.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/dark/14.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/14.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/light/14.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Text Color</span>
@@ -1953,9 +1949,9 @@
                                             <input type="radio" value="sidebar-default navs-full-width" class="btn-check"
                                                 name="sidebar_menu_style" id="navs-full-width">
                                             <label class="btn btn-border position-relative p-0 d-block overflow-hidden" for="navs-full-width">
-                                                <img src="../assets/images/settings/dark/15.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/dark/15.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/15.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/light/15.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Full Width</span>
@@ -1974,9 +1970,9 @@
                                             <input type="radio" value="nav-glass" class="btn-check" name="header_navbar"
                                                 id="nav-glass">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="nav-glass">
-                                                <img src="../assets/images/settings/dark/10.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/dark/10.png" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/10.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/light/10.png" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Glass</span>
@@ -1985,9 +1981,9 @@
                                             <input type="radio" value="navs-sticky" class="btn-check" name="header_navbar"
                                                 id="navs-sticky">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-sticky">
-                                                <img src="../assets/images/settings/dark/04.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/dark/04.png" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/04.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/light/04.png" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Sticky</span>
@@ -1996,9 +1992,9 @@
                                             <input type="radio" value="navs-transparent" class="btn-check" name="header_navbar"
                                                 id="navs-transparent">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-transparent">
-                                                <img src="../assets/images/settings/dark/12.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/dark/12.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/12.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/light/12.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Transparent</span>
@@ -2007,9 +2003,9 @@
                                             <input type="radio" value="navs-default" class="btn-check" name="header_navbar"
                                                 id="navs-default" checked>
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-default">
-                                                <img src="../assets/images/settings/dark/01.png" alt="default"
+                                                <img src="/dashboard/assets/images/settings/dark/01.png" alt="default"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/01.png" alt="default"
+                                                <img src="/dashboard/assets/images/settings/light/01.png" alt="default"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Default</span>
@@ -2065,9 +2061,9 @@
                                             <input type="radio" value="navs-bg-color" class="btn-check" name="header_banner"
                                                 id="header-banner-color">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="header-banner-color">
-                                                <img src="../assets/images/settings/dark/11.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/dark/11.png" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/11.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/light/11.png" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Color</span>
@@ -2077,9 +2073,9 @@
                                                 id="header-banner-default">
                                             <label class="btn btn-border p-0 d-block overflow-hidden"
                                                 for="header-banner-default">
-                                                <img src="../assets/images/settings/dark/04.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/dark/04.png" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/04.png" alt="hover"
+                                                <img src="/dashboard/assets/images/settings/light/04.png" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Image</span>
@@ -2088,9 +2084,9 @@
                                             <input type="radio" value="hide" class="btn-check" name="header_banner"
                                                 id="hide-banner" checked>
                                             <label class="btn btn-border position-relative p-0 d-block overflow-hidden" for="hide-banner">
-                                                <img src="../assets/images/settings/dark/05.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/dark/05.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../assets/images/settings/light/05.png" alt="boxed"
+                                                <img src="/dashboard/assets/images/settings/light/05.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Hide</span>
@@ -2325,52 +2321,52 @@
 
 
         <!-- Library Bundle Script -->
-        <script th:src="@{/assets/js/core/libs.min.js}"></script>
+        <script th:src="@{/dashboard/assets/js/core/libs.min.js}"></script>
         <!-- Plugin Scripts -->
 
         <!-- Flatpickr Script -->
-        <script th:src="@{/assets/vendor/flatpickr/dist/flatpickr.min.js}"></script>
-        <script th:src="@{/assets/js/plugins/flatpickr.js}" defer></script>
+        <script th:src="@{/dashboard/assets/vendor/flatpickr/dist/flatpickr.min.js}"></script>
+        <script th:src="@{/dashboard/assets/js/plugins/flatpickr.js}" defer></script>
 
 
 
         <!-- Slider-tab Script -->
-        <script th:src="@{/assets/js/plugins/slider-tabs.js}"></script>
+        <script th:src="@{/dashboard/assets/js/plugins/slider-tabs.js}"></script>
 
 
         <!-- fslightbox Script -->
-        <script th:src="@{/assets/js/plugins/fslightbox.js}" defer></script>
+        <script th:src="@{/dashboard/assets/js/plugins/fslightbox.js}" defer></script>
 
 
 
 
           <!-- Select2 Script -->
-          <script th:src="@{/assets/js/plugins/select2.js}" defer></script>
+          <script th:src="@{/dashboard/assets/js/plugins/select2.js}" defer></script>
 
 
 
 
         <!-- Lodash Utility -->
-        <script th:src="@{/assets/vendor/lodash/lodash.min.js}"></script>
+        <script th:src="@{/dashboard/assets/vendor/lodash/lodash.min.js}"></script>
         <!-- Utilities Functions -->
-        <script th:src="@{/assets/js/iqonic-script/utility.min.js}"></script>
+        <script th:src="@{/dashboard/assets/js/iqonic-script/utility.min.js}"></script>
         <!-- Settings Script -->
-        <script th:src="@{/assets/js/iqonic-script/setting.min.js}"></script>
+        <script th:src="@{/dashboard/assets/js/iqonic-script/setting.min.js}"></script>
         <!-- Settings Init Script -->
-        <script th:src="@{/assets/js/setting-init.js}"></script>
+        <script th:src="@{/dashboard/assets/js/setting-init.js}"></script>
         <!-- External Library Bundle Script -->
-        <script th:src="@{/assets/js/core/external.min.js}"></script>
+        <script th:src="@{/dashboard/assets/js/core/external.min.js}"></script>
         <!-- Widgetchart Script -->
-        <script th:src="@{/assets/js/charts/widgetcharts.js?v=1.4.1}" defer></script>
+        <script th:src="@{/dashboard/assets/js/charts/widgetcharts.js?v=1.4.1}" defer></script>
         <!-- Dashboard Script -->
-        <script th:src="@{/assets/js/charts/dashboard.js?v=1.4.1}" defer></script>
+        <script th:src="@{/dashboard/assets/js/charts/dashboard.js?v=1.4.1}" defer></script>
         <!-- Hopeui Script -->
-        <script th:src="@{/assets/js/kivicare.js?v=1.4.1}" defer></script>
-        <script th:src="@{/assets/js/kivicare-advance.js?v=1.4.1}" defer></script>
-        <script th:src="@{/assets/js/sidebar.js?v=1.4.1}" defer></script>
+        <script th:src="@{/dashboard/assets/js/kivicare.js?v=1.4.1}" defer></script>
+        <script th:src="@{/dashboard/assets/js/kivicare-advance.js?v=1.4.1}" defer></script>
+        <script th:src="@{/dashboard/assets/js/sidebar.js?v=1.4.1}" defer></script>
 
         <!-- Icons -->
-        <script th:src="@{/assets/js/solid-icon-search-filter.js?v=1.4.1}" defer></script>
+        <script th:src="@{/dashboard/assets/js/solid-icon-search-filter.js?v=1.4.1}" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.querySelector('form');

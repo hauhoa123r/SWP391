@@ -18,4 +18,11 @@ public interface AdminStaffService {
     StaffEntity getStaffById(Long id); // dùng nội bộ
     AdminStaffUpdateRequest getUpdateForm(Long id);
     void updateStaff(Long id, AdminStaffUpdateRequest request);
+    
+    // Soft delete methods - following UserService pattern
+    void deactivateStaff(Long id);
+    Page<AdminStaffResponse> getDeletedStaffs(Pageable pageable);
+    void restoreStaff(Long id);
+
+    void deleteStaffPermanently(Long id);
 }
