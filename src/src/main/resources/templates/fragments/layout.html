@@ -1,0 +1,41 @@
+<!-- fragments/layout.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title layout:title-pattern="$CONTENT_TITLE - KiviCare">KiviCare</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" th:href="@{/assets/images/favicon.ico}"/>
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/kivicare.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/font-awesome/css/all.min.css}">
+</head>
+<body>
+
+    <!-- Header fragment -->
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="wrapper">
+        <!-- Sidebar fragment -->
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+
+        <!-- Page content -->
+        <main class="main-content p-3">
+            <section layout:fragment="content"></section>
+        </main>
+    </div>
+
+    <!-- Footer fragment -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!-- Script fragment -->
+    <div th:replace="fragments/script :: script"></div>
+
+</body>
+</html>
+
