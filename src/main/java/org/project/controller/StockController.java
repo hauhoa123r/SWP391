@@ -6,7 +6,6 @@ import org.project.entity.InventoryManagerEntity;
 import org.project.enums.StockStatus;
 import org.project.enums.StockTransactionType;
 import org.project.model.request.StockInvoiceDTO;
-import org.project.model.request.StockRequestDTO;
 import org.project.model.response.StockInvoiceResponse;
 import org.project.model.response.StockRequestResponse;
 import org.project.repository.InventoryManagerRepository;
@@ -90,7 +89,7 @@ public class StockController {
     // Stock Request Management
     @PostMapping("/api/stock-requests")
     @ResponseBody
-    public ResponseEntity<StockRequestResponse> createStockRequest(@Valid @RequestBody StockRequestDTO stockRequestDTO) {
+    public ResponseEntity<SupplierReq> createStockRequest(@Valid @RequestBody StockRequestDTO stockRequestDTO) {
         Long inventoryManagerId = getCurrentInventoryManagerId();
         StockRequestResponse response = stockService.createStockRequest(stockRequestDTO, inventoryManagerId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
