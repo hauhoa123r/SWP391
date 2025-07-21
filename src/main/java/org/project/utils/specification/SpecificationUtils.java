@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class SpecificationUtils<T> {
@@ -70,6 +67,10 @@ public class SpecificationUtils<T> {
             return null;
         }
         GenericSpecification<T> genericSpecification = genericSpecificationObjectProvider.getObject();
+        this.searchCriteriaLogicalOperatorMap = Map.of(
+                searchCriteria,
+                LogicalOperator.AND
+        );
         genericSpecification.setSearchCriteriaLogicalOperatorMap(this.searchCriteriaLogicalOperatorMap);
         genericSpecification.setSortCriteriaLogicalOperatorMap(new HashMap<>());
         return genericSpecification;
@@ -80,6 +81,10 @@ public class SpecificationUtils<T> {
             return null;
         }
         GenericSpecification<T> genericSpecification = genericSpecificationObjectProvider.getObject();
+        this.sortCriteriaLogicalOperatorMap = Map.of(
+                sortCriteria,
+                LogicalOperator.AND
+        );
         genericSpecification.setSearchCriteriaLogicalOperatorMap(new HashMap<>());
         genericSpecification.setSortCriteriaLogicalOperatorMap(this.sortCriteriaLogicalOperatorMap);
         return genericSpecification;
@@ -134,7 +139,7 @@ public class SpecificationUtils<T> {
     }
 
     public Specification<T> getSearchSpecifications(List<SearchCriteria> searchCriterias) {
-        this.searchCriteriaLogicalOperatorMap = new HashMap<>();
+        this.searchCriteriaLogicalOperatorMap = new LinkedHashMap<>();
         for (SearchCriteria searchCriteria : searchCriterias) {
             this.searchCriteriaLogicalOperatorMap.put(searchCriteria, LogicalOperator.AND);
         }
@@ -142,7 +147,7 @@ public class SpecificationUtils<T> {
     }
 
     public Specification<T> getSortSpecifications(List<SortCriteria> sortCriterias) {
-        this.sortCriteriaLogicalOperatorMap = new HashMap<>();
+        this.sortCriteriaLogicalOperatorMap = new LinkedHashMap<>();
         for (SortCriteria sortCriteria : sortCriterias) {
             this.sortCriteriaLogicalOperatorMap.put(sortCriteria, LogicalOperator.AND);
         }

@@ -41,4 +41,7 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
 
     @Query("SELECT COUNT(pe.id) FROM PatientEntity pe")
     int countAllPatients();
+
+    @Query("FROM PatientEntity pe ORDER BY RAND() LIMIT 1")
+    PatientEntity getRandom();
 }

@@ -6,4 +6,7 @@ import java.util.List;
 public interface ReviewService {
     List<ReviewResponse> findReviewsByProductId(Long productId);
     ReviewResponse saveReview(Long productId, String reviewerName, String comment, int rating);
+    Long count5StarReviews();
+
+    List<ReviewResponse> getTop5Reviews();
 }

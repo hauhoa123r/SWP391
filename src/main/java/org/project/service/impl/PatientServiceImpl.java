@@ -43,11 +43,11 @@ import java.util.stream.Collectors;
 @Transactional
 public class PatientServiceImpl implements PatientService {
 
-private static final String AVATAR_DIR_RELATIVE =
-        Paths.get("src", "main", "resources",
-                "templates", "frontend", "assets",
-                "images", "patientAvatar")
-                .toString();
+    private static final String AVATAR_DIR_RELATIVE =
+            Paths.get("src", "main", "resources",
+                            "templates", "frontend", "assets",
+                            "images", "patientAvatar")
+                    .toString();
     //    private final ModelMapper modelMapper;
     private ModelMapper modelMapper;
     private UserRepository userRepository;
@@ -162,7 +162,7 @@ private static final String AVATAR_DIR_RELATIVE =
                     } else {
                         response.setBirthdate("N/A");
                     }
-                    if(entity.getAvatarUrl() != null) {
+                    if (entity.getAvatarUrl() != null) {
                         response.setAvatarUrl(toConvertFileToBase64(entity.getAvatarUrl()));
                     } else {
                         response.setAvatarUrl(null);
@@ -180,12 +180,12 @@ private static final String AVATAR_DIR_RELATIVE =
 
         PatientResponse response = patientConverter.toConvertResponse(patientEntity);
 
-        if(response.getBirthdate() != null) {
+        if (response.getBirthdate() != null) {
             response.setBirthdate(patientEntity.getBirthdate().toString());
         } else {
             response.setBirthdate("N/A");
         }
-        if(patientEntity.getAvatarUrl() != null) {
+        if (patientEntity.getAvatarUrl() != null) {
             response.setAvatarUrl(toConvertFileToBase64(patientEntity.getAvatarUrl()));
         } else {
             response.setAvatarUrl(null);
@@ -205,10 +205,10 @@ private static final String AVATAR_DIR_RELATIVE =
         for (Method method : methods) {
             String name = method.getName();
 
-            if("getDateOfBirth".equals(name) && method.getParameterCount() == 0) {
+            if ("getDateOfBirth".equals(name) && method.getParameterCount() == 0) {
                 try {
                     String dobStr = (String) method.invoke(patientDTO);
-                    if( dobStr != null && !dobStr.isEmpty()) {
+                    if (dobStr != null && !dobStr.isEmpty()) {
                         Date dateOfBirth = Date.valueOf(LocalDate.parse(dobStr, DateTimeFormatter.ISO_DATE));
                         patientEntity.setBirthdate(dateOfBirth);
                     }
@@ -238,7 +238,7 @@ private static final String AVATAR_DIR_RELATIVE =
                         Method setterMethod = PatientEntity.class.getMethod(setterName, method.getReturnType());
                         setterMethod.invoke(patientEntity, value);
                     }
-                } catch ( NoSuchMethodException e) {
+                } catch (NoSuchMethodException e) {
 
                 } catch (Exception e) {
                     throw new RuntimeException("Error updating patient: " + e.getMessage(), e);
@@ -267,7 +267,8 @@ private static final String AVATAR_DIR_RELATIVE =
         userRepository.findById(patientDTO.getUserId())
                 .ifPresentOrElse(patientEntity::setUserEntity,
                         () -> {
-                    throw new ResourceNotFoundException("User not found with ID: " + patientDTO.getUserId()); });
+                            throw new ResourceNotFoundException("User not found with ID: " + patientDTO.getUserId());
+                        });
 
         patientRepository.save(patientEntity);
 
@@ -311,11 +312,11 @@ private static final String AVATAR_DIR_RELATIVE =
         try {
             String extension = "png";
             String base64Data = avatarBase64;
-            if ( avatarBase64.contains(",")) {
+            if (avatarBase64.contains(",")) {
                 String[] parts = avatarBase64.split(",");
                 String meta = parts[0];
                 base64Data = parts[1];
-                if(meta.contains("image/")) {
+                if (meta.contains("image/")) {
                     extension = meta.substring(meta.indexOf(",") + 6, meta.indexOf(";"));
                 }
             }
@@ -324,7 +325,7 @@ private static final String AVATAR_DIR_RELATIVE =
 
             Path avatarDir = Paths.get(System.getProperty("user.dir"), AVATAR_DIR_RELATIVE);
             File dir = avatarDir.toFile();
-            if(!dir.exists()) {
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
 
@@ -333,7 +334,7 @@ private static final String AVATAR_DIR_RELATIVE =
                 fos.write(imageBytes);
             }
             return "templates/frontend/assets/images/patientAvatar/" + fileName;
-        } catch (IOException | IllegalArgumentException e){
+        } catch (IOException | IllegalArgumentException e) {
             return null;
         }
     }
@@ -344,14 +345,19 @@ private static final String AVATAR_DIR_RELATIVE =
         }
         try {
             ClassPathResource imgFile = new ClassPathResource(avatarUrl);
-            if( !imgFile.exists()) {
+            if (!imgFile.exists()) {
                 return null;
             }
             byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
             String avatarBase64 = Base64.getEncoder().encodeToString(bytes);
             return avatarBase64;
-        } catch ( IOException e) {
+        } catch (IOException e) {
             return null;
         }
+    }
+
+    @Override
+    public UserEntity getUserHasPatient() {
+        return patientRepository.getRandom().getUserEntity();
     }
 }

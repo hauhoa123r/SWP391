@@ -7,12 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/doctor")
 public class DoctorController {
 
     private DoctorService doctorService;
@@ -22,17 +20,17 @@ public class DoctorController {
         this.doctorService = doctorService;
     }
 
-    @GetMapping
+    @GetMapping("/doctor")
     public String getAll() {
         return "/frontend/doctor";
     }
 
-    @GetMapping("/detail/{doctorId}")
+    @GetMapping("/doctor/detail/{doctorId}")
     public String getDoctorDetail(@PathVariable Long doctorId, Model model) {
         DoctorResponse doctorResponse = doctorService.getDoctor(doctorId);
         model.addAttribute("doctor", doctorResponse);
         List<DoctorResponse> doctorResponses = doctorService.getColleagueDoctorsByDepartment(doctorResponse.getStaffEntity().getDepartmentEntity().getId(), doctorId);
         model.addAttribute("colleagueDoctors", doctorResponses);
-        return "/frontend/doctor-details";
+        return "/frontend/doctor-detail";
     }
 }
