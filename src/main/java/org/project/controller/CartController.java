@@ -48,7 +48,12 @@ public class CartController {
 		model.addAttribute("size", cartItems.size());
 		return "frontend/cart";
 	}
-
+	@PostMapping("/add-to-cart")
+	public String addToCart(@RequestParam Long userId, @RequestParam Long productId,
+							@RequestParam(defaultValue = "1") int quantity) {
+		cartService.addItem(userId, productId, quantity);
+		return "redirect:/shop";
+	}
 	// hard delete from cart
 	@PostMapping("/delete")
 	public String deleteCartItem(@RequestParam Long productId) {

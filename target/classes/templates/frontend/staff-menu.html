@@ -1821,27 +1821,34 @@
 				</svg>
 				<span class="head-title fw-500 mt-1">Staffs</span>
 			</div>
+			<!-- Check In Button -->
+			<form action="/staffs/checkin" method="post">
+				<input type="hidden" name="staffId" value="2" />
+				<button class="btn btn-primary" type="submit" th:disabled="${alreadyCheckedIn}">
+				<span class="btn-inner">
+					<span class="text d-inline-block align-middle">Check In</span>
+				</span>
+				</button>
+			</form>
+			<!-- Alrady checked in msg -->
+			<div th:if="${alreadyCheckedIn}" class="text-muted mt-2">
+				✅ You've already checked in today.
+			</div>
+			<!--  Success msg -->
+			<div th:if="${successMessage}" class="alert alert-success" role="alert">
+				<span th:text="${successMessage}"></span>
+			</div>
+
+			<!--  Error msg -->
+			<div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+				<span th:text="${errorMessage}"></span>
+			</div>
+
 			<div class="card" th:each="entry : ${staffs}">
 				<div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
 					<div class="role-section">
 						<h4 th:text="${entry.key.value}">Role</h4>
 					</div>
-
-					<!-- Check In Button -->
-					<a class="btn btn-primary" href="/staffs/checkin" type="button" data-bs-toggle="offcanvas"
-						data-bs-target="#offcanvasAddDoctor" aria-controls="offcanvasAddDoctor">
-						<span class="btn-inner">
-							<span class="text d-inline-block align-middle">Check In</span>
-							<span class="icon d-inline-block align-middle ms-1 ps-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8"
-									fill="none">
-									<path
-										d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-										fill="currentColor" />
-								</svg>
-							</span>
-						</span>
-					</a>
 				</div>
 
 				<div class="card-body pt-0">

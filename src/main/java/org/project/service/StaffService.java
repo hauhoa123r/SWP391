@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 public interface StaffService {
 	StaffEntity getStaffById(Long id);
 
+	boolean hasCheckedInToday(Long employeeId);
+
 	boolean processCheckIn(Long employeeId);
 
 	List<StaffEntity> getAllStaff();
