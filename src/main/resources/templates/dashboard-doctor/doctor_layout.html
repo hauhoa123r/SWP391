@@ -7,11 +7,10 @@
     <title th:text="${pageTitle ?: 'KiviCare - Doctor Portal'}">KiviCare - Doctor Portal</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{/frontend/assets/css/core/libs.min.css}" />
-    <link rel="stylesheet" th:href="@{/frontend/assets/css/kivicare.min.css}" />
-    <link rel="stylesheet" th:href="@{/frontend/assets/vendor/font-awesome/css/all.min.css}" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/core/libs.min.css}" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/kivicare.min.css}" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/font-awesome/css/all.min.css}" />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="enhanced-buttons.css" />
     <style>
         body {
             background-color: #f8f9fa;
@@ -170,7 +169,7 @@
 <body>
     <div class="main-wrapper">
         <!-- Header -->
-        <div th:replace="~{/frontend/doctor/doctor_header}"></div>
+        <div th:replace="~{/dashboard-doctor/doctor_header}"></div>
 
         <!-- Main Content -->
         <main class="content-wrapper">
@@ -200,7 +199,7 @@
         </div>
     </div>
 
-    <div class="position-fixed end-0 p-3" style="z-index: 11; top: 20%;">
+    <div class="position-fixed end-0 p-3" style="z-index: 11; top: 11%;">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header align-items-center">
                 <i id="toastIcon" class="me-2"></i>
@@ -213,8 +212,8 @@
 
 
     <!-- Scripts -->
-    <script th:src="@{/frontend/assets/js/core/libs.min.js}"></script>
-    <script th:src="@{/frontend/assets/js/core/external.min.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/core/libs.min.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/core/external.min.js}"></script>
     <!-- Additional JavaScript placeholder for page-specific scripts -->
     <th:block th:fragment="additionalJS"></th:block>
 </body>

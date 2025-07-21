@@ -8,7 +8,6 @@
     />
     <title>Appointment In Progress - KiviCare</title>
     <!-- Enhanced Custom Styles -->
-    <link rel="stylesheet" href="enhanced-buttons.css" />
 
     <style>
       :root {
@@ -765,7 +764,7 @@
   </div>
 
   <!-- Toast Container -->
-  <div class="position-fixed  end-0 p-3" style="z-index: 11;top:20%;">
+  <div class="position-fixed  end-0 p-3" style="z-index: 11;top:11%;">
     <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header">
         <strong class="me-auto">Thông báo</strong>
@@ -778,11 +777,11 @@
   <div id="modalContainer"></div>
 
   <th:block th:fragment="additionalJS">
-    <script th:src="@{/frontend/assets/doctor-dashboard-js/symptom.js}"></script>
-    <script th:src="@{/frontend/assets/doctor-dashboard-js/toast.js}"></script>
-    <script th:src="@{/frontend/assets/doctor-dashboard-js/test-list.js}"></script>
-    <script th:src="@{/frontend/assets/doctor-dashboard-js/medical-record.js}"></script>
-    <script th:src="@{/frontend/assets/doctor-dashboard-js/clinal-exam.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/doctor-dashboard-js/symptom.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/doctor-dashboard-js/toast.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/doctor-dashboard-js/test-list.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/doctor-dashboard-js/medical-record.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/doctor-dashboard-js/clinal-exam.js}"></script>
   </th:block>
 
   <script>
