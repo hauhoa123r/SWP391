@@ -10,7 +10,9 @@ import lombok.experimental.FieldNameConstants;
 import org.project.enums.AppointmentStatus;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor

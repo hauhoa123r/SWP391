@@ -1,26 +1,30 @@
 package org.project.api;
 
 import org.project.exception.ResourceNotFoundException;
-import org.project.model.dto.ApproveResultDTO;
-import org.project.model.response.ApproveResultFilterResponse;
-import org.project.service.ApproveResultService;
+import org.project.model.dto.ResultTestDTO;
+import org.project.model.response.ResultAppointmentResponse;
+import org.project.service.ResultSampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/approve-result")
-public class ApproveResultAPI {
+@RequestMapping("/api/result-lab")
+public class SendResultAPI {
 
     @Autowired
-    private ApproveResultService approveResultService;
+    private ResultSampleService resultSampleService;
+
 
     @GetMapping("/filter")
-    public ResponseEntity<?> filterResult(@ModelAttribute ApproveResultDTO approveResultDTO){
+    public ResponseEntity<?> filterResult(@ModelAttribute ResultTestDTO resultTestDTO){
         try {
-            Page<ApproveResultFilterResponse> results =  approveResultService.getAllApproveResult(approveResultDTO);
+            Page<ResultAppointmentResponse> results = resultSampleService.filterResultSample(resultTestDTO);
             if (results == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid search parameters");
             }
@@ -30,11 +34,5 @@ public class ApproveResultAPI {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> approveResult(@PathVariable Long id){
-        Boolean isApprove = approveResultService.isApproveResultExist(id);
-        return ResponseEntity.ok("ok");
     }
 }

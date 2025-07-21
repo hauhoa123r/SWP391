@@ -9,9 +9,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApproveResultFilterResponse extends SampleServiceResponse{
-    private String tester;
-    private String requestAt;
+public class ViewResultDetailResponse {
+    private String sampleName;
+    private String managerName;
     private String status;
-    private Long resultId;
 }

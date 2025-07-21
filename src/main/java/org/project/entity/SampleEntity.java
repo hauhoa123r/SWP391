@@ -23,7 +23,7 @@ public class SampleEntity {
     private Long id;
 
     @NotNull
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "test_request_id", nullable = false)
     private TestRequestEntity testRequest;
 

@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Map;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApproveResultFilterResponse extends SampleServiceResponse{
-    private String tester;
-    private String requestAt;
-    private String status;
-    private Long resultId;
+public class SampleResponse {
+    private String name;
+    Map<String, String> data;
 }

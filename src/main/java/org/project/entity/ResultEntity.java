@@ -7,8 +7,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -57,5 +57,6 @@ public class ResultEntity {
     @Column(name = "dataunit")
     private String dataunit;
 
-
+    @OneToMany(mappedBy = "resultEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ResultDetailEntity> resultDetailEntities = new ArrayList<>();
 }

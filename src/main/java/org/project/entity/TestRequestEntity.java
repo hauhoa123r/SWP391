@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.project.enums.RequestStatus;
 
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -53,8 +51,8 @@ public class TestRequestEntity {
     @JoinColumn(name = "doctor_id", nullable = false)
     private DoctorEntity doctorEntity;
 
-    @OneToMany(mappedBy = "testRequest", fetch = FetchType.LAZY)
-    private Set<SampleEntity> samples = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "testRequest", fetch = FetchType.LAZY)
+    private SampleEntity samples;
 
 
 }

@@ -756,83 +756,35 @@
                                         <tr>
                                             <th>Tên bệnh nhân</th>
                                             <th>Loại kiểm tra</th>
-                                            <th>Người xét nghiệm</th>
-                                            <th>Thời gian</th>
-                                            <th>Trạng thái</th>
+                                            <th>Bác sĩ yêu cầu</th>
                                             <th>Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>BN123-20240625-01-2</td>
-                                            <td>BN123456</td>
-                                            <td>Bùi Huy Hùng</td>
-                                            <td>Glucose</td>
-                                            <td>
-                                                25/6/2025 10:30
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-outline-success tooltip-init"
-                                                        data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                                        title="Submit">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                         fill="currentColor" class="bi bi-check-square-fill"
-                                                         viewBox="0 0 16 16">
-                                                        <path
-                                                                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
-                                                    </svg>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-info" title="View Details"
-                                                    onclick="window.location.href='result'">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                                        <path
-                                                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                                    </svg>
-                                                </button></td>
-                                        </tr>
-                                        <!-- Dòng mẫu status Success -->
-                                        <tr>
-                                            <td>BN124-20240625-02-1</td>
-                                            <td>BN123457</td>
-                                            <td>Nguyễn Thị An</td>
-                                            <td>Cholesterol</td>
-                                            <td>25/6/2025 10:30</td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-outline-success tooltip-init"
-                                                        data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                                        title="Submit">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                         fill="currentColor" class="bi bi-check-square-fill"
-                                                         viewBox="0 0 16 16">
-                                                        <path
-                                                                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
-                                                    </svg>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-info" title="View Details"
-                                                        onclick="window.location.href='result'">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                         fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                                        <path
-                                                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                     <tfoot>
-                                        <tr>
-                                            <td></td>
-                                            <th title="OrderID">OrderID</th>
-                                            <th title="Patient Name">Patient Name</th>
-                                            <th title="Test Type">Test Type</th>
-                                            <th title="Time">Time</th>
-                                            <td></td>
-                                        </tr>
+                                    <tr>
+                                        <th title="Tìm kiếm tên bệnh nhân">
+                                            <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" placeholder="Tìm kiếm tên bệnh nhân">
+                                        </th>
+                                        <th title="Tìm kiếm loại test">
+                                            <input type="text" id="testType" name="testType" class="form-control form-control-sm" placeholder="Tìm kiếm loại test">
+                                        </th>
+                                        <th title="Tìm kiếm bác sĩ">
+                                            <input type="text" id="doctorName" name="doctorName" class="form-control form-control-sm" placeholder="Tìm kiếm bác sĩ">
+                                        </th>
+                                        <td></td>
+                                    </tr>
                                     </tfoot>
                                 </table>
+                                <div class="mt-4 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span id="total-items"></span>
+                                    </div>
+                                    <nav>
+                                        <ul class="pagination mb-0" id="pagination-container"></ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1683,66 +1635,21 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="resultModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Kết quả xét nghiệm</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" id="resultModalText"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="testModal" tabindex="-1">
-        <div class="modal-dialog">
-            <form class="modal-content" id="testResultForm" onsubmit="submitTestResult(event)">
-                <div class="modal-header">
-                    <h5 class="modal-title">Nhập kết quả xét nghiệm</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div><strong>Barcode:</strong> <span id="testBarcode"></span></div>
-                    <div><strong>Bệnh nhân:</strong> <span id="testPatient"></span></div>
-                    <div><strong>Loại xét nghiệm:</strong> <span id="testType"></span></div>
-                    <div class="mb-3 mt-3">
-                        <label class="form-label">Kết quả</label>
-                        <input type="text" class="form-control" id="testResultInput" required
-                            placeholder="Nhập kết quả...">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Ghi chú</label>
-                        <textarea class="form-control" id="testResultNote" rows="2"
-                            placeholder="Nhập ghi chú nếu có"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Lưu kết quả</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- Modal xác nhận -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="testTypeModal" tabindex="-1" aria-labelledby="testTypeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">Xác nhận gửi</h5>
+                    <h5 class="modal-title" id="testTypeModalLabel">Các loại Test</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                 </div>
 
                 <div class="modal-body">
-                    Bạn có chắc chắn muốn gửi không?
+                    <ul id="testTypeList" class="mb-0"></ul>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Xác nhận</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
 
             </div>
@@ -1815,7 +1722,163 @@
     <!-- Icons -->
     <script src="./assets/js/solid-icon-search-filter.js?v=1.4.1" th:src="@{/dashboard-staff-test/assets/js/solid-icon-search-filter.js?v=1.4.1}"
  defer></script>
-
 </body>
+<script>
+    function getFilterParams() {
+        return {
+            patientName: $('#patientName').val(),
+            doctorName: $('#doctorName').val(),
+            testType: $('#testType').val()
+        };
+    }
 
+    function fetchFilteredData(page = 0) {
+        const filters = getFilterParams();
+        filters.page = page;
+
+        $.ajax({
+            url: '/api/result-lab/filter',
+            type: 'GET',
+            data: filters,
+            success: function (data) {
+                renderTable(data.content);
+                renderPagination(data);
+            },
+            error: function () {
+                notFound();
+            }
+        });
+    }
+
+
+    function renderTable(assignments) {
+        let html = '';
+        if (!assignments || assignments.length === 0) {
+            const html = `
+        <tr>
+            <td colspan="4" class="text-center text-muted">Không tìm thấy dữ liệu</td>
+        </tr>
+    `;
+            $('#input-datatable tbody').html(html);
+            return;
+        }
+        assignments.forEach(item => {
+            html += `
+                <tr>
+            <input type="hidden" name="id" value="${item.id}" id="testRequestId"></input>
+            <input type="hidden" name="patientId" value="${item.patientId}" id="patientId"></input>
+                    <td>${item.patientName || ''}</td>
+                    <td>
+    <button class="btn btn-sm btn-info"
+        data-testtype="${item.testType}"
+        onclick="showTestTypesSimple(this)">
+    Xem chi tiết
+</button>
+</td>
+                    <td>${item.doctorName || ''}</td>
+                                            <td>
+        <button type="button" className="btn btn-sm btn-outline-primary tooltip-init"
+                title="Submit"
+                id="open-btn"
+                data-id="${item.id}"
+                onclick='window.location.href="/lab/view-test-request/${item.id}"'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 className="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                      d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707m4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707"/>
+            </svg>
+        </button>
+
+    </td>
+                                        </tr>
+            `;
+        });
+        $('#input-datatable tbody').html(html);
+    }
+    function formatTime(isoString) {
+        if (!isoString) return '';
+        const date = new Date(isoString);
+        return date.toLocaleTimeString('vi-VN', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+    }
+
+    function renderPagination(pageData) {
+        const currentPage = pageData.number;
+        const totalPages = pageData.totalPages;
+        let html = '';
+
+        html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a></li>`;
+
+        if (currentPage > 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+            if (currentPage > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+
+        for (let i = Math.max(0, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
+        }
+
+        if (currentPage < totalPages - 3) {
+            html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+        if (currentPage < totalPages - 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
+        }
+
+        html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a></li>`;
+
+        $('#pagination-container').html(html);
+    }
+    function showTestTypesSimple(btn) {
+        const raw = btn.getAttribute('data-testtype') || '';
+
+        const lines = raw
+            .replace(/[\[\]]/g, '')
+            .split(',')
+            .map(x => x.trim());
+
+        const listEl = document.getElementById('testTypeList');
+        listEl.innerHTML = '';
+
+        lines.forEach(line => {
+            const li = document.createElement('li');
+            li.textContent = line;
+            listEl.appendChild(li);
+        });
+
+        const modal = new bootstrap.Modal(document.getElementById('testTypeModal'));
+        modal.show();
+    }
+    $(document).on('click', '.pagination a.page-link', function (e) {
+        e.preventDefault();
+        const page = parseInt($(this).data('page'));
+        fetchFilteredData(page);
+    });
+
+    let typingTimer;
+    const typingDelay = 800;
+
+    function attachInputEvents() {
+        $('#patientName, #testType, #doctorName').off('input').on('input', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => fetchFilteredData(0), typingDelay);
+        });
+    }
+
+    $(document).ready(function () {
+        attachInputEvents();
+        fetchFilteredData(0);
+    });
+
+    $(document).on('click', '#open-btn', function () {
+        const id = $(this).data('id');
+
+    })
+</script>
 </html>

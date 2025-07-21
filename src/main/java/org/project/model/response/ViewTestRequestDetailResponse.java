@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApproveResultFilterResponse extends SampleServiceResponse{
-    private String tester;
-    private String requestAt;
-    private String status;
-    private Long resultId;
+public class ViewTestRequestDetailResponse extends SampleServiceResponse{
+    private Long testRequestId;
+    private String managerName;
+    List<SampleResponse> sampleResponses;
 }
