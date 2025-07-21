@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.project.entity.InventoryManagerEntity;
 import org.project.enums.StockStatus;
 import org.project.enums.StockTransactionType;
+import org.project.model.dto.SupplierRequestDTO;
 import org.project.model.request.StockInvoiceDTO;
 import org.project.model.response.StockInvoiceResponse;
 import org.project.model.response.StockRequestResponse;
@@ -89,7 +90,7 @@ public class StockController {
     // Stock Request Management
     @PostMapping("/api/stock-requests")
     @ResponseBody
-    public ResponseEntity<SupplierReq> createStockRequest(@Valid @RequestBody StockRequestDTO stockRequestDTO) {
+    public ResponseEntity<StockRequestResponse> createStockRequest(@Valid @RequestBody SupplierRequestDTO stockRequestDTO) {
         Long inventoryManagerId = getCurrentInventoryManagerId();
         StockRequestResponse response = stockService.createStockRequest(stockRequestDTO, inventoryManagerId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -99,7 +100,7 @@ public class StockController {
     @ResponseBody
     public ResponseEntity<StockRequestResponse> updateStockRequest(
             @PathVariable("id") Long requestId,
-            @Valid @RequestBody StockRequestDTO stockRequestDTO) {
+            @Valid @RequestBody SupplierRequestDTO stockRequestDTO) {
         StockRequestResponse response = stockService.updateStockRequest(requestId, stockRequestDTO);
         return ResponseEntity.ok(response);
     }
