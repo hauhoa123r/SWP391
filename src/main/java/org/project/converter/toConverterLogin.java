@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class toConverterLogin {
     @Autowired
     private ModelMapperConfig modelMapper;

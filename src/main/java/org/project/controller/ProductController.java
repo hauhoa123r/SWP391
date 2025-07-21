@@ -18,7 +18,7 @@ public class ProductController {
 
     @GetMapping("/product-standard/")
     public ModelAndView product() {
-        ModelAndView mv = new ModelAndView("frontend/product-standard");
+        ModelAndView mv = new ModelAndView("/frontend/product-standard");
         return mv;
     }
 
@@ -57,12 +57,12 @@ public class ProductController {
         model.addAttribute("relatedProducts",
                 pharmacyServiceImpl.findRandomProductsByType(detailDTO.getProduct().getType().toString()));
         // Return the view name
-        return "frontend/product-standard";
+        return "/frontend/product-standard";
     }
 
     @GetMapping("/product-home")
     public ModelAndView productHome() {
-        ModelAndView mv = new ModelAndView("frontend/product-home");
+        ModelAndView mv = new ModelAndView("/frontend/product-home");
         // Fetch top 10 products for the home page
         mv.addObject("products", pharmacyServiceImpl.findTop10Products());
         return mv;
@@ -70,61 +70,9 @@ public class ProductController {
 
     @GetMapping("/cart")
     public ModelAndView cart() {
-        ModelAndView mv = new ModelAndView("frontend/cart");
+        ModelAndView mv = new ModelAndView("/frontend/cart");
         return mv;
     }
 
-    @GetMapping("/checkout")
-    public ModelAndView checkout() {
-        ModelAndView mv = new ModelAndView("frontend/checkout");
-        return mv;
-    }
 
-    @GetMapping("/wishlist")
-    public ModelAndView wishlist() {
-        ModelAndView mv = new ModelAndView("frontend/wishlist");
-        return mv;
-    }
-
-    @GetMapping("/my-account")
-    public ModelAndView myAccount() {
-        ModelAndView mv = new ModelAndView("frontend/my-account");
-        return mv;
-    }
-
-    @GetMapping("/track-order")
-    public ModelAndView trackOrder() {
-        ModelAndView mv = new ModelAndView("frontend/track-order");
-        return mv;
-    }
-
-    @GetMapping("/product-new")
-    public ModelAndView productNew() {
-        ModelAndView mv = new ModelAndView("frontend/product-new");
-        return mv;
-    }
-
-    @GetMapping("/product-sale")
-    public ModelAndView productSale() {
-        ModelAndView mv = new ModelAndView("frontend/product-sale");
-        return mv;
-    }
-
-    @GetMapping("/shop-left-sidebar")
-    public ModelAndView shopLeftSidebar() {
-        ModelAndView mv = new ModelAndView("frontend/shop-left-sidebar");
-        return mv;
-    }
-
-    @GetMapping("/shop-right-sidebar")
-    public ModelAndView shopRightSidebar() {
-        ModelAndView mv = new ModelAndView("frontend/shop-right-sidebar");
-        return mv;
-    }
-
-    @GetMapping("/shop-no-sidebar")
-    public ModelAndView shopNoSidebar() {
-        ModelAndView mv = new ModelAndView("frontend/shop-no-sidebar");
-        return mv;
-    }
 }

@@ -2,7 +2,7 @@ package org.project.repository;
 
 import org.project.entity.StockInvoiceEntity;
 import org.project.enums.StockStatus;
-import org.project.enums.StockTransactionType;
+import org.project.enums.SupplierTransactionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,18 +21,18 @@ public interface StockInvoiceRepository extends JpaRepository<StockInvoiceEntity
     
     Optional<StockInvoiceEntity> findByStockRequest_Id(Long stockRequestId);
     
-    Page<StockInvoiceEntity> findByTransactionType(StockTransactionType transactionType, Pageable pageable);
+    Page<StockInvoiceEntity> findByTransactionType(SupplierTransactionType transactionType, Pageable pageable);
     
     Page<StockInvoiceEntity> findByStatus(StockStatus status, Pageable pageable);
     
-    Page<StockInvoiceEntity> findByTransactionTypeAndStatus(StockTransactionType transactionType, StockStatus status, Pageable pageable);
+    Page<StockInvoiceEntity> findByTransactionTypeAndStatus(SupplierTransactionType transactionType, StockStatus status, Pageable pageable);
     
     @Query("SELECT si FROM StockInvoiceEntity si WHERE si.invoiceDate BETWEEN :startDate AND :endDate")
     Page<StockInvoiceEntity> findByDateRange(@Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate, Pageable pageable);
     
     @Query("SELECT si FROM StockInvoiceEntity si WHERE si.transactionType = :transactionType AND si.invoiceDate BETWEEN :startDate AND :endDate")
     Page<StockInvoiceEntity> findByTransactionTypeAndDateRange(
-            @Param("transactionType") StockTransactionType transactionType,
+            @Param("transactionType") SupplierTransactionType transactionType,
             @Param("startDate") Timestamp startDate,
             @Param("endDate") Timestamp endDate,
             Pageable pageable);

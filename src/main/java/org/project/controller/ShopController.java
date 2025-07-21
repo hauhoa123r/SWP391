@@ -192,37 +192,37 @@ public class ShopController {
      * Product home page displaying top products
      * @return ModelAndView for product home page
      */
-    @GetMapping("/product-home")
-    public ModelAndView productHome() {
-        log.info("Loading product home page");
-
-        ModelAndView mv = new ModelAndView("product-home");
-
-        try {
-            // Fetch top 10 products for the home page
-            List<PharmacyResponse> products = productService.findTop10Products();
-
-            // Validate returned list
-            if (products == null) {
-                log.warn("findTop10Products returned null, using empty list");
-                products = Collections.emptyList();
-            } else if (products.isEmpty()) {
-                log.debug("No products found, returning empty list");
-            } else {
-                log.debug("Loaded {} products for home page", products.size());
-            }
-
-            // Add products to model
-            mv.addObject("products", products);
-
-        } catch (Exception e) {
-            log.error("Error fetching top 10 products: {}", e.getMessage(), e);
-            // Return empty list on error to avoid rendering issues
-            mv.addObject("products", Collections.emptyList());
-        }
-
-        return mv;
-    }
+//    @GetMapping("/product-home")
+//    public ModelAndView productHome() {
+//        log.info("Loading product home page");
+//
+//        ModelAndView mv = new ModelAndView("product-home");
+//
+//        try {
+//            // Fetch top 10 products for the home page
+//            List<PharmacyResponse> products = productService.findTop10Products();
+//
+//            // Validate returned list
+//            if (products == null) {
+//                log.warn("findTop10Products returned null, using empty list");
+//                products = Collections.emptyList();
+//            } else if (products.isEmpty()) {
+//                log.debug("No products found, returning empty list");
+//            } else {
+//                log.debug("Loaded {} products for home page", products.size());
+//            }
+//
+//            // Add products to model
+//            mv.addObject("products", products);
+//
+//        } catch (Exception e) {
+//            log.error("Error fetching top 10 products: {}", e.getMessage(), e);
+//            // Return empty list on error to avoid rendering issues
+//            mv.addObject("products", Collections.emptyList());
+//        }
+//
+//        return mv;
+//    }
 
     // ==================== Other page mappings ====================
 

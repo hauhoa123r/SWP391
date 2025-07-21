@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.Label;
 import org.project.enums.ProductStatus;
@@ -22,6 +23,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "products", schema = "swp391")
+@FieldNameConstants
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

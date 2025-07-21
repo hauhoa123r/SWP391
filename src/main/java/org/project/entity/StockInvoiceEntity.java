@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.StockStatus;
-import org.project.enums.StockTransactionType;
-
+import org.project.enums.SupplierTransactionType;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -39,7 +38,7 @@ public class StockInvoiceEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "transaction_type", columnDefinition = "enum not null")
-    private StockTransactionType transactionType;
+    private SupplierTransactionType transactionType;
 
     @NotNull
     @Column(name = "invoice_date", nullable = false)
