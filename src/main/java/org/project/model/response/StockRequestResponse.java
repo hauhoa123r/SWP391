@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.project.enums.StockStatus;
-import org.project.enums.StockTransactionType;
+import org.project.enums.SupplierTransactionStatus;
+import org.project.enums.SupplierTransactionType;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,12 +16,12 @@ import java.util.List;
 @Setter
 public class StockRequestResponse {
     private Long id;
-    private StockTransactionType transactionType;
+    private SupplierTransactionType transactionType;
     private Timestamp requestDate;
     private SupplierResponse supplier;
     private InventoryManagerResponse requestedBy;
     private InventoryManagerResponse approvedBy;
-    private StockStatus status;
+    private SupplierTransactionStatus status;
     private Timestamp approvedDate;
     private String notes;
     private DepartmentResponse department;

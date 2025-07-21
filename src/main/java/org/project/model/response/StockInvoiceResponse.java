@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.project.enums.StockStatus;
-import org.project.enums.StockTransactionType;
+import org.project.enums.SupplierTransactionStatus;
+import org.project.enums.SupplierTransactionType;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -18,13 +18,13 @@ public class StockInvoiceResponse {
     private Long id;
     private String invoiceNumber;
     private Long stockRequestId;
-    private StockTransactionType transactionType;
+    private SupplierTransactionType transactionType;
     private Timestamp invoiceDate;
     private BigDecimal totalAmount;
     private BigDecimal taxAmount;
     private BigDecimal shippingCost;
     private BigDecimal grandTotal;
-    private StockStatus status;
+    private SupplierTransactionStatus status;
     private InventoryManagerResponse createdBy;
     private String notes;
     private String paymentMethod;

@@ -63,9 +63,10 @@ public class SupplierTransactionsEntity {
     @Column
     private Timestamp expectedDeliveryDate;
 
-    @ManyToOne
-    @JoinColumn(name = "approved_by_id")
-    private InventoryManagerEntity approvedBy;
+    // Xóa hoặc đổi tên trường này vì nó không có trong database
+    // @ManyToOne
+    // @JoinColumn(name = "approved_by_id")
+    // private InventoryManagerEntity approvedBy;
 
     @Column(nullable = false, unique = true)
     private String invoiceNumber;

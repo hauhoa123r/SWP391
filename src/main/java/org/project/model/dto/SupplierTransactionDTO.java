@@ -26,7 +26,6 @@ public class SupplierTransactionDTO {
     private Timestamp approvedDate;
     private String notes;
     private Timestamp expectedDeliveryDate;
-    private Long approvedById;
     private String invoiceNumber;
     private BigDecimal taxAmount;
     private BigDecimal shippingCost;

@@ -19,6 +19,7 @@ import org.project.service.ProductService;
 import org.project.utils.specification.SpecificationUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.project.utils.specification.search.SearchCriteria;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -39,10 +40,16 @@ import java.util.HashMap;
 @Transactional
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
-    private final ConverterPharmacyProduct converter;
-    private final ObjectProvider<SpecificationUtils<ProductEntity>> specUtilsProvider;
-    
+    @Autowired
+    private  ProductRepository productRepository;
+
+    @Autowired
+    private  ConverterPharmacyProduct converter;
+
+    @Autowired
+    private  ObjectProvider<SpecificationUtils<ProductEntity>> specUtilsProvider;
+
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -369,25 +376,42 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<PharmacyResponse> findRelatedProducts(Long productId, int limit) {
         try {
-            log.debug("Finding {} related products for product ID: {}", limit, productId);
+            log.info("Finding {} related products for product ID: {}", limit, productId);
             ProductEntity base = productRepository.findById(productId).orElse(null);
-            if (base == null || base.getCategoryEntities() == null || base.getCategoryEntities().isEmpty()) {
+            if (base == null) {
+                log.warn("Base product not found for ID: {}", productId);
                 return List.of();
             }
 
+            // Kiểm tra xem sản phẩm có categories hay không
+            if (base.getCategoryEntities() == null || base.getCategoryEntities().isEmpty()) {
+                log.warn("Base product has no categories, ID: {}", productId);
+                // Nếu không có category, lấy các sản phẩm cùng type thay thế
+                return findProductsByType(base.getProductType(), productId, limit);
+            }
+
             Long categoryId = base.getCategoryEntities().iterator().next().getId();
+            log.info("Finding products in category ID: {}", categoryId);
             
-            // Lấy tất cả sản phẩm trong cùng category
+            // Lấy tất cả sản phẩm trong cùng category với status ACTIVE
             List<ProductEntity> categoryProducts = productRepository
                     .findByProductStatusAndCategoryEntities_Id(ProductStatus.ACTIVE, categoryId,
                             PageRequest.of(0, limit * 2)).getContent();
 
-            // Lọc theo type
+            log.info("Found {} products in the same category", categoryProducts.size());
+
+            // Lọc theo type và loại bỏ sản phẩm hiện tại
             List<ProductEntity> related = categoryProducts.stream()
-                    .filter(p -> p.getProductType() == ProductType.MEDICINE || 
-                                p.getProductType() == ProductType.MEDICAL_PRODUCT)
-                    .filter(p -> !p.getId().equals(productId))
+                    .filter(p -> !p.getId().equals(productId))  // Không hiển thị sản phẩm hiện tại
                     .collect(Collectors.toList());
+                    
+            log.info("After filtering: {} related products remain", related.size());
+
+            // Nếu không tìm thấy sản phẩm liên quan, thử tìm theo type
+            if (related.isEmpty() && base.getProductType() != null) {
+                log.info("No related products found by category, trying by product type: {}", base.getProductType());
+                return findProductsByType(base.getProductType(), productId, limit);
+            }
 
             return related.stream()
                     .sorted(Comparator.comparingDouble(this::calculateRating).reversed())
@@ -398,6 +422,32 @@ public class ProductServiceImpl implements ProductService {
             log.error("Error finding related products: {}", e.getMessage(), e);
             return List.of();
         }
+    }
+
+    /**
+     * Tìm sản phẩm theo loại sản phẩm
+     */
+    private List<PharmacyResponse> findProductsByType(ProductType type, Long currentProductId, int limit) {
+        if (type == null) {
+            log.warn("Cannot find products by type: product type is null");
+            return List.of();
+        }
+        
+        log.info("Finding products by type: {}", type);
+        List<ProductEntity> typeProducts = productRepository
+                .findByProductStatusAndProductType(ProductStatus.ACTIVE, type)
+                .stream()
+                .filter(p -> !p.getId().equals(currentProductId))
+                .limit(limit * 2)
+                .collect(Collectors.toList());
+                
+        log.info("Found {} products with type {}", typeProducts.size(), type);
+        
+        return typeProducts.stream()
+                .sorted(Comparator.comparingDouble(this::calculateRating).reversed())
+                .limit(limit)
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override

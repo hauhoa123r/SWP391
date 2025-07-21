@@ -1,96 +1,75 @@
 package org.project.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.project.entity.MedicineEntity;
-import org.project.entity.ProductEntity;
-import org.project.entity.StockRequestEntity;
-import org.project.enums.ProductType;
-import org.project.enums.StockStatus;
-import org.project.enums.StockTransactionType;
+import org.project.model.dto.MedicineDTO;
+import org.project.model.dto.SupplierInDTO;
 import org.project.service.MedicineService;
-import org.project.service.ProductService;
-import org.project.service.StockRequestService;
+import org.project.service.SupplierInService;
+import org.project.enums.operation.SortDirection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Controller
-@RequestMapping("/medicine")
-@RequiredArgsConstructor
+@RequestMapping("/medicines")
 public class MedicineController {
 
-    private final ProductService productService;
-    private final MedicineService medicineService;
-    private final StockRequestService stockRequestService;
+    @Autowired
+    private MedicineService medicineService;
+
+    @Autowired
+    private SupplierInService supplierInService;
 
     @GetMapping
-    public String getMedicinePage(Model model) {
-        List<ProductEntity> medicines = productService.findAllByProductType(ProductType.MEDICINE);
-        List<StockRequestEntity> stockInRequests = stockRequestService.findAllByTransactionType(StockTransactionType.STOCK_IN);
-        
-        model.addAttribute("medicines", medicines);
-        model.addAttribute("stockInRequests", stockInRequests);
+    public String getAllMedicines(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) SortDirection sortDirection,
+            @RequestParam(required = false) String sortField,
+            Model model) {
+        Page<MedicineDTO> medicinePage = medicineService.getAllMedicines(page, size, name, sortDirection, sortField);
+        model.addAttribute("medicines", medicinePage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", medicinePage.getTotalPages());
+        model.addAttribute("newMedicine", new MedicineDTO());
+        model.addAttribute("supplierIn", new SupplierInDTO());
         return "medicine";
     }
 
-    @GetMapping("/{id}")
-    public String getMedicineDetails(@PathVariable Long id, Model model) {
-        ProductEntity product = productService.findById(id);
-        model.addAttribute("product", product);
-        return "medicine-details";
-    }
-
     @PostMapping("/create")
-    public String createMedicine(@ModelAttribute ProductEntity product) {
-        product.setProductType(ProductType.MEDICINE);
-        ProductEntity savedProduct = productService.save(product);
-        
-        MedicineEntity medicine = new MedicineEntity();
-        medicine.setProductEntity(savedProduct);
-        medicineService.save(medicine);
-        
-        return "redirect:/medicine";
+    public String createMedicine(@ModelAttribute MedicineDTO medicineDTO, Model model) {
+        medicineService.createMedicine(medicineDTO);
+        return "redirect:/medicines";
     }
 
     @PostMapping("/update/{id}")
-    public String updateMedicine(@PathVariable Long id, @ModelAttribute ProductEntity product) {
-        ProductEntity existingProduct = productService.findById(id);
-        existingProduct.setName(product.getName());
-        existingProduct.setDescription(product.getDescription());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setUnit(product.getUnit());
-        existingProduct.setStockQuantities(product.getStockQuantities());
-        existingProduct.setImageUrl(product.getImageUrl());
-        
-        productService.save(existingProduct);
-        return "redirect:/medicine";
+    public String updateMedicine(@PathVariable Long id, @ModelAttribute MedicineDTO medicineDTO, Model model) {
+        medicineDTO.setId(id);
+        medicineService.updateMedicine(medicineDTO);
+        return "redirect:/medicines";
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteMedicine(@PathVariable Long id) {
-        productService.deleteById(id);
-        return "redirect:/medicine";
+    public String deleteMedicine(@PathVariable Long id, Model model) {
+        medicineService.deleteById(id);
+        return "redirect:/medicines";
     }
 
-    @PostMapping("/create-stock-request")
-    public String createStockRequest(@ModelAttribute StockRequestEntity stockRequest) {
-        stockRequest.setTransactionType(StockTransactionType.STOCK_IN);
-        stockRequest.setRequestDate(Timestamp.valueOf(LocalDateTime.now()));
-        stockRequest.setStatus(StockStatus.WAITING_FOR_DELIVERY);
-        
-        stockRequestService.save(stockRequest);
-        return "redirect:/stock-in";
+    @PostMapping("/create-supplier-in")
+    public String createSupplierIn(@ModelAttribute SupplierInDTO supplierInDTO, Model model) {
+        supplierInService.createSupplierIn(supplierInDTO);
+        return "redirect:/medicines";
     }
 
-    @PostMapping("/update-stock/{id}")
-    public String updateStock(@PathVariable Long id, @RequestParam Integer quantity) {
-        ProductEntity product = productService.findById(id);
-        product.setStockQuantities(quantity);
-        productService.save(product);
-        return "redirect:/medicine";
+    @PostMapping("/process-supplier-in/{supplierInId}")
+    public String processSupplierIn(@PathVariable Long supplierInId, Model model) {
+        SupplierInDTO supplierIn = supplierInService.getSupplierInById(supplierInId);
+        if (supplierIn != null && "CHECKED".equals(supplierIn.getStatus())) {
+            medicineService.processSupplierIn(supplierIn);
+            supplierInService.updateSupplierInStatus(supplierInId, "COMPLETED");
+        }
+        return "redirect:/medicines";
     }
-} 
+}

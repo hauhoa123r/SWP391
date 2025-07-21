@@ -64,18 +64,30 @@ public class WishlistController {
         redirectAttrs.addFlashAttribute("wishlistMessage", "Đã xoá sản phẩm khỏi wishlist!");
         return redirectBack(referer);
     }
+    
+    /**
+     * Update quantity of a product in the wishlist.
+     */
+    @PostMapping("/wishlist/update-quantity")
+    public String updateQuantity(@RequestParam("productId") Long productId,
+                                @RequestParam("quantity") Integer quantity,
+                                @RequestHeader(value = "Referer", required = false) String referer,
+                                RedirectAttributes redirectAttrs,
+                                HttpSession session) {
+        wishlistService.updateQuantity(getCurrentUserId(session), productId, quantity);
+        redirectAttrs.addFlashAttribute("wishlistMessage", "Số lượng sản phẩm đã được cập nhật!");
+        return redirectBack(referer);
+    }
 
     /** Redirect helper: fallback to /wishlist if no referer present */
     private String redirectBack(String referer) {
-        if (referer != null && !referer.isBlank()) {
-            return "redirect:" + referer;
-        }
-        return "redirect:/wishlist";
+        return referer != null ? "redirect:" + referer : "redirect:/wishlist";
     }
 
-    
+    /** Get current authenticated user ID from session */
     private Long getCurrentUserId(HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
-        return userId != null ? userId : 1L;
+        // TODO: Replace with authenticated user ID once security is integrated
+        Object userId = session.getAttribute("userId");
+        return userId != null ? (Long) userId : 1L; // Default to user ID 1 if not found
     }
 }
