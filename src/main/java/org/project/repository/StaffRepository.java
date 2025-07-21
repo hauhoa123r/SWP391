@@ -1,8 +1,13 @@
 package org.project.repository;
 
 import org.project.enums.StaffRole;
+<<<<<<< HEAD
 
 import org.project.entity.StaffEntity;
+=======
+import org.project.enums.TechnicianRank;
+import org.project.model.response.ManagerNameResponse;
+>>>>>>> 1fe7b34939d6bcd04ae5de38ce13891189c4ebc0
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,6 +35,7 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long>, JpaSp
 
     List<StaffEntity> findAllByStaffRoleAndFullNameContainingAndDepartmentEntity_IdAndHospitalEntity_Id(StaffRole staffRole, String fullName, Long departmentId, Long hospitalId);
 
+<<<<<<< HEAD
     // Find the first staff (lowest rank level) in the same department & hospital to act as default manager
     Optional<StaffEntity> findFirstByDepartmentEntity_IdAndHospitalEntity_IdOrderByRankLevelAsc(Long departmentId, Long hospitalId);
 
@@ -43,5 +49,10 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long>, JpaSp
 
     // Lấy nhân viên theo phòng ban và bệnh viện
     List<StaffEntity> findByDepartmentEntity_IdAndHospitalEntity_Id(Long departmentId, Long hospitalId);
+=======
+    List<StaffEntity> findByStaffRoleAndHospitalEntity_IdAndTechnicianEntity_TechnicianRank(StaffRole staffRole, Long hospitalEntityId, TechnicianRank technicianEntityTechnicianRank);
+
+    StaffEntity findByUserEntity_Id(Long userEntityId);
+>>>>>>> 1fe7b34939d6bcd04ae5de38ce13891189c4ebc0
 }
 

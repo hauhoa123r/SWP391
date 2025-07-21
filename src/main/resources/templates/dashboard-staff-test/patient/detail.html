@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{dashboard-staff-test/fragments/base :: head}"></head>
+<body>
+    <div th:replace="~{dashboard-staff-test/fragments/header :: header}"></div>
+    
+    <div class="main-content">
+        <div th:replace="~{dashboard-staff-test/fragments/sidebar :: sidebar}"></div>
+        
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title">Patient Details</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Patients</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Details</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="row">
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="profile-sidebar">
+                                        <div class="profile-image">
+                                            <img src="https://via.placeholder.com/150" class="img-fluid rounded-circle" alt="Patient Photo">
+                                        </div>
+                                        <h3 class="profile-name" th:text="*{fullName}"></h3>
+                                        <p class="profile-id">Patient ID: <span th:text="*{id}"></span></p>
+                                        <div class="profile-stats">
+                                            <div class="stat-item">
+                                                <span class="stat-label">Appointments</span>
+                                                <span class="stat-value" th:text="*{appointments.size()}">0</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-label">Payments</span>
+                                                <span class="stat-value" th:text="*{payments.size()}">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="profile-info">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="info-item">
+                                                    <label>Gender:</label>
+                                                    <span th:text="*{gender}"></span>
+                                                </div>
+                                                <div class="info-item">
+                                                    <label>Email:</label>
+                                                    <span th:text="*{email}"></span>
+                                                </div>
+                                                <div class="info-item">
+                                                    <label>Phone:</label>
+                                                    <span th:text="*{phoneNumber}"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="info-item">
+                                                    <label>Date of Birth:</label>
+                                                    <span th:text="*{dateOfBirth}"></span>
+                                                </div>
+                                                <div class="info-item">
+                                                    <label>Address:</label>
+                                                    <span th:text="*{address}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#appointments">Appointments</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#payments">Payments</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="appointments">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Doctor</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each="appointment : ${appointments}">
+                                                        <td th:text="*{appointment.appointmentDate}"></td>
+                                                        <td th:text="*{appointment.doctor.fullName}"></td>
+                                                        <td>
+                                                            <span class="badge" th:class="*{appointment.status == 'PENDING' ? 'badge-warning' : appointment.status == 'COMPLETED' ? 'badge-success' : 'badge-danger' }" th:text="*{appointment.status}"></span>
+                                                        </td>
+                                                        <td>
+                                                            <a href="#" class="btn btn-sm btn-primary">View</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="payments">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Amount</th>
+                                                        <th>Status</th>
+                                                        <th>Payment Method</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each="payment : ${payments}">
+                                                        <td th:text="*{payment.paymentDate}"></td>
+                                                        <td th:text="*{payment.amount}"></td>
+                                                        <td>
+                                                            <span class="badge" th:class="*{payment.status == 'PAID' ? 'badge-success' : 'badge-warning' }" th:text="*{payment.status}"></span>
+                                                        </td>
+                                                        <td th:text="*{payment.paymentMethod}"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{dashboard-staff-test/fragments/footer :: footer}"></div>
+</body>
+</html>

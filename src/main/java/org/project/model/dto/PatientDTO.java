@@ -1,15 +1,17 @@
 package org.project.model.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
+<<<<<<< HEAD
 @Getter
 @Setter
 public class PatientDTO extends AbstractServiceAIDTO{
+=======
+public class PatientDTO extends AbstractServiceDTO {
+>>>>>>> 1fe7b34939d6bcd04ae5de38ce13891189c4ebc0
     private Long userId;
     private String fullName;
     private String email;

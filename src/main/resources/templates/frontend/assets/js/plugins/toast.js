@@ -1,5 +1,17 @@
 /**
- * Toast.js - Thư viện hiển thị thông báo toast đơn giản
+ * @typedef {Object} ToastOptions
+ * @property {"primary"|"success"|"warning"|"danger"|"info"} [type] - Loại toast
+ * @property {string} [message] - Nội dung thông báo
+ * @property {number} [duration] - Thời gian hiển thị (ms)
+ * @property {"top-right"|"top-left"|"bottom-right"|"bottom-left"} [position] - Vị trí hiển thị
+ * @property {boolean} [dismissible] - Có thể đóng được không
+ * @property {boolean} [icon] - Hiển thị icon hay không
+ * @property {boolean} [solid] - Kiểu solid hay không
+ * @property {boolean} [rounded] - Bo góc hay không
+ * @property {string|null} [link] - Liên kết (nếu có)
+ * @property {string|null} [heading] - Tiêu đề (nếu có)
+ * @property {string|null} [additionalText] - Văn bản bổ sung (nếu có)
+ * @property {boolean} [progress] - Có hiện progress bar không
  */
 class Toast {
     constructor() {
@@ -18,6 +30,7 @@ class Toast {
             link: null, // liên kết (nếu có)
             heading: null, // tiêu đề (nếu có)
             additionalText: null, // văn bản bổ sung (nếu có)
+            progress: false // có hiện progress bar không
         };
 
         this.icons = {
@@ -25,7 +38,7 @@ class Toast {
             success: `<svg class="bi flex-shrink-0 me-2" width="24" height="24"><use xlink:href="#check-circle-fill" /></svg>`,
             warning: `<svg class="bi flex-shrink-0 me-2" width="24" height="24"><use xlink:href="#exclamation-triangle-fill" /></svg>`,
             danger: `<svg class="bi flex-shrink-0 me-2" width="24" height="24"><use xlink:href="#exclamation-triangle-fill" /></svg>`,
-            info: `<svg class="bi flex-shrink-0 me-2" width="24" height="24"><use xlink:href="#info-fill" /></svg>`,
+            info: `<svg class="bi flex-shrink-0 me-2" width="24" height="24"><use xlink:href="#info-fill" /></svg>`
         };
 
         // Thêm SVG icons vào trang
@@ -203,6 +216,22 @@ class Toast {
         background-color: #0dcaf0;
         border-color: #0dcaf0;
       }
+      /* Progress cho toast */
+      .toast-progress {
+        position: absolute;
+        left: 0; bottom: 0;
+        height: 4px;
+        background: #0d6efd;
+        width: 100%;
+        transition: width linear;
+        border-radius: 0 0 0.375rem 0.375rem;
+        opacity: 0.7;
+        pointer-events: none;
+      }
+      .alert-success .toast-progress { background: #198754; }
+      .alert-danger .toast-progress { background: #dc3545; }
+      .alert-warning .toast-progress { background: #ffc107; }
+      .alert-info .toast-progress { background: #0dcaf0; }
     `;
 
         // Tạo một thẻ style
@@ -215,9 +244,6 @@ class Toast {
             document.head.appendChild(style);
         }
     }
-
-    // Còn lại giữ nguyên code như cũ
-    // ...
 
     // Khởi tạo SVG icons
     initIcons() {
@@ -248,7 +274,7 @@ class Toast {
             "top-right",
             "top-left",
             "bottom-right",
-            "bottom-left",
+            "bottom-left"
         ];
 
         positions.forEach((position) => {
@@ -260,7 +286,11 @@ class Toast {
         });
     }
 
-    // Hiển thị toast
+    /**
+     * Hiển thị một toast.
+     * @param {ToastOptions} options
+     * @returns {HTMLElement}
+     */
     show(options = {}) {
         const settings = {...this.defaultOptions, ...options};
 
@@ -270,8 +300,7 @@ class Toast {
         // Xác định vị trí container
         let positionClass = "top-right";
         if (settings.position === "top-left") positionClass = "top-left";
-        if (settings.position === "bottom-right")
-            positionClass = "bottom-right";
+        if (settings.position === "bottom-right") positionClass = "bottom-right";
         if (settings.position === "bottom-left") positionClass = "bottom-left";
 
         // Các lớp CSS cho vị trí
@@ -279,7 +308,6 @@ class Toast {
         if (settings.position.includes("top")) positionStyleClass = "alert-top";
         else if (settings.position.includes("bottom"))
             positionStyleClass = "alert-bottom";
-
         if (settings.position.includes("left"))
             positionStyleClass = "alert-left";
         else if (settings.position.includes("right"))
@@ -291,7 +319,7 @@ class Toast {
             `alert-${settings.type}`,
             "alert-dismissible",
             "fade",
-            "show",
+            "show"
         ];
 
         // Thêm các lớp tùy chọn
@@ -339,6 +367,11 @@ class Toast {
             contentHTML += `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>`;
         }
 
+        // Thêm progress bar nếu bật
+        if (settings.progress && settings.duration > 0) {
+            contentHTML += `<div class="toast-progress"></div>`;
+        }
+
         toastElement.innerHTML = contentHTML;
 
         // Thêm toast vào container
@@ -355,6 +388,19 @@ class Toast {
             });
         }
 
+        // Animate progress bar nếu có
+        if (settings.progress && settings.duration > 0) {
+            const progressBar = toastElement.querySelector(".toast-progress");
+            if (progressBar) {
+                // Đặt width về 100% rồi giảm về 0%
+                progressBar.style.width = "100%";
+                setTimeout(() => {
+                    progressBar.style.transition = `width ${settings.duration}ms linear`;
+                    progressBar.style.width = "0%";
+                }, 10);
+            }
+        }
+
         // Tự động đóng sau thời gian cài đặt
         if (settings.duration > 0) {
             setTimeout(() => {
@@ -365,7 +411,10 @@ class Toast {
         return toastElement;
     }
 
-    // Ẩn toast
+    /**
+     * Ẩn toast.
+     * @param {HTMLElement} toastElement
+     */
     hide(toastElement) {
         if (toastElement && toastElement.parentNode) {
             toastElement.classList.remove("show");
@@ -377,23 +426,52 @@ class Toast {
         }
     }
 
-    // Phương thức nhanh cho các loại toast khác nhau
+    /**
+     * Hiển thị toast kiểu primary.
+     * @param {string} message
+     * @param {ToastOptions} [options]
+     * @returns {HTMLElement}
+     */
     primary(message, options = {}) {
         return this.show({...options, type: "primary", message});
     }
 
+    /**
+     * Hiển thị toast kiểu success.
+     * @param {string} message
+     * @param {ToastOptions} [options]
+     * @returns {HTMLElement}
+     */
     success(message, options = {}) {
         return this.show({...options, type: "success", message});
     }
 
+    /**
+     * Hiển thị toast kiểu warning.
+     * @param {string} message
+     * @param {ToastOptions} [options]
+     * @returns {HTMLElement}
+     */
     warning(message, options = {}) {
         return this.show({...options, type: "warning", message});
     }
 
+    /**
+     * Hiển thị toast kiểu danger.
+     * @param {string} message
+     * @param {ToastOptions} [options]
+     * @returns {HTMLElement}
+     */
     danger(message, options = {}) {
         return this.show({...options, type: "danger", message});
     }
 
+    /**
+     * Hiển thị toast kiểu info.
+     * @param {string} message
+     * @param {ToastOptions} [options]
+     * @returns {HTMLElement}
+     */
     info(message, options = {}) {
         return this.show({...options, type: "info", message});
     }

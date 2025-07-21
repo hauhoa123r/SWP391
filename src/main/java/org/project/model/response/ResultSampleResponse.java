@@ -1,0 +1,14 @@
+package org.project.model.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ResultSampleResponse extends SampleServiceResponse{
+    private String Time;
+}

@@ -1,0 +1,5 @@
+description,email,phone,fullName,staffType,rankLevel,expectValid
+"Valid data 1","user1__RANDOM__@gmail.com","0987654321","Nguyen Van A","FULL_TIME","5","valid"
+"Invalid email format","invalid$char@gmail.com","0987654321","Nguyen Van D","FULL_TIME","5","invalid"
+"Email already exists","dup@mailtest.com","0987654321","Nguyen Van M","FULL_TIME","5","invalid"
+

@@ -202,7 +202,7 @@
     <!-- loader END -->
     <aside class="sidebar sidebar-base " id="first-tour" data-toggle="main-sidebar" data-sidebar="responsive">
         <div class="sidebar-header d-flex align-items-center justify-content-start position-relative">
-            <a href="./index.html" th:href="@{/dashboard-staff-test/index.html}"
+            <a href="./index.html" th:href="@{/lab/homepage}"
  class="navbar-brand">
 
                 <!--Logo start-->
@@ -273,269 +273,6 @@
                                     d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
                             </svg>
                         </i>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between product-offcanvas">
-                        <div class="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabindex="-1"
-                            id="offcanvasBottomNav">
-                            <div class="offcanvas-body">
-                                <ul class="iq-nav-menu list-unstyled">
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start active" href="./index.html" th:href="@{/dashboard-staff-test/index.html}"
->
-                                            <span class="nav-text">Home</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
-                                            href="#allPagesData" role="button" aria-expanded="false"
-                                            aria-controls="allPagesData">
-                                            <span class="nav-text">Pages</span>
-                                        </a>
-                                        <ul class="iq-header-sub-menu list-unstyled collapse" id="allPagesData">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="./component.html" th:href="@{/dashboard-staff-test/component.html}"
->Components</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="./ui-color.html" th:href="@{/dashboard-staff-test/ui-color.html}"
->UI Color</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#authSkins" role="button" aria-expanded="false">
-                                                    Auth skins
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="defaultAuth">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/sign-in.html" th:href="@{/dashboard-staff-test/auth/sign-in.html}"
->Sign In</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/sign-up.html" th:href="@{/dashboard-staff-test/auth/sign-up.html}"
->Sign Up</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/confirm-mail.html" th:href="@{/dashboard-staff-test/auth/confirm-mail.html}"
->Email Verified</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/recoverpw.html" th:href="@{/dashboard-staff-test/auth/recoverpw.html}"
->Reset
-                                                            Password</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/lock-screen.html" th:href="@{/dashboard-staff-test/auth/lock-screen.html}"
->Lock Screen</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#userApps" role="button" aria-expanded="false"
-                                                    aria-controls="userApps">
-                                                    User
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="userApps">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-profile.html" th:href="@{/dashboard-staff-test/app/user-profile.html}"
->User Profile</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-add.html" th:href="@{/dashboard-staff-test/app/user-add.html}"
->User Add</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-list.html" th:href="@{/dashboard-staff-test/app/user-list.html}"
->User List</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#utilities" role="button" aria-expanded="false"
-                                                    aria-controls="utilities">
-                                                    Utilities
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="utilities">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/maintenance.html" th:href="@{/dashboard-staff-test/errors/maintenance.html}"
->Maintenance</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/error404.html" th:href="@{/dashboard-staff-test/errors/error404.html}"
->404</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/error500.html" th:href="@{/dashboard-staff-test/errors/error500.html}"
->500</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#widgetsPage" role="button" aria-expanded="false"
-                                                    aria-controls="widgetsPage">
-                                                    Widgets
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="widgetsPage">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetbasic.html" th:href="@{/dashboard-staff-test/widget/widgetbasic.html}"
->Widget Basic</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetchart.html" th:href="@{/dashboard-staff-test/widget/widgetchart.html}"
->Widget Chart</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetcard.html" th:href="@{/dashboard-staff-test/widget/widgetcard.html}"
->Widget Card</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#mapPages" role="button" aria-expanded="false"
-                                                    aria-controls="mapPages">
-                                                    Map
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="mapPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./maps/google.html" th:href="@{/dashboard-staff-test/maps/google.html}"
->Google</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./maps/vector.html" th:href="@{/dashboard-staff-test/maps/vector.html}"
->Vector</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#formsPages" role="button" aria-expanded="false"
-                                                    aria-controls="formsPages">
-                                                    Form
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="formsPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./form/form-element.html" th:href="@{/dashboard-staff-test/form/form-element.html}"
->Element</a></li>
-
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./form/form-validation.html" th:href="@{/dashboard-staff-test/form/form-validation.html}"
->Validation</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#tablesPages" role="button" aria-expanded="false"
-                                                    aria-controls="tablesPages">
-                                                    Table
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="tablesPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/bootstrap-table.html" th:href="@{/dashboard-staff-test/table/bootstrap-table.html}"
->Bootstrap Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/table-data.html" th:href="@{/dashboard-staff-test/table/table-data.html}"
->Data Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/border-table.html" th:href="@{/dashboard-staff-test/table/border-table.html}"
->Bordered Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/fancy-table.html" th:href="@{/dashboard-staff-test/table/fancy-table.html}"
->Fancy Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/fixed-table.html" th:href="@{/dashboard-staff-test/table/fixed-table.html}"
->Fixed Table</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#iconsPages" role="button" aria-expanded="false"
-                                                    aria-controls="iconsPages">
-                                                    Icons
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="iconsPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/solid.html" th:href="@{/dashboard-staff-test/icons/solid.html}"
->Solid</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/outline.html" th:href="@{/dashboard-staff-test/icons/outline.html}"
->Outlined</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/dual-tone.html" th:href="@{/dashboard-staff-test/icons/dual-tone.html}"
->Dual Tone</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                     <div class="d-flex align-items-center">
                         <button id="navbar-toggle" class="navbar-toggler px-0" type="button" data-bs-toggle="collapse"
@@ -751,94 +488,43 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="input-datatable" class="table" data-toggle="data-table-column-filter">
+                                <table id="input-datatable" class="table">
                                     <thead>
                                         <tr>
-                                            <th>Barcode</th>
-                                            <th>OrderID</th>
-                                            <th>Patient Name</th>
-                                            <th>Test Type</th>
-                                            <th>Time</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Tên bệnh nhân</th>
+                                            <th>Loại kiểm tra</th>
+                                            <th>Người xét nghiệm</th>
+                                            <th>Thời gian</th>
+                                            <th>Trạng thái</th>
+                                            <th>Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Dòng mẫu status Pending -->
-                                        <tr>
-                                            <td>BN123-20240625-01-2</td>
-                                            <td>BN123456</td>
-                                            <td>Bùi Huy Hùng</td>
-                                            <td>Glucose</td>
-                                            <td>
-                                                25/6/2025 10:30
-                                            </td>
-                                            <td><span class="status-badge status-not-received">Danger</span></td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-outline-success tooltip-init"
-                                                        data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                                        title="Submit">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                         fill="currentColor" class="bi bi-check-square-fill"
-                                                         viewBox="0 0 16 16">
-                                                        <path
-                                                                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
-                                                    </svg>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-info" title="View Details"
-                                                        onclick="window.location.href='test-detail'">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                         fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                                        <path
-                                                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <!-- Dòng mẫu status Success -->
-                                        <tr>
-                                            <td>BN124-20240625-02-1</td>
-                                            <td>BN123457</td>
-                                            <td>Nguyễn Thị An</td>
-                                            <td>Cholesterol</td>
-                                            <td>25/6/2025 10:30</td>
-                                            <td><span class="status-badge status-completed">Normal</span></td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-outline-success tooltip-init"
-                                                        data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                                        title="Submit">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                         fill="currentColor" class="bi bi-check-square-fill"
-                                                         viewBox="0 0 16 16">
-                                                        <path
-                                                                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
-                                                    </svg>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-info" title="View Details"
-                                                        onclick="window.location.href='test-detail'">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                         fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                                        <path
-                                                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
+
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td></td>
-                                            <th title="OrderID">OrderID</th>
-                                            <th title="Patient Name">Patient Name</th>
-                                            <th title="Test Type">Test Type</th>
-                                            <th title="Time">Time</th>
+                                            <th title="Patient Name">
+                                                <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" placeholder="Search Patient Name">
+                                            </th>
+                                            <th title="Test Type">
+                                                <input type="text" id="testType" name="testType" class="form-control form-control-sm" placeholder="Search Test Type">
+                                            </th>
+                                            <th></th>
+                                            <th></th>
                                             <td></td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
                                 </table>
+                                <div class="mt-4 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span id="total-items"></span>
+                                    </div>
+                                    <nav>
+                                        <ul class="pagination mb-0" id="pagination-container"></ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1823,5 +1509,123 @@
  defer></script>
 
 </body>
+<script>
+    function getFilterParams() {
+        return {
+            patientName: $('#patientName').val(),
+            testType: $('#testType').val()
+        };
+    }
 
+    function fetchFilteredData(page = 0) {
+        const filters = getFilterParams();
+        filters.page = page;
+
+        $.ajax({
+            url: '/api/approve-result/filter',
+            type: 'GET',
+            data: filters,
+            success: function (data) {
+                renderTable(data.content);
+                renderPagination(data);
+                $('#total-items').text(`Tổng số: ${data.totalElements} mẫu`);
+            },
+            error: function () {
+                alert('Lỗi khi lọc dữ liệu');
+            }
+        });
+    }
+
+    function renderTable(data) {
+        let html = '';
+        data.forEach(item => {
+            html += `
+        <tr>
+            <input type="hidden" name="id" value="${item.id}" id="testRequestId"></input>
+            <input type="hidden" name="patientId" value="${item.patientId}" id="patientId"></input>
+                                            <td>${item.patientName}</td>
+                                            <td>${item.testType}</td>
+                                            <td>${item.tester}</td>
+                                            <td>${item.requestAt}</td>
+                                            <td>
+                                               ${item.status}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-outline-success tooltip-init"
+                                                        data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                                        title="Submit">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                         fill="currentColor" class="bi bi-check-square-fill"
+                                                         viewBox="0 0 16 16">
+                                                        <path
+                                                                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
+                                                    </svg>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" title="View Details"
+                                                        onclick="window.location.href='/lab/test-detail/${item.id}'">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                         fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                                        <path
+                                                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>`;
+        });
+
+        $('#input-datatable tbody').html(html);
+    }
+
+    function renderPagination(pageData) {
+        const currentPage = pageData.number;
+        const totalPages = pageData.totalPages;
+        let html = '';
+
+        html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a></li>`;
+
+        if (currentPage > 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+            if (currentPage > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+
+        for (let i = Math.max(0, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
+        }
+
+        if (currentPage < totalPages - 3) {
+            html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+        if (currentPage < totalPages - 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
+        }
+
+        html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a></li>`;
+
+        $('#pagination-container').html(html);
+    }
+
+    $(document).on('click', '.pagination a.page-link', function (e) {
+        e.preventDefault();
+        const page = parseInt($(this).data('page'));
+        fetchFilteredData(page);
+    });
+
+    let typingTimer;
+    const typingDelay = 800;
+    function attachInputEvents() {
+        $('#patientName, #testType').off('input').on('input', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => fetchFilteredData(0), typingDelay);
+        });
+    }
+
+    $(document).ready(function () {
+        attachInputEvents();
+        fetchFilteredData(0);
+    });
+</script>
 </html>

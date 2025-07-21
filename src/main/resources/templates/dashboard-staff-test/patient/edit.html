@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{dashboard-staff-test/fragments/base :: head}"></head>
+<body>
+    <div th:replace="~{dashboard-staff-test/fragments/header :: header}"></div>
+    
+    <div class="main-content">
+        <div th:replace="~{dashboard-staff-test/fragments/sidebar :: sidebar}"></div>
+        
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title">Edit Patient</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Patients</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="row">
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <form th:action="@{/admin/patients/edit}" th:object="${patient}" method="post">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Patient ID</label>
+                                            <input type="text" class="form-control" th:field="*{id}" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Full Name</label>
+                                            <input type="text" class="form-control" th:field="*{fullName}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control" th:field="*{email}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input type="tel" class="form-control" th:field="*{phoneNumber}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gender</label>
+                                            <select class="form-control" th:field="*{gender}" required>
+                                                <option value="MALE">Male</option>
+                                                <option value="FEMALE">Female</option>
+                                                <option value="OTHER">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date of Birth</label>
+                                            <input type="date" class="form-control" th:field="*{dateOfBirth}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <textarea class="form-control" th:field="*{address}" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary mr-2">Save Changes</button>
+                                        <a href="/admin/patients" class="btn btn-light">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{dashboard-staff-test/fragments/footer :: footer}"></div>
+</body>
+</html>
