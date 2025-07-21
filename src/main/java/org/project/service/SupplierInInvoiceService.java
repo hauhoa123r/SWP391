@@ -16,6 +16,8 @@ public interface SupplierInInvoiceService {
     
     SupplierInvoiceDTO saveInvoice(SupplierInDTO supplierInDTO);
     
+    void saveInvoiceWithRejection(SupplierInDTO supplierIn, String rejectionReason);
+    
     SupplierInvoiceDTO updateInvoice(Long id, SupplierInvoiceDTO invoiceDTO);
     
     SupplierInvoiceDTO updateInvoiceStatus(Long id, SupplierTransactionStatus status);

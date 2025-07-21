@@ -10,6 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.project.enums.SupplierTransactionStatus;
+import org.project.entity.ProductEntity;
+import org.project.repository.ProductRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.project.service.SupplierInInvoiceService;
 
 @Controller
 @RequestMapping("/medicines")
@@ -20,6 +26,12 @@ public class MedicineController {
 
     @Autowired
     private SupplierInService supplierInService;
+    
+    @Autowired
+    private ProductRepository productRepository;
+    
+    @Autowired
+    private SupplierInInvoiceService supplierInInvoiceService;
 
     @GetMapping
     public String getAllMedicines(
@@ -66,10 +78,56 @@ public class MedicineController {
     @PostMapping("/process-supplier-in/{supplierInId}")
     public String processSupplierIn(@PathVariable Long supplierInId, Model model) {
         SupplierInDTO supplierIn = supplierInService.getSupplierInById(supplierInId);
-        if (supplierIn != null && "CHECKED".equals(supplierIn.getStatus())) {
+        if (supplierIn != null && supplierIn.getStatus() == SupplierTransactionStatus.CHECKED) {
             medicineService.processSupplierIn(supplierIn);
             supplierInService.updateSupplierInStatus(supplierInId, "COMPLETED");
         }
+        return "redirect:/medicines";
+    }
+    
+    /**
+     * Process stock in for medicine
+     * @param id Stock in ID
+     * @param redirectAttributes Redirect attributes for flash messages
+     * @return Redirect to medicine page
+     */
+    @PostMapping("/process-stockin/{id}")
+    public String processStockIn(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            // Get supplier in details
+            SupplierInDTO supplierIn = supplierInService.getSupplierInById(id);
+            
+            if (supplierIn != null && supplierIn.getStatus() == SupplierTransactionStatus.INSPECTED) {
+                // Update stock quantities for each product
+                if (supplierIn.getItems() != null) {
+                    for (var item : supplierIn.getItems()) {
+                        ProductEntity product = productRepository.findById(item.getProductId()).orElse(null);
+                        if (product != null) {
+                            // Update stock quantity
+                            int currentStock = product.getStockQuantities() != null ? product.getStockQuantities() : 0;
+                            product.setStockQuantities(currentStock + item.getQuantity());
+                            productRepository.save(product);
+                        }
+                    }
+                }
+                
+                // Update order status to COMPLETED
+                supplierInService.updateSupplierInStatus(id, "COMPLETED");
+                
+                // Move order to StockInInvoice
+                supplierInInvoiceService.saveInvoice(supplierIn);
+                
+                redirectAttributes.addFlashAttribute("successMessage", 
+                        "Đã nhập kho thành công đơn hàng #" + id);
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", 
+                        "Đơn hàng không tồn tại hoặc không ở trạng thái đã kiểm tra");
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", 
+                    "Lỗi khi xử lý nhập kho: " + e.getMessage());
+        }
+        
         return "redirect:/medicines";
     }
 }

@@ -411,35 +411,65 @@
                             <div class="card-body">
                                 <div class="row mb-3">
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" id="searchFilter" placeholder="Tìm kiếm mã phiếu, người nhận...">
+                                        <input type="text" class="form-control" id="searchFilter" name="search" placeholder="Tìm kiếm mã phiếu, người nhận..." th:value="${param.search}">
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-select" id="statusFilter">
+                                        <select class="form-select" id="statusFilter" name="status">
                                             <option value="">Tất cả trạng thái</option>
-                                            <option value="pending">Chờ xử lý</option>
-                                            <option value="approved">Đang xử lý</option>
-                                            <option value="completed">Hoàn thành</option>
-                                            <option value="cancelled">Đã hủy</option>
+                                            <option th:each="statusValue : ${T(org.project.enums.SupplierTransactionStatus).values()}" 
+                                                    th:value="${statusValue}" 
+                                                    th:text="${statusValue == T(org.project.enums.SupplierTransactionStatus).PENDING ? 'Chờ xử lý' :
+                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).APPROVED ? 'Đã phê duyệt' :
+                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).REJECTED ? 'Từ chối' :
+                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).WAITING_FOR_DELIVERY ? 'Chờ giao hàng' :
+                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).DELIVERED ? 'Đã giao hàng' :
+                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).INSPECTED ? 'Đã kiểm tra' :
+                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).COMPLETED ? 'Hoàn thành' :
+                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).PROBLEM ? 'Có vấn đề' :
+                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).PARTIALLY_COMPLETED ? 'Hoàn thành một phần' :
+                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).CANCELLED ? 'Đã hủy' :
+                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).RECEIVED ? 'Đã nhận hàng' :
+                                                             statusValue}"
+                                                    th:selected="${param.status == statusValue.name()}">
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-select" id="reasonFilter">
+                                        <select class="form-select" id="reasonFilter" name="type">
                                             <option value="">Tất cả lý do</option>
-                                            <option value="SALE">Bán hàng</option>
-                                            <option value="TRANSFER">Chuyển kho</option>
-                                            <option value="RETURN">Trả hàng</option>
-                                            <option value="EXPIRED">Hết hạn</option>
-                                            <option value="DAMAGED">Hư hỏng</option>
-                                            <option value="OTHER">Khác</option>
+                                            <option value="SALE" th:selected="${param.type == 'SALE'}">Bán hàng</option>
+                                            <option value="TRANSFER" th:selected="${param.type == 'TRANSFER'}">Chuyển kho</option>
+                                            <option value="RETURN" th:selected="${param.type == 'RETURN'}">Trả hàng</option>
+                                            <option value="EXPIRED" th:selected="${param.type == 'EXPIRED'}">Hết hạn</option>
+                                            <option value="DAMAGED" th:selected="${param.type == 'DAMAGED'}">Hư hỏng</option>
+                                            <option value="OTHER" th:selected="${param.type == 'OTHER'}">Khác</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <button class="btn btn-secondary" onclick="clearFilters()">
-                                            <i class="ri-filter-off-line"></i> Xóa bộ lọc
+                                        <button class="btn btn-primary me-2" type="submit" form="filterForm">
+                                            <i class="ri-filter-line"></i> Lọc
                                         </button>
+                                        <a th:href="@{/StockOut.html}" class="btn btn-secondary">
+                                            <i class="ri-filter-off-line"></i> Xóa bộ lọc
+                                        </a>
                                     </div>
                                 </div>
+                                
+                                <!-- Hidden form for filters -->
+                                <form id="filterForm" th:action="@{/StockOut.html}" method="get">
+                                    <input type="hidden" id="searchParam" name="search" th:value="${param.search}">
+                                    <input type="hidden" id="statusParam" name="status" th:value="${param.status}">
+                                    <input type="hidden" id="typeParam" name="type" th:value="${param.type}">
+                                    <input type="hidden" id="pageParam" name="page" th:value="${currentPage}">
+                                    <input type="hidden" id="sizeParam" name="size" th:value="${pageSize}">
+                                </form>
 
+                                <!-- Hiển thị thông báo lỗi nếu có -->
+                                <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
+                                    <i class="ri-error-warning-line me-2"></i>
+                                    <span th:text="${errorMessage}">Lỗi hệ thống</span>
+                                </div>
+                                
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="stockOutTable">
                                         <thead>
@@ -470,12 +500,18 @@
                                             </td>
                                             <td class="text-end"><strong th:text="${#numbers.formatDecimal(supplierOut.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong></td>
                                             <td>
-                                                <!-- Simple status implementation -->
-                                                <span th:if="${supplierOut.status == 'PENDING'}" class="status-pending">Chờ xử lý</span>
-                                                <span th:if="${supplierOut.status == 'APPROVED'}" class="status-processing">Đang xử lý</span>
-                                                <span th:if="${supplierOut.status == 'COMPLETED'}" class="status-completed">Hoàn thành</span>
-                                                <span th:if="${supplierOut.status == 'CANCELLED'}" class="status-cancelled">Đã hủy</span>
-                                                <span th:if="${supplierOut.status != 'PENDING' && supplierOut.status != 'APPROVED' && supplierOut.status != 'COMPLETED' && supplierOut.status != 'CANCELLED'}" class="status-processing">Đang xử lý</span>
+                                                <!-- Enhanced status implementation -->
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).PENDING}" class="status-pending">Chờ xử lý</span>
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).APPROVED}" class="status-processing">Đã phê duyệt</span>
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).REJECTED}" class="status-rejected">Từ chối</span>
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).WAITING_FOR_DELIVERY}" class="status-pending">Chờ giao hàng</span>
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).DELIVERED}" class="status-received">Đã giao hàng</span>
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).INSPECTED}" class="status-checked">Đã kiểm tra</span>
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).COMPLETED}" class="status-completed">Hoàn thành</span>
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).PROBLEM}" class="status-rejected">Có vấn đề</span>
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).PARTIALLY_COMPLETED}" class="status-processing">Hoàn thành một phần</span>
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).CANCELLED}" class="status-rejected">Đã hủy</span>
+                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).RECEIVED}" class="status-received">Đã nhận hàng</span>
                                             </td>
                                             <td>
                                                 <div class="btn-group">
@@ -487,28 +523,28 @@
                                                     </a>
 
                                                     <!-- Nút xử lý trạng thái -->
-                                                    <form th:if="${supplierOut.status == 'PENDING'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                    <form th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).PENDING}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
                                                         <input type="hidden" name="status" value="APPROVED" />
                                                         <button type="submit" class="btn btn-sm btn-success" title="Xử lý">
                                                             <i class="ri-play-line"></i>
                                                         </button>
                                                     </form>
 
-                                                    <form th:if="${supplierOut.status == 'APPROVED'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                    <form th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).APPROVED}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
                                                         <input type="hidden" name="status" value="COMPLETED" />
                                                         <button type="submit" class="btn btn-sm btn-success" title="Hoàn thành">
                                                             <i class="ri-check-line"></i>
                                                         </button>
                                                     </form>
 
-                                                    <form th:if="${supplierOut.status == 'PENDING' || supplierOut.status == 'APPROVED'}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                    <form th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).PENDING || supplierOut.status == T(org.project.enums.SupplierTransactionStatus).APPROVED}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
                                                         <input type="hidden" name="status" value="CANCELLED" />
                                                         <button type="submit" class="btn btn-sm btn-danger" title="Hủy">
                                                             <i class="ri-close-line"></i>
                                                         </button>
                                                     </form>
 
-                                                    <button th:if="${supplierOut.status == 'COMPLETED'}" class="btn btn-sm btn-info" th:onclick="'printStockOut(' + ${supplierOut.id} + ')'">
+                                                    <button th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).COMPLETED}" class="btn btn-sm btn-info" th:onclick="'printStockOut(' + ${supplierOut.id} + ')'">
                                                         <i class="ri-printer-line"></i>
                                                     </button>
                                                 </div>
@@ -521,6 +557,43 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Pagination section -->
+                            <nav aria-label="Page navigation" th:if="${totalPages > 0}">
+                                <ul class="pagination justify-content-center mt-3">
+                                    <!-- Previous button -->
+                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/StockOut.html(page=${currentPage - 1}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <!-- Page numbers -->
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" th:href="@{/StockOut.html(page=${i}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" th:text="${i + 1}">1</a>
+                                    </li>
+                                    
+                                    <!-- Next button -->
+                                    <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                        <a class="page-link" th:href="@{/StockOut.html(page=${currentPage + 1}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            
+                            <!-- Page size selector -->
+                            <div class="row mt-2" th:if="${totalPages > 0}">
+                                <div class="col-md-6 offset-md-3 text-center">
+                                    <label for="pageSizeSelect" class="me-2">Số mục trên mỗi trang:</label>
+                                    <select id="pageSizeSelect" class="form-select d-inline-block w-auto" onchange="changePageSize()">
+                                        <option value="5" th:selected="${pageSize == 5}">5</option>
+                                        <option value="10" th:selected="${pageSize == 10}">10</option>
+                                        <option value="20" th:selected="${pageSize == 20}">20</option>
+                                        <option value="50" th:selected="${pageSize == 50}">50</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -724,6 +797,31 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal từ chối đơn hàng -->
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Từ chối đơn hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="rejectForm">
+                    <input type="hidden" id="rejectOrderId" name="orderId">
+                    <div class="mb-3">
+                        <label for="rejectReason" class="form-label">Lý do từ chối</label>
+                        <textarea class="form-control" id="rejectReason" name="reason" rows="3" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" onclick="rejectOrder()">Xác nhận từ chối</button>
             </div>
         </div>
     </div>
@@ -1148,12 +1246,45 @@
         });
     }
 
+    // Change page size function
+    function changePageSize() {
+        const size = document.getElementById('pageSizeSelect').value;
+        const currentUrl = new URL(window.location.href);
+        
+        // Update size parameter and reset to first page
+        currentUrl.searchParams.set('size', size);
+        currentUrl.searchParams.set('page', 0);
+        
+        // Navigate to the new URL
+        window.location.href = currentUrl.toString();
+    }
+
+    // Update filter form inputs when select elements change
+    $(document).ready(function() {
+        $('#searchFilter').on('input', function() {
+            $('#searchParam').val($(this).val());
+        });
+        
+        $('#statusFilter').on('change', function() {
+            $('#statusParam').val($(this).val());
+        });
+        
+        $('#reasonFilter').on('change', function() {
+            $('#typeParam').val($(this).val());
+        });
+    });
+
     // Clear filters
     function clearFilters() {
         $('#searchFilter').val('');
         $('#statusFilter').val('');
         $('#reasonFilter').val('');
-        filterTable();
+        
+        $('#searchParam').val('');
+        $('#statusParam').val('');
+        $('#typeParam').val('');
+        
+        $('#filterForm').submit();
     }
 
     // Refresh stock out list
@@ -1161,6 +1292,170 @@
         alert('Đang làm mới danh sách...');
         // Implement refresh functionality
         location.reload();
+    }
+
+    // Xử lý thay đổi trạng thái
+    function handleStatusChange(form, newStatus) {
+        const orderId = $(form).data('id');
+        console.log("Handle status change:", orderId, newStatus);
+        
+        if (!confirm(`Xác nhận cập nhật trạng thái đơn hàng sang "${getStatusText(newStatus)}"?`)) {
+            return; // Người dùng hủy
+        }
+        
+        // Xử lý đặc biệt khi hoàn thành
+        if (newStatus === 'COMPLETED') {
+            // Lấy loại đơn hàng (nếu có)
+            const orderType = $(`tr[data-id="${orderId}"]`).data('type');
+            console.log("Order type:", orderType);
+            
+            // Chuyển hướng đến trang xử lý tương ứng
+            let targetUrl = 'StockOutInvoice.html';
+            targetUrl += `?completed=${orderId}`;
+            
+            showNotification(`Đang chuyển đến trang hóa đơn xuất kho...`, 'info');
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 1500);
+            return;
+        }
+        
+        // Xử lý đặc biệt khi từ chối
+        if (newStatus === 'REJECTED') {
+            // Hiển thị modal để nhập lý do từ chối
+            showRejectModal(orderId);
+            return;
+        }
+        
+        // Thu thập form data
+        const formData = new FormData(form);
+        const csrfToken = formData.get('_csrf');
+        
+        // Show loading indicator
+        const $button = $(form).find('button');
+        const originalHtml = $button.html();
+        $button.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+        $button.prop('disabled', true);
+        
+        // Gửi AJAX request
+        fetch(`/supplier-outs/${orderId}/status?redirect=false`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            console.log("Response status:", response.status);
+            
+            // Restore button
+            $button.html(originalHtml);
+            $button.prop('disabled', false);
+            
+            if (response.ok) {
+                showNotification(`Đã cập nhật trạng thái thành công!`, 'success');
+                
+                // Reload page after a short delay
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                throw new Error(`Error: ${response.status}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            
+            // Restore button
+            $button.html(originalHtml);
+            $button.prop('disabled', false);
+            
+            // Show error
+            showNotification(`Lỗi: ${error.message}. Vui lòng thử lại sau.`, 'danger');
+        });
+    }
+
+    // Convert status codes to display text
+    function getStatusText(status) {
+        const statusMap = {
+            'PENDING': 'Chờ xử lý',
+            'APPROVED': 'Đã phê duyệt',
+            'REJECTED': 'Từ chối',
+            'WAITING_FOR_DELIVERY': 'Chờ giao hàng',
+            'DELIVERED': 'Đã giao hàng',
+            'INSPECTED': 'Đã kiểm tra',
+            'COMPLETED': 'Hoàn thành',
+            'PROBLEM': 'Có vấn đề',
+            'PARTIALLY_COMPLETED': 'Hoàn thành một phần',
+            'CANCELLED': 'Đã hủy',
+            'RECEIVED': 'Đã nhận hàng'
+        };
+        return statusMap[status] || status;
+    }
+
+    // Hiển thị modal từ chối đơn hàng
+    function showRejectModal(orderId) {
+        console.log("Show reject modal for order ID:", orderId);
+        
+        // Set order ID vào form
+        $('#rejectOrderId').val(orderId);
+        
+        // Hiển thị modal
+        $('#rejectModal').modal('show');
+    }
+
+    // Xử lý từ chối đơn hàng
+    function rejectOrder() {
+        const orderId = $('#rejectOrderId').val();
+        const reason = $('#rejectReason').val();
+        
+        console.log("Processing reject for order ID:", orderId);
+        
+        if (!reason.trim()) {
+            alert('Vui lòng nhập lý do từ chối!');
+            return;
+        }
+        
+        // Tạo một form mới và submit trực tiếp
+        const formId = 'reject_form_' + Math.random().toString(36).substring(2, 15);
+        const targetIframe = 'hidden_iframe_' + Math.random().toString(36).substring(2, 15);
+        
+        // Thêm iframe ẩn
+        $('body').append(`<iframe name="${targetIframe}" id="${targetIframe}" style="display:none;"></iframe>`);
+        
+        // Tạo và thêm form vào body
+        const formHTML = `
+            <form id="${formId}" action="${window.location.origin}/supplier-outs/${orderId}/status" method="post" target="${targetIframe}" style="display:none;">
+                <input type="hidden" name="status" value="REJECTED">
+                <input type="hidden" name="reason" value="${reason}">
+                ${$('input[name="_csrf"]').val() ? `<input type="hidden" name="_csrf" value="${$('input[name="_csrf"]').val()}">` : ''}
+            </form>
+        `;
+        
+        $('body').append(formHTML);
+        
+        // Submit form
+        try {
+            $(`#${formId}`).submit();
+            
+            // Đóng modal và hiển thị thông báo
+            $('#rejectModal').modal('hide');
+            showNotification('Đã từ chối đơn hàng', 'success');
+            
+            // Chuyển đến trang hóa đơn xuất kho để lưu trữ
+            setTimeout(() => {
+                window.location.href = `StockOutInvoice.html?rejected=${orderId}`;
+            }, 1500);
+            
+            // Dọn dẹp
+            setTimeout(() => {
+                $(`#${formId}`).remove();
+                $(`#${targetIframe}`).remove();
+            }, 2000);
+        } catch (error) {
+            console.error('Lỗi khi từ chối đơn hàng:', error);
+            showNotification('Lỗi khi từ chối đơn hàng: ' + error.message, 'danger');
+        }
     }
 </script>
 

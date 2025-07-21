@@ -633,8 +633,17 @@
 <script th:src="@{/templates_storage/assets/js/scrollbar/custom.js}"></script>
 <script th:src="@{/templates_storage/assets/js/config.js}"></script>
 <script th:src="@{/templates_storage/assets/js/sidebar-menu.js}"></script>
+<script th:src="@{/templates_storage/assets/js/chart/apex-chart/apex-chart.js}"></script>
+<script th:src="@{/templates_storage/assets/js/chart/apex-chart/stock-prices.js}"></script>
+<script th:src="@{/templates_storage/assets/js/chart/apex-chart/chart-custom.js}"></script>
 <script th:src="@{/templates_storage/assets/js/notify/bootstrap-notify.min.js}"></script>
+<script th:src="@{/templates_storage/assets/js/dashboard/default.js}"></script>
 <script th:src="@{/templates_storage/assets/js/notify/index.js}"></script>
+<script th:src="@{/templates_storage/assets/js/typeahead/handlebars.js}"></script>
+<script th:src="@{/templates_storage/assets/js/typeahead/typeahead.bundle.js}"></script>
+<script th:src="@{/templates_storage/assets/js/typeahead/typeahead.custom.js}"></script>
+<script th:src="@{/templates_storage/assets/js/typeahead-search/handlebars.js}"></script>
+<script th:src="@{/templates_storage/assets/js/typeahead-search/typeahead-custom.js}"></script>
 <script th:src="@{/templates_storage/assets/js/script.js}"></script>
 
 <script>
@@ -940,7 +949,7 @@
         const content = `
                 <h6>Thông tin đơn nhập</h6>
                 <p><strong>Mã đơn:</strong> ${order.id}</p>
-                <p><strong>Nhà cung cấp:</strong> ${order.supplier}</p>
+                <p><strong>Nhà cung cấp:</strong> ${order.supplierEntity ? order.supplierEntity.name : ''}</p>
                 <p><strong>Ngày:</strong> ${order.date}</p>
 
                 <h6>Danh sách thiết bị</h6>
@@ -1194,8 +1203,8 @@
         if (!order) return;
 
         alert(`Chi tiết đơn nhập ${orderId}:\n` +
-            `Nhà cung cấp: ${order.supplier}\n` +
-            `Ngày: ${order.date}\n` +
+            `Nhà cung cấp: ${order.supplierEntity ? order.supplierEntity.name : ''}` +
+            `\nNgày: ${order.date}\n` +
             `Số sản phẩm: ${order.products.length}`);
     }
 
@@ -1208,6 +1217,107 @@
             `Ngày: ${order.date}\n` +
             `Số sản phẩm: ${order.products.length}`);
     }
+
+    function loadStockInOrders() {
+        // Lấy dữ liệu từ controller đã truyền vào
+        const orders = stockInOrders || [];
+        
+        // Hiển thị danh sách đơn hàng
+        const container = document.getElementById('stockInOrders');
+        
+        if (orders.length === 0) {
+            container.innerHTML = '<div class="alert alert-info">Không có đơn hàng nào cần xử lý</div>';
+            return;
+        }
+        
+        let html = '<div class="table-responsive"><table class="table table-bordered">';
+        html += '<thead><tr><th>Mã đơn</th><th>Nhà cung cấp</th><th>Ngày tạo</th><th>Tổng tiền</th><th>Thao tác</th></tr></thead>';
+        html += '<tbody>';
+        
+        orders.forEach(order => {
+            html += `<tr>
+            <td>${order.id}</td>
+            <td>${order.supplierName || (order.supplierEntity ? order.supplierEntity.name : '')}</td>
+            <td>${formatDate(order.transactionDate)}</td>
+            <td>${formatCurrency(order.totalAmount)}</td>
+            <td>
+                <a href="/supplier-ins/${order.id}" class="btn btn-sm btn-primary">
+                    <i class="ri-eye-line"></i> Chi tiết
+                </a>
+                <form method="POST" action="/medical-equipment/process-stockin/${order.id}" style="display:inline-block;">
+                    <input type="hidden" name="_csrf" value="${document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : ''}" />
+                    <button type="submit" class="btn btn-sm btn-success">
+                        <i class="ri-add-line"></i> Nhập kho
+                    </button>
+                </form>
+                <button class="btn btn-sm btn-danger" onclick="rejectOrder(${order.id})">
+                    <i class="ri-close-line"></i> Từ chối
+                </button>
+            </td>
+        </tr>`;
+        });
+        
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('vi-VN');
+    }
+
+    function formatCurrency(amount) {
+        if (!amount) return '0 VNĐ';
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    }
+
+    function rejectOrder(id) {
+        // Redirect to supplier-in detail page for rejection
+        window.location.href = `/supplier-ins/${id}?action=reject`;
+    }
+
+    // Gọi hàm khi trang tải xong
+    document.addEventListener('DOMContentLoaded', function() {
+        loadStockInOrders();
+        
+        // Xử lý thông báo thành công nếu có
+        const successMessage = /*[[${successMessage}]]*/ null;
+        if (successMessage) {
+            $.notify({
+                message: successMessage
+            }, {
+                type: 'success',
+                allow_dismiss: true,
+                placement: {
+                    from: 'top',
+                    align: 'center'
+                },
+                timer: 1000
+            });
+        }
+        
+        // Xử lý thông báo lỗi nếu có
+        const errorMessage = /*[[${errorMessage}]]*/ null;
+        if (errorMessage) {
+            $.notify({
+                message: errorMessage
+            }, {
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: 'top',
+                    align: 'center'
+                },
+                timer: 2000
+            });
+        }
+    });
+
+    // Variables from controller
+    /*<![CDATA[*/
+// Variables are already defined above, just updating from Thymeleaf
+/*]]>*/
 </script>
 </body>
 </html>

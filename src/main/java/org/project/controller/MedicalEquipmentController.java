@@ -8,14 +8,18 @@ import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.ProductType;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
+import org.project.model.dto.SupplierInDTO;
 import org.project.repository.MedicalProductRepository;
 import org.project.repository.ProductRepository;
 import org.project.repository.SupplierTransactionRepository;
 import org.project.service.MedicalProductService;
+import org.project.service.SupplierInInvoiceService;
+import org.project.service.SupplierInService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +37,8 @@ public class MedicalEquipmentController {
     private final MedicalProductRepository medicalProductRepository;
     private final ProductRepository productRepository;
     private final SupplierTransactionRepository supplierTransactionRepository;
+    private final SupplierInService supplierInService;
+    private final SupplierInInvoiceService supplierInInvoiceService;
 
     /**
      * Main page displaying all medical equipment
@@ -50,7 +56,7 @@ public class MedicalEquipmentController {
             
             // Get stock in orders for medical equipment - use pageable version but retrieve all results
             List<SupplierTransactionsEntity> stockInOrders = supplierTransactionRepository
-                .findByTransactionTypeAndStatus(SupplierTransactionType.STOCK_IN, SupplierTransactionStatus.RECEIVED, 
+                .findByTransactionTypeAndStatus(SupplierTransactionType.STOCK_IN, SupplierTransactionStatus.INSPECTED, 
                     PageRequest.of(0, 1000)).getContent();
             model.addAttribute("stockInOrders", stockInOrders);
             
@@ -181,6 +187,57 @@ public class MedicalEquipmentController {
         } catch (Exception e) {
             log.error("Error deleting medical equipment with ID {}: {}", id, e.getMessage(), e);
             model.addAttribute("errorMessage", "Lỗi khi xóa thiết bị y tế: " + e.getMessage());
+        }
+        
+        return "redirect:/medical-equipment";
+    }
+
+    /**
+     * Process stock in for medical equipment
+     * @param id Stock in ID
+     * @param redirectAttributes Redirect attributes for flash messages
+     * @return Redirect to medical equipment page
+     */
+    @PostMapping("/process-stockin/{id}")
+    public String processStockIn(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            log.info("Processing stock in with ID: {}", id);
+            
+            // Get supplier in details
+            SupplierInDTO supplierIn = supplierInService.getSupplierInById(id);
+            
+            if (supplierIn != null && supplierIn.getStatus() == SupplierTransactionStatus.INSPECTED) {
+                // Update stock quantities for each product
+                if (supplierIn.getItems() != null) {
+                    for (var item : supplierIn.getItems()) {
+                        ProductEntity product = productRepository.findById(item.getProductId()).orElse(null);
+                        if (product != null) {
+                            // Update stock quantity
+                            int currentStock = product.getStockQuantities() != null ? product.getStockQuantities() : 0;
+                            product.setStockQuantities(currentStock + item.getQuantity());
+                            productRepository.save(product);
+                            log.debug("Updated stock for product {}: {} + {} = {}", 
+                                     product.getId(), currentStock, item.getQuantity(), product.getStockQuantities());
+                        }
+                    }
+                }
+                
+                // Update order status to COMPLETED
+                supplierInService.updateSupplierInStatus(id, "COMPLETED");
+                
+                // Move order to StockInInvoice
+                supplierInInvoiceService.saveInvoice(supplierIn);
+                
+                redirectAttributes.addFlashAttribute("successMessage", 
+                        "Đã nhập kho thành công đơn hàng #" + id);
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", 
+                        "Đơn hàng không tồn tại hoặc không ở trạng thái đã kiểm tra");
+            }
+        } catch (Exception e) {
+            log.error("Error processing stock in with ID {}: {}", id, e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("errorMessage", 
+                    "Lỗi khi xử lý nhập kho: " + e.getMessage());
         }
         
         return "redirect:/medical-equipment";
