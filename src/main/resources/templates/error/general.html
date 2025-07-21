@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Fastkart</title>
+
+    <!-- Google font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" th:href="@{/frontend/assets/css/linearicon.css}">
+
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/frontend/assets/css/remixicon.css}">
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/frontend/assets/css/vendors/bootstrap.css}">
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/frontend/assets/css/style.css}">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h4 class="mb-0">Đã xảy ra lỗi</h4>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-center mb-4">Mã lỗi: <span th:text="${status}">500</span></h3>
+                        <p class="lead text-center" th:text="${error}">Đã có lỗi xảy ra. Vui lòng thử lại sau.</p>
+                        <p class="text-center text-muted" th:if="${path != null}">
+                            <small>Đường dẫn: <span th:text="${path}">unknown</span></small>
+                        </p>
+                        <p class="text-center text-muted" th:if="${message != null}">
+                            <small>Thông báo: <span th:text="${message}">unknown</span></small>
+                        </p>
+                        <div class="text-center mt-4">
+                            <a th:href="@{/}" class="btn btn-primary">Quay lại trang chủ</a>
+                            <button onclick="window.history.back()" class="btn btn-secondary ml-2">Quay lại trang trước</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Thông tin hỗ trợ</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Nếu lỗi vẫn tiếp tục, vui lòng liên hệ quản trị viên hệ thống:</p>
+                        <ul>
+                            <li>Email: admin@example.com</li>
+                            <li>Điện thoại: (123) 456-7890</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap js -->
+    <script th:src="@{/frontend/assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>
