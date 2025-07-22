@@ -1598,12 +1598,12 @@
                                 <form class="d-flex mt-2" th:action="@{/users/search}" method="get">
                                     <select class="form-select me-2" name="type" th:value="${searchType}">
                                         <option value="email" th:selected="${searchType=='email'}">Email</option>
-                                        <option value="phone" th:selected="${searchType=='phone'}">Phone</option>
-                                        <option value="role" th:selected="${searchType=='role'}">Role</option>
-                                        <option value="status" th:selected="${searchType=='status'}">Status</option>
+                                        <option value="phone" th:selected="${searchType=='phone'}">Số điện thoại</option>
+                                        <option value="role" th:selected="${searchType=='role'}">Vai trò</option>
+                                        <option value="status" th:selected="${searchType=='status'}">Trạng thái</option>
                                     </select>
-                                    <input class="form-control me-2" type="search" placeholder="Keyword" name="keyword" th:value="${keyword}">
-                                    <button class="btn btn-primary" type="submit">Search</button>
+                                    <input class="form-control me-2" type="search" placeholder="Từ khóa" name="keyword" th:value="${keyword}">
+                                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                                 </form>
                             </div>
                         </div>
@@ -1627,7 +1627,7 @@
                                         <th>Bảo mật 2 lớp</th>
                                         <th>Vai trò</th>
                                         <th>Trạng thái</th>
-                                        <th class="text-center">Action</th>
+                                        <th class="text-center">Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
