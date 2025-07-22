@@ -82,22 +82,133 @@ public class DoctorStaffValidator {
         }
 
         // ================================
-        // 8. Phòng ban (bắt buộc nếu là bác sĩ)
+        // 8. Validation theo từng role cụ thể
         // ================================
-        if (isDoctor && (request.getDepartmentId() == null || request.getDepartmentId() <= 0)) {
-            throw new IllegalArgumentException("Bác sĩ bắt buộc phải có phòng ban");
-        }
-
-        if (request.getDepartmentId() != null && request.getDepartmentId() < 0) {
-            throw new IllegalArgumentException("Mã phòng ban không hợp lệ");
-        }
+        validateByRole(request, isDoctor);
 
         // ================================
-        // 9. Chức danh bác sĩ
+        // 9. Avatar URL (nếu có)
         // ================================
-        if (isDoctor && !StringUtils.hasText(request.getDoctorRank())) {
-            throw new IllegalArgumentException("Vui lòng nhập học hàm/chức danh nếu vai trò là bác sĩ");
+        if (StringUtils.hasText(request.getAvatarUrl())) {
+            if (request.getAvatarUrl().length() > 500) {
+                throw new IllegalArgumentException("URL ảnh đại diện quá dài (tối đa 500 ký tự)");
+            }
+            if (!request.getAvatarUrl().matches("^https?://.*\\.(jpg|jpeg|png|gif)$")) {
+                throw new IllegalArgumentException("URL ảnh đại diện phải có định dạng hợp lệ (.jpg, .jpeg, .png, .gif)");
+            }
         }
+    }
+
+    /**
+     * Validation chi tiết theo từng role
+     */
+    private void validateByRole(DoctorStaffRequest request, boolean isDoctor) {
+        String role = request.getStaffRole();
+        
+        switch (role.toUpperCase()) {
+            case "DOCTOR":
+                validateDoctorRole(request);
+                break;
+            case "TECHNICIAN":
+                validateTechnicianRole(request);
+                break;
+            case "SCHEDULING_COORDINATOR":
+                validateSchedulingCoordinatorRole(request);
+                break;
+            case "ADMINISTRATIVE_STAFF":
+                validateAdministrativeStaffRole(request);
+                break;
+            case "SECURITY_GUARD":
+                validateSecurityGuardRole(request);
+                break;
+            case "CLEANER":
+                validateCleanerRole(request);
+                break;
+            default:
+                throw new IllegalArgumentException("Vai trò nhân viên không hợp lệ: " + role);
+        }
+    }
+
+    /**
+     * Validation cho vai trò BÁC SĨ
+     */
+    private void validateDoctorRole(DoctorStaffRequest request) {
+        // Bác sĩ BẮT BUỘC phải có phòng ban
+        if (request.getDepartmentId() == null || request.getDepartmentId() <= 0) {
+            throw new IllegalArgumentException("Bác sĩ bắt buộc phải chọn phòng ban");
+        }
+        
+        // Bác sĩ BẮT BUỘC phải có chức danh
+        if (!StringUtils.hasText(request.getDoctorRank())) {
+            throw new IllegalArgumentException("Bác sĩ bắt buộc phải chọn chức danh (Thạc sĩ, Tiến sĩ, Chuyên khoa I/II, PGS.TS)");
+        }
+        
+        // Bác sĩ phải có cấp bậc cao (từ 5 trở lên)
+        if (request.getRankLevel() != null && request.getRankLevel() < 5) {
+            throw new IllegalArgumentException("Bác sĩ phải có cấp bậc từ 5 trở lên");
+        }
+    }
+
+    /**
+     * Validation cho vai trò KỸ THUẬT VIÊN
+     */
+    private void validateTechnicianRole(DoctorStaffRequest request) {
+        // Kỹ thuật viên BẮT BUỘC phải có phòng ban
+        if (request.getDepartmentId() == null || request.getDepartmentId() <= 0) {
+            throw new IllegalArgumentException("Kỹ thuật viên bắt buộc phải chọn phòng ban");
+        }
+        
+        // Kỹ thuật viên KHÔNG được có chức danh bác sĩ
+        if (StringUtils.hasText(request.getDoctorRank())) {
+            throw new IllegalArgumentException("Kỹ thuật viên không được chọn chức danh bác sĩ");
+        }
+    }
+
+    /**
+     * Validation cho vai trò ĐIỀU PHỐI LỊCH TRÌNH
+     */
+    private void validateSchedulingCoordinatorRole(DoctorStaffRequest request) {
+        // Điều phối viên có thể không cần phòng ban cụ thể
+        // Nhưng KHÔNG được có chức danh bác sĩ
+        if (StringUtils.hasText(request.getDoctorRank())) {
+            throw new IllegalArgumentException("Điều phối viên không được chọn chức danh bác sĩ");
+        }
+    }
+
+    /**
+     * Validation cho vai trò NHÂN VIÊN HÀNH CHÍNH
+     */
+    private void validateAdministrativeStaffRole(DoctorStaffRequest request) {
+        // Nhân viên hành chính KHÔNG được có chức danh bác sĩ
+        if (StringUtils.hasText(request.getDoctorRank())) {
+            throw new IllegalArgumentException("Nhân viên hành chính không được chọn chức danh bác sĩ");
+        }
+    }
+
+    /**
+     * Validation cho vai trò BẢO VỆ
+     */
+    private void validateSecurityGuardRole(DoctorStaffRequest request) {
+        // Bảo vệ KHÔNG được có chức danh bác sĩ
+        if (StringUtils.hasText(request.getDoctorRank())) {
+            throw new IllegalArgumentException("Bảo vệ không được chọn chức danh bác sĩ");
+        }
+        
+        // Bảo vệ KHÔNG cần phòng ban cụ thể
+        // Có thể để trống departmentId
+    }
+
+    /**
+     * Validation cho vai trò LAO CÔNG
+     */
+    private void validateCleanerRole(DoctorStaffRequest request) {
+        // Lao công KHÔNG được có chức danh bác sĩ
+        if (StringUtils.hasText(request.getDoctorRank())) {
+            throw new IllegalArgumentException("Lao công không được chọn chức danh bác sĩ");
+        }
+        
+        // Lao công KHÔNG cần phòng ban cụ thể
+        // Có thể để trống departmentId
 
         // ================================
         // 10. Đường dẫn ảnh (nếu có)

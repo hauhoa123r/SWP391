@@ -118,14 +118,14 @@
                     </div>
 
                     <div class="col-12 text-end mt-3">
-                        <a th:href="@{|/admin/patients/edit/*{id}|}" class="btn btn-primary me-2">✏️ Sửa</a>
+                        <a th:href="@{|/admin/patient/edit/*{id}|}" class="btn btn-primary me-2">✏️ Sửa</a>
                         <form th:action="@{|/admin/patients/delete/*{id}|}" method="post" style="display: inline;">
                             <button type="submit" class="btn btn-danger me-2"
                                     onclick="return confirm('Bạn có chắc chắn muốn xoá bệnh nhân này không?');">
                                 🗑️ Xoá
                             </button>
                         </form>
-                        <a th:href="@{/admin/patients}" class="btn btn-secondary">↩️ Quay lại</a>
+                        <a th:href="@{/admin/patient}" class="btn btn-secondary">↩️ Quay lại</a>
                     </div>
                 </div>
 

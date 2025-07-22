@@ -69,6 +69,8 @@ public class DoctorStaffController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes,
                          Model model) {
+        
+        // Kiểm tra Jakarta Bean Validation trước
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.staff", bindingResult);
             redirectAttributes.addFlashAttribute("staff", request);
@@ -76,16 +78,19 @@ public class DoctorStaffController {
         }
 
         try {
+            // Xử lý upload avatar nếu có
             if (avatarFile != null && !avatarFile.isEmpty()) {
                 String avatarUrl = doctorStaffService.handleAvatarUpload(avatarFile);
                 request.setAvatarUrl(avatarUrl);
             }
 
+            // Gọi service để tạo nhân viên (bao gồm validation)
             DoctorStaffResponse saved = doctorStaffService.createDoctorStaff(request);
             redirectAttributes.addFlashAttribute("success", "Tạo mới nhân viên thành công!");
             return "redirect:/admin/doctor-staffs/detail/" + saved.getStaffId();
 
         } catch (IOException | IllegalArgumentException ex) {
+            // Xử lý lỗi (bao gồm validation errors từ service)
             model.addAttribute("staff", request);
             model.addAttribute("error", ex.getMessage());
             prepareFormModel(model, false);

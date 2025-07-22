@@ -149,7 +149,7 @@
                         <h3 class="card-title">✏️ Sửa thông tin bệnh nhân</h3>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{|/admin/patients/edit/${patientId}|}" method="post" th:object="${patientRequest}">
+                        <form th:action="@{|/admin/patient/edit/${patientId}|}" method="post" th:object="${patientRequest}">
                             <!-- Thông tin cơ bản -->
                             <div class="form-section">
                                 <div class="section-title">👤 Thông tin cá nhân</div>
@@ -217,7 +217,7 @@
                             <!-- Nút hành động -->
                             <div class="text-center pt-3">
                                 <button type="submit" class="btn btn-primary me-3">💾 Cập nhật</button>
-                                <a th:href="@{|/admin/patients/detail/${patientId}|}" class="btn btn-secondary">↩️ Quay lại</a>
+                                <a th:href="@{|/admin/patient/detail/${patientId}|}" class="btn btn-secondary">↩️ Quay lại</a>
                             </div>
                         </form>
                     </div>

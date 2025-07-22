@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.project.entity.StaffEntity;
+import org.project.enums.StaffStatus;
 import org.project.repository.StaffRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -72,6 +73,12 @@ public class StaffRepositoryImpl implements StaffRepositoryCustom {
             }
         }
 
+        // Thêm điều kiện lọc chỉ hiển thị nhân viên ACTIVE hoặc NULL (để tương thích với dữ liệu cũ)
+        predicates.add(cb.or(
+            cb.isNull(staffRoot.get("staffStatus")),
+            cb.equal(staffRoot.get("staffStatus"), StaffStatus.ACTIVE)
+        ));
+
         // Xây dựng query
         query.where(predicates.toArray(Predicate[]::new));
         query.orderBy(cb.asc(staffRoot.get("id")));
@@ -83,6 +90,7 @@ public class StaffRepositoryImpl implements StaffRepositoryCustom {
 
         // Xây dựng predicate cho countRoot (không được dùng predicate của staffRoot)
         List<Predicate> countPredicates = new ArrayList<>();
+
         if (keyword != null && !keyword.isBlank()) {
             switch (field) {
                 case "fullName":
@@ -103,6 +111,13 @@ public class StaffRepositoryImpl implements StaffRepositoryCustom {
                     break;
             }
         }
+        
+        // Thêm điều kiện lọc cho count query
+        countPredicates.add(cb.or(
+            cb.isNull(countRoot.get("staffStatus")),
+            cb.equal(countRoot.get("staffStatus"), StaffStatus.ACTIVE)
+        ));
+        
         countQuery.where(countPredicates.toArray(Predicate[]::new));
 
         // Thực thi các query
@@ -119,5 +134,110 @@ public class StaffRepositoryImpl implements StaffRepositoryCustom {
     @Override
     public Page<StaffEntity> searchStaffs(Pageable pageable, String keyword) {
         return searchStaffs(pageable, "", keyword);
+    }
+
+    @Override
+    public Page<StaffEntity> searchStaffsByStatusNot(StaffStatus status, Pageable pageable, String field, String keyword) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<StaffEntity> query = cb.createQuery(StaffEntity.class);
+        Root<StaffEntity> staffRoot = query.from(StaffEntity.class);
+
+        // Tạo danh sách các điều kiện tìm kiếm
+        List<Predicate> predicates = new ArrayList<>();
+
+        // Thêm điều kiện loại trừ status
+        predicates.add(cb.or(
+            cb.isNull(staffRoot.get("staffStatus")),
+            cb.notEqual(staffRoot.get("staffStatus"), status)
+        ));
+
+        // Thêm điều kiện tìm kiếm theo field và keyword
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            switch (field) {
+                case "id":
+                    predicates.add(cb.like(
+                        cb.lower(staffRoot.get("id").as(String.class)),
+                        "%" + keyword.toLowerCase() + "%"
+                    ));
+                    break;
+                case "fullName":
+                    predicates.add(cb.like(
+                        cb.lower(staffRoot.get("fullName")),
+                        "%" + keyword.toLowerCase() + "%"
+                    ));
+                    break;
+                case "email":
+                    predicates.add(cb.like(
+                        cb.lower(staffRoot.get("userEntity").get("email")),
+                        "%" + keyword.toLowerCase() + "%"
+                    ));
+                    break;
+                case "phoneNumber":
+                    predicates.add(cb.like(
+                        cb.lower(staffRoot.get("userEntity").get("phoneNumber")),
+                        "%" + keyword.toLowerCase() + "%"
+                    ));
+                    break;
+                default:
+                    // Tìm kiếm theo tất cả các trường
+                    predicates.add(cb.or(
+                        cb.like(cb.lower(staffRoot.get("fullName")), "%" + keyword.toLowerCase() + "%"),
+                        cb.like(cb.lower(staffRoot.get("userEntity").get("email")), "%" + keyword.toLowerCase() + "%"),
+                        cb.like(cb.lower(staffRoot.get("userEntity").get("phoneNumber")), "%" + keyword.toLowerCase() + "%")
+                    ));
+                    break;
+            }
+        }
+
+        // Xây dựng query
+        query.where(predicates.toArray(Predicate[]::new));
+        query.orderBy(cb.asc(staffRoot.get("id")));
+
+        // Tạo query để đếm số lượng kết quả
+        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        Root<StaffEntity> countRoot = countQuery.from(StaffEntity.class);
+        countQuery.select(cb.count(countRoot));
+
+        // Xây dựng predicate cho countRoot
+        List<Predicate> countPredicates = new ArrayList<>();
+        
+        // Thêm điều kiện loại trừ status cho count query
+        countPredicates.add(cb.or(
+            cb.isNull(countRoot.get("staffStatus")),
+            cb.notEqual(countRoot.get("staffStatus"), status)
+        ));
+
+        if (keyword != null && !keyword.isBlank()) {
+            switch (field) {
+                case "fullName":
+                    countPredicates.add(cb.like(cb.lower(countRoot.get("fullName")), "%" + keyword.toLowerCase() + "%"));
+                    break;
+                case "email":
+                    countPredicates.add(cb.like(cb.lower(countRoot.get("userEntity").get("email")), "%" + keyword.toLowerCase() + "%"));
+                    break;
+                case "phoneNumber":
+                    countPredicates.add(cb.like(cb.lower(countRoot.get("userEntity").get("phoneNumber")), "%" + keyword.toLowerCase() + "%"));
+                    break;
+                default:
+                    countPredicates.add(cb.or(
+                            cb.like(cb.lower(countRoot.get("fullName")), "%" + keyword.toLowerCase() + "%"),
+                            cb.like(cb.lower(countRoot.get("userEntity").get("email")), "%" + keyword.toLowerCase() + "%"),
+                            cb.like(cb.lower(countRoot.get("userEntity").get("phoneNumber")), "%" + keyword.toLowerCase() + "%")
+                    ));
+                    break;
+            }
+        }
+        
+        countQuery.where(countPredicates.toArray(Predicate[]::new));
+
+        // Thực thi các query
+        TypedQuery<StaffEntity> result = entityManager.createQuery(query);
+        TypedQuery<Long> count = entityManager.createQuery(countQuery);
+
+        // Áp dụng phân trang
+        result.setFirstResult((int) pageable.getOffset());
+        result.setMaxResults(pageable.getPageSize());
+
+        return new PageImpl<>(result.getResultList(), pageable, count.getSingleResult());
     }
 }

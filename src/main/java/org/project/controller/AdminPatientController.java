@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/admin/patients")
+@RequestMapping("/admin/patient")
 @RequiredArgsConstructor
 public class AdminPatientController {
 

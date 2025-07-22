@@ -1,158 +1,11 @@
 <!doctype html>
 <html lang="en">
-<!--<head>-->
-<!--    <meta charset="utf-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-<!--    <title>Patient Management - KiviCare</title>-->
-<!--    -->
-<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
-<!--    &lt;!&ndash; Font Awesome &ndash;&gt;-->
-<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">-->
-<!--</head>-->
-<!--<body>-->
-<!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary">-->
-<!--    <div class="container-fluid">-->
-<!--        <a class="navbar-brand" href="/admin">-->
-<!--            <i class="fas fa-hospital"></i> KiviCare Admin-->
-<!--        </a>-->
-<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">-->
-<!--            <span class="navbar-toggler-icon"></span>-->
-<!--        </button>-->
-<!--        <div class="collapse navbar-collapse" id="navbarNav">-->
-<!--            <ul class="navbar-nav ms-auto">-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="/admin/dashboard">-->
-<!--                        <i class="fas fa-tachometer-alt"></i> Dashboard-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="/logout">-->
-<!--                        <i class="fas fa-sign-out-alt"></i> Logout-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</nav>-->
-
-<!--<div class="container-fluid mt-4">-->
-<!--    &lt;!&ndash; Entity Navigation Section &ndash;&gt;-->
-<!--    <div class="row mb-4">-->
-<!--        <div class="col-12">-->
-<!--            <div class="card">-->
-<!--                <div class="card-header">-->
-<!--                    <h5 class="mb-0"><i class="fas fa-sitemap"></i> Entity Management Navigation</h5>-->
-<!--                </div>-->
-<!--                <div class="card-body">-->
-<!--                    <div class="row g-3">-->
-<!--                        <div class="col-md-2">-->
-<!--                            <a href="/admin/users" class="btn btn-outline-primary w-100">-->
-<!--                                <i class="fas fa-users"></i><br>Users-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-2">-->
-<!--                            <a href="/admin/staff" class="btn btn-outline-success w-100">-->
-<!--                                <i class="fas fa-user-tie"></i><br>Admin Staff-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-2">-->
-<!--                            <a href="/admin/doctor-staff" class="btn btn-outline-info w-100">-->
-<!--                                <i class="fas fa-user-md"></i><br>Doctor Staff-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-2">-->
-<!--                            <a href="/admin/patients" class="btn btn-warning w-100 active">-->
-<!--                                <i class="fas fa-procedures"></i><br>Patients-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-2">-->
-<!--                            <a href="/admin/payments" class="btn btn-outline-danger w-100">-->
-<!--                                <i class="fas fa-credit-card"></i><br>Payments-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-2">-->
-<!--                            <a href="/admin/staff-shifts" class="btn btn-outline-secondary w-100">-->
-<!--                                <i class="fas fa-calendar-alt"></i><br>Staff Shifts-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Patient Management Section &ndash;&gt;-->
-<!--    <div class="row">-->
-<!--        <div class="col-12">-->
-<!--            <div class="card">-->
-<!--                <div class="card-header d-flex justify-content-between align-items-center">-->
-<!--                    <h4 class="mb-0">Patient List</h4>-->
-<!--                    <a href="/admin/patients/add" class="btn btn-warning">-->
-<!--                        <i class="fas fa-plus"></i> Add New Patient-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--                <div class="card-body">-->
-<!--                    <div class="table-responsive">-->
-<!--                        <table class="table table-striped" id="patientTable">-->
-<!--                            <thead>-->
-<!--                            <tr>-->
-<!--                                <th>#ID</th>-->
-<!--                                <th>Full Name</th>-->
-<!--                                <th>Email</th>-->
-<!--                                <th>Phone</th>-->
-<!--                                <th>Date of Birth</th>-->
-<!--                                <th>Gender</th>-->
-<!--                                <th>Address</th>-->
-<!--                                <th>Status</th>-->
-<!--                                <th class="text-center">Actions</th>-->
-<!--                            </tr>-->
-<!--                            </thead>-->
-<!--                            <tbody>-->
-<!--                            <tr th:each="patient : ${patientList}">-->
-<!--                                <td th:text="${patient.id}">1</td>-->
-<!--                                <td th:text="${patient.fullName}">Jane Doe</td>-->
-<!--                                <td th:text="${patient.email}">jane@example.com</td>-->
-<!--                                <td th:text="${patient.phoneNumber}">0123456789</td>-->
-<!--                                <td th:text="${patient.dateOfBirth}">1990-01-01</td>-->
-<!--                                <td th:text="${patient.gender}">Female</td>-->
-<!--                                <td th:text="${patient.address}">123 Main St</td>-->
-<!--                                <td>-->
-<!--                                    <span th:switch="${patient.status}">-->
-<!--                                        <span th:case="'ACTIVE'" class="badge bg-success">Active</span>-->
-<!--                                        <span th:case="'INACTIVE'" class="badge bg-danger">Inactive</span>-->
-<!--                                        <span th:case="*" class="badge bg-secondary">Unknown</span>-->
-<!--                                    </span>-->
-<!--                                </td>-->
-<!--                                <td class="text-center">-->
-<!--                                    <a th:href="@{'/admin/patients/detail/' + ${patient.id}}" class="btn btn-sm btn-outline-info me-1" title="View Details">-->
-<!--                                        <i class="fa fa-eye"></i>-->
-<!--                                    </a>-->
-<!--                                    <a th:href="@{'/admin/patients/edit/' + ${patient.id}}" class="btn btn-sm btn-outline-primary me-1" title="Edit">-->
-<!--                                        <i class="fa fa-pen"></i>-->
-<!--                                    </a>-->
-<!--                                    <form th:action="@{/admin/patients/delete/{id}(id=${patient.id})}" method="post" class="d-inline">-->
-<!--                                        <input type="hidden" name="_csrf" th:value="${_csrf}" />-->
-<!--                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"-->
-<!--                                                onclick="return confirm('Are you sure you want to delete this patient?');">-->
-<!--                                            <i class="fa fa-trash"></i>-->
-<!--                                        </button>-->
-<!--                                    </form>-->
-<!--                                </td>-->
-<!--                            </tr>-->
-<!--                            </tbody>-->
-<!--                        </table>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; Bootstrap JS &ndash;&gt;-->
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
-<!--</body>-->
 <head>
+    <base href="/" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title data-setting="app_name" data-rightJoin=" Clinic And Patient Management Dashboard">KiviCare Clinic And Patient
+        Management Dashboard</title>
     <meta name="description"
           content="KiviCare is a revolutionary Bootstrap Admin Dashboard Template and UI Components Library. The Admin Dashboard Template and UI Component features 8 modules.">
     <meta name="keywords"
@@ -168,29 +21,29 @@
     <link rel="shortcut icon" href="/assets/images/favicon.ico"/>
 
     <!-- Library / Plugin Css Build -->
-    <link rel="stylesheet" href="../dashboard/dashboard/assets/css/core/libs.min.css"/>
+    <link rel="stylesheet" href="../dashboard/assets/css/core/libs.min.css"/>
 
     <!-- flaticon css -->
-    <link rel="stylesheet" href="../dashboard/dashboard/assets/vendor/flaticon/css/flaticon.css"/>
+    <link rel="stylesheet" href="../dashboard/assets/vendor/flaticon/css/flaticon.css"/>
 
     <!-- font-awesome css -->
-    <link rel="stylesheet" href="../dashboard/dashboard/assets/vendor/font-awesome/css/all.min.css"/>
+    <link rel="stylesheet" href="../dashboard/assets/vendor/font-awesome/css/all.min.css"/>
 
     <!-- Flatpickr css -->
-    <link rel="stylesheet" href="../dashboard/dashboard/assets/vendor/flatpickr/dist/flatpickr.min.css"/>
+    <link rel="stylesheet" href="../dashboard/assets/vendor/flatpickr/dist/flatpickr.min.css"/>
 
 
     <!-- Kivicare Design System Css -->
-    <link rel="stylesheet" href="../dashboard/dashboard/assets/css/kivicare.min.css?v=1.4.1"/>
+    <link rel="stylesheet" href="../dashboard/assets/css/kivicare.min.css?v=1.4.1"/>
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="../dashboard/dashboard/assets/css/custom.min.css?v=1.4.1"/>
+    <link rel="stylesheet" href="../dashboard/assets/css/custom.min.css?v=1.4.1"/>
 
     <!-- RTL Css -->
-    <link rel="stylesheet" href="../dashboard/dashboard/assets/css/rtl.min.css?v=1.4.1"/>
+    <link rel="stylesheet" href="../dashboard/assets/css/rtl.min.css?v=1.4.1"/>
 
     <!-- Customizer Css -->
-    <link rel="stylesheet" href="../dashboard/dashboard/assets/css/customizer.min.css?v=1.4.1"/>
+    <link rel="stylesheet" href="../dashboard/assets/css/customizer.min.css?v=1.4.1"/>
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -371,9 +224,11 @@
                     </a>
                     <!-- PATIENT -->
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="http://localhost:8089/users/view">
+                    <a class="nav-link" href="/admin/patient">
                         <i class="icon" data-bs-toggle="tooltip" title="Patient" data-bs-placement="right">
-                            <svg class="icon-20" viewBox="0 0 24 24" fill="none"><path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/></svg>
+                            <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+                            </svg>
                         </i>
                         <span class="item-name">Patient</span>
                     </a>
@@ -381,9 +236,11 @@
 
                 <!-- STAFF -->
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8089/admin/staffs">
+                    <a class="nav-link" href="/admin/staffs">
                         <i class="icon" data-bs-toggle="tooltip" title="Staff" data-bs-placement="right">
-                            <svg class="icon-20" viewBox="0 0 24 24" fill="none"><path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4zm0 2c-2.66 0-8 1.34-8 4v2h16v-2c0-2.66-5.34-4-8-4z" fill="currentColor"/></svg>
+                            <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4zm0 2c-2.66 0-8 1.34-8 4v2h16v-2c0-2.66-5.34-4-8-4z" fill="currentColor"/>
+                            </svg>
                         </i>
                         <span class="item-name">Staff</span>
                     </a>
@@ -391,9 +248,11 @@
 
                 <!-- ADD STAFF (sub-item) -->
                 <li class="nav-item ms-4">
-                    <a class="nav-link" href="http://localhost:8089/admin/doctor-staffs/create">
+                    <a class="nav-link" href="/admin/doctor-staffs/create">
                         <i class="icon" data-bs-toggle="tooltip" title="Add Staff" data-bs-placement="right">
-                            <svg class="icon-20" viewBox="0 0 24 24" fill="none"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/></svg>
+                            <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+                            </svg>
                         </i>
                         <span class="item-name">Add Staff</span>
                     </a>
@@ -401,9 +260,11 @@
 
                 <!-- STAFF SHIFT (sub-item) -->
                 <li class="nav-item ms-4">
-                    <a class="nav-link" href="http://localhost:8089/admin/staff-shifts">
+                    <a class="nav-link" href="/admin/staff-shifts">
                         <i class="icon" data-bs-toggle="tooltip" title="Staff Shift" data-bs-placement="right">
-                            <svg class="icon-20" viewBox="0 0 24 24" fill="none"><path d="M17 10.5V6a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4.5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2zM9 4h6a2 2 0 0 1 2 2v.5H7V6a2 2 0 0 1 2-2zM7 8h10v.5a.5.5 0 0 1-.5.5H7.5a.5.5 0 0 1-.5-.5V8z" fill="currentColor"/></svg>
+                            <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                <path d="M17 10.5V6a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4.5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2zM9 4h6a2 2 0 0 1 2 2v.5H7V6a2 2 0 0 1 2-2zM7 8h10v.5a.5.5 0 0 1-.5.5H7.5a.5.5 0 0 1-.5-.5V8z" fill="currentColor"/>
+                            </svg>
                         </i>
                         <span class="item-name">Staff Shift</span>
                     </a>
@@ -411,13 +272,18 @@
 
                 <!-- PAYMENT -->
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8089/admin/payments">
+                    <a class="nav-link" href="/admin/payments">
                         <i class="icon" data-bs-toggle="tooltip" title="Payment" data-bs-placement="right">
-                            <svg class="icon-20" viewBox="0 0 24 24" fill="none"><path d="M21 7H3V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2zm0 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h18zM7 13h2v2H7v-2z" fill="currentColor"/></svg>
+                            <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                <path d="M21 7H3V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2zm0 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h18zM7 13h2v2H7v-2z" fill="currentColor"/>
+                            </svg>
                         </i>
                         <span class="item-name">Payment</span>
                     </a>
                 </li>
+
+
+
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost:8089/users/view" aria-current="page">
                         <i class="icon" data-bs-toggle="tooltip" title="User" data-bs-placement="right">
@@ -2186,7 +2052,7 @@
                                 <div class="header-title">
                                     <h4 class="card-title">Danh sách bệnh nhân</h4>
                                     <!-- Search Form -->
-                                    <form class="d-flex mt-2 gap-2" th:action="@{/admin/patients}" method="get">
+                                    <form class="d-flex mt-2 gap-2" th:action="@{/admin/patient}" method="get">
                                         <select name="field" class="form-select w-auto" aria-label="Search field">
                                             <option value="" th:selected="${field==''}">Chọn tiêu chí tìm kiếm</option>
                                             <option value="name" th:selected="${field=='name'}">Họ tên</option>
@@ -2207,9 +2073,10 @@
                                         <h4 class="mb-0 fw-bold text-dark">Danh sách bệnh nhân</h4>
                                     </div>
 
-                                    <a th:href="@{/admin/patients/deleted}" class="btn btn-sm btn-outline-danger shadow-sm" title="Xem danh sách đã xoá">
+                                    <a th:href="@{/admin/patient/deleted}" class="btn btn-sm btn-outline-danger shadow-sm" title="Xem danh sách đã xoá">
                                         <i class="fa fa-trash me-1"></i> Bệnh nhân đã xoá
                                     </a>
+
                                 </div>
 
                                 <div class="table-responsive">
@@ -2248,21 +2115,21 @@
                                             </td>
                                             <td class="text-center">
                                                 <!-- Xem -->
-                                                <a th:href="@{'/admin/patients/detail/' + ${patient.id}}"
+                                                <a th:href="@{'/admin/patient/detail/' + ${patient.id}}"
                                                    class="btn btn-sm btn-outline-info me-1"
                                                    title="Xem chi tiết">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
 
                                                 <!-- Sửa -->
-                                                <a th:href="@{'/admin/patients/edit/' + ${patient.id}}"
+                                                <a th:href="@{'/admin/patient/edit/' + ${patient.id}}"
                                                    class="btn btn-sm btn-outline-primary me-1"
                                                    title="Chỉnh sửa">
                                                     <i class="fa fa-pen"></i>
                                                 </a>
 
                                                 <!-- Xóa tạm thời -->
-                                                <form th:action="@{'/admin/patients/soft-delete/' + ${patient.id}}"
+                                                <form th:action="@{'/admin/patient/soft-delete/' + ${patient.id}}"
                                                       method="post"
                                                       class="d-inline"
                                                       th:onsubmit="return confirm('Bạn có chắc chắn muốn xóa tạm thời bệnh nhân này?')">
@@ -2286,7 +2153,7 @@
                                             <ul class="pagination mb-0">
                                                 <li class="page-item" th:classappend="${currentPage == 0} ? ' disabled'">
                                                     <a class="page-link"
-                                                       th:href="@{/admin/patients(page=${currentPage - 1}, keyword=${keyword}, field=${field})}"
+                                                       th:href="@{/admin/patient(page=${currentPage - 1}, keyword=${keyword}, field=${field})}"
                                                        aria-label="Previous">
                                                         &laquo; Trước
                                                     </a>
@@ -2294,7 +2161,7 @@
                                                 <li class="page-item"
                                                     th:classappend="${currentPage + 1 >= totalPages} ? ' disabled'">
                                                     <a class="page-link"
-                                                       th:href="@{/admin/patients(page=${currentPage + 1}, keyword=${keyword}, field=${field})}"
+                                                       th:href="@{/admin/patient(page=${currentPage + 1}, keyword=${keyword}, field=${field})}"
                                                        aria-label="Next">
                                                         Sau &raquo;
                                                     </a>

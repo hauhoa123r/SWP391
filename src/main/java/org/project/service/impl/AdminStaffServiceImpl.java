@@ -80,33 +80,30 @@ public class AdminStaffServiceImpl implements AdminStaffService {
         staffRepository.save(staff);
     }
 
-    // ===== Soft Delete =====
+    // ===== Soft Delete Methods =====
     @Override
-    public void deactivateStaff(Long id) {
+    public void softDeleteStaff(Long id) {
         StaffEntity staff = getStaffById(id);
-        staff.setStaffStatus(StaffStatus.INACTIVE);
+        staff.setStaffStatus(StaffStatus.INACTIVE); // dùng INACTIVE là "tạm xóa"
         staffRepository.save(staff);
     }
 
     @Override
     public void restoreStaff(Long id) {
         StaffEntity staff = getStaffById(id);
-        staff.setStaffStatus(StaffStatus.ACTIVE);
+        staff.setStaffStatus(StaffStatus.ACTIVE); // phục hồi
         staffRepository.save(staff);
+    }
+
+    @Override
+    public void deletePermanently(Long id) {
+        staffRepository.deleteById(id); // xóa vĩnh viễn
     }
 
     @Override
     public Page<AdminStaffResponse> getDeletedStaffs(Pageable pageable) {
         return staffRepository.findByStaffStatus(StaffStatus.INACTIVE, pageable)
                 .map(staffMapper::toResponse);
-    }
-
-    // ===== Hard Delete =====
-    @Override
-    public void deleteStaffPermanently(Long id) {
-        StaffEntity staff = staffRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Staff not found with id: " + id));
-        staffRepository.delete(staff); // xóa vĩnh viễn
     }
     // ===== Search theo từng trường =====
     @Override
@@ -126,4 +123,7 @@ public class AdminStaffServiceImpl implements AdminStaffService {
         return staffRepository.searchStaffs(pageable, "phoneNumber", keyword)
                 .map(staffMapper::toResponse);
     }
+
+
+
 }

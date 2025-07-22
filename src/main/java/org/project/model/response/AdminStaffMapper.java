@@ -21,6 +21,7 @@ public interface AdminStaffMapper {
     @Mapping(source = "rankLevel", target = "rankLevel")
     @Mapping(expression = "java(staffEntity.getAverageRating())", target = "averageRating")
     @Mapping(expression = "java(staffEntity.getReviewCount())", target = "reviewCount")
+    @Mapping(source = "staffStatus", target = "status")
     AdminStaffResponse toResponse(StaffEntity staffEntity);
 
     // Dùng cho chi tiết Staff (Detail View)

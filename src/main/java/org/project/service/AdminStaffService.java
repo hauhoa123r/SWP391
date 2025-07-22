@@ -19,10 +19,10 @@ public interface AdminStaffService {
     AdminStaffUpdateRequest getUpdateForm(Long id);
     void updateStaff(Long id, AdminStaffUpdateRequest request);
     
-    // Soft delete methods - following UserService pattern
-    void deactivateStaff(Long id);
-    Page<AdminStaffResponse> getDeletedStaffs(Pageable pageable);
+    // Soft delete functionality
+    void softDeleteStaff(Long id);
     void restoreStaff(Long id);
+    void deletePermanently(Long id);
+    Page<AdminStaffResponse> getDeletedStaffs(Pageable pageable);
 
-    void deleteStaffPermanently(Long id);
 }

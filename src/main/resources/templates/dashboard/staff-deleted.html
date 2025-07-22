@@ -1,78 +1,143 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" class="theme-fs-sm" data-bs-theme="light" data-bs-theme-color="default" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <title>Danh sách Nhân viên Đã bị Vô hiệu hóa</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Nhân viên đã xóa - KiviCare</title>
+    <!-- CSS imports -->
+    <link rel="stylesheet" href="../dashboard/assets/css/core/libs.min.css"/>
+    <link rel="stylesheet" href="../dashboard/assets/vendor/flaticon/css/flaticon.css"/>
+    <link rel="stylesheet" href="../dashboard/assets/vendor/font-awesome/css/all.min.css"/>
+    <link rel="stylesheet" href="../dashboard/assets/css/kivicare.min.css?v=1.4.1"/>
 </head>
 <body>
-<div class="container mt-4">
-    <h2 class="mb-4 text-danger">Danh sách Nhân viên Đã bị Vô hiệu hóa</h2>
+    <div class="content-inner container-fluid pb-0">
+        <div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="header-title">
+                                <h4 class="card-title">Nhân viên đã xóa</h4>
+                            </div>
+                            <div>
+                                <a href="/admin/staffs" class="btn btn-primary">
+                                    <i class="fas fa-arrow-left"></i> Quay về danh sách nhân viên
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body px-0">
+                            <div class="d-flex justify-content-between align-items-center px-3 pb-3">
+                                <h4 class="mb-0 fw-bold">Danh sách Nhân viên đã xóa</h4>
+                            </div>
+                            
+                            <!-- Hiển thị thông báo nếu có -->
+                            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show mx-3" role="alert">
+                                <span th:text="${successMessage}"></span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="deletedStaffTable">
+                                    <thead>
+                                    <tr>
+                                        <th>#ID</th>
+                                        <th>Họ tên</th>
+                                        <th>Email</th>
+                                        <th>Phòng ban</th>
+                                        <th>Bệnh viện</th>
+                                        <th>Chức vụ</th>
+                                        <th>Loại</th>
+                                        <th>Cấp bậc</th>
+                                        <th>Trạng thái</th>
+                                        <th class="text-center">Hành động</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="staff : ${staffPage.content}">
+                                        <td th:text="${staff.id}">1</td>
+                                        <td th:text="${staff.fullName}">Nguyễn Văn A</td>
+                                        <td th:text="${staff.email}">a@example.com</td>
+                                        <td th:text="${staff.departmentName}">Khoa Nội</td>
+                                        <td th:text="${staff.hospitalName}">Bệnh viện ABC</td>
+                                        <td th:text="${staff.staffRole}">DOCTOR</td>
+                                        <td th:text="${staff.staffType}">FULL_TIME</td>
+                                        <td th:text="${staff.rankLevel}">3</td>
+                                        <td>
+                                            <span class="badge bg-danger">Đã xóa</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <!-- Nút khôi phục -->
+                                            <form th:action="@{'/admin/staffs/restore/' + ${staff.id}}" method="post" style="display: inline;">
+                                                <button type="submit" class="btn btn-sm btn-outline-success me-1" 
+                                                        title="Khôi phục nhân viên"
+                                                        onclick="return confirm('Bạn có chắc muốn khôi phục nhân viên này?')">
+                                                    <i class="fas fa-undo"></i> Khôi phục
+                                                </button>
+                                            </form>
+                                            
+                                            <!-- Nút xóa vĩnh viễn -->
+                                            <form th:action="@{'/admin/staffs/delete-permanent/' + ${staff.id}}" method="post" style="display: inline;">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                        title="Xóa vĩnh viễn"
+                                                        onclick="return confirm('CẢNH BÁO: Hành động này sẽ xóa vĩnh viễn nhân viên khỏi hệ thống và không thể khôi phục. Bạn có chắc chắn?')">
+                                                    <i class="fas fa-trash-alt"></i> Xóa vĩnh viễn
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
 
-    <div th:if="${staffPage.content.size() == 0}" class="alert alert-warning">
-        Không có nhân viên nào đã bị vô hiệu hóa.
-    </div>
+                                <!-- Hiển thị thông báo nếu không có dữ liệu -->
+                                <div th:if="${staffPage.content.isEmpty()}" class="text-center py-4">
+                                    <p class="text-muted">Không có nhân viên nào đã bị xóa.</p>
+                                </div>
 
-    <div th:if="${staffPage.content.size() > 0}">
-        <table class="table table-bordered table-hover shadow-sm">
-            <thead class="table-dark">
-            <tr>
-                <th>#</th>
-                <th>Họ tên</th>
-                <th>Email</th>
-                <th>Điện thoại</th>
-                <th>Vai trò</th>
-                <th>Thao tác</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="staff, iter : ${staffPage.content}">
-                <td th:text="${iter.index + 1 + currentPage * 10}">1</td>
-                <td th:text="${staff.fullName}">Nguyễn Văn A</td>
-                <td th:text="${staff.email}">email@example.com</td>
-                <td th:text="${staff.phoneNumber}">0123456789</td>
-                <td th:text="${staff.staffRole}">DOCTOR</td>
-                <td>
-                    <div class="d-flex gap-2">
-                        <!-- Khôi phục -->
-                        <form th:action="@{'/admin/staffs/restore/' + ${staff.id}}" method="post">
-                            <button type="submit" class="btn btn-success btn-sm">
-                                <i class="bi bi-arrow-counterclockwise"></i> Khôi phục
-                            </button>
-                        </form>
+                                <!-- Pagination Controls -->
+                                <div class="d-flex justify-content-center mt-3" th:if="${totalPages > 1}">
+                                    <nav aria-label="Deleted staff pagination">
+                                        <ul class="pagination mb-0">
+                                            <!-- Previous -->
+                                            <li class="page-item" th:classappend="${currentPage == 0} ? ' disabled'">
+                                                <a class="page-link"
+                                                   th:href="@{/admin/staffs/deleted(page=${currentPage - 1})}"
+                                                   aria-label="Previous">
+                                                    &laquo; Trước
+                                                </a>
+                                            </li>
 
-                        <!-- Xóa vĩnh viễn -->
-                        <form th:action="@{'/admin/staffs/delete-permanent/' + ${staff.id}}" method="post"
-                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa vĩnh viễn nhân viên này?');">
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="bi bi-trash-fill"></i> Xóa vĩnh viễn
-                            </button>
-                        </form>
+                                            <!-- Page numbers -->
+                                            <li class="page-item" 
+                                                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                                th:classappend="${i == currentPage} ? ' active'">
+                                                <a class="page-link" 
+                                                   th:href="@{/admin/staffs/deleted(page=${i})}"
+                                                   th:text="${i + 1}">1</a>
+                                            </li>
+
+                                            <!-- Next -->
+                                            <li class="page-item"
+                                                th:classappend="${currentPage + 1 >= totalPages} ? ' disabled'">
+                                                <a class="page-link"
+                                                   th:href="@{/admin/staffs/deleted(page=${currentPage + 1})}"
+                                                   aria-label="Next">
+                                                    Sau &raquo;
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-        <!-- Phân trang -->
-        <nav th:if="${totalPages > 1}">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{/admin/staffs/deleted(page=${currentPage - 1})}">Trước</a>
-                </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                    th:classappend="${i == currentPage} ? 'active'">
-                    <a class="page-link" th:href="@{/admin/staffs/deleted(page=${i})}"
-                       th:text="${i + 1}">1</a>
-                </li>
-                <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-                    <a class="page-link" th:href="@{/admin/staffs/deleted(page=${currentPage + 1})}">Tiếp</a>
-                </li>
-            </ul>
-        </nav>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+
+    <!-- JavaScript -->
+    <script src="../dashboard/assets/js/core/libs.min.js"></script>
+    <script src="../dashboard/assets/js/kivicare.js"></script>
 </body>
 </html>

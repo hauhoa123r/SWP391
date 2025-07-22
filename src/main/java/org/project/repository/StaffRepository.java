@@ -1,8 +1,8 @@
 package org.project.repository;
 
+import org.project.entity.StaffEntity;
 import org.project.enums.StaffRole;
 import org.project.enums.StaffStatus;
-import org.project.entity.StaffEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -44,10 +44,8 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long>, JpaSp
     // Lấy nhân viên theo phòng ban và bệnh viện
     List<StaffEntity> findByDepartmentEntity_IdAndHospitalEntity_Id(Long departmentId, Long hospitalId);
 
-    // Soft delete methods - following UserRepository pattern
-    Page<StaffEntity> findByStaffStatus(StaffStatus status, Pageable pageable);
-    Page<StaffEntity> findByStaffStatusNot(StaffStatus status, Pageable pageable);
-
+    // Soft delete functionality
+    Page<StaffEntity> findByStaffStatus(StaffStatus staffStatus, Pageable pageable);
 
 }
 

@@ -2,12 +2,9 @@ package org.project.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.project.entity.StaffEntity;
-import org.project.enums.StaffStatus;
 import org.project.model.request.AdminStaffUpdateRequest;
 import org.project.model.response.AdminStaffDetailResponse;
 import org.project.model.response.AdminStaffResponse;
-import org.project.repository.StaffRepository;
 import org.project.service.AdminStaffService;
 import org.project.service.DepartmentService;
 import org.project.service.HospitalService;
@@ -29,7 +26,6 @@ public class AdminStaffController {
     private final AdminStaffService adminStaffService;
     private final DepartmentService departmentService;
     private final HospitalService hospitalService;
-    private final StaffRepository staffRepository;
 
     private static final java.util.List<String> ROLE_NAMES = java.util.List.of(
             org.project.enums.StaffRole.DOCTOR,
@@ -118,69 +114,39 @@ public class AdminStaffController {
         return "dashboard/staff-search";
     }
 
-    // ====== Soft Delete Staff (Following User Pattern) ======
-    @PostMapping("/deactivate/{id}")
-    public String deactivateStaff(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        try {
-            adminStaffService.deactivateStaff(id);
-            redirectAttributes.addFlashAttribute("successMessage", "Nhân viên đã được vô hiệu hóa thành công");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi vô hiệu hóa nhân viên: " + e.getMessage());
-        }
-        return "redirect:/admin/staffs";
-    }
-
+    // ====== Soft Delete Functionality ======
     @GetMapping("/deleted")
-    public String getDeletedStaffs(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Model model
-    ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+    public String getDeletedStaffs(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   Model model) {
+        Pageable pageable = PageRequest.of(page, size);
         Page<AdminStaffResponse> deletedStaffs = adminStaffService.getDeletedStaffs(pageable);
-        
+
         model.addAttribute("staffPage", deletedStaffs);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", deletedStaffs.getTotalPages());
-        
-        return "admin/staff/deleted";
+        return "staff/deleted"; // view HTML riêng
+    }
+
+    @PostMapping("/soft-delete/{id}")
+    public String softDeleteStaff(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        adminStaffService.softDeleteStaff(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Đã xóa tạm thời nhân viên");
+        return "redirect:/admin/staffs";
     }
 
     @PostMapping("/restore/{id}")
     public String restoreStaff(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        try {
-            adminStaffService.restoreStaff(id);
-            redirectAttributes.addFlashAttribute("successMessage", "Nhân viên đã được khôi phục thành công");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi khôi phục nhân viên: " + e.getMessage());
-        }
-        return "redirect:/admin/staffs/deleted";
+        adminStaffService.restoreStaff(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Đã khôi phục nhân viên thành công");
+        return "redirect:/admin/staffs"; // Redirect về danh sách chính để thấy nhân viên đã được khôi phục
     }
+
     @PostMapping("/delete-permanent/{id}")
-    public String deleteStaffPermanently(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        try {
-            adminStaffService.deleteStaffPermanently(id);
-            redirectAttributes.addFlashAttribute("successMessage", "Nhân viên đã bị xóa vĩnh viễn.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi khi xóa vĩnh viễn: " + e.getMessage());
-        }
+    public String deletePermanently(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        adminStaffService.deletePermanently(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Đã xóa vĩnh viễn nhân viên");
         return "redirect:/admin/staffs/deleted";
     }
-    @GetMapping("/dashboard/staffs/deleted")
-    public String showDeletedStaffs(Model model,
-                                    @RequestParam(defaultValue = "0") int page,
-                                    @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<StaffEntity> deletedStaffs = staffRepository.findByStaffStatus(StaffStatus.INACTIVE, pageable);
-
-        model.addAttribute("deletedStaffs", deletedStaffs);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", deletedStaffs.getTotalPages());
-        model.addAttribute("totalItems", deletedStaffs.getTotalElements());
-
-        return "dashboard/staff-deleted"; // đúng với vị trí file của bạn
-    }
-
-
 
 }
