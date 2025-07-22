@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/result-lab")
@@ -19,7 +16,6 @@ public class SendResultAPI {
 
     @Autowired
     private ResultSampleService resultSampleService;
-
 
     @GetMapping("/filter")
     public ResponseEntity<?> filterResult(@ModelAttribute ResultTestDTO resultTestDTO){
@@ -34,5 +30,10 @@ public class SendResultAPI {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+    @GetMapping("/send/{id}")
+    public ResponseEntity<?> approveResult(@PathVariable Long id){
+        Boolean isApprove = resultSampleService.approveResultSample(id);
+        return ResponseEntity.ok("success");
     }
 }

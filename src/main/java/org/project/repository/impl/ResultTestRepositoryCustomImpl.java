@@ -73,8 +73,7 @@ public class ResultTestRepositoryCustomImpl implements ResultTestRepositoryCusto
             results.append("AND tt.test_type_name LIKE :testType\n");
             params.put("testType", "%" + resultTestDTO.getTestType() + "%");
         }
-        results.append("AND t.request_status != :testStatus\n");
-        params.put("testStatus","pending");
+        results.append("AND a.appointment_id NOT IN (SELECT appointment_id FROM test_requests WHERE request_status IN ('pending', 'completed', 'received'))\n");
         return results.toString();
     }
 

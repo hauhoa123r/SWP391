@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.mapping.ToOne;
 
 import java.time.Instant;
 import java.util.Date;
@@ -23,7 +24,7 @@ public class SampleEntity {
     private Long id;
 
     @NotNull
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "test_request_id", nullable = false)
     private TestRequestEntity testRequest;
 
@@ -56,7 +57,7 @@ public class SampleEntity {
     @Column(name = "retest_time")
     private Instant retestTime;
 
-    @OneToMany(mappedBy = "sampleEntity")
-    private Set<ResultEntity> results = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "sampleEntity")
+    private ResultEntity results;
 
 }

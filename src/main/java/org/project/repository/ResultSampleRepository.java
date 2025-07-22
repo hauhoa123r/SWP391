@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface ResultSampleRepository extends JpaRepository<ResultEntity, Long>, ResultSampleRepositoryCustom {
     Optional<ResultEntity> findById(Long id);
+
+    ResultEntity findBySampleEntity_Id(Long sampleEntityId);
 }

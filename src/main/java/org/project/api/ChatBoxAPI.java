@@ -34,7 +34,7 @@ public class ChatBoxAPI {
         this.chatSession = chatSession;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<String> handleMessageUser(@RequestBody ChatMessageRequest chatMessageRequest,
     HttpSession session) throws IOException {
 

@@ -11,4 +11,5 @@ import java.util.Map;
 public interface ResultSampleService {
      ResultEntity isSaveResultSample(Map<String, String> dataUnit);
      Page<ResultAppointmentResponse> filterResultSample(ResultTestDTO resultTestDTO) throws IllegalAccessException;
+     Boolean approveResultSample(Long id);
 }

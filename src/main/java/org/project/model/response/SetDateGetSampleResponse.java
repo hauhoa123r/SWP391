@@ -21,4 +21,5 @@ public class SetDateGetSampleResponse
     private String departmentName;
     private String hospitalName;
     private List<ManagerNameResponse> managerName;
+    private String imagePatient;
 }

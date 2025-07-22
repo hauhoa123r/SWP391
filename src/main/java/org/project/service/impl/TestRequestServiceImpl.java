@@ -13,8 +13,10 @@ import org.project.service.TestRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,7 +41,7 @@ public class TestRequestServiceImpl implements TestRequestService {
                     .doctorEntity(appointmentEntity.getDoctorEntity())
                     .testTypeEntity(testTypeRepository.findById(testTypeId).orElse(null))
                     .requestStatus(RequestStatus.pending)
-                    .requestTime(LocalDate.now())
+                    .requestTime(Date.from(Instant.now()))
                     .build();
             System.out.println(testRequest);
             testRequestRepository.save(testRequest);

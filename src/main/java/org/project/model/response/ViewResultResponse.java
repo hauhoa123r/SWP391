@@ -12,9 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ViewResultResponse {
+    private Long id;
     private String patientName;
     private String doctorName;
     private String department;
     private String testName;
+    private String imagePatient;
+    private String note;
+    private String dateRequest;
     List<ViewResultDetailResponse> viewResultDetailResponses;
 }

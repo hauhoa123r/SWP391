@@ -4,8 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title data-setting="app_name" data-rightJoin=" Clinic And Patient Management Dashboard">KiviCare Clinic And Patient
-    Management Dashboard</title>
+  <title data-setting="app_name" data-rightJoin=" Clinic And Patient Management Dashboard">Trang chủ</title>
   <meta name="description"
         content="KiviCare is a revolutionary Bootstrap Admin Dashboard Template and UI Components Library. The Admin Dashboard Template and UI Component features 8 modules.">
   <meta name="keywords"
@@ -130,7 +129,120 @@
           href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap"
           rel="stylesheet">
 </head>
+<style>
+  .chat-icon {
+    position: fixed;
+    bottom: 200px;
+    right: 20px;
+    z-index: 1000;
+    cursor: pointer;
+    background-color: #1AB8D6;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
 
+  .chat-icon:hover {
+    transform: scale(1.1);
+    background-color: #1AB8D6;
+  }
+
+  .chat-icon .notification-dot {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 8px;
+    height: 8px;
+    background-color: #dc3545;
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
+
+  .chat-box {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    width: 400px;
+    height: 500px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+  }
+
+  .chat-box.open {
+    display: flex;
+  }
+
+  .chat-header {
+    background-color: #1AB8D6;
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chat-body {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #f8f9fa; /* Matches bg-primary-subtle */
+  }
+
+  .chat-footer {
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+
+  .chat-footer input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .chat-message {
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 5px;
+  }
+
+  .chat-message.user {
+    background-color: #1AB8D6;
+    color: white;
+    margin-left: 20%;
+    margin-right: 10px;
+  }
+
+  .chat-message.bot {
+    background-color: #e9ecef;
+    margin-right: 20%;
+    margin-left: 10px;
+  }
+
+  .icon-24 {
+    width: 24px;
+    height: 24px;
+  }
+  .chat-message.bot.typing::after {
+    content: ' .';
+    animation: dots 1s steps(3, end) infinite;
+  }
+
+  @keyframes dots {
+    0% { content: ' .'; }
+    33% { content: ' ..'; }
+    66% { content: ' ...'; }
+    100% { content: ' .'; }
+  }
+
+</style>
 <body class="  ">
 <!-- loader Start -->
 <div id="loading">
@@ -179,10 +291,36 @@
     </div>
   </div>
   <div th:insert="~{dashboard-staff-test/fragments/sidebar :: sidebar}">
-    
+
   </div>
 </aside>
 <main class="main-content">
+  <div class="chat-icon" id="chatIcon">
+    <svg class="icon-24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0034 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99664 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37485 5.27072 7.03258C6.10083 5.69031 7.28825 4.6056 8.7 3.9C9.87812 3.30493 11.1801 2.99664 12.5 3C14.0782 3.00061 15.6251 3.44061 16.9674 4.27072C18.3098 5.10083 19.3944 6.28825 20.1 7.7C20.6951 8.87812 21.0034 10.1801 21 11.5Z" fill="white" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 12H8.01" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 12H12.01" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16 12H16.01" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="notification-dot"></span>
+  </div>
+  <div class="chat-box" id="chatBox">
+    <div class="chat-header">
+      <h5 class="mb-0">Chat Support</h5>
+      <button class="btn border-0 p-0" id="closeChat">
+        <svg class="icon-24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-message bot">Hello! How can I assist you today?</div>
+    </div>
+    <div class="chat-footer">
+      <input type="text" id="chatInput" placeholder="Type a message...">
+    </div>
+  </div>
   <div class="position-relative ">
     <!--Nav Start-->
     <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar">
@@ -226,7 +364,7 @@
               <ul class="iq-nav-menu list-unstyled">
                 <li class="nav-item">
                   <a class="nav-link menu-arrow justify-content-start active" href="./index.html" th:href="@{/dashboard-staff-test/index.html}">
-                    <span class="nav-text">Home</span>
+                    <span class="nav-text">Trang chủ</span>
                   </a>
                 </li>
               </ul>
@@ -435,7 +573,7 @@
         <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
               stroke-linejoin="round"></path>
       </svg>
-      <span class="head-title fw-500 mt-1">Home</span>
+      <span class="head-title fw-500 mt-1">Trang chủ</span>
     </div>
     <div class="row">
       <div class="col-lg-8">
@@ -445,24 +583,11 @@
               <span id="greeting" class="left-text text-capitalize fw-light"></span>
               <span class="right-text text-capitalize" th:text="${staffs.getFullName()}"></span>
             </h1>
-            <p class="mb-5">Have a nice day at work. Progress is excellent!</p>
+            <p class="mb-5">Chúc bạn một ngày làm việc tốt lành. Tiến độ công việc rất tốt!</p>
             <div class="d-flex align-items-center flex-wrap gap-3">
               <a class="btn btn-primary">
                                     <span class="btn-inner">
-                                        <span class="text d-inline-block align-middle">View Schedule</span>
-                                        <span class="icon d-inline-block align-middle ms-1 ps-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-                                                 viewBox="0 0 8 8" fill="none">
-                                                <path
-                                                        d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                        fill="currentColor" />
-                                            </svg>
-                                        </span>
-                                    </span>
-              </a>
-              <a href="appointment.html" class="btn btn-secondary">
-                                    <span class="btn-inner">
-                                        <span class="text d-inline-block align-middle">Reception Test</span>
+                                        <span class="text d-inline-block align-middle">Lịch làm việc</span>
                                         <span class="icon d-inline-block align-middle ms-1 ps-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
                                                  viewBox="0 0 8 8" fill="none">
@@ -485,7 +610,7 @@
           <div class="col-md-4">
             <div class="card card-block card-stretch card-height overflow-hidden">
               <div class="card-body px-0 pb-0 text-center d-flex flex-column justify-content-end">
-                <h5>Monthly Progress</h5>
+                <h5>Quá trình trong tháng</h5>
                 <h3 class="text-secondary counter mb-4" style="visibility: visible;">56%</h3>
                 <div id="areachart"></div>
               </div>
@@ -495,7 +620,7 @@
             <div class="card card-block card-stretch card-height overflow-hidden">
               <div class="card-body pb-0">
                 <div class="d-flex justify-content-between">
-                  <h5 class="mb-3">Today Test</h5>
+                  <h5 class="mb-3">Số ca xét nghiệm hôm nay</h5>
                   <div class="dropdown lh-1">
                                             <span role="button" id="dropdownMenuTodayAppointment"
                                                   data-bs-toggle="dropdown" aria-expanded="false">
@@ -533,7 +658,7 @@
             <div class="card card-block card-stretch card-height overflow-hidden">
               <div class="card-body pb-0">
                 <div class="d-flex justify-content-between">
-                  <h5 class="mb-3">Total patients</h5>
+                  <h5 class="mb-3">Tổng số bệnh nhân</h5>
                   <div class="dropdown lh-1">
                                             <span role="button" id="dropdownMenuTotalPatients" data-bs-toggle="dropdown"
                                                   aria-expanded="false">
@@ -557,7 +682,7 @@
                   <h3 th:text="${totalPatient}" class="text-primary d-inline-block counter mb-0"
                       style="visibility: visible;">20M</h3>
                   <span class="badge rounded-pill bg-success-subtle text-success p-2">+25.2%
-                                            last week</span>
+                                            Tuần trước</span>
                 </div>
               </div>
               <div class="card-bg position-relative mt-2">
@@ -574,13 +699,13 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
-              <h4>Upcoming Test</h4>
-              <p class="mb-0">6 Test Today</p>
+              <h4>Chuẩn bị xét nghiệm</h4>
+              <p class="mb-0">6 xét nghiệm cho hôm nay</p>
             </div>
             <div class="dropdown text-end f-none">
               <button class="dropdown btn btn-light-subtle border text-body py-2 px-3"
                       id="dropdownMenuAppointmentToday" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="fw-500">Today</span>
+                <span class="fw-500">Hôm nay</span>
                 <svg width="8" class="ms-1 transform-up" viewBox="0 0 12 8" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd"
@@ -590,11 +715,11 @@
               </button>
               <ul class="dropdown-menu dropdown-menu-soft-primary sub-dropdown"
                   aria-labelledby="dropdownMenuAppointmentToday">
-                <li><a class="dropdown-item active" href="#">Monday</a></li>
-                <li><a class="dropdown-item" href="#">Tuesday</a></li>
-                <li><a class="dropdown-item" href="#">Wednesday</a></li>
-                <li><a class="dropdown-item" href="#">Thursday</a></li>
-                <li><a class="dropdown-item" href="#">Friday</a></li>
+                <li><a class="dropdown-item active" href="#">Thứ 2</a></li>
+                <li><a class="dropdown-item" href="#">Thứ 3</a></li>
+                <li><a class="dropdown-item" href="#">Thứ 4</a></li>
+                <li><a class="dropdown-item" href="#">Thứ 5</a></li>
+                <li><a class="dropdown-item" href="#">Thứ 6</a></li>
               </ul>
             </div>
           </div>
@@ -603,7 +728,7 @@
               <h6 class="mb-0 text-primary f-none">10:00 AM</h6>
               <div class="border-start ps-3 ms-3 flex-grow-1">
                 <h5>Emily Johnson</h5>
-                <h6 class="mb-0">Reason: <span class="text-body fw-normal">Acne Treatment</span>
+                <h6 class="mb-0">Lý do: <span class="text-body fw-normal">Đau bụng</span>
                 </h6>
               </div>
               <div>
@@ -620,7 +745,7 @@
               <h6 class="mb-0 text-primary f-none">10:00 AM</h6>
               <div class="border-start ps-3 ms-3 flex-grow-1">
                 <h5>Michael Rodriguez</h5>
-                <h6 class="mb-0">Reason: <span class="text-body fw-normal">Tooth Cleaning</span>
+                <h6 class="mb-0">Lý do: <span class="text-body fw-normal">Đau răng</span>
                 </h6>
               </div>
               <div>
@@ -637,7 +762,7 @@
               <h6 class="mb-0 text-primary f-none">10:00 AM</h6>
               <div class="border-start ps-3 ms-3 flex-grow-1">
                 <h5>Jessica Anderson</h5>
-                <h6 class="mb-0">Reason: <span class="text-body fw-normal">Skin Whitening</span>
+                <h6 class="mb-0">Lý do: <span class="text-body fw-normal">Đau tim</span>
                 </h6>
               </div>
               <div>
@@ -654,193 +779,13 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <!-- có thể thêm -->
-      <div class="col-lg-8">
-        <div class="card">
-          <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
-            <h4 class="mb-0">Test Request</h4>
-            <div class="dropdown text-end">
-              <button class="dropdown btn border-0 p-0" id="dropdownMenuAppReq"
-                      data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="fw-500 d-inline-block align-middle">View All</span>
-                <svg width="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                     class="transform-icon transform-down">
-                  <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                </svg>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-soft-primary sub-dropdown"
-                  aria-labelledby="dropdownMenuAppReq">
-                <li><a class="dropdown-item active" href="#">View</a></li>
-                <li><a class="dropdown-item" href="#">Delete</a></li>
-                <li><a class="dropdown-item" href="#">Edit</a></li>
-                <li><a class="dropdown-item" href="#">Print</a></li>
-                <li><a class="dropdown-item" href="#">Download</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="pt-0 card-body">
-            <div class="table-responsive">
-              <table class="table py-3 mb-0" role="grid" data-toggle="appointment_admin">
-                <thead class="bg-primary-subtle">
-                <tr class="text-dark">
-                  <th class="border-bottom">No.</th>
-                  <th class="border-bottom">Names</th>
-                  <th class="border-bottom">Date</th>
-                  <th class="border-bottom">Reason</th>
-                  <th class="border-bottom">Type</th>
-                  <th class="border-bottom">Staus</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <div class="d-flex align-items-center gap-3">
-                      <img src="./assets/images/table/10.png" th:src="@{/dashboard-staff-test/assets/images/table/10.png}"
 
-                           class="img-fluid flex-shrink-0 icon-40 object-fit-cover"
-                           alt="icon">
-                      <h5 class="mb-0">Courtney Henry</h5>
-                    </div>
-                  </td>
-                  <td>22 Mar, 2023</td>
-                  <td>Acne Treatment</td>
-                  <td>New Patient</td>
-                  <td>
-                    <button
-                            class="badge bg-success-subtle text-success fw-500 px-3 py-2 border-0 me-2">Accept</button>
-                    <button
-                            class="badge bg-danger-subtle text-danger fw-500 px-3 py-2 border-0 me-2">Cancel</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>
-                    <div class="d-flex align-items-center gap-3">
-                      <img src="./assets/images/table/11.png" th:src="@{/dashboard-staff-test/assets/images/table/11.png}"
-
-                           class="img-fluid flex-shrink-0 icon-40 object-fit-cover"
-                           alt="icon">
-                      <h5 class="mb-0">Jerome Bell</h5>
-                    </div>
-                  </td>
-                  <td>16 June, 2023</td>
-                  <td>Tooth Cleaning</td>
-                  <td>Old Patient</td>
-                  <td>
-                    <button
-                            class="badge bg-success-subtle text-success fw-500 px-3 py-2 border-0 me-2">Accept</button>
-                    <button
-                            class="badge bg-danger-subtle text-danger fw-500 px-3 py-2 border-0 me-2">Cancel</button>
-                  </td>
-                </tr>
-                <tr class="border-0">
-                  <td class="border-0">3</td>
-                  <td class="border-0">
-                    <div class="d-flex align-items-center gap-3">
-                      <img src="./assets/images/table/12.png" th:src="@{/dashboard-staff-test/assets/images/table/12.png}"
-
-                           class="img-fluid flex-shrink-0 icon-40 object-fit-cover"
-                           alt="icon">
-                      <h5 class="mb-0">Darrell Steward</h5>
-                    </div>
-                  </td>
-                  <td class="border-0">18 May, 2023</td>
-                  <td class="border-0">Skin Whitening</td>
-                  <td class="border-0">Old Patient</td>
-                  <td class="border-0">
-                    <button
-                            class="badge bg-success-subtle text-success fw-500 px-3 py-2 border-0 me-2">Accept</button>
-                    <button
-                            class="badge bg-danger-subtle text-danger fw-500 px-3 py-2 border-0 me-2">Cancel</button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- end -->
-      <div class="col-lg-4">
-        <div class="card">
-          <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
-            <h4 class="mb-0">Available Doctors</h4>
-            <div class="dropdown text-end">
-              <button class="dropdown btn border-0 p-0" id="dropdownMenuAvailableDoc"
-                      data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="fw-500 d-inline-block align-middle">View All</span>
-                <svg width="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                     class="transform-icon transform-down">
-                  <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                </svg>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-soft-primary sub-dropdown"
-                  aria-labelledby="dropdownMenuAvailableDoc">
-                <li><a class="dropdown-item active" href="#">View</a></li>
-                <li><a class="dropdown-item" href="#">Appointment</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card-body pt-0">
-            <ul class="list-inline m-0 p-0">
-              <li class="d-flex mb-4 align-items-center">
-                <div>
-                  <img class="img-fluid" src="./assets/images/dashboard/draminelouis.png" th:src="@{/dashboard-staff-test/assets/images/dashboard/draminelouis.png}"
-
-                       alt="Dr-profile" loading="lazy" />
-                </div>
-                <div class="ms-4 flex-grow-1">
-                  <h5>Dr.Amine Louis</h5>
-                  <p class="mb-0">Skin Specialist</p>
-                </div>
-                <div>
-                  <h6 class="text-primary mb-0">120 patients</h6>
-                </div>
-              </li>
-              <li class="d-flex mb-4 align-items-center">
-                <div>
-                  <img class="img-fluid" src="./assets/images/dashboard/drKeinoshine.png" th:src="@{/dashboard-staff-test/assets/images/dashboard/drKeinoshine.png}"
-
-                       alt="Dr-profile" loading="lazy" />
-                </div>
-                <div class="ms-4 flex-grow-1">
-                  <h5>Dr.Keino Shine</h5>
-                  <p class="mb-0">Cardiologist</p>
-                </div>
-                <div>
-                  <h6 class="text-primary mb-0">89 Patients</h6>
-                </div>
-              </li>
-              <li class="d-flex align-items-center">
-                <div>
-                  <img class="img-fluid" src="./assets/images/dashboard/drMaxwellena.png" th:src="@{/dashboard-staff-test/assets/images/dashboard/drMaxwellena.png}"
-
-                       alt="Dr-profile" loading="lazy" />
-                </div>
-                <div class="ms-4 flex-grow-1">
-                  <h5>Dr.Maxwell Ena</h5>
-                  <p class="mb-0">Orthopedics</p>
-                </div>
-                <div>
-                  <h6 class="text-primary mb-0">106 patients</h6>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="row">
       <div class="col-lg-4">
       </div>
       <div class="col-lg-8">
       </div>
     </div>
-
   </div>
   <!-- Footer Section Start -->
   <footer class="footer">
@@ -1449,7 +1394,6 @@
               </div>
             </div>
             <!-- Navbar style end here -->
-
             <hr class="hr-horizontal">
             <!-- Card style start here -->
             <div class="mb-4">
@@ -1730,11 +1674,11 @@
     const hour = vietnamTime.getHours();
 
     if (hour >= 5 && hour < 12) {
-      return "Good morning";
+      return "Chào buổi sáng";
     } else if (hour >= 12 && hour < 18) {
-      return "Good afternoon";
+      return "Chào buổi trưa";
     } else {
-      return "Good evening";
+      return "Chào buổi tối";
     }
   }
 
@@ -1774,7 +1718,67 @@
 <!-- Icons -->
 <script src="./assets/js/solid-icon-search-filter.js?v=1.4.1" th:src="@{/dashboard-staff-test/assets/js/solid-icon-search-filter.js?v=1.4.1}"
  defer></script>
+<script>
+  document.getElementById('chatIcon').addEventListener('click', function () {
+    const chatBox = document.getElementById('chatBox');
+    chatBox.classList.toggle('open');
+  });
 
+  document.getElementById('closeChat').addEventListener('click', function () {
+    document.getElementById('chatBox').classList.remove('open');
+  });
+
+  document.getElementById('chatInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter' && this.value.trim() !== '') {
+      const chatBody = document.getElementById('chatBody');
+      const userMessage = this.value.trim();
+      const message = document.createElement('div');
+      message.className = 'chat-message user';
+      message.textContent = userMessage;
+      chatBody.appendChild(message);
+
+      const typingMessage = document.createElement('div');
+      typingMessage.className = 'chat-message bot typing';
+      typingMessage.textContent = 'Bot đang trả lời';
+      chatBody.appendChild(typingMessage);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      fetch('/api/chatbox/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userMessage: userMessage
+        })
+      })
+              .then(response => {
+                if (!response.ok) throw new Error("Lỗi khi gọi API");
+                return response.text();
+              })
+              .then(aiResponse => {
+                chatBody.removeChild(typingMessage);
+
+                const botMessage = document.createElement('div');
+                botMessage.className = 'chat-message bot';
+                botMessage.textContent = aiResponse;
+                chatBody.appendChild(botMessage);
+                chatBody.scrollTop = chatBody.scrollHeight;
+              })
+              .catch(error => {
+                chatBody.removeChild(typingMessage);
+
+                const botMessage = document.createElement('div');
+                botMessage.className = 'chat-message bot';
+                botMessage.textContent = 'Lỗi khi gửi tin nhắn.';
+                chatBody.appendChild(botMessage);
+              });
+
+      this.value = '';
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  });
+</script>
 </body>
 
 </html>

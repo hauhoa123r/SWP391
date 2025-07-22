@@ -6,7 +6,6 @@ import org.project.exception.NumberInvalidFormatException;
 import org.project.model.dto.ApproveResultDTO;
 import org.project.model.response.ResultAppointmentResponse;
 import org.project.repository.*;
-import org.project.service.TestTypeRepository;
 import org.project.utils.NumberTypeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,6 +45,7 @@ public class ResultSampleConverter {
 
     @Autowired
     private SampleScheduleRepository sampleScheduleRepositoryImpl;
+
     public ResultEntity toConverterResultEntity(Map<String, String> dataUnit){
         String temp = dataUnit.get("testTypeId");
 

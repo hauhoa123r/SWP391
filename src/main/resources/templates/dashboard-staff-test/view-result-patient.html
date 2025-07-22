@@ -238,50 +238,12 @@
     </div>
 </div>
 <!-- loader END -->
-<aside class="sidebar sidebar-base " id="first-tour" data-toggle="main-sidebar" data-sidebar="responsive">
-    <div class="sidebar-header d-flex align-items-center justify-content-start position-relative">
-        <a href="/lab/homepage" th:href="@{/lab/homepage}"
-           class="navbar-brand">
-
-            <!--Logo start-->
-            <div class="logo-main">
-                <img class="logo-normal img-fluid" src="./assets/images/logo.png" th:src="@{/dashboard-staff-test/assets/images/logo.png}"
-                     height="30" alt="logo">
-                <img class="logo-normal dark-normal img-fluid" src="./assets/images/logo-dark.png" th:src="@{/dashboard-staff-test/assets/images/logo-dark.png}"
-                     height="30"
-                     alt="logo">
-                <img class="logo-normal white-normal img-fluid" src="./assets/images/logo-white.png" th:src="@{/dashboard-staff-test/assets/images/logo-white.png}"
-                     height="30"
-                     alt="logo">
-                <img class="logo-mini img-fluid" src="./assets/images/logo-mini.png" th:src="@{/dashboard-staff-test/assets/images/logo-mini.png}"
-                     height="30" alt="logo">
-                <img class="logo-mini dark-mini img-fluid" src="./assets/images/logo-mini-dark.png" th:src="@{/dashboard-staff-test/assets/images/logo-mini-dark.png}"
-                     height="30"
-                     alt="logo">
-                <img class="logo-mini white-mini img-fluid" src="./assets/images/logo-mini-white.png" th:src="@{/dashboard-staff-test/assets/images/logo-mini-white.png}"
-                     height="30"
-                     alt="logo">
-            </div>
-            <!--logo End-->
-        </a>
-        <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
-            <i class="icon">
-                <svg class="icon-20 icon-arrow" width="20" viewBox="0 0 24 24" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15.5 19L8.5 12L15.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                          stroke-linejoin="round"></path>
-                </svg>
-            </i>
-        </div>
-    </div>
-    <div th:insert="~{dashboard-staff-test/fragments/sidebar :: sidebar}"></div>
-</aside>
 <main class="main-content">
     <div class="position-relative  iq-banner ">
         <!--Nav Start-->
         <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar">
             <div class="container-fluid navbar-inner">
-                <a href="./index.html" th:href="@{/dashboard-staff-test/index.html}"
+                <a href="/lab/homepage"
                    class="navbar-brand">
 
                     <!--Logo start-->
@@ -317,265 +279,6 @@
                 <div class="d-flex align-items-center justify-content-between product-offcanvas">
                     <div class="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabindex="-1"
                          id="offcanvasBottomNav">
-                        <div class="offcanvas-body">
-                            <ul class="iq-nav-menu list-unstyled">
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
-                                       href="#allPagesData" role="button" aria-expanded="false"
-                                       aria-controls="allPagesData">
-                                        <span class="nav-text">Pages</span>
-                                    </a>
-                                    <ul class="iq-header-sub-menu list-unstyled collapse" id="allPagesData">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="./component.html" th:href="@{/dashboard-staff-test/component.html}"
-                                            >Components</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="./ui-color.html" th:href="@{/dashboard-staff-test/ui-color.html}"
-                                            >UI Color</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                               href="#authSkins" role="button" aria-expanded="false">
-                                                Auth skins
-                                                <i class="right-icon">
-                                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                              stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </i>
-                                            </a>
-                                            <ul aria-expanded="false"
-                                                class="iq-header-sub-menu left list-unstyled collapse"
-                                                id="defaultAuth">
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./auth/sign-in.html" th:href="@{/dashboard-staff-test/auth/sign-in.html}"
-                                                >Sign In</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./auth/sign-up.html" th:href="@{/dashboard-staff-test/auth/sign-up.html}"
-                                                >Sign Up</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./auth/confirm-mail.html" th:href="@{/dashboard-staff-test/auth/confirm-mail.html}"
-                                                >Email Verified</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./auth/recoverpw.html" th:href="@{/dashboard-staff-test/auth/recoverpw.html}"
-                                                >Reset
-                                                    Password</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./auth/lock-screen.html" th:href="@{/dashboard-staff-test/auth/lock-screen.html}"
-                                                >Lock Screen</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                               href="#userApps" role="button" aria-expanded="false"
-                                               aria-controls="userApps">
-                                                User
-                                                <i class="right-icon">
-                                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                              stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </i>
-                                            </a>
-                                            <ul aria-expanded="false"
-                                                class="iq-header-sub-menu left list-unstyled collapse"
-                                                id="userApps">
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./app/user-profile.html" th:href="@{/dashboard-staff-test/app/user-profile.html}"
-                                                >User Profile</a></li>
-                                                <li class="nav-item"><a class="nav-link active"
-                                                                        href="./app/user-add.html" th:href="@{/dashboard-staff-test/app/user-add.html}"
-                                                >User Add</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./app/user-list.html" th:href="@{/dashboard-staff-test/app/user-list.html}"
-                                                >User List</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                               href="#utilities" role="button" aria-expanded="false"
-                                               aria-controls="utilities">
-                                                Utilities
-                                                <i class="right-icon">
-                                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                              stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </i>
-                                            </a>
-                                            <ul aria-expanded="false"
-                                                class="iq-header-sub-menu left list-unstyled collapse"
-                                                id="utilities">
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./errors/maintenance.html" th:href="@{/dashboard-staff-test/errors/maintenance.html}"
-                                                >Maintenance</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./errors/error404.html" th:href="@{/dashboard-staff-test/errors/error404.html}"
-                                                >404</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./errors/error500.html" th:href="@{/dashboard-staff-test/errors/error500.html}"
-                                                >500</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                               href="#widgetsPage" role="button" aria-expanded="false"
-                                               aria-controls="widgetsPage">
-                                                Widgets
-                                                <i class="right-icon">
-                                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                              stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </i>
-                                            </a>
-                                            <ul aria-expanded="false"
-                                                class="iq-header-sub-menu left list-unstyled collapse"
-                                                id="widgetsPage">
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./widget/widgetbasic.html" th:href="@{/dashboard-staff-test/widget/widgetbasic.html}"
-                                                >Widget Basic</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./widget/widgetchart.html" th:href="@{/dashboard-staff-test/widget/widgetchart.html}"
-                                                >Widget Chart</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./widget/widgetcard.html" th:href="@{/dashboard-staff-test/widget/widgetcard.html}"
-                                                >Widget Card</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                               href="#mapPages" role="button" aria-expanded="false"
-                                               aria-controls="mapPages">
-                                                Map
-                                                <i class="right-icon">
-                                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                              stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </i>
-                                            </a>
-                                            <ul aria-expanded="false"
-                                                class="iq-header-sub-menu left list-unstyled collapse"
-                                                id="mapPages">
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./maps/google.html" th:href="@{/dashboard-staff-test/maps/google.html}"
-                                                >Google</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./maps/vector.html" th:href="@{/dashboard-staff-test/maps/vector.html}"
-                                                >Vector</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                               href="#formsPages" role="button" aria-expanded="false"
-                                               aria-controls="formsPages">
-                                                Form
-                                                <i class="right-icon">
-                                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                              stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </i>
-                                            </a>
-                                            <ul aria-expanded="false"
-                                                class="iq-header-sub-menu left list-unstyled collapse"
-                                                id="formsPages">
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./form/form-element.html" th:href="@{/dashboard-staff-test/form/form-element.html}"
-                                                >Element</a></li>
-
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./form/form-validation.html" th:href="@{/dashboard-staff-test/form/form-validation.html}"
-                                                >Validation</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                               href="#tablesPages" role="button" aria-expanded="false"
-                                               aria-controls="tablesPages">
-                                                Table
-                                                <i class="right-icon">
-                                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                              stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </i>
-                                            </a>
-                                            <ul aria-expanded="false"
-                                                class="iq-header-sub-menu left list-unstyled collapse"
-                                                id="tablesPages">
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./table/bootstrap-table.html" th:href="@{/dashboard-staff-test/table/bootstrap-table.html}"
-                                                >Bootstrap Table</a>
-                                                </li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./table/table-data.html" th:href="@{/dashboard-staff-test/table/table-data.html}"
-                                                >Data Table</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./table/border-table.html" th:href="@{/dashboard-staff-test/table/border-table.html}"
-                                                >Bordered Table</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./table/fancy-table.html" th:href="@{/dashboard-staff-test/table/fancy-table.html}"
-                                                >Fancy Table</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./table/fixed-table.html" th:href="@{/dashboard-staff-test/table/fixed-table.html}"
-                                                >Fixed Table</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                               href="#iconsPages" role="button" aria-expanded="false"
-                                               aria-controls="iconsPages">
-                                                Icons
-                                                <i class="right-icon">
-                                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                              stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </i>
-                                            </a>
-                                            <ul aria-expanded="false"
-                                                class="iq-header-sub-menu left list-unstyled collapse"
-                                                id="iconsPages">
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./icons/solid.html" th:href="@{/dashboard-staff-test/icons/solid.html}"
-                                                >Solid</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./icons/outline.html" th:href="@{/dashboard-staff-test/icons/outline.html}"
-                                                >Outlined</a></li>
-                                                <li class="nav-item"><a class="nav-link "
-                                                                        href="./icons/dual-tone.html" th:href="@{/dashboard-staff-test/icons/dual-tone.html}"
-                                                >Dual Tone</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link menu-arrow justify-content-start " href="./setting.html" th:href="@{/dashboard-staff-test/setting.html}"
-                                    >
-                                        <span class="nav-text">Setting </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
@@ -772,7 +475,7 @@
                     <div class="col-md-12">
                         <div class="flex-wrap d-flex justify-content-between align-items-center flex-wrap gap-3">
                             <div>
-                                <h1 class="fw-bold mb-0 rtl-primary-color">Set Date Time</h1>
+                                <h1 class="fw-bold mb-0 rtl-primary-color">Kết quả mẫu</h1>
                             </div>
                         </div>
                     </div>
@@ -863,55 +566,22 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between mb-0">
                                 <div class="header-title">
-                                    <h4 class="card-title">Kết quả kiểm tra</h4>
+                                    <h4 class="card-title">Kết quả xét nghiệm</h4>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="new-user-info">
                                     <form id="create-sample-form">
                                         <div class="row">
-                                            <table id="basic-table" class="table table-striped mb-0" role="grid">
-                                                <input type="hidden" th:value="${result.getId()}" id="appointmentId">
-                                                <thead>
-                                                <tr>
-                                                    <th>Tên Mẫu</th>
-                                                    <th>Người Duyệt</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="item:${result.getViewResultDetailResponses()}">
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <h6 th:text="${item.getSampleName()}"></h6>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="iq-media-group iq-media-group-1">
-                                                            <h6 th:text="${item.getManagerName()}"></h6>
-                                                        </div>
-                                                    </td>
-                                                    <td><div class="text-info" th:text="${item.getStatus()}"></div></td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                            <div class="card p-4" style="background-color: #f9f9f9; border-radius: 8px;">
+                                                <p th:text="'Ngày gửi yêu cầu: ' + ${result.dateRequest}"></p>
+                                                <hr>
+                                                <div th:text="${result.getNote()}"></div>
+                                            </div>
                                         </div>
 
                                         <hr>
                                         <div class="d-flex justify-content-end">
-                                            <button type="button" class="btn btn-primary" onclick="sendResult(event)">
-                                                    <span class="btn-inner">
-                                                        <span class="text d-inline-block align-middle">Gửi kết quả</span>
-                                                        <span class="icon d-inline-block align-middle ms-1 ps-2">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-                                                                 viewBox="0 0 8 8" fill="none">
-                                                                <path
-                                                                        d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                                        fill="currentColor" />
-                                                            </svg>
-                                                        </span>
-                                                    </span>
-                                            </button>
                                             <button type="button" class="btn btn-secondary ms-2"
                                                     onclick="window.location.href='/lab/send-result'">
                                                 Quay lại
@@ -1870,19 +1540,7 @@
         defer></script>
 
 
-<script>
-    const sendResult = async () => {
-        const data = document.getElementById('appointmentId').value;
-        const response = await fetch('/api/result-lab/send/' + data, {
-            method: 'GET'
-        });
-        if(response.ok){
-            alert('Successfully sent');
-        }else{
-            alert('Failed to send');
-        }
-    }
-</script>
+
 
 <!-- Lodash Utility -->
 <script src="./assets/vendor/lodash/lodash.min.js" th:src="@{/dashboard-staff-test/assets/vendor/lodash/lodash.min.js}"
@@ -1918,18 +1576,7 @@
         defer></script>
 </body>
 <script>
-    const sendResult = async (event) => {
-        event.preventDefault();
-        const data = document.getElementById('appointmentId').value;
-        const response = await fetch('/api/result-lab/send/' + data, {
-            method: 'GET'
-        });
-        if(response.ok){
-            alert('Successfully sent');
-        }else{
-            alert('Failed to send');
-        }
-    }
+
 </script>
 
 </html>
