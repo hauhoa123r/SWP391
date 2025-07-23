@@ -40,6 +40,7 @@
     <script th:src="@{/templates_storage/assets/js/notify/index.js}" defer></script>
     <script th:src="@{/templates_storage/assets/js/script.js}" defer></script>
 
+    <!-- Custom CSS -->
     <style>
         .product-card { border: 1px solid #e0e0e0; border-radius: 8px; transition: all 0.3s; }
         .product-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
@@ -56,7 +57,19 @@
         .status-checked { background-color: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-completed { background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .batch-info { font-size: 0.8em; color: #666; }
+        
+        .warehouse-logo {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2e8b57; /* Màu xanh lá cây */
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
     </style>
+
+    <!-- App css -->
 </head>
 
 <body>
@@ -91,7 +104,7 @@
                         <div class="Typeahead Typeahead--twitterUsers">
                             <div class="u-posRelative">
                                 <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-                                    placeholder="Tìm kiếm..." name="q" title="" autofocus>
+                                   placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
                                 <i class="close-search" data-feather="x"></i>
                                 <div class="spinner-border Typeahead-spinner" role="status">
                                     <span class="sr-only">Đang tải...</span>
@@ -101,6 +114,9 @@
                         </div>
                     </div>
                 </form>
+
+                            <!-- Tiêu đề mới -->
+            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
                 <div class="nav-right col-6 pull-right right-header p-0">
                     <ul class="nav-menus">
                         <li>
@@ -161,38 +177,6 @@
                                     <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                                 </div>
                             </div>
-                            <ul class="profile-dropdown onhover-show-div">
-                                <li>
-                                    <a href="#">
-                                        <i data-feather="users"></i>
-                                        <span>Người dùng</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i data-feather="archive"></i>
-                                        <span>Đơn hàng</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i data-feather="phone"></i>
-                                        <span>Hỗ trợ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i data-feather="settings"></i>
-                                        <span>Cài đặt</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">
-                                        <i data-feather="log-out"></i>
-                                        <span>Đăng xuất</span>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -202,9 +186,123 @@
 
         <!-- Page Body Start-->
         <div class="page-body-wrapper">
-            <!-- Page Sidebar Start-->
-            <div th:replace="templates_storage/fragments/sidebar::sidebar"></div>
-            <!-- Page Sidebar Ends-->
+            <!-- Bắt đầu thanh bên -->
+            <div class="sidebar-wrapper">
+                <div id="sidebarEffect"></div>
+                <div>
+                    <div class="logo-wrapper logo-wrapper-center">
+                        <a th:href="@{/index.html}" data-bs-original-title="" title="">
+                            <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
+                        </a>
+                        <div class="back-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </div>
+                        <div class="toggle-sidebar">
+                            <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="logo-icon-wrapper">
+                        <a th:href="@{/index.html}">
+                            <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
+                            <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
+                                 alt="logo">
+                        </a>
+                    </div>
+                    <nav class="sidebar-main">
+                        <div class="left-arrow" id="left-arrow">
+                            <i data-feather="arrow-left"></i>
+                        </div>
+
+                        <div id="sidebar-menu">
+                            <ul class="sidebar-links" id="simple-bar">
+                                <li class="back-btn"></li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/index.html}">
+                                        <i class="ri-home-line"></i>
+                                        <span>Bảng điều khiển</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                        <i class="ri-store-3-line"></i>
+                                        <span>Giao dịch</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a th:href="@{/StockIn.html}">Nhập kho</a>
+                                        </li>
+                                        <li>
+                                            <a th:href="@{/StockOut.html}">Xuất kho</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                        <i class="ri-list-check-2"></i>
+                                        <span>Hóa đơn</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a th:href="@{/StockInInvoice.html}">Hóa đơn nhập kho</a>
+                                        </li>
+                                        <li>
+                                            <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
+                                        </li>
+                                        <li>
+                                            <a th:href="@{/CustomerInvoice.html}">Hóa đơn khách hàng</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                        <i class="ri-list-settings-line"></i>
+                                        <span>Kho hàng</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                        </li>
+                                        <li>
+                                            <a th:href="@{/medicine.html}">Thuốc</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                               
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                        <i class="ri-price-tag-3-line"></i>
+                                        <span>Mã giảm giá</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
+                                        </li>
+                                        <li>
+                                            <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
+                                        <i class="ri-star-line"></i>
+                                        <span>Đánh giá sản phẩm</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
+                                        <i class="ri-file-chart-line"></i>
+                                        <span>Báo cáo</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="right-arrow" id="right-arrow">
+                            <i data-feather="arrow-right"></i>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- Kết thúc thanh bên -->
 
             <!-- Order Tracking Seation starts-->
             <div class="page-body">

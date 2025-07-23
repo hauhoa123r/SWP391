@@ -41,7 +41,20 @@
     <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/scrollbar.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/animate.css}">
 
-    <!-- App css -->
+    <!-- Custom CSS -->
+    <style>
+        .warehouse-logo {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2e8b57; /* Màu xanh lá cây */
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+    </style>
+
+    <!-- App css-->
     <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/style.css}">
 </head>
 
@@ -59,14 +72,14 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
@@ -87,6 +100,9 @@
                     </div>
                 </div>
             </form>
+
+            <!-- Tiêu đề mới -->
+            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
             <div class="nav-right col-6 pull-right right-header p-0">
                 <ul class="nav-menus">
                     <li>
@@ -146,39 +162,7 @@
                                 <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                             </div>
                         </div>
-                        <ul class="profile-dropdown onhover-show-div">
-                            <li>
-                                <a th:href="@{/all-users.html}">
-                                    <i data-feather="users"></i>
-                                    <span>Người dùng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/order-list.html}">
-                                    <i data-feather="archive"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/support-ticket.html}">
-                                    <i data-feather="phone"></i>
-                                    <span>Vé hỗ trợ</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/profile-setting.html}">
-                                    <i data-feather="settings"></i>
-                                    <span>Cài đặt</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                   href="#">
-                                    <i data-feather="log-out"></i>
-                                    <span>Đăng xuất</span>
-                                </a>
-                            </li>
-                        </ul>
+                       
                     </li>
                 </ul>
             </div>
@@ -194,7 +178,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/index.html}" data-bs-original-title="" title="">
+                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -205,7 +189,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -220,7 +204,7 @@
                         <ul class="sidebar-links" id="simple-bar">
                             <li class="back-btn"></li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/index.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -251,9 +235,6 @@
                                     <li>
                                         <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
                                     </li>
-                                    <li>
-                                        <a th:href="@{/CustomerInvoice.html}">Hóa đơn khách hàng</a>
-                                    </li>
                                 </ul>
                             </li>
                             <li class="sidebar-list">
@@ -270,23 +251,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <i class="ri-archive-line"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    <li>
-                                        <a th:href="@{/order-list.html}">Danh sách đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-detail.html}">Chi tiết đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-tracking.html}">Theo dõi đơn hàng</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="#">
                                     <i class="ri-price-tag-3-line"></i>
@@ -329,115 +294,186 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card card-table">
-                            <div class="card-header">
-                                <h5>Danh sách mã giảm giá</h5>
-                            </div>
-
                             <div class="card-body">
-                                <div class="tab-content" id="pills-tabContent">
-                                    <div class="tab-pane fade show active" id="pills-order" role="tabpanel">
-                                        <div class="d-flex justify-content-between align-items-center mb-4">
-                                            <!-- Thanh tìm kiếm -->
-                                            <form th:action="@{/coupon-list}" method="get" class="d-flex">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="Tìm kiếm mã giảm giá...">
-                                                    <button class="btn btn-primary" type="submit">Tìm</button>
-                                                </div>
-                                            </form>
-                                            
-                                            <!-- Nút tạo mới -->
-                                            <a th:href="@{/create-coupon}" class="btn btn-primary">
-                                                <i class="ri-add-line"></i> Tạo mã giảm giá
-                                            </a>
-                                        </div>
-                                        
-                                        <!-- Filter tabs -->
-                                        <ul class="nav nav-pills mb-3">
-                                            <li class="nav-item">
-                                                <a class="nav-link" th:classappend="${validFilter == null && expiredFilter == null ? 'active' : ''}" 
-                                                   th:href="@{/coupon-list}">Tất cả</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" th:classappend="${validFilter != null ? 'active' : ''}" 
-                                                   th:href="@{/valid-coupons}">Còn hiệu lực</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" th:classappend="${expiredFilter != null ? 'active' : ''}" 
-                                                   th:href="@{/expired-coupons}">Hết hạn</a>
+                                <div class="title-header option-title">
+                                    <h5>Coupon List</h5>
+                                    <div class="right-options">
+                                        <ul>
+                                            <li>
+                                                <a class="btn btn-solid" th:href="@{/create-coupon.html}">Add Coupon</a>
                                             </li>
                                         </ul>
-
-                                        <!-- Hiển thị thông báo -->
-                                        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <span th:text="${successMessage}"></span>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                         </div>
-                                        
-                                        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                                            <span th:text="${errorMessage}"></span>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                         </div>
-
+                                <div>
                                         <div class="table-responsive">
-                                            <table class="table all-package theme-table table-coupon" id="table_id">
+                                        <table class="table all-package coupon-list-table table-hover theme-table"
+                                            id="table_id">
                                                 <thead>
                                                     <tr>
                                                         <th>
                                                             <span class="form-check user-checkbox m-0 p-0">
-                                                                <input class="checkbox_animated checkall" type="checkbox" value="">
+                                                            <input class="checkbox_animated checkall"
+                                                                type="checkbox" value="">
                                                             </span>
                                                         </th>
-                                                        <th>ID</th>
-                                                        <th>
-                                                            <a th:href="@{'/coupon-list?sortBy=code&sortDir=' + ${reverseSortDir}}">
-                                                                Mã code <i class="ri-arrow-up-down-line"></i>
-                                                            </a>
-                                                        </th>
-                                                        <th>Mô tả</th>
-                                                        <th>
-                                                            <a th:href="@{'/coupon-list?sortBy=value&sortDir=' + ${reverseSortDir}}">
-                                                                Giá trị <i class="ri-arrow-up-down-line"></i>
-                                                            </a>
-                                                        </th>
-                                                        <th>Loại</th>
-                                                        <th>Đơn hàng tối thiểu</th>
-                                                        <th>
-                                                            <a th:href="@{'/coupon-list?sortBy=expiration&sortDir=' + ${reverseSortDir}}">
-                                                                Ngày hết hạn <i class="ri-arrow-up-down-line"></i>
-                                                            </a>
-                                                        </th>
-                                                        <th>Tùy chọn</th>
+                                                    <th>Title</th>
+                                                    <th>Code</th>
+                                                    <th>Discount</th>
+                                                    <th>Status</th>
+                                                    <th>Option</th>
                                                     </tr>
                                                 </thead>
 
                                                 <tbody>
-                                                    <tr th:each="coupon : ${coupons}">
+                                                <tr>
+                                                    <td>
+                                                        <span class="form-check user-checkbox m-0 p-0">
+                                                            <input class="checkbox_animated check-it"
+                                                                type="checkbox" value="">
+                                                        </span>
+                                                    </td>
+                                                    <td>10% Off</td>
+                                                    <td>5488165</td>
+                                                    <td class="theme-color">10%</td>
+                                                    <td class="menu-status">
+                                                        <span class="danger">Restitute</span>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0)">
+                                                                    <i class="ri-pencil-line"></i>
+                                                                </a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalToggle">
+                                                                    <i class="ri-delete-bin-line"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <span class="form-check user-checkbox m-0 p-0">
+                                                            <input class="checkbox_animated check-it"
+                                                                type="checkbox" value="">
+                                                        </span>
+                                                    </td>
+                                                    <td>25% Off</td>
+                                                    <td>2143235</td>
+                                                    <td class="theme-color">17%</td>
+                                                    <td class="menu-status">
+                                                        <span class="success">Success</span>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0)">
+                                                                    <i class="ri-pencil-line"></i>
+                                                                </a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalToggle">
+                                                                    <i class="ri-delete-bin-line"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <span class="form-check user-checkbox m-0 p-0">
+                                                            <input class="checkbox_animated check-it"
+                                                                type="checkbox" value="">
+                                                        </span>
+                                                    </td>
+                                                    <td>12% Off</td>
+                                                    <td>3243468</td>
+                                                    <td class="theme-color">20%</td>
+                                                    <td class="menu-status">
+                                                        <span class="success">Success</span>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0)">
+                                                                    <i class="ri-pencil-line"></i>
+                                                                </a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalToggle">
+                                                                    <i class="ri-delete-bin-line"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
                                                         <td>
                                                             <span class="form-check user-checkbox m-0 p-0">
-                                                                <input class="checkbox_animated check-it" type="checkbox" value="">
+                                                            <input class="checkbox_animated check-it"
+                                                                type="checkbox" value="">
                                                             </span>
                                                         </td>
-                                                        <td th:text="${coupon.id}">1</td>
-                                                        <td th:text="${coupon.code}">SAVE10</td>
-                                                        <td th:text="${coupon.description}">10% discount on all products</td>
-                                                        <td class="theme-color" th:text="${coupon.value}">10.00</td>
-                                                        <td th:text="${coupon.discountType?.displayName}">Phần trăm</td>
-                                                        <td th:text="${coupon.minimumOrderAmount}">50.00</td>
-                                                        <td>
-                                                            <span th:text="${#dates.format(coupon.expirationDate, 'dd-MM-yyyy')}">31-12-2023</span>
-                                                            <span th:if="${coupon.expired}" class="badge bg-danger">Hết hạn</span>
+                                                    <td>45% Off</td>
+                                                    <td>7846289</td>
+                                                    <td class="theme-color">50%</td>
+                                                    <td class="menu-status">
+                                                        <span class="danger">Restitute</span>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0)">
+                                                                    <i class="ri-pencil-line"></i>
+                                                                </a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalToggle">
+                                                                    <i class="ri-delete-bin-line"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <span class="form-check user-checkbox m-0 p-0">
+                                                            <input class="checkbox_animated check-it"
+                                                                type="checkbox" value="">
+                                                        </span>
+                                                    </td>
+                                                    <td>45% Off</td>
+                                                    <td>3614376</td>
+                                                    <td class="theme-color">60%</td>
+                                                    <td class="menu-status">
+                                                        <span class="success">Success</span>
                                                         </td>
                                                         <td>
                                                             <ul>
                                                                 <li>
-                                                                    <a th:href="@{/edit-coupon/{id}(id=${coupon.id})}">
+                                                                <a href="javascript:void(0)">
                                                                         <i class="ri-pencil-line"></i>
                                                                     </a>
                                                                 </li>
 
                                                                 <li>
-                                                                    <a href="#" data-bs-toggle="modal" th:attr="data-coupon-id=${coupon.id}"
-                                                                       data-bs-target="#deleteModal" class="delete-coupon">
+                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalToggle">
                                                                         <i class="ri-delete-bin-line"></i>
                                                                     </a>
                                                                 </li>
@@ -445,45 +481,104 @@
                                                         </td>
                                                     </tr>
                                                     
-                                                    <!-- Hiển thị thông báo khi không có dữ liệu -->
-                                                    <tr th:if="${#lists.isEmpty(coupons)}">
-                                                        <td colspan="9" class="text-center">Không tìm thấy mã giảm giá nào</td>
+                                                <tr>
+                                                    <td>
+                                                        <span class="form-check user-checkbox m-0 p-0">
+                                                            <input class="checkbox_animated check-it"
+                                                                type="checkbox" value="">
+                                                        </span>
+                                                    </td>
+                                                    <td>80% Off</td>
+                                                    <td>8328192</td>
+                                                    <td class="theme-color">45%</td>
+                                                    <td class="menu-status">
+                                                        <span class="success">Success</span>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0)">
+                                                                    <i class="ri-pencil-line"></i>
+                                                                </a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalToggle">
+                                                                    <i class="ri-delete-bin-line"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
                                                     </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        
-                                        <!-- Phân trang -->
-                                        <div class="pagination-box mt-4" th:if="${totalPages > 0}">
-                                            <nav class="ms-auto me-auto">
-                                                <ul class="pagination">
-                                                    <!-- Nút Previous -->
-                                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                                                        <a class="page-link" th:href="@{'/coupon-list?page=' + ${currentPage - 1} + '&keyword=' + ${keyword ?: ''} + '&sortBy=' + ${sortBy ?: ''} + '&sortDir=' + ${sortDir ?: ''}}">
-                                                            <span aria-hidden="true">&laquo;</span>
+
+                                                <tr>
+                                                    <td>
+                                                        <span class="form-check user-checkbox m-0 p-0">
+                                                            <input class="checkbox_animated check-it"
+                                                                type="checkbox" value="">
+                                                        </span>
+                                                    </td>
+                                                    <td>60% Off</td>
+                                                    <td>7218376</td>
+                                                    <td class="theme-color">30%</td>
+                                                    <td class="menu-status">
+                                                        <span class="success">Success</span>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0)">
+                                                                    <i class="ri-pencil-line"></i>
                                                         </a>
                                                     </li>
                                                     
-                                                    <!-- Các số trang -->
-                                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
-                                                        th:classappend="${i == currentPage ? 'active' : ''}">
-                                                        <a class="page-link" th:href="@{'/coupon-list?page=' + ${i} + '&keyword=' + ${keyword ?: ''} + '&sortBy=' + ${sortBy ?: ''} + '&sortDir=' + ${sortDir ?: ''}}">
-                                                            <span th:text="${i + 1}">1</span>
+                                                            <li>
+                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalToggle">
+                                                                    <i class="ri-delete-bin-line"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <span class="form-check user-checkbox m-0 p-0">
+                                                            <input class="checkbox_animated check-it"
+                                                                type="checkbox" value="">
+                                                        </span>
+                                                    </td>
+                                                    <td>40% Off</td>
+                                                    <td>1872349</td>
+                                                    <td class="theme-color">42%</td>
+                                                    <td class="menu-status">
+                                                        <span class="success">Success</span>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0)">
+                                                                    <i class="ri-pencil-line"></i>
                                                         </a>
                                                     </li>
                                                     
-                                                    <!-- Nút Next -->
-                                                    <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                                                        <a class="page-link" th:href="@{'/coupon-list?page=' + ${currentPage + 1} + '&keyword=' + ${keyword ?: ''} + '&sortBy=' + ${sortBy ?: ''} + '&sortDir=' + ${sortDir ?: ''}}">
-                                                            <span aria-hidden="true">&raquo;</span>
+                                                            <li>
+                                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalToggle">
+                                                                    <i class="ri-delete-bin-line"></i>
                                                         </a>
                                                     </li>
                                                 </ul>
-                                            </nav>
-                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Pagination End -->
                         </div>
                     </div>
                 </div>
@@ -577,6 +672,22 @@
     </div>
 </div>
 <!-- Delete Modal Box End -->
+
+<!-- Script để xử lý modal xóa -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Xử lý click vào nút xóa
+        const deleteButtons = document.querySelectorAll('.delete-coupon');
+        const deleteCouponForm = document.getElementById('deleteCouponForm');
+        
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const couponId = this.getAttribute('data-coupon-id');
+                deleteCouponForm.action = /*[[@{/delete-coupon/}]]*/ '' + couponId;
+            });
+        });
+    });
+</script>
 
 <!-- latest js -->
 <script th:src="@{/templates_storage/assets/js/jquery-3.6.0.min.js}"></script>

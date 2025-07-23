@@ -20,11 +20,62 @@
     <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/style.css}">
 
     <style>
+        .file-upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .file-upload-area:hover {
+            border-color: #007bff;
+            background-color: #e7f3ff;
+        }
+        .file-upload-area.dragover {
+            border-color: #007bff;
+            background-color: #e7f3ff;
+        }
+        
+        /* Logo style */
+        .warehouse-logo {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2e8b57; /* Màu xanh lá cây */
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Status styles */
         .status-pending { background-color: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-received { background-color: #e0f2fe; color: #0288d1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-checked { background-color: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-completed { background-color: #d1e7dd; color: #146c43; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-rejected { background-color: #f8d7da; color: #dc3545; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-inspected { background-color: #e0f2fe; color: #0288d1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-completed { background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-rejected { background-color: #fee2e2; color: #dc2626; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-waiting_for_delivery { background-color: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        
+        /* Style for action buttons */
+        .btn-group form button.btn {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            margin-right: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-group form {
+            margin-right: 2px;
+        }
+        
+        .btn-group {
+            flex-wrap: wrap;
+            gap: 2px;
+        }
     </style>
     <style>
 /* Thêm CSS để đảm bảo phân trang hiển thị đúng */
@@ -60,34 +111,21 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
             </div>
 
-            <form class="form-inline search-full" action="#" method="get">
-                <div class="form-group w-100">
-                    <div class="Typeahead Typeahead--twitterUsers">
-                        <div class="u-posRelative">
-                            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-                                   placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
-                            <i class="close-search" data-feather="x"></i>
-                            <div class="spinner-border Typeahead-spinner" role="status">
-                                <span class="sr-only">Đang tải...</span>
-                            </div>
-                        </div>
-                        <div class="Typeahead-menu"></div>
-                    </div>
-                </div>
-            </form>
+            <!-- Removed search form and replaced with Kho Quản Lý -->
+            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
             <div class="nav-right col-6 pull-right right-header p-0">
                 <ul class="nav-menus">
                     <li>
@@ -136,39 +174,7 @@
                                 <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                             </div>
                         </div>
-                        <ul class="profile-dropdown onhover-show-div">
-                            <li>
-                                <a th:href="@{all-users.html}">
-                                    <i data-feather="users"></i>
-                                    <span>Người dùng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{order-list.html}">
-                                    <i data-feather="archive"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{support-ticket.html}">
-                                    <i data-feather="phone"></i>
-                                    <span>Vé hỗ trợ</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{profile-setting.html}">
-                                    <i data-feather="settings"></i>
-                                    <span>Cài đặt</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                   href="#">
-                                    <i data-feather="log-out"></i>
-                                    <span>Đăng xuất</span>
-                                </a>
-                            </li>
-                        </ul>
+
                     </li>
                 </ul>
             </div>
@@ -183,7 +189,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{index.html}" data-bs-original-title="" title="">
+                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -194,7 +200,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -210,7 +216,7 @@
                             <li class="back-btn"></li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{index.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -245,10 +251,6 @@
                                     <li>
                                         <a th:href="@{/supplier-out-invoices}">Hóa đơn xuất kho</a>
                                     </li>
-
-                                    <li>
-                                        <a th:href="@{/customer-invoices}">Hóa đơn khách hàng</a>
-                                    </li>
                                 </ul>
                             </li>
 
@@ -259,32 +261,15 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{medical-equipment.html}">Thiết bị y tế</a>
+                                        <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{medicine.html}">Thuốc</a>
+                                        <a th:href="@{/medicine.html}">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>
 
-                            <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <i class="ri-archive-line"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    <li>
-                                        <a th:href="@{order-list.html}">Danh sách đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{order-detail.html}">Chi tiết đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{order-tracking.html}">Theo dõi đơn hàng</a>
-                                    </li>
-                                </ul>
-                            </li>
 
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="#">
@@ -293,24 +278,24 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{coupon-list.html}">Danh sách mã giảm giá</a>
+                                        <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{create-coupon.html}">Tạo mã giảm giá</a>
+                                        <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{product-review.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
                                     <i class="ri-star-line"></i>
                                     <span>Đánh giá sản phẩm</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{reports.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
                                     <i class="ri-file-chart-line"></i>
                                     <span>Báo cáo</span>
                                 </a>
@@ -336,12 +321,11 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <h5>Danh sách đơn hàng chờ nhập kho</h5>
+                                        <h5>Danh sách đơn nhập kho</h5>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="btn-group float-end">
-
-                                            <button class="btn btn-primary" onclick="refreshOrders()">
+                                            <button class="btn btn-primary" id="refreshButton">
                                                 <i class="ri-refresh-line"></i> Làm mới
                                             </button>
                                         </div>
@@ -426,7 +410,7 @@
                                         </thead>
                                         <tbody id="stockInTableBody">
                                         <!-- Hiển thị dữ liệu động từ controller -->
-                                        <tr th:each="supplierIn : ${supplierIns}" th:data-id="${supplierIn?.id}" th:data-type="${supplierIn?.type}" th:data-status="${supplierIn?.status}">
+                                        <tr th:each="supplierIn : ${supplierIns}" th:data-id="${supplierIn?.id}" th:data-type="${supplierIn?.type}" th:data-status="${supplierIn?.status?.name()}">
                                             <td><strong th:text="${'SI-' + (supplierIn?.id ?: '0')}">SI-001</strong></td>
                                             <td>
                                                 <!-- Improved type implementation to handle all types -->
@@ -1017,32 +1001,46 @@ function handleStatusChange(form, newStatus) {
 
     // Lọc bảng
     function filterTable() {
-        const search = $('#searchFilter').val().toLowerCase();
-        const status = $('#statusFilter').val();
-        const type = $('#typeFilter').val();
+        const searchValue = $('#searchFilter').val().toLowerCase();
+        const statusValue = $('#statusFilter').val().toLowerCase();
+        const typeValue = $('#typeFilter').val().toLowerCase();
 
+        // Lấy tất cả các hàng trong bảng
         $('#stockInTableBody tr').each(function() {
             const row = $(this);
-            const orderId = row.data('id');
-            const orderType = row.data('type');
-            const orderStatus = row.data('status');
+            const rowId = row.data('id');
+            
+            // Nếu không có data-id (hàng thông báo), bỏ qua
+            if (!rowId) return;
+            
+            const status = String(row.data('status')).toLowerCase();
+            const type = String(row.data('type')).toLowerCase();
             const text = row.text().toLowerCase();
 
-            let show = true;
-
-            // Ẩn các đơn có trạng thái COMPLETED hoặc REJECTED (nên hiển thị ở StockInInvoice)
-            if (orderStatus === 'COMPLETED' || orderStatus === 'completed' || 
-                orderStatus === 'REJECTED' || orderStatus === 'rejected') {
-                show = false;
+            // Kiểm tra điều kiện lọc
+            const matchesSearch = searchValue === '' || text.includes(searchValue);
+            const matchesStatus = statusValue === '' || status === statusValue;
+            const matchesType = typeValue === '' || type === typeValue;
+            
+            // Hiển thị hoặc ẩn hàng dựa trên kết quả lọc
+            if (matchesSearch && matchesStatus && matchesType) {
+                row.show();
+            } else {
+                row.hide();
             }
-
-            // Áp dụng các bộ lọc khác
-            if (search && !text.includes(search)) show = false;
-            if (status && orderStatus !== status) show = false;
-            if (type && orderType !== type) show = false;
-
-            row.toggle(show);
         });
+        
+        // Kiểm tra nếu không có hàng nào hiển thị
+        const visibleRows = $('#stockInTableBody tr:visible').length;
+        if (visibleRows === 0) {
+            // Xóa hàng "không có dữ liệu" cũ nếu có
+            $('#noDataRow').remove();
+            // Thêm hàng "không có dữ liệu" mới
+            $('#stockInTableBody').append('<tr id="noDataRow"><td colspan="7" class="text-center">Không có dữ liệu phù hợp</td></tr>');
+        } else {
+            // Xóa hàng "không có dữ liệu" nếu có dữ liệu hiển thị
+            $('#noDataRow').remove();
+        }
     }
 
     // Xóa bộ lọc
@@ -1151,14 +1149,18 @@ function handleStatusChange(form, newStatus) {
     // Utility functions
     function getStatusText(status) {
         const statusMap = {
-            'PENDING': 'Chờ hàng về',
-            'RECEIVED': 'Đã nhận hàng',
-            'CHECKED': 'Đã kiểm tra',
-            'SENT_TO_WAREHOUSE': 'Đã gửi về kho',
+            'PENDING': 'Chờ xử lý',
+            'APPROVED': 'Đã duyệt',
+            'REJECTED': 'Từ chối',
+            'WAITING_FOR_DELIVERY': 'Đang chờ giao hàng',
+            'DELIVERED': 'Đã giao hàng',
+            'INSPECTED': 'Đã kiểm tra',
             'COMPLETED': 'Hoàn thành',
-            'REJECTED': 'Từ chối'
+            'RECEIVED': 'Đã nhận hàng',
+            'PROBLEM': 'Có vấn đề',
+            'CANCELLED': 'Đã hủy'
         };
-        return statusMap[status.toUpperCase()] || status;
+        return statusMap[status] || status;
     }
 
     function formatCurrency(amount) {
@@ -1168,7 +1170,7 @@ function handleStatusChange(form, newStatus) {
         }).format(amount);
     }
 
-    function showNotification(message, type) {
+    function showNotification(message, type = 'info') {
         $.notify({
             message: message
         }, {
@@ -1302,6 +1304,65 @@ function handleStatusChange(form, newStatus) {
             alert('Có lỗi xảy ra khi cập nhật trạng thái đơn hàng. Vui lòng thử lại sau.');
         }
     }
+
+    // Lưu các tham số tìm kiếm vào localStorage
+    function saveFilterParams() {
+        const searchValue = $('#searchFilter').val();
+        const statusValue = $('#statusFilter').val();
+        const typeValue = $('#typeFilter').val();
+        
+        localStorage.setItem('stockIn_searchFilter', searchValue);
+        localStorage.setItem('stockIn_statusFilter', statusValue);
+        localStorage.setItem('stockIn_typeFilter', typeValue);
+    }
+
+    // Khôi phục các tham số tìm kiếm từ localStorage
+    function restoreFilterParams() {
+        const searchValue = localStorage.getItem('stockIn_searchFilter');
+        const statusValue = localStorage.getItem('stockIn_statusFilter');
+        const typeValue = localStorage.getItem('stockIn_typeFilter');
+        
+        if (searchValue) $('#searchFilter').val(searchValue);
+        if (statusValue) $('#statusFilter').val(statusValue);
+        if (typeValue) $('#typeFilter').val(typeValue);
+    }
+
+    // Sự kiện khi DOM đã tải xong
+    $(document).ready(function() {
+        // Khôi phục tham số tìm kiếm nếu không có tham số URL
+        if (!new URLSearchParams(window.location.search).has('search')) {
+            restoreFilterParams();
+        }
+        
+        // Xử lý sự kiện thay đổi trên các trường tìm kiếm
+        $('#searchFilter, #statusFilter, #typeFilter').on('change input', function() {
+            saveFilterParams();
+            
+            // Bật lọc client-side ngay lập tức 
+            filterTable();
+        });
+        
+        // Nút làm mới
+        $('#refreshButton').on('click', function() {
+            refreshStockIn();
+        });
+        
+        // Xử lý form lọc để không gửi tham số rỗng
+        $('#filterForm').on('submit', function() {
+            const form = $(this);
+            
+            // Loại bỏ các input có giá trị rỗng
+            form.find('input, select').each(function() {
+                if ($(this).val() === '' || $(this).val() === null) {
+                    // Thay vì xóa, chỉ đặt thuộc tính name thành rỗng
+                    $(this).attr('name', '');
+                }
+            });
+            
+            // Vẫn cho phép form submit
+            return true;
+        });
+    });
 </script>
 </body>
 </html>

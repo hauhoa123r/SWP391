@@ -16,6 +16,19 @@
     <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/vendors/bootstrap.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/style.css}">
 
+    <!-- Custom CSS -->
+    <style>
+        .warehouse-logo {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2e8b57; /* Màu xanh lá cây */
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+    </style>
+
     <style>
         .medicine-card { border: 1px solid #e0e0e0; border-radius: 8px; transition: all 0.3s; }
         .medicine-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
@@ -49,7 +62,7 @@
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
@@ -70,6 +83,10 @@
                     </div>
                 </div>
             </form>
+
+            <!-- Tiêu đề mới -->
+            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
+
             <div class="nav-right col-6 pull-right right-header p-0">
                 <ul class="nav-menus">
                     <li>
@@ -129,39 +146,7 @@
                                 <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                             </div>
                         </div>
-                        <ul class="profile-dropdown onhover-show-div">
-                            <li>
-                                <a th:href="@{/all-users.html}">
-                                    <i data-feather="users"></i>
-                                    <span>Người dùng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/order-list.html}">
-                                    <i data-feather="archive"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/support-ticket.html}">
-                                    <i data-feather="phone"></i>
-                                    <span>Vé hỗ trợ</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/profile-setting.html}">
-                                    <i data-feather="settings"></i>
-                                    <span>Cài đặt</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                   href="#">
-                                    <i data-feather="log-out"></i>
-                                    <span>Đăng xuất</span>
-                                </a>
-                            </li>
-                        </ul>
+                    
                     </li>
                 </ul>
             </div>
@@ -177,7 +162,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/index.html}" data-bs-original-title="" title="">
+                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -188,10 +173,9 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/index.html}">
-                        <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
-                        <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
-                             alt="logo">
+                    <a th:href="@{/dashboard/main}">
+                        <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
+                        <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <nav class="sidebar-main">
@@ -203,7 +187,7 @@
                         <ul class="sidebar-links" id="simple-bar">
                             <li class="back-btn"></li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/index.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -234,9 +218,6 @@
                                     <li>
                                         <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
                                     </li>
-                                    <li>
-                                        <a th:href="@{/CustomerInvoice.html}">Hóa đơn khách hàng</a>
-                                    </li>
                                 </ul>
                             </li>
                             <li class="sidebar-list">
@@ -253,23 +234,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <i class="ri-archive-line"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    <li>
-                                        <a th:href="@{/order-list.html}">Danh sách đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-detail.html}">Chi tiết đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-tracking.html}">Theo dõi đơn hàng</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="#">
                                     <i class="ri-price-tag-3-line"></i>

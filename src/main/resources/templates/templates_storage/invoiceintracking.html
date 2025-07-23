@@ -49,11 +49,67 @@
     <!-- App css -->
     <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/style.css}">
 
+    <!-- Custom CSS -->
     <style>
+        .warehouse-logo {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2e8b57; /* Màu xanh lá cây */
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Trạng thái đơn hàng */
+        .status-waiting_for_delivery { background-color: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-pending { background-color: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-received { background-color: #e0f2fe; color: #0288d1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-inspected { background-color: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-checked { background-color: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-completed { background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-rejected { background-color: #f8d7da; color: #dc3545; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        
+        /* Theo dõi quá trình */
+        .progtrckr {
+            display: flex;
+            margin-bottom: 2rem;
+            padding-left: 0;
+            list-style-type: none;
+        }
+        .progtrckr li {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            padding: 1rem 0.5rem;
+        }
+        .progtrckr-todo h5 {
+            color: #bbb;
+        }
+        .progtrckr-todo h6 {
+            color: #bbb;
+        }
+        .progtrckr-todo:before {
+            content: "\f111";
+            font-family: "Font Awesome 5 Free";
+            color: #bbb;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+        .progtrckr-done h5 {
+            color: #0da487;
+        }
+        .progtrckr-done h6 {
+            color: #333;
+        }
+        .progtrckr-done:before {
+            content: "\f058";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #0da487;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
     </style>
 </head>
 
@@ -71,14 +127,14 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
@@ -89,7 +145,7 @@
                     <div class="Typeahead Typeahead--twitterUsers">
                         <div class="u-posRelative">
                             <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-                                   placeholder="Tìm kiếm Fastkart .." name="q" title="" autofocus>
+                                   placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
                             <i class="close-search" data-feather="x"></i>
                             <div class="spinner-border Typeahead-spinner" role="status">
                                 <span class="sr-only">Đang tải...</span>
@@ -99,6 +155,9 @@
                     </div>
                 </div>
             </form>
+
+            <!-- Tiêu đề mới -->
+            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
             <div class="nav-right col-6 pull-right right-header p-0">
                 <ul class="nav-menus">
                     <li>
@@ -159,39 +218,7 @@
                                 <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                             </div>
                         </div>
-                        <ul class="profile-dropdown onhover-show-div">
-                            <li>
-                                <a th:href="@{/all-users.html}">
-                                    <i data-feather="users"></i>
-                                    <span>Người dùng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/order-list.html}">
-                                    <i data-feather="archive"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/support-ticket.html}">
-                                    <i data-feather="phone"></i>
-                                    <span>Hỗ trợ</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/profile-setting.html}">
-                                    <i data-feather="settings"></i>
-                                    <span>Cài đặt</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                   href="#">
-                                    <i data-feather="log-out"></i>
-                                    <span>Đăng xuất</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <
                     </li>
                 </ul>
             </div>
@@ -206,7 +233,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/index.html}" data-bs-original-title="" title="">
+                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -217,7 +244,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -233,7 +260,7 @@
                             <li class="back-btn"></li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/index.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -269,10 +296,6 @@
                                         <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
                                     </li>
 
-                                    <li>
-                                        <a th:href="@{/CustomerInvoice.html}">Hóa đơn khách hàng</a>
-                                    </li>
-
                                 </ul>
                             </li>
 
@@ -292,20 +315,7 @@
                                 </ul>
                             </li>
 
-                            <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <i class="ri-archive-line"></i>
-                                    <span>Theo dõi</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    <li>
-                                        <a th:href="@{/invoiceintracking.html}">Theo dõi nhập kho</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/invoiceouttracking.html}">Theo dõi xuất kho</a>
-                                    </li>
-                                </ul>
-                            </li>
+                        
 
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="#">
@@ -368,13 +378,21 @@
                                                     </div>
 
                                                     <div class="order-image-contain">
-                                                        <h4>Đơn nhập kho từ nhà cung cấp ABC</h4>
+                                                        <h4 th:text="${'Đơn nhập kho từ ' + (supplierIn.supplierName ?: 'Nhà cung cấp')}">Đơn nhập kho từ nhà cung cấp ABC</h4>
                                                         <div class="tracker-number">
-                                                            <p>Mã đơn nhập kho : <span>SI-00123</span></p>
-                                                            <p>Nhà cung cấp : <span>Công ty ABC</span></p>
-                                                            <p>Ngày tạo đơn : <span>20/05/2023</span></p>
+                                                            <p>Mã đơn nhập kho : <span th:text="${supplierIn.invoiceNumber ?: ('SI-' + supplierIn.id)}">SI-00123</span></p>
+                                                            <p>Nhà cung cấp : <span th:text="${supplierIn.supplierName ?: 'Không có thông tin'}">Công ty ABC</span></p>
+                                                            <p>Ngày tạo đơn : <span th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">20/05/2023</span></p>
+                                                            <p>Trạng thái : 
+                                                                <span th:if="${supplierIn.status != null}"
+                                                                      th:class="${'status-' + supplierIn.status.name().toLowerCase()}"
+                                                                      th:text="${supplierIn.status.displayName}">
+                                                                </span>
+                                                                <span th:if="${supplierIn.status == null}" class="status-waiting_for_delivery">
+                                                                   Chờ giao hàng
+                                                                </span>
+                                                            </p>
                                                         </div>
-                                                        <h5>Đơn hàng của bạn đang được xử lý. Thông tin theo dõi sẽ được cập nhật trong 24 giờ.</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -384,23 +402,23 @@
                                             </div>
 
                                             <ol class="progtrckr">
-                                                <li th:class="${supplierIn.status != null && (supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED')} ? 'progtrckr-done' : 'progtrckr-todo'">
+                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
                                                     <h5>Đơn đã tạo</h5>
                                                     <h6>Đơn hàng đã được tạo thành công</h6>
                                                 </li>
-                                                <li th:class="${supplierIn.status != null && (supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED')} ? 'progtrckr-done' : 'progtrckr-todo'">
+                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
                                                     <h5>Đã xác nhận</h5>
                                                     <h6>Nhà cung cấp đã xác nhận</h6>
                                                 </li>
-                                                <li th:class="${supplierIn.status != null && (supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'INSPECTED')} ? 'progtrckr-done' : 'progtrckr-todo'">
+                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'INSPECTED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
                                                     <h5>Đã nhận hàng</h5>
                                                     <h6>Đã nhận hàng từ nhà cung cấp</h6>
                                                 </li>
-                                                <li th:class="${supplierIn.status != null && (supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'INSPECTED')} ? 'progtrckr-done' : 'progtrckr-todo'">
+                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'INSPECTED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
                                                     <h5>Đã kiểm tra</h5>
                                                     <h6>Hàng đã được kiểm tra</h6>
                                                 </li>
-                                                <li th:class="${supplierIn.status != null && supplierIn.status.name() == 'COMPLETED'} ? 'progtrckr-done' : 'progtrckr-todo'">
+                                                <li th:classappend="${supplierIn.status != null && supplierIn.status.name() == 'COMPLETED'} ? 'progtrckr-done' : 'progtrckr-todo'">
                                                     <h5>Hoàn thành</h5>
                                                     <h6>Đơn hàng đã hoàn thành</h6>
                                                 </li>
@@ -415,6 +433,7 @@
                                                                 <th scope="col">Ngày</th>
                                                                 <th scope="col">Thời gian</th>
                                                                 <th scope="col">Trạng thái</th>
+                                                                <th scope="col">Người thực hiện</th>
                                                                 <th scope="col">Ghi chú</th>
                                                             </tr>
                                                             </thead>
@@ -429,6 +448,9 @@
                                                                 </td>
                                                                 <td>
                                                                     <p class="fw-bold">Đã nhận hàng</p>
+                                                                </td>
+                                                                <td>
+                                                                    <h6 th:text="${supplierIn.inventoryManagerName ?: 'Không xác định'}">Người nhập kho</h6>
                                                                 </td>
                                                                 <td>
                                                                     <h6>Đơn hàng đã được nhận từ nhà cung cấp</h6>
@@ -446,6 +468,9 @@
                                                                     <p class="fw-bold">Đã kiểm tra</p>
                                                                 </td>
                                                                 <td>
+                                                                    <h6 th:text="${supplierIn.inventoryManagerName ?: 'Không xác định'}">Người kiểm tra</h6>
+                                                                </td>
+                                                                <td>
                                                                     <h6>Hàng hóa đã được kiểm tra và xác nhận</h6>
                                                                 </td>
                                                             </tr>
@@ -461,6 +486,9 @@
                                                                     <p class="fw-bold">Đã hoàn thành</p>
                                                                 </td>
                                                                 <td>
+                                                                    <h6 th:text="${supplierIn.approvedByName ?: (supplierIn.inventoryManagerName ?: 'Không xác định')}">Người phê duyệt</h6>
+                                                                </td>
+                                                                <td>
                                                                     <h6>Đơn hàng đã hoàn thành và chuyển sang hóa đơn</h6>
                                                                 </td>
                                                             </tr>
@@ -474,6 +502,9 @@
                                                                 </td>
                                                                 <td>
                                                                     <p class="fw-bold">Đơn đã tạo</p>
+                                                                </td>
+                                                                <td>
+                                                                    <h6 th:text="${supplierIn.inventoryManagerName ?: 'Không xác định'}">Người tạo đơn</h6>
                                                                 </td>
                                                                 <td>
                                                                     <h6>Đơn hàng đã được tạo thành công</h6>

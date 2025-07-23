@@ -48,6 +48,30 @@
 
     <!-- App css -->
     <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/style.css}">
+
+    <!-- Custom CSS -->
+    <style>
+        .warehouse-logo {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2e8b57; /* Màu xanh lá cây */
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
+        .product-card { border: 1px solid #e0e0e0; border-radius: 8px; transition: all 0.3s; }
+        .product-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .stock-low { color: #ff6b6b; font-weight: bold; }
+        .stock-normal { color: #51cf66; }
+        .workflow-tabs { margin-bottom: 20px; }
+        .tab-content { min-height: 400px; }
+        .order-item { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; padding: 15px; }
+        .order-pending { border-left: 4px solid #ffc107; }
+        .order-preparing { border-left: 4px solid #17a2b8; }
+        .order-ready { border-left: 4px solid #28a745; }
+    </style>
 </head>
 
 <body>
@@ -92,6 +116,9 @@
                     </div>
                 </div>
             </form>
+
+            <!-- Tiêu đề mới -->
+            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
             <div class="nav-right col-6 pull-right right-header p-0">
                 <ul class="nav-menus">
                     <li>
@@ -152,38 +179,7 @@
                                 <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                             </div>
                         </div>
-                        <ul class="profile-dropdown onhover-show-div">
-                            <li>
-                                <a th:href="@{/all-users.html}">
-                                    <i data-feather="users"></i>
-                                    <span>Người dùng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/order-list.html}">
-                                    <i data-feather="archive"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/support-ticket.html}">
-                                    <i data-feather="phone"></i>
-                                    <span>Vé hỗ trợ</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/profile-setting.html}">
-                                    <i data-feather="settings"></i>
-                                    <span>Cài đặt</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                   href="#">
-                                    <i data-feather="log-out"></i>
-                                    <span>Đăng xuất</span>
-                                </a>
-                            </li>
+                        
                         </ul>
                     </li>
                 </ul>
@@ -280,24 +276,6 @@
 
                                     <li>
                                         <a th:href="@{/medicine.html}">Thuốc</a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <i class="ri-archive-line"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    <li>
-                                        <a th:href="@{/order-list.html}">Danh sách đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-detail.html}">Chi tiết đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-tracking.html}">Theo dõi đơn hàng</a>
                                     </li>
                                 </ul>
                             </li>

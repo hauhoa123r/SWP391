@@ -75,16 +75,28 @@
             border-color: #007bff;
             background-color: #e7f3ff;
         }
+        
+        /* Logo style */
+        .warehouse-logo {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2e8b57; /* Màu xanh lá cây */
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
         /* Status styles */
-        .status-pending { color: #fd7e14; background-color: #fff3cd; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-prepare_delivery { color: #0d6efd; background-color: #cfe2ff; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-delivering { color: #0d6efd; background-color: #cfe2ff; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-delivered { color: #198754; background-color: #d1e7dd; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-completed { color: #198754; background-color: #d1e7dd; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-rejected { color: #dc3545; background-color: #f8d7da; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-received { color: #0288d1; background-color: #e0f2fe; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-paid { color: #198754; background-color: #d1e7dd; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-        .status-waiting_for_delivery { color: #fd7e14; background-color: #fff3cd; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-pending { background-color: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-received { background-color: #e0f2fe; color: #0288d1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-checked { background-color: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-completed { background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-prepare_delivery { background-color: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-delivering { background-color: #e0f2fe; color: #0288d1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-delivered { background-color: #e0f2fe; color: #0288d1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-paid { background-color: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-rejected { background-color: #fee2e2; color: #dc2626; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-inspected { color: #0288d1; background-color: #e0f2fe; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-preparing { color: #6c757d; background-color: #f8f9fa; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-added { color: #6c757d; background-color: #f8f9fa; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
@@ -92,6 +104,26 @@
         .excel-preview {
             max-height: 300px;
             overflow-y: auto;
+        }
+        
+        /* Style for action buttons */
+        .btn-group form button.btn {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            margin-right: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-group form {
+            margin-right: 2px;
+        }
+        
+        .btn-group {
+            flex-wrap: wrap;
+            gap: 2px;
         }
     </style>
 </head>
@@ -110,34 +142,22 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
             </div>
 
-            <form class="form-inline search-full" action="#" method="get">
-                <div class="form-group w-100">
-                    <div class="Typeahead Typeahead--twitterUsers">
-                        <div class="u-posRelative">
-                            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-                                   placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
-                            <i class="close-search" data-feather="x"></i>
-                            <div class="spinner-border Typeahead-spinner" role="status">
-                                <span class="sr-only">Đang tải...</span>
-                            </div>
-                        </div>
-                        <div class="Typeahead-menu"></div>
-                    </div>
-                </div>
-            </form>
+            <!-- Removed search form and replaced with Kho Quản Lý -->
+            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
+
             <div class="nav-right col-6 pull-right right-header p-0">
                 <ul class="nav-menus">
                     <li>
@@ -198,39 +218,7 @@
                                 <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                             </div>
                         </div>
-                        <ul class="profile-dropdown onhover-show-div">
-                            <li>
-                                <a th:href="@{/all-users.html}">
-                                    <i data-feather="users"></i>
-                                    <span>Người dùng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/order-list.html}">
-                                    <i data-feather="archive"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/support-ticket.html}">
-                                    <i data-feather="phone"></i>
-                                    <span>Vé hỗ trợ</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/profile-setting.html}">
-                                    <i data-feather="settings"></i>
-                                    <span>Cài đặt</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                   href="#">
-                                    <i data-feather="log-out"></i>
-                                    <span>Đăng xuất</span>
-                                </a>
-                            </li>
-                        </ul>
+
                     </li>
                 </ul>
             </div>
@@ -245,7 +233,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/index.html}" data-bs-original-title="" title="">
+                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -256,7 +244,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -272,7 +260,7 @@
                             <li class="back-btn"></li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/index.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -307,10 +295,6 @@
                                     <li>
                                         <a th:href="@{/supplier-out-invoices}">Hóa đơn xuất kho</a>
                                     </li>
-
-                                    <li>
-                                        <a th:href="@{/customer-invoices}">Hóa đơn khách hàng</a>
-                                    </li>
                                 </ul>
                             </li>
 
@@ -330,23 +314,7 @@
                                 </ul>
                             </li>
 
-                            <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <i class="ri-archive-line"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    <li>
-                                        <a th:href="@{/order-list.html}">Danh sách đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-detail.html}">Chi tiết đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-tracking.html}">Theo dõi đơn hàng</a>
-                                    </li>
-                                </ul>
-                            </li>
+                    
 
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="#">
@@ -402,9 +370,6 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="btn-group float-end">
-                                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createStockOutModal">
-                                                <i class="ri-add-line"></i> Tạo phiếu xuất kho
-                                            </button>
                                             <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#uploadExcelModal">
                                                 <i class="ri-file-excel-line"></i> Import Excel
                                             </button>
@@ -481,6 +446,7 @@
                                             <th>Mã phiếu xuất</th>
                                             <th>Ngày xuất</th>
                                             <th>Người nhận</th>
+                                            <th>Loại</th>
                                             <th>Lý do xuất</th>
                                             <th>Tổng tiền</th>
                                             <th>Trạng thái</th>
@@ -489,10 +455,18 @@
                                         </thead>
                                         <tbody>
                                         <!-- Hiển thị dữ liệu động từ controller -->
-                                        <tr th:each="supplierOut : ${supplierOuts}" th:data-id="${supplierOut.id}" th:data-status="${supplierOut.status}">
+                                        <tr th:each="supplierOut : ${supplierOuts}" th:data-id="${supplierOut.id}" th:data-type="${supplierOut?.type}" th:data-status="${supplierOut.status}">
                                             <td><strong th:text="${'SO-' + supplierOut.id}">SO-001</strong></td>
                                             <td th:text="${supplierOut.transactionDate != null ? #dates.format(supplierOut.transactionDate, 'dd-MM-yyyy') : ''}">Ngày xuất</td>
                                             <td th:text="${supplierOut.recipient != null ? supplierOut.recipient : 'N/A'}">Người nhận</td>
+                                            <td>
+                                                <!-- Hiển thị loại sản phẩm -->
+                                                <span th:if="${supplierOut?.type != null && supplierOut.type == 'MEDICINE'}" class="badge bg-success">Thuốc</span>
+                                                <span th:if="${supplierOut?.type != null && supplierOut.type == 'MEDICAL_EQUIPMENT'}" class="badge bg-info">Thiết bị y tế</span>
+                                                <span th:if="${supplierOut?.type != null && supplierOut.type == 'MEDICAL_PRODUCT'}" class="badge bg-info">Thiết bị y tế</span>
+                                                <span th:if="${supplierOut?.type != null && supplierOut.type == 'MIXED'}" class="badge bg-warning">Hỗn hợp</span>
+                                                <span th:if="${supplierOut?.type == null || supplierOut.type == 'UNDEFINED'}" class="badge bg-secondary">Không xác định</span>
+                                            </td>
                                             <td>
                                                 <!-- Simple badge implementation -->
                                                 <span th:if="${supplierOut.reason == 'SALE'}" class="badge bg-primary">Bán hàng</span>
@@ -1331,32 +1305,49 @@
 
     // Filter table
     function filterTable() {
-        const searchTerm = $('#searchFilter').val().toLowerCase();
-        const statusFilter = $('#statusFilter').val();
-        const reasonFilter = $('#reasonFilter').val();
-
-        $('#stockOutTableBody tr').each(function() {
+        const searchValue = $('#searchFilter').val().toLowerCase();
+        const statusValue = $('#statusFilter').val().toLowerCase();
+        const typeValue = $('#reasonFilter').val().toLowerCase();
+        
+        // Lưu các tham số tìm kiếm vào localStorage
+        saveFilterParams();
+        
+        // Lấy tất cả các hàng trong bảng
+        $('#stockOutTable tbody tr').each(function() {
             const row = $(this);
+            const rowId = row.data('id');
+            
+            // Nếu không có data-id (hàng thông báo), bỏ qua
+            if (!rowId) return;
+            
+            const status = String(row.data('status')).toLowerCase();
+            const type = String(row.data('type') || '').toLowerCase();
             const text = row.text().toLowerCase();
-            const status = row.data('status');
-            const reason = row.find('.badge').text();
-
-            let show = true;
-
-            if (searchTerm && !text.includes(searchTerm)) {
-                show = false;
+            
+            // Kiểm tra điều kiện lọc
+            const matchesSearch = searchValue === '' || text.includes(searchValue);
+            const matchesStatus = statusValue === '' || status === statusValue;
+            const matchesType = typeValue === '' || type === typeValue;
+            
+            // Hiển thị hoặc ẩn hàng dựa trên kết quả lọc
+            if (matchesSearch && matchesStatus && matchesType) {
+                row.show();
+            } else {
+                row.hide();
             }
-
-            if (statusFilter && status !== statusFilter) {
-                show = false;
-            }
-
-            if (reasonFilter && !reason.includes(reasonFilter)) {
-                show = false;
-            }
-
-            row.toggle(show);
         });
+        
+        // Kiểm tra nếu không có hàng nào hiển thị
+        const visibleRows = $('#stockOutTable tbody tr:visible').length;
+        if (visibleRows === 0) {
+            // Xóa hàng "không có dữ liệu" cũ nếu có
+            $('#noDataRow').remove();
+            // Thêm hàng "không có dữ liệu" mới
+            $('#stockOutTable tbody').append('<tr id="noDataRow"><td colspan="7" class="text-center">Không có dữ liệu phù hợp</td></tr>');
+        } else {
+            // Xóa hàng "không có dữ liệu" nếu có dữ liệu hiển thị
+            $('#noDataRow').remove();
+        }
     }
 
     // Change page size function
@@ -1402,9 +1393,8 @@
 
     // Refresh stock out list
     function refreshStockOut() {
-        alert('Đang làm mới danh sách...');
-        // Implement refresh functionality
-        location.reload();
+        showNotification('Đang làm mới dữ liệu...', 'info');
+        window.location.reload();
     }
 
     // Xử lý thay đổi trạng thái
@@ -1491,17 +1481,19 @@
     // Convert status codes to display text
     function getStatusText(status) {
         const statusMap = {
-            'PENDING': 'Chờ thanh toán',
-            'APPROVED': 'Đã phê duyệt',
-            'REJECTED': 'Từ chối',
-            'WAITING_FOR_DELIVERY': 'Chuẩn bị giao hàng',
-            'DELIVERED': 'Đang giao hàng',
-            'INSPECTED': 'Đã kiểm tra',
-            'RECEIVED': 'Đã giao hàng',
             'COMPLETED': 'Hoàn thành',
-            'PROBLEM': 'Có vấn đề',
-            'PARTIALLY_COMPLETED': 'Hoàn thành một phần',
-            'CANCELLED': 'Đã hủy'
+            'REJECTED': 'Từ chối',
+            'WAITING_FOR_DELIVERY': 'Chờ giao hàng',
+            'INSPECTED': 'Đã kiểm tra',
+            'RECEIVED': 'Đã nhận hàng',
+            'PREPARE_DELIVERY': 'Chuẩn bị giao hàng',
+            'DELIVERING': 'Đang giao hàng',
+            'DELIVERED': 'Đã giao hàng',
+            'PENDING': 'Chờ thanh toán',
+            'PAID': 'Đã thanh toán',
+            'PREPARING': 'Chuẩn bị đơn hàng',
+            'ADDED': 'Đã thêm',
+            'PREPARED': 'Đã chuẩn bị hàng'
         };
         return statusMap[status] || status;
     }
@@ -1604,7 +1596,7 @@
                 <form id="createOrderForm" method="post" th:action="@{/supplier-outs}">
                     <input type="hidden" name="status" value="PREPARE_DELIVERY">
                     <input type="hidden" name="transactionType" value="STOCK_OUT">
-                    <input type="hidden" id="inventoryManagerId" name="inventoryManagerId" th:value="${currentUser?.id ?: 1}">
+                    <input type="hidden" id="inventoryManagerId" name="inventoryManagerId" th:value="${currentUser?.id ?: 256}">
                     <input type="hidden" name="totalAmount" id="totalAmountInput" value="0">
                     
                     <div class="row mb-3">
@@ -2693,6 +2685,7 @@
         };
     }
 </script>
+
 <script>
     // Using var instead of let to avoid redeclaration issues
     var currentRejectId = null;
@@ -2714,6 +2707,58 @@
         form.action = `/supplier-outs/${currentRejectId}/reject`;
         form.submit();
     });
+
+
+<!-- Lưu các tham số tìm kiếm vào localStorage -->
+function saveFilterParams() {
+    const searchValue = $('#searchFilter').val();
+    const statusValue = $('#statusFilter').val();
+    const typeValue = $('#reasonFilter').val();
+    localStorage.setItem('stockOut_searchFilter', searchValue);
+    localStorage.setItem('stockOut_statusFilter', statusValue);
+    localStorage.setItem('stockOut_typeFilter', typeValue);
+}
+
+// Khôi phục các tham số tìm kiếm từ localStorage
+function restoreFilterParams() {
+    const searchValue = localStorage.getItem('stockOut_searchFilter');
+    const statusValue = localStorage.getItem('stockOut_statusFilter');
+    const typeValue = localStorage.getItem('stockOut_typeFilter');
+    if (searchValue) $('#searchFilter').val(searchValue);
+    if (statusValue) $('#statusFilter').val(statusValue);
+    if (typeValue) $('#reasonFilter').val(typeValue);
+}
+
+// Thêm vào document ready
+$(document).ready(function() {
+    // Khôi phục tham số tìm kiếm nếu không có tham số URL
+    if (!new URLSearchParams(window.location.search).has('search')) {
+        restoreFilterParams();
+    }
+    
+    // Xử lý sự kiện thay đổi trên các trường tìm kiếm
+    $('#searchFilter, #statusFilter, #typeFilter').on('change input', function() {
+        saveFilterParams();
+        filterTable(); // Gọi hàm filter trực tiếp
+    });
+    
+    // Xử lý form lọc để không gửi tham số rỗng
+    $('#filterForm').on('submit', function() {
+        const form = $(this);
+        
+        // Loại bỏ các input có giá trị rỗng
+        form.find('input, select').each(function() {
+            if ($(this).val() === '' || $(this).val() === null) {
+                // Thay vì xóa, chỉ đặt thuộc tính name thành rỗng
+                $(this).attr('name', '');
+            }
+        });
+        
+        // Vẫn cho phép form submit
+        return true;
+    });
+});
+
 </script>
 
 </body>
