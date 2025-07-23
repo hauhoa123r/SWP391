@@ -30,7 +30,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
+@Service("supplierOutInvoiceService")
 public class SupplierOutInvoiceServiceImpl implements SupplierOutInvoiceService {
 
     @Autowired
@@ -273,46 +273,40 @@ public class SupplierOutInvoiceServiceImpl implements SupplierOutInvoiceService 
                                         List<SupplierTransactionStatus> allowedStatuses) {
         Pageable pageable = PageRequest.of(page, size);
         
-        // Xử lý status parameter
-        SupplierTransactionStatus statusFilter = null;
+        // Xử lý status parameter - Chỉ chấp nhận COMPLETED hoặc REJECTED
+        final SupplierTransactionStatus statusFilter;
         if (status != null && !status.isEmpty()) {
-            try {
-                SupplierTransactionStatus tempStatus = SupplierTransactionStatus.valueOf(status);
-                if (allowedStatuses.contains(tempStatus)) {
-                    statusFilter = tempStatus;
-                }
-            } catch (IllegalArgumentException e) {
-                // Invalid status, keep it null
+            if ("COMPLETED".equals(status)) {
+                statusFilter = SupplierTransactionStatus.COMPLETED;
+            } else if ("REJECTED".equals(status)) {
+                statusFilter = SupplierTransactionStatus.REJECTED;
+            } else {
+                statusFilter = null;
             }
+        } else {
+            statusFilter = null;
         }
         
         try {
-            // Lấy toàn bộ danh sách hóa đơn xuất kho
-            List<SupplierInvoiceEntity> allInvoices = supplierInvoiceRepository.findByTransactionType(
-                    SupplierTransactionType.STOCK_OUT);
+            // Lấy các đơn có trạng thái COMPLETED hoặc REJECTED bằng JPQL để tránh lỗi
+            List<SupplierInvoiceEntity> allInvoices = supplierInvoiceRepository
+                    .findCompletedOrRejectedInvoicesByType(SupplierTransactionType.STOCK_OUT);
             
-            // Log tổng số hóa đơn xuất kho
-            System.out.println("Tổng số hóa đơn xuất kho: " + allInvoices.size());
+            // Log tổng số hóa đơn
+            System.out.println("Tổng số hóa đơn xuất kho (COMPLETED+REJECTED): " + allInvoices.size());
             
-            // Lọc theo trạng thái được phép (allowedStatuses)
-            final SupplierTransactionStatus statusToFilter = statusFilter;
-            List<SupplierInvoiceEntity> filteredInvoices = allInvoices.stream()
-                    .filter(invoice -> invoice.getStatus() != null && allowedStatuses.contains(invoice.getStatus()))
-                    .collect(Collectors.toList());
+            // Lọc theo status được chọn nếu có
+            List<SupplierInvoiceEntity> filteredInvoices = allInvoices;
             
-            // Log số hóa đơn sau khi lọc theo trạng thái
-            System.out.println("Số hóa đơn xuất kho sau khi lọc theo trạng thái: " + filteredInvoices.size());
-            
-            // Nếu có status cụ thể, tiếp tục lọc
-            if (statusToFilter != null) {
-                filteredInvoices = filteredInvoices.stream()
-                        .filter(invoice -> statusToFilter.equals(invoice.getStatus()))
+            // Nếu có status cụ thể, lọc theo status đó
+            if (statusFilter != null) {
+                filteredInvoices = allInvoices.stream()
+                        .filter(invoice -> statusFilter.equals(invoice.getStatus()))
                         .collect(Collectors.toList());
-                System.out.println("Số hóa đơn xuất kho sau khi lọc theo status cụ thể " + statusToFilter + ": " 
-                        + filteredInvoices.size());
+                System.out.println("Số hóa đơn xuất kho sau khi lọc theo status " + statusFilter + ": " + filteredInvoices.size());
             }
             
-            // Nếu có từ khóa tìm kiếm, tiếp tục lọc
+            // Nếu có từ khóa tìm kiếm, tiếp tục lọc theo keyword
             if (keyword != null && !keyword.isEmpty()) {
                 final String lowerCaseKeyword = keyword.toLowerCase();
                 filteredInvoices = filteredInvoices.stream()

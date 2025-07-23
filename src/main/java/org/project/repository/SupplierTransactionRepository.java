@@ -36,6 +36,10 @@ public interface SupplierTransactionRepository extends JpaRepository<SupplierTra
     Page<SupplierTransactionsEntity> findByTransactionTypeAndStatusAndSupplierEntityNameContainingIgnoreCase(
             SupplierTransactionType type, SupplierTransactionStatus status, String supplierName, Pageable pageable);
             
+    // Thêm phương thức mới để tìm kiếm theo tên nhà cung cấp mà không quan tâm đến trạng thái
+    Page<SupplierTransactionsEntity> findByTransactionTypeAndSupplierEntityNameContainingIgnoreCase(
+            SupplierTransactionType type, String supplierName, Pageable pageable);
+            
     Page<SupplierTransactionsEntity> findByTransactionTypeAndStatusNotInAndSupplierEntityNameContainingIgnoreCase(
             SupplierTransactionType type, Collection<SupplierTransactionStatus> statuses, String supplierName, Pageable pageable);
             
@@ -48,4 +52,8 @@ public interface SupplierTransactionRepository extends JpaRepository<SupplierTra
             
     Page<SupplierTransactionsEntity> findByTransactionTypeAndStatusInAndSupplierEntityNameContainingIgnoreCase(
             SupplierTransactionType type, Collection<SupplierTransactionStatus> statuses, String supplierName, Pageable pageable);
+            
+    // Methods for filtering by invoice number with statuses for StockInInvoice and StockOutInvoice
+    Page<SupplierTransactionsEntity> findByTransactionTypeAndStatusInAndInvoiceNumberContaining(
+            SupplierTransactionType type, Collection<SupplierTransactionStatus> statuses, String invoiceNumber, Pageable pageable);
 }
