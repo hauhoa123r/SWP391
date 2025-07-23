@@ -78,7 +78,7 @@ public class MedicineController {
     @PostMapping("/process-supplier-in/{supplierInId}")
     public String processSupplierIn(@PathVariable Long supplierInId, Model model) {
         SupplierInDTO supplierIn = supplierInService.getSupplierInById(supplierInId);
-        if (supplierIn != null && supplierIn.getStatus() == SupplierTransactionStatus.CHECKED) {
+        if (supplierIn != null && supplierIn.getStatus() == SupplierTransactionStatus.INSPECTED) {
             medicineService.processSupplierIn(supplierIn);
             supplierInService.updateSupplierInStatus(supplierInId, "COMPLETED");
         }

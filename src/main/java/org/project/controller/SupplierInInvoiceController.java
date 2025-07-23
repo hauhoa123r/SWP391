@@ -14,6 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.project.entity.SupplierInvoiceEntity;
+import org.project.enums.SupplierTransactionType;
+import java.sql.Timestamp;
+import java.math.BigDecimal;
 
 /**
  * Controller for handling supplier in invoices
@@ -41,7 +45,41 @@ public class SupplierInInvoiceController {
                 page, size, keyword, status);
         
         try {
-            Page<SupplierInvoiceDTO> invoicesPage = supplierInInvoiceService.getAllInvoices(page, size, keyword, status);
+            // Define allowed statuses for StockInInvoice page
+            List<SupplierTransactionStatus> allowedStatuses = List.of(
+                SupplierTransactionStatus.COMPLETED,  // Hoàn thành
+                SupplierTransactionStatus.REJECTED    // Từ chối
+            );
+            
+            // Override status parameter if it's not in the allowed list
+            SupplierTransactionStatus statusEnum = null;
+            if (status != null && !status.isEmpty()) {
+                try {
+                    statusEnum = SupplierTransactionStatus.valueOf(status);
+                    if (!allowedStatuses.contains(statusEnum)) {
+                        statusEnum = null; // Reset if not in allowed list
+                    }
+                } catch (IllegalArgumentException e) {
+                    // Invalid status, keep it null
+                }
+            }
+            
+            // Convert enum to string if valid
+            String filteredStatus = statusEnum != null ? statusEnum.name() : null;
+            
+            // DEBUG: Log before calling service
+            log.debug("Calling supplierInInvoiceService.getFilteredInvoices with page={}, size={}, keyword={}, filteredStatus={}, allowedStatuses={}",
+                    page, size, keyword, filteredStatus, allowedStatuses);
+            
+            Page<SupplierInvoiceDTO> invoicesPage = supplierInInvoiceService.getFilteredInvoices(page, size, keyword, filteredStatus, allowedStatuses);
+            
+            // DEBUG: Log fetched invoices size and content
+            log.info("Fetched {} invoices from service", invoicesPage.getContent().size());
+            invoicesPage.getContent().forEach(invoice -> 
+                log.debug("Invoice ID: {}, Number: {}, Date: {}, Status: {}", 
+                    invoice.getId(), invoice.getInvoiceNumber(), 
+                    invoice.getInvoiceDate(), invoice.getStatus()));
+            
             model.addAttribute("invoices", invoicesPage.getContent());
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", invoicesPage.getTotalPages());
@@ -49,11 +87,8 @@ public class SupplierInInvoiceController {
             model.addAttribute("keyword", keyword);
             model.addAttribute("status", status);
             
-            // Add available statuses for dropdown
-            List<String> availableStatuses = Arrays.stream(SupplierTransactionStatus.values())
-                    .map(Enum::name)
-                    .collect(Collectors.toList());
-            model.addAttribute("availableStatuses", availableStatuses);
+            // Add allowed statuses for dropdown
+            model.addAttribute("availableStatuses", allowedStatuses);
             
             log.debug("Supplier in invoices page prepared with {} invoices", invoicesPage.getContent().size());
         } catch (Exception e) {
@@ -77,7 +112,15 @@ public class SupplierInInvoiceController {
             SupplierInvoiceDTO invoice = supplierInInvoiceService.getInvoiceById(id);
             if (invoice != null) {
                 model.addAttribute("invoice", invoice);
+                // Add with the alternative name that the template is expecting
+                model.addAttribute("supplierIn", invoice);
+                
+                // Debug info
                 log.debug("Supplier in invoice details loaded for ID: {}", id);
+                model.addAttribute("debugInfo", "Invoice ID: " + id + 
+                    ", status: " + invoice.getStatus() + 
+                    ", invoice number: " + invoice.getInvoiceNumber());
+                
                 return "templates_storage/StockInDetail";
             } else {
                 log.warn("Supplier in invoice with ID {} not found", id);
@@ -180,5 +223,49 @@ public class SupplierInInvoiceController {
         }
         
         return "redirect:/supplier-in-invoices";
+    }
+
+    /**
+     * Create test invoices for debugging
+     * @return Response with status
+     */
+    @GetMapping("/create-test")
+    @ResponseBody
+    public String createTestData() {
+        log.info("Creating test supplier in invoices");
+        
+        try {
+            // Tạo hóa đơn COMPLETED
+            SupplierInvoiceEntity invoice1 = new SupplierInvoiceEntity();
+            invoice1.setInvoiceNumber("SI-TEST-001");
+            invoice1.setTransactionType(SupplierTransactionType.STOCK_IN);
+            invoice1.setInvoiceDate(new Timestamp(System.currentTimeMillis()));
+            invoice1.setTotalAmount(new BigDecimal("1000000"));
+            invoice1.setTaxAmount(new BigDecimal("100000"));
+            invoice1.setShippingCost(new BigDecimal("50000"));
+            invoice1.setGrandTotal(new BigDecimal("1150000"));
+            invoice1.setStatus(SupplierTransactionStatus.COMPLETED);
+            invoice1.setNotes("Test completed invoice");
+            
+            // Tạo hóa đơn REJECTED
+            SupplierInvoiceEntity invoice2 = new SupplierInvoiceEntity();
+            invoice2.setInvoiceNumber("SI-TEST-002");
+            invoice2.setTransactionType(SupplierTransactionType.STOCK_IN);
+            invoice2.setInvoiceDate(new Timestamp(System.currentTimeMillis()));
+            invoice2.setTotalAmount(new BigDecimal("2000000"));
+            invoice2.setTaxAmount(new BigDecimal("200000"));
+            invoice2.setShippingCost(new BigDecimal("50000"));
+            invoice2.setGrandTotal(new BigDecimal("2250000"));
+            invoice2.setStatus(SupplierTransactionStatus.REJECTED);
+            invoice2.setNotes("Test rejected invoice");
+            
+            // Lưu hóa đơn
+            supplierInInvoiceService.saveTestInvoices(List.of(invoice1, invoice2));
+            
+            return "Đã tạo 2 hóa đơn mẫu thành công";
+        } catch (Exception e) {
+            log.error("Error creating test invoices: {}", e.getMessage(), e);
+            return "Lỗi khi tạo hóa đơn mẫu: " + e.getMessage();
+        }
     }
 }

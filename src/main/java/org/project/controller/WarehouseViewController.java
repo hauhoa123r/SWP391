@@ -27,207 +27,81 @@ public class WarehouseViewController {
     private final SupplierOutService supplierOutService;
 
     /**
-     * Direct access to StockIn.html page
+     * Direct access to StockIn.html page - redirects to supplier-ins controller
      * @param model Spring MVC Model
-     * @return View name for stock in page
+     * @return Redirect to supplier-ins controller
      */
     @GetMapping("/StockIn.html")
     public String stockInPage(Model model) {
-        log.info("Direct navigation to StockIn.html");
-        
-        try {
-            // Get all supplier ins
-            List<SupplierInDTO> supplierIns = supplierInService.getAllSupplierIns();
-            
-            // Add data to model
-            model.addAttribute("supplierIns", supplierIns != null ? supplierIns : Collections.emptyList());
-            
-            // Add pagination attributes
-            int totalItems = supplierIns != null ? supplierIns.size() : 0;
-            model.addAttribute("currentPage", 0);
-            model.addAttribute("totalPages", totalItems > 0 ? 1 : 0);
-            model.addAttribute("pageSize", 10);
-            model.addAttribute("totalItems", totalItems);
-            
-            log.debug("StockIn.html prepared with {} supplier ins", totalItems);
-        } catch (Exception e) {
-            log.error("Error preparing StockIn.html page data: {}", e.getMessage(), e);
-            // Set empty list and pagination attributes
-            model.addAttribute("supplierIns", Collections.emptyList());
-            model.addAttribute("currentPage", 0);
-            model.addAttribute("totalPages", 0);
-            model.addAttribute("pageSize", 10);
-            model.addAttribute("totalItems", 0);
-            model.addAttribute("errorMessage", "Không thể tải dữ liệu từ hệ thống: " + e.getMessage());
-        }
-        
-        return "templates_storage/StockIn";
+        log.info("Redirecting from StockIn.html to /supplier-ins");
+        return "redirect:/supplier-ins";
     }
 
     /**
-     * Direct access to StockOut.html page
+     * Direct access to StockOut.html page - redirects to supplier-outs controller
      * @param model Spring MVC Model
-     * @return View name for stock out page
+     * @return Redirect to supplier-outs controller
      */
     @GetMapping("/StockOut.html")
     public String stockOutPage(Model model) {
-        log.info("Direct navigation to StockOut.html");
-        
-        try {
-            // Get all supplier outs
-            List<SupplierOutDTO> supplierOuts = supplierOutService.getAllSupplierOuts();
-            
-            // Add data to model
-            model.addAttribute("supplierOuts", supplierOuts != null ? supplierOuts : Collections.emptyList());
-            
-            // Add pagination attributes
-            int totalItems = supplierOuts != null ? supplierOuts.size() : 0;
-            model.addAttribute("currentPage", 0);
-            model.addAttribute("totalPages", totalItems > 0 ? 1 : 0);
-            model.addAttribute("pageSize", 10);
-            model.addAttribute("totalItems", totalItems);
-            
-            log.debug("StockOut.html prepared with {} supplier outs", totalItems);
-        } catch (Exception e) {
-            log.error("Error preparing StockOut.html page data: {}", e.getMessage(), e);
-            // Set empty list and pagination attributes
-            model.addAttribute("supplierOuts", Collections.emptyList());
-            model.addAttribute("currentPage", 0);
-            model.addAttribute("totalPages", 0);
-            model.addAttribute("pageSize", 10);
-            model.addAttribute("totalItems", 0);
-            model.addAttribute("errorMessage", "Không thể tải dữ liệu từ hệ thống: " + e.getMessage());
-        }
-        
-        return "templates_storage/StockOut";
+        log.info("Redirecting from StockOut.html to /supplier-outs");
+        return "redirect:/supplier-outs";
     }
     
     /**
-     * Direct access to StockInDetail.html page
+     * Direct access to StockInDetail.html page - redirects to supplier-ins controller
      * @param id Supplier in ID from request parameter
      * @param model Spring MVC Model
-     * @return View name for stock in detail page
+     * @return Redirect to supplier-ins controller
      */
     @GetMapping("/StockInDetail.html")
     public String stockInDetailPage(Long id, Model model) {
         if (id == null) {
             log.warn("Attempted to access StockInDetail.html without an ID");
-            return "redirect:/StockIn.html";
+            return "redirect:/supplier-ins";
         }
         
-        log.info("Direct navigation to StockInDetail.html for ID: {}", id);
-        
-        try {
-            SupplierInDTO supplierIn = supplierInService.getSupplierInById(id);
-            if (supplierIn != null) {
-                model.addAttribute("supplierIn", supplierIn);
-                log.debug("StockInDetail.html prepared for ID: {}", id);
-            } else {
-                log.warn("Supplier in with ID {} not found", id);
-                model.addAttribute("errorMessage", "Không tìm thấy đơn nhập kho với ID: " + id);
-                return "redirect:/StockIn.html";
-            }
-        } catch (Exception e) {
-            log.error("Error preparing StockInDetail.html for ID {}: {}", id, e.getMessage(), e);
-            model.addAttribute("errorMessage", "Lỗi khi tải thông tin đơn nhập kho: " + e.getMessage());
-            return "redirect:/StockIn.html";
-        }
-        
-        return "templates_storage/StockInDetail";
+        log.info("Redirecting from StockInDetail.html for ID: {} to /supplier-ins/{}", id, id);
+        return "redirect:/supplier-ins/" + id;
     }
     
     /**
-     * Direct access to StockOutDetail.html page
+     * Direct access to StockOutDetail.html page - redirects to supplier-outs controller
      * @param id Supplier out ID from request parameter
      * @param model Spring MVC Model
-     * @return View name for stock out detail page
+     * @return Redirect to supplier-outs controller
      */
     @GetMapping("/StockOutDetail.html")
     public String stockOutDetailPage(Long id, Model model) {
         if (id == null) {
             log.warn("Attempted to access StockOutDetail.html without an ID");
-            return "redirect:/StockOut.html";
+            return "redirect:/supplier-outs";
         }
         
-        log.info("Direct navigation to StockOutDetail.html for ID: {}", id);
-        
-        try {
-            SupplierOutDTO supplierOut = supplierOutService.getSupplierOutById(id);
-            if (supplierOut != null) {
-                model.addAttribute("supplierOut", supplierOut);
-                log.debug("StockOutDetail.html prepared for ID: {}", id);
-            } else {
-                log.warn("Supplier out with ID {} not found", id);
-                model.addAttribute("errorMessage", "Không tìm thấy đơn xuất kho với ID: " + id);
-                return "redirect:/StockOut.html";
-            }
-        } catch (Exception e) {
-            log.error("Error preparing StockOutDetail.html for ID {}: {}", id, e.getMessage(), e);
-            model.addAttribute("errorMessage", "Lỗi khi tải thông tin đơn xuất kho: " + e.getMessage());
-            return "redirect:/StockOut.html";
-        }
-        
-        return "templates_storage/StockOutDetail";
+        log.info("Redirecting from StockOutDetail.html for ID: {} to /supplier-outs/{}", id, id);
+        return "redirect:/supplier-outs/" + id;
     }
     
     /**
-     * Direct access to invoiceintracking.html page
-     * @param id Supplier in invoice ID from request parameter
+     * Direct access to StockInInvoice.html page - redirects to supplier-in-invoices controller
      * @param model Spring MVC Model
-     * @return View name for invoice tracking page
-     */
-    @GetMapping("/invoiceintracking.html")
-    public String invoiceInTrackingPage(Long id, Model model) {
-        if (id == null) {
-            log.warn("Attempted to access invoiceintracking.html without an ID");
-            return "redirect:/StockIn.html";
-        }
-        
-        log.info("Direct navigation to invoiceintracking.html for ID: {}", id);
-        model.addAttribute("invoiceId", id);
-        
-        return "templates_storage/invoiceintracking";
-    }
-    
-    /**
-     * Direct access to invoiceouttracking.html page
-     * @param id Supplier out invoice ID from request parameter
-     * @param model Spring MVC Model
-     * @return View name for invoice tracking page
-     */
-    @GetMapping("/invoiceouttracking.html")
-    public String invoiceOutTrackingPage(Long id, Model model) {
-        if (id == null) {
-            log.warn("Attempted to access invoiceouttracking.html without an ID");
-            return "redirect:/StockOut.html";
-        }
-        
-        log.info("Direct navigation to invoiceouttracking.html for ID: {}", id);
-        model.addAttribute("invoiceId", id);
-        
-        return "templates_storage/invoiceouttracking";
-    }
-    
-    /**
-     * Direct access to StockInInvoice.html page
-     * @param model Spring MVC Model
-     * @return View name for stock in invoice page
+     * @return Redirect to supplier-in-invoices controller
      */
     @GetMapping("/StockInInvoice.html")
     public String stockInInvoicePage(Model model) {
-        log.info("Direct navigation to StockInInvoice.html");
-        return "templates_storage/StockInInvoice";
+        log.info("Redirecting from StockInInvoice.html to /supplier-in-invoices");
+        return "redirect:/supplier-in-invoices";
     }
     
     /**
-     * Direct access to StockOutInvoice.html page
+     * Direct access to StockOutInvoice.html page - redirects to supplier-out-invoices controller
      * @param model Spring MVC Model
-     * @return View name for stock out invoice page
+     * @return Redirect to supplier-out-invoices controller
      */
     @GetMapping("/StockOutInvoice.html")
     public String stockOutInvoicePage(Model model) {
-        log.info("Direct navigation to StockOutInvoice.html");
-        return "templates_storage/StockOutInvoice";
+        log.info("Redirecting from StockOutInvoice.html to /supplier-out-invoices");
+        return "redirect:/supplier-out-invoices";
     }
     
     /**
