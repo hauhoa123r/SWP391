@@ -30,5 +30,7 @@ public class SupplierInvoiceDTO {
     private String paymentMethod;
     private Timestamp dueDate;
     private Timestamp paymentDate;
+    private String recipient;
+    private String stockOutReason;
     private Set<SupplierTransactionInvoiceMappingDTO> transactionInvoiceMappings;
 }
