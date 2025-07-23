@@ -9,6 +9,8 @@ import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,4 +29,7 @@ public class MedicineDTO {
     private Label label;
     private Double averageRating;
     private Long reviewCount;
+    private String category;
+    private final Integer minStock = 100;
+    private Set<BatchDTO> batches;
 } 
