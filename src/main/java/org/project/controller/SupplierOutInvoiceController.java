@@ -3,30 +3,25 @@ package org.project.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.enums.SupplierTransactionStatus;
-import org.project.model.dto.SupplierInvoiceDTO;
-import org.project.service.SupplierOutInvoiceService;
+import org.project.model.dto.SupplierOutDTO;
+import org.project.service.SupplierOutService;
 import org.project.utils.PageUtils;
-import org.project.utils.specification.PageSpecificationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.project.enums.SupplierTransactionType;
-import org.project.entity.SupplierInvoiceEntity;
-import java.math.BigDecimal;
 
 /**
  * Controller for handling supplier out invoices
@@ -37,8 +32,8 @@ import java.math.BigDecimal;
 @RequestMapping("/supplier-out-invoices")
 public class SupplierOutInvoiceController {
 
-    private final SupplierOutInvoiceService supplierOutInvoiceService;
-    private final PageUtils<SupplierInvoiceDTO> pageUtils;
+    private final SupplierOutService supplierOutService;
+    private final PageUtils<SupplierOutDTO> pageUtils;
 
     /**
      * Main invoice page displaying all supplier out invoices
@@ -60,12 +55,8 @@ public class SupplierOutInvoiceController {
         
         try {
             // Parse sort parameter
-            Sort sort = Sort.by(Sort.Direction.DESC, "invoiceDate");
+            Sort sort = Sort.by(Sort.Direction.DESC, "transactionDate");
             Pageable pageable = PageRequest.of(page, size, sort);
-            
-            // Convert LocalDateTime to Timestamp if dates are provided
-            Timestamp startTimestamp = startDate != null ? Timestamp.valueOf(startDate) : null;
-            Timestamp endTimestamp = endDate != null ? Timestamp.valueOf(endDate) : null;
             
             // Define allowed statuses for StockOutInvoice page
             List<SupplierTransactionStatus> allowedStatuses = List.of(
@@ -90,24 +81,41 @@ public class SupplierOutInvoiceController {
             String filteredStatus = statusEnum != null ? statusEnum.name() : null;
             
             // DEBUG: Log before calling service
-            log.debug("Calling supplierOutInvoiceService.getFilteredInvoices with page={}, size={}, keyword={}, filteredStatus={}, allowedStatuses={}",
+            log.debug("Calling supplierOutService.getFilteredTransactions with page={}, size={}, keyword={}, filteredStatus={}, allowedStatuses={}",
                     page, size, keyword, filteredStatus, allowedStatuses);
             
-            Page<SupplierInvoiceDTO> invoicesPage = supplierOutInvoiceService.getFilteredInvoices(
-                page, size, keyword, filteredStatus, allowedStatuses);
+            Page<SupplierOutDTO> transactionsPage = supplierOutService.getFilteredTransactions(
+                page, size, keyword, filteredStatus, allowedStatuses, SupplierTransactionType.STOCK_OUT);
                 
-            // DEBUG: Log fetched invoices size and content
-            log.info("Fetched {} invoices from service", invoicesPage.getContent().size());
-            invoicesPage.getContent().forEach(invoice -> 
-                log.debug("Invoice ID: {}, Number: {}, Date: {}, Status: {}", 
-                    invoice.getId(), invoice.getInvoiceNumber(), 
-                    invoice.getInvoiceDate(), invoice.getStatus()));
+            // DEBUG: Log fetched transactions size and content
+            log.info("Fetched {} transactions from service", transactionsPage.getContent().size());
+            transactionsPage.getContent().forEach(transaction -> 
+                log.debug("Transaction ID: {}, Number: {}, Date: {}, Status: {}, Reason: {}", 
+                    transaction.getId(), transaction.getInvoiceNumber(), 
+                    transaction.getTransactionDate(), transaction.getStatus(), transaction.getStockOutReason()));
+            
+            // Lọc các transaction theo stockOutReason (Bán hàng hoặc Khác)
+            List<SupplierOutDTO> filteredTransactions = transactionsPage.getContent().stream()
+                .filter(transaction -> {
+                    // Nếu lý do là "Bán hàng" hoặc không thuộc các lý do cụ thể khác thì hiển thị
+                    String reason = transaction.getStockOutReason() != null ? transaction.getStockOutReason().toUpperCase() : "";
+                    return reason.contains("BÁN HÀNG") || reason.contains("SALE") || 
+                           (!reason.contains("CHUYỂN KHO") && !reason.contains("TRANSFER") && 
+                            !reason.contains("TRẢ HÀNG") && !reason.contains("RETURN") && 
+                            !reason.contains("HẾT HẠN") && !reason.contains("EXPIRED") && 
+                            !reason.contains("HƯ HỎNG") && !reason.contains("DAMAGED"));
+                })
+                .collect(Collectors.toList());
+            
+            // Create a new page with filtered content
+            Page<SupplierOutDTO> filteredPage = pageUtils.createPage(filteredTransactions, 
+                    PageRequest.of(page, size), transactionsPage.getTotalElements());
             
             // Add all data to model
-            mv.addObject("invoices", invoicesPage.getContent());
+            mv.addObject("invoices", filteredPage.getContent());
             mv.addObject("currentPage", page);
-            mv.addObject("totalPages", invoicesPage.getTotalPages());
-            mv.addObject("totalItems", invoicesPage.getTotalElements());
+            mv.addObject("totalPages", filteredPage.getTotalPages());
+            mv.addObject("totalItems", filteredPage.getTotalElements());
             mv.addObject("keyword", keyword);
             mv.addObject("status", status);
             mv.addObject("startDate", startDate);
@@ -117,7 +125,7 @@ public class SupplierOutInvoiceController {
             // Add allowed statuses for dropdown
             mv.addObject("availableStatuses", allowedStatuses);
             
-            log.debug("Supplier out invoices page prepared with {} invoices", invoicesPage.getContent().size());
+            log.debug("Supplier out invoices page prepared with {} transactions", filteredPage.getContent().size());
         } catch (Exception e) {
             log.error("Error preparing supplier out invoices page data: {}", e.getMessage(), e);
             mv.addObject("errorMessage", "Error loading invoices: " + e.getMessage());
@@ -138,21 +146,24 @@ public class SupplierOutInvoiceController {
         ModelAndView mv = new ModelAndView("templates_storage/StockOutDetail");
         
         try {
-            SupplierInvoiceDTO invoice = supplierOutInvoiceService.getInvoiceById(id);
-            if (invoice != null) {
-                mv.addObject("invoice", invoice);
+            SupplierOutDTO transaction = supplierOutService.getSupplierOutById(id);
+            if (transaction != null && 
+               (transaction.getStatus() == SupplierTransactionStatus.COMPLETED || 
+                transaction.getStatus() == SupplierTransactionStatus.REJECTED)) {
+                
+                mv.addObject("invoice", transaction);
                 // Add with the alternative name that the template is expecting
-                mv.addObject("supplierOut", invoice);
+                mv.addObject("supplierOut", transaction);
                 
                 // Debug info
                 log.debug("Supplier out invoice details loaded for ID: {}", id);
                 mv.addObject("debugInfo", "Invoice ID: " + id + 
-                    ", status: " + invoice.getStatus() + 
-                    ", invoice number: " + invoice.getInvoiceNumber());
+                    ", status: " + transaction.getStatus() + 
+                    ", invoice number: " + transaction.getInvoiceNumber());
                 
             } else {
-                log.warn("Supplier out invoice with ID {} not found", id);
-                mv.addObject("errorMessage", "Invoice not found");
+                log.warn("Supplier out invoice with ID {} not found or not in completed/rejected status", id);
+                mv.addObject("errorMessage", "Invoice not found or not in appropriate status");
                 mv.setViewName("redirect:/supplier-out-invoices");
             }
         } catch (Exception e) {
@@ -171,71 +182,38 @@ public class SupplierOutInvoiceController {
      * @param redirectAttributes Redirect attributes for flash messages
      * @return Redirect to invoice details page
      */
-    @PostMapping("/{id}/update-status")
+    @PostMapping("/{id}/status")
     public String updateInvoiceStatus(
             @PathVariable Long id,
             @RequestParam SupplierTransactionStatus status,
             RedirectAttributes redirectAttributes) {
-        log.info("Updating supplier out invoice status with ID: {} to status: {}", id, status);
+        log.info("Updating supplier out invoice status: ID={}, newStatus={}", id, status);
         
         try {
-            SupplierInvoiceDTO updated = supplierOutInvoiceService.updateInvoiceStatus(id, status);
-            if (updated != null) {
-                log.debug("Updated supplier out invoice status with ID: {}", id);
+            SupplierOutDTO updatedTransaction = supplierOutService.updateSupplierOutStatus(id, status.name());
+            if (updatedTransaction != null) {
                 redirectAttributes.addFlashAttribute("successMessage", 
-                        "Invoice status updated successfully to " + status);
+                        "Invoice status updated to " + status.getDisplayName());
+                return "redirect:/supplier-out-invoices/" + id;
             } else {
-                log.warn("Supplier out invoice with ID {} not found for status update", id);
-                redirectAttributes.addFlashAttribute("errorMessage", 
-                        "Invoice not found");
+                log.warn("Failed to update supplier out invoice status: ID={}, newStatus={}", id, status);
+                redirectAttributes.addFlashAttribute("errorMessage", "Failed to update invoice status");
+                return "redirect:/supplier-out-invoices";
             }
         } catch (Exception e) {
-            log.error("Error updating supplier out invoice status with ID {}: {}", id, e.getMessage(), e);
+            log.error("Error updating supplier out invoice status: ID={}, newStatus={}, error={}", 
+                    id, status, e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", 
-                    "Failed to update invoice status: " + e.getMessage());
+                    "Error updating invoice status: " + e.getMessage());
+            return "redirect:/supplier-out-invoices";
         }
-        
-        return "redirect:/supplier-out-invoices/" + id;
-    }
-
-    /**
-     * Update invoice form submission
-     * @param id Invoice ID
-     * @param invoiceDTO Invoice DTO from form
-     * @param redirectAttributes Redirect attributes for flash messages
-     * @return Redirect to invoice details page
-     */
-    @PostMapping("/{id}/update")
-    public String updateInvoice(@PathVariable Long id, 
-                               @ModelAttribute SupplierInvoiceDTO invoiceDTO,
-                               RedirectAttributes redirectAttributes) {
-        log.info("Updating supplier out invoice with ID: {}", id);
-        
-        try {
-            SupplierInvoiceDTO updated = supplierOutInvoiceService.updateInvoice(id, invoiceDTO);
-            if (updated != null) {
-                log.debug("Updated supplier out invoice with ID: {}", id);
-                redirectAttributes.addFlashAttribute("successMessage", 
-                        "Invoice updated successfully");
-            } else {
-                log.warn("Supplier out invoice with ID {} not found for update", id);
-                redirectAttributes.addFlashAttribute("errorMessage", 
-                        "Invoice not found");
-            }
-        } catch (Exception e) {
-            log.error("Error updating supplier out invoice with ID {}: {}", id, e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("errorMessage", 
-                    "Failed to update invoice: " + e.getMessage());
-        }
-        
-        return "redirect:/supplier-out-invoices/" + id;
     }
 
     /**
      * Delete invoice
      * @param id Invoice ID
      * @param redirectAttributes Redirect attributes for flash messages
-     * @return Redirect to invoices page
+     * @return Redirect to invoice list page
      */
     @PostMapping("/{id}/delete")
     public String deleteInvoice(@PathVariable Long id,
@@ -243,16 +221,27 @@ public class SupplierOutInvoiceController {
         log.info("Deleting supplier out invoice with ID: {}", id);
         
         try {
-            supplierOutInvoiceService.deleteInvoice(id);
-            redirectAttributes.addFlashAttribute("successMessage", 
-                    "Invoice deleted successfully");
+            // Kiểm tra xem ID tồn tại không và có phải là trạng thái COMPLETED/REJECTED hay không
+            SupplierOutDTO transaction = supplierOutService.getSupplierOutById(id);
+            if (transaction != null && 
+                (transaction.getStatus() == SupplierTransactionStatus.COMPLETED || 
+                 transaction.getStatus() == SupplierTransactionStatus.REJECTED)) {
+                
+                supplierOutService.deleteSupplierOut(id);
+                redirectAttributes.addFlashAttribute("successMessage", "Invoice deleted successfully");
+                return "redirect:/supplier-out-invoices";
+            } else {
+                log.warn("Cannot delete supplier out invoice: ID={} not found or not in COMPLETED/REJECTED status", id);
+                redirectAttributes.addFlashAttribute("errorMessage", 
+                        "Invoice not found or cannot be deleted due to its status");
+                return "redirect:/supplier-out-invoices";
+            }
         } catch (Exception e) {
             log.error("Error deleting supplier out invoice with ID {}: {}", id, e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", 
-                    "Failed to delete invoice: " + e.getMessage());
+                    "Error deleting invoice: " + e.getMessage());
+            return "redirect:/supplier-out-invoices";
         }
-        
-        return "redirect:/supplier-out-invoices";
     }
     
     /**
@@ -280,49 +269,5 @@ public class SupplierOutInvoiceController {
     @GetMapping("/inventory/api/stock-invoices/{id}")
     public String redirectApiDetailToController(@PathVariable Long id) {
         return "redirect:/supplier-out-invoices/" + id;
-    }
-
-    /**
-     * Create test invoices for debugging
-     * @return Response with status
-     */
-    @GetMapping("/create-test")
-    @ResponseBody
-    public String createTestData() {
-        log.info("Creating test supplier out invoices");
-        
-        try {
-            // Tạo hóa đơn COMPLETED
-            SupplierInvoiceEntity invoice1 = new SupplierInvoiceEntity();
-            invoice1.setInvoiceNumber("SO-TEST-001");
-            invoice1.setTransactionType(SupplierTransactionType.STOCK_OUT);
-            invoice1.setInvoiceDate(new Timestamp(System.currentTimeMillis()));
-            invoice1.setTotalAmount(new BigDecimal("1500000"));
-            invoice1.setTaxAmount(new BigDecimal("150000"));
-            invoice1.setShippingCost(new BigDecimal("75000"));
-            invoice1.setGrandTotal(new BigDecimal("1725000"));
-            invoice1.setStatus(SupplierTransactionStatus.COMPLETED);
-            invoice1.setNotes("Test completed stock out invoice");
-            
-            // Tạo hóa đơn REJECTED
-            SupplierInvoiceEntity invoice2 = new SupplierInvoiceEntity();
-            invoice2.setInvoiceNumber("SO-TEST-002");
-            invoice2.setTransactionType(SupplierTransactionType.STOCK_OUT);
-            invoice2.setInvoiceDate(new Timestamp(System.currentTimeMillis()));
-            invoice2.setTotalAmount(new BigDecimal("3000000"));
-            invoice2.setTaxAmount(new BigDecimal("300000"));
-            invoice2.setShippingCost(new BigDecimal("100000"));
-            invoice2.setGrandTotal(new BigDecimal("3400000"));
-            invoice2.setStatus(SupplierTransactionStatus.REJECTED);
-            invoice2.setNotes("Test rejected stock out invoice");
-            
-            // Lưu hóa đơn
-            supplierOutInvoiceService.saveTestInvoices(List.of(invoice1, invoice2));
-            
-            return "Đã tạo 2 hóa đơn mẫu thành công";
-        } catch (Exception e) {
-            log.error("Error creating test invoices: {}", e.getMessage(), e);
-            return "Lỗi khi tạo hóa đơn mẫu: " + e.getMessage();
-        }
     }
 }

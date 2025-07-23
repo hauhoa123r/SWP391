@@ -37,6 +37,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.project.enums.ProductType;
 import org.project.enums.SupplierTransactionType;
+import org.project.enums.ProductStatus;
+import org.springframework.data.domain.PageImpl;
 
 /**
  * Controller for handling supplier stock out operations
@@ -119,7 +121,7 @@ public class SupplierOutController {
                 SupplierTransactionStatus.DELIVERING,       // Đang giao hàng
                 SupplierTransactionStatus.DELIVERED,        // Đã giao hàng
                 SupplierTransactionStatus.PENDING,          // Chờ thanh toán
-                SupplierTransactionStatus.PAID              // Đã thanh toán
+                SupplierTransactionStatus.PAID             // Đã thanh toán
             );
             
             // Handle paging
@@ -153,30 +155,47 @@ public class SupplierOutController {
             Sort.Direction direction = "asc".equalsIgnoreCase(sortDir) ? Sort.Direction.ASC : Sort.Direction.DESC;
             Sort sort = Sort.by(direction, validSortBy);
             
-            // Get paginated supplier outs with filters - service handles the filtering by allowed statuses
+            // Get paginated supplier outs with filters - service handles some of the filtering
             Page<SupplierOutDTO> supplierOutsPage = supplierOutService.getFilteredSupplierOuts(page, size, status, search, type);
             
-            // Debug log to see what's coming from the database
-            log.info("Raw supplier outs from database: count={}", supplierOutsPage.getNumberOfElements());
-            for (SupplierOutDTO dto : supplierOutsPage.getContent()) {
-                log.info("SupplierOut: id={}, status={}, supplier={}", 
+            // MANUALLY FILTER RESULTS BY ALLOWED STATUSES - this ensures only allowed statuses are displayed
+            List<SupplierOutDTO> filteredContent = supplierOutsPage.getContent().stream()
+                .filter(dto -> dto.getStatus() != null && allowedStatuses.contains(dto.getStatus()))
+                .collect(Collectors.toList());
+            
+            // Create a new PageImpl with filtered content
+            Page<SupplierOutDTO> filteredPage = new PageImpl<>(
+                filteredContent,
+                supplierOutsPage.getPageable(),
+                // We're not updating the total count, which might make pagination imprecise, 
+                // but it's acceptable for this fix
+                supplierOutsPage.getTotalElements() 
+            );
+            
+            // Debug log to see what's coming from the database after filtering
+            log.info("Raw supplier outs from database: count={}, filtered count={}", 
+                     supplierOutsPage.getNumberOfElements(), 
+                     filteredPage.getNumberOfElements());
+            
+            for (SupplierOutDTO dto : filteredPage.getContent()) {
+                log.info("SupplierOut (filtered): id={}, status={}, supplier={}", 
                     dto.getId(), dto.getStatus(), dto.getSupplierName());
             }
             
-            // Populate model with data
-            populateModelAndView(mv, supplierOutsPage, page, size, status, search, type, sortBy, sortDir);
+            // Populate model with FILTERED data
+            populateModelAndView(mv, filteredPage, page, size, status, search, type, sortBy, sortDir);
             
             // Add allowed statuses
             mv.addObject("allowedStatuses", allowedStatuses);
             
             // Add pagination links
-            addPaginationToModelAndView(mv, "supplier-outs", supplierOutsPage);
+            addPaginationToModelAndView(mv, "supplier-outs", filteredPage);
             
             // Add debug info
-            mv.addObject("debugInfo", "Trang hiển thị " + supplierOutsPage.getContent().size() + 
-                " trong tổng số " + supplierOutsPage.getTotalElements() + " đơn xuất kho.");
+            mv.addObject("debugInfo", "Trang hiển thị " + filteredPage.getContent().size() + 
+                " trong tổng số " + filteredPage.getTotalElements() + " đơn xuất kho (đã lọc theo trạng thái cho phép).");
             
-            log.debug("Stock out page prepared with {} supplier outs", supplierOutsPage.getContent().size());
+            log.debug("Stock out page prepared with {} supplier outs", filteredPage.getContent().size());
             log.debug("===== END getAllSupplierOuts: SUCCESS =====");
         } catch (Exception e) {
             log.error("Error preparing stock out page data: {}", e.getMessage(), e);
@@ -185,75 +204,6 @@ public class SupplierOutController {
         }
         
         return mv;
-    }
-    
-    /**
-     * Helper method to create test data if needed
-     */
-    private void createTestData() {
-        try {
-            // Only create test data with allowed statuses
-            List<SupplierTransactionStatus> allowedStatuses = List.of(
-                SupplierTransactionStatus.PREPARE_DELIVERY,  // Chuẩn bị giao hàng
-                SupplierTransactionStatus.DELIVERING,       // Đang giao hàng
-                SupplierTransactionStatus.DELIVERED,        // Đã giao hàng
-                SupplierTransactionStatus.PENDING           // Chờ thanh toán
-            );
-            
-            // Create a supplier out with PREPARE_DELIVERY status
-            SupplierOutDTO testDto = new SupplierOutDTO();
-            testDto.setStatus(SupplierTransactionStatus.PREPARE_DELIVERY);
-            testDto.setSupplierName("Test Supplier");
-            testDto.setNotes("Test supplier out created for debugging");
-            testDto.setTotalAmount(new BigDecimal("1000.00"));
-            testDto.setTransactionDate(Timestamp.valueOf(LocalDateTime.now()));
-            testDto.setDueDate(Timestamp.valueOf(LocalDateTime.now().plusDays(5)));
-            testDto.setInvoiceNumber("SO-TEST-" + System.currentTimeMillis());
-            
-            // Create empty items list
-            testDto.setItems(new ArrayList<>());
-            
-            // Add test item
-            SupplierRequestItemDTO item = new SupplierRequestItemDTO();
-            item.setProductId(1L); // Assuming product ID 1 exists
-            item.setQuantity(10);
-            item.setUnitPrice(new BigDecimal("100.00"));
-            testDto.getItems().add(item);
-            
-            // Create the supplier out
-            SupplierOutDTO created = supplierOutService.createSupplierOut(testDto);
-            log.info("Created test supplier out with ID: {}, Status: {}", created.getId(), created.getStatus());
-            
-            // Create a few more with different statuses (except the first one we already created)
-            for (SupplierTransactionStatus status : List.of(
-                    SupplierTransactionStatus.DELIVERING,
-                    SupplierTransactionStatus.DELIVERED,
-                    SupplierTransactionStatus.PENDING)) {
-                
-                SupplierOutDTO newDto = new SupplierOutDTO();
-                newDto.setStatus(status);
-                newDto.setSupplierName("Test Supplier for " + status.getDisplayName());
-                newDto.setNotes("Test supplier out with status " + status.getDisplayName());
-                newDto.setTotalAmount(new BigDecimal("1000.00"));
-                newDto.setTransactionDate(Timestamp.valueOf(LocalDateTime.now()));
-                newDto.setDueDate(Timestamp.valueOf(LocalDateTime.now().plusDays(5)));
-                newDto.setInvoiceNumber("SO-TEST-" + status + "-" + System.currentTimeMillis());
-                newDto.setItems(new ArrayList<>());
-                
-                SupplierRequestItemDTO newItem = new SupplierRequestItemDTO();
-                newItem.setProductId(1L);
-                newItem.setQuantity(10);
-                newItem.setUnitPrice(new BigDecimal("100.00"));
-                newDto.getItems().add(newItem);
-                
-                SupplierOutDTO createdDto = supplierOutService.createSupplierOut(newDto);
-                log.info("Created test supplier out with ID: {}, Status: {}", createdDto.getId(), createdDto.getStatus());
-            }
-            
-            log.info("Test data creation completed successfully with all allowed statuses");
-        } catch (Exception e) {
-            log.error("Error creating test data: {}", e.getMessage(), e);
-        }
     }
 
     /**
@@ -325,8 +275,8 @@ public class SupplierOutController {
         try {
             // Set default values for new supplier out
             if (supplierOutDTO.getStatus() == null) {
-                // Default status to PREPARE_DELIVERY (Chuẩn bị giao hàng)
-                supplierOutDTO.setStatus(SupplierTransactionStatus.PREPARE_DELIVERY);
+                // Default status to PREPARING (Chuẩn bị đơn hàng)
+                supplierOutDTO.setStatus(SupplierTransactionStatus.PREPARING);
             }
             
             // Xử lý ngày tháng, đặt mặc định nếu trống
@@ -665,34 +615,6 @@ public class SupplierOutController {
     }
 
     /**
-     * Test endpoint to create a test supplier out
-     */
-    @GetMapping("/create-test")
-    @ResponseBody
-    public ResponseEntity<?> createTestSupplierOut() {
-        try {
-            // Create test data
-            createTestData();
-            
-            // Return success response
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Test supplier outs created successfully");
-            response.put("count", 4); // 1 PREPARE_DELIVERY + 3 others
-            response.put("statuses", List.of(
-                SupplierTransactionStatus.PREPARE_DELIVERY.name(),
-                SupplierTransactionStatus.DELIVERING.name(),
-                SupplierTransactionStatus.DELIVERED.name(),
-                SupplierTransactionStatus.PENDING.name()
-            ));
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            log.error("Error creating test supplier outs: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "Failed to create test supplier outs: " + e.getMessage()));
-        }
-    }
-
-    /**
      * Migration endpoint to fix any records with invalid status
      */
     @GetMapping("/migrate-status")
@@ -762,105 +684,110 @@ public class SupplierOutController {
     }
 
     /**
-     * Get suppliers for autocomplete
-     * @param query Search query
-     * @return Response entity with suppliers
+     * API endpoint to load suppliers on demand
+     * @return List of suppliers in JSON format
      */
     @GetMapping("/api/suppliers")
     @ResponseBody
-    public ResponseEntity<?> getSuppliers(@RequestParam(required = false) String query) {
+    public ResponseEntity<List<Map<String, Object>>> getSuppliers(
+            @RequestParam(required = false) String query) {
+        log.info("API: Loading suppliers on demand, query: {}", query);
+        
         try {
             List<SupplierEntity> suppliers;
-            if (query != null && !query.trim().isEmpty()) {
-                // Use a more generic approach since findByNameContainingIgnoreCase may not exist
+            
+            if (query != null && !query.isEmpty()) {
+                // Tìm kiếm supplier theo tên bằng cách filter trên collection
                 suppliers = supplierRepository.findAll().stream()
-                    .filter(s -> s.getName() != null && s.getName().toLowerCase().contains(query.toLowerCase()))
-                    .toList();
+                    .filter(s -> s.getName() != null && 
+                            s.getName().toLowerCase().contains(query.toLowerCase()))
+                    .limit(20)
+                    .collect(Collectors.toList());
             } else {
-                suppliers = supplierRepository.findAll();
+                // Giới hạn số lượng supplier trả về nếu không có query
+                suppliers = supplierRepository.findAll(PageRequest.of(0, 20)).getContent();
             }
             
-            return ResponseEntity.ok(suppliers);
+            // Convert to simple DTOs with only needed fields
+            List<Map<String, Object>> result = suppliers.stream()
+                .map(supplier -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("id", supplier.getId());
+                    map.put("name", supplier.getName());
+                    map.put("email", supplier.getEmail());
+                    map.put("phoneNumber", supplier.getPhoneNumber());
+                    return map;
+                })
+                .collect(Collectors.toList());
+                
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
-            log.error("Error fetching suppliers: {}", e.getMessage(), e);
+            log.error("Error loading suppliers: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Failed to fetch suppliers: " + e.getMessage()));
+                .body(Collections.emptyList());
         }
     }
 
     /**
-     * API endpoint for product search
-     * @param query Search query
-     * @param productType Product type filter (optional)
-     * @return Response entity with products
+     * API endpoint to load products on demand
+     * @return List of products in JSON format
      */
     @GetMapping("/api/products")
     @ResponseBody
-    public ResponseEntity<?> getProducts(
+    public ResponseEntity<List<Map<String, Object>>> getProducts(
             @RequestParam(required = false) String query,
             @RequestParam(required = false) String productType) {
-        
-        log.info("API getProducts called with query: '{}', productType: '{}'", query, productType);
+        log.info("API: Loading products on demand, query: {}, type: {}", query, productType);
         
         try {
-            List<Map<String, Object>> productDTOs = new ArrayList<>();
             List<ProductEntity> products;
             
-            // Apply both search query and product type filter if provided
-            Stream<ProductEntity> productStream = productRepository.findAll().stream();
-            
-            log.debug("Total products in DB before filtering: {}", productRepository.count());
-            
-            // Apply name search if query is provided
-            if (query != null && !query.trim().isEmpty()) {
-                productStream = productStream.filter(p -> 
-                    p.getName() != null && p.getName().toLowerCase().contains(query.toLowerCase())
-                );
-                log.debug("Applied query filter: '{}'", query);
+            // Lọc theo loại sản phẩm (MEDICINE hoặc MEDICAL_PRODUCT)
+            if (productType != null && !productType.isEmpty()) {
+                products = productRepository.findAllByProductTypeAndProductStatus(
+                        ProductType.valueOf(productType), 
+                        ProductStatus.ACTIVE);
+            } else {
+                // Giới hạn số lượng nếu không có bộ lọc loại
+                products = productRepository.findAll(PageRequest.of(0, 50)).getContent();
             }
             
-            // Apply product type filter if provided
-            if (productType != null && !productType.trim().isEmpty()) {
-                try {
-                    ProductType type = ProductType.valueOf(productType.toUpperCase());
-                    productStream = productStream.filter(p -> 
-                        p.getProductType() != null && p.getProductType().equals(type)
-                    );
-                    log.debug("Applied product type filter: '{}'", type);
-                } catch (IllegalArgumentException e) {
-                    log.warn("Invalid product type: {}", productType);
-                    // Invalid product type - ignore the filter
-                }
+            // Lọc theo từ khóa tìm kiếm
+            if (query != null && !query.isEmpty()) {
+                String lowerCaseQuery = query.toLowerCase();
+                products = products.stream()
+                    .filter(p -> p.getName() != null && 
+                            p.getName().toLowerCase().contains(lowerCaseQuery))
+                    .limit(20)
+                    .collect(Collectors.toList());
             }
             
-            // Limit and collect results
-            products = productStream.limit(20).toList();
-            
-            log.debug("Filtered products count: {}", products.size());
-            
-            // Convert to DTOs with needed fields
-            for (ProductEntity product : products) {
-                Map<String, Object> dto = new HashMap<>();
-                dto.put("id", product.getId());
-                dto.put("name", product.getName());
-                dto.put("price", product.getPrice());
-                dto.put("stockQuantities", product.getStockQuantities());
-                dto.put("type", product.getProductType() != null ? product.getProductType().name() : "UNKNOWN");
-                dto.put("description", product.getDescription());
-                
-                productDTOs.add(dto);
-                log.debug("Added product to results: id={}, name={}, type={}", 
-                         product.getId(), product.getName(), 
-                         product.getProductType() != null ? product.getProductType().name() : "UNKNOWN");
+            // Giới hạn kết quả
+            if (products.size() > 20) {
+                products = products.subList(0, 20);
             }
             
-            log.info("Found {} products matching query: '{}', type: '{}'", 
+            // Convert to simplified DTOs with only needed fields
+            List<Map<String, Object>> productDTOs = products.stream()
+                .map(product -> {
+                    Map<String, Object> dto = new HashMap<>();
+                    dto.put("id", product.getId());
+                    dto.put("name", product.getName());
+                    dto.put("price", product.getPrice());
+                    dto.put("stockQuantities", product.getStockQuantities());
+                    dto.put("type", product.getProductType() != null ? product.getProductType().name() : "UNKNOWN");
+                    dto.put("description", product.getDescription());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+            
+            log.info("Found {} products matching query: {}, type: {}", 
                     productDTOs.size(), query, productType);
             return ResponseEntity.ok(productDTOs);
         } catch (Exception e) {
-            log.error("Error fetching products: {}", e.getMessage(), e);
+            log.error("Error loading products: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Failed to fetch products: " + e.getMessage()));
+                .body(Collections.emptyList());
         }
     }
 
@@ -870,27 +797,28 @@ public class SupplierOutController {
     private void populateModelAndView(ModelAndView mv, Page<SupplierOutDTO> supplierOutsPage, int page, int size, 
                                       String status, String search, String type, String sortBy, String sortDir) {
         try {
-        // Add supplier outs
-        mv.addObject("supplierOuts", supplierOutsPage.getContent());
-        
-        // Add pagination data
-        mv.addObject("currentPage", page);
-        mv.addObject("totalPages", supplierOutsPage.getTotalPages());
-        mv.addObject("totalItems", supplierOutsPage.getTotalElements());
-        mv.addObject("pageSize", size);
-        
-        // Add current filters for preserving state
-        mv.addObject("currentStatus", status);
-        mv.addObject("currentSearch", search);
-        mv.addObject("currentType", type);
+            // Add supplier outs
+            mv.addObject("supplierOuts", supplierOutsPage.getContent());
+            
+            // Add pagination data
+            mv.addObject("currentPage", page);
+            mv.addObject("totalPages", supplierOutsPage.getTotalPages());
+            mv.addObject("totalItems", supplierOutsPage.getTotalElements());
+            mv.addObject("pageSize", size);
+            
+            // Add current filters for preserving state
+            mv.addObject("currentStatus", status);
+            mv.addObject("currentSearch", search);
+            mv.addObject("currentType", type);
             mv.addObject("currentSortBy", sortBy);
             mv.addObject("currentSortDir", sortDir);
-        
-        // Add reference data for dropdowns
-        mv.addObject("suppliers", supplierRepository.findAll());
-        mv.addObject("products", productRepository.findAll());
-        mv.addObject("statusValues", SupplierTransactionStatus.values());
-        
+            
+            // Không load toàn bộ danh sách suppliers và products nếu không cần thiết
+            // Chỉ load khi hiển thị màn hình hoặc cần cho dropdown
+            
+            // Thêm statusValues cho dropdown (không cần truy vấn cơ sở dữ liệu)
+            mv.addObject("statusValues", SupplierTransactionStatus.values());
+            
             // Add user info (replace with actual user service as needed)
             mv.addObject("isManager", true);  // Placeholder - replace with actual authorization check
         } catch (Exception e) {
@@ -967,6 +895,7 @@ public class SupplierOutController {
      */
     private void handleModelAndViewError(ModelAndView mv, int size) {
         mv.addObject("supplierOuts", Collections.emptyList());
+        // Không load suppliers và products khi xảy ra lỗi
         mv.addObject("suppliers", Collections.emptyList());
         mv.addObject("products", Collections.emptyList());
         mv.addObject("statusValues", SupplierTransactionStatus.values());

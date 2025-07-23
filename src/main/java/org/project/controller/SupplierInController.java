@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.entity.ProductEntity;
 import org.project.entity.SupplierEntity;
+import org.project.enums.ProductStatus;
+import org.project.enums.ProductType;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierInvoiceDTO;
@@ -36,6 +38,7 @@ import java.util.HashMap;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 /**
  * Controller for handling supplier stock in operations
@@ -619,15 +622,10 @@ public class SupplierInController {
             mv.addObject("currentSortBy", sortBy);
             mv.addObject("currentSortDir", sortDir);
             
-            // Add reference data for dropdowns
-            log.debug("Adding suppliers to model");
-            List<SupplierEntity> suppliers = supplierRepository.findAll();
-            mv.addObject("suppliers", suppliers);
+            // Không load toàn bộ dữ liệu suppliers và products không cần thiết
+            // Các dropdown và dữ liệu sẽ được nạp lazy thông qua API khi cần
             
-            log.debug("Adding products to model");
-            List<ProductEntity> products = productRepository.findAll();
-            mv.addObject("products", products);
-            
+            // Add statusValues for dropdown (không cần truy vấn DB)
             log.debug("Adding statusValues to model");
             mv.addObject("statusValues", SupplierTransactionStatus.values());
             
@@ -637,13 +635,8 @@ public class SupplierInController {
             
             log.debug("populateModelAndView thực thi thành công");
         } catch (Exception e) {
-            log.error("Lỗi trong populateModelAndView: {}", e.getMessage(), e);
-            log.error("Loại Exception: {}", e.getClass().getName());
-            log.error("Stack trace chi tiết:");
-            for (StackTraceElement element : e.getStackTrace()) {
-                log.error("  {}", element.toString());
-            }
-            throw e; // Re-throw để caller có thể xử lý
+            log.error("Error in populateModelAndView: {}", e.getMessage(), e);
+            throw e; // Re-throw to be handled by caller
         }
     }
     
@@ -742,18 +735,10 @@ public class SupplierInController {
             log.debug("Adding debug info to model");
             mv.addObject("debugInfo", "Xem log server để biết thêm chi tiết về lỗi.");
             
-            try {
-                // Add reference data for dropdowns even in error state
-                log.debug("Attempting to load suppliers and products for error page");
-                mv.addObject("suppliers", supplierRepository.findAll());
-                mv.addObject("products", productRepository.findAll());
-                log.debug("Successfully added suppliers and products to error model");
-            } catch (Exception e) {
-                log.error("Could not load reference data for error page: {}", e.getMessage(), e);
-                log.error("Exception type in reference data loading: {}", e.getClass().getName());
-                mv.addObject("suppliers", Collections.emptyList());
-                mv.addObject("products", Collections.emptyList());
-            }
+            // Không load dữ liệu suppliers và products khi có lỗi
+            mv.addObject("suppliers", Collections.emptyList());
+            mv.addObject("products", Collections.emptyList());
+            
             log.debug("handleModelAndViewError completed successfully");
         } catch (Exception e) {
             log.error("Exception occurred in handleModelAndViewError: {}", e.getMessage(), e);
@@ -971,6 +956,114 @@ public class SupplierInController {
             Map<String, String> error = new HashMap<>();
             error.put("error", "Failed to get invoice: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    /**
+     * API endpoint to load suppliers on demand
+     * @return List of suppliers in JSON format
+     */
+    @GetMapping("/api/suppliers")
+    @ResponseBody
+    public ResponseEntity<List<Map<String, Object>>> getSuppliers(
+            @RequestParam(required = false) String query) {
+        log.info("API: Loading suppliers on demand, query: {}", query);
+        
+        try {
+            List<SupplierEntity> suppliers;
+            
+            if (query != null && !query.isEmpty()) {
+                // Tìm kiếm supplier theo tên bằng cách filter trên collection
+                suppliers = supplierRepository.findAll().stream()
+                    .filter(s -> s.getName() != null && 
+                            s.getName().toLowerCase().contains(query.toLowerCase()))
+                    .limit(20)
+                    .collect(Collectors.toList());
+            } else {
+                // Giới hạn số lượng supplier trả về nếu không có query
+                suppliers = supplierRepository.findAll(PageRequest.of(0, 20)).getContent();
+            }
+            
+            // Convert to simple DTOs with only needed fields
+            List<Map<String, Object>> result = suppliers.stream()
+                .map(supplier -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("id", supplier.getId());
+                    map.put("name", supplier.getName());
+                    map.put("email", supplier.getEmail());
+                    map.put("phoneNumber", supplier.getPhoneNumber());
+                    return map;
+                })
+                .collect(Collectors.toList());
+                
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("Error loading suppliers: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Collections.emptyList());
+        }
+    }
+
+    /**
+     * API endpoint to load products on demand
+     * @return List of products in JSON format
+     */
+    @GetMapping("/api/products")
+    @ResponseBody
+    public ResponseEntity<List<Map<String, Object>>> getProducts(
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) String productType) {
+        log.info("API: Loading products on demand, query: {}, type: {}", query, productType);
+        
+        try {
+            List<ProductEntity> products;
+            
+            // Lọc theo loại sản phẩm (MEDICINE hoặc MEDICAL_PRODUCT)
+            if (productType != null && !productType.isEmpty()) {
+                products = productRepository.findAllByProductTypeAndProductStatus(
+                        ProductType.valueOf(productType), 
+                        ProductStatus.ACTIVE);
+            } else {
+                // Giới hạn số lượng nếu không có bộ lọc loại
+                products = productRepository.findAll(PageRequest.of(0, 50)).getContent();
+            }
+            
+            // Lọc theo từ khóa tìm kiếm
+            if (query != null && !query.isEmpty()) {
+                String lowerCaseQuery = query.toLowerCase();
+                products = products.stream()
+                    .filter(p -> p.getName() != null && 
+                            p.getName().toLowerCase().contains(lowerCaseQuery))
+                    .limit(20)
+                    .collect(Collectors.toList());
+            }
+            
+            // Giới hạn kết quả
+            if (products.size() > 20) {
+                products = products.subList(0, 20);
+            }
+            
+            // Convert to simplified DTOs with only needed fields
+            List<Map<String, Object>> productDTOs = products.stream()
+                .map(product -> {
+                    Map<String, Object> dto = new HashMap<>();
+                    dto.put("id", product.getId());
+                    dto.put("name", product.getName());
+                    dto.put("price", product.getPrice());
+                    dto.put("stockQuantities", product.getStockQuantities());
+                    dto.put("type", product.getProductType() != null ? product.getProductType().name() : "UNKNOWN");
+                    dto.put("description", product.getDescription());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+            
+            log.info("Found {} products matching query: {}, type: {}", 
+                    productDTOs.size(), query, productType);
+            return ResponseEntity.ok(productDTOs);
+        } catch (Exception e) {
+            log.error("Error loading products: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Collections.emptyList());
         }
     }
 

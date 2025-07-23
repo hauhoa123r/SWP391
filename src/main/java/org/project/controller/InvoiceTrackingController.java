@@ -1,14 +1,11 @@
 package org.project.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.model.dto.SupplierInDTO;
-import org.project.model.dto.SupplierInvoiceDTO;
 import org.project.model.dto.SupplierOutDTO;
-import org.project.service.SupplierInInvoiceService;
 import org.project.service.SupplierInService;
-import org.project.service.SupplierOutInvoiceService;
 import org.project.service.SupplierOutService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Slf4j
 @Controller
-@RequiredArgsConstructor
 public class InvoiceTrackingController {
 
-    private final SupplierInService supplierInService;
-    private final SupplierOutService supplierOutService;
-    private final SupplierInInvoiceService supplierInInvoiceService;
-    private final SupplierOutInvoiceService supplierOutInvoiceService;
+    @Autowired
+    private SupplierInService supplierInService;
+    
+    @Autowired
+    private SupplierOutService supplierOutService;
 
     /**
      * Supplier In tracking page
@@ -37,20 +34,12 @@ public class InvoiceTrackingController {
         log.info("Loading supplier in tracking page for ID: {}", id);
         
         try {
-            // First try to get from regular transaction
+            // Get transaction data
             SupplierInDTO supplierIn = supplierInService.getSupplierInById(id);
             
             if (supplierIn != null) {
                 model.addAttribute("supplierIn", supplierIn);
                 model.addAttribute("pageTitle", "Theo dõi đơn nhập kho");
-                return "templates_storage/invoiceintracking";
-            }
-            
-            // If not found, try invoice
-            SupplierInvoiceDTO invoice = supplierInInvoiceService.getInvoiceById(id);
-            if (invoice != null) {
-                model.addAttribute("supplierIn", invoice);
-                model.addAttribute("pageTitle", "Theo dõi hóa đơn nhập kho");
                 return "templates_storage/invoiceintracking";
             }
             
@@ -74,20 +63,12 @@ public class InvoiceTrackingController {
         log.info("Loading supplier out tracking page for ID: {}", id);
         
         try {
-            // First try to get from regular transaction
+            // Get transaction data
             SupplierOutDTO supplierOut = supplierOutService.getSupplierOutById(id);
             
             if (supplierOut != null) {
                 model.addAttribute("supplierOut", supplierOut);
                 model.addAttribute("pageTitle", "Theo dõi đơn xuất kho");
-                return "templates_storage/invoiceouttracking";
-            }
-            
-            // If not found, try invoice
-            SupplierInvoiceDTO invoice = supplierOutInvoiceService.getInvoiceById(id);
-            if (invoice != null) {
-                model.addAttribute("supplierOut", invoice);
-                model.addAttribute("pageTitle", "Theo dõi hóa đơn xuất kho");
                 return "templates_storage/invoiceouttracking";
             }
             

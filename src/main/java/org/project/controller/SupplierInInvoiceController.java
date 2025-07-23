@@ -3,8 +3,9 @@ package org.project.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.enums.SupplierTransactionStatus;
-import org.project.model.dto.SupplierInvoiceDTO;
-import org.project.service.SupplierInInvoiceService;
+import org.project.model.dto.SupplierInDTO;
+import org.project.model.dto.SupplierTransactionDTO;
+import org.project.service.SupplierInService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.project.entity.SupplierInvoiceEntity;
+import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionType;
 import java.sql.Timestamp;
 import java.math.BigDecimal;
@@ -28,7 +29,7 @@ import java.math.BigDecimal;
 @RequestMapping("/supplier-in-invoices")
 public class SupplierInInvoiceController {
 
-    private final SupplierInInvoiceService supplierInInvoiceService;
+    private final SupplierInService supplierInService;
 
     /**
      * Main invoice page displaying all supplier in invoices
@@ -68,29 +69,31 @@ public class SupplierInInvoiceController {
             String filteredStatus = statusEnum != null ? statusEnum.name() : null;
             
             // DEBUG: Log before calling service
-            log.debug("Calling supplierInInvoiceService.getFilteredInvoices with page={}, size={}, keyword={}, filteredStatus={}, allowedStatuses={}",
+            log.debug("Calling supplierInService.getFilteredTransactions with page={}, size={}, keyword={}, filteredStatus={}, allowedStatuses={}",
                     page, size, keyword, filteredStatus, allowedStatuses);
             
-            Page<SupplierInvoiceDTO> invoicesPage = supplierInInvoiceService.getFilteredInvoices(page, size, keyword, filteredStatus, allowedStatuses);
+            // Sử dụng SupplierInService để lấy các transactions có trạng thái COMPLETED hoặc REJECTED
+            Page<SupplierInDTO> transactionsPage = supplierInService.getFilteredTransactions(
+                page, size, keyword, filteredStatus, allowedStatuses, SupplierTransactionType.STOCK_IN);
             
-            // DEBUG: Log fetched invoices size and content
-            log.info("Fetched {} invoices from service", invoicesPage.getContent().size());
-            invoicesPage.getContent().forEach(invoice -> 
-                log.debug("Invoice ID: {}, Number: {}, Date: {}, Status: {}", 
-                    invoice.getId(), invoice.getInvoiceNumber(), 
-                    invoice.getInvoiceDate(), invoice.getStatus()));
+            // DEBUG: Log fetched transactions size and content
+            log.info("Fetched {} transactions from service", transactionsPage.getContent().size());
+            transactionsPage.getContent().forEach(transaction -> 
+                log.debug("Transaction ID: {}, Number: {}, Date: {}, Status: {}", 
+                    transaction.getId(), transaction.getInvoiceNumber(), 
+                    transaction.getTransactionDate(), transaction.getStatus()));
             
-            model.addAttribute("invoices", invoicesPage.getContent());
+            model.addAttribute("invoices", transactionsPage.getContent());
             model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", invoicesPage.getTotalPages());
-            model.addAttribute("totalItems", invoicesPage.getTotalElements());
+            model.addAttribute("totalPages", transactionsPage.getTotalPages());
+            model.addAttribute("totalItems", transactionsPage.getTotalElements());
             model.addAttribute("keyword", keyword);
             model.addAttribute("status", status);
             
             // Add allowed statuses for dropdown
             model.addAttribute("availableStatuses", allowedStatuses);
             
-            log.debug("Supplier in invoices page prepared with {} invoices", invoicesPage.getContent().size());
+            log.debug("Supplier in invoices page prepared with {} transactions", transactionsPage.getContent().size());
         } catch (Exception e) {
             log.error("Error preparing supplier in invoices page data: {}", e.getMessage(), e);
             model.addAttribute("errorMessage", "Error loading invoices: " + e.getMessage());
@@ -109,22 +112,24 @@ public class SupplierInInvoiceController {
         log.info("Viewing supplier in invoice with ID: {}", id);
         
         try {
-            SupplierInvoiceDTO invoice = supplierInInvoiceService.getInvoiceById(id);
-            if (invoice != null) {
-                model.addAttribute("invoice", invoice);
+            SupplierInDTO transaction = supplierInService.getSupplierInById(id);
+            if (transaction != null && 
+                (transaction.getStatus() == SupplierTransactionStatus.COMPLETED || 
+                 transaction.getStatus() == SupplierTransactionStatus.REJECTED)) {
+                model.addAttribute("invoice", transaction);
                 // Add with the alternative name that the template is expecting
-                model.addAttribute("supplierIn", invoice);
+                model.addAttribute("supplierIn", transaction);
                 
                 // Debug info
                 log.debug("Supplier in invoice details loaded for ID: {}", id);
                 model.addAttribute("debugInfo", "Invoice ID: " + id + 
-                    ", status: " + invoice.getStatus() + 
-                    ", invoice number: " + invoice.getInvoiceNumber());
+                    ", status: " + transaction.getStatus() + 
+                    ", invoice number: " + transaction.getInvoiceNumber());
                 
                 return "templates_storage/StockInDetail";
             } else {
-                log.warn("Supplier in invoice with ID {} not found", id);
-                model.addAttribute("errorMessage", "Invoice not found");
+                log.warn("Supplier in invoice with ID {} not found or not in COMPLETED/REJECTED status", id);
+                model.addAttribute("errorMessage", "Invoice not found or not in appropriate status");
                 return "redirect:/supplier-in-invoices";
             }
         } catch (Exception e) {
@@ -141,131 +146,64 @@ public class SupplierInInvoiceController {
      * @param redirectAttributes Redirect attributes for flash messages
      * @return Redirect to invoice details page
      */
-    @PostMapping("/{id}/update-status")
+    @PostMapping("/{id}/status")
     public String updateInvoiceStatus(
             @PathVariable Long id,
             @RequestParam SupplierTransactionStatus status,
             RedirectAttributes redirectAttributes) {
-        log.info("Updating supplier in invoice status with ID: {} to status: {}", id, status);
+        log.info("Updating supplier in invoice status: ID={}, newStatus={}", id, status);
         
         try {
-            SupplierInvoiceDTO updated = supplierInInvoiceService.updateInvoiceStatus(id, status);
-            if (updated != null) {
-                log.debug("Updated supplier in invoice status with ID: {}", id);
+            SupplierInDTO updatedTransaction = supplierInService.updateSupplierInStatus(id, status.name());
+            if (updatedTransaction != null) {
                 redirectAttributes.addFlashAttribute("successMessage", 
-                        "Invoice status updated successfully to " + status);
+                        "Invoice status updated to " + status.getDisplayName());
+                return "redirect:/supplier-in-invoices/" + id;
             } else {
-                log.warn("Supplier in invoice with ID {} not found for status update", id);
-                redirectAttributes.addFlashAttribute("errorMessage", 
-                        "Invoice not found");
+                log.warn("Failed to update supplier in invoice status: ID={}, newStatus={}", id, status);
+                redirectAttributes.addFlashAttribute("errorMessage", "Failed to update invoice status");
+                return "redirect:/supplier-in-invoices";
             }
         } catch (Exception e) {
-            log.error("Error updating supplier in invoice status with ID {}: {}", id, e.getMessage(), e);
+            log.error("Error updating supplier in invoice status: ID={}, newStatus={}, error={}", 
+                    id, status, e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", 
-                    "Failed to update invoice status: " + e.getMessage());
+                    "Error updating invoice status: " + e.getMessage());
+            return "redirect:/supplier-in-invoices";
         }
-        
-        return "redirect:/supplier-in-invoices/" + id;
-    }
-
-    /**
-     * Update invoice form submission
-     * @param id Invoice ID
-     * @param invoiceDTO Invoice DTO from form
-     * @param redirectAttributes Redirect attributes for flash messages
-     * @return Redirect to invoice details page
-     */
-    @PostMapping("/{id}/update")
-    public String updateInvoice(@PathVariable Long id, 
-                               @ModelAttribute SupplierInvoiceDTO invoiceDTO,
-                               RedirectAttributes redirectAttributes) {
-        log.info("Updating supplier in invoice with ID: {}", id);
-        
-        try {
-            SupplierInvoiceDTO updated = supplierInInvoiceService.updateInvoice(id, invoiceDTO);
-            if (updated != null) {
-                log.debug("Updated supplier in invoice with ID: {}", id);
-                redirectAttributes.addFlashAttribute("successMessage", 
-                        "Invoice updated successfully");
-            } else {
-                log.warn("Supplier in invoice with ID {} not found for update", id);
-                redirectAttributes.addFlashAttribute("errorMessage", 
-                        "Invoice not found");
-            }
-        } catch (Exception e) {
-            log.error("Error updating supplier in invoice with ID {}: {}", id, e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("errorMessage", 
-                    "Failed to update invoice: " + e.getMessage());
-        }
-        
-        return "redirect:/supplier-in-invoices/" + id;
     }
 
     /**
      * Delete invoice
      * @param id Invoice ID
      * @param redirectAttributes Redirect attributes for flash messages
-     * @return Redirect to invoices page
+     * @return Redirect to invoice list page
      */
     @PostMapping("/{id}/delete")
-    public String deleteInvoice(@PathVariable Long id,
-                               RedirectAttributes redirectAttributes) {
+    public String deleteInvoice(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         log.info("Deleting supplier in invoice with ID: {}", id);
         
         try {
-            supplierInInvoiceService.deleteInvoice(id);
-            redirectAttributes.addFlashAttribute("successMessage", 
-                    "Invoice deleted successfully");
+            // Kiểm tra xem ID tồn tại không và có phải là trạng thái COMPLETED/REJECTED hay không
+            SupplierInDTO transaction = supplierInService.getSupplierInById(id);
+            if (transaction != null && 
+                (transaction.getStatus() == SupplierTransactionStatus.COMPLETED || 
+                 transaction.getStatus() == SupplierTransactionStatus.REJECTED)) {
+                
+                supplierInService.deleteSupplierIn(id);
+                redirectAttributes.addFlashAttribute("successMessage", "Invoice deleted successfully");
+                return "redirect:/supplier-in-invoices";
+            } else {
+                log.warn("Cannot delete supplier in invoice: ID={} not found or not in COMPLETED/REJECTED status", id);
+                redirectAttributes.addFlashAttribute("errorMessage", 
+                        "Invoice not found or cannot be deleted due to its status");
+                return "redirect:/supplier-in-invoices";
+            }
         } catch (Exception e) {
             log.error("Error deleting supplier in invoice with ID {}: {}", id, e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", 
-                    "Failed to delete invoice: " + e.getMessage());
-        }
-        
-        return "redirect:/supplier-in-invoices";
-    }
-
-    /**
-     * Create test invoices for debugging
-     * @return Response with status
-     */
-    @GetMapping("/create-test")
-    @ResponseBody
-    public String createTestData() {
-        log.info("Creating test supplier in invoices");
-        
-        try {
-            // Tạo hóa đơn COMPLETED
-            SupplierInvoiceEntity invoice1 = new SupplierInvoiceEntity();
-            invoice1.setInvoiceNumber("SI-TEST-001");
-            invoice1.setTransactionType(SupplierTransactionType.STOCK_IN);
-            invoice1.setInvoiceDate(new Timestamp(System.currentTimeMillis()));
-            invoice1.setTotalAmount(new BigDecimal("1000000"));
-            invoice1.setTaxAmount(new BigDecimal("100000"));
-            invoice1.setShippingCost(new BigDecimal("50000"));
-            invoice1.setGrandTotal(new BigDecimal("1150000"));
-            invoice1.setStatus(SupplierTransactionStatus.COMPLETED);
-            invoice1.setNotes("Test completed invoice");
-            
-            // Tạo hóa đơn REJECTED
-            SupplierInvoiceEntity invoice2 = new SupplierInvoiceEntity();
-            invoice2.setInvoiceNumber("SI-TEST-002");
-            invoice2.setTransactionType(SupplierTransactionType.STOCK_IN);
-            invoice2.setInvoiceDate(new Timestamp(System.currentTimeMillis()));
-            invoice2.setTotalAmount(new BigDecimal("2000000"));
-            invoice2.setTaxAmount(new BigDecimal("200000"));
-            invoice2.setShippingCost(new BigDecimal("50000"));
-            invoice2.setGrandTotal(new BigDecimal("2250000"));
-            invoice2.setStatus(SupplierTransactionStatus.REJECTED);
-            invoice2.setNotes("Test rejected invoice");
-            
-            // Lưu hóa đơn
-            supplierInInvoiceService.saveTestInvoices(List.of(invoice1, invoice2));
-            
-            return "Đã tạo 2 hóa đơn mẫu thành công";
-        } catch (Exception e) {
-            log.error("Error creating test invoices: {}", e.getMessage(), e);
-            return "Lỗi khi tạo hóa đơn mẫu: " + e.getMessage();
+                    "Error deleting invoice: " + e.getMessage());
+            return "redirect:/supplier-in-invoices";
         }
     }
 }
