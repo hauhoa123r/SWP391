@@ -476,7 +476,11 @@
                                                 <span th:if="${supplierOut.reason == 'DAMAGED'}" class="badge bg-danger">Hư hỏng</span>
                                                 <span th:if="${supplierOut.reason != 'SALE' && supplierOut.reason != 'TRANSFER' && supplierOut.reason != 'RETURN' && supplierOut.reason != 'EXPIRED' && supplierOut.reason != 'DAMAGED'}" class="badge bg-info">Khác</span>
                                             </td>
-                                            <td class="text-end"><strong th:text="${#numbers.formatDecimal(supplierOut.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong></td>
+                                            <td class="text-end">
+                                                <span th:with="totalAmount=${supplierOut?.items != null ? #aggregates.sum(supplierOut.items.?[unitPrice != null && quantity != null].![unitPrice * quantity]) : 0}">
+                                                    <strong th:text="${#numbers.formatDecimal(totalAmount * 1000, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong>
+                                                </span>
+                                            </td>
                                             <td>
                                                 <span th:if="${supplierOut.status != null}"
                                                       th:class="${'badge status-' + supplierOut.status.name().toLowerCase()}"
