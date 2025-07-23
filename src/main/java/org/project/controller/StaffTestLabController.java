@@ -2,38 +2,78 @@ package org.project.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.project.converter.AssignmentListConverter;
+import org.project.converter.SetDateConverter;
+import org.project.converter.TestItemConverter;
 import org.project.entity.StaffEntity;
 import org.project.enums.StaffRole;
 import org.project.model.dto.AssignmentListDTO;
+import org.project.model.response.SetDateGetSampleResponse;
+import org.project.model.response.SetResultResponse;
 import org.project.repository.AppointmentRepository;
+import org.project.repository.AssignmentRepository;
 import org.project.repository.PatientRepository;
 import org.project.repository.StaffRepository;
+import org.project.service.SampleScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("lab")
 public class StaffTestLabController {
 
-    private final StaffRepository staffRepository;
-    private final PatientRepository patientRepository;
-    private final AppointmentRepository appointmentRepository;
-    private final AssignmentListConverter assignmentListConverter;
-    public StaffTestLabController(StaffRepository staffRepository,
-                                  PatientRepository patientRepository,
-                                  AppointmentRepository appointmentRepository,
-                                  AssignmentListConverter assignmentListConverter) {
+    private  TestItemConverter testItemConverter;
+    private  StaffRepository staffRepository;
+    private  PatientRepository patientRepository;
+    private  AppointmentRepository appointmentRepository;
+    private  AssignmentListConverter assignmentListConverter;
+    private  AssignmentRepository assignmentRepository;
+    private  SampleScheduleService sampleScheduleService;
+    private  SetDateConverter setDateConverter;
+
+    @Autowired
+    public void setTestItemConverter(TestItemConverter testItemConverter) {
+        this.testItemConverter = testItemConverter;
+    }
+
+    @Autowired
+    public void setStaffRepository(StaffRepository staffRepository) {
         this.staffRepository = staffRepository;
+    }
+
+    @Autowired
+    public void setPatientRepository(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
+    }
+
+    @Autowired
+    public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
         this.appointmentRepository = appointmentRepository;
+    }
+
+    @Autowired
+    public void setAssignmentListConverter(AssignmentListConverter assignmentListConverter) {
         this.assignmentListConverter = assignmentListConverter;
+    }
+
+    @Autowired
+    public void setAssignmentRepository(AssignmentRepository assignmentRepository) {
+        this.assignmentRepository = assignmentRepository;
+    }
+
+    @Autowired
+    public void setSampleScheduleService(SampleScheduleService sampleScheduleService) {
+        this.sampleScheduleService = sampleScheduleService;
+    }
+
+    @Autowired
+    public void setSetDateConverter(SetDateConverter setDateConverter) {
+        this.setDateConverter = setDateConverter;
     }
 
     @GetMapping("/homepage")
@@ -47,22 +87,31 @@ public class StaffTestLabController {
         return modelAndView;
     }
 
-    @GetMapping("/test-list")
-    public String getAssignments(
-            @ModelAttribute() AssignmentListDTO assignmentListDTO,
-                                 Model model,
-                                 HttpServletRequest request) {
-        Pageable pageable = PageRequest.of(assignmentListDTO.getPage(), assignmentListDTO.getSize());
-        Page<AssignmentListDTO> assignments = assignmentListConverter.getAllAssignmentListPageable(pageable);
-        model.addAttribute("assignments", assignments);
-        model.addAttribute("currentURI", request.getRequestURI());
-        return "dashboard-staff-test/test-list";
-    }
+        @GetMapping("/tests")
+        public String getAssignments(
+                @ModelAttribute() AssignmentListDTO assignmentListDTO,
+                                     Model model,
+                                     HttpServletRequest request) {
+            Pageable pageable = PageRequest.of(assignmentListDTO.getPage(), assignmentListDTO.getSize());
+            Page<AssignmentListDTO> assignments = assignmentListConverter.getAllAssignmentListPageable(pageable);
+            model.addAttribute("assignments", assignments);
+            model.addAttribute("currentURI", request.getRequestURI());
+            return "dashboard-staff-test/test-list";
+        }
 
-    @GetMapping("/receive-list")
-    public ModelAndView receiveListView(HttpServletRequest request, Model model) {
+    @GetMapping("/receive-items")
+    public ModelAndView receiveListView(
+            @RequestParam(defaultValue = "0", name = "page") int pageIndex,
+            HttpServletRequest request,
+            Model model) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/receive-list");
+        Pageable pageable = PageRequest.of(pageIndex, 10);
+        Page<AssignmentListDTO> assignments = assignmentListConverter.getAllRequestPending(pageable);
+        modelAndView.addObject("assignments", assignments);
         modelAndView.addObject("currentURI", request.getRequestURI());
+        model.addAttribute("currentPage", assignments.getNumber());
+        model.addAttribute("totalPages", assignments.getTotalPages());
+        model.addAttribute("totalItems", assignments.getTotalElements());
         return modelAndView;
     }
 
@@ -129,23 +178,32 @@ public class StaffTestLabController {
         return modelAndView;
     }
 
-    @GetMapping("/result")
-    public ModelAndView resultView(HttpServletRequest request, Model model) {
+    @GetMapping("/result/{id}")
+    public ModelAndView resultView(HttpServletRequest request, Model model, @PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/result-test-details");
+        SetResultResponse result = testItemConverter.toConverterSetResultResponse(id);
+        modelAndView.addObject("result", result);
         modelAndView.addObject("currentURI", request.getRequestURI());
         return modelAndView;
     }
 
     @GetMapping("/set-date")
-    public ModelAndView setDateView(HttpServletRequest request, Model model) {
+    public ModelAndView setDateView(HttpServletRequest request, Model model, @RequestParam(required = false) Long id) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/set-date-time");
+        SetDateGetSampleResponse setDateGetSampleResponse = setDateConverter.toConverterSetDateGetSampleResponse(id);
+        setDateGetSampleResponse.setTestRequestId(id);
+        modelAndView.addObject("patient", setDateGetSampleResponse);
         modelAndView.addObject("currentURI", request.getRequestURI());
         return modelAndView;
     }
-    @GetMapping("/test-detail")
-    public ModelAndView viewTestDetail(HttpServletRequest request, Model model) {
+    @GetMapping("/test-detail/{id}")
+    public ModelAndView viewTestDetail(HttpServletRequest request, Model model,  @PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/lab-test-details");
+        SetResultResponse result = testItemConverter.toConverterSetResultResponse(id);
+        modelAndView.addObject("result", result);
         modelAndView.addObject("currentURI", request.getRequestURI());
         return modelAndView;
     }
+
+
 }

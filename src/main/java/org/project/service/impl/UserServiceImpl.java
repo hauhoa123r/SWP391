@@ -4,6 +4,8 @@ import org.project.entity.UserEntity;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
 import org.project.exception.ResourceNotFoundException;
+import org.project.model.dto.UserLoginDTO;
+import org.project.model.response.UserLoginResponse;
 import org.project.repository.UserRepository;
 import org.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.Optional;
 
+import org.project.converter.toConverterLogin;
 @Service
 public class UserServiceImpl implements UserService {
 

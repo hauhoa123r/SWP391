@@ -32,7 +32,7 @@ public class ProductTagEntityId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (o == null || !(o instanceof ProductTagEntityId)) return false;
         ProductTagEntityId entity = (ProductTagEntityId) o;
         return Objects.equals(this.productId, entity.productId) &&
                 Objects.equals(this.name, entity.name);
@@ -41,6 +41,14 @@ public class ProductTagEntityId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(productId, name);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductTagEntityId{" +
+                "productId=" + productId +
+                ", name='" + name + '\'' +
+                '}';
     }
 
 }

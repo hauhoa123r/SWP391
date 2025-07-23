@@ -2,6 +2,8 @@ package org.project.service;
 
 import org.project.entity.UserEntity;
 import org.springframework.data.domain.Page;
+import org.project.model.dto.UserLoginDTO;
+import org.project.model.response.UserLoginResponse;
 
 public interface UserService {
     // Phân trang người dùng
@@ -49,4 +51,5 @@ public interface UserService {
 
 
 
+    UserLoginResponse isLogin(UserLoginDTO userLoginDTO);
 }

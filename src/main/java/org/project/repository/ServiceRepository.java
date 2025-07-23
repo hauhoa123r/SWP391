@@ -12,4 +12,6 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, Long> {
     boolean existsByIdAndProductEntityProductStatusAndDepartmentEntityStaffEntitiesId(Long id, ProductStatus productEntityProductStatus, Long departmentEntityStaffEntitiesId);
 
     boolean existsByIdAndProductEntityProductStatus(Long id, ProductStatus productEntityProductStatus);
+
+    Long countByProductEntityProductStatus(ProductStatus productEntityProductStatus);
 }

@@ -11,13 +11,13 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssignmentListDTO {
+public class AssignmentListDTO extends AbstractServiceDTO {
+    private Long id;
     private String patientName;
     private String departmentName;
+    private String doctorName;
     private String testType;
     private Date requestAt;
     private String status;
     private String reason;
-    private int page = 0;
-    private int size = 10;
 }

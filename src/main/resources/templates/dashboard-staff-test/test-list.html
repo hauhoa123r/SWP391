@@ -122,7 +122,7 @@
     <!-- Customizer Css -->
     <link rel="stylesheet" href="./assets/css/customizer.min.css?v=1.4.1" th:href="@{/dashboard-staff-test/assets/css/customizer.min.css?v=1.4.1}"
  />
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -191,7 +191,7 @@
     <!-- loader END -->
     <aside class="sidebar sidebar-base " id="first-tour" data-toggle="main-sidebar" data-sidebar="responsive">
         <div class="sidebar-header d-flex align-items-center justify-content-start position-relative">
-            <a href="./index.html" th:href="@{/dashboard-staff-test/index.html}"
+            <a href="./index.html" th:href="@{/lab/homepage}"
  class="navbar-brand">
 
                 <!--Logo start-->
@@ -740,122 +740,49 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive w-100">
-                                <form method="get" th:action="@{/lab/test-list}">
-                                <table class="table w-100">
-                                    <thead>
-                                    <tr>
-                                        <th>Patient Name</th>
-                                        <th>Referring Department</th>
-                                        <th>Test Type</th>
-                                        <th>Requested At</th>
-                                        <th>Status</th>
-                                        <th>Reason</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="assignment : ${assignments.content}">
-                                        <td th:text="${assignment.patientName}"></td>
-                                        <td th:text="${assignment.departmentName}"></td>
-                                        <td th:text="${assignment.testType}"></td>
-                                        <td th:text="${assignment.requestAt}"></td>
-                                        <td>
-                    <span th:switch="${assignment.status.toLowerCase()}" class="status-badge">
-                      <span th:case="'pending'" class="status-not-received" th:text="'Waiting'"></span>
-                      <span th:case="'received'" class="status-received" th:text="'Received'"></span>
-                      <span th:case="'processing'" class="status-processing" th:text="'Processing'"></span>
-                      <span th:case="'completed'" class="status-completed" th:text="'Completed'"></span>
-                      <span th:case="'rejected'" class="status-not-received" th:text="'Not Received'"></span>
-                      <span th:case="'rescheduled'" class="status-rescheduled" th:text="'Rescheduled'"></span>
-                      <span th:case="*" class="status-not-received" th:text="'Unknown'"></span>
-                    </span>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
-                                                    data-bs-target="#reasonModal"
-                                                    th:attr="data-reason=${assignment.reason}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="16" height="16"
-                                                     viewBox="0 0 24 24" fill="none">
-                                                    <path d="M22.4541 11.3918C22.7819 11.7385 22.7819 12.2615 22.4541 12.6082C21.0124 14.1335 16.8768 18 12 18C7.12317 18 2.98759 14.1335 1.54586 12.6082C1.21811 12.2615 1.21811 11.7385 1.54586 11.3918C2.98759 9.86647 7.12317 6 12 6C16.8768 6 21.0124 9.86647 22.4541 11.3918Z"
-                                                          fill="currentColor" fill-opacity="0.4" stroke="currentColor"></path>
-                                                    <path d="M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z"
-                                                          stroke="currentColor"></path>
-                                                    <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                                                          fill="currentColor"></path>
-                                                    <mask id="mask0_18_1031" style="mask-type:alpha"
-                                                          maskUnits="userSpaceOnUse" x="9" y="9" width="6" height="6">
-                                                        <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                                                              fill="currentColor"></path>
-                                                    </mask>
-                                                    <g mask="url(#mask0_18_1031)">
-                                                        <path opacity="0.53"
-                                                              d="M13.5 12C14.3284 12 15 11.3284 15 10.5C15 9.67157 14.3284 9 13.5 9C12.6716 9 12 9.67157 12 10.5C12 11.3284 12.6716 12 13.5 12Z"
-                                                              fill="white"></path>
-                                                    </g>
-                                                </svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>
-                                            Patient Name<br/>
-                                            <input type="text" name="patientName" th:value="${param.patientName}" class="form-control form-control-sm" onchange="this.form.submit()"/>
-                                        </th>
-                                        <th>
-                                            Department<br/>
-                                            <input type="text" name="departmentName" th:value="${param.departmentName}" class="form-control form-control-sm" onchange="this.form.submit()"/>
-                                        </th>
-                                        <th>
-                                            Test Type<br/>
-                                            <input type="text" name="testType" th:value="${param.testType}" class="form-control form-control-sm" onchange="this.form.submit()"/>
-                                        </th>
-                                        <th>Requested At</th>
-                                        <th>Status</th>
-                                        <th>Reason</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
+                                <form id="searchForm">
+                                    <table class="table w-100">
+                                        <thead>
+                                        <tr>
+                                            <th>Patient Name</th>
+                                            <th>Referring Department</th>
+                                            <th>Test Type</th>
+                                            <th>Requested At</th>
+                                            <th>Status</th>
+                                            <th>Reason</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="assignmentBody">
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>
+                                                Patient Name<br/>
+                                                <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" />
+                                            </th>
+                                            <th>
+                                                Department<br/>
+                                                <input type="text" id="departmentName" name="departmentName" class="form-control form-control-sm" />
+                                            </th>
+                                            <th>
+                                                Test Type<br/>
+                                                <input type="text" id="testType" name="testType" class="form-control form-control-sm" />
+                                            </th>
+                                            <th></th>
+                                            <th>Status</th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
                                 </form>
-                                <nav th:if="${assignments.totalPages > 1}" class="mt-3">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item" th:classappend="${assignments.first} ? 'disabled'">
-                                            <a class="page-link" th:href="@{${currentURI}(page=0, size=${assignments.size})}" aria-label="First">First</a>
-                                        </li>
-
-                                        <li class="page-item" th:classappend="${assignments.first} ? 'disabled'">
-                                            <a class="page-link" th:href="@{${currentURI}(page=${assignments.number - 1}, size=${assignments.size})}" aria-label="Previous">«</a>
-                                        </li>
-
-                                        <li class="page-item" th:each="i : ${#numbers.sequence(0, assignments.totalPages - 1)}"
-                                            th:if="${i < 2 or i > assignments.totalPages - 3 or (i >= assignments.number - 1 and i <= assignments.number + 1)}"
-                                            th:classappend="${i} == ${assignments.number} ? 'active'">
-                                            <a class="page-link" th:href="@{${currentURI}(page=${i}, size=${assignments.size})}" th:text="${i + 1}"></a>
-                                        </li>
-
-                                        <li class="page-item disabled" th:if="${assignments.number > 3}"><span class="page-link">...</span></li>
-                                        <li class="page-item disabled" th:if="${assignments.number < assignments.totalPages - 4}"><span class="page-link">...</span></li>
-
-                                        <li class="page-item" th:classappend="${assignments.last} ? 'disabled'">
-                                            <a class="page-link" th:href="@{${currentURI}(page=${assignments.number + 1}, size=${assignments.size})}" aria-label="Next">»</a>
-                                        </li>
-
-                                        <li class="page-item" th:classappend="${assignments.last} ? 'disabled'">
-                                            <a class="page-link" th:href="@{${currentURI}(page=${assignments.totalPages - 1}, size=${assignments.size})}" aria-label="Last">Last</a>
-                                        </li>
-                                    </ul>
+                                <nav id="pagination" class="mt-3 text-center">
                                 </nav>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
-
         </div>
-        <!-- Footer Section Start -->
         <footer class="footer">
             <div class="footer-body">
                 <ul class="left-panel list-inline mb-0 p-0">
@@ -1708,27 +1635,184 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modal-reason-content">
-                    <!-- Lý do sẽ hiển thị ở đây -->
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- Settings sidebar end here -->
-    <!-- Live Customizer end -->
-    <!-- Wrapper End-->
-
     <script>
-        const reasonModal = document.getElementById('reasonModal');
-        reasonModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-            const reason = button.getAttribute('data-reason');
-            const modalBody = reasonModal.querySelector('#modal-reason-content');
-            modalBody.textContent = reason || 'No reason provided.';
+        let timer = null;
+        let currentPage = 0;
+        let pageSize = 10;
+
+        function fetchAssignments(page = 0) {
+            const patientName = $('#patientName').val();
+            const departmentName = $('#departmentName').val();
+            const testType = $('#testType').val();
+
+            $.ajax({
+                url: '/api/assignments/search',
+                method: 'GET',
+                data: {
+                    patientName: patientName,
+                    departmentName: departmentName,
+                    testType: testType,
+                    page: page,
+                    size: pageSize
+                },
+                success: function (res) {
+                    if (!res || !res.content) {
+                        $('#assignmentBody').html('<tr><td colspan="6">No data found</td></tr>');
+                        $('#pagination').html('');
+                        return;
+                    }
+                    renderTable(res.content);
+                    renderPagination(res.totalPages, res.number);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching assignments:', error);
+                    $('#assignmentBody').html('<tr><td colspan="6">Error loading data: ' + (xhr.responseText || 'Unknown error') + '</td></tr>');
+                    $('#pagination').html('');
+                }
+            });
+        }
+
+        function renderTable(data) {
+            const tbody = $('#assignmentBody');
+            if (!data || data.length === 0) {
+                tbody.html('<tr><td colspan="6">No data found</td></tr>');
+                return;
+            }
+
+            let html = '';
+            data.forEach(a => {
+                const statusClass = {
+                    'pending': 'status-not-received',
+                    'received': 'status-received',
+                    'processing': 'status-processing',
+                    'completed': 'status-completed',
+                    'rejected': 'status-not-received',
+                    'rescheduled': 'status-rescheduled'
+                }[a.status?.toLowerCase()] || 'status-not-received';
+                const statusText = {
+                    'pending': 'Waiting',
+                    'received': 'Received',
+                    'processing': 'Processing',
+                    'completed': 'Completed',
+                    'rejected': 'Not Received',
+                    'rescheduled': 'Rescheduled'
+                }[a.status?.toLowerCase()] || 'Unknown';
+
+                const requestTime = a.requestAt
+                    ? new Date(a.requestAt).toLocaleTimeString('vi-VN', { hour12: false })
+                    : '';
+
+
+                const escapedReason = a.reason
+                    ? a.reason.replace(/"/g, '\\"').replace(/\n/g, ' ')
+                    : null;
+
+                html += `
+            <tr>
+                <td>${a.patientName || ''}</td>
+                <td>${a.departmentName || ''}</td>
+                <td>${a.testType || ''}</td>
+                <td>${requestTime}</td>
+                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                <td>
+  <button type="button"
+  class="btn btn-sm btn-outline-info"
+          data-bs-toggle="modal"
+          data-bs-target="#reasonModal"
+          ${escapedReason !== null ? `data-reason="${escapedReason}"` : ''}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+  <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+  <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+</svg>
+  </button>
+</td>
+            </tr>`;
+            });
+            tbody.html(html);
+        }
+
+        function renderPagination(totalPages, currentPage) {
+            const pagination = $('#pagination');
+            if (!totalPages || totalPages <= 0) {
+                pagination.html('<p>No pages available</p>');
+                return;
+            }
+
+            let html = '<ul class="pagination justify-content-center">';
+            html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="0" aria-label="First">First</a>
+    </li>`;
+            html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage - 1}" aria-label="Previous">«</a>
+    </li>`;
+
+            for (let i = 0; i < totalPages; i++) {
+                if (i < 2 || i > totalPages - 3 || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="${i}">${i + 1}</a>
+            </li>`;
+                }
+            }
+
+            if (currentPage > 3) {
+                html += '<li class="page-item disabled"><span class="page-link">...</span></li>';
+            }
+            if (currentPage < totalPages - 4) {
+                html += '<li class="page-item disabled"><span class="page-link">...</span></li>';
+            }
+
+            html += `<li class="page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}" aria-label="Next">»</a>
+    </li>`;
+            html += `<li class="page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${totalPages - 1}" aria-label="Last">Last</a>
+    </li>`;
+            html += '</ul>';
+
+            pagination.html(html);
+
+            $('.page-link').on('click', function (e) {
+                e.preventDefault();
+                const page = $(this).data('page');
+                if (page !== undefined && page >= 0 && page < totalPages) {
+                    currentPage = page;
+                    fetchAssignments(page);
+                }
+            });
+        }
+
+        $('#patientName, #departmentName, #testType').on('input', function () {
+            clearTimeout(timer);
+            timer = setTimeout(() => fetchAssignments(0), 300);
+        });
+
+        $(document).ready(function () {
+            $('#reasonModal').on('show.bs.modal', function (event) {
+                const button = $(event.relatedTarget);
+                const reason = button.data('reason');
+                $('#modal-reason-content').text(reason || 'No reason provided');
+            });
+        });
+
+
+        $(document).ready(() => fetchAssignments());
+        $(document).ready(function () {
+            $('#reasonModal').on('show.bs.modal', function (event) {
+                const button = $(event.relatedTarget);
+                const reason = button.data('reason');
+                $('#modal-reason-content').text(reason || 'No reason provided');
+            });
+        });
+        $(document).on('click', '.btn-outline-info', function () {
+            const reason = $(this).data('reason');
+            $('#modal-reason-content').text(reason || 'No reason provided');
         });
     </script>
-
     <!-- Library Bundle Script -->
     <script src="./assets/js/core/libs.min.js" th:src="@{/dashboard-staff-test/assets/js/core/libs.min.js}"
 ></script>
@@ -1788,6 +1872,7 @@
     <!-- Icons -->
     <script src="./assets/js/solid-icon-search-filter.js?v=1.4.1" th:src="@{/dashboard-staff-test/assets/js/solid-icon-search-filter.js?v=1.4.1}"
  defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

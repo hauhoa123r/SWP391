@@ -29,105 +29,246 @@ public class TimestampUtils {
         this.timestamp = new Timestamp(date.getTime());
     }
 
+    //  ---------------------- CUSTOM SETTER ----------------------
+
+    public TimestampUtils setTime() {
+        return new TimestampUtils();
+    }
+
+    public TimestampUtils setTime(Timestamp timestamp) {
+        return new TimestampUtils(timestamp);
+    }
+
+    public TimestampUtils setTime(Date date) {
+        return new TimestampUtils(date);
+    }
+
     // ------------------------- ADD & SUBTRACT TIME ----------------------
+    // Seconds
     public Timestamp plusSeconds(int seconds) {
-        long milliseconds = timestamp.getTime() + (seconds * 1000L);
-        return new Timestamp(milliseconds);
+        LocalDateTime ldt = toLocalDateTime().plusSeconds(seconds);
+        return Timestamp.valueOf(ldt);
     }
 
     public Timestamp plusSeconds(Timestamp timestamp, int seconds) {
-        long milliseconds = timestamp.getTime() + (seconds * 1000L);
-        return new Timestamp(milliseconds);
+        LocalDateTime ldt = timestamp.toLocalDateTime().plusSeconds(seconds);
+        return Timestamp.valueOf(ldt);
     }
 
     public Timestamp minusSeconds(int seconds) {
-        long milliseconds = timestamp.getTime() - (seconds * 1000L);
-        return new Timestamp(milliseconds);
+        LocalDateTime ldt = toLocalDateTime().minusSeconds(seconds);
+        return Timestamp.valueOf(ldt);
     }
 
     public Timestamp minusSeconds(Timestamp timestamp, int seconds) {
-        long milliseconds = timestamp.getTime() - (seconds * 1000L);
-        return new Timestamp(milliseconds);
+        LocalDateTime ldt = timestamp.toLocalDateTime().minusSeconds(seconds);
+        return Timestamp.valueOf(ldt);
     }
 
+    // Minutes
     public Timestamp plusMinutes(int minutes) {
-        long milliseconds = timestamp.getTime() + (minutes * 60 * 1000L);
-        return new Timestamp(milliseconds);
+        LocalDateTime ldt = toLocalDateTime().plusMinutes(minutes);
+        return Timestamp.valueOf(ldt);
     }
 
     public Timestamp plusMinutes(Timestamp timestamp, int minutes) {
-        long milliseconds = timestamp.getTime() + (minutes * 60 * 1000L);
-        return new Timestamp(milliseconds);
+        LocalDateTime ldt = timestamp.toLocalDateTime().plusMinutes(minutes);
+        return Timestamp.valueOf(ldt);
     }
 
     public Timestamp minusMinutes(int minutes) {
-        long milliseconds = timestamp.getTime() - (minutes * 60 * 1000L);
-        return new Timestamp(milliseconds);
-    }
-
-    public Timestamp plusHours(int hours) {
-        long milliseconds = timestamp.getTime() + (hours * 60 * 60 * 1000L);
-        return new Timestamp(milliseconds);
-    }
-
-    public Timestamp plusHours(Timestamp timestamp, int hours) {
-        long milliseconds = timestamp.getTime() + (hours * 60 * 60 * 1000L);
-        return new Timestamp(milliseconds);
-    }
-
-    public Timestamp minusHours(int hours) {
-        long milliseconds = timestamp.getTime() - (hours * 60 * 60 * 1000L);
-        return new Timestamp(milliseconds);
-    }
-
-    public Timestamp minusHours(Timestamp timestamp, int hours) {
-        long milliseconds = timestamp.getTime() - (hours * 60 * 60 * 1000L);
-        return new Timestamp(milliseconds);
+        LocalDateTime ldt = toLocalDateTime().minusMinutes(minutes);
+        return Timestamp.valueOf(ldt);
     }
 
     public Timestamp minusMinutes(Timestamp timestamp, int minutes) {
-        long milliseconds = timestamp.getTime() - (minutes * 60 * 1000L);
-        return new Timestamp(milliseconds);
+        LocalDateTime ldt = timestamp.toLocalDateTime().minusMinutes(minutes);
+        return Timestamp.valueOf(ldt);
     }
 
+    // Hours
+    public Timestamp plusHours(int hours) {
+        LocalDateTime ldt = toLocalDateTime().plusHours(hours);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Timestamp plusHours(Timestamp timestamp, int hours) {
+        LocalDateTime ldt = timestamp.toLocalDateTime().plusHours(hours);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Timestamp minusHours(int hours) {
+        LocalDateTime ldt = toLocalDateTime().minusHours(hours);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Timestamp minusHours(Timestamp timestamp, int hours) {
+        LocalDateTime ldt = timestamp.toLocalDateTime().minusHours(hours);
+        return Timestamp.valueOf(ldt);
+    }
+
+    // Days
     public Timestamp plusDays(int days) {
-        long milliseconds = timestamp.getTime() + (days * 24 * 60 * 60 * 1000L);
-        return new Timestamp(milliseconds);
-    }
-
-    public Date plusDaysAsDate(int days) {
-        long milliseconds = timestamp.getTime() + (days * 24 * 60 * 60 * 1000L);
-        return new Date(milliseconds);
+        LocalDateTime ldt = toLocalDateTime().plusDays(days);
+        return Timestamp.valueOf(ldt);
     }
 
     public Timestamp plusDays(Timestamp timestamp, int days) {
-        long milliseconds = timestamp.getTime() + (days * 24 * 60 * 60 * 1000L);
-        return new Timestamp(milliseconds);
+        LocalDateTime ldt = timestamp.toLocalDateTime().plusDays(days);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Date plusDaysAsDate(int days) {
+        LocalDate ld = toLocalDate().plusDays(days);
+        return Date.valueOf(ld);
     }
 
     public Date plusDaysAsDate(Date date, int days) {
-        long milliseconds = date.getTime() + (days * 24 * 60 * 60 * 1000L);
-        return new Date(milliseconds);
+        LocalDate ld = date.toLocalDate().plusDays(days);
+        return Date.valueOf(ld);
     }
 
     public Timestamp minusDays(int days) {
-        long milliseconds = timestamp.getTime() - (days * 24 * 60 * 60 * 1000L);
-        return new Timestamp(milliseconds);
-    }
-
-    public Date minusDaysAsDate(int days) {
-        long milliseconds = timestamp.getTime() - (days * 24 * 60 * 60 * 1000L);
-        return new Date(milliseconds);
+        LocalDateTime ldt = toLocalDateTime().minusDays(days);
+        return Timestamp.valueOf(ldt);
     }
 
     public Timestamp minusDays(Timestamp timestamp, int days) {
-        long milliseconds = timestamp.getTime() - (days * 24 * 60 * 60 * 1000L);
-        return new Timestamp(milliseconds);
+        LocalDateTime ldt = timestamp.toLocalDateTime().minusDays(days);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Date minusDaysAsDate(int days) {
+        LocalDate ld = toLocalDate().minusDays(days);
+        return Date.valueOf(ld);
     }
 
     public Date minusDaysAsDate(Date date, int days) {
-        long milliseconds = date.getTime() - (days * 24 * 60 * 60 * 1000L);
-        return new Date(milliseconds);
+        LocalDate ld = date.toLocalDate().minusDays(days);
+        return Date.valueOf(ld);
+    }
+
+    // Weeks
+    public Timestamp plusWeeks(int weeks) {
+        LocalDateTime ldt = toLocalDateTime().plusWeeks(weeks);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Timestamp plusWeeks(Timestamp timestamp, int weeks) {
+        LocalDateTime ldt = timestamp.toLocalDateTime().plusWeeks(weeks);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Date plusWeeksAsDate(int weeks) {
+        LocalDate ld = toLocalDate().plusWeeks(weeks);
+        return Date.valueOf(ld);
+    }
+
+    public Date plusWeeksAsDate(Date date, int weeks) {
+        LocalDate ld = date.toLocalDate().plusWeeks(weeks);
+        return Date.valueOf(ld);
+    }
+
+    public Timestamp minusWeeks(int weeks) {
+        LocalDateTime ldt = toLocalDateTime().minusWeeks(weeks);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Timestamp minusWeeks(Timestamp timestamp, int weeks) {
+        LocalDateTime ldt = timestamp.toLocalDateTime().minusWeeks(weeks);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Date minusWeeksAsDate(int weeks) {
+        LocalDate ld = toLocalDate().minusWeeks(weeks);
+        return Date.valueOf(ld);
+    }
+
+    public Date minusWeeksAsDate(Date date, int weeks) {
+        LocalDate ld = date.toLocalDate().minusWeeks(weeks);
+        return Date.valueOf(ld);
+    }
+
+    // Months
+    public Timestamp plusMonths(int months) {
+        LocalDateTime ldt = toLocalDateTime().plusMonths(months);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Timestamp plusMonths(Timestamp timestamp, int months) {
+        LocalDateTime ldt = timestamp.toLocalDateTime().plusMonths(months);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Date plusMonthsAsDate(int months) {
+        LocalDate ld = toLocalDate().plusMonths(months);
+        return Date.valueOf(ld);
+    }
+
+    public Date plusMonthsAsDate(Date date, int months) {
+        LocalDate ld = date.toLocalDate().plusMonths(months);
+        return Date.valueOf(ld);
+    }
+
+    public Timestamp minusMonths(int months) {
+        LocalDateTime ldt = toLocalDateTime().minusMonths(months);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Timestamp minusMonths(Timestamp timestamp, int months) {
+        LocalDateTime ldt = timestamp.toLocalDateTime().minusMonths(months);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Date minusMonthsAsDate(int months) {
+        LocalDate ld = toLocalDate().minusMonths(months);
+        return Date.valueOf(ld);
+    }
+
+    public Date minusMonthsAsDate(Date date, int months) {
+        LocalDate ld = date.toLocalDate().minusMonths(months);
+        return Date.valueOf(ld);
+    }
+
+    // Years
+    public Timestamp plusYears(int years) {
+        LocalDateTime ldt = toLocalDateTime().plusYears(years);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Timestamp plusYears(Timestamp timestamp, int years) {
+        LocalDateTime ldt = timestamp.toLocalDateTime().plusYears(years);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Date plusYearsAsDate(int years) {
+        LocalDate ld = toLocalDate().plusYears(years);
+        return Date.valueOf(ld);
+    }
+
+    public Date plusYearsAsDate(Date date, int years) {
+        LocalDate ld = date.toLocalDate().plusYears(years);
+        return Date.valueOf(ld);
+    }
+
+    public Timestamp minusYears(int years) {
+        LocalDateTime ldt = toLocalDateTime().minusYears(years);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Timestamp minusYears(Timestamp timestamp, int years) {
+        LocalDateTime ldt = timestamp.toLocalDateTime().minusYears(years);
+        return Timestamp.valueOf(ldt);
+    }
+
+    public Date minusYearsAsDate(int years) {
+        LocalDate ld = toLocalDate().minusYears(years);
+        return Date.valueOf(ld);
+    }
+
+    public Date minusYearsAsDate(Date date, int years) {
+        LocalDate ld = date.toLocalDate().minusYears(years);
+        return Date.valueOf(ld);
     }
 
     // ------------------------- GET TIME BOUNDARIES ----------------------
@@ -620,6 +761,10 @@ public class TimestampUtils {
         return timestamp;
     }
 
+    public LocalDate toLocalDate() {
+        return timestamp.toLocalDateTime().toLocalDate();
+    }
+
     public LocalDateTime toLocalDateTime() {
         return timestamp.toLocalDateTime();
     }
@@ -629,5 +774,9 @@ public class TimestampUtils {
         LocalDateTime ldt = toLocalDateTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return ldt.format(formatter);
+    }
+
+    public static Timestamp getCurrentTimestamp() {
+        return new Timestamp(System.currentTimeMillis());
     }
 }
