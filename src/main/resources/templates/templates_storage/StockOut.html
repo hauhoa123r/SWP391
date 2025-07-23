@@ -75,10 +75,20 @@
             border-color: #007bff;
             background-color: #e7f3ff;
         }
-        .status-pending { color: #fd7e14; }
-        .status-processing { color: #0d6efd; }
-        .status-completed { color: #198754; }
-        .status-cancelled { color: #dc3545; }
+        /* Status styles */
+        .status-pending { color: #fd7e14; background-color: #fff3cd; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-prepare_delivery { color: #0d6efd; background-color: #cfe2ff; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-delivering { color: #0d6efd; background-color: #cfe2ff; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-delivered { color: #198754; background-color: #d1e7dd; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-completed { color: #198754; background-color: #d1e7dd; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-rejected { color: #dc3545; background-color: #f8d7da; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-received { color: #0288d1; background-color: #e0f2fe; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-paid { color: #198754; background-color: #d1e7dd; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-waiting_for_delivery { color: #fd7e14; background-color: #fff3cd; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-inspected { color: #0288d1; background-color: #e0f2fe; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-preparing { color: #6c757d; background-color: #f8f9fa; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-added { color: #6c757d; background-color: #f8f9fa; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-prepared { color: #6c757d; background-color: #f8f9fa; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .excel-preview {
             max-height: 300px;
             overflow-y: auto;
@@ -269,37 +279,37 @@
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
                                     <i class="ri-store-3-line"></i>
                                     <span>Giao dịch</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockIn.html}">Nhập kho</a>
+                                        <a th:href="@{/supplier-ins}">Nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/StockOut.html}">Xuất kho</a>
+                                        <a th:href="@{/supplier-outs}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
                                     <i class="ri-list-check-2"></i>
                                     <span>Hóa đơn</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockInInvoice.html}">Hóa đơn nhập kho</a>
+                                        <a th:href="@{/supplier-in-invoices}">Hóa đơn nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
+                                        <a th:href="@{/supplier-out-invoices}">Hóa đơn xuất kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/CustomerInvoice.html}">Hóa đơn khách hàng</a>
+                                        <a th:href="@{/customer-invoices}">Hóa đơn khách hàng</a>
                                     </li>
                                 </ul>
                             </li>
@@ -409,67 +419,61 @@
 
                             <!-- Filter Section -->
                             <div class="card-body">
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" id="searchFilter" name="search" placeholder="Tìm kiếm mã phiếu, người nhận..." th:value="${param.search}">
+                                <!-- Form tìm kiếm -->
+                                <form th:action="@{/supplier-outs}" method="get" id="filterForm" class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="input-group mb-3">
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" id="searchFilter" name="search" th:value="${param.search}" placeholder="Tìm kiếm...">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <select class="form-select" id="typeFilter" name="type">
+                                                        <option value="">Tất cả loại</option>
+                                                        <option value="MEDICINE" th:selected="${param.type == 'MEDICINE'}">Thuốc</option>
+                                                        <option value="MEDICAL_PRODUCT" th:selected="${param.type == 'MEDICAL_PRODUCT'}">Thiết bị y tế</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <!-- Dropdown status filter để chỉ hiển thị các trạng thái được phép -->
+                                                    <select class="form-select" id="statusFilter" name="status">
+                                                        <option value="">Tất cả trạng thái</option>
+                                                        <option th:each="statusValue : ${allowedStatuses}"
+                                                                th:value="${statusValue.name()}"
+                                                                th:text="${statusValue.displayName}"
+                                                                th:selected="${param.status == statusValue.name()}">
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-primary w-100" type="submit">
+                                                        <i class="ri-search-line"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#createOrderModal">
+                                                        <i class="ri-add-line"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select" id="statusFilter" name="status">
-                                            <option value="">Tất cả trạng thái</option>
-                                            <option th:each="statusValue : ${T(org.project.enums.SupplierTransactionStatus).values()}" 
-                                                    th:value="${statusValue}" 
-                                                    th:text="${statusValue == T(org.project.enums.SupplierTransactionStatus).PENDING ? 'Chờ xử lý' :
-                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).APPROVED ? 'Đã phê duyệt' :
-                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).REJECTED ? 'Từ chối' :
-                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).WAITING_FOR_DELIVERY ? 'Chờ giao hàng' :
-                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).DELIVERED ? 'Đã giao hàng' :
-                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).INSPECTED ? 'Đã kiểm tra' :
-                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).COMPLETED ? 'Hoàn thành' :
-                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).PROBLEM ? 'Có vấn đề' :
-                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).PARTIALLY_COMPLETED ? 'Hoàn thành một phần' :
-                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).CANCELLED ? 'Đã hủy' :
-                                                             statusValue == T(org.project.enums.SupplierTransactionStatus).RECEIVED ? 'Đã nhận hàng' :
-                                                             statusValue}"
-                                                    th:selected="${param.status == statusValue.name()}">
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select" id="reasonFilter" name="type">
-                                            <option value="">Tất cả lý do</option>
-                                            <option value="SALE" th:selected="${param.type == 'SALE'}">Bán hàng</option>
-                                            <option value="TRANSFER" th:selected="${param.type == 'TRANSFER'}">Chuyển kho</option>
-                                            <option value="RETURN" th:selected="${param.type == 'RETURN'}">Trả hàng</option>
-                                            <option value="EXPIRED" th:selected="${param.type == 'EXPIRED'}">Hết hạn</option>
-                                            <option value="DAMAGED" th:selected="${param.type == 'DAMAGED'}">Hư hỏng</option>
-                                            <option value="OTHER" th:selected="${param.type == 'OTHER'}">Khác</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-primary me-2" type="submit" form="filterForm">
-                                            <i class="ri-filter-line"></i> Lọc
-                                        </button>
-                                        <a th:href="@{/StockOut.html}" class="btn btn-secondary">
-                                            <i class="ri-filter-off-line"></i> Xóa bộ lọc
-                                        </a>
-                                    </div>
-                                </div>
-                                
-                                <!-- Hidden form for filters -->
-                                <form id="filterForm" th:action="@{/StockOut.html}" method="get">
-                                    <input type="hidden" id="searchParam" name="search" th:value="${param.search}">
-                                    <input type="hidden" id="statusParam" name="status" th:value="${param.status}">
-                                    <input type="hidden" id="typeParam" name="type" th:value="${param.type}">
-                                    <input type="hidden" id="pageParam" name="page" th:value="${currentPage}">
-                                    <input type="hidden" id="sizeParam" name="size" th:value="${pageSize}">
                                 </form>
-
+                                
                                 <!-- Hiển thị thông báo lỗi nếu có -->
-                                <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
+                                <div th:if="${errorMessage != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <i class="ri-error-warning-line me-2"></i>
-                                    <span th:text="${errorMessage}">Lỗi hệ thống</span>
+                                    <span th:text="${errorMessage}"></span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                                 
+                                <!-- Hiển thị thông báo thành công nếu có -->
+                                <div th:if="${successMessage != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <i class="ri-checkbox-circle-line me-2"></i>
+                                    <span th:text="${successMessage}"></span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="stockOutTable">
                                         <thead>
@@ -483,11 +487,11 @@
                                             <th>Thao tác</th>
                                         </tr>
                                         </thead>
-                                        <tbody id="stockOutTableBody">
+                                        <tbody>
                                         <!-- Hiển thị dữ liệu động từ controller -->
                                         <tr th:each="supplierOut : ${supplierOuts}" th:data-id="${supplierOut.id}" th:data-status="${supplierOut.status}">
                                             <td><strong th:text="${'SO-' + supplierOut.id}">SO-001</strong></td>
-                                            <td th:text="${supplierOut.createdAt != null ? #dates.format(supplierOut.createdAt, 'dd-MM-yyyy') : ''}">Ngày xuất</td>
+                                            <td th:text="${supplierOut.transactionDate != null ? #dates.format(supplierOut.transactionDate, 'dd-MM-yyyy') : ''}">Ngày xuất</td>
                                             <td th:text="${supplierOut.recipient != null ? supplierOut.recipient : 'N/A'}">Người nhận</td>
                                             <td>
                                                 <!-- Simple badge implementation -->
@@ -500,59 +504,89 @@
                                             </td>
                                             <td class="text-end"><strong th:text="${#numbers.formatDecimal(supplierOut.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong></td>
                                             <td>
-                                                <!-- Enhanced status implementation -->
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).PENDING}" class="status-pending">Chờ xử lý</span>
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).APPROVED}" class="status-processing">Đã phê duyệt</span>
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).REJECTED}" class="status-rejected">Từ chối</span>
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).WAITING_FOR_DELIVERY}" class="status-pending">Chờ giao hàng</span>
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).DELIVERED}" class="status-received">Đã giao hàng</span>
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).INSPECTED}" class="status-checked">Đã kiểm tra</span>
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).COMPLETED}" class="status-completed">Hoàn thành</span>
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).PROBLEM}" class="status-rejected">Có vấn đề</span>
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).PARTIALLY_COMPLETED}" class="status-processing">Hoàn thành một phần</span>
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).CANCELLED}" class="status-rejected">Đã hủy</span>
-                                                <span th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).RECEIVED}" class="status-received">Đã nhận hàng</span>
+                                                <span th:if="${supplierOut.status != null}"
+                                                      th:class="${'badge status-' + supplierOut.status.name().toLowerCase()}"
+                                                      th:text="${supplierOut.status.displayName}">
+                                                </span>
                                             </td>
                                             <td>
-                                                <div class="btn-group">
-                                                    <a th:href="@{'/StockOutDetail.html?id=' + ${supplierOut.id}}" class="btn btn-sm btn-primary">
-                                                        <i class="ri-eye-line"></i>
+                                                <div class="btn-group" style="display: flex !important;">
+                                                    <a th:href="@{'/supplier-outs/' + ${supplierOut?.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
+                                                        <i class="ri-eye-line text-white"></i>
                                                     </a>
-                                                    <a th:href="@{'/invoiceouttracking.html?id=' + ${supplierOut.id}}" class="btn btn-sm btn-info">
-                                                        <i class="ri-truck-line"></i>
+                                                    <a th:href="@{'/invoiceouttracking.html?id=' + ${supplierOut?.id}}" class="btn btn-sm btn-info" title="Theo dõi">
+                                                        <i class="ri-route-line text-white"></i>
                                                     </a>
-
-                                                    <!-- Nút xử lý trạng thái -->
-                                                    <form th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).PENDING}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
-                                                        <input type="hidden" name="status" value="APPROVED" />
-                                                        <button type="submit" class="btn btn-sm btn-success" title="Xử lý">
-                                                            <i class="ri-play-line"></i>
+                                                      
+                                                    <!-- Status update buttons based on current status -->
+                                                    <form th:if="${supplierOut?.status != null && supplierOut.status.name() == 'PREPARE_DELIVERY'}" 
+                                                          th:action="@{'/supplier-outs/' + ${supplierOut?.id} + '/status'}" 
+                                                          method="post" style="display:inline-block !important;">
+                                                        <input type="hidden" name="status" value="DELIVERING" />
+                                                        <button type="submit" class="btn btn-sm btn-success" 
+                                                                title="Chuyển sang Đang giao hàng" 
+                                                                onclick="return confirm('Xác nhận chuyển sang trạng thái Đang giao hàng?')">
+                                                            <i class="ri-truck-line text-white"></i>
                                                         </button>
                                                     </form>
 
-                                                    <form th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).APPROVED}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                    <form th:if="${supplierOut?.status != null && supplierOut.status.name() == 'DELIVERING'}" 
+                                                          th:action="@{'/supplier-outs/' + ${supplierOut?.id} + '/status'}" 
+                                                          method="post" style="display:inline-block !important;">
+                                                        <input type="hidden" name="status" value="DELIVERED" />
+                                                        <button type="submit" class="btn btn-sm btn-success" 
+                                                                title="Chuyển sang Đã giao hàng" 
+                                                                onclick="return confirm('Xác nhận đã giao hàng đến khách hàng?')">
+                                                            <i class="ri-check-double-line text-white"></i>
+                                                        </button>
+                                                    </form>
+                                                    
+                                                    <form th:if="${supplierOut?.status != null && supplierOut.status.name() == 'DELIVERED'}" 
+                                                          th:action="@{'/supplier-outs/' + ${supplierOut?.id} + '/status'}" 
+                                                          method="post" style="display:inline-block !important;">
+                                                        <input type="hidden" name="status" value="PENDING" />
+                                                        <button type="submit" class="btn btn-sm btn-warning" 
+                                                                title="Chuyển sang Chờ thanh toán" 
+                                                                onclick="return confirm('Xác nhận chuyển sang trạng thái Chờ thanh toán?')">
+                                                            <i class="ri-money-dollar-circle-line text-white"></i>
+                                                        </button>
+                                                    </form>
+                                                    
+                                                    <form th:if="${supplierOut?.status != null && supplierOut.status.name() == 'PENDING'}" 
+                                                          th:action="@{'/supplier-outs/' + ${supplierOut?.id} + '/status'}" 
+                                                          method="post" style="display:inline-block !important;">
+                                                        <input type="hidden" name="status" value="PAID" />
+                                                        <button type="submit" class="btn btn-sm btn-info" 
+                                                                title="Đánh dấu đã thanh toán" 
+                                                                onclick="return confirm('Xác nhận đã thanh toán?')">
+                                                            <i class="ri-bank-card-line text-white"></i>
+                                                        </button>
+                                                    </form>
+                                                    
+                                                    <form th:if="${supplierOut?.status != null && supplierOut.status.name() == 'PAID'}" 
+                                                          th:action="@{'/supplier-outs/' + ${supplierOut?.id} + '/status'}" 
+                                                          method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="COMPLETED" />
-                                                        <button type="submit" class="btn btn-sm btn-success" title="Hoàn thành">
-                                                            <i class="ri-check-line"></i>
+                                                        <button type="submit" class="btn btn-sm btn-success" 
+                                                                title="Hoàn thành đơn hàng" 
+                                                                onclick="return confirm('Xác nhận hoàn thành đơn hàng? Đơn hàng sẽ được chuyển sang hóa đơn.')">
+                                                            <i class="ri-check-line text-white"></i>
                                                         </button>
                                                     </form>
 
-                                                    <form th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).PENDING || supplierOut.status == T(org.project.enums.SupplierTransactionStatus).APPROVED}" th:action="@{'/supplier-outs/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
-                                                        <input type="hidden" name="status" value="CANCELLED" />
-                                                        <button type="submit" class="btn btn-sm btn-danger" title="Hủy">
-                                                            <i class="ri-close-line"></i>
-                                                        </button>
-                                                    </form>
-
-                                                    <button th:if="${supplierOut.status == T(org.project.enums.SupplierTransactionStatus).COMPLETED}" class="btn btn-sm btn-info" th:onclick="'printStockOut(' + ${supplierOut.id} + ')'">
-                                                        <i class="ri-printer-line"></i>
+                                                    <!-- Nút từ chối đơn hàng luôn hiển thị trừ khi đã hoàn thành hoặc đã từ chối -->
+                                                    <button th:if="${supplierOut?.status != null && supplierOut.status.name() != 'COMPLETED' && supplierOut.status.name() != 'REJECTED'}" 
+                                                            type="button" class="btn btn-sm btn-danger" 
+                                                            title="Từ chối" 
+                                                            th:onclick="'openRejectModal(' + ${supplierOut?.id} + ')'">
+                                                        <i class="ri-close-line text-white"></i>
                                                     </button>
                                                 </div>
                                             </td>
                                         </tr>
 
                                         <!-- Hiển thị thông báo khi không có dữ liệu -->
-                                        <tr th:if="${supplierOuts.isEmpty()}">
+                                        <tr th:if="${supplierOuts == null || supplierOuts.isEmpty()}">
                                             <td colspan="7" class="text-center">Không có dữ liệu xuất kho</td>
                                         </tr>
                                         </tbody>
@@ -560,40 +594,55 @@
                                 </div>
                             </div>
                             
-                            <!-- Pagination section -->
-                            <nav aria-label="Page navigation" th:if="${totalPages > 0}">
-                                <ul class="pagination justify-content-center mt-3">
-                                    <!-- Previous button -->
-                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                                        <a class="page-link" th:href="@{/StockOut.html(page=${currentPage - 1}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
+                            <!-- Phân trang -->
+                            <div th:if="${totalPages > 0}" class="pagination-box mt-4">
+                                <nav class="ms-auto me-auto" aria-label="...">
+                                    <ul class="pagination pagination-primary">
+                                        <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                            <a class="page-link" th:href="@{/supplier-outs(page=0, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="First">
+                                                <span aria-hidden="true">&laquo;&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                            <a class="page-link" th:href="@{/supplier-outs(page=${currentPage - 1}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item" th:each="i : ${pageNumbers}"
+                                            th:classappend="${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" th:href="@{/supplier-outs(page=${i}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" th:text="${i + 1}"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                            <a class="page-link" th:href="@{/supplier-outs(page=${currentPage + 1}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                            <a class="page-link" th:href="@{/supplier-outs(page=${totalPages - 1}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="Last">
+                                                <span aria-hidden="true">&raquo;&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                
+                                <!-- Page size selector and page info -->
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div class="d-flex align-items-center">
+                                        <span>Hiển thị</span>
+                                        <select id="pageSizeSelect" class="form-select mx-2" style="width: auto;" onchange="changePageSize()">
+                                            <option value="5" th:selected="${pageSize == 5}">5</option>
+                                            <option value="10" th:selected="${pageSize == 10}">10</option>
+                                            <option value="20" th:selected="${pageSize == 20}">20</option>
+                                            <option value="50" th:selected="${pageSize == 50}">50</option>
+                                        </select>
+                                        <span>mục trên mỗi trang</span>
+                                    </div>
                                     
-                                    <!-- Page numbers -->
-                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage ? 'active' : ''}">
-                                        <a class="page-link" th:href="@{/StockOut.html(page=${i}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" th:text="${i + 1}">1</a>
-                                    </li>
-                                    
-                                    <!-- Next button -->
-                                    <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                                        <a class="page-link" th:href="@{/StockOut.html(page=${currentPage + 1}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            
-                            <!-- Page size selector -->
-                            <div class="row mt-2" th:if="${totalPages > 0}">
-                                <div class="col-md-6 offset-md-3 text-center">
-                                    <label for="pageSizeSelect" class="me-2">Số mục trên mỗi trang:</label>
-                                    <select id="pageSizeSelect" class="form-select d-inline-block w-auto" onchange="changePageSize()">
-                                        <option value="5" th:selected="${pageSize == 5}">5</option>
-                                        <option value="10" th:selected="${pageSize == 10}">10</option>
-                                        <option value="20" th:selected="${pageSize == 20}">20</option>
-                                        <option value="50" th:selected="${pageSize == 50}">50</option>
-                                    </select>
+                                    <div class="text-muted">
+                                        Hiển thị <span th:text="${currentPage * pageSize + 1}">1</span> đến 
+                                        <span th:text="${(currentPage * pageSize + pageSize) < totalItems ? (currentPage * pageSize + pageSize) : totalItems}">10</span> 
+                                        trong tổng số <span th:text="${totalItems}">100</span> mục
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -602,141 +651,57 @@
             </div>
         </div>
     </div>
-    <!-- Page Body End -->
 </div>
-<!-- page-wrapper End -->
 
-<!-- Modal tạo phiếu xuất kho -->
+<!-- Modal tạo mới -->
 <div class="modal fade" id="createStockOutModal" tabindex="-1" aria-labelledby="createStockOutModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createStockOutModalLabel">Tạo phiếu xuất kho mới</h5>
+                <h5 class="modal-title" id="createStockOutModalLabel">Tạo đơn xuất kho mới</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form id="createStockOutForm">
-                    <div class="row">
+            <form th:action="@{/supplier-outs}" method="post">
+                <div class="modal-body">
+                    <div class="row mb-3">
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">Mã phiếu xuất</label>
-                                <input class="form-control" type="text" id="stockOutId" readonly value="SO-AUTO-001">
-                            </div>
+                            <label class="form-label">Mã đơn hàng</label>
+                            <input class="form-control" type="text" name="invoiceNumber" required>
                         </div>
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">Ngày xuất <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" id="stockOutDate" required>
-                            </div>
+                            <label class="form-label">Người nhận</label>
+                            <input class="form-control" type="text" name="recipient" required>
                         </div>
                     </div>
-
-                    <div class="row">
+                    
+                    <div class="row mb-3">
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">Người nhận <span class="text-danger">*</span></label>
-                                <select class="form-select" id="recipientId" required>
-                                    <option value="">Chọn người nhận</option>
-                                    <option value="1">Nguyễn Văn A</option>
-                                    <option value="2">Trần Thị B</option>
-                                    <option value="3">Lê Văn C</option>
-                                </select>
-                            </div>
+                            <label class="form-label">Lý do xuất kho</label>
+                            <select class="form-select" name="reason" required>
+                                <option value="SALE">Bán hàng</option>
+                                <option value="TRANSFER">Chuyển kho</option>
+                                <option value="RETURN">Trả hàng</option>
+                                <option value="EXPIRED">Hết hạn</option>
+                                <option value="DAMAGED">Hư hỏng</option>
+                                <option value="OTHER">Khác</option>
+                            </select>
                         </div>
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">Lý do xuất <span class="text-danger">*</span></label>
-                                <select class="form-select" id="reason" required>
-                                    <option value="">Chọn lý do xuất kho</option>
-                                    <option value="SALE">Bán hàng</option>
-                                    <option value="TRANSFER">Chuyển kho</option>
-                                    <option value="RETURN">Trả hàng</option>
-                                    <option value="EXPIRED">Hết hạn</option>
-                                    <option value="DAMAGED">Hư hỏng</option>
-                                    <option value="OTHER">Khác</option>
-                                </select>
-                            </div>
+                            <label class="form-label">Ngày xuất</label>
+                            <input class="form-control" type="date" name="transactionDate" required>
                         </div>
                     </div>
-
+                    
                     <div class="mb-3">
                         <label class="form-label">Ghi chú</label>
-                        <textarea class="form-control" id="notes" rows="3" placeholder="Nhập ghi chú (nếu có)"></textarea>
+                        <textarea class="form-control" name="notes" rows="3"></textarea>
                     </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h6>Chi tiết sản phẩm xuất kho</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table" id="productTable">
-                                    <thead>
-                                    <tr>
-                                        <th>Sản phẩm</th>
-                                        <th>Số lô</th>
-                                        <th>Số lượng</th>
-                                        <th>Đơn giá</th>
-                                        <th>Thành tiền</th>
-                                        <th>Thao tác</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <select class="form-select product-select" required>
-                                                <option value="">Chọn sản phẩm</option>
-                                                <option value="1">Paracetamol 500mg</option>
-                                                <option value="2">Amoxicillin 250mg</option>
-                                                <option value="3">Máy đo huyết áp</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="form-select batch-select" required>
-                                                <option value="">Chọn số lô</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control quantity" min="1" required>
-                                            <small class="text-muted">Tồn kho: <span class="stock-qty">0</span></small>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control price" min="0" required>
-                                        </td>
-                                        <td>
-                                            <span class="total">0</span>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-sm remove-row">
-                                                <i class="ri-delete-bin-line"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <td colspan="4" class="text-end">
-                                            <strong>Tổng cộng:</strong>
-                                        </td>
-                                        <td>
-                                            <strong class="grand-total">0</strong>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <button type="button" class="btn btn-primary mt-3" id="addRow">
-                                <i class="ri-add-line"></i> Thêm sản phẩm
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-primary" id="saveStockOut">Lưu phiếu xuất</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Tạo đơn</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -807,12 +772,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Từ chối đơn hàng</h5>
+                <h5 class="modal-title">Từ chối đơn xuất kho</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="rejectForm">
-                    <input type="hidden" id="rejectOrderId" name="orderId">
+                <form id="rejectForm" method="post">
                     <div class="mb-3">
                         <label for="rejectReason" class="form-label">Lý do từ chối</label>
                         <textarea class="form-control" id="rejectReason" name="reason" rows="3" required></textarea>
@@ -821,7 +785,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-danger" onclick="rejectOrder()">Xác nhận từ chối</button>
+                <button type="button" class="btn btn-danger" id="confirmRejectBtn">Xác nhận từ chối</button>
             </div>
         </div>
     </div>
@@ -864,51 +828,200 @@
     </div>
 </div>
 
-<!-- latest js -->
+<!-- Notification container -->
+<div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+<!-- Script -->
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Thiết lập giá trị mặc định cho ngày
+        const dateInput = document.querySelector('input[name="transactionDate"]');
+        if (dateInput) {
+            dateInput.valueAsDate = new Date();
+        }
+        
+        // Function thay đổi page size
+        window.changePageSize = function() {
+            const pageSize = document.getElementById('pageSizeSelect').value;
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('size', pageSize);
+            currentUrl.searchParams.set('page', 0); // Reset về trang đầu tiên
+            window.location.href = currentUrl.toString();
+        };
+        
+        // Xử lý từ chối đơn hàng
+        window.rejectOrder = function() {
+            const orderId = document.getElementById('rejectOrderId').value;
+            const reason = document.getElementById('rejectReason').value;
+            
+            if (!reason) {
+                alert('Vui lòng nhập lý do từ chối');
+                return;
+            }
+            
+            // Tạo form để submit
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/supplier-outs/${orderId}/status`;
+            
+            const statusInput = document.createElement('input');
+            statusInput.type = 'hidden';
+            statusInput.name = 'status';
+            statusInput.value = 'REJECTED';
+            
+            const reasonInput = document.createElement('input');
+            reasonInput.type = 'hidden';
+            reasonInput.name = 'reason';
+            reasonInput.value = reason;
+            
+            form.appendChild(statusInput);
+            form.appendChild(reasonInput);
+            document.body.appendChild(form);
+            
+            // Đóng modal
+            const rejectModal = document.getElementById('rejectModal');
+            const bootstrapModal = bootstrap.Modal.getInstance(rejectModal);
+            if (bootstrapModal) {
+                bootstrapModal.hide();
+            }
+            
+            // Submit form
+            form.submit();
+        };
+        
+        // Xử lý upload Excel
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const excelFile = document.getElementById('excelFile');
+        
+        if (fileUploadArea && excelFile) {
+            // Click vào area để chọn file
+            fileUploadArea.addEventListener('click', function() {
+                excelFile.click();
+            });
+            
+            // Xử lý drag & drop
+            fileUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                fileUploadArea.classList.add('dragover');
+            });
+            
+            fileUploadArea.addEventListener('dragleave', function() {
+                fileUploadArea.classList.remove('dragover');
+            });
+            
+            fileUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                fileUploadArea.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length) {
+                    excelFile.files = e.dataTransfer.files;
+                    handleExcelFile(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // Xử lý khi chọn file
+            excelFile.addEventListener('change', function() {
+                if (this.files.length) {
+                    handleExcelFile(this.files[0]);
+                }
+            });
+        }
+        
+        // Gán sự kiện cho các nút từ chối
+        document.querySelectorAll('form[action*="/status"]').forEach(form => {
+            if (form.querySelector('input[name="status"][value="CANCELLED"]')) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const orderId = form.action.split('/').pop().split('?')[0];
+                    document.getElementById('rejectOrderId').value = orderId;
+                    const rejectModal = new bootstrap.Modal(document.getElementById('rejectModal'));
+                    rejectModal.show();
+                });
+            }
+        });
+        
+        // Xử lý template
+        const downloadTemplate = document.getElementById('downloadTemplate');
+        if (downloadTemplate) {
+            downloadTemplate.addEventListener('click', function(e) {
+                e.preventDefault();
+                downloadExcelTemplate();
+            });
+        }
+    });
+    
+    // Xử lý file Excel
+    function handleExcelFile(file) {
+        if (!file) return;
+        
+        // Kiểm tra định dạng file
+        const validExtensions = ['xlsx', 'xls'];
+        const fileExt = file.name.split('.').pop().toLowerCase();
+        
+        if (!validExtensions.includes(fileExt)) {
+            alert('Chỉ hỗ trợ file Excel (.xlsx, .xls)');
+            return;
+        }
+        
+        // Hiển thị preview
+        const preview = document.getElementById('excelPreview');
+        if (preview) {
+            preview.style.display = 'block';
+        }
+        
+        // Enable nút xử lý
+        const processBtn = document.getElementById('processExcel');
+        if (processBtn) {
+            processBtn.disabled = false;
+        }
+        
+        // TODO: Xử lý đọc file Excel (cần thư viện đọc Excel như SheetJS/xlsx)
+        showNotification('Đã tải file lên thành công', 'success');
+    }
+    
+    // Tạo file Excel template
+    function downloadExcelTemplate() {
+        // TODO: Tạo file Excel template
+        showNotification('Đang tải template...', 'info');
+        
+        // Giả lập tải file
+        setTimeout(() => {
+            showNotification('Đã tải template thành công', 'success');
+        }, 1500);
+    }
+    
+    // Hiển thị thông báo
+    function showNotification(message, type) {
+        const alertBox = document.createElement('div');
+        alertBox.className = `alert alert-${type} alert-dismissible fade show`;
+        alertBox.innerHTML = `
+            <span>${message}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        const container = document.querySelector('.container-fluid');
+        container.insertBefore(alertBox, container.firstChild);
+        
+        // Tự động đóng sau 5 giây
+        setTimeout(() => {
+            const bsAlert = new bootstrap.Alert(alertBox);
+            bsAlert.close();
+        }, 5000);
+    }
+</script>
+
+<!-- Latest js-->
 <script th:src="@{/templates_storage/assets/js/jquery-3.6.0.min.js}"></script>
-
-<!-- Bootstrap js -->
 <script th:src="@{/templates_storage/assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
-
-<!-- feather icon js -->
-<script th:src="@{/templates_storage/assets/js/icons/feather-icon/feather.min.js}"></script>
-<script th:src="@{/templates_storage/assets/js/icons/feather-icon/feather-icon.js}"></script>
-
-<!-- scrollbar simplebar js -->
+<script th:src="@{/templates_storage/assets/js/feather/feather.min.js}"></script>
+<script th:src="@{/templates_storage/assets/js/feather/feather-icon.js}"></script>
 <script th:src="@{/templates_storage/assets/js/scrollbar/simplebar.js}"></script>
 <script th:src="@{/templates_storage/assets/js/scrollbar/custom.js}"></script>
-
-<!-- Sidebar js -->
 <script th:src="@{/templates_storage/assets/js/config.js}"></script>
-
-<!-- bootstrap tag-input js -->
-<script th:src="@{/templates_storage/assets/js/bootstrap-tagsinput.min.js}"></script>
 <script th:src="@{/templates_storage/assets/js/sidebar-menu.js}"></script>
-
-<!-- customizer js -->
-<script th:src="@{/templates_storage/assets/js/customizer.js}"></script>
-
-<!-- Dropzone js -->
-<script th:src="@{/templates_storage/assets/js/dropzone/dropzone.js}"></script>
-<script th:src="@{/templates_storage/assets/js/dropzone/dropzone-script.js}"></script>
-
-<!-- Plugins js -->
+<script th:src="@{/templates_storage/assets/js/script.js}"></script>
 <script th:src="@{/templates_storage/assets/js/notify/bootstrap-notify.min.js}"></script>
 <script th:src="@{/templates_storage/assets/js/notify/index.js}"></script>
-
-<!-- ck editor js -->
-<script th:src="@{/templates_storage/assets/js/ckeditor.js}"></script>
-<script th:src="@{/templates_storage/assets/js/ckeditor-custom.js}"></script>
-
-<!-- select2 js -->
-<script th:src="@{/templates_storage/assets/js/select2.min.js}"></script>
-<script th:src="@{/templates_storage/assets/js/select2-custom.js}"></script>
-
-<!-- sidebar effect -->
-<script th:src="@{/templates_storage/assets/js/sidebareffect.js}"></script>
-
-<!-- Theme js -->
-<script th:src="@{/templates_storage/assets/js/script.js}"></script>
 
 <!-- SheetJS for Excel processing -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1378,19 +1491,34 @@
     // Convert status codes to display text
     function getStatusText(status) {
         const statusMap = {
-            'PENDING': 'Chờ xử lý',
+            'PENDING': 'Chờ thanh toán',
             'APPROVED': 'Đã phê duyệt',
             'REJECTED': 'Từ chối',
-            'WAITING_FOR_DELIVERY': 'Chờ giao hàng',
-            'DELIVERED': 'Đã giao hàng',
+            'WAITING_FOR_DELIVERY': 'Chuẩn bị giao hàng',
+            'DELIVERED': 'Đang giao hàng',
             'INSPECTED': 'Đã kiểm tra',
+            'RECEIVED': 'Đã giao hàng',
             'COMPLETED': 'Hoàn thành',
             'PROBLEM': 'Có vấn đề',
             'PARTIALLY_COMPLETED': 'Hoàn thành một phần',
-            'CANCELLED': 'Đã hủy',
-            'RECEIVED': 'Đã nhận hàng'
+            'CANCELLED': 'Đã hủy'
         };
         return statusMap[status] || status;
+    }
+
+    // Handle opening the reject modal
+    function openRejectModal(id) {
+        console.log('Opening reject modal for order ID:', id);
+        
+        // Set the order ID for the reject form
+        document.getElementById('rejectOrderId').value = id;
+        
+        // Clear any previous rejection reason
+        document.getElementById('rejectReason').value = '';
+        
+        // Open the modal
+        const rejectModal = new bootstrap.Modal(document.getElementById('rejectModal'));
+        rejectModal.show();
     }
 
     // Hiển thị modal từ chối đơn hàng
@@ -1457,6 +1585,1135 @@
             showNotification('Lỗi khi từ chối đơn hàng: ' + error.message, 'danger');
         }
     }
+</script>
+
+<!-- Create Order Modal -->
+<div class="modal fade" id="createOrderModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo đơn xuất kho</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Debug info display -->
+                <div id="formDebugInfo" class="alert alert-info mb-3" style="display: none;">
+                    <pre id="formDebugContent"></pre>
+                </div>
+                
+                <form id="createOrderForm" method="post" th:action="@{/supplier-outs}">
+                    <input type="hidden" name="status" value="PREPARE_DELIVERY">
+                    <input type="hidden" name="transactionType" value="STOCK_OUT">
+                    <input type="hidden" id="inventoryManagerId" name="inventoryManagerId" th:value="${currentUser?.id ?: 1}">
+                    <input type="hidden" name="totalAmount" id="totalAmountInput" value="0">
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="supplierSearch" class="form-label">Nhà cung cấp <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="supplierSearch" placeholder="Tìm kiếm nhà cung cấp...">
+                                <input type="hidden" id="supplierId" name="supplierId" required>
+                                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#supplierModal">
+                                    <i class="ri-search-line"></i>
+                                </button>
+                            </div>
+                            <div id="supplierSearchResults" class="dropdown-menu w-100"></div>
+                            <div class="form-text" id="selectedSupplierInfo"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="expectedDeliveryDate" class="form-label">Ngày giao hàng dự kiến <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="expectedDeliveryDate" name="expectedDeliveryDate" required>
+                            <script>
+                                // Set default date to tomorrow
+                                const tomorrow = new Date();
+                                tomorrow.setDate(tomorrow.getDate() + 1);
+                                document.getElementById('expectedDeliveryDate').value = tomorrow.toISOString().split('T')[0];
+                            </script>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="recipient" class="form-label">Người nhận <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="recipient" name="recipient" required placeholder="Nhập tên người nhận">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="recipientContact" class="form-label">Liên hệ người nhận</label>
+                            <input type="text" class="form-control" id="recipientContact" name="recipientContact" placeholder="Số điện thoại liên hệ">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="orderType" class="form-label">Loại đơn hàng <span class="text-danger">*</span></label>
+                            <select class="form-select" id="orderType" name="orderType" required>
+                                <option value="">Chọn loại đơn hàng</option>
+                                <option value="MEDICINE">Thuốc</option>
+                                <option value="MEDICAL_PRODUCT">Thiết bị y tế</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="reason" class="form-label">Lý do xuất <span class="text-danger">*</span></label>
+                            <select class="form-select" id="reason" name="reason" required>
+                                <option value="">Chọn lý do xuất</option>
+                                <option value="SALE">Bán hàng</option>
+                                <option value="TRANSFER">Chuyển kho</option>
+                                <option value="RETURN">Trả hàng</option>
+                                <option value="EXPIRED">Hết hạn</option>
+                                <option value="DAMAGED">Hư hỏng</option>
+                                <option value="OTHER">Khác</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="paymentMethod" class="form-label">Phương thức thanh toán</label>
+                            <select class="form-select" id="paymentMethod" name="paymentMethod">
+                                <option value="CASH" selected>Tiền mặt</option>
+                                <option value="BANK_TRANSFER">Chuyển khoản</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="taxAmount" class="form-label">Thuế (%)</label>
+                            <select class="form-select" id="taxAmount" name="taxAmount">
+                                <option value="0">0%</option>
+                                <option value="8">8%</option>
+                                <option value="10" selected>10%</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="shippingCost" class="form-label">Chi phí vận chuyển</label>
+                            <input type="number" class="form-control" id="shippingCost" name="shippingCost" min="0" value="0">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="notes" class="form-label">Ghi chú</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="1"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label">Sản phẩm <span class="text-danger">*</span></label>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="productTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Sản phẩm</th>
+                                            <th>Số lượng</th>
+                                            <th>Đơn giá</th>
+                                            <th>Thành tiền</th>
+                                            <th>Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="productTableBody">
+                                        <!-- Products will be added dynamically -->
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="5">
+                                                <button type="button" class="btn btn-sm btn-primary" id="addProductBtn">
+                                                    <i class="ri-add-line"></i> Thêm sản phẩm
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="notes" class="form-label">Ghi chú</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Tổng kết</h5>
+                                    <div class="row">
+                                        <div class="col-6">Tổng giá trị sản phẩm:</div>
+                                        <div class="col-6 text-end" id="subtotal">0 VNĐ</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">Thuế (<span id="taxRate">10</span>%):</div>
+                                        <div class="col-6 text-end" id="taxValue">0 VNĐ</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">Chi phí vận chuyển:</div>
+                                        <div class="col-6 text-end" id="shippingCostDisplay">0 VNĐ</div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-6"><strong>Tổng cộng:</strong></div>
+                                        <div class="col-6 text-end"><strong id="totalAmount">0 VNĐ</strong></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="submitOrderBtn">Tạo đơn xuất kho</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product Selection Modal -->
+<div class="modal fade" id="productModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chọn sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="productSearch" class="form-label">Tìm kiếm sản phẩm</label>
+                    <input type="text" class="form-control" id="productSearch" placeholder="Nhập tên sản phẩm...">
+                    <!-- Hidden input to store current order type for filtering -->
+                    <input type="hidden" id="currentOrderType" value="">
+                </div>
+                
+                <!-- Loading indicator -->
+                <div class="text-center mb-3" id="productLoading" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Đang tải...</span>
+                    </div>
+                </div>
+                
+                <div class="list-group" id="productSearchResults">
+                    <!-- Products will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Supplier Selection Modal -->
+<div class="modal fade" id="supplierModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chọn nhà cung cấp</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="supplierModalSearch" placeholder="Tìm kiếm nhà cung cấp...">
+                </div>
+                <div class="list-group" id="supplierModalResults">
+                    <!-- Suppliers will be populated here -->
+                    <div class="text-center p-3" id="supplierLoading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Order Creation -->
+<script th:inline="javascript">
+    // Global variables
+    const products = [];
+    let selectedProducts = [];
+    var currentRejectId = null;
+
+    // Notification function
+    function showNotification(message, type = 'success') {
+        const container = document.getElementById('notification-container');
+        if (!container) return;
+        
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type} alert-dismissible fade show`;
+        notification.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        container.appendChild(notification);
+        
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                container.removeChild(notification);
+            }, 300);
+        }, 5000);
+    }
+    
+    // Function to refresh the page
+    function refreshStockOut() {
+        window.location.reload();
+    }
+    
+    // Function to open reject modal
+    function openRejectModal(id) {
+        currentRejectId = id;
+        document.getElementById('rejectReason').value = '';
+        $('#rejectModal').modal('show');
+    }
+
+    // Document ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize date pickers with today + 5 days as default for expected delivery
+        const expectedDeliveryDateInput = document.getElementById('expectedDeliveryDate');
+        if (expectedDeliveryDateInput) {
+            const defaultDate = new Date();
+            defaultDate.setDate(defaultDate.getDate() + 5);
+            expectedDeliveryDateInput.valueAsDate = defaultDate;
+        }
+
+        // Supplier search
+        initSupplierSearch();
+        
+        // Product handling
+        document.getElementById('addProductBtn')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Check if order type is selected first
+            const orderType = document.getElementById('orderType')?.value;
+            if (!orderType) {
+                showNotification('Vui lòng chọn loại đơn hàng trước khi thêm sản phẩm', 'warning');
+                // Focus on the order type select to make it obvious
+                document.getElementById('orderType')?.focus();
+                return;
+            }
+            showProductModal();
+        });
+        
+        // Add event listener to product search input for auto-searching
+        const productSearchInput = document.getElementById('productSearch');
+        if (productSearchInput) {
+            productSearchInput.addEventListener('input', debounce(searchProducts, 500));
+        }
+        
+        // Add event listener to order type for validation
+        const orderTypeSelect = document.getElementById('orderType');
+        if (orderTypeSelect) {
+            orderTypeSelect.addEventListener('change', function() {
+                // When order type changes, clear the product table to prevent mixing types
+                if (selectedProducts.length > 0 && !confirm('Thay đổi loại đơn hàng sẽ xóa tất cả sản phẩm đã chọn. Bạn có muốn tiếp tục?')) {
+                    // Restore previous value
+                    this.value = this.getAttribute('data-previous-value') || '';
+                    return;
+                }
+                
+                // Store the new value for next change
+                this.setAttribute('data-previous-value', this.value);
+                
+                // Clear product table
+                const productTableBody = document.getElementById('productTableBody');
+                if (productTableBody) {
+                    productTableBody.innerHTML = '';
+                    selectedProducts = [];
+                    recalculateTotal();
+                }
+                
+                console.log(`Order type changed to: ${this.value}`);
+            });
+        }
+        
+        // Auto load product modal when showing
+        // Sử dụng addEventListener thay vì jQuery
+        const productModal = document.getElementById('productModal');
+        if (productModal) {
+            productModal.addEventListener('shown.bs.modal', function() {
+                // Auto load some products if search box is empty
+                if (document.getElementById('productSearch').value.trim() === '') {
+                    console.log("Auto loading initial product list");
+                    searchProducts();
+                }
+            });
+        }
+        
+        // Submit form
+        document.getElementById('submitOrderBtn')?.addEventListener('click', submitOrderForm);
+        
+        // Tax amount change
+        document.getElementById('taxAmount')?.addEventListener('change', function() {
+            const taxRateElement = document.getElementById('taxRate');
+            if (taxRateElement) {
+                taxRateElement.textContent = this.value;
+            }
+            recalculateTotal();
+        });
+        
+        // Shipping cost change
+        document.getElementById('shippingCost')?.addEventListener('input', recalculateTotal);
+        
+        // Set up reject button
+        document.getElementById('confirmRejectBtn')?.addEventListener('click', function() {
+            const reason = document.getElementById('rejectReason')?.value;
+            if (!reason) {
+                alert('Vui lòng nhập lý do từ chối');
+                return;
+            }
+            
+            const form = document.getElementById('rejectForm');
+            if (!form) {
+                console.error("Reject form not found");
+                return;
+            }
+            form.action = `/supplier-outs/${currentRejectId}/reject`;
+            form.submit();
+        });
+        
+        // Check for success or error messages
+        const successMessage = /*[[${successMessage}]]*/ null;
+        if (successMessage) {
+            showNotification(successMessage, 'success');
+        }
+        
+        const errorMessage = /*[[${errorMessage}]]*/ null;
+        if (errorMessage) {
+            showNotification(errorMessage, 'danger');
+        }
+    });
+    
+    // Function to display product search results
+    function displayProductResults(data) {
+        const resultsContainer = document.getElementById('productSearchResults');
+        if (!resultsContainer) {
+            console.error("Results container not found");
+            return;
+        }
+        
+        // Clear previous results
+        resultsContainer.innerHTML = '';
+        
+        // Check if data is valid
+        if (!data || !Array.isArray(data) || data.length === 0) {
+            const item = document.createElement('div');
+            item.className = 'list-group-item';
+            item.textContent = 'Không tìm thấy sản phẩm';
+            resultsContainer.appendChild(item);
+            console.log("No products found or invalid data format");
+            return;
+        }
+        
+        console.log(`Found ${data.length} products to display`);
+        
+        // Process each product
+        data.forEach(product => {
+            if (!product) return;
+            
+            console.log("Displaying product:", product.name || 'Unnamed', product.id || 'No ID');
+            
+            try {
+                const item = document.createElement('button');
+                item.className = 'list-group-item list-group-item-action';
+                item.type = 'button';
+                
+                // Ensure price is a number
+                let priceValue = 0;
+                try {
+                    priceValue = parseFloat(product.price) || 0;
+                } catch (e) {
+                    console.error("Error parsing price:", e);
+                }
+                
+                item.innerHTML = `
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">${product.name || 'Không có tên'}</h5>
+                        <small>${formatCurrency(priceValue)}</small>
+                    </div>
+                    <p class="mb-1">ID: ${product.id || 'N/A'}</p>
+                    <small>Tồn kho: ${product.stockQuantities || 0}</small>
+                `;
+                
+                item.addEventListener('click', function() {
+                    console.log("Product selected:", product);
+                    addProductToTable(product);
+                    
+                    // Close modal using Bootstrap API
+                    const productModal = document.getElementById('productModal');
+                    if (productModal) {
+                        const bsModal = bootstrap.Modal.getInstance(productModal);
+                        if (bsModal) {
+                            bsModal.hide();
+                        }
+                    }
+                });
+                
+                resultsContainer.appendChild(item);
+            } catch (error) {
+                console.error("Error creating product item:", error, product);
+            }
+        });
+    }
+    
+    // Initialize supplier search
+    function initSupplierSearch() {
+        const supplierSearch = document.getElementById('supplierSearch');
+        if (!supplierSearch) return;
+        
+        const supplierSearchResults = document.getElementById('supplierSearchResults');
+        const supplierId = document.getElementById('supplierId');
+        const selectedSupplierInfo = document.getElementById('selectedSupplierInfo');
+        
+        // Search on input
+        supplierSearch.addEventListener('input', debounce(function() {
+            const query = supplierSearch.value.trim();
+            if (query.length < 2) {
+                supplierSearchResults.classList.remove('show');
+                return;
+            }
+            
+            fetch(`/supplier-outs/api/suppliers?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    supplierSearchResults.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        const item = document.createElement('a');
+                        item.className = 'dropdown-item';
+                        item.textContent = 'Không tìm thấy nhà cung cấp';
+                        supplierSearchResults.appendChild(item);
+                    } else {
+                        data.forEach(supplier => {
+                            const item = document.createElement('a');
+                            item.className = 'dropdown-item';
+                            item.href = '#';
+                            item.textContent = supplier.name;
+                            item.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                supplierSearch.value = supplier.name;
+                                supplierId.value = supplier.id;
+                                selectedSupplierInfo.textContent = `ID: ${supplier.id}, Liên hệ: ${supplier.contactPerson || 'N/A'}`;
+                                supplierSearchResults.classList.remove('show');
+                            });
+                            supplierSearchResults.appendChild(item);
+                        });
+                    }
+                    
+                    supplierSearchResults.classList.add('show');
+                })
+                .catch(error => {
+                    console.error('Error searching suppliers:', error);
+                });
+        }, 500));
+        
+        // Hide results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!supplierSearch.contains(e.target) && !supplierSearchResults.contains(e.target)) {
+                supplierSearchResults.classList.remove('show');
+            }
+        });
+        
+        // Modal search
+        const supplierModalSearch = document.getElementById('supplierModalSearch');
+        if (!supplierModalSearch) return;
+        
+        const supplierModalResults = document.getElementById('supplierModalResults');
+        
+        supplierModalSearch.addEventListener('input', debounce(function() {
+            const query = supplierModalSearch.value.trim();
+            if (query.length < 2) {
+                return;
+            }
+            
+            document.getElementById('supplierLoading').style.display = 'block';
+            
+            fetch(`/supplier-outs/api/suppliers?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    supplierModalResults.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        const item = document.createElement('div');
+                        item.className = 'list-group-item';
+                        item.textContent = 'Không tìm thấy nhà cung cấp';
+                        supplierModalResults.appendChild(item);
+                    } else {
+                        data.forEach(supplier => {
+                            const item = document.createElement('button');
+                            item.className = 'list-group-item list-group-item-action';
+                            item.type = 'button';
+                            item.innerHTML = `
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">${supplier.name}</h5>
+                                    <small>ID: ${supplier.id}</small>
+                                </div>
+                                <p class="mb-1">${supplier.address || 'N/A'}</p>
+                                <small>Liên hệ: ${supplier.contactPerson || 'N/A'}</small>
+                            `;
+                            item.addEventListener('click', function() {
+                                supplierSearch.value = supplier.name;
+                                supplierId.value = supplier.id;
+                                selectedSupplierInfo.textContent = `ID: ${supplier.id}, Liên hệ: ${supplier.contactPerson || 'N/A'}`;
+                                $('#supplierModal').modal('hide');
+                            });
+                            supplierModalResults.appendChild(item);
+                        });
+                    }
+                    
+                    document.getElementById('supplierLoading').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error searching suppliers:', error);
+                    document.getElementById('supplierLoading').style.display = 'none';
+                });
+        }, 500));
+    }
+    
+    // Show product modal
+    function showProductModal() {
+        // Kiểm tra tất cả các phần tử DOM cần thiết
+        const orderTypeSelect = document.getElementById('orderType');
+        const currentOrderTypeField = document.getElementById('currentOrderType');
+        const productSearch = document.getElementById('productSearch');
+        const productSearchResults = document.getElementById('productSearchResults');
+        const productLoading = document.getElementById('productLoading');
+        
+        // Kiểm tra tất cả các phần tử DOM cần thiết
+        if (!orderTypeSelect) {
+            console.error("Missing orderType element");
+            showNotification('Lỗi: Không tìm thấy phần tử chọn loại đơn hàng', 'danger');
+            return;
+        }
+        
+        // Kiểm tra đã chọn loại đơn hàng chưa
+        if (!orderTypeSelect.value) {
+            showNotification('Vui lòng chọn loại đơn hàng trước khi thêm sản phẩm', 'warning');
+            orderTypeSelect.focus();
+            return;
+        }
+        
+        // Kiểm tra các phần tử DOM khác
+        if (!currentOrderTypeField) {
+            console.error("Missing currentOrderType field");
+            showNotification('Lỗi: Không tìm thấy trường lưu loại đơn hàng', 'danger');
+            return;
+        }
+        
+        if (!productSearch || !productSearchResults || !productLoading) {
+            console.error("Missing product search elements");
+            showNotification('Lỗi: Thiếu các phần tử tìm kiếm sản phẩm', 'danger');
+            return;
+        }
+        
+        // Store the order type in hidden field for filtering
+        currentOrderTypeField.value = orderTypeSelect.value;
+        console.log(`Using order type for product filtering: ${currentOrderTypeField.value}`);
+        
+        // Hiển thị modal
+        const productModal = document.getElementById('productModal');
+        if (!productModal) {
+            console.error("Cannot find product modal element");
+            showNotification('Lỗi: Không tìm thấy modal sản phẩm', 'danger');
+            return;
+        }
+        
+        // Sử dụng Bootstrap JS để hiển thị modal
+        const bsModal = new bootstrap.Modal(productModal);
+        bsModal.show();
+        
+        // Reset các giá trị
+        productSearch.value = '';
+        productSearchResults.innerHTML = '';
+        productLoading.style.display = 'none';
+        
+        // Trigger an initial product search with the selected order type
+        setTimeout(() => searchProducts(), 300);
+    }
+    
+    // Search products
+    function searchProducts() {
+        // Kiểm tra tất cả các phần tử DOM cần thiết
+        const productSearch = document.getElementById('productSearch');
+        const resultsContainer = document.getElementById('productSearchResults');
+        const loadingIndicator = document.getElementById('productLoading');
+        const currentOrderTypeField = document.getElementById('currentOrderType');
+        
+        // Kiểm tra các phần tử DOM cần thiết
+        if (!productSearch || !resultsContainer || !currentOrderTypeField) {
+            console.error("Missing DOM elements for product search", {
+                productSearch: !!productSearch,
+                resultsContainer: !!resultsContainer,
+                currentOrderTypeField: !!currentOrderTypeField
+            });
+            return;
+        }
+        
+        // Hiển thị loading nếu có
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'block';
+        } else {
+            console.warn("Loading indicator not found, continuing without it");
+        }
+        
+        const query = productSearch.value.trim();
+        const productType = currentOrderTypeField.value;
+        
+        console.log(`Searching for products with query: "${query}", using order type: "${productType}"`);
+        
+        // Clear previous results
+        resultsContainer.innerHTML = '';
+        
+        // Check if order type is selected
+        if (!productType) {
+            resultsContainer.innerHTML = '<div class="list-group-item text-warning">Vui lòng chọn loại đơn hàng trước</div>';
+            if (loadingIndicator) loadingIndicator.style.display = 'none';
+            return;
+        }
+        
+        // Build the API URL with query parameters
+        let apiUrl = '/supplier-outs/api/products?';
+        const params = [];
+        
+        if (query && query.length >= 2) {
+            params.push(`query=${encodeURIComponent(query)}`);
+        }
+        
+        if (productType) {
+            params.push(`productType=${encodeURIComponent(productType)}`);
+        }
+        
+        apiUrl += params.join('&');
+        console.log("API URL:", apiUrl);
+        
+        // Fetch products from API
+        fetch(apiUrl)
+            .then(response => {
+                console.log("API response status:", response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Products returned:", data);
+                
+                // Hide loading indicator if exists
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'none';
+                }
+                
+                // Check if container still exists (may be removed if modal closed)
+                if (!document.getElementById('productSearchResults')) {
+                    console.error("Results container no longer exists");
+                    return;
+                }
+                
+                // Check if data is array and not empty
+                if (Array.isArray(data) && data.length > 0) {
+                    displayProductResults(data);
+                } else {
+                    resultsContainer.innerHTML = `
+                        <div class="list-group-item text-center">
+                            <p>Không tìm thấy sản phẩm</p>
+                            <small class="text-muted">Hãy thử tìm kiếm với từ khóa khác hoặc kiểm tra loại đơn hàng</small>
+                            <div>Loại đơn hàng: ${productType || 'Chưa chọn'}</div>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error("Error searching products:", error);
+                
+                // Check if container still exists
+                if (document.getElementById('productSearchResults')) {
+                    document.getElementById('productSearchResults').innerHTML = `
+                        <div class="list-group-item text-danger">
+                            <p>Lỗi khi tìm kiếm sản phẩm</p>
+                            <small>${error.message || 'Vui lòng thử lại sau'}</small>
+                        </div>
+                    `;
+                }
+                
+                // Hide loading indicator if exists
+                if (document.getElementById('productLoading')) {
+                    document.getElementById('productLoading').style.display = 'none';
+                }
+            });
+    }
+    
+    // Add product to table
+    function addProductToTable(product) {
+        const tableBody = document.getElementById('productTableBody');
+        const rowId = 'product-row-' + Date.now();
+        
+        // Create new row
+        const row = document.createElement('tr');
+        row.id = rowId;
+        row.innerHTML = `
+            <td>
+                <input type="hidden" name="items[${selectedProducts.length}].productId" value="${product.id}">
+                <div>${product.name}</div>
+                <small class="text-muted">ID: ${product.id}</small>
+            </td>
+            <td>
+                <input type="number" class="form-control form-control-sm quantity-input" 
+                       name="items[${selectedProducts.length}].quantity" 
+                       value="1" min="1" max="${product.stockQuantities || 999}" 
+                       data-row-id="${rowId}" required>
+            </td>
+            <td>
+                <input type="number" class="form-control form-control-sm price-input" 
+                       name="items[${selectedProducts.length}].unitPrice" 
+                       value="${product.price}" min="0" step="0.01"
+                       data-row-id="${rowId}" required>
+            </td>
+            <td class="text-end item-total">${formatCurrency(product.price)}</td>
+            <td>
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeProduct('${rowId}')">
+                    <i class="ri-delete-bin-line"></i>
+                </button>
+            </td>
+        `;
+        
+        tableBody.appendChild(row);
+        
+        // Add to selected products
+        selectedProducts.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            quantity: 1,
+            rowId: rowId
+        });
+        
+        // Add event listeners
+        const quantityInput = row.querySelector('.quantity-input');
+        const priceInput = row.querySelector('.price-input');
+        
+        quantityInput.addEventListener('change', function() {
+            updateRowTotal(this);
+        });
+        
+        priceInput.addEventListener('change', function() {
+            updateRowTotal(this);
+        });
+        
+        // Update totals
+        recalculateTotal();
+    }
+    
+    // Update row total
+    function updateRowTotal(input) {
+        const rowId = input.getAttribute('data-row-id');
+        const row = document.getElementById(rowId);
+        const quantity = parseFloat(row.querySelector('.quantity-input').value) || 0;
+        const price = parseFloat(row.querySelector('.price-input').value) || 0;
+        const total = quantity * price;
+        
+        row.querySelector('.item-total').textContent = formatCurrency(total);
+        
+        // Update selected products array
+        const index = selectedProducts.findIndex(p => p.rowId === rowId);
+        if (index !== -1) {
+            selectedProducts[index].quantity = quantity;
+            selectedProducts[index].price = price;
+        }
+        
+        recalculateTotal();
+    }
+    
+    // Remove product from table
+    function removeProduct(rowId) {
+        document.getElementById(rowId).remove();
+        
+        // Remove from selected products
+        selectedProducts = selectedProducts.filter(p => p.rowId !== rowId);
+        
+        // Update indices for name attributes
+        const tableBody = document.getElementById('productTableBody');
+        const rows = tableBody.querySelectorAll('tr');
+        rows.forEach((row, index) => {
+            const productIdInput = row.querySelector('input[name^="items["][name$="].productId"]');
+            const quantityInput = row.querySelector('input[name^="items["][name$="].quantity"]');
+            const priceInput = row.querySelector('input[name^="items["][name$="].unitPrice"]');
+            
+            if (productIdInput) productIdInput.name = `items[${index}].productId`;
+            if (quantityInput) quantityInput.name = `items[${index}].quantity`;
+            if (priceInput) priceInput.name = `items[${index}].unitPrice`;
+        });
+        
+        recalculateTotal();
+    }
+    
+    // Recalculate total
+    function recalculateTotal() {
+        console.log("Recalculating totals...");
+        
+        try {
+            // Calculate subtotal from all product rows
+            let subtotal = 0;
+            selectedProducts.forEach(product => {
+                const quantity = parseFloat(product.quantity) || 0;
+                const price = parseFloat(product.price) || 0;
+                const rowTotal = quantity * price;
+                subtotal += rowTotal;
+                console.log(`Product: ${product.name}, Qty: ${quantity}, Price: ${price}, Total: ${rowTotal}`);
+            });
+            
+            // Get tax rate and shipping cost
+            const taxRate = parseFloat(document.getElementById('taxAmount').value) || 0;
+            const taxValue = subtotal * (taxRate / 100);
+            const shippingCost = parseFloat(document.getElementById('shippingCost').value) || 0;
+            
+            // Calculate grand total
+            const grandTotal = subtotal + taxValue + shippingCost;
+            
+            // Update UI
+            document.getElementById('subtotal').textContent = formatCurrency(subtotal);
+            document.getElementById('taxValue').textContent = formatCurrency(taxValue);
+            document.getElementById('shippingCostDisplay').textContent = formatCurrency(shippingCost);
+            document.getElementById('totalAmount').textContent = formatCurrency(grandTotal);
+            
+            // Update hidden input for form submission
+            document.getElementById('totalAmountInput').value = grandTotal.toFixed(2);
+            
+            console.log(`Totals updated: Subtotal=${subtotal}, Tax=${taxValue}, Shipping=${shippingCost}, Total=${grandTotal}`);
+        } catch (error) {
+            console.error("Error calculating totals:", error);
+        }
+    }
+    
+    // Submit order form
+    function submitOrderForm() {
+        const form = document.getElementById('createOrderForm');
+        
+        // Debug function
+        function showDebugInfo(data) {
+            const debugInfo = document.getElementById('formDebugInfo');
+            const debugContent = document.getElementById('formDebugContent');
+            
+            if (debugInfo && debugContent) {
+                debugContent.textContent = JSON.stringify(data, null, 2);
+                debugInfo.style.display = 'block';
+            }
+            
+            console.log('Debug info:', data);
+        }
+        
+        // Validate supplier
+        if (!document.getElementById('supplierId').value) {
+            showNotification('Vui lòng chọn nhà cung cấp', 'danger');
+            return;
+        }
+        
+        // Validate recipient
+        if (!document.getElementById('recipient').value.trim()) {
+            showNotification('Vui lòng nhập tên người nhận', 'danger');
+            return;
+        }
+        
+        // Validate reason
+        if (!document.getElementById('reason').value) {
+            showNotification('Vui lòng chọn lý do xuất kho', 'danger');
+            return;
+        }
+        
+        // Validate products
+        if (selectedProducts.length === 0) {
+            showNotification('Vui lòng thêm ít nhất một sản phẩm', 'danger');
+            return;
+        }
+        
+        try {
+            console.log("Form submission started...");
+            
+            // Xóa các item hiện tại (nếu có) để tránh trùng lặp
+            const existingItems = form.querySelectorAll('input[name^="items["]');
+            existingItems.forEach(item => item.remove());
+            
+            // Generate invoice number with SO prefix and timestamp
+            const timestamp = new Date().getTime();
+            const invoiceNumber = `SO-${timestamp}`;
+            
+            // Add invoice number to form
+            let invoiceInput = form.querySelector('input[name="invoiceNumber"]');
+            if (!invoiceInput) {
+                invoiceInput = document.createElement('input');
+                invoiceInput.type = 'hidden';
+                invoiceInput.name = 'invoiceNumber';
+                form.appendChild(invoiceInput);
+            }
+            invoiceInput.value = invoiceNumber;
+            
+            // Format expectedDeliveryDate as yyyy-MM-dd HH:mm:ss
+            const expectedDeliveryDateInput = document.getElementById('expectedDeliveryDate');
+            if (expectedDeliveryDateInput && expectedDeliveryDateInput.value) {
+                const expectedDate = new Date(expectedDeliveryDateInput.value + 'T12:00:00'); // Set to noon
+                const formattedExpectedDate = expectedDate.getFullYear() + '-' + 
+                                     String(expectedDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                                     String(expectedDate.getDate()).padStart(2, '0') + ' ' + 
+                                     String(expectedDate.getHours()).padStart(2, '0') + ':' + 
+                                     String(expectedDate.getMinutes()).padStart(2, '0') + ':' + 
+                                     String(expectedDate.getSeconds()).padStart(2, '0');
+                expectedDeliveryDateInput.value = formattedExpectedDate;
+            }
+            
+            // Add current date as transaction date
+            let transactionDateInput = form.querySelector('input[name="transactionDate"]');
+            if (!transactionDateInput) {
+                transactionDateInput = document.createElement('input');
+                transactionDateInput.type = 'hidden';
+                transactionDateInput.name = 'transactionDate';
+                form.appendChild(transactionDateInput);
+            }
+            // Format date as yyyy-MM-dd HH:mm:ss
+            const now = new Date();
+            const formattedNow = now.getFullYear() + '-' + 
+                                String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                                String(now.getDate()).padStart(2, '0') + ' ' + 
+                                String(now.getHours()).padStart(2, '0') + ':' + 
+                                String(now.getMinutes()).padStart(2, '0') + ':' + 
+                                String(now.getSeconds()).padStart(2, '0');
+            transactionDateInput.value = formattedNow;
+            
+            // Set due date to 5 days from now
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + 5);
+            const formattedDueDate = dueDate.getFullYear() + '-' + 
+                                    String(dueDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                                    String(dueDate.getDate()).padStart(2, '0') + ' ' + 
+                                    String(dueDate.getHours()).padStart(2, '0') + ':' + 
+                                    String(dueDate.getMinutes()).padStart(2, '0') + ':' + 
+                                    String(dueDate.getSeconds()).padStart(2, '0');
+            
+            let dueDateInput = form.querySelector('input[name="dueDate"]');
+            if (!dueDateInput) {
+                dueDateInput = document.createElement('input');
+                dueDateInput.type = 'hidden';
+                dueDateInput.name = 'dueDate';
+                form.appendChild(dueDateInput);
+            }
+            dueDateInput.value = formattedDueDate;
+            
+            // Calculate total amount
+            const subtotal = selectedProducts.reduce((sum, product) => sum + (product.quantity * product.price), 0);
+            const taxRate = parseFloat(document.getElementById('taxAmount').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const shippingCost = parseFloat(document.getElementById('shippingCost').value) || 0;
+            const total = subtotal + taxAmount + shippingCost;
+            
+            // Update hidden total amount input
+            const totalAmountInput = document.getElementById('totalAmountInput');
+            totalAmountInput.value = total.toFixed(2);
+            
+            // Add all products to form
+            selectedProducts.forEach((product, index) => {
+                // Add productId
+                const productIdInput = document.createElement('input');
+                productIdInput.type = 'hidden';
+                productIdInput.name = `items[${index}].productId`;
+                productIdInput.value = product.id;
+                form.appendChild(productIdInput);
+                
+                // Add quantity
+                const quantityInput = document.createElement('input');
+                quantityInput.type = 'hidden';
+                quantityInput.name = `items[${index}].quantity`;
+                quantityInput.value = product.quantity;
+                form.appendChild(quantityInput);
+                
+                // Add unit price
+                const priceInput = document.createElement('input');
+                priceInput.type = 'hidden';
+                priceInput.name = `items[${index}].unitPrice`;
+                priceInput.value = product.price;
+                form.appendChild(priceInput);
+            });
+            
+            // Show debug info before submit
+            const formData = {
+                invoiceNumber,
+                supplierId: document.getElementById('supplierId').value,
+                recipient: document.getElementById('recipient').value,
+                reason: document.getElementById('reason').value,
+                totalAmount: totalAmountInput.value,
+                taxAmount: document.getElementById('taxAmount').value,
+                shippingCost: document.getElementById('shippingCost').value,
+                paymentMethod: document.getElementById('paymentMethod').value,
+                notes: document.getElementById('notes').value,
+                items: selectedProducts.map(p => ({
+                    productId: p.id,
+                    quantity: p.quantity,
+                    unitPrice: p.price
+                }))
+            };
+            
+            showDebugInfo(formData);
+            
+            // Submit the form after a delay to allow debug view
+            showNotification('Đang gửi đơn xuất kho...', 'info');
+            
+            setTimeout(() => {
+                form.submit();
+            }, 500);
+            
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            showNotification('Lỗi khi gửi form: ' + error.message, 'danger');
+        }
+    }
+    
+    // Helper: Format currency
+    function formatCurrency(amount) {
+        if (amount === null || amount === undefined || isNaN(amount)) {
+            return '0 VNĐ';
+        }
+        
+        try {
+            // Ensure amount is a number
+            const numericAmount = parseFloat(amount);
+            
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(numericAmount).replace('₫', 'VNĐ');
+        } catch (e) {
+            console.error('Error formatting currency:', e, amount);
+            return '0 VNĐ';
+        }
+    }
+    
+    // Helper: Debounce function
+    function debounce(func, delay) {
+        let timeout;
+        return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), delay);
+        };
+    }
+</script>
+<script>
+    // Using var instead of let to avoid redeclaration issues
+    var currentRejectId = null;
+    
+    function openRejectModal(id) {
+        currentRejectId = id;
+        document.getElementById('rejectReason').value = '';
+        $('#rejectModal').modal('show');
+    }
+    
+    document.getElementById('confirmRejectBtn').addEventListener('click', function() {
+        const reason = document.getElementById('rejectReason').value;
+        if (!reason) {
+            alert('Vui lòng nhập lý do từ chối');
+            return;
+        }
+        
+        const form = document.getElementById('rejectForm');
+        form.action = `/supplier-outs/${currentRejectId}/reject`;
+        form.submit();
+    });
 </script>
 
 </body>

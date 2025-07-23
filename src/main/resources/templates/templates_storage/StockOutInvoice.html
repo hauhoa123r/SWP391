@@ -368,10 +368,13 @@
                                         <input type="text" class="form-control" id="searchFilter" placeholder="Tìm kiếm mã hóa đơn, bộ phận...">
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-select" id="statusFilter">
+                                        <select class="form-select" id="statusFilter" name="status">
                                             <option value="">Tất cả trạng thái</option>
-                                            <option value="COMPLETED">Hoàn thành</option>
-                                            <option value="PENDING">Chờ duyệt</option>
+                                            <option th:each="statusValue : ${availableStatuses}"
+                                                    th:value="${statusValue.name()}" 
+                                                    th:text="${statusValue.displayName}"
+                                                    th:selected="${param.status == statusValue.name()}">
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
@@ -408,35 +411,32 @@
                                         </thead>
                                         <tbody>
                                         <tr th:each="invoice : ${invoices}">
-                                            <td th:text="${invoice.id}"></td>
-                                            <td th:text="${#dates.format(invoice.date, 'dd-MM-yyyy')}"></td>
-                                            <td th:text="${invoice.department}"></td>
-                                            <td th:text="${invoice.reason}"></td>
-                                            <td th:text="${invoice.createdBy}"></td>
+                                            <td th:text="${invoice.invoiceNumber}"></td>
+                                            <td th:text="${invoice.invoiceDate != null ? #dates.format(invoice.invoiceDate, 'dd-MM-yyyy') : ''}"></td>
+                                            <td th:text="${invoice.recipient != null ? invoice.recipient : 'Hospital'}"></td>
+                                            <td th:text="${invoice.stockOutReason != null ? invoice.stockOutReason : '-'}"></td>
+                                            <td th:text="${invoice.createdById}"></td>
                                             <td>
-                                                        <span th:class="${invoice.status == 'COMPLETED' ? 'status-success' : 'status-danger'}"
-                                                              th:text="${invoice.status == 'COMPLETED' ? 'Hoàn thành' : 'Chờ duyệt'}">
-                                                        </span>
+                                                <span th:if="${invoice.status != null}"
+                                                      th:class="${'badge status-' + invoice.status.name().toLowerCase()}"
+                                                      th:text="${invoice.status.displayName}">
+                                                </span>
+                                                <span th:if="${invoice.status == null}" class="badge status-pending">
+                                                   Chờ xử lý
+                                                </span>
                                             </td>
                                             <td>
-                                                <ul>
-                                                    <li>
-                                                        <a th:href="@{'/StockOutDetail.html?id=' + ${invoice.id}}">
-                                                            <i class="ri-eye-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a th:href="@{'/invoiceouttracking.html?id=' + ${invoice.id}}" class="btn btn-sm btn-info">
-                                                            <i class="ri-truck-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" data-bs-toggle="modal"
-                                                           data-bs-target="#exampleModalToggle">
-                                                            <i class="ri-download-2-line"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
+                                                <div class="btn-group" style="display: flex !important;">
+                                                    <a th:href="@{'/supplier-out-invoices/' + ${invoice.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
+                                                        <i class="ri-eye-line text-white"></i>
+                                                    </a>
+                                                    <a th:href="@{'/invoiceouttracking.html?id=' + ${invoice.id}}" class="btn btn-sm btn-info" title="Theo dõi">
+                                                        <i class="ri-route-line text-white"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-sm btn-secondary" title="Tải xuống" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                                                        <i class="ri-download-2-line text-white"></i>
+                                                    </a>
+                                                </div>
                                             </td>
                                         </tr>
                                         </tbody>

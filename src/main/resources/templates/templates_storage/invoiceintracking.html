@@ -379,26 +379,30 @@
                                                 </div>
                                             </div>
 
+                                            <div class="order-image">
+                                                <img th:src="@{/templates_storage/assets/images/track-image.png}" class="img-fluid blur-up lazyload" alt="">
+                                            </div>
+
                                             <ol class="progtrckr">
-                                                <li class="progtrckr-done">
+                                                <li th:class="${supplierIn.status != null && (supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED')} ? 'progtrckr-done' : 'progtrckr-todo'">
                                                     <h5>Đơn đã tạo</h5>
-                                                    <h6>08:20 AM</h6>
+                                                    <h6>Đơn hàng đã được tạo thành công</h6>
                                                 </li>
-                                                <li class="progtrckr-done">
-                                                    <h5>Chờ hàng về</h5>
-                                                    <h6>09:30 AM</h6>
+                                                <li th:class="${supplierIn.status != null && (supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED')} ? 'progtrckr-done' : 'progtrckr-todo'">
+                                                    <h5>Đã xác nhận</h5>
+                                                    <h6>Nhà cung cấp đã xác nhận</h6>
                                                 </li>
-                                                <li class="progtrckr-done">
+                                                <li th:class="${supplierIn.status != null && (supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'INSPECTED')} ? 'progtrckr-done' : 'progtrckr-todo'">
                                                     <h5>Đã nhận hàng</h5>
-                                                    <h6>10:45 AM</h6>
+                                                    <h6>Đã nhận hàng từ nhà cung cấp</h6>
                                                 </li>
-                                                <li class="progtrckr-todo">
+                                                <li th:class="${supplierIn.status != null && (supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'INSPECTED')} ? 'progtrckr-done' : 'progtrckr-todo'">
                                                     <h5>Đã kiểm tra</h5>
-                                                    <h6>Đang xử lý</h6>
+                                                    <h6>Hàng đã được kiểm tra</h6>
                                                 </li>
-                                                <li class="progtrckr-todo">
+                                                <li th:class="${supplierIn.status != null && supplierIn.status.name() == 'COMPLETED'} ? 'progtrckr-done' : 'progtrckr-todo'">
                                                     <h5>Hoàn thành</h5>
-                                                    <h6>Chờ xử lý</h6>
+                                                    <h6>Đơn hàng đã hoàn thành</h6>
                                                 </li>
                                             </ol>
 
@@ -416,12 +420,12 @@
                                                             </thead>
 
                                                             <tbody>
-                                                            <tr>
+                                                            <tr th:if="${supplierIn.status != null && (supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED' || supplierIn.status.name() == 'COMPLETED')}">
                                                                 <td>
-                                                                    <h6>20/05/2023</h6>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">20/05/2023</h6>
                                                                 </td>
                                                                 <td>
-                                                                    <h6>10:45 AM</h6>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'HH:mm')}">10:45</h6>
                                                                 </td>
                                                                 <td>
                                                                     <p class="fw-bold">Đã nhận hàng</p>
@@ -430,28 +434,43 @@
                                                                     <h6>Đơn hàng đã được nhận từ nhà cung cấp</h6>
                                                                 </td>
                                                             </tr>
-
-                                                            <tr>
+                                                            
+                                                            <tr th:if="${supplierIn.status != null && (supplierIn.status.name() == 'INSPECTED' || supplierIn.status.name() == 'COMPLETED')}">
                                                                 <td>
-                                                                    <h6>20/05/2023</h6>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">21/05/2023</h6>
                                                                 </td>
                                                                 <td>
-                                                                    <h6>09:30 AM</h6>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'HH:mm')}">11:30</h6>
                                                                 </td>
                                                                 <td>
-                                                                    <p class="fw-bold">Chờ hàng về</p>
+                                                                    <p class="fw-bold">Đã kiểm tra</p>
                                                                 </td>
                                                                 <td>
-                                                                    <h6>Nhà cung cấp đã xác nhận đơn hàng</h6>
+                                                                    <h6>Hàng hóa đã được kiểm tra và xác nhận</h6>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            <tr th:if="${supplierIn.status != null && supplierIn.status.name() == 'COMPLETED'}">
+                                                                <td>
+                                                                    <h6 th:text="${#dates.format(supplierIn.approvedDate != null ? supplierIn.approvedDate : supplierIn.transactionDate, 'dd/MM/yyyy')}">22/05/2023</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <h6 th:text="${#dates.format(supplierIn.approvedDate != null ? supplierIn.approvedDate : supplierIn.transactionDate, 'HH:mm')}">09:15</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <p class="fw-bold">Đã hoàn thành</p>
+                                                                </td>
+                                                                <td>
+                                                                    <h6>Đơn hàng đã hoàn thành và chuyển sang hóa đơn</h6>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td>
-                                                                    <h6>20/05/2023</h6>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">20/05/2023</h6>
                                                                 </td>
                                                                 <td>
-                                                                    <h6>08:20 AM</h6>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'HH:mm')}">08:20</h6>
                                                                 </td>
                                                                 <td>
                                                                     <p class="fw-bold">Đơn đã tạo</p>

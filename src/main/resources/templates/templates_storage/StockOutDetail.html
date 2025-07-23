@@ -335,6 +335,7 @@
                                             <h6 class="mb-2">Thông tin người nhận</h6>
                                             <p class="mb-1"><strong>Người nhận:</strong> <span th:text="${supplierOut.recipient}" id="supplierName">Người nhận</span></p>
                                             <p class="mb-1"><strong>Liên hệ:</strong> <span th:text="${supplierOut.recipientContact != null ? supplierOut.recipientContact : 'N/A'}" id="supplierContact">N/A</span></p>
+                                            <p class="mb-1" th:if="${supplierOut.stockOutReason != null}"><strong>Lý do xuất kho:</strong> <span th:text="${supplierOut.stockOutReason}">Không có</span></p>
                                         </div>
                                         <div class="mb-3">
                                             <h6 class="mb-2">Thông tin người quản lý</h6>

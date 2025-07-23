@@ -223,11 +223,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{StockIn.html}">Nhập kho</a>
+                                        <a th:href="@{/supplier-ins}">Nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{StockOut.html}">Xuất kho</a>
+                                        <a th:href="@{/supplier-outs}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -239,15 +239,15 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{StockInInvoice.html}">Hóa đơn nhập kho</a>
+                                        <a th:href="@{/supplier-in-invoices}">Hóa đơn nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{StockOutInvoice.html}">Hóa đơn xuất kho</a>
+                                        <a th:href="@{/supplier-out-invoices}">Hóa đơn xuất kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{CustomerInvoice.html}">Hóa đơn khách hàng</a>
+                                        <a th:href="@{/customer-invoices}">Hóa đơn khách hàng</a>
                                     </li>
                                 </ul>
                             </li>
@@ -351,50 +351,64 @@
 
                             <!-- Filter Section -->
                             <div class="card-body">
-                                <!-- Form filter gửi đến controller -->
-                                <form id="filterForm" th:action="@{/supplier-ins}" method="get">
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" id="searchFilter" name="search" placeholder="Tìm kiếm mã đơn, nhà cung cấp..." th:value="${param.search}">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <!-- Sửa dropdown status filter để chỉ hiển thị các trạng thái được phép -->
-                                            <select class="form-select" id="statusFilter" name="status">
-                                                <option value="">Tất cả trạng thái</option>
-                                                <!-- Chỉ hiển thị các trạng thái cho phép -->
-                                                <option th:each="statusValue : ${allowedStatuses}"
-                                                        th:value="${statusValue.name()}"
-                                                        th:text="${statusValue.name() == 'PENDING' ? 'Chờ hàng về' :
-                                                                 statusValue.name() == 'RECEIVED' ? 'Đã nhận hàng' :
-                                                                 statusValue.name() == 'WAITING_FOR_DELIVERY' ? 'Chờ giao hàng' :
-                                                                 statusValue.name() == 'INSPECTED' ? 'Đã kiểm tra' :
-                                                                 statusValue}"
-                                                        th:selected="${param.status == statusValue.name()}">
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <select class="form-select" id="typeFilter" name="type">
-                                                <option value="">Tất cả loại</option>
-                                                <option value="MEDICINE" th:selected="${param.type == 'MEDICINE'}">Thuốc</option>
-                                                <option value="EQUIPMENT" th:selected="${param.type == 'EQUIPMENT'}">Thiết bị y tế</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="submit" class="btn btn-primary me-2">
-                                                <i class="ri-filter-line"></i> Lọc
-                                            </button>
-                                            <a th:href="@{/supplier-ins}" class="btn btn-secondary">
-                                                <i class="ri-filter-off-line"></i> Xóa bộ lọc
-                                            </a>
+                                <!-- Tìm kiếm và bộ lọc -->
+                                <form th:action="@{/supplier-ins}" method="get" id="filterForm" class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="input-group mb-3">
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" id="searchFilter" name="search" th:value="${param.search}" placeholder="Tìm kiếm...">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <select class="form-select" id="typeFilter" name="type">
+                                                        <option value="">Tất cả loại</option>
+                                                        <option value="MEDICINE" th:selected="${param.type == 'MEDICINE'}">Thuốc</option>
+                                                        <option value="MEDICAL_PRODUCT" th:selected="${param.type == 'MEDICAL_PRODUCT'}">Thiết bị y tế</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <!-- Sửa dropdown status filter để chỉ hiển thị các trạng thái được phép -->
+                                                    <select class="form-select" id="statusFilter" name="status">
+                                                        <option value="">Tất cả trạng thái</option>
+                                                        <!-- Chỉ hiển thị các trạng thái cho phép -->
+                                                        <option th:each="statusValue : ${allowedStatuses}"
+                                                                th:value="${statusValue.name()}"
+                                                                th:text="${statusValue.displayName}"
+                                                                th:selected="${param.status == statusValue.name()}">
+                                                        </option>
+                                                    </select>
+                                                    <!-- Tooltip giải thích -->
+                                                    <small class="text-muted d-block mt-1">
+                                                        <i class="ri-information-line"></i> 
+                                                        Các đơn sau khi "Đã nhận hàng" sẽ được chuyển sang trang Thuốc/Thiết bị y tế để kiểm tra và thêm vào kho.
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-primary w-100" type="submit">
+                                                        <i class="ri-search-line"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
-
+ 
                                 <!-- Hiển thị thông báo lỗi nếu có -->
                                 <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
                                     <i class="ri-error-warning-line me-2"></i>
                                     <span th:text="${errorMessage}">Lỗi hệ thống</span>
+                                </div>
+                                
+                                <!-- Hiển thị thông báo thành công từ flash attributes -->
+                                <div th:if="${message != null}" class="alert alert-success" role="alert">
+                                    <i class="ri-checkbox-circle-line me-2"></i>
+                                    <span th:text="${message}">Thao tác thành công</span>
+                                </div>
+                                
+                                <!-- Hiển thị debug info nếu có -->
+                                <div th:if="${debugInfo != null}" class="alert alert-info" role="alert">
+                                    <i class="ri-information-line me-2"></i>
+                                    <span th:text="${debugInfo}">Thông tin debug</span>
                                 </div>
                                 
                                 <div class="table-responsive">
@@ -415,63 +429,82 @@
                                         <tr th:each="supplierIn : ${supplierIns}" th:data-id="${supplierIn?.id}" th:data-type="${supplierIn?.type}" th:data-status="${supplierIn?.status}">
                                             <td><strong th:text="${'SI-' + (supplierIn?.id ?: '0')}">SI-001</strong></td>
                                             <td>
-                                                <!-- Simple type implementation -->
+                                                <!-- Improved type implementation to handle all types -->
                                                 <span th:if="${supplierIn?.type == 'MEDICINE'}" class="badge bg-success">Thuốc</span>
-                                                <span th:if="${supplierIn?.type != 'MEDICINE'}" class="badge bg-info">Thiết bị y tế</span>
+                                                <span th:if="${supplierIn?.type == 'MEDICAL_EQUIPMENT'}" class="badge bg-info">Thiết bị y tế</span>
+                                                <span th:if="${supplierIn?.type == 'MIXED'}" class="badge bg-warning">Hỗn hợp</span>
+                                                <span th:if="${supplierIn?.type == null || supplierIn?.type == 'UNDEFINED'}" class="badge bg-secondary">Không xác định</span>
                                             </td>
                                             <td th:text="${supplierIn?.supplierName ?: 'N/A'}">Nhà cung cấp</td>
-                                            <td th:text="${supplierIn?.createdAt != null ? #dates.format(supplierIn.createdAt, 'dd-MM-yyyy') : 'N/A'}">Ngày tạo</td>
+                                            <td th:text="${supplierIn?.transactionDate != null ? #dates.format(supplierIn.transactionDate, 'dd-MM-yyyy') : 'N/A'}">Ngày tạo</td>
                                             <td class="text-end"><strong th:text="${supplierIn?.totalAmount != null ? #numbers.formatDecimal(supplierIn.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}">0 VNĐ</strong></td>
                                             <td>
-                                                <!-- Sử dụng so sánh String thay vì so sánh enum trực tiếp -->
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'PENDING'}" class="status-pending">Chờ hàng về</span>
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'APPROVED'}" class="status-processing">Đã phê duyệt</span>
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'REJECTED'}" class="status-rejected">Từ chối</span>
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'WAITING_FOR_DELIVERY'}" class="status-pending">Chờ giao hàng</span>
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'DELIVERED'}" class="status-received">Đã giao hàng</span>
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'INSPECTED'}" class="status-checked">Đã kiểm tra</span>
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'COMPLETED'}" class="status-completed">Hoàn thành</span>
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'PROBLEM'}" class="status-rejected">Có vấn đề</span>
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'PARTIALLY_COMPLETED'}" class="status-processing">Hoàn thành một phần</span>
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'CANCELLED'}" class="status-rejected">Đã hủy</span>
-                                                <span th:if="${supplierIn?.status != null && supplierIn.status.name() == 'RECEIVED'}" class="status-received">Đã nhận hàng</span>
+                                                <!-- Use the displayName property directly -->
+                                                <span th:if="${supplierIn?.status != null}" th:class="${'status-' + (
+                                                    supplierIn.status.name() == 'PENDING' ? 'pending' : 
+                                                    supplierIn.status.name() == 'APPROVED' ? 'processing' : 
+                                                    supplierIn.status.name() == 'REJECTED' ? 'rejected' : 
+                                                    supplierIn.status.name() == 'WAITING_FOR_DELIVERY' ? 'pending' : 
+                                                    supplierIn.status.name() == 'DELIVERED' ? 'received' : 
+                                                    supplierIn.status.name() == 'INSPECTED' ? 'checked' : 
+                                                    supplierIn.status.name() == 'COMPLETED' ? 'completed' : 
+                                                    supplierIn.status.name() == 'PROBLEM' ? 'rejected' : 
+                                                    supplierIn.status.name() == 'PARTIALLY_COMPLETED' ? 'processing' : 
+                                                    supplierIn.status.name() == 'CANCELLED' ? 'rejected' : 
+                                                    supplierIn.status.name() == 'RECEIVED' ? 'received' : 'pending')}" 
+                                                      th:text="${supplierIn.status.displayName}">Status</span>
                                                 <span th:if="${supplierIn?.status == null}" class="status-pending">Chờ xử lý</span>
                                             </td>
                                             <td>
                                                 <div class="btn-group" style="display: flex !important;">
-                                                    <a th:href="@{'/supplier-ins/' + ${supplierIn?.id}}" class="btn btn-sm btn-primary">
+                                                    <a th:href="@{'/supplier-ins/' + ${supplierIn?.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
                                                         <i class="ri-eye-line text-white"></i>
                                                     </a>
-                                                    <a th:href="@{'/invoiceintracking.html?id=' + ${supplierIn?.id}}" class="btn btn-sm btn-info">
+                                                    <a th:href="@{'/invoiceintracking.html?id=' + ${supplierIn?.id}}" class="btn btn-sm btn-info" title="Theo dõi">
                                                         <i class="ri-route-line text-white"></i>
                                                     </a>
-                                                    <!-- Sửa phần hiển thị nút hành động trong bảng -->
-                                                    <form th:if="${supplierIn?.status != null && supplierIn.status.name() == 'PENDING'}" th:data-id="${supplierIn?.id}" action="javascript:void(0);" style="display:inline-block !important;" onsubmit="handleStatusChange(this, 'RECEIVED')">
-                                                        <input type="hidden" name="_csrf" th:value="${_csrf != null ? _csrf.token : ''}" />
+                                                      
+                                                    <!-- Status update buttons based on current status -->
+                                                    <form th:if="${supplierIn?.status != null && supplierIn.status.name() == 'WAITING_FOR_DELIVERY'}" 
+                                                          th:action="@{'/supplier-ins/' + ${supplierIn?.id} + '/status'}" 
+                                                          method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="RECEIVED" />
-                                                        <button type="submit" class="btn btn-sm btn-success" title="Đánh dấu đã nhận" style="display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
-                                                            <i class="ri-truck-line text-white"></i>
+                                                        <button type="submit" class="btn btn-sm btn-success" 
+                                                                title="Đánh dấu đã nhận hàng" 
+                                                                onclick="return confirm('Xác nhận đã nhận hàng?')">
+                                                            <i class="ri-inbox-line text-white"></i>
                                                         </button>
                                                     </form>
 
-                                                    <form th:if="${supplierIn?.status != null && supplierIn.status.name() == 'RECEIVED'}" th:data-id="${supplierIn?.id}" th:data-type="${supplierIn?.type}" action="javascript:void(0);" style="display:inline-block !important;" onsubmit="handleStatusChange(this, 'INSPECTED')">
-                                                        <input type="hidden" name="_csrf" th:value="${_csrf != null ? _csrf.token : ''}" />
+                                                    <form th:if="${supplierIn?.status != null && supplierIn.status.name() == 'RECEIVED'}" 
+                                                          th:action="@{'/supplier-ins/' + ${supplierIn?.id} + '/status'}" 
+                                                          method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="INSPECTED" />
-                                                        <button type="submit" class="btn btn-sm btn-warning" title="Đánh dấu đã kiểm tra và chuyển sang trang xử lý tương ứng" style="display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
-                                                            <i class="ri-checkbox-line text-white"></i>
+                                                        <button type="submit" class="btn btn-sm btn-info" 
+                                                                title="Đánh dấu đã kiểm tra" 
+                                                                onclick="return confirm('Xác nhận đã kiểm tra hàng?')">
+                                                            <i class="ri-checkbox-circle-line text-white"></i>
                                                         </button>
                                                     </form>
                                                     
-                                                    <!-- Loại bỏ nút chuyển sang trạng thái COMPLETED vì sau khi đánh dấu INSPECTED sẽ chuyển sang trang khác -->
-
-                                                    <!-- Nút từ chối đơn hàng - hiển thị khi chưa hoàn thành -->
-                                                    <form th:if="${supplierIn?.status != null && supplierIn.status.name() != 'COMPLETED' && supplierIn.status.name() != 'REJECTED'}" th:data-id="${supplierIn?.id}" action="javascript:void(0);" style="display:inline-block !important;" onsubmit="handleStatusChange(this, 'REJECTED')">
-                                                        <input type="hidden" name="_csrf" th:value="${_csrf != null ? _csrf.token : ''}" />
-                                                        <input type="hidden" name="status" value="REJECTED" />
-                                                        <button type="submit" class="btn btn-sm btn-danger" title="Từ chối" style="display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
-                                                            <i class="ri-close-line text-white"></i>
+                                                    <form th:if="${supplierIn?.status != null && supplierIn.status.name() == 'INSPECTED'}" 
+                                                          th:action="@{'/supplier-ins/' + ${supplierIn?.id} + '/status'}" 
+                                                          method="post" style="display:inline-block !important;">
+                                                        <input type="hidden" name="status" value="COMPLETED" />
+                                                        <button type="submit" class="btn btn-sm btn-success" 
+                                                                title="Hoàn thành đơn hàng" 
+                                                                onclick="return confirm('Xác nhận hoàn thành đơn hàng? Đơn hàng sẽ được chuyển sang hóa đơn.')">
+                                                            <i class="ri-check-line text-white"></i>
                                                         </button>
                                                     </form>
+
+                                                    <!-- Nút từ chối đơn hàng luôn hiển thị trừ khi đã hoàn thành hoặc đã từ chối -->
+                                                    <button th:if="${supplierIn?.status != null && supplierIn.status.name() != 'COMPLETED' && supplierIn.status.name() != 'REJECTED'}" 
+                                                            type="button" class="btn btn-sm btn-danger" 
+                                                            title="Từ chối" 
+                                                            th:onclick="'openRejectModal(' + ${supplierIn?.id} + ')'">
+                                                        <i class="ri-close-line text-white"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -611,47 +644,63 @@ function rejectOrder() {
     const orderId = document.getElementById('rejectOrderId').value;
     const reason = document.getElementById('rejectReason').value;
     
-    if (!reason) {
+    if (!orderId) {
+        alert('Lỗi: Không tìm thấy ID đơn hàng');
+        return;
+    }
+    
+    if (!reason || !reason.trim()) {
         alert('Vui lòng nhập lý do từ chối');
         return;
     }
     
-    // Gửi request đến server
+    // Đóng modal trước khi xử lý
+    const rejectModal = document.getElementById('rejectModal');
+    const bootstrapModal = bootstrap.Modal.getInstance(rejectModal);
+    if (bootstrapModal) {
+        bootstrapModal.hide();
+    }
+    
+    // Hiển thị thông báo
+    showNotification('Đang xử lý từ chối đơn hàng...', 'info');
+    
+    // Gửi AJAX request
     fetch(`/supplier-ins/${orderId}/reject`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]') ? 
-                document.querySelector('input[name="_csrf"]').value : ''
+            'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify({ reason: reason })
     })
     .then(response => {
         if (response.ok) {
-            window.location.href = '/supplier-ins';
+            showNotification('Đã từ chối đơn hàng thành công', 'success');
+            // Reload sau 1 giây
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
         } else {
-            return response.text().then(text => {
-                throw new Error(text || 'Có lỗi xảy ra khi từ chối đơn hàng');
+            return response.json().then(data => {
+                throw new Error(data.message || 'Lỗi từ chối đơn hàng');
             });
         }
     })
-    .then(() => {
-        // Hiển thị thông báo thành công
-        alert('Từ chối đơn hàng thành công');
-        window.location.reload();
-    })
     .catch(error => {
-        console.error('Error:', error);
-        alert(error.message || 'Có lỗi xảy ra khi từ chối đơn hàng');
+        showNotification(`Lỗi: ${error.message}`, 'danger');
     });
-    
-    // Đóng modal
-    $('#rejectModal').modal('hide');
 }
 
 function openRejectModal(id) {
+    // Thiết lập order ID cho form từ chối
     document.getElementById('rejectOrderId').value = id;
-    $('#rejectModal').modal('show');
+    
+    // Xóa nội dung lý do từ chối cũ (nếu có)
+    document.getElementById('rejectReason').value = '';
+    
+    // Mở modal
+    const rejectModal = new bootstrap.Modal(document.getElementById('rejectModal'));
+    rejectModal.show();
 }
 
 // Đảm bảo các nút reject gọi hàm này
@@ -668,72 +717,71 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function handleStatusChange(form, newStatus) {
-    const id = form.getAttribute('data-id');
-    console.log("Handle status change:", id, newStatus);
+    // Safely get the ID from form's data attribute or from other sources
+    const $form = $(form);
+    const orderId = $form.data('id') || $form.closest('tr').data('id');
+    
+    if (!orderId) {
+        showNotification("Lỗi: Không tìm thấy ID đơn hàng", "danger");
+        return;
+    }
     
     if (!confirm(`Xác nhận cập nhật trạng thái đơn hàng sang "${getStatusText(newStatus)}"?`)) {
         return; // Người dùng hủy
     }
     
-    // Xử lý đặc biệt khi chuyển sang INSPECTED
-    if (newStatus === 'INSPECTED') {
-        // Lấy loại đơn hàng (MEDICINE hoặc EQUIPMENT)
-        const orderType = form.getAttribute('data-type');
-        console.log("Order type:", orderType);
-        
-        // Chuẩn bị data để gửi
-        const formData = new FormData();
-        formData.append('status', newStatus);
-        formData.append('_csrf', form.querySelector('input[name="_csrf"]').value);
-        
-        // Hiển thị loading
-        const button = form.querySelector('button');
-        const originalHtml = button.innerHTML;
-        button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-        button.disabled = true;
-        
-        // Gửi request cập nhật trạng thái
-        fetch(`/supplier-ins/${id}/status`, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                // Chuyển hướng đến trang xử lý tương ứng
-                let targetUrl = orderType === 'MEDICINE' ? '/medicine?stockin=' : '/medical-equipment?stockin=';
-                targetUrl += id;
-                
-                showNotification(`Đã chuyển trạng thái sang đã kiểm tra. Đang chuyển đến trang xử lý ${orderType === 'MEDICINE' ? 'thuốc' : 'thiết bị y tế'}...`, 'info');
-                
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 1500);
-            } else {
-                button.innerHTML = originalHtml;
-                button.disabled = false;
-                showNotification('Có lỗi xảy ra khi cập nhật trạng thái', 'danger');
+    // Đặc biệt: nếu người dùng đang chuyển từ RECEIVED -> tiếp tục xử lý
+    if (newStatus === 'RECEIVED') {
+        // Hiển thị thông báo xác nhận
+        if (confirm('Bạn đã nhận hàng và muốn tiếp tục kiểm tra/thêm vào kho?')) {
+            // Chuẩn bị form để submit
+            const processForm = document.createElement('form');
+            processForm.method = 'POST';
+            processForm.action = `/supplier-ins/${orderId}/process`;
+            
+            // Thêm CSRF token nếu có
+            const csrfInput = form.querySelector('input[name="_csrf"]');
+            if (csrfInput) {
+                const newCsrfInput = document.createElement('input');
+                newCsrfInput.type = 'hidden';
+                newCsrfInput.name = '_csrf';
+                newCsrfInput.value = csrfInput.value;
+                processForm.appendChild(newCsrfInput);
             }
-        })
-        .catch(error => {
-            button.innerHTML = originalHtml;
-            button.disabled = false;
-            showNotification('Có lỗi xảy ra: ' + error.message, 'danger');
-        });
-        
-        return;
+            
+            // Hiển thị loading
+            const $button = $(form).find('button');
+            const originalHtml = $button.html();
+            $button.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+            $button.prop('disabled', true);
+            
+            // Thêm form vào document
+            document.body.appendChild(processForm);
+            
+            // Hiển thị thông báo
+            showNotification('Đang chuyển đến trang xử lý tiếp theo...', 'info');
+            
+            // Submit form để chuyển đến trang xử lý
+            setTimeout(() => {
+                processForm.submit();
+            }, 500);
+            
+            return;
+        }
+        // Nếu không muốn tiếp tục, chỉ đánh dấu đã nhận hàng
     }
     
-    // Xử lý các trạng thái khác
+    // Xử lý các trạng thái thông thường
     const formData = new FormData(form);
     
     // Show loading indicator
-    const $button = $(form).find('button');
+    const $button = $form.find('button');
     const originalHtml = $button.html();
     $button.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
     $button.prop('disabled', true);
     
     // Gửi AJAX request
-    fetch(`/supplier-ins/${id}/status`, {
+    fetch(`/supplier-ins/${orderId}/status`, {
         method: 'POST',
         body: formData,
     })
@@ -754,8 +802,6 @@ function handleStatusChange(form, newStatus) {
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        
         // Restore button
         $button.html(originalHtml);
         $button.prop('disabled', false);
@@ -779,69 +825,47 @@ function handleStatusChange(form, newStatus) {
     /*<![CDATA[*/
     const supplierInsData = /*[[${supplierIns}]]*/ [];
     
-    // Debug information
-    console.log("Raw supplier data: ", supplierInsData);
-    
-
-    
     // Chuyển đổi dữ liệu từ controller vào định dạng orderData
-    if (supplierInsData) {
+    if (supplierInsData && Array.isArray(supplierInsData)) {
         supplierInsData.forEach(function(supplierIn) {
-            const key = supplierIn.code || supplierIn.id;
-            orderData[key] = {
-                id: supplierIn.id,
-                type: supplierIn.type || 'unknown',
-                supplier: supplierIn.supplierName || 'Không xác định',
-                date: supplierIn.createdDate,
-                status: supplierIn.status ? supplierIn.status : 'pending',
-                products: supplierIn.items || [],
-                total: supplierIn.totalAmount || 0,
-                source: supplierIn.type === 'medicine' ? 'medicine.html' : 'medical-equipment.html'
-            };
+            if (supplierIn) {
+                const id = supplierIn.id;
+                if (id) {
+                    orderData[id] = {
+                        id: id,
+                        type: supplierIn.type || 'UNDEFINED',
+                        supplier: supplierIn.supplierName || 'Không xác định',
+                        date: supplierIn.transactionDate || supplierIn.createdAt,
+                        status: supplierIn.status ? (typeof supplierIn.status === 'string' ? supplierIn.status : supplierIn.status.name || 'PENDING') : 'PENDING',
+                        products: supplierIn.items || [],
+                        total: supplierIn.totalAmount || 0,
+                        source: supplierIn.type === 'MEDICINE' ? 'medicine.html' : 'medical-equipment.html'
+                    };
+                }
+            }
         });
     }
     /*]]>*/
 
     // Khởi tạo khi trang load
     $(document).ready(function() {
-        // Debug helper
-        console.log("Initializing debug helper...");
-        
-        // Hiển thị data-id và trạng thái của tất cả hàng
-        $('tr[data-id]').each(function() {
-            const $row = $(this);
-            const id = $row.data('id');
-            const status = $row.data('status');
-            const type = $row.data('type');
-            
-            console.log(`Row ${id}: status=${status}, type=${type}`);
-        });
-        
-        // Check form data
-        $('form').each(function(index) {
-            const $form = $(this);
-            const action = $form.attr('action');
-            const dataId = $form.data('id');
-            
-            if (action && action.includes('/status')) {
-                console.log(`Form ${index}: action=${action}, data-id=${dataId}`);
-                
-                // Check inputs
-                const status = $form.find('input[name="status"]').val();
-                if (status) {
-                    console.log(`  Status input: ${status}`);
-                }
-            }
-        });
+        // Initialize event handlers if needed
+        try {
+            $('tr[data-id]').each(function() {
+                const $row = $(this);
+                const id = $row.data('id');
+                const status = $row.data('status');
+                const type = $row.data('type');
+            });
+        } catch (e) {
+            // Silent error handling
+        }
     });
 
-    // Change page size function with extra logging
+    // Change page size function
     function changePageSize() {
         const size = document.getElementById('pageSizeSelect').value;
         const currentUrl = new URL(window.location.href);
-        
-        console.log("Changing page size to:", size);
-        console.log("Current URL:", currentUrl.toString());
         
         // Update size parameter and reset to first page
         currentUrl.searchParams.set('size', size);
@@ -856,11 +880,8 @@ function handleStatusChange(form, newStatus) {
         if (search) currentUrl.searchParams.set('search', search);
         if (type) currentUrl.searchParams.set('type', type);
         
-        const newUrl = currentUrl.toString();
-        console.log("Navigating to:", newUrl);
-        
         // Navigate to the new URL
-        window.location.href = newUrl;
+        window.location.href = currentUrl.toString();
     }
 
     // Initialize filters with debounce search
@@ -902,8 +923,14 @@ function handleStatusChange(form, newStatus) {
 
     // Xử lý thay đổi trạng thái
     function handleStatusChange(form, newStatus) {
-        const orderId = $(form).data('id');
-        console.log("Handle status change:", orderId, newStatus);
+        // Safely get the ID from form's data attribute or from other sources
+        const $form = $(form);
+        const orderId = $form.data('id') || $form.closest('tr').data('id');
+        
+        if (!orderId) {
+            showNotification("Lỗi: Không tìm thấy ID đơn hàng", "danger");
+            return;
+        }
         
         if (!confirm(`Xác nhận cập nhật trạng thái đơn hàng sang "${getStatusText(newStatus)}"?`)) {
             return; // Người dùng hủy
@@ -913,7 +940,6 @@ function handleStatusChange(form, newStatus) {
         if (newStatus === 'COMPLETED') {
             // Lấy loại đơn hàng (MEDICINE hoặc EQUIPMENT)
             const orderType = $(`tr[data-id="${orderId}"]`).data('type');
-            console.log("Order type:", orderType);
             
             // Chuyển hướng đến trang xử lý tương ứng
             let targetUrl = orderType === 'MEDICINE' ? 'medicine.html' : 'medical-equipment.html';
@@ -952,8 +978,6 @@ function handleStatusChange(form, newStatus) {
             }
         })
         .then(response => {
-            console.log("Response status:", response.status);
-            
             // Restore button
             $button.html(originalHtml);
             $button.prop('disabled', false);
@@ -970,8 +994,6 @@ function handleStatusChange(form, newStatus) {
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            
             // Restore button
             $button.html(originalHtml);
             $button.prop('disabled', false);
@@ -991,7 +1013,6 @@ function handleStatusChange(form, newStatus) {
     // Load danh sách đơn hàng
     function loadOrders() {
         // Simulate loading from API
-        console.log('Loading orders...');
     }
 
     // Lọc bảng
@@ -1168,7 +1189,6 @@ function handleStatusChange(form, newStatus) {
         
         // Lấy ID trực tiếp từ data-id của form
         const orderId = $(form).data('id');
-        console.log("Order ID from data attribute:", orderId);
         
         // Hiển thị xác nhận
         if (!confirm(`Xác nhận cập nhật trạng thái đơn hàng sang "${getStatusText(newStatus)}"?`)) {
@@ -1178,7 +1198,6 @@ function handleStatusChange(form, newStatus) {
         
         // Chuẩn bị data
         const formData = new FormData(form);
-        console.log("Status being set:", formData.get('status'));
         
         // Thử phương pháp 1: sử dụng native form submission nhưng ngăn redirect
         try {
@@ -1189,7 +1208,6 @@ function handleStatusChange(form, newStatus) {
             // Thiết lập form để submit vào iframe
             const originalAction = form.action;
             form.action = `${window.location.origin}/api/supplier-ins/${orderId}/status`;
-            console.log("Submitting to URL:", form.action);
             const originalTarget = form.target;
             form.target = targetIframe;
             
@@ -1213,15 +1231,12 @@ function handleStatusChange(form, newStatus) {
             form.action = originalAction;
             form.target = originalTarget;
         } catch (error) {
-            console.error('Lỗi khi submit form:', error);
-            showNotification('Lỗi khi cập nhật trạng thái: ' + error.message, 'danger');
+            showNotification('Lỗi khi submit form:', 'danger');
         }
     }
     
     // Hiển thị modal từ chối đơn hàng
     function showRejectModal(orderId) {
-        console.log("Show reject modal for order ID:", orderId);
-        
         // Set order ID vào form
         $('#rejectOrderId').val(orderId);
         
@@ -1233,8 +1248,6 @@ function handleStatusChange(form, newStatus) {
     function rejectOrder() {
         const orderId = $('#rejectOrderId').val();
         const reason = $('#rejectReason').val();
-        
-        console.log("Processing reject for order ID:", orderId);
         
         if (!reason.trim()) {
             alert('Vui lòng nhập lý do từ chối!');
@@ -1278,7 +1291,6 @@ function handleStatusChange(form, newStatus) {
                 $(`#${targetIframe}`).remove();
             }, 2000);
         } catch (error) {
-            console.error('Lỗi khi từ chối đơn hàng:', error);
             showNotification('Lỗi khi từ chối đơn hàng: ' + error.message, 'danger');
         }
     }
@@ -1288,7 +1300,6 @@ function handleStatusChange(form, newStatus) {
         const iframe = document.getElementById(iframeName);
         if (iframe.contentWindow.document.body.innerHTML.includes('error')) {
             alert('Có lỗi xảy ra khi cập nhật trạng thái đơn hàng. Vui lòng thử lại sau.');
-            console.error('Iframe error:', iframe.contentWindow.document.body.innerHTML);
         }
     }
 </script>
