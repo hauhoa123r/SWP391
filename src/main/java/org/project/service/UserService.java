@@ -3,12 +3,9 @@ package org.project.service;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.project.dto.RegisterDTO;
-
-import org.project.dto.request.LoginRequest;
 import org.project.dto.response.Response;
 import org.project.entity.PatientEntity;
 import org.project.entity.UserEntity;
-import org.project.enums.FamilyRelationship;
 import org.project.enums.PatientStatus;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
@@ -146,7 +143,6 @@ public class UserService implements IUserService {
 
         return response;
     }
-
 
 
     public String login(String email, String password, String redirectTo, HttpServletResponse response) throws Exception {

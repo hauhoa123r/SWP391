@@ -6,16 +6,16 @@
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <title>Patient List | Kivicare</title>
     <!-- Library / Plugin Css Build -->
-    <link href="./assets/css/core/libs.min.css" rel="stylesheet" th:href="@{/frontend/assets/css/core/libs.min.css}" />
+    <link href="./assets/css/core/libs.min.css" rel="stylesheet" th:href="@{/frontend/assets/css/core/libs.min.css}"/>
     <!-- font-awesome css -->
     <link href="./assets/vendor/font-awesome/css/all.min.css" rel="stylesheet"
-          th:href="@{/frontend/assets/vendor/font-awesome/css/all.min.css}" />
+          th:href="@{/frontend/assets/vendor/font-awesome/css/all.min.css}"/>
     <!-- Kivicare Design System Css -->
     <link href="./assets/css/kivicare.min.css?v=1.4.1" rel="stylesheet"
-          th:href="@{/frontend/assets/css/kivicare.min.css?v=1.4.1}" />
+          th:href="@{/frontend/assets/css/kivicare.min.css?v=1.4.1}"/>
     <!-- Custom Css -->
     <link href="./assets/css/custom.min.css?v=1.4.1" rel="stylesheet"
-          th:href="@{/frontend/assets/css/custom.min.css?v=1.4.1}" />
+          th:href="@{/frontend/assets/css/custom.min.css?v=1.4.1}"/>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
@@ -333,8 +333,8 @@
                         <td th:text="${iter.index + 1}">1</td>
                         <td>
                             <img alt="Avatar"
-                                 th:src="@{${patient.avatarUrl} != null ? 'data:image/jpge;base64,' + ${patient.avatarUrl} : '/frontend/assets/images/patientAvatar/anonymous.jpg'}"
-                                 style="width:80px;height:80px;border-radius:35%;">
+                                 style="width:80px;height:80px;border-radius:35%;"
+                                 th:src="@{${patient.avatarUrl} != null ? 'data:image/jpge;base64,' + ${patient.avatarUrl} : '/frontend/assets/images/patientAvatar/anonymous.jpg'}">
                         </td>
                         <td th:text="${patient.fullName}">Patient Name</td>
                         <td th:text="${patient.email}">Email</td>
@@ -345,7 +345,7 @@
                         <td th:text="${patient.familyRelationship}">Relationship</td>
                         <td th:text="${patient.bloodType}">Blood Type</td>
                         <td>
-                            <input type="hidden" th:value="${patient.id}" class="patient-id">
+                            <input class="patient-id" th:value="${patient.id}" type="hidden">
                             <button class="action-btn edit" title="Edit"><i class="fas fa-pen"></i></button>
                             <button class="action-btn delete" title="Delete"><i
                                     class="fas fa-trash"></i></button>
@@ -359,37 +359,37 @@
             </div>
             <!-- Pagination -->
             <div class="pagination-wrap">
-                <a class="pagination-btn prev" th:classappend="${pageIndex == 0} ? 'disabled'"
-                   th:if="${pageIndex > 0}"
+                <a aria-disabled="false" class="pagination-btn prev"
+                   th:classappend="${pageIndex == 0} ? 'disabled'"
                    th:href="@{${'/patient/showList/' + 1 + '?pageIndex=' + (pageIndex - 1)}}"
-                   aria-disabled="false">Previous&nbsp;&nbsp;+</a>
-                <span class="pagination-btn prev disabled" th:if="${pageIndex == 0}"
-                      aria-disabled="true">Previous&nbsp;&nbsp;+</span>
+                   th:if="${pageIndex > 0}">Previous&nbsp;&nbsp;+</a>
+                <span aria-disabled="true" class="pagination-btn prev disabled"
+                      th:if="${pageIndex == 0}">Previous&nbsp;&nbsp;+</span>
                 <ul class="pagination">
-                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                        th:classappend="${i} == ${pageIndex} ? 'active'">
+                    <li class="page-item" th:classappend="${i} == ${pageIndex} ? 'active'"
+                        th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
                         <a class="page-link" th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + ${i}}"
                            th:text="${i + 1}"></a>
                     </li>
                 </ul>
-                <a class="pagination-btn next" th:classappend="${pageIndex == totalPages - 1} ? 'disabled'"
-                   th:if="${pageIndex < totalPages - 1}"
+                <a aria-disabled="false" class="pagination-btn next"
+                   th:classappend="${pageIndex == totalPages - 1} ? 'disabled'"
                    th:href="@{${'/patient/showList/' + 1 + '?pageIndex=' + (pageIndex + 1)}}"
-                   aria-disabled="false">Next&nbsp;&nbsp;+</a>
-                <span class="pagination-btn next disabled" th:if="${pageIndex == totalPages - 1}"
-                      aria-disabled="true">Next&nbsp;&nbsp;+</span>
+                   th:if="${pageIndex < totalPages - 1}">Next&nbsp;&nbsp;+</a>
+                <span aria-disabled="true" class="pagination-btn next disabled"
+                      th:if="${pageIndex == totalPages - 1}">Next&nbsp;&nbsp;+</span>
             </div>
         </div>
     </div>
 </main>
 
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPatientEdit"
-     aria-labelledby="offcanvasPatientEditLabel"
-     style="width: 480px; box-shadow: -2px 0 16px rgba(44,62,80,0.08); z-index: 2000;">
+<div aria-labelledby="offcanvasPatientEditLabel" class="offcanvas offcanvas-end" id="offcanvasPatientEdit"
+     style="width: 480px; box-shadow: -2px 0 16px rgba(44,62,80,0.08); z-index: 2000;"
+     tabindex="-1">
     <div class="offcanvas-header border-bottom">
         <h3 class="offcanvas-title" id="offcanvasPatientEditLabel">Edit Patient</h3>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
-                style="font-size:1.5rem"></button>
+        <button aria-label="Close" class="btn-close text-reset" data-bs-dismiss="offcanvas" style="font-size:1.5rem"
+                type="button"></button>
     </div>
     <div class="profile-upload-section mb-4">
         <h5 class="text-center mb-4">
@@ -405,9 +405,9 @@
                 <svg class="upload-button icon-20" height="20" viewBox="0 0 24 24" width="20">
                     <path
                             d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z"
-                            fill="#ffffff" />
+                            fill="#ffffff"/>
                 </svg>
-                <input accept="image/*" class="file-upload" id="editAvatarUpload" type="file" style="display:none;">
+                <input accept="image/*" class="file-upload" id="editAvatarUpload" style="display:none;" type="file">
             </div>
         </div>
         <div class="img-extension text-center">
@@ -416,46 +416,46 @@
             </small>
         </div>
     </div>
-    <input type="hidden" id="patientIdEdit" value="" readonly>
+    <input id="patientIdEdit" readonly type="hidden" value="">
     <div class="offcanvas-body" style="overflow-y:auto; max-height:calc(100vh - 120px);">
         <div class="form-group mb-3">
             <label class="form-label" for="editPatientName">Name <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="editPatientName" value="">
+            <input class="form-control" id="editPatientName" type="text" value="">
         </div>
         <div class="form-group mb-3">
             <label class="form-label" for="editPatientEmail">Email</label>
-            <input type="email" class="form-control" id="editPatientEmail" value="">
+            <input class="form-control" id="editPatientEmail" type="email" value="">
         </div>
         <div class="form-group mb-3">
             <label class="form-label" for="editPatientPhone">Phone Number <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="editPatientPhone" value="">
+            <input class="form-control" id="editPatientPhone" type="text" value="">
         </div>
         <div class="form-group mb-3">
             <label class="form-label" for="editPatientBirthdate">Date of Birth <span
                     class="text-danger">*</span></label>
-            <input type="date" class="form-control" id="editPatientBirthdate" value="">
+            <input class="form-control" id="editPatientBirthdate" type="date" value="">
         </div>
         <div class="form-group mb-3">
             <label class="form-label d-block">Gender <span class="text-danger">*</span></label>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="editPatientGender" id="editGenderMale"
+                <input class="form-check-input" id="editGenderMale" name="editPatientGender" type="radio"
                        value="MALE">
                 <label class="form-check-label" for="editGenderMale">Male</label>
             </div>
             <div class="form-check form-check-inline ms-3">
-                <input class="form-check-input" type="radio" name="editPatientGender" id="editGenderFemale"
+                <input class="form-check-input" id="editGenderFemale" name="editPatientGender" type="radio"
                        value="FEMALE">
                 <label class="form-check-label" for="editGenderFemale">Female</label>
             </div>
             <div class="form-check form-check-inline ms-3">
-                <input class="form-check-input" type="radio" name="editPatientGender" id="editGenderOther"
+                <input class="form-check-input" id="editGenderOther" name="editPatientGender" type="radio"
                        value="OTHER">
                 <label class="form-check-label" for="editGenderOther">Other</label>
             </div>
         </div>
         <div class="form-group mb-3">
             <label class="form-label" for="editPatientAddress">Address</label>
-            <input type="text" class="form-control" id="editPatientAddress" value="">
+            <input class="form-control" id="editPatientAddress" type="text" value="">
         </div>
         <div class="form-group mb-3">
             <label class="form-label" for="editPatientRelationship">Family Relationship</label>
@@ -492,26 +492,26 @@
     </div>
     <div class="offcanvas-footer border-top">
         <div class="d-grid d-md-flex gap-3 p-3">
-            <button type="submit" class="btn btn-primary d-block">
+            <button class="btn btn-primary d-block" type="submit">
                     <span class="btn-inner">
                         <span class="text d-inline-block align-middle">Update</span>
                         <span class="icon d-inline-block align-middle ms-1 ps-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
+                            <svg fill="none" height="8" viewBox="0 0 8 8" width="8" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                         d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                        fill="currentColor" />
+                                        fill="currentColor"/>
                             </svg>
                         </span>
                     </span>
             </button>
-            <button class="btn btn-secondary d-block" type="button" data-bs-dismiss="offcanvas">
+            <button class="btn btn-secondary d-block" data-bs-dismiss="offcanvas" type="button">
                     <span class="btn-inner">
                         <span class="text d-inline-block align-middle">Close</span>
                         <span class="icon d-inline-block align-middle ms-1 ps-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
+                            <svg fill="none" height="8" viewBox="0 0 8 8" width="8" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                         d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                        fill="currentColor" />
+                                        fill="currentColor"/>
                             </svg>
                         </span>
                     </span>
@@ -526,98 +526,98 @@
 <!-- JS: Hiển thị popup khi bấm Edit và tự động điền dữ liệu -->
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.action-btn.edit').forEach(function (btn, idx) {
-            btn.addEventListener('click', function (e) {
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".action-btn.edit").forEach(function (btn, idx) {
+            btn.addEventListener("click", function (e) {
                 e.preventDefault();
-                var tr = btn.closest('tr');
-                var tds = tr.querySelectorAll('td');
-                var img = tr.querySelector('img[alt="Avatar"]');
-                var preview = document.getElementById('editProfilePreview');
-                var idInput = tr.querySelector('input.patient-id');
-                var patientId = idInput ? idInput.value : '';
+                var tr = btn.closest("tr");
+                var tds = tr.querySelectorAll("td");
+                var img = tr.querySelector("img[alt=\"Avatar\"]");
+                var preview = document.getElementById("editProfilePreview");
+                var idInput = tr.querySelector("input.patient-id");
+                var patientId = idInput ? idInput.value : "";
                 // Gán dữ liệu vào form
-                document.getElementById('editPatientName').value = tds[2]?.innerText.trim() || '';
-                document.getElementById('editPatientEmail').value = tds[3]?.innerText.trim() || '';
-                document.getElementById('editPatientPhone').value = tds[4]?.innerText.trim() || '';
-                document.getElementById('editPatientBirthdate').value = tds[5]?.innerText.trim() || '';
-                document.getElementById('patientIdEdit').value = patientId;
+                document.getElementById("editPatientName").value = tds[2]?.innerText.trim() || "";
+                document.getElementById("editPatientEmail").value = tds[3]?.innerText.trim() || "";
+                document.getElementById("editPatientPhone").value = tds[4]?.innerText.trim() || "";
+                document.getElementById("editPatientBirthdate").value = tds[5]?.innerText.trim() || "";
+                document.getElementById("patientIdEdit").value = patientId;
                 // Gender radio
                 var gender = tds[6]?.innerText.trim().toUpperCase();
-                document.getElementById('editGenderMale').checked = gender === 'MALE' || gender === 'NAM' || gender === 'MALE';
-                document.getElementById('editGenderFemale').checked = gender === 'FEMALE' || gender === 'NỮ' || gender === 'FEMALE';
-                document.getElementById('editGenderOther').checked = gender === 'OTHER' || gender === 'KHÁC' || gender === 'OTHER';
-                document.getElementById('editPatientAddress').value = tds[7]?.innerText.trim() || '';
+                document.getElementById("editGenderMale").checked = gender === "MALE" || gender === "NAM" || gender === "MALE";
+                document.getElementById("editGenderFemale").checked = gender === "FEMALE" || gender === "NỮ" || gender === "FEMALE";
+                document.getElementById("editGenderOther").checked = gender === "OTHER" || gender === "KHÁC" || gender === "OTHER";
+                document.getElementById("editPatientAddress").value = tds[7]?.innerText.trim() || "";
                 // Relationship select
-                var rel = (tds[8]?.innerText.trim() || '').toUpperCase().replace(' ', '_');
+                var rel = (tds[8]?.innerText.trim() || "").toUpperCase().replace(" ", "_");
                 var relMap = {
-                    'SELF': 'SELF',
-                    'FATHER': 'FATHER',
-                    'MOTHER': 'MOTHER',
-                    'BROTHER': 'BROTHER',
-                    'SISTER': 'SISTER',
-                    'SON': 'SON',
-                    'DAUGHTER': 'DAUGHTER',
-                    'GRANDFATHER': 'GRAND_FATHER',
-                    'GRANDMOTHER': 'GRAND_MOTHER',
-                    'COUSIN': 'COUSIN',
-                    'AUNT': 'AUNT',
-                    'UNCLE': 'UNCLE',
-                    'OTHER': 'OTHER'
+                    "SELF": "SELF",
+                    "FATHER": "FATHER",
+                    "MOTHER": "MOTHER",
+                    "BROTHER": "BROTHER",
+                    "SISTER": "SISTER",
+                    "SON": "SON",
+                    "DAUGHTER": "DAUGHTER",
+                    "GRANDFATHER": "GRAND_FATHER",
+                    "GRANDMOTHER": "GRAND_MOTHER",
+                    "COUSIN": "COUSIN",
+                    "AUNT": "AUNT",
+                    "UNCLE": "UNCLE",
+                    "OTHER": "OTHER"
                 };
                 if (img && preview) {
                     preview.src = img.src;
                 }
-                document.getElementById('editPatientRelationship').value = relMap[rel] || 'OTHER';
+                document.getElementById("editPatientRelationship").value = relMap[rel] || "OTHER";
                 // Blood type select
-                var blood = (tds[9]?.innerText.trim() || '').toUpperCase();
+                var blood = (tds[9]?.innerText.trim() || "").toUpperCase();
                 var bloodMap = {
-                    'A+': 'A_POSITIVE',
-                    'A-': 'A_NEGATIVE',
-                    'B+': 'B_POSITIVE',
-                    'B-': 'B_NEGATIVE',
-                    'AB+': 'AB_POSITIVE',
-                    'AB-': 'AB_NEGATIVE',
-                    'O+': 'O_POSITIVE',
-                    'O-': 'O_NEGATIVE',
-                    'A_POSITIVE': 'A_POSITIVE',
-                    'A_NEGATIVE': 'A_NEGATIVE',
-                    'B_POSITIVE': 'B_POSITIVE',
-                    'B_NEGATIVE': 'B_NEGATIVE',
-                    'AB_POSITIVE': 'AB_POSITIVE',
-                    'AB_NEGATIVE': 'AB_NEGATIVE',
-                    'O_POSITIVE': 'O_POSITIVE',
-                    'O_NEGATIVE': 'O_NEGATIVE'
+                    "A+": "A_POSITIVE",
+                    "A-": "A_NEGATIVE",
+                    "B+": "B_POSITIVE",
+                    "B-": "B_NEGATIVE",
+                    "AB+": "AB_POSITIVE",
+                    "AB-": "AB_NEGATIVE",
+                    "O+": "O_POSITIVE",
+                    "O-": "O_NEGATIVE",
+                    "A_POSITIVE": "A_POSITIVE",
+                    "A_NEGATIVE": "A_NEGATIVE",
+                    "B_POSITIVE": "B_POSITIVE",
+                    "B_NEGATIVE": "B_NEGATIVE",
+                    "AB_POSITIVE": "AB_POSITIVE",
+                    "AB_NEGATIVE": "AB_NEGATIVE",
+                    "O_POSITIVE": "O_POSITIVE",
+                    "O_NEGATIVE": "O_NEGATIVE"
                 };
-                document.getElementById('editPatientBloodType').value = bloodMap[blood] || 'O_POSITIVE';
+                document.getElementById("editPatientBloodType").value = bloodMap[blood] || "O_POSITIVE";
             });
             // Hiện offcanvas
-            btn.addEventListener('click', function () {
-                var offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasPatientEdit'));
+            btn.addEventListener("click", function () {
+                var offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasPatientEdit"));
                 offcanvas.show();
             });
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var avatarInput = document.getElementById('editAvatarUpload');
-        var profilePreview = document.getElementById('editProfilePreview');
-        var uploadIcone = document.getElementById('editUploadIcone');
+    document.addEventListener("DOMContentLoaded", function () {
+        var avatarInput = document.getElementById("editAvatarUpload");
+        var profilePreview = document.getElementById("editProfilePreview");
+        var uploadIcone = document.getElementById("editUploadIcone");
 
         // Click vào ảnh hoặc icon để mở input file
         if (profilePreview && avatarInput) {
-            profilePreview.addEventListener('click', function () {
+            profilePreview.addEventListener("click", function () {
                 avatarInput.click();
             });
         }
         if (uploadIcone && avatarInput) {
-            uploadIcone.addEventListener('click', function (e) {
+            uploadIcone.addEventListener("click", function (e) {
                 if (e.target !== avatarInput) avatarInput.click();
             });
         }
         // Khi chọn ảnh, đổi preview
         if (avatarInput && profilePreview) {
-            avatarInput.addEventListener('change', function (e) {
+            avatarInput.addEventListener("change", function (e) {
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
@@ -630,104 +630,108 @@
         }
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.action-btn.edit').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var tr = btn.closest('tr');
-                var img = tr.querySelector('img[alt="Avatar"]');
-                var preview = document.getElementById('editProfilePreview');
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".action-btn.edit").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var tr = btn.closest("tr");
+                var img = tr.querySelector("img[alt=\"Avatar\"]");
+                var preview = document.getElementById("editProfilePreview");
                 if (img && preview) {
                     preview.src = img.src;
-                    preview.setAttribute('data-original-src', img.src); // Lưu lại src gốc
+                    preview.setAttribute("data-original-src", img.src); // Lưu lại src gốc
                 }
             });
         });
 
         // Xử lý submit form update patient
-        const updateBtn = document.querySelector('#offcanvasPatientEdit button[type="submit"]');
+        const updateBtn = document.querySelector("#offcanvasPatientEdit button[type=\"submit\"]");
         if (updateBtn) {
-            updateBtn.addEventListener('click', function (e) {
+            updateBtn.addEventListener("click", function (e) {
                 e.preventDefault();
 
-                const preview = document.getElementById('editProfilePreview');
-                const originalSrc = preview.getAttribute('data-original-src') || '';
+                const preview = document.getElementById("editProfilePreview");
+                const originalSrc = preview.getAttribute("data-original-src") || "";
                 let avatarBase64 = null;
-                if (preview.src !== originalSrc && preview.src.startsWith('data:image')) {
+                if (preview.src !== originalSrc && preview.src.startsWith("data:image")) {
                     avatarBase64 = preview.src;
                 }
 
                 // Lấy patientId từ input hidden
-                const patientId = document.getElementById('patientIdEdit').value;
+                const patientId = document.getElementById("patientIdEdit").value;
 
                 // Lấy dữ liệu từ form
                 const patientDTO = {
                     userId: 1,
-                    fullName: document.getElementById('editPatientName').value.trim(),
-                    email: document.getElementById('editPatientEmail').value.trim(),
-                    phoneNumber: document.getElementById('editPatientPhone').value.trim(),
-                    dateOfBirth: document.getElementById('editPatientBirthdate').value.trim(),
-                    gender: document.querySelector('input[name="editPatientGender"]:checked')?.value || '',
-                    address: document.getElementById('editPatientAddress').value.trim(),
-                    familyRelationship: document.getElementById('editPatientRelationship').value,
-                    bloodType: document.getElementById('editPatientBloodType').value,
+                    fullName: document.getElementById("editPatientName").value.trim(),
+                    email: document.getElementById("editPatientEmail").value.trim(),
+                    phoneNumber: document.getElementById("editPatientPhone").value.trim(),
+                    dateOfBirth: document.getElementById("editPatientBirthdate").value.trim(),
+                    gender: document.querySelector("input[name=\"editPatientGender\"]:checked")?.value || "",
+                    address: document.getElementById("editPatientAddress").value.trim(),
+                    familyRelationship: document.getElementById("editPatientRelationship").value,
+                    bloodType: document.getElementById("editPatientBloodType").value,
                     avatarBase64: avatarBase64
                 };
 
                 fetch(`/api/patient/update/${patientId}`, {
-                    method: 'PATCH',
+                    method: "PATCH",
                     headers: {
-                        'Content-Type': 'application/json'
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify(patientDTO)
                 })
-                    .then(res => {
-                        if (res.ok) return res.json();
-                        return res.text().then(msg => { throw new Error(msg); });
-                    })
-                    .then(data => {
-                        alert('Update successful!');
-                        window.location.reload();
-                    })
-                    .catch(err => {
-                        alert('Update failed: ' + err.message);
-                    });
+                        .then(res => {
+                            if (res.ok) return res.json();
+                            return res.text().then(msg => {
+                                throw new Error(msg);
+                            });
+                        })
+                        .then(data => {
+                            alert("Update successful!");
+                            window.location.reload();
+                        })
+                        .catch(err => {
+                            alert("Update failed: " + err.message);
+                        });
             });
         }
     });
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.action-btn.delete').forEach(function (btn) {
-            btn.addEventListener('click', function (e) {
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".action-btn.delete").forEach(function (btn) {
+            btn.addEventListener("click", function (e) {
                 e.preventDefault();
-                if (!confirm('Are you sure you want to delete this patient?')) return;
+                if (!confirm("Are you sure you want to delete this patient?")) return;
 
                 // Lấy patientId từ input hidden trong dòng
-                var tr = btn.closest('tr');
-                var idInput = tr.querySelector('input.patient-id');
+                var tr = btn.closest("tr");
+                var idInput = tr.querySelector("input.patient-id");
                 var patientId = idInput ? idInput.value : null;
                 if (!patientId) {
-                    alert('Patient ID not found!');
+                    alert("Patient ID not found!");
                     return;
                 }
 
                 fetch(`/api/patient/delete/${patientId}`, {
-                    method: 'DELETE'
+                    method: "DELETE"
                 })
-                    .then(res => {
-                        if (res.ok) return res.text();
-                        return res.text().then(msg => { throw new Error(msg); });
-                    })
-                    .then(msg => {
-                        alert('Delete successful!');
-                        window.location.reload();
-                    })
-                    .catch(err => {
-                        alert('Delete failed: ' + err.message);
-                    });
+                        .then(res => {
+                            if (res.ok) return res.text();
+                            return res.text().then(msg => {
+                                throw new Error(msg);
+                            });
+                        })
+                        .then(msg => {
+                            alert("Delete successful!");
+                            window.location.reload();
+                        })
+                        .catch(err => {
+                            alert("Delete failed: " + err.message);
+                        });
             });
         });
     });
 </script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
 </body>
 
 </html>
