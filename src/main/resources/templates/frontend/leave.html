@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý nghỉ phép cá nhân</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --secondary: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --border: #e5e7eb;
+            --modal-bg: rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9fafb;
+            color: #1f2937;
+            padding: 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .leave-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-title i {
+            background-color: var(--primary-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .leave-balance-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            background-color: var(--light-gray);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 5px 0;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .total-days {
+            color: var(--primary);
+        }
+
+        .used-days {
+            color: var(--warning);
+        }
+
+        .remaining-days {
+            color: var(--success);
+        }
+
+        .pending-days {
+            color: var(--danger);
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            border-radius: 16px;
+            color: white;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .action-content {
+            margin-bottom: 25px;
+        }
+
+        .action-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .action-description {
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: white;
+            color: var(--primary);
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .view-all {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .leave-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leave-table th {
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: 600;
+            color: var(--gray);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .leave-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .leave-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .leave-table tr:hover {
+            background-color: var(--light-gray);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .chart-container {
+            height: 250px;
+            margin-top: 20px;
+        }
+
+        /* Modal tạo đơn nghỉ phép */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-bg);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            animation: modalOpen 0.3s ease;
+        }
+
+        @keyframes modalOpen {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            background-color: var(--light-gray);
+        }
+
+        .modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .half-day-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .half-day-option {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .half-day-option.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #4b5563;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #0da271;
+        }
+
+        .file-upload i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .action-card {
+                min-height: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .mini-calendar {
+                gap: 4px;
+            }
+
+            .calendar-day {
+                padding: 8px 4px;
+                font-size: 0.85rem;
+            }
+
+            .calendar-header {
+                padding: 4px;
+                font-size: 0.8rem;
+            }
+
+            .modal-content {
+                max-width: 95%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 1.3rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .action-title {
+                font-size: 1.2rem;
+            }
+
+            .leave-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .mini-calendar {
+                grid-template-columns: repeat(7, 1fr);
+            }
+
+            .calendar-day {
+                padding: 6px 2px;
+                font-size: 0.75rem;
+            }
+
+            .calendar-header {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 900;
+            padding: 10px;
+        }
+
+        .mobile-menu-items {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .mobile-menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--gray);
+            text-decoration: none;
+        }
+
+        .mobile-menu-item i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .mobile-menu-item.active {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="leave-container">
+        <!-- Tiêu đề trang -->
+        <div class="page-title">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Quản lý nghỉ phép</span>
+        </div>
+
+        <!-- Dashboard chính -->
+        <div class="dashboard">
+            <!-- Card số dư phép -->
+            <div class="leave-balance-card">
+                <div class="card-header">
+                    <div class="card-title">Số dư nghỉ phép của bạn</div>
+                    <div class="stat-label">Năm <span th:text="${leaveBalance.year}">2023</span></div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Tổng ngày phép</div>
+                        <div class="stat-value total-days" th:text="${leaveBalance.totalLeave}">15</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Đã sử dụng</div>
+                        <div class="stat-value used-days" th:text="${leaveBalance.usedLeave}">5</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Còn lại</div>
+                        <div class="stat-value remaining-days" th:text="${leaveBalance.leaveLeft}">10</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Đang chờ</div>
+                        <div class="stat-value pending-days" th:text="${leaveBalance.pendingLeave}">2</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="leaveChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Card hành động -->
+            <div class="action-card">
+                <div class="action-content">
+                    <div class="action-title">Xin nghỉ phép</div>
+                    <div class="action-description">
+                        Tạo đơn nghỉ phép mới nhanh chóng, hệ thống sẽ tự động kiểm tra lịch trực và đề xuất người thay
+                        thế.
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="createLeaveBtn">
+                    <i class="fas fa-plus"></i> Tạo đơn nghỉ phép
+                </button>
+            </div>
+        </div>
+
+        <!-- Danh sách đơn nghỉ phép gần đây -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">Đơn nghỉ phép gần đây</div>
+                <a href="#" class="view-all">Xem tất cả <i class="fas fa-chevron-right"></i></a>
+            </div>
+
+            <table class="leave-table">
+                <thead>
+                    <tr>
+                        <th>Ngày tạo</th>
+                        <th>Thời gian nghỉ</th>
+                        <th>Loại phép</th>
+                        <th>Trạng thái</th>
+                        <th>Người duyệt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="request : ${leaveRequests}">
+                        <td th:text="${request.createdAt}">15/07/2023</td>
+                        <td>
+                            <span th:text="${request.startDate}"></span>
+                            <span th:if="${request.endDate != request.startDate}">
+                                -
+                                <span th:text="${request.endDate}"></span>
+                            </span>
+                            (<span th:text="${request.totalDays}"></span> ngày
+                            <span th:if="${request.halfDayType != null}"> - <span
+                                    th:text="${request.halfDayType}"></span></span>)
+                        </td>
+                        <td th:text="${request.leaveType}">Nghỉ ốm</td>
+                        <td>
+                            <span th:switch="${request.status}" class="status-badge">
+                              <span th:case="'APPROVED'"
+                                    class="status-approved"
+                                    th:text="'Đã duyệt'">Đã duyệt</span>
+                              <span th:case="'REJECTED'"
+                                    class="status-rejected"
+                                    th:text="'Từ chối'">Từ chối</span>
+                              <span th:case="'PENDING'"
+                                    class="status-pending"
+                                    th:text="'Chờ duyệt'">Chờ duyệt</span>
+                              <span th:case="*"
+                                    class="status-cancelled"
+                                    th:text="'Đã hủy'">Đã hủy</span>
+                            </span>
+                        </td>
+                        <td th:text="${request.staffApprovalName}">Trần Văn B</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- Modal tạo đơn nghỉ phép -->
+        <div class="modal" id="leaveModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Đơn xin nghỉ phép</h3>
+                    <button class="close-modal" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="leaveType">Loại nghỉ phép *</label>
+                        <select class="form-control" id="leaveType" required>
+                            <option value="" disabled>Chọn loại nghỉ phép</option>
+                            <option value="ANNUAL_LEAVE">Nghỉ phép năm</option>
+                            <option value="SICK_LEAVE">Nghỉ ốm</option>
+                            <option value="MATERNITY_LEAVE">Nghỉ thai sản</option>
+                            <option value="PATERNITY_LEAVE">Nghỉ phép cha</option>
+                            <option value="UNPAID_LEAVE">Nghỉ không lương</option>
+                            <option value="STUDY_LEAVE">Nghỉ học tập</option>
+                            <option value="EMERGENCY_LEAVE">Nghỉ khẩn cấp</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="startDate">Ngày bắt đầu *</label>
+                            <input type="date" class="form-control" id="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="endDate">Ngày kết thúc *</label>
+                            <input type="date" class="form-control" id="endDate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Nửa ngày</label>
+                        <div class="half-day-options">
+                            <div class="half-day-option" id="morningOption">Buổi sáng</div>
+                            <div class="half-day-option" id="afternoonOption">Buổi chiều</div>
+                            <div class="half-day-option" id="fullDayOption">Cả ngày</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reason">Lý do *</label>
+                        <textarea class="form-control" id="reason" rows="4"
+                            placeholder="Mô tả lý do nghỉ phép..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="substitute">Người thay thế đề xuất</label>
+                        <select class="form-control" id="substitute">
+                            <option value="">Chọn người thay thế</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="emergencyContact">Liên hệ khẩn cấp *</label>
+                        <input type="text" class="form-control" id="emergencyContact"
+                            placeholder="Họ tên & Số điện thoại">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelBtn">Hủy bỏ</button>
+                    <button class="btn btn-success" id="submitLeaveBtn">Gửi đơn</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="mobile-menu">
+            <div class="mobile-menu-items">
+                <a href="#" class="mobile-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Trang chủ</span>
+                </a>
+                <a href="#" class="mobile-menu-item active">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Nghỉ phép</span>
+                </a>
+                <a href="#" class="mobile-menu-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Lịch trực</span>
+                </a>
+                <a href="#" class="mobile-menu-item">
+                    <i class="fas fa-user"></i>
+                    <span>Cá nhân</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            /*<![CDATA[*/
+            const used = [[${ leaveBalance.usedLeave }]];
+            const left = [[${ leaveBalance.leaveLeft }]];
+            const pending = [[${ leaveBalance.pendingLeave }]];
+            const staffId = [[${staffId}]];
+            /*]]>*/
+
+            const leaveChart = new Chart(document.getElementById('leaveChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Đã sử dụng', 'Còn lại', 'Đang chờ'],
+                    datasets: [{
+                        data: [used, left, pending],
+                        backgroundColor: [
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(239, 68, 68, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 15,
+                                padding: 20
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+            // Modal xử lý
+            const modal = document.getElementById('leaveModal');
+            const createLeaveBtn = document.getElementById('createLeaveBtn');
+            const closeModalBtn = document.getElementById('closeModal');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            createLeaveBtn.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            const halfDayOptions = document.querySelectorAll('.half-day-option');
+            const substituteSelect = document.getElementById('substitute');
+            const leaveTypeOption = document.getElementById('leaveType');
+            let selectedHalfDay = 'fullDayOption';
+
+            function getMinAdvanceDays(leaveType) {
+                switch (leaveType) {
+                    case 'ANNUAL_LEAVE':     return 7;
+                    case 'SICK_LEAVE':       return 0;
+                    case 'MATERNITY_LEAVE':  return 30;
+                    case 'PATERNITY_LEAVE':  return 7;
+                    case 'UNPAID_LEAVE':     return 3;
+                    case 'STUDY_LEAVE':      return 14;
+                    case 'EMERGENCY_LEAVE':  return 0;
+                    default:                 return 0;
+                }
+            }
+
+            function shouldCallAPI() {
+                return startDateInput.value && endDateInput.value && selectedHalfDay;
+            }
+
+            function validateDates() {
+                const leaveType = document.getElementById('leaveType').value;
+                const startVal = startDateInput.value;
+                const endVal = endDateInput.value;
+                const minDays = getMinAdvanceDays(leaveType);
+
+                if(!startVal || !endVal) {
+                    alert('Vui lòng chọn cả ngày bắt đầu và ngày kết thúc.');
+                    return false;
+                }
+
+                function formatToInputDate(date) {
+                    const y = date.getFullYear();
+                    const m = String(date.getMonth() + 1).padStart(2, '0');
+                    const d = String(date.getDate()).padStart(2, '0');
+                    return `${y}-${m}-${d}`;
+                }
+
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                let startDate = new Date(startVal);
+                let endDate = new Date(endVal);
+
+                const diffMs = startDate - today;
+                const diffDays = Math.floor(diffMs / (1000*60*60*24));
+
+                if(diffDays < minDays) {
+                    const minDate = new Date(today.getTime() + minDays * 24 * 60 * 60 * 1000);
+                    const formatted = formatToInputDate(minDate);
+                    alert(`Với loại nghỉ này (${leaveType}), bạn phải xin trước ít nhất ${minDays} ngày.` +
+                        ` Đã tự động điều chỉnh ngày bắt đầu sang ${formatted}.`);
+
+                    startDateInput.value = formatted;
+                    // Nếu endDate < new startDate thì đồng bộ endDate
+                    if (new Date(endDateInput.value) < minDate) {
+                        endDateInput.value = formatted;
+                    }
+                    // Refresh lại biến local
+                    startDate = minDate;
+                    endDate   = new Date(endDateInput.value);
+                    // Không cần return false, ta đã auto sửa giá trị, coi như valid
+                }
+
+                if (selectedHalfDay !== 'fullDayOption' && startDateInput.value !== endDateInput.value) {
+                        alert('Nếu chọn nửa ngày, ngày bắt đầu và kết thúc phải giống nhau.');
+                        endDateInput.value = startDateInput.value;
+                        return false;
+                }
+
+                if (endDate < startDate) {
+                    alert('Ngày kết thúc phải cùng ngày hoặc sau ngày bắt đầu.');
+                    endDateInput.value = startDateInput.value;
+                    return false;
+                }
+                return true;
+            }
+
+            function toVietNamTimestamp(dateString, hour) {
+                const date = new Date(dateString);
+                date.setHours(hour, 0, 0, 0);
+                return date.toISOString();
+            }
+
+            function createRequestBody () {
+                let startTime, endTime;
+
+                switch (selectedHalfDay) {
+                    case 'morningOption':
+                        startTime = toVietNamTimestamp(startDateInput.value, 8);
+                        endTime = toVietNamTimestamp(startDateInput.value, 12);
+                        break;
+                    case 'afternoonOption':
+                        startTime = toVietNamTimestamp(startDateInput.value, 13);
+                        endTime = toVietNamTimestamp(startDateInput.value, 17);
+                        break;
+                    case 'fullDayOption':
+                        startTime = toVietNamTimestamp(startDateInput.value, 8);
+                        endTime = toVietNamTimestamp(endDateInput.value, 17);
+                        break;
+                }
+                return {
+                    staffId : staffId,
+                    startTime: startTime,
+                    endTime: endTime,
+                };
+            }
+
+            async function fetchSubstituteStaffs() {
+                if ( !shouldCallAPI()) return;
+
+                const requestBody = createRequestBody();
+
+                try {
+                    const response = await fetch ('/api/staff/substitutes', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+                    if (!response.ok) {
+                        throw new Error('Lỗi khi lấy danh sách người thay thế');
+                    }
+
+                    const substitutes = await response.json();
+                    updateSubstituteDropdown(substitutes);
+                } catch (error) {
+                    console.error('Error fetching substitutes:', error);
+                    alert('Không thể lấy danh sách người thay thế. Vui lòng thử lại sau.');
+                }
+            }
+
+            function updateSubstituteDropdown(substitutes) {
+                substituteSelect.innerHTML = '';
+                if (!substitutes || substitutes.length === 0) {
+                    const noOpt = document.createElement('option');
+                    noOpt.value = 'Null';
+                    noOpt.textContent = 'Không có người thay thế';
+                    noOpt.disabled = true;
+                    substituteSelect.appendChild(noOpt);
+                    substituteSelect.disabled = true;
+                } else {
+
+                    substituteSelect.disabled = false;
+
+                    const defaultOpt = document.createElement('option');
+                    defaultOpt.value = '';
+                    defaultOpt.textContent = 'Chọn người thay thế';
+                    substituteSelect.appendChild(defaultOpt);
+
+                    substitutes.forEach (staff => {
+                        const option = document.createElement('option');
+                        option.value = staff.id;
+                        option.textContent = staff.name;
+                        substituteSelect.appendChild(option);
+                    });
+                }
+            }
+
+            function onDateOrOptionChange() {
+                if (!validateDates()) {
+                    updateSubstituteDropdown([]);
+                    return;
+                }
+                if (shouldCallAPI()) {
+                    fetchSubstituteStaffs();
+                }
+            }
+            startDateInput.addEventListener('change', onDateOrOptionChange);
+            endDateInput.addEventListener('change', onDateOrOptionChange);
+            leaveTypeOption.addEventListener('change', onDateOrOptionChange);
+            halfDayOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    halfDayOptions.forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedHalfDay = option.id;
+                    onDateOrOptionChange();
+                });
+            });
+
+            document.getElementById('fullDayOption').classList.add('selected');
+
+            // Xử lý gửi đơn
+            const submitLeaveBtn = document.getElementById('submitLeaveBtn');
+
+            submitLeaveBtn.addEventListener('click', async() => {
+                const leaveType = leaveTypeOption.value;
+                const reason = document.getElementById('reason').value.trim();
+                const emergencyContact = document.getElementById('emergencyContact').value.trim();
+                const substituteId = substituteSelect.disabled ? null : (substituteSelect.value || null);
+                let starts, endTs;
+                switch (selectedHalfDay) {
+                    case 'morningOption':
+                        startTs = toVietNamTimestamp(startDateInput.value, 8);
+                        endTs   = toVietNamTimestamp(startDateInput.value, 12);
+                        break;
+                    case 'afternoonOption':
+                        startTs = toVietNamTimestamp(startDateInput.value, 13);
+                        endTs   = toVietNamTimestamp(startDateInput.value, 17);
+                        break;
+                    default:
+                        startTs = toVietNamTimestamp(startDateInput.value, 8);
+                        endTs   = toVietNamTimestamp(endDateInput.value,   17);
+                }
+
+                if (!reason || !emergencyContact) {
+                    alert('Vui lòng điền đầy đủ lý do và thông tin liên hệ khẩn cấp.');
+                    return;
+                }
+
+                if (!leaveType) {
+                    alert('Vui lòng chọn loại nghỉ phép.');
+                    return;
+                }
+
+                const dto = {
+                    staffId: staffId,
+                    startDate: startTs,
+                    endDate: endTs,
+                    leaveType: leaveType,
+                    reason: reason,
+                    substituteStaffId: substituteId,
+                    emergencyContact: emergencyContact
+                };
+
+                try {
+                    const resp = await fetch('/api/leave-request/create', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(dto)
+                    });
+                    const text = await resp.text();
+
+                    if(resp.ok) {
+                        alert(text);
+                        window.location.href = `/leave-staff/${staffId}`;
+                    } else if (resp.status === 400) {
+                        alert(text || 'Không đủ ngày phép!');
+                    } else if (resp.status === 404) {
+                        alert(text || 'Không tìm thấy nhân viên!');
+                    } else {
+                        console.error('Error response:', resp.status, text);
+                        alert(text || 'Có lỗi xảy ra. Vui lòng thử lại sau.');
+                    }
+                } catch (err) {
+                    console.error('Fetch error:', err);
+                    alert('Không thể kết nối tới server. Vui lòng kiểm tra mạng.');
+                }
+            });
+            // Responsive: Tự động cập nhật biểu đồ khi thay đổi kích thước màn hình
+            window.addEventListener('resize', () => {
+                leaveChart.resize();
+            });
+        });
+    </script>
+</body>
+
+</html>
