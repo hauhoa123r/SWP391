@@ -1,5 +1,7 @@
 package org.project.model.response;
 
+import org.project.enums.Label;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

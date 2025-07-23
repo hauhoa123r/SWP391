@@ -38,7 +38,6 @@ public class SupplierEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToMany
+    @OneToMany(mappedBy = "supplierEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SupplierTransactionsEntity> supplierTransactionEntities = new LinkedHashSet<>();
-
 }

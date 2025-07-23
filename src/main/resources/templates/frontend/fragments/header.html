@@ -167,128 +167,17 @@
                                         <span class="item-name">Dịch vụ</span>
                                     </a>
                                 </li>
-                                <!-- Phần Shop giữ nguyên như cũ -->
                                 <li class="nav-item">
-                                    <a aria-controls="shopPage" aria-expanded="false" class="nav-link"
-                                       data-bs-toggle="collapse" href="#shopPage" role="button">
+                                    <a class="nav-link" th:href="@{/product-home}">
                                         <span class="item-name">Shop</span>
                                         <span class="menu-icon">
-                <svg fill="none" height="10" viewBox="0 0 8 8" width="10"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z"
-                          fill="currentColor"/>
-                </svg>
-            </span>
+            <svg fill="none" height="10" viewBox="0 0 8 8" width="10"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z"
+                      fill="currentColor"/>
+            </svg>
+        </span>
                                     </a>
-                                    <ul class="sub-nav collapse list-unstyled" id="shopPage">
-                                        <li class="nav-item">
-                                            <a class="nav-link" th:href="@{/frontend/shop.html}">Shop</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a aria-controls="productSidebar" aria-expanded="false" class="nav-link"
-                                               data-bs-toggle="collapse" href="#productSidebar"
-                                               role="button">
-                                                <span class="item-name">Product Sidebar</span>
-                                                <span class="menu-icon">
-                        <svg class="icon-32" fill="none" viewBox="0 0 24 24" width="32"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                  stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="1.5"></path>
-                        </svg>
-                    </span>
-                                            </a>
-                                            <ul class="sub-nav collapse list-unstyled" id="productSidebar">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/shop-left-sidebar.html}">
-                                                        shop left sidebar
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/shop-right-sidebar.html}">
-                                                        shop right sidebar
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/shop-no-sidebar.html}">
-                                                        shop no sidebar
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a aria-controls="sPages" aria-expanded="false" class="nav-link"
-                                               data-bs-toggle="collapse" href="#sPages" role="button">
-                                                <span class="item-name">Shop Pages</span>
-                                                <span class="menu-icon">
-                        <svg class="icon-32" fill="none" viewBox="0 0 24 24" width="32"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                  stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="1.5"></path>
-                        </svg>
-                    </span>
-                                            </a>
-                                            <ul class="sub-nav collapse list-unstyled" id="sPages">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/cart.html}">
-                                                        cart
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/checkout.html}">
-                                                        checkout
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/wishlist.html}">
-                                                        wishlist
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/my-account.html}">
-                                                        my account
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/track-order.html}">
-                                                        track order
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a aria-controls="proType" aria-expanded="false" class="nav-link"
-                                               data-bs-toggle="collapse" href="#proType" role="button">
-                                                <span class="item-name">Product Type</span>
-                                                <span class="menu-icon">
-                        <svg class="icon-32" fill="none" viewBox="0 0 24 24" width="32"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                  stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="1.5"></path>
-                        </svg>
-                    </span>
-                                            </a>
-                                            <ul class="sub-nav collapse list-unstyled" id="proType">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/product-standard.html}">
-                                                        product standard
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/product-new.html}">
-                                                        product new
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/product-sale.html}">
-                                                        product sale
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
                                 </li>
                             </ul>
                         </div>
