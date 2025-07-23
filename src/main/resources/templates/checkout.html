@@ -1133,14 +1133,15 @@
          </div>
       </div>
       <div id="apply-coupon" class="collapse">
-         <form
-            class="checkout-coupon bg-primary-subtle text-body px-3 py-5 mb-5">
-            <p class="mt-0">If you have a coupon code, please apply it
-               below.</p>
-            <input name="coupon-code" type="text" required="required"
+         <form id="coupon-form" class="checkout-coupon bg-primary-subtle text-body px-3 py-5 mb-5">
+            <p class="mt-0">If you have a coupon code, please apply it below.</p>
+            <div id="coupon-message"></div>
+            <input name="coupon-code" id="coupon-code" type="text" required="required"
                placeholder="Coupon code" class="form-control rounded-0 mb-3">
+            <!-- Hidden input for user ID, to be populated server-side with Thymeleaf -->
+            <input type="hidden" id="user-id" th:value="${#authentication != null ? #authentication.principal.id : ''}" />
             <div class="iq-btn-container button-primary">
-               <button type="submit" class="iq-button text-uppercase border-0">
+               <button type="submit" id="apply-coupon-btn" class="iq-button text-uppercase border-0">
                   <span class="iq-btn-text-holder position-relative">apply
                      coupon</span>
                   <span class="iq-btn-icon-holder">
@@ -1559,4 +1560,121 @@
     <script src="frontend/assets/js/slider.js" defer></script>
     <script src="frontend/assets/js/scroll-text.js" defer></script>  </body>
 </html>
+
+<!-- Scripts start -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const couponForm = document.getElementById('coupon-form');
+        const couponMessageDiv = document.getElementById('coupon-message');
+        const couponCode = document.getElementById('coupon-code');
+        
+        // Get the subtotal and total elements
+        const subtotalElement = document.querySelector('tfoot tr:first-child td.text-end h5');
+        const totalElement = document.querySelector('tfoot tr:last-child td.text-end h5');
+        
+        let appliedCoupon = null;
+        let originalSubtotal = null;
+        
+        // Get userId from hidden input or session (if available)
+        const userIdElement = document.getElementById('user-id');
+        const userId = userIdElement ? userIdElement.value : null;
+        
+        if (subtotalElement) {
+            // Extract the numeric value from the subtotal (e.g., "$64.00" -> 64.00)
+            originalSubtotal = parseFloat(subtotalElement.textContent.replace(/[^0-9.-]+/g, ""));
+        }
+        
+        couponForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const code = couponCode.value.trim();
+            if (!code) {
+                showMessage('Please enter a coupon code', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const applyButton = document.getElementById('apply-coupon-btn');
+            const originalButtonText = applyButton.innerHTML;
+            applyButton.innerHTML = '<span>Processing...</span>';
+            applyButton.disabled = true;
+            
+            // Call the API to apply the coupon
+            let apiUrl = `/api/apply-coupon?code=${encodeURIComponent(code)}&orderTotal=${originalSubtotal}`;
+            if (userId) {
+                apiUrl += `&userId=${userId}`;
+            }
+            
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Restore button state
+                applyButton.innerHTML = originalButtonText;
+                applyButton.disabled = false;
+                
+                if (data.success) {
+                    // Coupon applied successfully
+                    appliedCoupon = data.coupon;
+                    
+                    // Update the total with the discount
+                    if (originalSubtotal && totalElement) {
+                        const discountAmount = parseFloat(data.discountAmount);
+                        const newTotal = Math.max(0, originalSubtotal - discountAmount);
+                        
+                        // Update the total display
+                        totalElement.textContent = `$${newTotal.toFixed(2)}`;
+                        
+                        // Add a row for the discount if it doesn't exist
+                        const discountRow = document.querySelector('tr.discount-row');
+                        if (!discountRow) {
+                            const newRow = document.createElement('tr');
+                            newRow.className = 'border-bottom discount-row';
+                            newRow.innerHTML = `
+                                <td class="ps-0 p-3 fw-bold text-primary">Discount (${data.coupon.code})</td>
+                                <td class="pe-0 p-3 fw-bold text-end">
+                                    <h5 class="text-danger mb-0">-$${discountAmount.toFixed(2)}</h5>
+                                </td>
+                            `;
+                            
+                            // Insert before the last row (total)
+                            const tbody = document.querySelector('tfoot');
+                            const lastRow = document.querySelector('tfoot tr:last-child');
+                            tbody.insertBefore(newRow, lastRow);
+                        } else {
+                            // Update existing discount row
+                            discountRow.querySelector('td:first-child').textContent = `Discount (${data.coupon.code})`;
+                            discountRow.querySelector('h5').textContent = `-$${discountAmount.toFixed(2)}`;
+                        }
+                    }
+                    
+                    showMessage(data.message, 'success');
+                } else {
+                    // Error applying coupon
+                    showMessage(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error applying coupon:', error);
+                applyButton.innerHTML = originalButtonText;
+                applyButton.disabled = false;
+                showMessage('An error occurred while applying the coupon. Please try again.', 'error');
+            });
+        });
+        
+        function showMessage(message, type) {
+            couponMessageDiv.innerHTML = `<div class="alert alert-${type === 'error' ? 'danger' : 'success'} mb-3">${message}</div>`;
+            
+            // Clear the message after 5 seconds
+            setTimeout(() => {
+                couponMessageDiv.innerHTML = '';
+            }, 5000);
+        }
+    });
+</script>
+<!-- Scripts end -->
 

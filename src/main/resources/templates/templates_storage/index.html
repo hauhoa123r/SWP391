@@ -355,10 +355,11 @@
                             <div class="custome-1-bg b-r-4 card-body">
                                 <div class="media align-items-center static-top-widget">
                                     <div class="media-body p-0">
-                                        <span class="m-0">Total Revenue</span>
-                                        <h4 class="mb-0 counter">$6659
+                                        <span class="m-0">Tổng doanh thu</span>
+                                        <h4 class="mb-0 counter" th:text="${#numbers.formatDecimal(dashboard.totalRevenue, 0, 'POINT', 0, 'COMMA') + ' VNĐ'}">650.000.000 VNĐ
                                             <span class="badge badge-light-primary grow">
-                                                    <i data-feather="trending-up"></i>8.5%</span>
+                                                    <i data-feather="trending-up"></i><span th:text="${dashboard.revenueGrowthPercent + '%'}">8.5%</span>
+                                            </span>
                                         </h4>
                                     </div>
                                     <div class="align-self-center text-center">
@@ -374,10 +375,11 @@
                             <div class="custome-2-bg b-r-4 card-body">
                                 <div class="media static-top-widget">
                                     <div class="media-body p-0">
-                                        <span class="m-0">Total Orders</span>
-                                        <h4 class="mb-0 counter">9856
+                                        <span class="m-0">Tổng đơn nhập/xuất</span>
+                                        <h4 class="mb-0 counter" th:text="${dashboard.totalTransactions}">124
                                             <span class="badge badge-light-danger grow">
-                                                    <i data-feather="trending-down"></i>8.5%</span>
+                                                    <i data-feather="trending-up"></i><span th:text="${dashboard.transactionGrowthPercent + '%'}">12.3%</span>
+                                            </span>
                                         </h4>
                                     </div>
                                     <div class="align-self-center text-center">
@@ -393,15 +395,15 @@
                             <div class="custome-3-bg b-r-4 card-body">
                                 <div class="media static-top-widget">
                                     <div class="media-body p-0">
-                                        <span class="m-0">Total Products</span>
-                                        <h4 class="mb-0 counter">893
+                                        <span class="m-0">Tổng sản phẩm</span>
+                                        <h4 class="mb-0 counter" th:text="${dashboard.totalProducts}">893
                                             <a th:href="@{/StockIn.html}" class="badge badge-light-secondary grow">
-                                                STOCK IN</a>
+                                                Nhập kho</a>
                                         </h4>
                                     </div>
 
                                     <div class="align-self-center text-center">
-                                        <i class="ri-chat-3-line"></i>
+                                        <i class="ri-medicine-bottle-line"></i>
                                     </div>
                                 </div>
                             </div>
@@ -413,15 +415,16 @@
                             <div class="custome-4-bg b-r-4 card-body">
                                 <div class="media static-top-widget">
                                     <div class="media-body p-0">
-                                        <span class="m-0">Total Customers</span>
-                                        <h4 class="mb-0 counter">4.6k
+                                        <span class="m-0">Tổng bệnh nhân</span>
+                                        <h4 class="mb-0 counter" th:text="${dashboard.totalPatients}">1.246
                                             <span class="badge badge-light-success grow">
-                                                    <i data-feather="trending-down"></i>8.5%</span>
+                                                    <i data-feather="trending-up"></i><span th:text="${dashboard.patientGrowthPercent + '%'}">5.2%</span>
+                                            </span>
                                         </h4>
                                     </div>
 
                                     <div class="align-self-center text-center">
-                                        <i class="ri-user-add-line"></i>
+                                        <i class="ri-user-heart-line"></i>
                                     </div>
                                 </div>
                             </div>
@@ -434,7 +437,7 @@
                         <div class="card o-hidden card-hover">
                             <div class="card-header border-0 pb-1">
                                 <div class="card-header-title">
-                                    <h4>Revenue Report</h4>
+                                    <h4>Báo cáo doanh thu</h4>
                                 </div>
                             </div>
                             <div class="card-body p-0">
@@ -450,19 +453,19 @@
                         <div class="card o-hidden card-hover">
                             <div class="card-header card-header-top card-header--2 px-0 pt-0">
                                 <div class="card-header-title">
-                                    <h4>Best Selling Product</h4>
+                                    <h4>Sản phẩm bán chạy</h4>
                                 </div>
 
                                 <div class="best-selling-box d-sm-flex d-none">
-                                    <span>Short By:</span>
+                                    <span>Lọc theo:</span>
                                     <div class="dropdown">
                                         <button class="btn p-0 dropdown-toggle" type="button"
                                                 id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                                data-bs-auto-close="true">Today</button>
+                                                data-bs-auto-close="true">Hôm nay</button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                            <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                                            <li><a class="dropdown-item" href="#">Tuần này</a></li>
+                                            <li><a class="dropdown-item" href="#">Tháng này</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -475,45 +478,45 @@
                                             w-image
                                             w-image table border-0">
                                             <tbody>
-                                            <tr>
+                                            <tr th:each="product : ${dashboard.bestSellingProducts}">
                                                 <td>
                                                     <div class="best-product-box">
                                                         <div class="product-image">
-                                                            <img th:src="@{/templates_storage/assets/images/product/1.png}"
+                                                            <img th:src="${product.imageUrl != null ? product.imageUrl : '/templates_storage/assets/images/product/1.png'}"
                                                                  class="img-fluid" alt="Product">
                                                         </div>
                                                         <div class="product-name">
-                                                            <h5>Aata Buscuit</h5>
-                                                            <h6>26-08-2022</h6>
+                                                            <h5 th:text="${product.name}">Paracetamol 500mg</h5>
+                                                            <h6 th:text="${#temporals.format(product.transactionDate, 'dd-MM-yyyy')}">26-08-2023</h6>
                                                         </div>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Price</h6>
-                                                        <h5>$29.00</h5>
+                                                        <h6>Giá</h6>
+                                                        <h5 th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA') + ' VNĐ'}">15.000 VNĐ</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Orders</h6>
-                                                        <h5>62</h5>
+                                                        <h6>Đã xuất</h6>
+                                                        <h5 th:text="${product.soldQuantity}">62</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Stock</h6>
-                                                        <h5>510</h5>
+                                                        <h6>Tồn kho</h6>
+                                                        <h5 th:text="${product.inStock}">510</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Amount</h6>
-                                                        <h5>$1,798</h5>
+                                                        <h6>Tổng tiền</h6>
+                                                        <h5 th:text="${#numbers.formatDecimal(product.totalAmount, 0, 'POINT', 0, 'COMMA') + ' VNĐ'}">930.000 VNĐ</h5>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -526,37 +529,37 @@
                                                                  class="img-fluid" alt="Product">
                                                         </div>
                                                         <div class="product-name">
-                                                            <h5>Aata Buscuit</h5>
-                                                            <h6>26-08-2022</h6>
+                                                            <h5>Máy đo huyết áp</h5>
+                                                            <h6>24-08-2023</h6>
                                                         </div>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Price</h6>
-                                                        <h5>$29.00</h5>
+                                                        <h6>Giá</h6>
+                                                        <h5>1.200.000 VNĐ</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Orders</h6>
-                                                        <h5>62</h5>
+                                                        <h6>Đã xuất</h6>
+                                                        <h5>35</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Stock</h6>
-                                                        <h5>510</h5>
+                                                        <h6>Tồn kho</h6>
+                                                        <h5>42</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Amount</h6>
-                                                        <h5>$1,798</h5>
+                                                        <h6>Tổng tiền</h6>
+                                                        <h5>42.000.000 VNĐ</h5>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -569,37 +572,37 @@
                                                                  class="img-fluid" alt="Product">
                                                         </div>
                                                         <div class="product-name">
-                                                            <h5>Aata Buscuit</h5>
-                                                            <h6>26-08-2022</h6>
+                                                            <h5>Amoxicillin 500mg</h5>
+                                                            <h6>20-08-2023</h6>
                                                         </div>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Price</h6>
-                                                        <h5>$29.00</h5>
+                                                        <h6>Giá</h6>
+                                                        <h5>25.000 VNĐ</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Orders</h6>
-                                                        <h5>62</h5>
+                                                        <h6>Đã xuất</h6>
+                                                        <h5>45</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Stock</h6>
-                                                        <h5>510</h5>
+                                                        <h6>Tồn kho</h6>
+                                                        <h5>320</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Amount</h6>
-                                                        <h5>$1,798</h5>
+                                                        <h6>Tổng tiền</h6>
+                                                        <h5>1.125.000 VNĐ</h5>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -618,19 +621,19 @@
                         <div class="card o-hidden card-hover">
                             <div class="card-header card-header-top card-header--2 px-0 pt-0">
                                 <div class="card-header-title">
-                                    <h4>Recent Orders</h4>
+                                    <h4>Giao dịch gần đây</h4>
                                 </div>
 
                                 <div class="best-selling-box d-sm-flex d-none">
-                                    <span>Short By:</span>
+                                    <span>Lọc theo:</span>
                                     <div class="dropdown">
                                         <button class="btn p-0 dropdown-toggle" type="button"
                                                 id="dropdownMenuButton2" data-bs-toggle="dropdown"
-                                                data-bs-auto-close="true">Today</button>
+                                                data-bs-auto-close="true">Hôm nay</button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                            <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                                            <li><a class="dropdown-item" href="#">Tuần này</a></li>
+                                            <li><a class="dropdown-item" href="#">Tháng này</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -641,161 +644,44 @@
                                     <div class="table-responsive">
                                         <table class="best-selling-table table border-0">
                                             <tbody>
-                                            <tr>
+                                            <tr th:each="transaction : ${dashboard.recentTransactions}">
                                                 <td>
                                                     <div class="best-product-box">
                                                         <div class="product-name">
-                                                            <h5>Aata Buscuit</h5>
-                                                            <h6>#64548</h6>
+                                                            <h5 th:text="${transaction.transactionType.name() == 'STOCK_IN' ? 'Phiếu nhập kho' : 'Phiếu xuất kho'}">Phiếu xuất kho</h5>
+                                                            <h6 th:text="${transaction.invoiceNumber}">SO-2023-001</h6>
                                                         </div>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Date Placed</h6>
-                                                        <h5>5/1/22</h5>
+                                                        <h6>Ngày tạo</h6>
+                                                        <h5 th:text="${#dates.format(transaction.transactionDate, 'dd/MM/yyyy')}">23/07/2023</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Price</h6>
-                                                        <h5>$250.00</h5>
+                                                        <h6>Giá trị</h6>
+                                                        <h5 th:text="${#numbers.formatDecimal(transaction.amount, 0, 'POINT', 0, 'COMMA') + ' VNĐ'}">5.250.000 VNĐ</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Order Status</h6>
-                                                        <h5>Completed</h5>
+                                                        <h6>Trạng thái</h6>
+                                                        <h5 th:text="${transaction.status.displayName}">Đã giao hàng</h5>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div class="product-detail-box">
-                                                        <h6>Payment</h6>
-                                                        <h5 class="text-danger">Unpaid</h5>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <div class="best-product-box">
-                                                        <div class="product-name">
-                                                            <h5>Aata Buscuit</h5>
-                                                            <h6>26-08-2022</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Date Placed</h6>
-                                                        <h5>5/1/22</h5>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Price</h6>
-                                                        <h5>$250.00</h5>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Order Status</h6>
-                                                        <h5>Completed</h5>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Payment</h6>
-                                                        <h5 class="theme-color">Paid</h5>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <div class="best-product-box">
-                                                        <div class="product-name">
-                                                            <h5>Aata Buscuit</h5>
-                                                            <h6>26-08-2022</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Date Placed</h6>
-                                                        <h5>5/1/22</h5>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Price</h6>
-                                                        <h5>$250.00</h5>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Order Status</h6>
-                                                        <h5>Completed</h5>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Payment</h6>
-                                                        <h5 class="theme-color">Paid</h5>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <div class="best-product-box">
-                                                        <div class="product-name">
-                                                            <h5>Aata Buscuit</h5>
-                                                            <h6>26-08-2022</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Date Placed</h6>
-                                                        <h5>5/1/22</h5>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Price</h6>
-                                                        <h5>$250.00</h5>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Order Status</h6>
-                                                        <h5>Completed</h5>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div class="product-detail-box">
-                                                        <h6>Payment</h6>
-                                                        <h5 class="theme-color">Paid</h5>
+                                                        <h6>Thanh toán</h6>
+                                                        <h5 th:class="${transaction.paid ? 'theme-color' : 'text-danger'}" 
+                                                            th:text="${transaction.paid ? 'Đã thanh toán' : 'Chưa thanh toán'}">
+                                                            Chưa thanh toán
+                                                        </h5>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -813,7 +699,7 @@
                         <div class="card o-hidden card-hover">
                             <div class="card-header border-0 mb-0">
                                 <div class="card-header-title">
-                                    <h4>Earning</h4>
+                                    <h4>Doanh thu theo danh mục</h4>
                                 </div>
                             </div>
                             <div class="card-body p-0">
@@ -829,7 +715,7 @@
                         <div class="card o-hidden card-hover">
                             <div class="card-header border-0">
                                 <div class="card-header-title">
-                                    <h4>Transactions</h4>
+                                    <h4>Giao dịch tài chính</h4>
                                 </div>
                             </div>
 
@@ -844,12 +730,12 @@
                                                         <i class="ri-shield-line"></i>
                                                     </div>
                                                     <div class="transactions-name">
-                                                        <h6>Wallets</h6>
-                                                        <p>Starbucks</p>
+                                                        <h6>Tiền mặt</h6>
+                                                        <p>Thanh toán cho nhà cung cấp</p>
                                                     </div>
                                                 </td>
 
-                                                <td class="lost">-$74</td>
+                                                <td class="lost">-5.750.000 VNĐ</td>
                                             </tr>
                                             <tr>
                                                 <td class="td-color-1">
@@ -857,12 +743,12 @@
                                                         <i class="ri-check-line"></i>
                                                     </div>
                                                     <div class="transactions-name">
-                                                        <h6>Bank Transfer</h6>
-                                                        <p>Add Money</p>
+                                                        <h6>Chuyển khoản</h6>
+                                                        <p>Nhận thanh toán từ bảo hiểm</p>
                                                     </div>
                                                 </td>
 
-                                                <td class="success">+$125</td>
+                                                <td class="success">+12.500.000 VNĐ</td>
                                             </tr>
                                             <tr>
                                                 <td class="td-color-2">
@@ -870,12 +756,12 @@
                                                         <i class="ri-exchange-dollar-line"></i>
                                                     </div>
                                                     <div class="transactions-name">
-                                                        <h6>Paypal</h6>
-                                                        <p>Add Money</p>
+                                                        <h6>Tiền mặt</h6>
+                                                        <p>Thanh toán cho nhà cung cấp</p>
                                                     </div>
                                                 </td>
 
-                                                <td class="lost">-$50</td>
+                                                <td class="lost">-3.200.000 VNĐ</td>
                                             </tr>
                                             <tr>
                                                 <td class="td-color-3">
@@ -883,12 +769,12 @@
                                                         <i class="ri-bank-card-line"></i>
                                                     </div>
                                                     <div class="transactions-name">
-                                                        <h6>Mastercard</h6>
-                                                        <p>Ordered Food</p>
+                                                        <h6>Thẻ tín dụng</h6>
+                                                        <p>Thanh toán cho nhà cung cấp</p>
                                                     </div>
                                                 </td>
 
-                                                <td class="lost">-$40</td>
+                                                <td class="lost">-4.900.000 VNĐ</td>
                                             </tr>
                                             <tr>
                                                 <td class="td-color-4 pb-0">
@@ -896,12 +782,12 @@
                                                         <i class="ri-bar-chart-grouped-line"></i>
                                                     </div>
                                                     <div class="transactions-name">
-                                                        <h6>Transfer</h6>
-                                                        <p>Refund</p>
+                                                        <h6>Chuyển khoản</h6>
+                                                        <p>Hoàn tiền</p>
                                                     </div>
                                                 </td>
 
-                                                <td class="success pb-0">+$90</td>
+                                                <td class="success pb-0">+1.200.000 VNĐ</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -919,7 +805,7 @@
                                 <div class="card-header border-0">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="card-header-title">
-                                            <h4>Visitors</h4>
+                                            <h4>Phân loại sản phẩm</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -939,7 +825,7 @@
                         <div class="card o-hidden card-hover">
                             <div class="card-header border-0">
                                 <div class="card-header-title">
-                                    <h4>To Do List</h4>
+                                    <h4>Công việc cần làm</h4>
                                 </div>
                             </div>
 
@@ -951,8 +837,8 @@
                                                    id="flexCheckDefault">
                                         </div>
                                         <div class="to-do-list-name">
-                                            <strong>Pick up kids from school</strong>
-                                            <p>8 Hours</p>
+                                            <strong>Kiểm kê kho thuốc</strong>
+                                            <p>8 Giờ</p>
                                         </div>
                                     </li>
                                     <li class="to-do-item">
@@ -961,8 +847,8 @@
                                                    id="flexCheckDefault1">
                                         </div>
                                         <div class="to-do-list-name">
-                                            <strong>Prepare or presentation.</strong>
-                                            <p>8 Hours</p>
+                                            <strong>Chuẩn bị báo cáo tháng.</strong>
+                                            <p>3 Giờ</p>
                                         </div>
                                     </li>
                                     <li class="to-do-item">
@@ -971,8 +857,8 @@
                                                    id="flexCheckDefault2">
                                         </div>
                                         <div class="to-do-list-name">
-                                            <strong>Create invoice</strong>
-                                            <p>8 Hours</p>
+                                            <strong>Tạo hóa đơn</strong>
+                                            <p>1 Giờ</p>
                                         </div>
                                     </li>
                                     <li class="to-do-item">
@@ -981,8 +867,8 @@
                                                    id="flexCheckDefault3">
                                         </div>
                                         <div class="to-do-list-name">
-                                            <strong>Meeting with Alisa</strong>
-                                            <p>8 Hours</p>
+                                            <strong>Cuộc họp với nhà cung cấp</strong>
+                                            <p>5 Giờ</p>
                                         </div>
                                     </li>
 
@@ -990,11 +876,11 @@
                                         <form class="row g-2">
                                             <div class="col-8">
                                                 <input type="text" class="form-control" id="name"
-                                                       placeholder="Enter Task Name">
+                                                       placeholder="Nhập công việc">
                                             </div>
                                             <div class="col-4">
-                                                <button type="submit" class="btn btn-primary w-100 h-100">Add
-                                                    task</button>
+                                                <button type="submit" class="btn btn-primary w-100 h-100">Thêm
+                                                    mới</button>
                                             </div>
                                         </form>
                                     </li>
