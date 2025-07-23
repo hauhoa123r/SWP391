@@ -21,7 +21,6 @@ public class StockRequestItemResponse {
     private BigDecimal totalPrice;
     private Date manufactureDate;
     private Date expirationDate;
-    private String batchNumber;
     private String storageLocation;
     private String notes;
 } 
