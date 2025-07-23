@@ -1,7 +1,8 @@
 
 <!doctype html>
-<html lang="en" class="theme-fs-sm" data-bs-theme="light" data-bs-theme-color="default" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" class="theme-fs-sm" data-bs-theme="light" data-bs-theme-color="default" dir="ltr">
     <head>
+        <base th:href="@{/}" />
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title data-setting="app_name" data-rightJoin=" Clinic And Patient Management Dashboard">KiviCare  Clinic And Patient Management Dashboard</title>
@@ -14,41 +15,41 @@
         <!-- Google Font Api KEY-->
         <meta name="google_font_api" content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
         <!-- Favicon -->
-        <link rel="shortcut icon" href="/dashboard_assets/assets/images/favicon.ico" />
-        
+        <link rel="shortcut icon" href="../dashboard/assets/images/favicon.ico" />
+        <link rel="shortcut icon" href="../dashboard/dashboard/assets/images/favicon.ico" />
         <!-- Library / Plugin Css Build -->
-        <link rel="stylesheet" href="/dashboard_assets/assets/css/core/libs.min.css" />
-        
+        <link rel="stylesheet" href="../dashboard/assets/css/core/libs.min.css" />
+
         <!-- flaticon css -->
-        <link rel="stylesheet" href="/dashboard_assets/assets/vendor/flaticon/css/flaticon.css" />
-        
+        <link rel="stylesheet" href="../dashboard/assets/vendor/flaticon/css/flaticon.css" />
+
         <!-- font-awesome css -->
-        <link rel="stylesheet" href="/dashboard_assets/assets/vendor/font-awesome/css/all.min.css" />
-        
+        <link rel="stylesheet" href="../dashboard/assets/vendor/font-awesome/css/all.min.css" />
+
         <!-- Flatpickr css -->
-        <link rel="stylesheet" href="/dashboard_assets/assets/vendor/flatpickr/dist/flatpickr.min.css" />
-        
-        <link rel="stylesheet" href="/dashboard_assets/assets/vendor/sheperd/dist/css/sheperd.css">
-        
-        
-        
+        <link rel="stylesheet" href="../dashboard/assets/vendor/flatpickr/dist/flatpickr.min.css" />
+
+        <link rel="stylesheet" href="../dashboard/assets/vendor/sheperd/dist/css/sheperd.css">
+
+
+
         <!-- Sweetlaert2 css -->
-        <link rel="stylesheet" href="/dashboard_assets/assets/vendor/sweetalert2/dist/sweetalert2.min.css"/>
-        
-        
-        
-        
+        <link rel="stylesheet" href="../dashboard/assets/vendor/sweetalert2/dist/sweetalert2.min.css"/>
+
+
+
+
         <!-- Kivicare Design System Css -->
-        <link rel="stylesheet" href="/dashboard_assets/assets/css/kivicare.min.css?v=1.4.1" />
-        
+        <link rel="stylesheet" href="../dashboard/assets/css/kivicare.min.css?v=1.4.1" />
+
         <!-- Custom Css -->
-        <link rel="stylesheet" href="/dashboard_assets/assets/css/custom.min.css?v=1.4.1" />
+        <link rel="stylesheet" href="../dashboard/assets/css/custom.min.css?v=1.4.1" />
         
         <!-- RTL Css -->
-        <link rel="stylesheet" href="/dashboard_assets/assets/css/rtl.min.css?v=1.4.1"/>
+        <link rel="stylesheet" href="../dashboard/assets/css/rtl.min.css?v=1.4.1"/>
         
         <!-- Customizer Css -->
-        <link rel="stylesheet" href="/dashboard_assets/assets/css/customizer.min.css?v=1.4.1"/>
+        <link rel="stylesheet" href="../dashboard/assets/css/customizer.min.css?v=1.4.1"/>
         
         <!-- Google Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,29 +60,29 @@
         <div id="loading">
         <div class="loader simple-loader">
             <div class="loader-body">
-                <img src="/dashboard_assets/assets/images/loader.gif" alt="loader" class="light-loader img-fluid " width="200">
+                <img src="../dashboard/assets/images/loader.gif" alt="loader" class="light-loader img-fluid " width="200">
             </div>
         </div>        </div>
         <!-- loader END -->
             <aside class="sidebar sidebar-base " id="first-tour" data-toggle="main-sidebar" data-sidebar="responsive">
                 <div class="sidebar-header d-flex align-items-center justify-content-start position-relative">
-                    <a href="./index.html" class="navbar-brand">
+                    <a href="../dashboard/index.html" class="navbar-brand">
                         
                         <!--Logo start-->
                         <div class="logo-main">
-                            <img class="logo-normal img-fluid" src="/dashboard_assets/assets/images/logo.png" height="30" alt="logo">
-                            <img class="logo-normal dark-normal img-fluid" src="/dashboard_assets/assets/images/logo-dark.png" height="30" alt="logo">
-                            <img class="logo-normal white-normal img-fluid" src="/dashboard_assets/assets/images/logo-white.png" height="30" alt="logo">
-                            <img class="logo-mini img-fluid" src="/dashboard_assets/assets/images/logo-mini.png" height="30" alt="logo">
-                            <img class="logo-mini dark-mini img-fluid" src="/dashboard_assets/assets/images/logo-mini-dark.png" height="30" alt="logo">
-                            <img class="logo-mini white-mini img-fluid" src="/dashboard_assets/assets/images/logo-mini-white.png" height="30" alt="logo">
+                            <img class="logo-normal img-fluid" src="../dashboard/assets/images/logo.png" height="30" alt="logo">
+                            <img class="logo-normal dark-normal img-fluid" src="../dashboard/assets/images/logo-dark.png" height="30" alt="logo">
+                            <img class="logo-normal white-normal img-fluid" src="../dashboard/assets/images/logo-white.png" height="30" alt="logo">
+                            <img class="logo-mini img-fluid" src="../dashboard/assets/images/logo-mini.png" height="30" alt="logo">
+                            <img class="logo-mini dark-mini img-fluid" src="../dashboard/assets/images/logo-mini-dark.png" height="30" alt="logo">
+                            <img class="logo-mini white-mini img-fluid" src="../dashboard/assets/images/logo-mini-white.png" height="30" alt="logo">
                         </div>
                         <!--logo End-->        </a>
                     <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
-                        <i class="icon">               
+                        <i class="icon">
                             <svg class="icon-20 icon-arrow" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M15.5 19L8.5 12L15.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>                            
+                            </svg>
                         </i>
                     </div>
                 </div>
@@ -118,7 +119,7 @@
                                 <ul class="sub-nav collapse" id="dashboard" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link " aria-current="page"
-                                            href="./index.html">
+                                            href="../dashboard/index.html">
                                             <i class="icon" data-bs-toggle="tooltip" title="Dashboard" data-bs-placement="right">
                                                 <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -134,7 +135,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link " aria-current="page"
-                                            href="./patient-dashboard.html">
+                                            href="../dashboard/payment-dashboard.html">
                                             <i class="icon" data-bs-toggle="tooltip" title="Dashboard" data-bs-placement="right">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" fill="none">
                                                     <path opacity="0.4"
@@ -157,7 +158,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./appointment.html">
+                                    href="../dashboard/appointment.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Appointment" data-bs-placement="right">
                                         <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -174,126 +175,93 @@
                                                 fill="currentColor" />
                                         </svg>
                                     </i>
-                                    <span class="item-name">Appointments</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " aria-current="page"
-                                    href="./report.html">
-                                    <i class="icon" data-bs-toggle="tooltip" title="Report" data-bs-placement="right">
-                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.4"
-                                                d="M16.6756 2H7.33333C3.92889 2 2 3.92889 2 7.33333V16.6667C2 20.0711 3.92889 22 7.33333 22H16.6756C20.08 22 22 20.0711 22 16.6667V7.33333C22 3.92889 20.08 2 16.6756 2Z"
-                                                fill="currentColor"></path>
-                                            <path
-                                                d="M7.36866 9.3689C6.91533 9.3689 6.54199 9.74223 6.54199 10.2045V17.0756C6.54199 17.5289 6.91533 17.9022 7.36866 17.9022C7.83088 17.9022 8.20421 17.5289 8.20421 17.0756V10.2045C8.20421 9.74223 7.83088 9.3689 7.36866 9.3689Z"
-                                                fill="currentColor"></path>
-                                            <path
-                                                d="M12.0352 6.08887C11.5818 6.08887 11.2085 6.4622 11.2085 6.92442V17.0755C11.2085 17.5289 11.5818 17.9022 12.0352 17.9022C12.4974 17.9022 12.8707 17.5289 12.8707 17.0755V6.92442C12.8707 6.4622 12.4974 6.08887 12.0352 6.08887Z"
-                                                fill="currentColor"></path>
-                                            <path
-                                                d="M16.6398 12.9956C16.1775 12.9956 15.8042 13.3689 15.8042 13.8312V17.0756C15.8042 17.5289 16.1775 17.9023 16.6309 17.9023C17.0931 17.9023 17.4664 17.5289 17.4664 17.0756V13.8312C17.4664 13.3689 17.0931 12.9956 16.6398 12.9956Z"
-                                                fill="currentColor"></path>
-                                        </svg>
-                                    </i>
-                                    <span class="item-name">Report</span>
+
                                 </a>
                             </li>
                             <li>
                                 <hr class="hr-horizontal">
                             </li>
-                            <li class="nav-item static-item">
-                                <a class="nav-link static-item disabled text-start" href="#" tabindex="-1">
-                                    <span class="default-icon">Pages</span>
-                                    <span class="mini-icon">-</span>
-                                </a>
-                            </li>
                             <li class="nav-item">
-                                <a class="nav-link " aria-current="page"
-                                    href="./doctors.html">
-                                    <i class="icon" data-bs-toggle="tooltip" title="Doctors" data-bs-placement="right">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <g opacity="0.4">
-                                                <path
-                                                    d="M7.9999 0C6.27589 0 4.87366 1.40261 4.87366 3.12663V4.74646C4.87366 6.4706 6.27589 7.87322 7.9999 7.87322C9.72405 7.87322 11.1262 6.4706 11.1262 4.74646V3.12663C11.1262 1.40261 9.72405 0 7.9999 0Z"
-                                                    fill="currentColor" />
-                                            </g>
-                                            <path
-                                                d="M14.8945 11.9476C13.8934 10.2416 12.2933 8.97685 10.389 8.38626C10.3448 8.37256 10.297 8.38421 10.2642 8.41672C9.37827 9.29019 8.27748 9.97165 8.00228 10.1363C7.70852 9.94849 6.47116 9.14196 5.73555 8.41672C5.70278 8.38421 5.65465 8.37256 5.61075 8.38626C3.70612 8.97697 2.10614 10.2417 1.10544 11.9477C1.08253 11.9867 1.08253 12.0353 1.10544 12.0743C2.52649 14.4958 5.16826 16 7.99985 16C10.8316 16 13.4735 14.4958 14.8945 12.0743C14.9176 12.0351 14.9176 11.9866 14.8945 11.9476ZM12.2518 12.8802C12.2518 12.9492 12.1862 13.0019 12.1173 13.0019H11.2706C11.2016 13.0019 11.1264 13.0612 11.1264 13.1303V14.0059C11.1264 14.0748 11.0895 14.1274 11.0205 14.1274H10.2601C10.1911 14.1274 10.126 14.0748 10.126 14.0059V13.1303C10.1258 13.0613 10.0787 13.0019 10.0097 13.0019H9.1265C9.05751 13.0019 9.00042 12.949 9.00042 12.8802V12.1263C9.00042 12.0573 9.05751 12.0016 9.1265 12.0016H10.0097C10.0787 12.0016 10.1258 11.9453 10.1258 11.8762V10.9995C10.1258 10.9305 10.1908 10.8761 10.2598 10.8761H11.012C11.0809 10.8761 11.1262 10.9305 11.1262 10.9995V11.8787C11.1262 11.9478 11.193 12.0015 11.2622 12.0015H12.1173C12.1862 12.0015 12.2518 12.0598 12.2518 12.1288V12.8802Z"
-                                                fill="currentColor" />
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon" data-bs-toggle="tooltip" title="Doctors" data-bs-placement="right">DR</i>
-                                    <span class="item-name">Doctors</span>
+                                <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
+                                   href="#allPagesData"
+                                   role="button" aria-expanded="false" aria-controls="allPagesData">
+                                    <span class="nav-text">Pages</span>
                                 </a>
-                            </li>
+                                <!-- PATIENT -->
                             <li class="nav-item">
-                                <a class="nav-link " aria-current="page"
-                                    href="./patient.html">
+                                <a class="nav-link" href="/admin/patient">
                                     <i class="icon" data-bs-toggle="tooltip" title="Patient" data-bs-placement="right">
-                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M11.997 15.1746C7.684 15.1746 4 15.8546 4 18.5746C4 21.2956 7.661 21.9996 11.997 21.9996C16.31 21.9996 19.994 21.3206 19.994 18.5996C19.994 15.8786 16.334 15.1746 11.997 15.1746Z"
-                                                fill="currentColor"></path>
-                                            <path opacity="0.4"
-                                                d="M11.9971 12.5838C14.9351 12.5838 17.2891 10.2288 17.2891 7.29176C17.2891 4.35476 14.9351 1.99976 11.9971 1.99976C9.06008 1.99976 6.70508 4.35476 6.70508 7.29176C6.70508 10.2288 9.06008 12.5838 11.9971 12.5838Z"
-                                                fill="currentColor"></path>
+                                        <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
                                         </svg>
                                     </i>
-                                    <i class="sidenav-mini-icon" data-bs-toggle="tooltip" title="Patient" data-bs-placement="right">P</i>
                                     <span class="item-name">Patient</span>
                                 </a>
                             </li>
+
+                            <!-- STAFF -->
                             <li class="nav-item">
-                                <a class="nav-link " aria-current="page"
-                                    href="./category.html">
-                                    <i class="icon" data-bs-toggle="tooltip" title="Category" data-bs-placement="right">
-                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M10.1528 5.55559C10.2037 5.65925 10.2373 5.77027 10.2524 5.8844L10.5308 10.0243L10.669 12.1051C10.6705 12.3191 10.704 12.5317 10.7687 12.7361C10.9356 13.1326 11.3372 13.3846 11.7741 13.3671L18.4313 12.9316C18.7196 12.9269 18.998 13.0347 19.2052 13.2313C19.3779 13.3952 19.4894 13.6096 19.5246 13.8402L19.5364 13.9802C19.2609 17.795 16.4592 20.9767 12.6524 21.7981C8.84555 22.6194 4.94186 20.8844 3.06071 17.535C2.51839 16.5619 2.17965 15.4923 2.06438 14.389C2.01623 14.0624 1.99503 13.7326 2.00098 13.4026C1.99503 9.31279 4.90747 5.77702 8.98433 4.92463C9.47501 4.84822 9.95603 5.10798 10.1528 5.55559Z"
-                                                fill="currentColor"></path>
-                                            <path opacity="0.4"
-                                                d="M12.8701 2.00082C17.43 2.11683 21.2624 5.39579 22.0001 9.81229L21.993 9.84488L21.9729 9.89227L21.9757 10.0224C21.9652 10.1947 21.8987 10.3605 21.784 10.4945C21.6646 10.634 21.5014 10.729 21.3217 10.7659L21.2121 10.7809L13.5313 11.2786C13.2758 11.3038 13.0214 11.2214 12.8314 11.052C12.6731 10.9107 12.5719 10.7201 12.5433 10.5147L12.0277 2.84506C12.0188 2.81913 12.0188 2.79102 12.0277 2.76508C12.0348 2.55367 12.1278 2.35384 12.2861 2.21023C12.4444 2.06662 12.6547 1.9912 12.8701 2.00082Z"
-                                                fill="currentColor"></path>
+                                <a class="nav-link" href="/admin/staffs">
+                                    <i class="icon" data-bs-toggle="tooltip" title="Staff" data-bs-placement="right">
+                                        <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4zm0 2c-2.66 0-8 1.34-8 4v2h16v-2c0-2.66-5.34-4-8-4z" fill="currentColor"/>
                                         </svg>
                                     </i>
-                                    <i class="sidenav-mini-icon" data-bs-toggle="tooltip" title="Category" data-bs-placement="right">C</i>
-                                    <span class="item-name">Category</span>
+                                    <span class="item-name">Staff</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link " aria-current="page"
-                                    href="./products.html">
-                                    <i class="icon" data-bs-toggle="tooltip" title="Products" data-bs-placement="right">
-                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                d="M7.7688 8.71387H16.2312C18.5886 8.71387 20.5 10.5831 20.5 12.8885V17.8254C20.5 20.1308 18.5886 22 16.2312 22H7.7688C5.41136 22 3.5 20.1308 3.5 17.8254V12.8885C3.5 10.5831 5.41136 8.71387 7.7688 8.71387ZM11.9949 17.3295C12.4928 17.3295 12.8891 16.9419 12.8891 16.455V14.2489C12.8891 13.772 12.4928 13.3844 11.9949 13.3844C11.5072 13.3844 11.1109 13.772 11.1109 14.2489V16.455C11.1109 16.9419 11.5072 17.3295 11.9949 17.3295Z"
-                                                fill="currentColor"></path>
-                                            <path opacity="0.4"
-                                                d="M17.523 7.39595V8.86667C17.1673 8.7673 16.7913 8.71761 16.4052 8.71761H15.7447V7.39595C15.7447 5.37868 14.0681 3.73903 12.0053 3.73903C9.94257 3.73903 8.26594 5.36874 8.25578 7.37608V8.71761H7.60545C7.20916 8.71761 6.83319 8.7673 6.47754 8.87661V7.39595C6.4877 4.41476 8.95692 2 11.985 2C15.0537 2 17.523 4.41476 17.523 7.39595Z"
-                                                fill="currentColor"></path>
+
+                            <!-- ADD STAFF (sub-item) -->
+                            <li class="nav-item ms-4">
+                                <a class="nav-link" href="/admin/doctor-staffs/create">
+                                    <i class="icon" data-bs-toggle="tooltip" title="Add Staff" data-bs-placement="right">
+                                        <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
                                         </svg>
                                     </i>
-                                    <span class="item-name">Products</span>
+                                    <span class="item-name">Add Staff</span>
                                 </a>
                             </li>
+
+                            <!-- STAFF SHIFT (sub-item) -->
+                            <li class="nav-item ms-4">
+                                <a class="nav-link" href="/admin/staff-shifts">
+                                    <i class="icon" data-bs-toggle="tooltip" title="Staff Shift" data-bs-placement="right">
+                                        <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                            <path d="M17 10.5V6a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4.5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2zM9 4h6a2 2 0 0 1 2 2v.5H7V6a2 2 0 0 1 2-2zM7 8h10v.5a.5.5 0 0 1-.5.5H7.5a.5.5 0 0 1-.5-.5V8z" fill="currentColor"/>
+                                        </svg>
+                                    </i>
+                                    <span class="item-name">Staff Shift</span>
+                                </a>
+                            </li>
+
+                            <!-- PAYMENT -->
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page"
-                                    href="./payment.html">
+                                <a class="nav-link" href="/admin/payments">
                                     <i class="icon" data-bs-toggle="tooltip" title="Payment" data-bs-placement="right">
-                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                d="M21.9964 8.37513H17.7618C15.7911 8.37859 14.1947 9.93514 14.1911 11.8566C14.1884 13.7823 15.7867 15.3458 17.7618 15.3484H22V15.6543C22 19.0136 19.9636 21 16.5173 21H7.48356C4.03644 21 2 19.0136 2 15.6543V8.33786C2 4.97862 4.03644 3 7.48356 3H16.5138C19.96 3 21.9964 4.97862 21.9964 8.33786V8.37513ZM6.73956 8.36733H12.3796H12.3831H12.3902C12.8124 8.36559 13.1538 8.03019 13.152 7.61765C13.1502 7.20598 12.8053 6.87318 12.3831 6.87491H6.73956C6.32 6.87664 5.97956 7.20858 5.97778 7.61852C5.976 8.03019 6.31733 8.36559 6.73956 8.36733Z"
-                                                fill="currentColor"></path>
-                                            <path opacity="0.4"
-                                                d="M16.0374 12.2966C16.2465 13.2478 17.0805 13.917 18.0326 13.8996H21.2825C21.6787 13.8996 22 13.5715 22 13.166V10.6344C21.9991 10.2297 21.6787 9.90077 21.2825 9.8999H17.9561C16.8731 9.90338 15.9983 10.8024 16 11.9102C16 12.0398 16.0128 12.1695 16.0374 12.2966Z"
-                                                fill="currentColor"></path>
-                                            <circle cx="18" cy="11.8999" r="1" fill="currentColor"></circle>
+                                        <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                            <path d="M21 7H3V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2zm0 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h18zM7 13h2v2H7v-2z" fill="currentColor"/>
                                         </svg>
                                     </i>
                                     <span class="item-name">Payment</span>
                                 </a>
                             </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/view" aria-current="page">
+                                    <i class="icon" data-bs-toggle="tooltip" title="User" data-bs-placement="right">
+                                        <svg class="icon-20" viewBox="0 0 24 24" fill="none">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" fill="currentColor"/>
+                                            <path d="M4 20c0-2.21 4.42-4 8-4s8 1.79 8 4v2H4v-2z" fill="currentColor"/>
+                                        </svg>
+                                    </i>
+                                    <span class="item-name">User</span>
+                                </a>
+                            </li>
+
+
+
+
                             <li>
                                 <hr class="hr-horizontal">
                             </li>
@@ -305,7 +273,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./helpsupport.html">
+                                    href="../dashboard/helpsupport.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Help & Support" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -321,7 +289,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./setting.html">
+                                    href="../dashboard/setting.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Setting" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -346,7 +314,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./component.html">
+                                    href="../dashboard/component.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Components" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -365,7 +333,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./ui-color.html">
+                                    href="../dashboard/ui-color.html">
                                     <i class="icon" data-bs-toggle="tooltip" title="Colors" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -402,7 +370,7 @@
                                 <ul class="sub-nav collapse" id="auth-skins" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/sign-in.html">
+                                            href="../dashboard/auth/sign-in.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -418,7 +386,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/sign-up.html">
+                                            href="../dashboard/auth/sign-up.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -434,7 +402,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/confirm-mail.html">
+                                            href="../dashboard/auth/confirm-mail.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -450,7 +418,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/recoverpw.html">
+                                            href="../dashboard/auth/recoverpw.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -466,7 +434,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/lock-screen.html">
+                                            href="../dashboard/auth/lock-screen.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -503,7 +471,7 @@
                                 </a>
                                 <ul class="sub-nav collapse" id="sidebar-user" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
-                                        <a class="nav-link " href="./app/user-profile.html">
+                                        <a class="nav-link " href="../dashboard/app/user-profile.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -516,7 +484,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link " href="./app/user-add.html">
+                                        <a class="nav-link " href="../dashboard/app/user-add.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -529,7 +497,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link " href="./app/user-list.html">
+                                        <a class="nav-link " href="../dashboard/app/user-list.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -567,7 +535,7 @@
                                 <ul class="sub-nav collapse" id="utilities-error" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./errors/maintenance.html">
+                                            href="../dashboard/errors/maintenance.html">
                                             <i class="icon" data-bs-toggle="tooltip" title="Maintenance" data-bs-placement="right">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -583,7 +551,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./errors/error404.html">
+                                            href="../dashboard/errors/error404.html">
                                             <i class="icon" data-bs-toggle="tooltip" title="Error 404" data-bs-placement="right">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -599,7 +567,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./errors/error500.html">
+                                            href="../dashboard/errors/error500.html">
                                             <i class="icon" data-bs-toggle="tooltip" title="Error 500" data-bs-placement="right">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -639,7 +607,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-widget" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./widget/widgetbasic.html">
+                                            href="../dashboard/widget/widgetbasic.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -655,7 +623,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./widget/widgetchart.html">
+                                            href="../dashboard/widget/widgetchart.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -671,7 +639,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./widget/widgetcard.html">
+                                            href="../dashboard/widget/widgetcard.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -709,7 +677,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-maps" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./maps/google.html">
+                                            href="../dashboard/maps/google.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -725,7 +693,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./maps/vector.html">
+                                            href="../dashboard/maps/vector.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -765,7 +733,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-form" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./form/form-element.html">
+                                            href="../dashboard/form/form-element.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -781,7 +749,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./form/form-validation.html">
+                                            href="../dashboard/form/form-validation.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -820,7 +788,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-table" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./table/bootstrap-table.html">
+                                            href="../dashboard/table/bootstrap-table.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -836,7 +804,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./table/table-data.html">
+                                            href="../dashboard/table/table-data.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -852,7 +820,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./table/border-table.html">
+                                            href="../dashboard/table/border-table.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -868,7 +836,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./table/fancy-table.html">
+                                            href="../dashboard/table/fancy-table.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -884,7 +852,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./table/fixed-table.html">
+                                            href="../dashboard/table/fixed-table.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -923,7 +891,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-icons" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./icons/solid.html">
+                                            href="../dashboard/icons/solid.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -939,7 +907,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./icons/outline.html">
+                                            href="../dashboard/icons/outline.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -955,7 +923,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./icons/dual-tone.html">
+                                            href="../dashboard/icons/dual-tone.html">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -987,16 +955,16 @@
             <!--Nav Start-->
                     <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar">
                        <div class="container-fluid navbar-inner">
-                          <a href="./index.html" class="navbar-brand">
+                          <a href="../dashboard/index.html" class="navbar-brand">
                              
                              <!--Logo start-->
                              <div class="logo-main">
-                                 <img class="logo-normal img-fluid" src="/dashboard_assets/assets/images/logo.png" height="30" alt="logo">
-                                 <img class="logo-normal dark-normal img-fluid" src="/dashboard_assets/assets/images/logo-dark.png" height="30" alt="logo">
-                                 <img class="logo-normal white-normal img-fluid" src="/dashboard_assets/assets/images/logo-white.png" height="30" alt="logo">
-                                 <img class="logo-mini img-fluid" src="/dashboard_assets/assets/images/logo-mini.png" height="30" alt="logo">
-                                 <img class="logo-mini dark-mini img-fluid" src="/dashboard_assets/assets/images/logo-mini-dark.png" height="30" alt="logo">
-                                 <img class="logo-mini white-mini img-fluid" src="/dashboard_assets/assets/images/logo-mini-white.png" height="30" alt="logo">
+                                 <img class="logo-normal img-fluid" src="../dashboard/assets/images/logo.png" height="30" alt="logo">
+                                 <img class="logo-normal dark-normal img-fluid" src="../dashboard/assets/images/logo-dark.png" height="30" alt="logo">
+                                 <img class="logo-normal white-normal img-fluid" src="../dashboard/assets/images/logo-white.png" height="30" alt="logo">
+                                 <img class="logo-mini img-fluid" src="../dashboard/assets/images/logo-mini.png" height="30" alt="logo">
+                                 <img class="logo-mini dark-mini img-fluid" src="../dashboard/assets/images/logo-mini-dark.png" height="30" alt="logo">
+                                 <img class="logo-mini white-mini img-fluid" src="../dashboard/assets/images/logo-mini-white.png" height="30" alt="logo">
                              </div>
                              <!--logo End-->      </a>
                           <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
@@ -1013,7 +981,7 @@
                                    <ul class="iq-nav-menu list-unstyled">
                                       <li class="nav-item">
                                          <a class="nav-link menu-arrow justify-content-start "
-                                            href="./index.html">
+                                            href="../dashboard/index.html">
                                             <span class="nav-text">Home</span>
                                          </a>
                                       </li>
@@ -1024,10 +992,10 @@
                                          </a>
                                          <ul class="iq-header-sub-menu list-unstyled collapse" id="allPagesData">
                                             <li class="nav-item">
-                                               <a class="nav-link" href="./component.html">Components</a>
+                                               <a class="nav-link" href="../dashboard/component.html">Components</a>
                                             </li>
                                             <li class="nav-item">
-                                               <a class="nav-link" href="./ui-color.html">UI Color</a>
+                                               <a class="nav-link" href="../dashboard/ui-color.html">UI Color</a>
                                             </li>
                                             <li class="nav-item">
                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#authSkins" role="button"
@@ -1045,18 +1013,18 @@
                                                   id="defaultAuth">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./auth/sign-in.html">Sign In</a></li>
+                                                        href="../dashboard/auth/sign-in.html">Sign In</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./auth/sign-up.html">Sign Up</a></li>
+                                                        href="../dashboard/auth/sign-up.html">Sign Up</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./auth/confirm-mail.html">Email Verified</a></li>
-                                                  <li class="nav-item"><a class="nav-link " href="./auth/recoverpw.html">Reset
+                                                        href="../dashboard/auth/confirm-mail.html">Email Verified</a></li>
+                                                  <li class="nav-item"><a class="nav-link " href="../dashboard/auth/recoverpw.html">Reset
                                                         Password</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./auth/lock-screen.html">Lock Screen</a></li>
+                                                        href="../dashboard/auth/lock-screen.html">Lock Screen</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1075,13 +1043,13 @@
                                                   id="userApps">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./app/user-profile.html">User Profile</a></li>
+                                                        href="../dashboard/app/user-profile.html">User Profile</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./app/user-add.html">User Add</a></li>
+                                                        href="../dashboard/app/user-add.html">User Add</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./app/user-list.html">User List</a></li>
+                                                        href="../dashboard/app/user-list.html">User List</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1100,13 +1068,13 @@
                                                   id="utilities">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./errors/maintenance.html">Maintenance</a></li>
+                                                        href="../dashboard/errors/maintenance.html">Maintenance</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./errors/error404.html">404</a></li>
+                                                        href="../dashboard/errors/error404.html">404</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./errors/error500.html">500</a></li>
+                                                        href="../dashboard/errors/error500.html">500</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1125,13 +1093,13 @@
                                                   id="widgetsPage">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./widget/widgetbasic.html">Widget Basic</a></li>
+                                                        href="../dashboard/widget/widgetbasic.html">Widget Basic</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./widget/widgetchart.html">Widget Chart</a></li>
+                                                        href="../dashboard/widget/widgetchart.html">Widget Chart</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./widget/widgetcard.html">Widget Card</a></li>
+                                                        href="../dashboard/widget/widgetcard.html">Widget Card</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1150,10 +1118,10 @@
                                                   id="mapPages">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./maps/google.html">Google</a></li>
+                                                        href="../dashboard/maps/google.html">Google</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./maps/vector.html">Vector</a></li>
+                                                        href="../dashboard/maps/vector.html">Vector</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1172,11 +1140,11 @@
                                                   id="formsPages">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./form/form-element.html">Element</a></li>
+                                                        href="../dashboard/form/form-element.html">Element</a></li>
                     
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./form/form-validation.html">Validation</a></li>
+                                                        href="../dashboard/form/form-validation.html">Validation</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1195,19 +1163,19 @@
                                                   id="tablesPages">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./table/bootstrap-table.html">Bootstrap Table</a></li>
+                                                        href="../dashboard/table/bootstrap-table.html">Bootstrap Table</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./table/table-data.html">Data Table</a></li>
+                                                        href="../dashboard/table/table-data.html">Data Table</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./table/border-table.html">Bordered Table</a></li>
+                                                        href="../dashboard/table/border-table.html">Bordered Table</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./table/fancy-table.html">Fancy Table</a></li>
+                                                        href="../dashboard/table/fancy-table.html">Fancy Table</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./table/fixed-table.html">Fixed Table</a></li>
+                                                        href="../dashboard/table/fixed-table.html">Fixed Table</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1226,20 +1194,20 @@
                                                   id="iconsPages">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./icons/solid.html">Solid</a></li>
+                                                        href="../dashboard/icons/solid.html">Solid</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./icons/outline.html">Outlined</a></li>
+                                                        href="../dashboard/icons/outline.html">Outlined</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./icons/dual-tone.html">Dual Tone</a></li>
+                                                        href="../dashboard/icons/dual-tone.html">Dual Tone</a></li>
                                                </ul>
                                             </li>
                                          </ul>
                                       </li>
                                       <li class="nav-item">
                                          <a class="nav-link menu-arrow justify-content-start "
-                                            href="./setting.html">
+                                            href="../dashboard/setting.html">
                                             <span class="nav-text">Setting </span>
                                          </a>
                                       </li>
@@ -1355,7 +1323,7 @@
                                             <a href="#" class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/01.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/01.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Emma Watson Bni</h6>
                                                      <p class="mb-0">95 MB</p>
@@ -1366,7 +1334,7 @@
                                             <a href="#" class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/02.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/02.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">New customer is join</h6>
                                                      <p class="mb-0">Cyst Bni</p>
@@ -1377,7 +1345,7 @@
                                             <a href="#" class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/03.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/03.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Two customer is left</h6>
                                                      <p class="mb-0">Cyst Bni</p>
@@ -1388,7 +1356,7 @@
                                             <a href="#" class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/04.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/04.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">New Mail from Fenny</h6>
                                                      <p class="mb-0">Cyst Bni</p>
@@ -1437,7 +1405,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/01.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/01.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Biker’s Jacket</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1459,7 +1427,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/02.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/02.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Casual Shoes</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1481,7 +1449,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/03.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/03.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Knitted Shrug</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1503,7 +1471,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/04.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/04.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Blue Handbag</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1525,7 +1493,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/01.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/01.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Biker’s Jacket</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1547,7 +1515,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/02.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/02.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Casual Shoes</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1569,7 +1537,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/03.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/03.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Knitted Shrug</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1591,7 +1559,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="/dashboard_assets/assets/images/shapes/04.png" loading="lazy" />
+                                                     src="../dashboard/assets/images/shapes/04.png" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Blue Handbag</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1654,7 +1622,7 @@
                                       data-bs-toggle="dropdown" aria-expanded="false">
                                       <div class="icon-40">
                                          <span class="btn-inner d-inline-block position-relative">
-                                            <img src="/dashboard_assets/assets/images/avatars/14.png"
+                                            <img src="../dashboard/assets/images/avatars/14.png"
                                                class="img-fluid rounded-circle object-fit-cover" alt="icon">
                                             <span
                                                class="bg-success p-1 rounded-circle position-absolute end-0 bottom-0 border border-3 border-white"></span>
@@ -1663,16 +1631,16 @@
                                    </a>
                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                       <li>
-                                         <a class="dropdown-item" href="./app/user-profile.html">Profile</a>
+                                         <a class="dropdown-item" href="../dashboard/app/user-profile.html">Profile</a>
                                       </li>
                                       <li>
-                                         <a class="dropdown-item" href="./app/user-privacy-setting.html">Privacy Setting</a>
+                                         <a class="dropdown-item" href="../dashboard/app/user-privacy-setting.html">Privacy Setting</a>
                                       </li>
                                       <li>
                                          <hr class="dropdown-divider">
                                       </li>
                                       <li>
-                                         <a class="dropdown-item" href="./auth/sign-in.html">Logout</a>
+                                         <a class="dropdown-item" href="../dashboard/auth/sign-in.html">Logout</a>
                                       </li>
                                    </ul>
                                 </li>
@@ -1719,350 +1687,86 @@
          </div>
       </div>
    </div>
-   <div class="card-body pt-0">
-      <div class="table-responsive">
-         <table class="table border-end border-start align-middle mb-0 rounded">
-            <thead class="table-dark">
-               <tr>
-                  <th>Sr. No.</th>
-                  <th>Customer Name</th>
-                  <th>Date & Time</th>
-                  <th>Payment Method</th>
-                  <th>Amount</th>
-                  <th>Payment Status</th>
-                  <th>Action</th>
-               </tr>
-            </thead>
-            <tbody>
-               <tr data-item="list">
-                  <th scope="row">1</th>
-                  <td>Isabella Brown</td>
-                  <td>24 May At 10:00 AM</td>
-                  <td>Cash</td>
-                  <td>$500</td>
-                  <td>Completed</td>
-                  <td>
-                     <a class="d-inline-block pe-2" data-bs-toggle="offcanvas" href="#offcanvasPaymentEdit"
-                        aria-controls="offcanvasPaymentEdit">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-               <tr data-item="list">
-                  <th scope="row">2</th>
-                  <td>Daniel White</td>
-                  <td>7 July At 02:15 PM</td>
-                  <td>Online</td>
-                  <td>$410</td>
-                  <td>Completed</td>
-                  <td>
-                     <a href="#" class="d-inline-block pe-2">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-               <tr data-item="list">
-                  <th scope="row">3</th>
-                  <td>Ashley Garcia</td>
-                  <td>23 July At 11:00 AM</td>
-                  <td>Online</td>
-                  <td>$150</td>
-                  <td>Completed</td>
-                  <td>
-                     <a href="#" class="d-inline-block pe-2">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-               <tr data-item="list">
-                  <th>4</th>
-                  <td>Jonathan Thomas</td>
-                  <td>13 Aug At 04:30 PM</td>
-                  <td>Online</td>
-                  <td>$390</td>
-                  <td>Completed</td>
-                  <td>
-                     <a href="#" class="d-inline-block pe-2">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-               <tr data-item="list">
-                  <th>5</th>
-                  <td>Sophia Wilson</td>
-                  <td>24 Aug At 06:45 PM</td>
-                  <td>Cash</td>
-                  <td>$235</td>
-                  <td>Completed</td>
-                  <td>
-                     <a href="#" class="d-inline-block pe-2">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-               <tr data-item="list">
-                  <th>6</th>
-                  <td>Benjamin Chen</td>
-                  <td>09 Sep At 01:00 PM</td>
-                  <td>Cash</td>
-                  <td>$220</td>
-                  <td>Completed</td>
-                  <td>
-                     <a href="#" class="d-inline-block pe-2">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-               <tr data-item="list">
-                  <th>7</th>
-                  <td>Samantha Davis</td>
-                  <td>23 Sep At 03:30 PM</td>
-                  <td>Online</td>
-                  <td>$370</td>
-                  <td>Completed</td>
-                  <td>
-                     <a href="#" class="d-inline-block pe-2">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                 d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                     <a href="#" class="d-inline-block ps-2 delete-btn">
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                 stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                 d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                     </a>
-                  </td>
-               </tr>
-            </tbody>
-         </table>
-      </div>
-   </div>
-   <div class="card-footer pt-0">
-      <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-          <ul class="page-number m-0 p-0 list-unstyled d-flex gap-2">
-              <li class="text-center bg-primary text-white rounded">1</li>
-              <li class="text-center bg-primary-subtle text-primary rounded ">2</li>
-              <li class="text-center text-primary rounded fs-1">...</li>
-              <li class="text-center bg-primary-subtle text-primary rounded">6</li>
-          </ul>
-          <div>
-              <button class="btn btn-secondary text-white me-3" type="button">
-                  <span class="btn-inner">
-                      <span class="text d-inline-block align-middle">Previous</span>
-                      <span class="icon d-inline-block align-middle ms-1 ps-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
-                              <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z" fill="currentColor" />
-                          </svg>
-                      </span>
-                  </span>
-               </button>
-               <button class="btn btn-primary me-3" type="button">
-                  <span class="btn-inner">
-                      <span class="text d-inline-block align-middle">Next</span>
-                      <span class="icon d-inline-block align-middle ms-1 ps-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
-                              <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z" fill="currentColor" />
-                          </svg>
-                      </span>
-                  </span>
-               </button>
-          </div>
+   <!-- Search / filter form -->
+    <form method="get" th:action="@{/payments/search}" class="row g-2 mb-3">
+        <input type="text" name="orderId" class="form-control col" placeholder="Mã đơn hàng"
+               th:value="${orderId}">
+        <input type="number" step="0.01" name="amount" class="form-control col" placeholder="Số tiền"
+               th:value="${amount}">
+        <input type="text" name="customer" class="form-control col" placeholder="Email người dùng"
+               th:value="${customer}">
+        <select name="method" class="form-select col">
+            <option value="" th:selected="${method == null || method == ''}">Tất cả phương thức</option>
+            <option th:value="CASH" th:selected="${method == 'CASH'}">Tiền mặt</option>
+            <option th:value="CARD" th:selected="${method == 'CARD'}">Thẻ</option>
+            <option th:value="MOMO" th:selected="${method == 'MOMO'}">Momo</option>
+        </select>
+        <select name="status" class="form-select col">
+            <option value="" th:selected="${status == null || status == ''}">Tất cả trạng thái</option>
+            <option th:value="success" th:selected="${status == 'success'}">SUCCESS</option>
+            <option th:value="pending" th:selected="${status == 'pending'}">PENDING</option>
+            <option th:value="failed" th:selected="${status == 'failed'}">FAILED</option>
+        </select>
+        <input type="date" name="from" class="form-control col" placeholder="Từ ngày" th:value="${from}">
+        
+        <button type="submit" class="btn btn-primary col-auto">Lọc</button>
+    </form>
+
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <table class="table border-end border-start align-middle mb-0 rounded">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>Mã thanh toán</th>
+                                <th>Email người dùng</th>
+                                <th>Ngày & Giờ</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Số tiền</th>
+                                <th>Trạng thái thanh toán</th>
+                                <th>Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="payment, iterStat : ${payments}">
+                                <td th:text="${iterStat.index + 1 + currentPage * pageSize}">1</td>
+                                <td th:text="${payment.orderEntity.appointmentEntity.patientEntity.email}">Customer</td>
+                                <td th:text="${#dates.format(payment.paymentTime, 'dd/MM/yyyy HH:mm')}">24 May At 10:00 AM</td>
+                                <td th:text="${payment.method == 'CASH' ? 'Tiền mặt' : (payment.method == 'CARD' ? 'Thẻ' : (payment.method == 'MOMO' ? 'Momo' : payment.method))}">Phương thức</td>
+                                <td th:text="${'$' + payment.amount}">$500</td>
+                                <td th:text="${payment.status.equalsIgnoreCase('success') ? 'Thành công' : (payment.status.equalsIgnoreCase('failed') ? 'Thất bại' : payment.status)}">Trạng thái</td>
+                                <td>
+                                    <a th:href="@{'/admin/payments/' + ${payment.id}}" class="d-inline-block pe-2">
+                                        <span class="text-success">✏️</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <nav th:if="${totalPages > 1}" class="mt-3">
+                            <ul class="pagination justify-content-center">
+                                <!-- Previous -->
+                                <li class="page-item" th:classappend="${currentPage == 0} ? ' disabled'">
+                                    <a class="page-link" th:if="${!isSearch}"
+                                       th:href="@{/admin/payments(page=${currentPage - 1}, size=${pageSize})}" aria-label="Previous">&laquo; Previous</a>
+                                    <a class="page-link" th:if="${isSearch}"
+                                       th:href="@{/admin/payments/search(page=${currentPage - 1}, size=${pageSize}, orderId=${orderId}, amount=${amount}, customer=${customer}, method=${method}, status=${status}, from=${from}, to=${to})}" aria-label="Previous">&laquo; Previous</a>
+                                </li>
+
+                                <!-- Next -->
+                                <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? ' disabled'">
+                                    <a class="page-link" th:if="${!isSearch}"
+                                       th:href="@{/admin/payments(page=${currentPage + 1}, size=${pageSize})}" aria-label="Next">Next &raquo;</a>
+                                    <a class="page-link" th:if="${isSearch}"
+                                       th:href="@{/admin/payments/search(page=${currentPage + 1}, size=${pageSize}, orderId=${orderId}, amount=${amount}, customer=${customer}, method=${method}, status=${status}, from=${from}, to=${to})}" aria-label="Next">Next &raquo;</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="card-footer pt-0">
+      
       </div>   </div>
 </div>
 
@@ -2140,8 +1844,8 @@
             <footer class="footer">
                 <div class="footer-body">
                     <ul class="left-panel list-inline mb-0 p-0">
-                        <li class="list-inline-item fw-500"><a class="footer-link" href="./extra/privacy-policy.html">Privacy Policy</a></li>
-                        <li class="list-inline-item fw-500"><a class="footer-link" href="./extra/terms-of-service.html">Terms of Use</a></li>
+                        <li class="list-inline-item fw-500"><a class="footer-link" href="../dashboard/extra/privacy-policy.html">Privacy Policy</a></li>
+                        <li class="list-inline-item fw-500"><a class="footer-link" href="../dashboard/extra/terms-of-service.html">Terms of Use</a></li>
                     </ul>
                     <h6 class="right-panel mb-0">
                         © <script>document.write(new Date().getFullYear())</script> <span data-setting="app_name">KiviCare</span> with
@@ -2260,9 +1964,9 @@
                                             <input type="radio" value="ltr" class="btn-check" name="theme_scheme_direction"
                                                 data-prop="dir" id="theme-scheme-direction-ltr" checked>
                                             <label class="btn btn-border d-block p-0" for="theme-scheme-direction-ltr">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/01.png" alt="ltr"
+                                                <img src="/assets/images/settings/dark/01.png" alt="ltr"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/01.png" alt="ltr"
+                                                <img src="/assets/images/settings/light/01.png" alt="ltr"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class=" mt-2"> LTR </span>
@@ -2271,9 +1975,9 @@
                                             <input type="radio" value="rtl" class="btn-check" name="theme_scheme_direction"
                                                 data-prop="dir" id="theme-scheme-direction-rtl">
                                             <label class="btn btn-border d-block p-0" for="theme-scheme-direction-rtl">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/02.png" alt="ltr"
+                                                <img src="/assets/images/settings/dark/02.png" alt="ltr"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/02.png" alt="ltr"
+                                                <img src="/assets/images/settings/light/02.png" alt="ltr"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class=" mt-2"> RTL </span>
@@ -2519,9 +2223,9 @@
                                             <input type="checkbox" value="sidebar-mini" class="btn-check" name="sidebar_type"
                                                 id="sidebar-mini">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-mini">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/03.png" alt="mini"
+                                                <img src="/assets/images/settings/dark/03.png" alt="mini"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/03.png" alt="mini"
+                                                <img src="/assets/images/settings/light/03.png" alt="mini"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Mini</span>
@@ -2531,9 +2235,9 @@
                                                 data-extra="{target: '.sidebar', ClassListAdd: 'sidebar-mini'}"
                                                 class="btn-check" name="sidebar_type" id="sidebar-hover">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-hover">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/04.png" alt="hover"
+                                                <img src="/assets/images/settings/dark/04.png" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/04.png" alt="hover"
+                                                <img src="/assets/images/settings/light/04.png" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Hover</span>
@@ -2542,9 +2246,9 @@
                                             <input type="checkbox" value="sidebar-boxed" class="btn-check" name="sidebar_type"
                                                 id="sidebar-boxed">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-boxed">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/05.png" alt="boxed"
+                                                <img src="/assets/images/settings/dark/05.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/05.png" alt="boxed"
+                                                <img src="/assets/images/settings/light/05.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Boxed</span>
@@ -2553,9 +2257,9 @@
                                             <input type="checkbox" value="sidebar-soft" class="btn-check" name="sidebar_type"
                                                 id="sidebar-soft">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-soft">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/05.png" alt="boxed"
+                                                <img src="/assets/images/settings/dark/05.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/05.png" alt="boxed"
+                                                <img src="/assets/images/settings/light/05.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Soft</span>
@@ -2576,9 +2280,9 @@
                                             <input type="radio" value="sidebar-default navs-rounded" class="btn-check" name="sidebar_menu_style"
                                                 id="navs-rounded">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-rounded">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/06.png" alt="mini"
+                                                <img src="/assets/images/settings/dark/06.png" alt="mini"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/06.png" alt="mini"
+                                                <img src="/assets/images/settings/light/06.png" alt="mini"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Rounded One Side</span>
@@ -2587,9 +2291,9 @@
                                             <input type="radio" value="sidebar-default navs-rounded-all" class="btn-check"
                                                 name="sidebar_menu_style" id="navs-rounded-all">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-rounded-all">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/07.png" alt="hover"
+                                                <img src="/assets/images/settings/dark/07.png" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/07.png" alt="hover"
+                                                <img src="/assets/images/settings/light/07.png" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Rounded All</span>
@@ -2598,9 +2302,9 @@
                                             <input type="radio" value="sidebar-default navs-pill" class="btn-check" name="sidebar_menu_style"
                                                 id="navs-pill">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-pill">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/08.png" alt="boxed"
+                                                <img src="/assets/images/settings/dark/08.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/08.png" alt="boxed"
+                                                <img src="/assets/images/settings/light/08.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Pill One Side</span>
@@ -2609,9 +2313,9 @@
                                             <input type="radio" value="sidebar-default navs-pill-all" class="btn-check"
                                                 name="sidebar_menu_style" id="navs-pill-all">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-pill-all">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/09.png" alt="boxed"
+                                                <img src="/assets/images/settings/dark/09.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/09.png" alt="boxed"
+                                                <img src="/assets/images/settings/light/09.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Pill All</span>
@@ -2620,9 +2324,9 @@
                                             <input type="radio" value="text-hover" class="btn-check"
                                                 name="sidebar_menu_style" id="text-hover" checked>
                                             <label class="btn btn-border position-relative p-0 d-block overflow-hidden" for="text-hover">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/14.png" alt="boxed"
+                                                <img src="/assets/images/settings/dark/14.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/14.png" alt="boxed"
+                                                <img src="../dashboard/assets/images/settings/light/14.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Text Color</span>
@@ -2631,9 +2335,9 @@
                                             <input type="radio" value="sidebar-default navs-full-width" class="btn-check"
                                                 name="sidebar_menu_style" id="navs-full-width">
                                             <label class="btn btn-border position-relative p-0 d-block overflow-hidden" for="navs-full-width">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/15.png" alt="boxed"
+                                                <img src="../dashboard/assets/images/settings/dark/15.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/15.png" alt="boxed"
+                                                <img src="../dashboard/assets/images/settings/light/15.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Full Width</span>
@@ -2652,9 +2356,9 @@
                                             <input type="radio" value="nav-glass" class="btn-check" name="header_navbar"
                                                 id="nav-glass">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="nav-glass">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/10.png" alt="hover"
+                                                <img src="../dashboard/assets/images/settings/dark/10.png" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/10.png" alt="hover"
+                                                <img src="../dashboard/assets/images/settings/light/10.png" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Glass</span>
@@ -2663,9 +2367,9 @@
                                             <input type="radio" value="navs-sticky" class="btn-check" name="header_navbar"
                                                 id="navs-sticky">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-sticky">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/04.png" alt="hover"
+                                                <img src="../dashboard/assets/images/settings/dark/04.png" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/04.png" alt="hover"
+                                                <img src="../dashboard/assets/images/settings/light/04.png" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Sticky</span>
@@ -2674,9 +2378,9 @@
                                             <input type="radio" value="navs-transparent" class="btn-check" name="header_navbar"
                                                 id="navs-transparent">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-transparent">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/12.png" alt="boxed"
+                                                <img src="../dashboard/assets/images/settings/dark/12.png" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/12.png" alt="boxed"
+                                                <img src="../dashboard/assets/images/settings/light/12.png" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Transparent</span>
@@ -2685,9 +2389,9 @@
                                             <input type="radio" value="navs-default" class="btn-check" name="header_navbar"
                                                 id="navs-default" checked>
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-default">
-                                                <img src="/dashboard_assets/assets/images/settings/dark/01.png" alt="default"
+                                                <img src="../dashboard/assets/images/settings/dark/01.png" alt="default"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="/dashboard_assets/assets/images/settings/light/01.png" alt="default"
+                                                <img src="../dashboard/assets/images/settings/light/01.png" alt="default"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Default</span>
@@ -2943,57 +2647,57 @@
 
 
         <!-- Library Bundle Script -->
-        <script src="/dashboard_assets/assets/js/core/libs.min.js"></script>
+        <script src="../dashboard/assets/js/core/libs.min.js"></script>
         <!-- Plugin Scripts -->
         <!-- Tour plugin Start -->
-        <script src="/dashboard_assets/assets/vendor/sheperd/dist/js/sheperd.min.js"></script>
-        <script src="/dashboard_assets/assets/js/plugins/tour.js" defer></script>
+        <script src="../dashboard/assets/vendor/sheperd/dist/js/sheperd.min.js"></script>
+        <script src="../dashboard/assets/js/plugins/tour.js" defer></script>
         
         <!-- Flatpickr Script -->
-        <script src="/dashboard_assets/assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
-        <script src="/dashboard_assets/assets/js/plugins/flatpickr.js" defer></script>
+        <script src="../dashboard/assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
+        <script src="../dashboard/assets/js/plugins/flatpickr.js" defer></script>
         
         
         
         <!-- Slider-tab Script -->
-        <script src="/dashboard_assets/assets/js/plugins/slider-tabs.js"></script>
+        <script src="../dashboard/assets/js/plugins/slider-tabs.js"></script>
         
         
         <!-- fslightbox Script -->
-        <script src="/dashboard_assets/assets/js/plugins/fslightbox.js" defer></script>
+        <script src="../dashboard/assets/js/plugins/fslightbox.js" defer></script>
         
         
         <!-- Sweet-alert Script -->
-        <script src="/dashboard_assets/assets/vendor/sweetalert2/dist/sweetalert2.min.js" async></script>
-        <script src="/dashboard_assets/assets/js/plugins/sweet-alert.js" defer></script>
+        <script src="../dashboard/assets/vendor/sweetalert2/dist/sweetalert2.min.js" async></script>
+        <script src="../dashboard/assets/js/plugins/sweet-alert.js" defer></script>
         
         
           <!-- Select2 Script -->
-          <script src="/dashboard_assets/assets/js/plugins/select2.js" defer></script>
+          <script src="../dashboard/assets/js/plugins/select2.js" defer></script>
         
         
         
         
         <!-- Lodash Utility -->
-        <script src="/dashboard_assets/assets/vendor/lodash/lodash.min.js"></script>
+        <script src="../dashboard/assets/vendor/lodash/lodash.min.js"></script>
         <!-- Utilities Functions -->
-        <script src="/dashboard_assets/assets/js/iqonic-script/utility.min.js"></script>
+        <script src="../dashboard/assets/js/iqonic-script/utility.min.js"></script>
         <!-- Settings Script -->
-        <script src="/dashboard_assets/assets/js/iqonic-script/setting.min.js"></script>
+        <script src="../dashboard/assets/js/iqonic-script/setting.min.js"></script>
         <!-- Settings Init Script -->
-        <script src="/dashboard_assets/assets/js/setting-init.js"></script>
+        <script src="../dashboard/assets/js/setting-init.js"></script>
         <!-- External Library Bundle Script -->
-        <script src="/dashboard_assets/assets/js/core/external.min.js"></script>
+        <script src="../dashboard/assets/js/core/external.min.js"></script>
         <!-- Widgetchart Script -->
-        <script src="/dashboard_assets/assets/js/charts/widgetcharts.js?v=1.4.1" defer></script>
+        <script src="../dashboard/assets/js/charts/widgetcharts.js?v=1.4.1" defer></script>
         <!-- Dashboard Script -->
-        <script src="/dashboard_assets/assets/js/charts/dashboard.js?v=1.4.1" defer></script>
+        <script src="../dashboard/assets/js/charts/dashboard.js?v=1.4.1" defer></script>
         <!-- Hopeui Script -->
-        <script src="/dashboard_assets/assets/js/kivicare.js?v=1.4.1" defer></script>
-        <script src="/dashboard_assets/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
-        <script src="/dashboard_assets/assets/js/sidebar.js?v=1.4.1" defer></script>
+        <script src="../dashboard/assets/js/kivicare.js?v=1.4.1" defer></script>
+        <script src="../dashboard/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
+        <script src="../dashboard/assets/js/sidebar.js?v=1.4.1" defer></script>
         
         <!-- Icons -->
-        <script src="/dashboard_assets/assets/js/solid-icon-search-filter.js?v=1.4.1" defer></script>
+        <script src="../dashboard/assets/js/solid-icon-search-filter.js?v=1.4.1" defer></script>
     </body>
 </html>
