@@ -94,7 +94,7 @@
                     <div class="col-md-4">
                         <div class="info-box">
                             <label class="form-label">📅 Ngày sinh</label>
-                            <p th:text="*{dateOfBirth}">--</p>
+                            <p th:text="*{#dates.format(dateOfBirth, 'dd/MM/yyyy')}">--</p>
                         </div>
                     </div>
                     <div class="col-md-4">

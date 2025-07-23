@@ -53,7 +53,7 @@ public class AdminStaffServiceImpl implements AdminStaffService {
         req.setFullName(staff.getFullName());
         req.setDepartmentId(staff.getDepartmentEntity().getId());
         req.setHospitalId(staff.getHospitalEntity().getId());
-        req.setManagerId(staff.getStaffEntity() != null ? staff.getStaffEntity().getId() : null);
+        req.setManagerId(staff.getManager() != null ? staff.getManager().getId() : null);
         req.setRankLevel(staff.getRankLevel());
         req.setAvatarUrl(staff.getAvatarUrl());
         req.setStaffRole(staff.getStaffRole().name());
@@ -72,9 +72,9 @@ public class AdminStaffServiceImpl implements AdminStaffService {
                 .orElseThrow(() -> new ResourceNotFoundException("Hospital not found")));
 
         if (request.getManagerId() != null) {
-            staff.setStaffEntity(staffRepository.findById(request.getManagerId()).orElse(null));
+            staff.setManager(staffRepository.findById(request.getManagerId()).orElse(null));
         } else {
-            staff.setStaffEntity(null);
+            staff.setManager(null);
         }
 
         staffRepository.save(staff);

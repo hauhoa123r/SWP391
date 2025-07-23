@@ -45,15 +45,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
 	@Autowired
 	private PharmacyServiceImpl pharmacyServiceImpl;
 
+    @Autowired
+    private UserService userService;
 
-	@Autowired
+
+
+    @Autowired
 	private PharmacyRepositoryImpl pharmacyRepositoryCustom;
 
 	//constructor-based injection of pharmacyService and categoryRepo
@@ -77,8 +80,6 @@ public class UserController {
     public String viewUsers() {
         return "redirect:/users/view";
     }
-    @Autowired
-    private final UserService userService;
 
     // Global model attributes for form selects
     @ModelAttribute("roles") //Gửi dữ liệu từ hàm roles() vào View
@@ -192,6 +193,26 @@ public class UserController {
 		if (productUpdateDTO.getAdditionalInfos() == null || productUpdateDTO.getAdditionalInfos().isEmpty()) {
 			productUpdateDTO.setAdditionalInfos(List.of(new ProductAdditionalInfoResponse()));
 		}
+
+
+		//add object
+		mv.addObject("productUpdateDTO", productUpdateDTO);
+		//get more data
+		mv.addObject("categories", categoryRepo.findAll());
+		//get types
+		mv.addObject("types", ProductType.values());
+		//get statuses
+		mv.addObject("statuses", ProductStatus.values());
+		//get labels
+		mv.addObject("labels", Label.values());
+		//get additional info
+//		mv.addObject("additionalInfo", productUpdateDTO.getAdditionalInfos());
+		//get tags
+		mv.addObject("availableTags", productTagRepository.findAllDistinctTagNames());
+		//add object
+		mv.addObject("currentImageUrl", productUpdateDTO.getCurrentImageUrl());
+		return mv;
+	}
     // ================== View User Details ==================
     @PostMapping("/delete/{id}")
     public String deactivateUser(@PathVariable Long id, Model model) {
@@ -213,25 +234,6 @@ public class UserController {
             return "redirect:/users/view";
         }
     }
-
-		//add object
-		mv.addObject("productUpdateDTO", productUpdateDTO);
-		//get more data
-		mv.addObject("categories", categoryRepo.findAll());
-		//get types
-		mv.addObject("types", ProductType.values());
-		//get statuses
-		mv.addObject("statuses", ProductStatus.values());
-		//get labels
-		mv.addObject("labels", Label.values());
-		//get additional info
-//		mv.addObject("additionalInfo", productUpdateDTO.getAdditionalInfos());
-		//get tags
-		mv.addObject("availableTags", productTagRepository.findAllDistinctTagNames());
-		//add object
-		mv.addObject("currentImageUrl", productUpdateDTO.getCurrentImageUrl());
-		return mv;
-	}
 
     // ================== View User Details ==================
     @GetMapping("/detail/{id}")

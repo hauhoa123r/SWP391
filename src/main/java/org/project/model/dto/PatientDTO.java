@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class PatientDTO extends AbstractServiceAIDTO{
+public class PatientDTO extends AbstractServiceDTO{
     private Long userId;
     private String fullName;
     private String email;

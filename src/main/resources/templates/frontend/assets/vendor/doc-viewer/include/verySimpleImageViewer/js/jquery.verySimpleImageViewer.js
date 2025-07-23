@@ -1,7 +1,7 @@
 
 /**
  * jquery.verySimpleImageViewer.js
- * Ver. : 1.1.0 
+ * Ver. : 1.0.0 
  * last update: 28/04/2018
  * Author: meshesha , https://github.com/meshesha
  * LICENSE: MIT

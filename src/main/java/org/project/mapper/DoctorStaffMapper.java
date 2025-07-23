@@ -18,8 +18,8 @@ public interface DoctorStaffMapper {
     @Mapping(source = "departmentEntity.name", target = "departmentName")
     @Mapping(source = "hospitalEntity.id", target = "hospitalId")
     @Mapping(source = "hospitalEntity.name", target = "hospitalName")
-    @Mapping(source = "staffEntity.id", target = "managerId")
-    @Mapping(source = "staffEntity.fullName", target = "managerName")
+    @Mapping(source = "manager.id", target = "managerId")
+    @Mapping(source = "manager.fullName", target = "managerName")
     @Mapping(source = "doctorEntity.doctorRank", target = "doctorRank")
     DoctorStaffResponse toResponse(StaffEntity entity);
 

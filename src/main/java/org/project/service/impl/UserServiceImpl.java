@@ -83,6 +83,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserLoginResponse isLogin(UserLoginDTO userLoginDTO) {
+        return null;
+    }
+
+    @Override
     public void deleteUser(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("User ID không được null");

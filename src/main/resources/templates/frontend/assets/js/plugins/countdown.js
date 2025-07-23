@@ -45,7 +45,12 @@ function getTimeRemaining(endtime) {
   if (time == undefined) {
     time = Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000
   }
-  const deadline = new Date(time)
-  initializeClock('.countdown', deadline)
 
+  const dateString = time ;
+  const [day, month, year] = dateString.split('-');
+  const formattedDateString = `${month}-${day}-${year}`;
+
+  const deadline = new Date(formattedDateString);
+  initializeClock('.countdown', deadline)
+  
 })()

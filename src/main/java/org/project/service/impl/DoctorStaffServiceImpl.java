@@ -70,10 +70,10 @@ public class DoctorStaffServiceImpl implements DoctorStaffService {
             HospitalEntity hospital = hospitalRepo.findById(request.getHospitalId()).orElse(null);
             entity.setHospitalEntity(hospital);
 
-            if (dept != null && entity.getStaffEntity() == null) {
+            if (dept != null && entity.getManager() == null) {
                 staffRepo.findFirstByDepartmentEntity_IdAndHospitalEntity_IdOrderByRankLevelAsc(
                         dept.getId(), hospital.getId()
-                ).ifPresent(entity::setStaffEntity);
+                ).ifPresent(entity::setManager);
             }
         }
 
@@ -162,7 +162,7 @@ public class DoctorStaffServiceImpl implements DoctorStaffService {
         dto.setAvatarUrl(entity.getAvatarUrl());
         if (entity.getDepartmentEntity() != null) dto.setDepartmentId(entity.getDepartmentEntity().getId());
         if (entity.getHospitalEntity() != null) dto.setHospitalId(entity.getHospitalEntity().getId());
-        if (entity.getStaffEntity() != null) dto.setManagerId(entity.getStaffEntity().getId());
+        if (entity.getManager() != null) dto.setManagerId(entity.getManager().getId());
         if (entity.getDoctorEntity() != null && entity.getDoctorEntity().getDoctorRank() != null) {
             dto.setDoctorRank(entity.getDoctorEntity().getDoctorRank().name());
         }

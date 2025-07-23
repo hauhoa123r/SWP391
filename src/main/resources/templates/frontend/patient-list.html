@@ -10,12 +10,12 @@
     <!-- font-awesome css -->
     <link href="./assets/vendor/font-awesome/css/all.min.css" rel="stylesheet"
         th:href="@{/frontend/assets/vendor/font-awesome/css/all.min.css}" />
-    <!-- Kivicare Design System CSS -->
-    <link rel="stylesheet" th:href="@{'/frontend/assets/css/kivicare.min.css?v=1.4.1'}" />
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" th:href="@{'/frontend/assets/css/custom.min.css?v=1.4.1'}" />
-
+    <!-- Kivicare Design System Css -->
+    <link href="./assets/css/kivicare.min.css?v=1.4.1" rel="stylesheet"
+        th:href="@{/frontend/assets/css/kivicare.min.css?v=1.4.1}" />
+    <!-- Custom Css -->
+    <link href="./assets/css/custom.min.css?v=1.4.1" rel="stylesheet"
+        th:href="@{/frontend/assets/css/custom.min.css?v=1.4.1}" />
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
@@ -306,99 +306,82 @@
             <div class="patient-table-card">
                 <div class="patient-table-header mb-2">
                     <div>
-                        <div class="title">All Patients</div>
+                        <div class="title">All Patient</div>
                         <div class="desc"></div>
                     </div>
                     <a class="add-btn" th:href="@{/patient/showAddPrevious}">Add Patient&nbsp;&nbsp;+</a>
                 </div>
-
                 <div class="table-responsive">
                     <table class="table-patient">
                         <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Avatar</th>
-                            <th>Patient Name</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th>Date of Birth</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Address</th>
-                            <th>Family Relationship</th>
-                            <th>Blood Type</th>
-                            <th>Action</th>
-                        </tr>
+                            <tr>
+                                <th>No.</th>
+                                <th>Avatar</th>
+                                <th>Patient Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Date of Birth</th>
+                                <th>Gender</th>
+                                <th>Address</th>
+                                <th>Family Relationship</th>
+                                <th>Blood Type</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="patient, iter : ${patients}">
-                            <td th:text="${iter.index + 1}">1</td>
-                            <td>
-                                <img alt="Avatar"
-                                     th:if="${patient.avatarUrl != null}"
-                                     th:src="'data:image/jpeg;base64,' + ${patient.avatarUrl}"
-                                     style="width:80px;height:80px;border-radius:35%;">
-                                <img alt="Avatar"
-                                     th:if="${patient.avatarUrl == null}"
-                                     th:src="@{/frontend/assets/images/patientAvatar/anonymous.jpg}"
-                                     style="width:80px;height:80px;border-radius:35%;">
-                            </td>
-                            <td th:text="${patient.fullName}">Patient Name</td>
-                            <td th:text="${patient.email}">Email</td>
-                            <td th:text="${patient.phoneNumber}">Phone</td>
-                            <td th:text="${#dates.format(patient.dateOfBirth != null ? patient.dateOfBirth : patient.birthdate, 'yyyy-MM-dd')}">YYYY-MM-DD</td>
-                             <td th:text="${patient.age}">Age</td>
-                            <td th:text="${patient.gender}">Gender</td>
-                            <td th:text="${patient.address}">Address</td>
-                            <td th:text="${patient.familyRelationship}">Relationship</td>
-                            <td th:text="${patient.bloodType}">Blood Type</td>
-                            <td>
-                                <input type="hidden" th:value="${patient.id}" class="patient-id">
-                                <button class="action-btn edit" title="Edit"><i class="fas fa-pen"></i></button>
-                                <button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr th:if="${#lists.isEmpty(patients)}">
-                            <td colspan="12" style="text-align:center;color:#aaa;">No patient found.</td>
-                        </tr>
+                            <tr th:each="patient,iter : ${patients}">
+                                <td th:text="${iter.index + 1}">1</td>
+                                <td>
+                                    <img alt="Avatar"
+                                        th:src="@{${patient.avatarUrl} != null ? 'data:image/jpge;base64,' + ${patient.avatarUrl} : '/frontend/assets/images/patientAvatar/anonymous.jpg'}"
+                                        style="width:80px;height:80px;border-radius:35%;">
+                                </td>
+                                <td th:text="${patient.fullName}">Patient Name</td>
+                                <td th:text="${patient.email}">Email</td>
+                                <td th:text="${patient.phoneNumber}">Phone</td>
+                                <td th:text="${patient.birthdate}">YYYY-MM-DD</td>
+                                <td th:text="${patient.gender}">Gender</td>
+                                <td th:text="${patient.address}">Address</td>
+                                <td th:text="${patient.familyRelationship}">Relationship</td>
+                                <td th:text="${patient.bloodType}">Blood Type</td>
+                                <td>
+                                    <input type="hidden" th:value="${patient.id}" class="patient-id">
+                                    <button class="action-btn edit" title="Edit"><i class="fas fa-pen"></i></button>
+                                    <button class="action-btn delete" title="Delete"><i
+                                            class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(patients)}">
+                                <td colspan="11" style="text-align:center;color:#aaa;">No patient found.</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-
                 <!-- Pagination -->
                 <div class="pagination-wrap">
-                    <!-- Previous Button -->
-                    <a class="pagination-btn prev"
-                       th:classappend="${pageIndex == 0} ? 'disabled'"
-                       th:if="${pageIndex > 0}"
-                       th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + (${pageIndex - 1})}"
-                       aria-disabled="false">Previous</a>
-                    <span class="pagination-btn prev disabled"
-                          th:if="${pageIndex == 0}" aria-disabled="true">Previous</span>
-
-                    <!-- Page Numbers -->
+                    <a class="pagination-btn prev" th:classappend="${pageIndex == 0} ? 'disabled'"
+                        th:if="${pageIndex > 0}"
+                        th:href="@{${'/patient/showList/' + 1 + '?pageIndex=' + (pageIndex - 1)}}"
+                        aria-disabled="false">Previous&nbsp;&nbsp;+</a>
+                    <span class="pagination-btn prev disabled" th:if="${pageIndex == 0}"
+                        aria-disabled="true">Previous&nbsp;&nbsp;+</span>
                     <ul class="pagination">
                         <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                            th:classappend="${i == pageIndex} ? 'active'">
-                            <a class="page-link"
-                               th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + ${i}}"
-                               th:text="${i + 1}"></a>
+                            th:classappend="${i} == ${pageIndex} ? 'active'">
+                            <a class="page-link" th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + ${i}}"
+                                th:text="${i + 1}"></a>
                         </li>
                     </ul>
-
-                    <!-- Next Button -->
-                    <a class="pagination-btn next"
-                       th:classappend="${pageIndex == totalPages - 1} ? 'disabled'"
-                       th:if="${pageIndex < totalPages - 1}"
-                       th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + (${pageIndex + 1})}"
-                       aria-disabled="false">Next</a>
-                    <span class="pagination-btn next disabled"
-                          th:if="${pageIndex == totalPages - 1}" aria-disabled="true">Next</span>
+                    <a class="pagination-btn next" th:classappend="${pageIndex == totalPages - 1} ? 'disabled'"
+                        th:if="${pageIndex < totalPages - 1}"
+                        th:href="@{${'/patient/showList/' + 1 + '?pageIndex=' + (pageIndex + 1)}}"
+                        aria-disabled="false">Next&nbsp;&nbsp;+</a>
+                    <span class="pagination-btn next disabled" th:if="${pageIndex == totalPages - 1}"
+                        aria-disabled="true">Next&nbsp;&nbsp;+</span>
                 </div>
             </div>
         </div>
     </main>
-
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPatientEdit"
         aria-labelledby="offcanvasPatientEditLabel"
