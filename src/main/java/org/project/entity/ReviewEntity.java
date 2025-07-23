@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
+import org.project.enums.ReviewType;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -43,6 +44,10 @@ public class ReviewEntity {
 
     @ManyToMany
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "review_type", nullable = false, columnDefinition = "enum default 'STAFF'")
+    private ReviewType reviewType = ReviewType.STAFF;
 
 /*
  TODO [Reverse Engineering] create field to map the 'review_type' column
