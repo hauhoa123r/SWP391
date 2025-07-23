@@ -19,7 +19,6 @@ public class SupplierTransactionItemDTO {
     private BigDecimal unitPrice;
     private Date manufactureDate;
     private Date expirationDate;
-    private String batchNumber;
     private String storageLocation;
     private String notes;
 }

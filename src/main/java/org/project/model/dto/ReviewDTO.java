@@ -1,45 +1,64 @@
 package org.project.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.project.enums.ReviewStatus;
+import java.util.Objects;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class ReviewDTO {
-    private Long id;
-    private String title;
+    private String patientFullName;
+    private String patientImageUrl;
     private String content;
     private Integer rating;
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
-    private ReviewStatus status;
-    private String hideReason;
-    
-    // Product information
-    private Long productId;
-    private String productName;
-    private String productImage;
-    private String productType;
-    
-    // User information
-    private Long userId;
-    private String username;
-    private String userEmail;
-    private String userAvatar;
-    
-    // Images and replies
-    private List<String> reviewImages;
-    private List<ReviewReplyDTO> replies;
-    
-    // Additional fields for display
-    private boolean hasImages;
-    private int replyCount;
-} 
+    public ReviewDTO() {
+    }
+    public ReviewDTO(String patientFullName, String patientImageUrl, String content, Integer rating) {
+        this.patientFullName = patientFullName;
+        this.patientImageUrl = patientImageUrl;
+        this.content = content;
+        this.rating = rating;
+    }
+    public String getPatientFullName() {
+        return patientFullName;
+    }
+    public void setPatientFullName(String patientFullName) {
+        this.patientFullName = patientFullName;
+    }
+    public String getPatientImageUrl() {
+        return patientImageUrl;
+    }
+    public void setPatientImageUrl(String patientImageUrl) {
+        this.patientImageUrl = patientImageUrl;
+    }
+    public String getContent() {
+        return content;
+    }
+    public void setContent(String content) {
+        this.content = content;
+    }
+    public Integer getRating() {
+        return rating;
+    }
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+    @Override
+    public String toString() {
+        return "ReviewDTO [patientFullName=" + patientFullName + ", patientImageUrl=" + patientImageUrl + ", content="
+                + content + ", rating=" + rating + "]";
+    }
+    //Overriding equals and hashCode methods for proper comparison
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReviewDTO)) return false;
+        ReviewDTO that = (ReviewDTO) o;
+
+        return Objects.equals(patientFullName, that.patientFullName) &&
+                Objects.equals(patientImageUrl, that.patientImageUrl) &&
+                Objects.equals(content, that.content) &&
+                Objects.equals(rating, that.rating);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(patientFullName, patientImageUrl, content, rating);
+    }
+
+}

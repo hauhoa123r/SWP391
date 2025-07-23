@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.project.enums.SupplierTransactionStatus;
+import org.project.enums.SupplierTransactionType;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -40,4 +41,7 @@ public class SupplierInDTO {
     // Additional fields for the StockIn view
     private String type;
     private Timestamp createdAt;
+    
+    // Transaction type field for base service
+    private SupplierTransactionType transactionType;
 } 

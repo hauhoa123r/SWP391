@@ -51,4 +51,7 @@ public class SupplierOutDTO {
     
     // Transaction type field
     private SupplierTransactionType transactionType;
+    
+    // Type of first product in the transaction (for filtering)
+    private String type;
 } 
