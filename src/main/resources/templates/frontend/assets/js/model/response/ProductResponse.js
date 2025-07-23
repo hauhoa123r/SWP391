@@ -18,15 +18,15 @@ export class ProductResponse {
 
     static fromJson(json) {
         const productResponse = new ProductResponse(
-            json.id,
-            json.name,
-            json.description,
-            json.imageUrl,
-            json.price,
-            json.categoryEntities,
-            json.productAdditionalInfoEntities,
-            json.reviewCount,
-            json.averageRating
+                json.id,
+                json.name,
+                json.description,
+                json.imageUrl,
+                json.price,
+                json.categoryEntities,
+                json.productAdditionalInfoEntities,
+                json.reviewCount,
+                json.averageRating
         );
 
         if (json.categoryEntities) {

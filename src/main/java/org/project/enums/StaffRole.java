@@ -1,10 +1,8 @@
 package org.project.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public enum StaffRole {
     DOCTOR("doctor"),
     TECHNICIAN("technician"),
@@ -13,5 +11,10 @@ public enum StaffRole {
     PHARMACIST("pharmacist"),
     INVENTORY_MANAGER("inventory_manager"),
     LAB_RECEIVER("lab_receiver");
+
     private final String value;
+
+    StaffRole(String value) {
+        this.value = value;
+    }
 }
