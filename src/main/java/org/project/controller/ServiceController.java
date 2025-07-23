@@ -7,10 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/service")
 public class ServiceController {
 
     private ServiceService serviceService;
@@ -20,12 +18,12 @@ public class ServiceController {
         this.serviceService = serviceService;
     }
 
-    @GetMapping
+    @GetMapping("/service")
     public String getAll() {
         return "/frontend/service";
     }
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("/service/detail/{id}")
     public String serviceDetail(@PathVariable Long id, Model model) {
         ServiceResponse productResponse = serviceService.getActiveService(id);
         model.addAttribute("service", productResponse);

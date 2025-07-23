@@ -775,4 +775,8 @@ public class TimestampUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return ldt.format(formatter);
     }
+
+    public static Timestamp getCurrentTimestamp() {
+        return new Timestamp(System.currentTimeMillis());
+    }
 }

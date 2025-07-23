@@ -1,18 +1,23 @@
 package org.project.service;
 
+import org.project.model.dto.DepartmentDTO;
 import org.project.model.response.DepartmentResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface DepartmentService {
-    List<DepartmentResponse> getAll();
+    DepartmentResponse getDepartment(Long id);
 
-    Page<DepartmentResponse> getAllHaveDoctorByHospital(Long hospitalId, int pageIndex, int pageSize);
+    List<DepartmentResponse> getDepartments();
 
-    Page<DepartmentResponse> getAllHaveDoctorByHospitalAndKeyword(Long hospitalId, String keyword, int pageIndex, int pageSize);
+    Page<DepartmentResponse> getDepartments(int pageIndex, int pageSize, DepartmentDTO departmentDTO);
 
-    List<DepartmentResponse> getAllHaveDoctor();
+    Page<DepartmentResponse> getDepartmentsHaveDoctorByHospital(Long hospitalId, int pageIndex, int pageSize);
+
+    Page<DepartmentResponse> getDepartmentsHaveDoctorByHospitalAndKeyword(Long hospitalId, String keyword, int pageIndex, int pageSize);
+
+    List<DepartmentResponse> getDepartmentsHaveDoctor();
 
     boolean isDepartmentNameExist(String departmentName);
 }

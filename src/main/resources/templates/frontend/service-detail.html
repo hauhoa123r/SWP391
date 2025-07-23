@@ -1,0 +1,102 @@
+<!doctype html>
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        navActive = ${6},
+        breadCrumbTitle = ${'Dịch vụ ' + service.productEntity.name},
+        breadCrumbTexts = ${{{'Dịch vụ ' + service.productEntity.name}}},
+        breadCrumbLinks = ${{{''}}}
+"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title th:text="${'Dịch vụ ' + service.productEntity.name}"></title>
+</head>
+<body>
+<main>
+    <section class="section-padding service-details" layout:fragment="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="about-service">
+                        <div class="position-relative"
+                             style="width:100%; max-width:600px; margin:auto;">
+                            <div style="position:relative; width:100%; padding-top:56.25%; border-radius:16px; overflow:hidden;">
+                                <img alt="image"
+                                     class="img-fluid w-100"
+                                     style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;"
+                                     th:src="${service.productEntity.imageUrl}">
+                            </div>
+                        </div>
+                        <div class="iq-title-box mt-5 mb-0">
+                            <span class="iq-subtitle text-uppercase" th:text="${service.productEntity.name}">REATIONSHIP ISSUE</span>
+                            <h3 class="iq-title iq-heading-title mb-2">
+                                <span class="left-text text-capitalize fw-light">Dịch vụ thuộc phòng ban</span>
+                                <span class="right-text text-capitalize"
+                                      th:text="${service.departmentEntity.name}"></span>
+                            </h3>
+                            <div class="d-flex align-items-center mb-3">
+                                <h4 class="text-primary mb-0 me-2">Giá:</h4>
+                                <h4 class="mb-0"
+                                    th:text="${#numbers.formatCurrency(service.productEntity.price)}"></h4>
+                            </div>
+                            <p class="iq-title-desc text-body" th:text="${service.productEntity.description}"></p>
+                        </div>
+                        <div class="row mt-5 align-items-center">
+                            <div class="col-md-6" th:each="feature : ${service.serviceFeatureEntities}">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="text-primary"><i class="fas fa-check"></i></span>
+                                    <span th:text="${feature.name}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-5">
+                            <div class="row mt-5 align-items-center">
+                                <div class="col-md-5 text-center">
+                                    <div class="iq-counter iq-counter-no-icon bg-primary-subtle p-3">
+                                        <div class="service-rating">
+                                            <div class="counter-content">
+                                                <h3 class="counter mt-0 text-primary fw-500"
+                                                    th:text="${#numbers.formatDecimal(service.productEntity.averageRating, 1, 1, 'POINT')}">
+                                                    5</h3>
+                                                <span th:classappend="${service.productEntity.reviewCount > 0 ? 'text-warning' : 'text-primary'}"
+                                                      th:each="i : ${#numbers.sequence(1, 5)}">
+                                                    <i class="fas fa-star"
+                                                       th:if="${service.productEntity.averageRating - i > -0.5}"></i>
+                                                    <i class="fas fa-star-half-alt"
+                                                       th:if="${i - service.productEntity.averageRating >= 0.5 && i - service.productEntity.averageRating < 1}"></i>
+                                                    <i class="far fa-star"
+                                                       th:if="${i - service.productEntity.averageRating >= 1}"></i>
+                                                </span>
+                                                <h4 class="counter-title mt-3 fw-normal"
+                                                    th:text="${service.productEntity.reviewCount}"></h4>
+                                                <p class="counter-text m-0 text-body">Đánh giá</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 mt-md-0 mt-5">
+                                    <div class="tab-pane fade active show" id="additional-information" role="tabpanel">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered mb-0">
+                                                <tbody>
+                                                <tr class="text-body"
+                                                    th:each="additionalInfo : ${service.productEntity.getProductAdditionalInfoEntities()}">
+                                                    <th class="text-dark" th:text="${additionalInfo.name}">Color</th>
+                                                    <td th:text="${additionalInfo.value}">Blue, Green, Red</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>
