@@ -4,10 +4,17 @@ import org.project.entity.UserEntity;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     boolean existsByEmail(String email);
@@ -32,5 +39,13 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     List<UserEntity> findByUserStatus(UserStatus userStatus);
     Page<UserEntity> findByUserStatus(UserStatus status, Pageable pageable);
     Page<UserEntity> findByUserStatusNot(UserStatus status, Pageable pageable);
+
+    Optional<UserEntity> findByEmail(String email);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE UserEntity u SET u.passwordHash = ?2 WHERE u.email = ?1")
+    void updatePassword(String email, String password);
+
 
 }

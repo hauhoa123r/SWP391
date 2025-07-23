@@ -2,10 +2,9 @@ package org.project.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.project.dto.RegisterDTO;
-import org.project.dto.request.LoginRequest;
 import org.project.dto.response.Response;
 import org.project.service.GoogleAuthService;
-import org.project.service.IUserService;
+import org.project.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,7 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
-    private IUserService userService;
+    private UserSecurityService userService;
 
     @Autowired
     private GoogleAuthService googleAuthService;

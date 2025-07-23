@@ -8,6 +8,8 @@ import org.project.dto.RegisterDTO;
 import org.project.dto.response.Response;
 import org.project.repository.UserRepository;
 import org.project.service.ForgotPasswordService;
+import org.project.service.UserSecurityService;
+import org.project.service.UserSecutiryServiceImpl;
 import org.project.service.UserService;
 import org.project.utils.ChangePassword;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +29,11 @@ public class AuthViewController {
 
     private final ForgotPasswordService forgotPasswordService;
 
-    private final UserService userService;
+    private final UserSecurityService userService;
+
     private final UserRepository userRepository;
 
+    private final UserSecutiryServiceImpl userSecurityServiceImpl;
     @GetMapping("/login")
     public String showLoginPage(@RequestParam(value = "redirectTo", required = false) String redirectTo, Model model) {
         model.addAttribute("redirectTo", redirectTo);
@@ -44,7 +48,7 @@ public class AuthViewController {
                               Model model,
                               HttpServletResponse response) {
         try {
-            String view = userService.login(email, password, redirectTo, response);
+            String view = userSecurityServiceImpl.login(email, password, redirectTo, response);
             return view;
 
         } catch (Exception e) {

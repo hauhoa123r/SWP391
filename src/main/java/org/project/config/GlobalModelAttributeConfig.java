@@ -1,4 +1,4 @@
-package org.project.security;
+package org.project.config;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
