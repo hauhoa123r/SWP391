@@ -1,7 +1,7 @@
 package org.project.enums;
 
 public enum PaymentStatus {
-    SUCECESS("success"),
+    SUCCESS("success"),
     FAILED("failed");
 
     private final String value;

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <title>Chi tiết bệnh nhân</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0f0ff, #ffffff);
+            font-size: 1.1rem;
+        }
+        .card {
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        }
+        .card-title {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(90deg,#0d6efd, #6610f2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #0d6efd;
+        }
+        .info-box {
+            background-color: #f8f9fc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            border-left: 5px solid #0d6efd;
+        }
+        .info-box p {
+            margin: 0;
+            font-weight: 500;
+            color: #212529;
+        }
+        .btn {
+            font-size: 1rem;
+            padding: 0.6rem 1.4rem;
+            border-radius: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg,#0d6efd, #6610f2);
+            border: none;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="card p-5">
+                <h3 class="card-title mb-4">📄 Chi tiết bệnh nhân</h3>
+
+                <div class="row g-3" th:object="${patient}">
+                    <div class="col-md-4">
+                        <div class="info-box">
+                            <label class="form-label">👤 Mã bệnh nhân</label>
+                            <p th:text="*{id}">--</p>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="info-box">
+                            <label class="form-label">👤 Họ tên</label>
+                            <p th:text="*{fullName}">--</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="info-box">
+                            <label class="form-label">📞 Số điện thoại</label>
+                            <p th:text="*{phoneNumber}">--</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-box">
+                            <label class="form-label">📧 Email</label>
+                            <p th:text="*{email}">--</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="info-box">
+                            <label class="form-label">📅 Ngày sinh</label>
+                            <p th:text="*{#dates.format(dateOfBirth, 'dd/MM/yyyy')}">--</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info-box">
+                            <label class="form-label">♂️ Giới tính</label>
+                            <p th:text="*{gender}">--</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info-box">
+                            <label class="form-label">🩸 Nhóm máu</label>
+                            <p th:text="*{bloodType}">--</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="info-box">
+                            <label class="form-label">📍 Địa chỉ</label>
+                            <p th:text="*{address}">--</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-end mt-3">
+                        <a th:href="@{|/admin/patient/edit/*{id}|}" class="btn btn-primary me-2">✏️ Sửa</a>
+                        <form th:action="@{|/admin/patients/delete/*{id}|}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-danger me-2"
+                                    onclick="return confirm('Bạn có chắc chắn muốn xoá bệnh nhân này không?');">
+                                🗑️ Xoá
+                            </button>
+                        </form>
+                        <a th:href="@{/admin/patient}" class="btn btn-secondary">↩️ Quay lại</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

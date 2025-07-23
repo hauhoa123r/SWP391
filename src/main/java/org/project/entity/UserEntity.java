@@ -23,16 +23,28 @@ import java.util.Set;
 @FieldNameConstants
 public class UserEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     private Long id;
 
     @Size(max = 255)
-    @Column(name = "email")
-    private String email;
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
+
+    @Transient
+    private boolean isPasswordSet = false;
+
+    public boolean isPasswordSet() {
+        return isPasswordSet;
+    }
+
+    public void setPasswordSet(boolean passwordSet) {
+        this.isPasswordSet = passwordSet;
+    }
 
     @Size(max = 255)
-    @Column(name = "password_hash")
-    private String passwordHash;
+    @Column(name = "email")
+    private String email;
 
     @Size(max = 255)
     @Column(name = "phone_number")

@@ -244,7 +244,7 @@ public class SupplierOutServiceImpl implements SupplierOutService {
         dto.setInventoryManagerId(entity.getInventoryManagerEntity().getId());
 
         // Get staff name from inventory manager's staff entity
-        if (entity.getInventoryManagerEntity().getStaffEntity() != null) {
+        if (entity.getInventoryManagerEntity().getStaffEntity()!= null) {
             dto.setInventoryManagerName(entity.getInventoryManagerEntity().getStaffEntity().getFullName());
         }
 
