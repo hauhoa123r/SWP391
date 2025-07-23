@@ -84,4 +84,11 @@ public interface SupplierInService {
      * @param id Supplier in ID
      */
     void deleteSupplierIn(Long id);
+    
+    /**
+     * Add rejection reason to a supplier in transaction
+     * @param id Supplier in ID
+     * @param reason Rejection reason
+     */
+    void addRejectionReason(Long id, String reason);
 } 

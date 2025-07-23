@@ -30,4 +30,11 @@ public interface SupplierOutService {
     void updateSupplierOutStatus(Long id, String status);
     
     void deleteSupplierOut(Long id);
+    
+    /**
+     * Add rejection reason to a supplier out transaction
+     * @param id Supplier out ID
+     * @param reason Rejection reason
+     */
+    void addRejectionReason(Long id, String reason);
 } 

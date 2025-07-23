@@ -8,6 +8,7 @@ import org.project.entity.SupplierTransactionItemEntityId;
 import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
+import org.project.enums.ProductType;
 import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierRequestItemDTO;
 import org.project.repository.InventoryManagerRepository;
@@ -210,9 +211,11 @@ public class SupplierInServiceImpl implements SupplierInService {
             }
         }
         
-        // Convert to DTOs
+        // Apply type filter if specified (MEDICINE or MEDICAL_EQUIPMENT)
+        // Note: This filtering is applied after DB query as an optional filter
         List<SupplierInDTO> dtoList = transactionsPage.getContent().stream()
                 .map(this::convertToDTO)
+                .filter(dto -> type == null || type.isEmpty() || type.equalsIgnoreCase(dto.getType()))
                 .collect(Collectors.toList());
         
         return new PageImpl<>(dtoList, pageable, transactionsPage.getTotalElements());
@@ -364,45 +367,51 @@ public class SupplierInServiceImpl implements SupplierInService {
     @Override
     @Transactional
     public void updateSupplierInStatus(Long id, String status) {
-        Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
-        if (transactionOpt.isPresent() && transactionOpt.get().getTransactionType() == SupplierTransactionType.STOCK_IN) {
-            SupplierTransactionsEntity transaction = transactionOpt.get();
-            SupplierTransactionStatus newStatus = SupplierTransactionStatus.valueOf(status);
-            
-            // Kiểm tra trạng thái hiện tại và trạng thái mới
-            if (!isValidStatusTransition(transaction.getStatus(), newStatus)) {
-                throw new IllegalStateException("Không thể chuyển từ trạng thái " + 
-                        transaction.getStatus() + " sang " + newStatus);
-            }
-            
-            transaction.setStatus(newStatus);
-            
-            // Xử lý các trường hợp đặc biệt
-            if (SupplierTransactionStatus.APPROVED.name().equals(status)) {
-                transaction.setApprovedDate(Timestamp.from(Instant.now()));
-            }
-            
-            supplierTransactionRepository.save(transaction);
+        SupplierTransactionsEntity transaction = supplierTransactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier In not found with id: " + id));
+        
+        if (transaction.getTransactionType() != SupplierTransactionType.STOCK_IN) {
+            throw new RuntimeException("Transaction is not a Stock In");
         }
+        
+        // Validate current status against new status
+        SupplierTransactionStatus currentStatus = transaction.getStatus();
+        SupplierTransactionStatus newStatus = SupplierTransactionStatus.valueOf(status);
+        
+        if (!isValidStatusTransition(currentStatus, newStatus)) {
+            throw new RuntimeException(
+                    "Invalid status transition from " + currentStatus + " to " + newStatus);
+        }
+        
+        transaction.setStatus(newStatus);
+        
+        // If status is COMPLETED, set approvedDate
+        if (SupplierTransactionStatus.COMPLETED.name().equals(status)) {
+            transaction.setApprovedDate(Timestamp.from(Instant.now()));
+        }
+        
+        supplierTransactionRepository.save(transaction);
     }
-
+    
     private boolean isValidStatusTransition(SupplierTransactionStatus current, SupplierTransactionStatus next) {
-        // Kiểm tra các chuyển đổi trạng thái hợp lệ
+        if (current == null) return true;
+        
         switch (current) {
-            case PENDING:
-                return next == SupplierTransactionStatus.RECEIVED || 
+            case WAITING_FOR_DELIVERY:
+                return next == SupplierTransactionStatus.RECEIVED ||
                        next == SupplierTransactionStatus.REJECTED;
             case RECEIVED:
-                return next == SupplierTransactionStatus.INSPECTED || 
+                return next == SupplierTransactionStatus.INSPECTED ||
                        next == SupplierTransactionStatus.REJECTED;
             case INSPECTED:
-                return next == SupplierTransactionStatus.CHECKED || 
+                return next == SupplierTransactionStatus.COMPLETED ||
                        next == SupplierTransactionStatus.REJECTED;
-            case CHECKED:
-                return next == SupplierTransactionStatus.COMPLETED || 
-                       next == SupplierTransactionStatus.REJECTED;
+            case COMPLETED:
+                return false; // Terminal state
+            case REJECTED:
+                return false; // Terminal state
             default:
-                return next == SupplierTransactionStatus.REJECTED; // Luôn có thể từ chối
+                return false;
         }
     }
 
@@ -412,6 +421,21 @@ public class SupplierInServiceImpl implements SupplierInService {
         Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
         if (transactionOpt.isPresent() && transactionOpt.get().getTransactionType() == SupplierTransactionType.STOCK_IN) {
             supplierTransactionRepository.deleteById(id);
+        }
+    }
+    
+    @Override
+    @Transactional
+    public void addRejectionReason(Long id, String reason) {
+        Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
+        if (transactionOpt.isPresent() && transactionOpt.get().getTransactionType() == SupplierTransactionType.STOCK_IN) {
+            SupplierTransactionsEntity transaction = transactionOpt.get();
+            transaction.setNotes(transaction.getNotes() != null ? 
+                             transaction.getNotes() + " | Từ chối: " + reason : 
+                             "Từ chối: " + reason);
+            supplierTransactionRepository.save(transaction);
+        } else {
+            throw new RuntimeException("Supplier In with ID " + id + " not found");
         }
     }
     
@@ -457,6 +481,42 @@ public class SupplierInServiceImpl implements SupplierInService {
         dto.setPaymentMethod(entity.getPaymentMethod());
         dto.setDueDate(entity.getDueDate());
         dto.setPaymentDate(entity.getPaymentDate());
+        
+        // Set creation timestamp for StockIn view
+        dto.setCreatedAt(entity.getTransactionDate());
+        
+        // Set type based on product type - if any item is a medicine, consider it MEDICINE type
+        // otherwise consider it MEDICAL_EQUIPMENT
+        if (entity.getSupplierTransactionItemEntities() != null && !entity.getSupplierTransactionItemEntities().isEmpty()) {
+            boolean hasMedicine = false;
+            boolean hasEquipment = false;
+            
+            for (SupplierTransactionItemEntity item : entity.getSupplierTransactionItemEntities()) {
+                if (item.getProductEntity() != null) {
+                    ProductType productType = item.getProductEntity().getProductType();
+                    if (ProductType.MEDICINE == productType) {
+                        hasMedicine = true;
+                    } else if (ProductType.MEDICAL_PRODUCT == productType) {
+                        hasEquipment = true;
+                    }
+                }
+            }
+            
+            // Set type based on what items are present
+            if (hasMedicine && !hasEquipment) {
+                dto.setType("MEDICINE");
+            } else if (hasEquipment && !hasMedicine) {
+                dto.setType("MEDICAL_EQUIPMENT");
+            } else if (hasMedicine && hasEquipment) {
+                // If both are present, mark as mixed
+                dto.setType("MIXED");
+            } else {
+                // If none are recognized, set as undefined
+                dto.setType("UNDEFINED");
+            }
+        } else {
+            dto.setType("UNDEFINED");
+        }
         
         // Convert items
         if (entity.getSupplierTransactionItemEntities() != null) {

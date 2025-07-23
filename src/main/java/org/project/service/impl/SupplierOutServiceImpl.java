@@ -97,54 +97,52 @@ public class SupplierOutServiceImpl implements SupplierOutService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<SupplierTransactionsEntity> transactionsPage;
         
-        // Build filtering logic
+        // Define allowed statuses for StockOut
+        List<SupplierTransactionStatus> allowedStatuses = List.of(
+            SupplierTransactionStatus.PREPARE_DELIVERY,  // Chuẩn bị giao hàng
+            SupplierTransactionStatus.DELIVERING,       // Đang giao hàng
+            SupplierTransactionStatus.DELIVERED,        // Đã giao hàng
+            SupplierTransactionStatus.PENDING           // Chờ thanh toán
+        );
+
+        // Build filtering logic based on status parameter
         if (status != null && !status.isEmpty()) {
-            // If status is COMPLETED, we should exclude it from StockOut (it should go to StockOutInvoice)
-            if ("COMPLETED".equalsIgnoreCase(status) || "REJECTED".equalsIgnoreCase(status)) {
-                // Filter specifically by the requested status
+            try {
                 SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status.toUpperCase());
                 
-                if (search != null && !search.isEmpty()) {
-                    // Search with status and search term
-                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusAndSupplierEntityNameContainingIgnoreCase(
-                            SupplierTransactionType.STOCK_OUT, statusEnum, search, pageable);
+                // Only proceed if the requested status is in the allowed list
+                if (allowedStatuses.contains(statusEnum)) {
+                    if (search != null && !search.isEmpty()) {
+                        // Search with status and search term
+                        transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusAndSupplierEntityNameContainingIgnoreCase(
+                                SupplierTransactionType.STOCK_OUT, statusEnum, search, pageable);
+                    } else {
+                        // Just by status
+                        transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatus(
+                                SupplierTransactionType.STOCK_OUT, statusEnum, pageable);
+                    }
                 } else {
-                    // Just by status
-                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatus(
-                            SupplierTransactionType.STOCK_OUT, statusEnum, pageable);
+                    // If status is not allowed, return empty page
+                    return new PageImpl<>(List.of(), pageable, 0);
                 }
-            } else {
-                // Filter by specific status that's not COMPLETED or REJECTED
-                SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status.toUpperCase());
-                
-                if (search != null && !search.isEmpty()) {
-                    // Search with status and search term
-                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusAndSupplierEntityNameContainingIgnoreCase(
-                            SupplierTransactionType.STOCK_OUT, statusEnum, search, pageable);
-                } else {
-                    // Just by status
-                    transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatus(
-                            SupplierTransactionType.STOCK_OUT, statusEnum, pageable);
-                }
+            } catch (IllegalArgumentException e) {
+                // Invalid status, return empty page
+                return new PageImpl<>(List.of(), pageable, 0);
             }
         } else {
-            // Default behavior: show all except COMPLETED and REJECTED
-            List<SupplierTransactionStatus> excludedStatuses = new ArrayList<>();
-            excludedStatuses.add(SupplierTransactionStatus.COMPLETED);
-            excludedStatuses.add(SupplierTransactionStatus.REJECTED);
-            
+            // No specific status requested - get all with allowed statuses
             if (search != null && !search.isEmpty()) {
-                // Search in non-completed/non-rejected transactions
-                transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusNotInAndSupplierEntityNameContainingIgnoreCase(
+                // Search with allowed statuses
+                transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusInAndSupplierEntityNameContainingIgnoreCase(
                         SupplierTransactionType.STOCK_OUT, 
-                        excludedStatuses,
+                        allowedStatuses,
                         search, 
                         pageable);
             } else {
-                // Just get all non-completed/non-rejected transactions
-                transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusNotIn(
+                // Just get all allowed statuses
+                transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusIn(
                         SupplierTransactionType.STOCK_OUT,
-                        excludedStatuses,
+                        allowedStatuses,
                         pageable);
             }
         }
@@ -184,6 +182,10 @@ public class SupplierOutServiceImpl implements SupplierOutService {
         transaction.setDueDate(supplierOutDTO.getDueDate());
         transaction.setPaymentDate(supplierOutDTO.getPaymentDate());
         
+        // Set new fields
+        transaction.setRecipient(supplierOutDTO.getRecipient() != null ? supplierOutDTO.getRecipient() : "Hospital");
+        transaction.setStockOutReason(supplierOutDTO.getStockOutReason());
+        
         // Set supplier
         SupplierEntity supplier = supplierEntityRepository.findById(supplierOutDTO.getSupplierId())
                 .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + supplierOutDTO.getSupplierId()));
@@ -202,101 +204,123 @@ public class SupplierOutServiceImpl implements SupplierOutService {
             List<SupplierTransactionItemEntity> itemEntities = new ArrayList<>();
             
             for (SupplierRequestItemDTO itemDTO : supplierOutDTO.getItems()) {
-                SupplierTransactionItemEntity itemEntity = new SupplierTransactionItemEntity();
-                
-                // Create composite key
-                SupplierTransactionItemEntityId id = new SupplierTransactionItemEntityId();
-                id.setSupplierTransactionId(savedTransaction.getId());
-                id.setProductId(itemDTO.getProductId());
-                itemEntity.setId(id);
-                
-                // Set transaction reference
-                itemEntity.setSupplierTransactionEntity(savedTransaction);
-                
-                // Set product reference
                 ProductEntity product = productRepository.findById(itemDTO.getProductId())
                         .orElseThrow(() -> new RuntimeException("Product not found with id: " + itemDTO.getProductId()));
-                itemEntity.setProductEntity(product);
                 
-                // Set other fields
-                itemEntity.setQuantity(itemDTO.getQuantity());
-                itemEntity.setUnitPrice(itemDTO.getUnitPrice());
-                itemEntity.setManufactureDate(itemDTO.getManufactureDate());
-                itemEntity.setExpirationDate(itemDTO.getExpirationDate());
-                itemEntity.setBatchNumber(itemDTO.getBatchNumber());
-                itemEntity.setStorageLocation(itemDTO.getStorageLocation());
-                itemEntity.setNotes(itemDTO.getNotes());
+                SupplierTransactionItemEntity item = new SupplierTransactionItemEntity();
+                item.setId(new SupplierTransactionItemEntityId(savedTransaction.getId(), product.getId()));
+                item.setSupplierTransactionEntity(savedTransaction);
+                item.setProductEntity(product);
+                item.setQuantity(itemDTO.getQuantity());
+                item.setUnitPrice(itemDTO.getUnitPrice());
+                item.setManufactureDate(itemDTO.getManufactureDate());
+                item.setExpirationDate(itemDTO.getExpirationDate());
+                item.setBatchNumber(itemDTO.getBatchNumber());
+                item.setStorageLocation(itemDTO.getStorageLocation());
+                item.setNotes(itemDTO.getNotes());
                 
-                itemEntities.add(itemEntity);
+                itemEntities.add(item);
             }
             
-            // Save all items
             supplierTransactionItemRepository.saveAll(itemEntities);
         }
         
-        // Return the DTO with updated information
-        return getSupplierOutById(savedTransaction.getId());
+        return convertToDTO(savedTransaction);
     }
-
+    
     @Override
     @Transactional
     public SupplierOutDTO updateSupplierOut(Long id, SupplierOutDTO supplierOutDTO) {
         Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
-        if (transactionOpt.isEmpty() || transactionOpt.get().getTransactionType() != SupplierTransactionType.STOCK_OUT) {
-            return null;
+        if (transactionOpt.isPresent()) {
+            SupplierTransactionsEntity transaction = transactionOpt.get();
+            
+            // Update basic information
+            if (supplierOutDTO.getStatus() != null) {
+                transaction.setStatus(supplierOutDTO.getStatus());
+            }
+            if (supplierOutDTO.getTransactionDate() != null) {
+                transaction.setTransactionDate(supplierOutDTO.getTransactionDate());
+            }
+            if (supplierOutDTO.getTotalAmount() != null) {
+                transaction.setTotalAmount(supplierOutDTO.getTotalAmount());
+            }
+            transaction.setNotes(supplierOutDTO.getNotes());
+            transaction.setExpectedDeliveryDate(supplierOutDTO.getExpectedDeliveryDate());
+            transaction.setInvoiceNumber(supplierOutDTO.getInvoiceNumber());
+            transaction.setTaxAmount(supplierOutDTO.getTaxAmount());
+            transaction.setShippingCost(supplierOutDTO.getShippingCost());
+            transaction.setPaymentMethod(supplierOutDTO.getPaymentMethod());
+            transaction.setDueDate(supplierOutDTO.getDueDate());
+            transaction.setPaymentDate(supplierOutDTO.getPaymentDate());
+            
+            // Update new fields
+            if (supplierOutDTO.getRecipient() != null) {
+                transaction.setRecipient(supplierOutDTO.getRecipient());
+            }
+            transaction.setStockOutReason(supplierOutDTO.getStockOutReason());
+            
+            // Update supplier if provided
+            if (supplierOutDTO.getSupplierId() != null) {
+                SupplierEntity supplier = supplierEntityRepository.findById(supplierOutDTO.getSupplierId())
+                        .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + supplierOutDTO.getSupplierId()));
+                transaction.setSupplierEntity(supplier);
+            }
+            
+            SupplierTransactionsEntity updatedTransaction = supplierTransactionRepository.save(transaction);
+            return convertToDTO(updatedTransaction);
+        } else {
+            throw new RuntimeException("Supplier Out with ID " + id + " not found");
         }
-        
-        SupplierTransactionsEntity transaction = transactionOpt.get();
-        
-        // Update basic information
-        transaction.setStatus(supplierOutDTO.getStatus());
-        transaction.setTotalAmount(supplierOutDTO.getTotalAmount());
-        transaction.setNotes(supplierOutDTO.getNotes());
-        transaction.setExpectedDeliveryDate(supplierOutDTO.getExpectedDeliveryDate());
-        transaction.setInvoiceNumber(supplierOutDTO.getInvoiceNumber());
-        transaction.setTaxAmount(supplierOutDTO.getTaxAmount());
-        transaction.setShippingCost(supplierOutDTO.getShippingCost());
-        transaction.setPaymentMethod(supplierOutDTO.getPaymentMethod());
-        transaction.setDueDate(supplierOutDTO.getDueDate());
-        transaction.setPaymentDate(supplierOutDTO.getPaymentDate());
-        
-        // Update supplier if provided
-        if (supplierOutDTO.getSupplierId() != null) {
-            SupplierEntity supplier = supplierEntityRepository.findById(supplierOutDTO.getSupplierId())
-                    .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + supplierOutDTO.getSupplierId()));
-            transaction.setSupplierEntity(supplier);
-        }
-        
-        // Save updated transaction
-        supplierTransactionRepository.save(transaction);
-        
-        // Return the updated DTO
-        return getSupplierOutById(id);
     }
 
     @Override
     @Transactional
     public void updateSupplierOutStatus(Long id, String status) {
-        Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
-        if (transactionOpt.isPresent() && transactionOpt.get().getTransactionType() == SupplierTransactionType.STOCK_OUT) {
-            SupplierTransactionsEntity transaction = transactionOpt.get();
-            transaction.setStatus(SupplierTransactionStatus.valueOf(status));
-            
-            // If status is APPROVED, set approvedDate
-            if (SupplierTransactionStatus.APPROVED.name().equals(status)) {
-                transaction.setApprovedDate(Timestamp.from(Instant.now()));
-            }
-            
-            supplierTransactionRepository.save(transaction);
+        SupplierTransactionsEntity transaction = supplierTransactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier Out not found with id: " + id));
+        
+        if (transaction.getTransactionType() != SupplierTransactionType.STOCK_OUT) {
+            throw new RuntimeException("Transaction is not a Stock Out");
         }
+        
+        // Validate current status against new status
+        SupplierTransactionStatus currentStatus = transaction.getStatus();
+        SupplierTransactionStatus newStatus = SupplierTransactionStatus.valueOf(status);
+        
+        transaction.setStatus(newStatus);
+        
+        // If status is COMPLETED, set approvedDate
+        if (SupplierTransactionStatus.COMPLETED.name().equals(status)) {
+            transaction.setApprovedDate(Timestamp.from(Instant.now()));
+        }
+        
+        supplierTransactionRepository.save(transaction);
     }
 
     @Override
     @Transactional
     public void deleteSupplierOut(Long id) {
-        Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
-        if (transactionOpt.isPresent() && transactionOpt.get().getTransactionType() == SupplierTransactionType.STOCK_OUT) {
+        Optional<SupplierTransactionsEntity> transaction = supplierTransactionRepository.findById(id);
+        if (transaction.isPresent()) {
             supplierTransactionRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Supplier Out with ID " + id + " not found");
+        }
+    }
+    
+    @Override
+    @Transactional
+    public void addRejectionReason(Long id, String reason) {
+        Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
+        if (transactionOpt.isPresent()) {
+            SupplierTransactionsEntity transaction = transactionOpt.get();
+            transaction.setNotes(transaction.getNotes() != null ? 
+                              transaction.getNotes() + " | Từ chối: " + reason : 
+                              "Từ chối: " + reason);
+            supplierTransactionRepository.save(transaction);
+        } else {
+            throw new RuntimeException("Supplier Out with ID " + id + " not found");
         }
     }
     
@@ -334,6 +358,10 @@ public class SupplierOutServiceImpl implements SupplierOutService {
         dto.setPaymentMethod(entity.getPaymentMethod());
         dto.setDueDate(entity.getDueDate());
         dto.setPaymentDate(entity.getPaymentDate());
+        
+        // Set recipient and reason
+        dto.setRecipient(entity.getRecipient());
+        dto.setStockOutReason(entity.getStockOutReason());
         
         // Convert items
         if (entity.getSupplierTransactionItemEntities() != null) {
