@@ -18,7 +18,7 @@ public class ForgotPassword {
     private Integer fpid;
 
     @Column(nullable = false)
-    private Integer otp; // Changed to String to store hashed OTP
+    private Integer otp;
 
     @Column(nullable = false)
     private Date expirationTime;

@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.project.dto.RegisterDTO;
 import org.project.dto.response.Response;
+import org.project.repository.UserRepository;
 import org.project.service.ForgotPasswordService;
 import org.project.service.UserService;
 import org.project.utils.ChangePassword;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.sql.Date;
 
 @Controller
 @RequestMapping("/auth-view")
@@ -24,6 +28,7 @@ public class AuthViewController {
     private final ForgotPasswordService forgotPasswordService;
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @GetMapping("/login")
     public String showLoginPage(@RequestParam(value = "redirectTo", required = false) String redirectTo, Model model) {
@@ -49,15 +54,15 @@ public class AuthViewController {
         }
     }
     @GetMapping("/logout")
-    public String logout(HttpServletResponse response) {
+    public String logout(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 
         Cookie cookie = new Cookie("token", null);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(0); // xóa ngay lập tức
         response.addCookie(cookie);
-
-        return "redirect:/auth-view/login";
+        redirectAttributes.addFlashAttribute("logoutSuccess", "Đăng xuất thành công!");
+        return "redirect:/";
     }
 
     @GetMapping("/register")
@@ -71,6 +76,20 @@ public class AuthViewController {
             @ModelAttribute("registerDTO") @Valid RegisterDTO dto,
             BindingResult result,
             Model model) {
+
+        if (!result.hasFieldErrors("email") && userRepository.existsByEmail(dto.getEmail())) {
+            result.rejectValue("email", null, "Email đã tồn tại.");
+        }
+
+        if (!result.hasFieldErrors("birthdate")) {
+            try {
+                if (Date.valueOf(dto.getBirthdate()).after(new java.util.Date())) {
+                    result.rejectValue("birthdate", null, "Ngày sinh không được lớn hơn ngày hiện tại.");
+                }
+            } catch (Exception e) {
+                result.rejectValue("birthdate", null, "Định dạng ngày sinh không hợp lệ.");
+            }
+        }
 
         if (result.hasErrors()) {
             return "frontend/register";
@@ -88,20 +107,21 @@ public class AuthViewController {
     }
 
 
+
     @GetMapping("/forgot-password")
     public String showForgotPage() {
-        return "frontend/forgot-email";
+        return "frontend/forgot-password";
     }
 
     @PostMapping("/forgot-password")
     public String handleEmail(@RequestParam String email, Model model) {
         ResponseEntity<String> response = forgotPasswordService.sendOtp(email);
+
         if (response.getStatusCode().is2xxSuccessful()) {
-            model.addAttribute("message", response.getBody());
             return "redirect:/auth-view/verify-otp?email=" + email;
         } else {
             model.addAttribute("error", response.getBody());
-            return "frontend/forgot-email";
+            return "frontend/forgot-password";
         }
     }
 

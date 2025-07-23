@@ -27,6 +27,7 @@ public class RegisterDTO {
     private String phoneNumber;
 
     @NotBlank(message = "Vui lòng nhập họ và tên.")
+    @Pattern(regexp = "^[\\p{L}]+(?:\\s[\\p{L}]+)*$", message = "Họ và tên chỉ được chứa chữ cái và khoảng trắng")
     private String fullName;
 
     @NotBlank(message = "Vui lòng nhập địa chỉ.")

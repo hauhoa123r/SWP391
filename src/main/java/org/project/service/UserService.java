@@ -45,58 +45,6 @@ public class UserService implements IUserService {
         Response response = new Response();
         try {
 
-            if (dto.getEmail() == null || dto.getEmail().isBlank()) {
-                throw new OurException("Vui lòng nhập email.");
-            }
-
-            if (!dto.getEmail().matches("^[\\w.-]+@[\\w.-]+\\.\\w{2,}$")) {
-                throw new OurException("Email không hợp lệ.");
-            }
-
-            if (dto.getPassword() == null || dto.getPassword().isBlank()) {
-                throw new OurException("Vui lòng nhập mật khẩu.");
-            }
-
-            if (dto.getPassword().length() < 6) {
-                throw new OurException("Mật khẩu phải có ít nhất 6 ký tự.");
-            }
-
-            if (dto.getPhoneNumber() == null || dto.getPhoneNumber().isBlank()) {
-                throw new OurException("Vui lòng nhập số điện thoại.");
-            }
-
-            if (!dto.getPhoneNumber().matches("^(03|05|07|08|09)\\d{8}$")) {
-                throw new OurException("Số điện thoại không hợp lệ.");
-            }
-
-            if (dto.getFullName() == null || dto.getFullName().isBlank()) {
-                throw new OurException("Vui lòng nhập họ và tên.");
-            }
-
-            if (dto.getAddress() == null || dto.getAddress().isBlank()) {
-                throw new OurException("Vui lòng nhập địa chỉ.");
-            }
-
-            if (dto.getBirthdate() == null || dto.getBirthdate().isBlank()) {
-                throw new OurException("Vui lòng chọn ngày sinh.");
-            }
-
-            if (dto.getGender() == null) {
-                throw new OurException("Vui lòng chọn giới tính.");
-            }
-
-            if (userRepository.existsByEmail(dto.getEmail())) {
-                throw new OurException("Email đã tồn tại: " + dto.getEmail());
-            }
-
-            if (Date.valueOf(dto.getBirthdate()).after(new java.util.Date())) {
-                throw new OurException("Ngày sinh không được lớn hơn ngày hiện tại.");
-            }
-            if (dto.getFamilyRelationship() == null) {
-                throw new OurException("Vui lòng chọn quan hệ với bệnh nhân.");
-            }
-
-
             UserEntity user = new UserEntity();
             user.setEmail(dto.getEmail());
             user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
@@ -169,7 +117,7 @@ public class UserService implements IUserService {
                 redirectUrl = "redirect:/admin";
                 break;
             case PATIENT:
-                redirectUrl = "redirect:/";
+                redirectUrl = "redirect:/patient/showAddPrevious";
                 break;
             case STAFF:
                 if (user.getStaffEntity() != null && user.getStaffEntity().getStaffRole() != null) {

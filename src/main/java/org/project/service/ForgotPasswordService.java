@@ -28,7 +28,8 @@ public class ForgotPasswordService {
     public ResponseEntity<String> sendOtp(String email) {
         Optional<UserEntity> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Email không tồn tại trong hệ thống.");
         }
 
         UserEntity user = userOpt.get();
@@ -39,7 +40,7 @@ public class ForgotPasswordService {
             if (expiration.after(new Date())) {
                 long secondsLeft = (expiration.getTime() - System.currentTimeMillis()) / 1000;
                 return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                        .body("An OTP has already been sent. Please try again in " + secondsLeft + " seconds.");
+                        .body("Mã OTP đã được gửi trước đó. Vui lòng thử lại sau " + secondsLeft + " giây.");
             }
 
             user.setForgotPassword(null);
@@ -58,29 +59,32 @@ public class ForgotPasswordService {
         forgotPasswordRepository.save(forgotPassword);
 
         try {
-            mailService.senEmail("Change Password", "This is your OTP: " + otp, user.getEmail());
+            mailService.senEmail("Đổi Mật Khẩu", "Mã OTP của bạn là: " + otp, user.getEmail());
         } catch (Exception e) {
             user.setForgotPassword(null);
             userRepository.save(user);
             userRepository.flush();
             forgotPasswordRepository.deleteById(forgotPassword.getFpid());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unable to send email.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Không thể gửi email. Vui lòng thử lại sau.");
         }
 
-        return ResponseEntity.ok("OTP has been sent to your email.");
+        return ResponseEntity.ok("Mã OTP đã được gửi tới email của bạn.");
     }
 
     public ResponseEntity<String> verifyOtp(Integer otp, String email) {
         Optional<UserEntity> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Email không hợp lệ.");
         }
 
         UserEntity user = userOpt.get();
 
         Optional<ForgotPassword> fpOpt = forgotPasswordRepository.findByOtpAndUser(otp, user);
         if (fpOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect OTP.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Mã OTP không chính xác.");
         }
 
         ForgotPassword fp = fpOpt.get();
@@ -89,44 +93,50 @@ public class ForgotPasswordService {
             user.setForgotPassword(null);
             userRepository.save(user);
             forgotPasswordRepository.deleteById(fp.getFpid());
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("OTP has expired.");
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body("Mã OTP đã hết hạn.");
         }
 
         fp.setOtpVerified(true);
         forgotPasswordRepository.save(fp);
-        return ResponseEntity.ok("OTP verified successfully!");
+        return ResponseEntity.ok("Xác minh OTP thành công.");
     }
 
     @Transactional
     public ResponseEntity<String> changePassword(String email, ChangePassword changePassword) {
         if (!changePassword.password().equals(changePassword.confirmPassword())) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Password confirmation does not match.");
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body("Xác nhận mật khẩu không khớp.");
         }
 
         Optional<UserEntity> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email does not exist.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Email không tồn tại.");
         }
 
         UserEntity user = userOpt.get();
 
         Optional<ForgotPassword> fpOpt = forgotPasswordRepository.findByUser(user);
         if (fpOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("OTP not verified.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Mã OTP chưa được xác minh.");
         }
 
         ForgotPassword fp = fpOpt.get();
 
         if (!fp.isOtpVerified()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Please verify OTP before changing the password.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Vui lòng xác minh mã OTP trước khi đổi mật khẩu.");
         }
 
         userRepository.updatePassword(email, passwordEncoder.encode(changePassword.password()));
         user.setForgotPassword(null);
         userRepository.save(user);
 
-        return ResponseEntity.ok("Password changed successfully.");
+        return ResponseEntity.ok("Đổi mật khẩu thành công.");
     }
+
 
 
     private Integer generateOtp() {

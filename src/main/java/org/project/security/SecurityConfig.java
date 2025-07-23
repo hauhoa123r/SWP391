@@ -30,33 +30,43 @@ public class SecurityConfig {
     private JWTAuthFilter jwtAuthFilter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        String[] publicEndpoints = {
-                "/auth/**",
-                "/auth-view/**",
-                "/auth/google",
-                "/assets/**",
-                "/css/**",
-                "/js/**",
-                "/images/**",
-                "/vendor/**",
-                "/forgotPassword/**"
-        };
+
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers(publicEndpoints).permitAll()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/patient/**").hasRole("PATIENT")
-//                        .requestMatchers("/staff/pharmacy/**").hasRole("STAFF_PHARMACIST")
-//                        .requestMatchers("/staff/lab/**").hasRole("STAFF_TECHNICIAN")
-//                        .requestMatchers("/staff/schedule/**").hasRole("STAFF_SCHEDULING_COORDINATOR")
-//                        .requestMatchers("/staff/inventory/**").hasRole("STAFF_INVENTORY_MANAGER")
-//                        .requestMatchers("/staff/lab-receive/**").hasRole("STAFF_LAB_RECEIVER")
-//                        .requestMatchers("/staff/doctor/**").hasRole("STAFF_DOCTOR")
-//                        .requestMatchers("/home").hasAnyRole("ADMIN", "PATIENT", "STAFF")
-                        .anyRequest().permitAll()
+                        .requestMatchers(
+                                "/auth/**",
+                                "/auth-view/**",
+                                "/auth/google",
+                                "/assets/**",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/vendor/**",
+                                "/forgotPassword/**",
+                                "/webjars/**",
+                                "/favicon.ico",
+                                "frontend/assets/**",
+                                "dashboard-staff-test/assets/**",
+                                "templates_storage/assets/**",
+                                "/"
+                        ).permitAll()
+
+
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/patient/**").hasRole("PATIENT")
+                        .requestMatchers("/staff/pharmacy/**").hasRole("STAFF_PHARMACIST")
+                        .requestMatchers("/staff/lab/**").hasRole("STAFF_TECHNICIAN")
+                        .requestMatchers("/staff/schedule/**").hasRole("STAFF_SCHEDULING_COORDINATOR")
+                        .requestMatchers("/staff/inventory/**").hasRole("STAFF_INVENTORY_MANAGER")
+                        .requestMatchers("/staff/lab-receive/**").hasRole("STAFF_LAB_RECEIVER")
+                        .requestMatchers("/staff/doctor/**").hasRole("STAFF_DOCTOR")
+                        .requestMatchers("/").hasAnyRole("ADMIN", "PATIENT", "STAFF")
+
+
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

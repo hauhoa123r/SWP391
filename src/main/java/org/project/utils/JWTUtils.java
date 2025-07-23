@@ -79,6 +79,14 @@ public class JWTUtils {
     private boolean isTokenExpired(String token) {
         return extractClaims(token, Claims::getExpiration).before(new Date());
     }
+    public boolean isValidToken(String token) {
+        try {
+            String username = extractUsername(token);
+            return username != null && !isTokenExpired(token);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     private <T> T extractClaims(String token, Function<Claims, T> claimsResolver) {
         return claimsResolver.apply(
