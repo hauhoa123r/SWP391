@@ -32,7 +32,7 @@ public class InventoryManagerServiceImpl implements InventoryManagerService {
 
     @Autowired
     private SpecificationUtils<InventoryManagerEntity> specificationUtils;
-    
+
     @Autowired
     private PageUtils<InventoryManagerEntity> pageUtils;
 

@@ -24,4 +24,5 @@ public class PharmacyListResponse {
     private String category ; // chỉ là tên
     private List<String> tags; // Danh sách tên tag
     private String imageUrl;
+    private String type; 
 }

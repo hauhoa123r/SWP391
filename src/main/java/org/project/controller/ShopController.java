@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.enums.ProductSortType;
+import org.project.model.dto.ProductDetailDTO;
 import org.project.model.response.CategoryListResponse;
 import org.project.model.response.PharmacyResponse;
 import org.project.service.CategoryService;
@@ -16,7 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -93,7 +96,7 @@ public class ShopController {
         List<CategoryListResponse> categories = loadCategoriesWithProductCount();
 
         // Get all available tags for the sidebar
-        List<String> availableTags = productTagRepository.findDistinctTagNames();
+        List<String> availableTags = productTagRepository.findAllDistinctTagNames();
         log.info("Available tags: {}", availableTags);
 
         // Add all data to model
@@ -189,37 +192,37 @@ public class ShopController {
      * Product home page displaying top products
      * @return ModelAndView for product home page
      */
-    @GetMapping("/product-home")
-    public ModelAndView productHome() {
-        log.info("Loading product home page");
-
-        ModelAndView mv = new ModelAndView("product-home");
-
-        try {
-            // Fetch top 10 products for the home page
-            List<PharmacyResponse> products = productService.findTop10Products();
-
-            // Validate returned list
-            if (products == null) {
-                log.warn("findTop10Products returned null, using empty list");
-                products = Collections.emptyList();
-            } else if (products.isEmpty()) {
-                log.debug("No products found, returning empty list");
-            } else {
-                log.debug("Loaded {} products for home page", products.size());
-            }
-
-            // Add products to model
-            mv.addObject("products", products);
-
-        } catch (Exception e) {
-            log.error("Error fetching top 10 products: {}", e.getMessage(), e);
-            // Return empty list on error to avoid rendering issues
-            mv.addObject("products", Collections.emptyList());
-        }
-
-        return mv;
-    }
+//    @GetMapping("/product-home")
+//    public ModelAndView productHome() {
+//        log.info("Loading product home page");
+//
+//        ModelAndView mv = new ModelAndView("product-home");
+//
+//        try {
+//            // Fetch top 10 products for the home page
+//            List<PharmacyResponse> products = productService.findTop10Products();
+//
+//            // Validate returned list
+//            if (products == null) {
+//                log.warn("findTop10Products returned null, using empty list");
+//                products = Collections.emptyList();
+//            } else if (products.isEmpty()) {
+//                log.debug("No products found, returning empty list");
+//            } else {
+//                log.debug("Loaded {} products for home page", products.size());
+//            }
+//
+//            // Add products to model
+//            mv.addObject("products", products);
+//
+//        } catch (Exception e) {
+//            log.error("Error fetching top 10 products: {}", e.getMessage(), e);
+//            // Return empty list on error to avoid rendering issues
+//            mv.addObject("products", Collections.emptyList());
+//        }
+//
+//        return mv;
+//    }
 
     // ==================== Other page mappings ====================
 
@@ -366,4 +369,7 @@ public class ShopController {
      * Record class representing search context
      */
     private record SearchContext(Optional<String> searchQuery, ProductSortType sortType) {}
+
+
+
 }

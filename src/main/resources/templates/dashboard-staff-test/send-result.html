@@ -751,20 +751,18 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="input-datatable" class="table" data-toggle="data-table-column-filter">
+                                <table id="input-datatable" class="table">
                                     <thead>
                                         <tr>
-                                            <th>Barcode</th>
-                                            <th>OrderID</th>
-                                            <th>Patient Name</th>
-                                            <th>Test Type</th>
-                                            <th>Time</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Tên bệnh nhân</th>
+                                            <th>Loại kiểm tra</th>
+                                            <th>Người xét nghiệm</th>
+                                            <th>Thời gian</th>
+                                            <th>Trạng thái</th>
+                                            <th>Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Dòng mẫu status Pending -->
                                         <tr>
                                             <td>BN123-20240625-01-2</td>
                                             <td>BN123456</td>
@@ -773,7 +771,6 @@
                                             <td>
                                                 25/6/2025 10:30
                                             </td>
-                                            <td><span class="status-badge status-not-received">Danger</span></td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-outline-success tooltip-init"
                                                         data-bs-toggle="modal" data-bs-target="#confirmModal"
@@ -802,7 +799,6 @@
                                             <td>Nguyễn Thị An</td>
                                             <td>Cholesterol</td>
                                             <td>25/6/2025 10:30</td>
-                                            <td><span class="status-badge status-completed">Normal</span></td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-outline-success tooltip-init"
                                                         data-bs-toggle="modal" data-bs-target="#confirmModal"
@@ -833,7 +829,6 @@
                                             <th title="Patient Name">Patient Name</th>
                                             <th title="Test Type">Test Type</th>
                                             <th title="Time">Time</th>
-                                            <td></td>
                                             <td></td>
                                         </tr>
                                     </tfoot>

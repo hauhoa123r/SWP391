@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssignmentListDTO extends AbstractServiceAIDTO{
+public class AssignmentListDTO extends AbstractServiceDTO {
     private Long id;
     private String patientName;
     private String departmentName;

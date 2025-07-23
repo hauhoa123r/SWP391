@@ -31,12 +31,18 @@ public class PathUtils {
 
 
     public static Path<Object> getRealPath(Root<?> root, String fieldName, Map<String, Join<?, ?>> joinMap) {
+        if (!fieldName.contains(".")) {
+            return root.get(fieldName);
+        }
         String[] fieldParts = fieldName.split("\\.");
         String joinKey = root.getJavaType().getSimpleName() + "." + fieldName.substring(0, fieldName.lastIndexOf("."));
         return joinMap.get(joinKey).get(fieldParts[fieldParts.length - 1]);
     }
 
     public static void join(Root<?> root, String fieldName, JoinType joinType, Map<String, Join<?, ?>> joinMap) {
+        if (!fieldName.contains(".")) {
+            return;
+        }
         String[] fieldParts = fieldName.split("\\.");
         Join<?, ?> join;
         StringBuilder joinKey = new StringBuilder();

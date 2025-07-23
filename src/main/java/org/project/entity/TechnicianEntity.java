@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +16,6 @@ import lombok.experimental.FieldNameConstants;
 @Setter
 @Entity
 @Table(name = "technicians", schema = "swp391")
-@FieldNameConstants
 public class TechnicianEntity {
     @Id
     @Column(name = "technician_id", nullable = false)
@@ -27,11 +29,7 @@ public class TechnicianEntity {
 //    @OneToMany
 //    private Set<TestRequestItemEntity> testRequestItemEntities = new LinkedHashSet<>();
 
-/*
- TODO [Reverse Engineering] create field to map the 'technician_rank' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
     @ColumnDefault("'JUNIOR_TECHNICIAN'")
     @Column(name = "technician_rank", columnDefinition = "enum not null")
     private Object technicianRank;
-*/
 }

@@ -2,7 +2,7 @@ package org.project.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
+import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public enum SupplierTransactionType {
@@ -10,4 +10,4 @@ public enum SupplierTransactionType {
     STOCK_OUT("stock_out");
 
     private final String value;
-} 
+}

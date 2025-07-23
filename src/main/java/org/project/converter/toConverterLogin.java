@@ -1,5 +1,6 @@
 package org.project.converter;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.project.config.ModelMapperConfig;
 import org.project.entity.UserEntity;

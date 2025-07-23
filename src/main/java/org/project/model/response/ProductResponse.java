@@ -9,11 +9,12 @@ import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductResponse {
     private Long id;
     private String name;
@@ -27,4 +28,5 @@ public class ProductResponse {
     private Label label;
     private Double averageRating;
     private Long reviewCount;
+    private List<ProductAdditionalInfoResponse> productAdditionalInfoEntities;
 }

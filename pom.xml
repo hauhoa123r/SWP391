@@ -156,7 +156,11 @@
 			<artifactId>json</artifactId>
 			<version>20210307</version>
 		</dependency>
-
+		<!--layout-->
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+		</dependency>
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

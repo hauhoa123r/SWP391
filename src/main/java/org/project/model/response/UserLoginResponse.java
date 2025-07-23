@@ -1,20 +1,12 @@
 package org.project.model.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class UserLoginResponse {
-
-    private Long id;
+	private Long id;
     private String username;
     private String password;
     private String fullName;
     private String email;
-
 }

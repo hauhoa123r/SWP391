@@ -58,4 +58,7 @@ public interface ReviewService {
      * Lưu đánh giá mới - API cũ
      */
     ReviewResponse saveReview(Long productId, String reviewerName, String comment, int rating);
+    Long count5StarReviews();
+
+    List<ReviewResponse> getTop5Reviews();
 }

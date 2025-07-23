@@ -56,8 +56,8 @@ public class ProductEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany
-    private final Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "productEntity")
+    private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
     private ServiceEntity serviceEntity;
@@ -69,16 +69,16 @@ public class ProductEntity {
     private MedicineEntity medicineEntity;
 
     @OneToMany(mappedBy = "productEntity")
-    private final Set<OrderItemEntity> orderItemEntities = new LinkedHashSet<>();
+    private Set<OrderItemEntity> orderItemEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
     private PricingPlanEntity pricingPlanEntity;
 
-    @OneToMany(mappedBy = "productEntity")
-    private final Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "productEntity", cascade =  CascadeType.ALL,  orphanRemoval = true)
+    private Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "productEntities")
-    private final Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
+    private Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
 
     @ManyToMany()
     @JoinTable(
@@ -86,16 +86,16 @@ public class ProductEntity {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "product_review_id")
     )
-    private final Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+    private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "productEntity")
-    private final Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
+    private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
     @OneToMany(mappedBy = "productEntity")
-    private final Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
-    @OneToOne(mappedBy = "productEntity")
-    private TestEntity testEntity;
-    @ManyToMany
-    private final Set<UserEntity> userEntities = new LinkedHashSet<>();
+    private Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
+    //@OneToOne(mappedBy = "productEntity")
+    //private TestEntity testEntity;
+    @ManyToMany(mappedBy = "products")
+    private Set<UserEntity> userEntities = new LinkedHashSet<>();
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'MEDICAL_PRODUCT'")
     @Column(name = "product_type", columnDefinition = "enum not null")

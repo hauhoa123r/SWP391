@@ -58,4 +58,13 @@ public class AssignmentServiceImpl implements AssignmentService {
         }
         return true;
     }
+
+    @Override
+    public Page<AssignmentListDTO> getReceivedPatientBySearch(AssignmentListDTO search) throws IllegalAccessException {
+        Page<AssignmentListDTO> results = assignmentListConverter.getAllReceivePatient(search);
+        if (results == null || results.isEmpty()) {
+            throw new ResourceNotFoundException("No resource found");
+        }
+        return results;
+    }
 }

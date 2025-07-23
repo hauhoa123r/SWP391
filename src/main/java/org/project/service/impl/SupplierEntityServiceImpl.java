@@ -32,7 +32,7 @@ public class SupplierEntityServiceImpl implements SupplierEntityService {
 
     @Autowired
     private SpecificationUtils<SupplierEntity> specificationUtils;
-    
+
     @Autowired
     private PageUtils<SupplierEntity> pageUtils;
 

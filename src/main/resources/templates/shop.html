@@ -1124,7 +1124,7 @@
                         <img th:src="@{${p.imageUrl}}" alt="" class="img-fluid">
                      </div>
                      <div>
-                        <a class="new-link" th:href="@{/product-standard(id=${p.id})}">
+                        <a class="new-link" th:href="@{/product-standard/{id}(id=${p.id})}">
                            <h6 class="post-title fw-500 mb-0 text-capitalize" th:text="${p.name}">Product</h6>
                         </a>
                         <div class="ratting" th:with="filled=${T(java.lang.Math).round(p.rating)}">
@@ -1364,7 +1364,7 @@
                                  <div class="col-sm-8 mt-4 mt-sm-0">
                                     <div class="product-caption">
                                        <h4 class="product-title mt-1 mb-2">
-                                          <a th:href="@{/product-standard(id=${product.id})}" th:text="${product.name}">Product Name</a>
+                                          <a th:href="@{/product-standard/{id}(id=${product.id})}" th:text="${product.name}">Product Name</a>
                                        </h4>
                                        <h6 class="price-value fw-semibold mb-2" th:text="'$' + ${product.price}">Price</h6>
                                        <div class="ratting">
@@ -1492,7 +1492,7 @@
                               <div class="product-caption text-center mt-3">
                                  <span class="iq-category" th:text="${#strings.replace(product.productType, '_', ' ')}">category</span>
                                  <h5 class="product-title mt-1 mb-2">
-                                    <a th:href="@{/product-standard(id=${product.id})}" th:text="${product.name}">Product Name</a>
+                                    <a th:href="@{/product-standard/{id}(id=${product.id})}" th:text="${product.name}">Product Name</a>
                                  </h5>
                                  <h6 class="price-value fw-semibold mb-2" th:text="'$' + ${product.price}">Price</h6>
                                  <div class="ratting">
@@ -1579,7 +1579,7 @@
                               <div class="product-caption text-center mt-3">
                                  <span class="iq-category" th:text="${#strings.replace(product.productType, '_', ' ')}">category</span>
                                  <h5 class="product-title mt-1 mb-2">
-                                    <a th:href="@{/product-standard(id=${product.id})}" th:text="${product.name}">Product Name</a>                                 </h5>
+                                    <a th:href="@{/product-standard/{id}(id=${product.id})}" th:text="${product.name}">Product Name</a>                                 </h5>
                                  <h6 class="price-value fw-semibold mb-2" th:text="'$' + ${product.price}">Price</h6>
                                  <div class="ratting">
                                     <th:block th:if="${product.rating != null and product.rating > 0}">
@@ -1663,7 +1663,7 @@
                               <div class="product-caption text-center mt-3">
                                  <span class="iq-category" th:text="${#strings.replace(product.productType, '_', ' ')}">category</span>
                                  <h5 class="product-title mt-1 mb-2">
-                                    <a th:href="@{/product-standard(id=${product.id})}" th:text="${product.name}">Product Name</a>
+                                    <a th:href="@{/product-standard/{id}(id=${product.id})}" th:text="${product.name}">Product Name</a>
                                  </h5>
                                  <h6 class="price-value fw-semibold mb-2">
                                     $90

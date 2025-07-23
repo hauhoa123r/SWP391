@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserLoginResponse isLogin(UserLoginDTO userLoginDTO) {
-        UserEntity userEntity = userRepositoryImpl.findByEmailAndPasswordHash(userLoginDTO.getUsername(), userLoginDTO.getPassword());
+        UserEntity userEntity = userRepositoryImpl.findByEmailAndPasswordHash(userLoginDTO.getEmail(), userLoginDTO.getPasswordHash());
         UserLoginResponse userLoginResponse = toConverterLoginResponse.toConverterUserLoginResponse(userEntity);
         return userLoginResponse;
     }
