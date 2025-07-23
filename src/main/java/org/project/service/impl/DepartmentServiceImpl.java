@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -112,5 +113,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public boolean isDepartmentNameExist(String departmentName) {
         return departmentRepository.existsByName(departmentName);
+    }
+
+    @Override
+    public List<DepartmentResponse> getAll() {
+        List<DepartmentEntity> departmentEntities = departmentRepository.findAll();
+        return departmentEntities.stream().map(departmentConverter::toResponse).toList();
     }
 }

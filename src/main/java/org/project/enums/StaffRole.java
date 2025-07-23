@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum StaffRole {
     DOCTOR("doctor"),
     TECHNICIAN("technician"),
+    NURSE("nurse"),
     SCHEDULING_COORDINATOR("scheduling_coordinator"),
     PHARMACIST("pharmacist"),
     INVENTORY_MANAGER("inventory_manager"),
