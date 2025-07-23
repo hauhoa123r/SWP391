@@ -2,17 +2,21 @@ package org.project.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.project.enums.RequestStatus;
 
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Builder
 @Table(name = "test_requests", schema = "swp391")
 public class TestRequestEntity {
     @Id
@@ -49,8 +53,8 @@ public class TestRequestEntity {
     @JoinColumn(name = "doctor_id", nullable = false)
     private DoctorEntity doctorEntity;
 
-    @OneToOne(mappedBy = "testRequest", fetch = FetchType.LAZY)
-    private SampleEntity samples;
+    @OneToMany(mappedBy = "testRequest", fetch = FetchType.LAZY)
+    private Set<SampleEntity> samples = new LinkedHashSet<>();
 
 
 }

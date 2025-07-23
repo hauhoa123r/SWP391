@@ -103,7 +103,7 @@ public class SampleScheduleConverter {
     }
 
     public Page<ResultSampleResponse> toConvertResultSampleResponse(SampleFilterDTO sampleFilterDTO) throws IllegalAccessException {
-        sampleFilterDTO.setStatus(RequestStatus.collected);
+        sampleFilterDTO.setStatus(RequestStatus.received);
         Page<SampleEntity> sampleEntityEntities = sampleScheduleRepository.filterSampleEntityCustom(sampleFilterDTO);
 
         if (sampleEntityEntities == null) {

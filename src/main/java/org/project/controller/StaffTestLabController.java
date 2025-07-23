@@ -157,6 +157,13 @@ public class StaffTestLabController {
         return modelAndView;
     }
 
+    @GetMapping("/lab-statistics")
+    public ModelAndView labStatisticsView(HttpServletRequest request, Model model) {
+        ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/lab-statistics");
+        modelAndView.addObject("currentURI", request.getRequestURI());
+        return modelAndView;
+    }
+
     @GetMapping("/helpsupport")
     public ModelAndView helpSupportView(HttpServletRequest request, Model model) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/helpsupport");
@@ -197,13 +204,6 @@ public class StaffTestLabController {
         modelAndView.addObject("currentURI", request.getRequestURI());
         return modelAndView;
     }
-    @GetMapping("/view-test-request/{id}")
-    public ModelAndView viewResult(HttpServletRequest request, Model model, @PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/view-result");
-        SetResultResponse result = testItemConverter.toConverterSetResultResponse(id);
-        modelAndView.addObject("currentURI", request.getRequestURI());
-        modelAndView.addObject("patient", result);
-        return modelAndView;
-    }
+
 
 }

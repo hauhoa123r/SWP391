@@ -1433,7 +1433,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" id="approveResult">Xác nhận</button>
+                    <button type="button" class="btn btn-success">Xác nhận</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                 </div>
 
@@ -1551,9 +1551,9 @@
                                                ${item.status}
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-outline-success tooltip-init approve-btn"
-                                                        title="Gửi"
-                                                        data-id="${item.resultId}">
+                                                <button type="button" class="btn btn-sm btn-outline-success tooltip-init"
+                                                        data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                                        title="Submit">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                          fill="currentColor" class="bi bi-check-square-fill"
                                                          viewBox="0 0 16 16">
@@ -1627,20 +1627,5 @@
         attachInputEvents();
         fetchFilteredData(0);
     });
-
-    $(document).on('click', '.approve-btn', function () {
-        const resultId = $(this).data('id');
-        $.ajax({
-            url: '/api/approve-result/' + resultId,
-            method: 'GET',
-            success: function (data) {
-                attachInputEvents();
-                fetchFilteredData(0);
-            }, failure: function () {
-                alert("loi")
-            }
-        })
-
-    })
 </script>
 </html>
