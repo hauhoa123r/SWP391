@@ -177,4 +177,19 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>, J
     List<ProductEntity> findDistinctByProductStatus(ProductStatus productStatus);
 
     List<ProductEntity> findByProductType(String string);
+
+    // ==================== Dashboard queries ====================
+    
+    /**
+     * Find top selling products based on transaction items
+     * @param pageable Pagination information for limiting results
+     * @return List of top selling products
+     */
+    @Query("SELECT p FROM ProductEntity p " +
+           "JOIN SupplierTransactionItemEntity i ON p.id = i.productEntity.id " +
+           "JOIN i.supplierTransactionEntity t " +
+           "WHERE t.transactionType = org.project.enums.SupplierTransactionType.STOCK_OUT " +
+           "GROUP BY p.id " +
+           "ORDER BY SUM(i.quantity) DESC")
+    List<ProductEntity> findTopSellingProducts(Pageable pageable);
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" dir="ltr">
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -12,7 +12,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" th:href="@{/templates_storage/assets/images/favicon.png}" type="image/x-icon">
     <link rel="shortcut icon" th:href="@{/templates_storage/assets/images/favicon.png}" type="image/x-icon">
-    <title>Fastkart - Báo Cáo</title>
+    <title>Fastkart - Đánh giá sản phẩm</title>
 
     <!-- Google font-->
     <link
@@ -55,6 +55,19 @@
 
     <!-- App css -->
     <link rel="stylesheet" type="text/css" th:href="@{/templates_storage/assets/css/style.css}">
+
+    <!-- Custom CSS -->
+    <style>
+        .warehouse-logo {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2e8b57; /* Màu xanh lá cây */
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -99,6 +112,9 @@
                     </div>
                 </div>
             </form>
+
+            <!-- Tiêu đề mới -->
+            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
             <div class="nav-right col-6 pull-right right-header p-0">
                 <ul class="nav-menus">
                     <li>
@@ -158,38 +174,7 @@
                                 <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                             </div>
                         </div>
-                        <ul class="profile-dropdown onhover-show-div">
-                            <li>
-                                <a th:href="@{/all-users.html}">
-                                    <i data-feather="users"></i>
-                                    <span>Người dùng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/order-list.html}">
-                                    <i data-feather="archive"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/support-ticket.html}">
-                                    <i data-feather="phone"></i>
-                                    <span>Vé hỗ trợ</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/profile-setting.html}">
-                                    <i data-feather="settings"></i>
-                                    <span>Cài đặt</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                   href="#">
-                                    <i data-feather="log-out"></i>
-                                    <span>Đăng xuất</span>
-                                </a>
-                            </li>
+                        
                         </ul>
                     </li>
                 </ul>
@@ -282,23 +267,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <i class="ri-archive-line"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    <li>
-                                        <a th:href="@{/order-list.html}">Danh sách đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-detail.html}">Chi tiết đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-tracking.html}">Theo dõi đơn hàng</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="#">
                                     <i class="ri-price-tag-3-line"></i>
@@ -335,229 +304,251 @@
         </div>
         <!-- Kết thúc thanh bên -->
 
-        <!-- Bắt đầu phần báo cáo -->
+        <!-- Bắt đầu phần nội dung -->
         <div class="page-body">
             <!-- Container-fluid bắt đầu -->
             <div class="container-fluid">
                 <div class="row">
-                    <!-- Tổng quan kho bắt đầu -->
-                    <div class="col-xl-8 col-lg-12 col-md-6">
-                        <div class="card o-hidden">
-                            <div class="card-header border-0 pb-1">
-                                <div class="card-header-title">
-                                    <h4>Tổng quan kho</h4>
-                                </div>
-                            </div>
-                            <div class="card-body p-0">
-                                <div id="inventory-summary"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Kết thúc tổng quan kho -->
-
-                    <!-- Tình trạng hàng tồn kho bắt đầu -->
-                    <div class="col-xl-4 col-lg-12 col-md-6">
-                        <div class="h-100">
-                            <div class="card o-hidden">
-                                <div class="card-header border-0 pb-1">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="card-header-title">
-                                            <h4>Tình trạng hàng tồn kho</h4>
+                    <div class="col-sm-12">
+                        <div class="card card-table">
+                            <div class="card-body">
+                                <div class="title-header option-title">
+                                    <h5>Đánh giá sản phẩm</h5>
+                                    
+                                    <!-- Bộ lọc và tìm kiếm -->
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <!-- Tìm kiếm -->
+                                        <div class="search-box">
+                                            <form th:action="@{/product-review}" method="get" class="d-flex">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="search" th:value="${param.search}" placeholder="Tìm theo sản phẩm hoặc người dùng...">
+                                                    <button class="btn btn-primary" type="submit">Tìm</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        
+                                        <!-- Bộ lọc -->
+                                        <div class="filter-options d-flex">
+                                            <div class="dropdown me-2">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="ratingFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="ri-filter-line"></i> Đánh giá
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="ratingFilter">
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(rating=5,search=${param.search},sort=${param.sort},direction=${param.direction})}">5 sao</a></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(rating=4,search=${param.search},sort=${param.sort},direction=${param.direction})}">4 sao</a></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(rating=3,search=${param.search},sort=${param.sort},direction=${param.direction})}">3 sao</a></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(rating=2,search=${param.search},sort=${param.sort},direction=${param.direction})}">2 sao</a></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(rating=1,search=${param.search},sort=${param.sort},direction=${param.direction})}">1 sao</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(search=${param.search},sort=${param.sort},direction=${param.direction})}">Tất cả</a></li>
+                                                </ul>
+                                            </div>
+                                            
+                                            <div class="dropdown me-2">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="statusFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="ri-filter-line"></i> Trạng thái
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="statusFilter">
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(status='APPROVED',search=${param.search},sort=${param.sort},direction=${param.direction})}">Đã duyệt</a></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(status='PENDING',search=${param.search},sort=${param.sort},direction=${param.direction})}">Chờ duyệt</a></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(status='HIDDEN',search=${param.search},sort=${param.sort},direction=${param.direction})}">Đã ẩn</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(search=${param.search},sort=${param.sort},direction=${param.direction})}">Tất cả</a></li>
+                                                </ul>
+                                            </div>
+                                            
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="ri-sort-desc"></i> Sắp xếp
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="sortFilter">
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(search=${param.search},sort='createdDate',direction='desc')}">Mới nhất</a></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(search=${param.search},sort='createdDate',direction='asc')}">Cũ nhất</a></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(search=${param.search},sort='rating',direction='desc')}">Đánh giá cao nhất</a></li>
+                                                    <li><a class="dropdown-item" th:href="@{/product-review(search=${param.search},sort='rating',direction='asc')}">Đánh giá thấp nhất</a></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-body p-0">
-                                    <div class="pie-chart">
-                                        <div id="stock-status-chart"></div>
+                                    
+                                    <!-- Hiển thị thông báo -->
+                                    <div th:if="${message}" class="alert" th:classappend="${messageType == 'success' ? 'alert-success' : 'alert-danger'}">
+                                        <span th:text="${message}"></span>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Kết thúc tình trạng hàng tồn kho -->
 
-                    <!-- Sản phẩm sắp hết hàng bắt đầu -->
-                    <div class="col-xl-6 col-lg-12 col-md-6">
-                        <div class="card">
-                            <div class="card-header border-0 pb-1">
-                                <div class="card-header-title">
-                                    <h4>Sản phẩm sắp hết hàng</h4>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th>Mã sản phẩm</th>
-                                            <th>Tên sản phẩm</th>
-                                            <th>Số lượng hiện tại</th>
-                                            <th>Ngưỡng tối thiểu</th>
-                                            <th>Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="product : ${lowStockReport}">
-                                            <td th:text="${'P' + product.productId}">P001</td>
-                                            <td th:text="${product.productName}">Paracetamol 500mg</td>
-                                            <td th:text="${product.currentStock}">5</td>
-                                            <td th:text="${product.threshold}">10</td>
-                                            <td>
-                                                <span th:if="${product.currentStock <= product.threshold / 2}" class="badge bg-danger">Sắp hết</span>
-                                                <span th:if="${product.currentStock > product.threshold / 2 && product.currentStock <= product.threshold}" class="badge bg-warning">Cần nhập thêm</span>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${#lists.isEmpty(lowStockReport)}">
-                                            <td colspan="5" class="text-center">Không có sản phẩm nào sắp hết hàng</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Kết thúc sản phẩm sắp hết hàng -->
-
-                    <!-- Sản phẩm sắp hết hạn bắt đầu -->
-                    <div class="col-xl-6 col-lg-12 col-md-6">
-                        <div class="card">
-                            <div class="card-header border-0 pb-1">
-                                <div class="card-header-title">
-                                    <h4>Sản phẩm sắp hết hạn</h4>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th>Mã sản phẩm</th>
-                                            <th>Tên sản phẩm</th>
-                                            <th>Số lô</th>
-                                            <th>Ngày hết hạn</th>
-                                            <th>Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="product : ${expiringProducts}">
-                                            <td th:text="${'P' + product.productId}">P001</td>
-                                            <td th:text="${product.productName}">Paracetamol 500mg</td>
-                                            <td th:text="${product.batchNumber != null ? product.batchNumber : 'N/A'}">LOT12345</td>
-                                            <td th:text="${#dates.format(product.expirationDate, 'dd-MM-yyyy')}">30-06-2023</td>
-                                            <td>
-                                                <span th:if="${#dates.createNow() >= product.expirationDate}" class="badge bg-danger">Đã hết hạn</span>
-                                                <span th:if="${#dates.createNow() < product.expirationDate && #dates.daysBetween(#dates.createNow(), product.expirationDate) <= 15}" class="badge bg-danger">Sắp hết hạn</span>
-                                                <span th:if="${#dates.createNow() < product.expirationDate && #dates.daysBetween(#dates.createNow(), product.expirationDate) > 15 && #dates.daysBetween(#dates.createNow(), product.expirationDate) <= 30}" class="badge bg-warning">Sắp hết hạn</span>
-                                            </td>
-                                        </tr>
-                                        <tr th:if="${#lists.isEmpty(expiringProducts)}">
-                                            <td colspan="5" class="text-center">Không có sản phẩm nào sắp hết hạn</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Kết thúc sản phẩm sắp hết hạn -->
-
-                    <!-- Biểu đồ nhập/xuất kho bắt đầu -->
-                    <div class="col-12">
-                        <div class="card o-hidden">
-                            <div class="card-header border-0 pb-1">
-                                <div class="card-header-title">
-                                    <h4>Thống kê nhập/xuất kho</h4>
-                                </div>
-                            </div>
-                            <div class="card-body p-0">
-                                <div id="stock-in-out-chart"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Kết thúc biểu đồ nhập/xuất kho -->
-
-                    <!-- Lịch sử giao dịch kho bắt đầu -->
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header border-0 pb-1">
-                                <div class="card-header-title">
-                                    <h4>Lịch sử giao dịch kho</h4>
-                                </div>
-                            </div>
-                            <div class="card-body">
                                 <div>
                                     <div class="table-responsive">
-                                        <table class="user-table list-table table">
+                                        <table class="table product-review-table">
                                             <thead>
-                                            <tr>
-                                                <th>Mã giao dịch</th>
-                                                <th>Loại giao dịch</th>
-                                                <th>Ngày</th>
-                                                <th>Người thực hiện</th>
-                                                <th>Trạng thái</th>
-                                                <th>Tùy chọn</th>
-                                            </tr>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Sản phẩm</th>
+                                                    <th>Người đánh giá</th>
+                                                    <th>Đánh giá</th>
+                                                    <th>Nội dung</th>
+                                                    <th>Ngày tạo</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Thao tác</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            <tr th:each="transaction : ${recentTransactions}">
-                                                <td th:text="${transaction.transactionType.name() == 'STOCK_IN' ? 'SI-' + transaction.id : 'SO-' + transaction.id}">SI-003</td>
-                                                <td th:text="${transaction.transactionType.name() == 'STOCK_IN' ? 'Nhập kho' : 'Xuất kho'}">Nhập kho</td>
-                                                <td th:text="${#dates.format(transaction.transactionDate, 'dd-MM-yyyy')}">15-05-2023</td>
-                                                <td th:text="${transaction.inventoryManagerName}">Lê Văn C</td>
-                                                <td>
-                                                    <span th:if="${transaction.status.name() == 'PENDING'}" class="status-pending">Chờ xử lý</span>
-                                                    <span th:if="${transaction.status.name() == 'RECEIVED'}" class="status-received">Đã nhận</span>
-                                                    <span th:if="${transaction.status.name() == 'CHECKED'}" class="status-checked">Đã kiểm tra</span>
-                                                    <span th:if="${transaction.status.name() == 'COMPLETED'}" class="status-close">Hoàn thành</span>
-                                                </td>
-                                                <td>
-                                                    <ul>
-                                                        <li>
-                                                            <a th:if="${transaction.transactionType.name() == 'STOCK_IN'}"
-                                                               th:href="@{'/supplier-ins/' + ${transaction.id}}">
-                                                                <i class="ri-eye-line"></i>
-                                                            </a>
-                                                            <a th:if="${transaction.transactionType.name() == 'STOCK_OUT'}"
-                                                               th:href="@{'/supplier-outs/' + ${transaction.id}}">
-                                                                <i class="ri-eye-line"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr th:if="${#lists.isEmpty(recentTransactions)}">
-                                                <td colspan="6" class="text-center">Không có giao dịch nào gần đây</td>
-                                            </tr>
+                                                <tr th:each="review : ${reviews}">
+                                                    <td th:text="${review.id}">1</td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <img th:src="${review.productImage != null ? review.productImage : '/templates_storage/assets/images/product/1.png'}" 
+                                                                 class="img-fluid product-review-img" alt="product">
+                                                            <div class="ms-2">
+                                                                <span th:text="${review.productName}">Paracetamol 500mg</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td th:text="${review.username}">nguyenvana</td>
+                                                    <td>
+                                                        <ul class="rating">
+                                                            <li th:each="i : ${#numbers.sequence(1, 5)}">
+                                                                <i class="ri-star-fill" th:classappend="${i <= review.rating ? 'rated' : ''}"></i>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td>
+                                                        <p class="truncate-text" th:text="${review.content}">Sản phẩm rất tốt, giao hàng nhanh...</p>
+                                                    </td>
+                                                    <td th:text="${#dates.format(review.createdDate, 'dd-MM-yyyy')}">10-07-2023</td>
+                                                    <td>
+                                                        <div class="status-badge" th:classappend="${review.status == 'APPROVED' ? 'status-approved' : (review.status == 'PENDING' ? 'status-pending' : 'status-hidden')}">
+                                                            <span th:text="${review.status == 'APPROVED' ? 'Đã duyệt' : (review.status == 'PENDING' ? 'Chờ duyệt' : 'Đã ẩn')}">Chờ duyệt</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <ul class="action">
+                                                            <li>
+                                                                <a th:href="@{/review-detail/{id}(id=${review.id})}" title="Xem chi tiết">
+                                                                    <i class="ri-eye-line"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li th:if="${review.status != 'APPROVED'}">
+                                                                <a href="#" class="approve-review" 
+                                                                   th:attr="data-review-id=${review.id}"
+                                                                   data-bs-toggle="modal" 
+                                                                   data-bs-target="#approveReviewModal"
+                                                                   title="Duyệt đánh giá">
+                                                                    <i class="ri-check-double-line"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li th:if="${review.status != 'HIDDEN'}">
+                                                                <a href="#" class="hide-review"
+                                                                   th:attr="data-review-id=${review.id}"
+                                                                   data-bs-toggle="modal" 
+                                                                   data-bs-target="#hideReviewModal"
+                                                                   title="Ẩn đánh giá">
+                                                                    <i class="ri-eye-off-line"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                                
+                                                <!-- Hiển thị thông báo khi không có dữ liệu -->
+                                                <tr th:if="${#lists.isEmpty(reviews)}">
+                                                    <td colspan="8" class="text-center">Không tìm thấy đánh giá nào</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
+                                
+                                <!-- Phân trang -->
+                                <div class="pagination-box" th:if="${totalPages > 0}">
+                                    <nav class="ms-auto me-auto">
+                                        <ul class="pagination">
+                                            <!-- Nút Previous -->
+                                            <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                                <a class="page-link" th:href="@{/product-review(page=${currentPage - 1},search=${param.search},rating=${param.rating},status=${param.status},sort=${param.sort},direction=${param.direction})}">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                            
+                                            <!-- Các số trang -->
+                                            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+                                                th:classappend="${i == currentPage ? 'active' : ''}">
+                                                <a class="page-link" th:href="@{/product-review(page=${i},search=${param.search},rating=${param.rating},status=${param.status},sort=${param.sort},direction=${param.direction})}">
+                                                    <span th:text="${i + 1}">1</span>
+                                                </a>
+                                            </li>
+                                            
+                                            <!-- Nút Next -->
+                                            <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                                <a class="page-link" th:href="@{/product-review(page=${currentPage + 1},search=${param.search},rating=${param.rating},status=${param.status},sort=${param.sort},direction=${param.direction})}">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Kết thúc lịch sử giao dịch kho -->
                 </div>
             </div>
             <!-- Container-fluid kết thúc -->
 
             <!-- Bắt đầu chân trang -->
-            <div class="container-fluid">
-                <footer class="footer">
-                    <div class="row">
-                        <div class="col-md-12 footer-copyright text-center">
-                            <p class="mb-0">Bản quyền 2022 © Chủ đề Fastkart bởi pixelstrap</p>
-                        </div>
-                    </div>
-                </footer>
-            </div>
+            <div th:replace="~{templates_storage/fragments/footer :: footer}"></div>
+            <!-- Kết thúc chân trang -->
         </div>
-        <!-- Kết thúc phần báo cáo -->
+        <!-- Kết thúc phần nội dung -->
     </div>
     <!-- Kết thúc nội dung trang -->
 </div>
 <!-- Kết thúc page-wrapper -->
 
-<!-- Bắt đầu Modal -->
+<!-- Modal Duyệt đánh giá -->
+<div class="modal fade" id="approveReviewModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="modal-title">Duyệt đánh giá</h5>
+                <p>Bạn có chắc chắn muốn duyệt đánh giá này?</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <form id="approveReviewForm" method="post" action="#">
+                    <input type="hidden" id="approveReviewId" name="reviewId" value="">
+                    <div class="button-box">
+                        <button type="button" class="btn btn--no" data-bs-dismiss="modal">Không</button>
+                        <button type="submit" class="btn btn--yes btn-primary">Có, duyệt</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ẩn đánh giá -->
+<div class="modal fade" id="hideReviewModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="modal-title">Ẩn đánh giá</h5>
+                <p>Bạn có chắc chắn muốn ẩn đánh giá này?</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <form id="hideReviewForm" method="post" action="#">
+                    <input type="hidden" id="hideReviewId" name="reviewId" value="">
+                    <div class="form-group mt-3">
+                        <label for="hideReason">Lý do ẩn (tuỳ chọn):</label>
+                        <textarea class="form-control" id="hideReason" name="hideReason" rows="3"></textarea>
+                    </div>
+                    <div class="button-box mt-3">
+                        <button type="button" class="btn btn--no" data-bs-dismiss="modal">Không</button>
+                        <button type="submit" class="btn btn--yes btn-primary">Có, ẩn</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Đăng xuất -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -574,7 +565,6 @@
         </div>
     </div>
 </div>
-<!-- Kết thúc Modal -->
 
 <!-- latest js -->
 <script th:src="@{/templates_storage/assets/js/jquery-3.6.0.min.js}"></script>
@@ -601,13 +591,6 @@
 <script th:src="@{/templates_storage/assets/js/notify/bootstrap-notify.min.js}"></script>
 <script th:src="@{/templates_storage/assets/js/notify/index.js}"></script>
 
-<!-- Apexchar js -->
-<script th:src="@{/templates_storage/assets/js/chart/apex-chart/apex-chart1.js}"></script>
-<script th:src="@{/templates_storage/assets/js/chart/apex-chart/moment.min.js}"></script>
-<script th:src="@{/templates_storage/assets/js/chart/apex-chart/apex-chart.js}"></script>
-<script th:src="@{/templates_storage/assets/js/chart/apex-chart/stock-prices.js}"></script>
-<script th:src="@{/templates_storage/assets/js/chart/apex-chart/chart-custom.js}"></script>
-
 <!-- customizer js -->
 <script th:src="@{/templates_storage/assets/js/customizer.js}"></script>
 
@@ -619,6 +602,101 @@
 
 <!-- Theme js -->
 <script th:src="@{/templates_storage/assets/js/script.js}"></script>
+
+<script>
+    $(document).ready(function() {
+        // Hiển thị ID đánh giá khi click vào nút duyệt
+        $('.approve-review').on('click', function() {
+            var reviewId = $(this).data('review-id');
+            $('#approveReviewId').val(reviewId);
+            $('#approveReviewForm').attr('action', '/approve-review/' + reviewId);
+        });
+        
+        // Hiển thị ID đánh giá khi click vào nút ẩn
+        $('.hide-review').on('click', function() {
+            var reviewId = $(this).data('review-id');
+            $('#hideReviewId').val(reviewId);
+            $('#hideReviewForm').attr('action', '/hide-review/' + reviewId);
+        });
+        
+        // Hiển thị toàn bộ nội dung khi hover vào
+        $('.truncate-text').hover(function() {
+            $(this).toggleClass('show-full-text');
+        });
+    });
+</script>
+
+<style>
+    .product-review-img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+    
+    .rating {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+    }
+    
+    .rating li {
+        margin-right: 2px;
+    }
+    
+    .rating i {
+        color: #ccc;
+        font-size: 16px;
+    }
+    
+    .rating i.rated {
+        color: #ffb800;
+    }
+    
+    .truncate-text {
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .show-full-text {
+        white-space: normal;
+        max-width: none;
+        position: relative;
+        z-index: 10;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        text-align: center;
+        display: inline-block;
+    }
+    
+    .status-approved {
+        background-color: #e7f7ee;
+        color: #0ab39c;
+    }
+    
+    .status-pending {
+        background-color: #fff8dd;
+        color: #f7b84b;
+    }
+    
+    .status-hidden {
+        background-color: #f3f3f9;
+        color: #878a99;
+    }
+</style>
 </body>
 
 </html>

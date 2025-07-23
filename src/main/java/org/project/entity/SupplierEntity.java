@@ -35,7 +35,7 @@ public class SupplierEntity {
     private String email;
 
     @Size(max = 255)
-    @Column(name = "phone_number")
+    @Column(name = "phone_number") // Đổi từ "phone" sang "phone_number" để phù hợp với cấu trúc DB hiện tại
     private String phoneNumber;
 
     @OneToMany(mappedBy = "supplierEntity", cascade = CascadeType.ALL, orphanRemoval = true)

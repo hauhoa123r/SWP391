@@ -52,6 +52,10 @@ public class SupplierInvoiceEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by_id")
     private InventoryManagerEntity createdBy;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id")
+    private SupplierEntity supplierEntity;
 
     @Column(length = 500)
     private String notes;
@@ -64,6 +68,9 @@ public class SupplierInvoiceEntity {
 
     @Column
     private Timestamp paymentDate;
+    
+    @Column(length = 500)
+    private String rejectionReason;
 
     @OneToMany(mappedBy = "supplierInvoiceEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SupplierTransactionInvoiceMappingEntity> transactionInvoiceMappings = new LinkedHashSet<>();

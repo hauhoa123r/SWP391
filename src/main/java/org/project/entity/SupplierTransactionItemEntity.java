@@ -42,9 +42,6 @@ public class SupplierTransactionItemEntity {
     private Date expirationDate;
 
     @Column(length = 255)
-    private String batchNumber;
-
-    @Column(length = 255)
     private String storageLocation;
 
     @Column(length = 500)

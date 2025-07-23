@@ -33,4 +33,6 @@ public class MedicineEntity {
     @OneToMany
     private Set<PrescriptionItemEntity> prescriptionItemEntities = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "medicine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Batch> batches = new LinkedHashSet<>();
 }

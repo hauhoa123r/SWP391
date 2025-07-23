@@ -20,7 +20,6 @@ public class ProductStockReportResponse {
     private String status;
     private String recommendedAction;
     private Date expirationDate;
-    private String batchNumber;
     private BigDecimal unitPrice;
     private BigDecimal totalValue;
     private int stockIn;

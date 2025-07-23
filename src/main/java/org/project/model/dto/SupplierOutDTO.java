@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.project.enums.ProductType;
 import org.project.enums.SupplierTransactionStatus;
+import org.project.enums.SupplierTransactionType;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -39,6 +41,17 @@ public class SupplierOutDTO {
     
     // Additional fields for the StockOut view
     private String recipient;
+    private String recipientContact;
     private String reason;
+    private String stockOutReason; // Trường mới tương ứng với stock_out_reason trong database
     private Timestamp createdAt;
+    
+    // Field to determine the order type (MEDICINE, MEDICAL_PRODUCT)
+    private ProductType orderType;
+    
+    // Transaction type field
+    private SupplierTransactionType transactionType;
+    
+    // Type of first product in the transaction (for filtering)
+    private String type;
 } 

@@ -60,7 +60,6 @@ public class StockReportUtils {
                     report.setExpirationDate(item.getExpirationDate());
                     report.setStatus("Expiring Soon");
                     report.setRecommendedAction("Use or Discard");
-                    report.setBatchNumber(item.getBatchNumber());
                     return report;
                 })
                 .collect(Collectors.toList());

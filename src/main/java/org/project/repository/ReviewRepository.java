@@ -14,5 +14,3 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
     List<ReviewEntity> findByProductId(@Param("productId") Long productId);
     Long countByRating(Integer rating);
 }
-
-

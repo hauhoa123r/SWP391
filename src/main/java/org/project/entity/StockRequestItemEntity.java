@@ -36,9 +36,6 @@ public class StockRequestItemEntity {
     @Column(name = "unit_price", precision = 10, scale = 2)
     private BigDecimal unitPrice;
     
-    @Column(name = "batch_number")
-    private String batchNumber;
-    
     @Column(name = "expiration_date")
     private Date expirationDate;
     
