@@ -6,7 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
+@Repository("mainAdminPatientRepository")
 public interface AdminPatientRepository extends JpaRepository<PatientEntity, Long>, JpaSpecificationExecutor<PatientEntity> {
     org.springframework.data.domain.Page<PatientEntity> findByFullNameContainingIgnoreCase(String name, org.springframework.data.domain.Pageable pageable);
     org.springframework.data.domain.Page<PatientEntity> findByEmailContainingIgnoreCase(String email, org.springframework.data.domain.Pageable pageable);

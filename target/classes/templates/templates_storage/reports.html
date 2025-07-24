@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="vi" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Fastkart admin là mẫu giao diện quản trị Bootstrap 5 linh hoạt, mạnh mẽ, hiện đại và responsive với vô số khả năng tùy chỉnh.">
+    <meta name="keywords"
+        content="mẫu giao diện quản trị, Fastkart admin, giao diện dashboard, giao diện quản trị phẳng, giao diện quản trị responsive, ứng dụng web">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" th:href="@{/frontend/assets/images/favicon.png}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/frontend/assets/images/favicon.png}" type="image/x-icon">
+    <title>Fastkart - Báo Cáo</title>
+
+    <!-- Google font-->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/templates_storage/assets/css/core/libs.min.css" th:href="@{/templates_storage/assets/css/core/libs.min.css}">
+    <link rel="stylesheet" href="/templates_storage/assets/css/vendors/font-awesome.css" th:href="@{/templates_storage/assets/css/vendors/font-awesome.css}">
+    <link rel="stylesheet" type="text/css" href="/templates_storage/assets/css/vendors/themify.css" th:href="@{/templates_storage/assets/css/vendors/themify.css}">
+    <link rel="stylesheet" type="text/css" href="/templates_storage/assets/css/vendors/feather-icon.css" th:href="@{/templates_storage/assets/css/vendors/feather-icon.css}">
+    <link rel="stylesheet" type="text/css" href="/templates_storage/assets/css/remixicon.css" th:href="@{/templates_storage/assets/css/remixicon.css}">
+    <link rel="stylesheet" type="text/css" href="/templates_storage/assets/css/datatables.css" th:href="@{/templates_storage/assets/css/datatables.css}">
+    <link rel="stylesheet" type="text/css" href="/templates_storage/assets/css/vendors/scrollbar.css" th:href="@{/templates_storage/assets/css/vendors/scrollbar.css}">
+    <link rel="stylesheet" type="text/css" href="/templates_storage/assets/css/vendors/animate.css" th:href="@{/templates_storage/assets/css/vendors/animate.css}">
+    <link rel="stylesheet" type="text/css" href="/templates_storage/assets/css/vendors/bootstrap.css" th:href="@{/templates_storage/assets/css/vendors/bootstrap.css}">
+    <link rel="stylesheet" type="text/css" href="/templates_storage/assets/css/style.css" th:href="@{/templates_storage/assets/css/style.css}">
+
+    <!-- JavaScript Files -->
+    <script th:src="@{/templates_storage/assets/js/jquery-3.6.0.min.js}" defer></script>
+    <script th:src="@{/templates_storage/assets/js/bootstrap/bootstrap.bundle.min.js}" defer></script>
+    <script th:src="@{/templates_storage/assets/js/icons/feather-icon/feather.min.js}" defer></script>
+    <script th:src="@{/templates_storage/assets/js/icons/feather-icon/feather-icon.js}" defer></script>
+    <script th:src="@{/templates_storage/assets/js/scrollbar/simplebar.js}" defer></script>
+    <script th:src="@{/templates_storage/assets/js/scrollbar/custom.js}" defer></script>
+    <script th:src="@{/templates_storage/assets/js/config.js}" defer></script>
+    <script th:src="@{/templates_storage/assets/js/sidebar-menu.js}" defer></script>
+    <script th:src="@{/templates_storage/assets/js/notify/bootstrap-notify.min.js}" defer></script>
+    <script th:src="@{/templates_storage/assets/js/notify/index.js}" defer></script>
+    <script th:src="@{/templates_storage/assets/js/script.js}" defer></script>
+
+    <!-- Custom CSS -->
+    <style>
+        .warehouse-logo {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2e8b57; /* Màu xanh lá cây */
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+    </style>
+
+    <!-- Template js-->
+    <style>
+        .product-card { border: 1px solid #e0e0e0; border-radius: 8px; transition: all 0.3s; }
+        .product-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .stock-low { color: #ff6b6b; font-weight: bold; }
+        .stock-normal { color: #51cf66; }
+        .workflow-tabs { margin-bottom: 20px; }
+        .tab-content { min-height: 400px; }
+        .order-item { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; padding: 15px; }
+        .order-pending { border-left: 4px solid #ffc107; }
+        .order-preparing { border-left: 4px solid #17a2b8; }
+        .order-ready { border-left: 4px solid #28a745; }
+        .status-pending { background-color: #fef3c7; color: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-received { background-color: #e0f2fe; color: #0288d1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-checked { background-color: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .status-completed { background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .batch-info { font-size: 0.8em; color: #666; }
+    </style>
+    
+</head>
+
+<body>
+    <!-- tap on top start -->
+    <div class="tap-top">
+        <span class="lnr lnr-chevron-up"></span>
+    </div>
+    <!-- tap on tap end -->
+
+    <!-- page-wrapper Start-->
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+        <!-- Bắt đầu tiêu đề trang -->
+        <div class="page-header">
+            <div class="header-wrapper m-0">
+                <div class="header-logo-wrapper p-0">
+                    <div class="logo-wrapper">
+                        <a th:href="@{/dashboard/main}">
+                            <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
+                            <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
+                        </a>
+                    </div>
+                    <div class="toggle-sidebar">
+                        <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
+                        <a th:href="@{/dashboard/main}">
+                            <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
+                        </a>
+                    </div>
+                </div>
+
+                            <!-- Tiêu đề mới -->
+            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
+                <div class="nav-right col-6 pull-right right-header p-0">
+                    <ul class="nav-menus">
+                        <li>
+                        <span class="header-search">
+                            <i class="ri-search-line"></i>
+                        </span>
+                        </li>
+                        <li class="onhover-dropdown">
+                            <div class="notification-box">
+                                <i class="ri-notification-line"></i>
+                                <span class="badge rounded-pill badge-theme">4</span>
+                            </div>
+                            <ul class="notification-dropdown onhover-show-div">
+                                <li>
+                                    <i class="ri-notification-line"></i>
+                                    <h6 class="f-18 mb-0">Thông báo</h6>
+                                </li>
+                                <li>
+                                    <p>
+                                        <i class="fa fa-circle me-2 font-primary"></i>Đang xử lý giao hàng <span
+                                            class="pull-right">10 phút</span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <i class="fa fa-circle me-2 font-success"></i>Hoàn thành đơn hàng <span
+                                            class="pull-right">1 giờ</span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <i class="fa fa-circle me-2 font-info"></i>Tạo vé hỗ trợ <span
+                                            class="pull-right">3 giờ</span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <i class="fa fa-circle me-2 font-danger"></i>Hoàn thành giao hàng <span
+                                            class="pull-right">6 giờ</span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <a class="btn btn-primary" href="#">Xem tất cả thông báo</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="mode">
+                                <i class="ri-moon-line"></i>
+                            </div>
+                        </li>
+                        <li class="profile-nav onhover-dropdown pe-0 me-0">
+                            <div class="media profile-media">
+                                <img class="user-profile rounded-circle" th:src="@{${currentUser?.avatar ?: '/templates_storage/assets/images/users/default.jpg'}}" alt="">
+                                <div class="user-name-hide media-body">
+                                    <span th:text="${currentUser?.fullName ?: 'Người dùng'}">Người dùng</span>
+                                    <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Kết thúc tiêu đề trang -->
+
+
+        <!-- Sidebar -->
+        <div class="page-body-wrapper">
+            <!-- Bắt đầu thanh bên -->
+            <div class="sidebar-wrapper">
+                <div id="sidebarEffect"></div>
+                <div>
+                    <div class="logo-wrapper logo-wrapper-center">
+                        <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
+                            <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
+                        </a>
+                        <div class="back-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </div>
+                        <div class="toggle-sidebar">
+                            <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="logo-icon-wrapper">
+                        <a th:href="@{/dashboard/main}">
+                            <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
+                            <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
+                                 alt="logo">
+                        </a>
+                    </div>
+                    <nav class="sidebar-main">
+                        <div class="left-arrow" id="left-arrow">
+                            <i data-feather="arrow-left"></i>
+                        </div>
+
+                        <div id="sidebar-menu">
+                            <ul class="sidebar-links" id="simple-bar">
+                                <li class="back-btn"></li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
+                                        <i class="ri-home-line"></i>
+                                        <span>Bảng điều khiển</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                        <i class="ri-store-3-line"></i>
+                                        <span>Giao dịch</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a th:href="@{/StockIn.html}">Nhập kho</a>
+                                        </li>
+                                        <li>
+                                            <a th:href="@{/StockOut.html}">Xuất kho</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                        <i class="ri-list-check-2"></i>
+                                        <span>Hóa đơn</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a th:href="@{/StockInInvoice.html}">Hóa đơn nhập kho</a>
+                                        </li>
+                                        <li>
+                                            <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                        <i class="ri-list-settings-line"></i>
+                                        <span>Kho hàng</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                        </li>
+                                        <li>
+                                            <a th:href="@{/medicine.html}">Thuốc</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="#">
+                                        <i class="ri-price-tag-3-line"></i>
+                                        <span>Mã giảm giá</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
+                                        </li>
+                                        <li>
+                                            <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
+                                        <i class="ri-star-line"></i>
+                                        <span>Đánh giá sản phẩm</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
+                                        <i class="ri-file-chart-line"></i>
+                                        <span>Báo cáo</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="right-arrow" id="right-arrow">
+                            <i data-feather="arrow-right"></i>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- Kết thúc thanh bên -->
+
+            <!-- Bắt đầu phần báo cáo -->
+            <div class="page-body">
+                <!-- Container-fluid bắt đầu -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Tổng quan kho bắt đầu -->
+                        <div class="col-xl-8 col-lg-12 col-md-6">
+                            <div class="card o-hidden">
+                                <div class="card-header border-0 pb-1">
+                                    <div class="card-header-title">
+                                        <h4>Tổng quan kho</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div id="inventory-summary"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Kết thúc tổng quan kho -->
+
+                        <!-- Tình trạng hàng tồn kho bắt đầu -->
+                        <div class="col-xl-4 col-lg-12 col-md-6">
+                            <div class="h-100">
+                                <div class="card o-hidden">
+                                    <div class="card-header border-0 pb-1">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="card-header-title">
+                                                <h4>Tình trạng hàng tồn kho</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="pie-chart">
+                                            <div id="stock-status-chart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Kết thúc tình trạng hàng tồn kho -->
+
+                        <!-- Sản phẩm sắp hết hàng bắt đầu -->
+                        <div class="col-xl-6 col-lg-12 col-md-6">
+                            <div class="card">
+                                <div class="card-header border-0 pb-1">
+                                    <div class="card-header-title">
+                                        <h4>Sản phẩm sắp hết hàng</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mã sản phẩm</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>Số lượng hiện tại</th>
+                                                    <th>Ngưỡng tối thiểu</th>
+                                                    <th>Trạng thái</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="product : ${lowStockReport}">
+                                                    <td th:text="${'P' + product.productId}">P001</td>
+                                                    <td th:text="${product.productName}">Paracetamol 500mg</td>
+                                                    <td th:text="${product.currentStock}">5</td>
+                                                    <td th:text="${product.threshold}">10</td>
+                                                    <td>
+                                                        <span th:if="${product.currentStock <= product.threshold / 2}" class="badge bg-danger">Sắp hết</span>
+                                                        <span th:if="${product.currentStock > product.threshold / 2 && product.currentStock <= product.threshold}" class="badge bg-warning">Cần nhập thêm</span>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${#lists.isEmpty(lowStockReport)}">
+                                                    <td colspan="5" class="text-center">Không có sản phẩm nào sắp hết hàng</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Kết thúc sản phẩm sắp hết hàng -->
+
+                        <!-- Sản phẩm sắp hết hạn bắt đầu -->
+                        <div class="col-xl-6 col-lg-12 col-md-6">
+                            <div class="card">
+                                <div class="card-header border-0 pb-1">
+                                    <div class="card-header-title">
+                                        <h4>Sản phẩm sắp hết hạn</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mã sản phẩm</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>Ngày hết hạn</th>
+                                                    <th>Trạng thái</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="product : ${expiringProducts}">
+                                                    <td th:text="${'P' + product.productId}">P001</td>
+                                                    <td th:text="${product.productName}">Paracetamol 500mg</td>
+                                                    <td th:text="${#dates.format(product.expirationDate, 'dd-MM-yyyy')}">30-06-2023</td>
+                                                    <td>
+                                                        <span th:if="${#dates.createNow() >= product.expirationDate}" class="badge bg-danger">Đã hết hạn</span>
+                                                        <span th:if="${#dates.createNow() < product.expirationDate && #dates.daysBetween(#dates.createNow(), product.expirationDate) <= 15}" class="badge bg-danger">Sắp hết hạn</span>
+                                                        <span th:if="${#dates.createNow() < product.expirationDate && #dates.daysBetween(#dates.createNow(), product.expirationDate) > 15 && #dates.daysBetween(#dates.createNow(), product.expirationDate) <= 30}" class="badge bg-warning">Sắp hết hạn</span>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${#lists.isEmpty(expiringProducts)}">
+                                                    <td colspan="4" class="text-center">Không có sản phẩm nào sắp hết hạn</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Kết thúc sản phẩm sắp hết hạn -->
+
+                        <!-- Biểu đồ nhập/xuất kho bắt đầu -->
+                        <div class="col-12">
+                            <div class="card o-hidden">
+                                <div class="card-header border-0 pb-1">
+                                    <div class="card-header-title">
+                                        <h4>Thống kê nhập/xuất kho</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div id="stock-in-out-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Kết thúc biểu đồ nhập/xuất kho -->
+
+                        <!-- Lịch sử giao dịch kho bắt đầu -->
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header border-0 pb-1">
+                                    <div class="card-header-title">
+                                        <h4>Lịch sử giao dịch kho</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div>
+                                        <div class="table-responsive">
+                                            <table class="user-table list-table table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Mã giao dịch</th>
+                                                        <th>Loại giao dịch</th>
+                                                        <th>Ngày</th>
+                                                        <th>Người thực hiện</th>
+                                                        <th>Trạng thái</th>
+                                                        <th>Tùy chọn</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each="transaction : ${recentTransactions}">
+                                                        <td th:text="${transaction.transactionType.name() == 'STOCK_IN' ? 'SI-' + transaction.id : 'SO-' + transaction.id}">SI-003</td>
+                                                        <td th:text="${transaction.transactionType.name() == 'STOCK_IN' ? 'Nhập kho' : 'Xuất kho'}">Nhập kho</td>
+                                                        <td th:text="${#dates.format(transaction.transactionDate, 'dd-MM-yyyy')}">15-05-2023</td>
+                                                        <td th:text="${transaction.inventoryManagerName}">Lê Văn C</td>
+                                                        <td>
+                                                            <span th:if="${transaction.status.name() == 'PENDING'}" class="status-pending">Chờ xử lý</span>
+                                                            <span th:if="${transaction.status.name() == 'RECEIVED'}" class="status-received">Đã nhận</span>
+                                                            <span th:if="${transaction.status.name() == 'CHECKED'}" class="status-checked">Đã kiểm tra</span>
+                                                            <span th:if="${transaction.status.name() == 'COMPLETED'}" class="status-close">Hoàn thành</span>
+                                                        </td>
+                                                        <td>
+                                                            <ul>
+                                                                <li>
+                                                                    <a th:if="${transaction.transactionType.name() == 'STOCK_IN'}" 
+                                                                        >
+                                                                        <i class="ri-eye-line"></i>
+                                                                    </a>
+                                                                    <a th:if="${transaction.transactionType.name() == 'STOCK_OUT'}" 
+                                                                        >
+                                                                        <i class="ri-eye-line"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <tr th:if="${#lists.isEmpty(recentTransactions)}">
+                                                        <td colspan="6" class="text-center">Không có giao dịch nào gần đây</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Kết thúc lịch sử giao dịch kho -->
+                    </div>
+                </div>
+                <!-- Container-fluid kết thúc -->
+
+                <!-- Bắt đầu chân trang -->
+                <div class="container-fluid">
+                    <footer class="footer">
+                        <div class="row">
+                            <div class="col-md-12 footer-copyright text-center">
+                                <p class="mb-0">Bản quyền 2022 © Chủ đề Fastkart bởi pixelstrap</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+            <!-- Kết thúc phần báo cáo -->
+        </div>
+        <!-- Kết thúc nội dung trang -->
+    </div>
+    <!-- Kết thúc page-wrapper -->
+
+    <!-- Bắt đầu Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title" id="staticBackdropLabel">Đăng xuất</h5>
+                    <p>Bạn có chắc chắn muốn đăng xuất?</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="button-box">
+                        <button type="button" class="btn btn--no" data-bs-dismiss="modal">Không</button>
+                        <button type="button" onclick="location.href = 'login.html';"
+                            class="btn btn--yes btn-primary">Có</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Kết thúc Modal -->
+
+    <!-- latest js -->
+    <script th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+
+    <!-- Bootstrap js -->
+    <script th:src="@{/assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
+
+    <!-- feather icon js -->
+    <script th:src="@{/assets/js/icons/feather-icon/feather.min.js}"></script>
+    <script th:src="@{/assets/js/icons/feather-icon/feather-icon.js}"></script>
+
+    <!-- scrollbar simplebar js -->
+    <script th:src="@{/assets/js/scrollbar/simplebar.js}"></script>
+    <script th:src="@{/assets/js/scrollbar/custom.js}"></script>
+
+    <!-- Sidebar js -->
+    <script th:src="@{/assets/js/config.js}"></script>
+
+    <!-- tooltip init js -->
+    <script th:src="@{/assets/js/tooltip-init.js}"></script>
+
+    <!-- Plugins js -->
+    <script th:src="@{/assets/js/sidebar-menu.js}"></script>
+    <script th:src="@{/assets/js/notify/bootstrap-notify.min.js}"></script>
+    <script th:src="@{/assets/js/notify/index.js}"></script>
+
+    <!-- Apexchar js -->
+    <script th:src="@{/assets/js/chart/apex-chart/apex-chart1.js}"></script>
+    <script th:src="@{/assets/js/chart/apex-chart/moment.min.js}"></script>
+    <script th:src="@{/assets/js/chart/apex-chart/apex-chart.js}"></script>
+    <script th:src="@{/assets/js/chart/apex-chart/stock-prices.js}"></script>
+    <script th:src="@{/assets/js/chart/apex-chart/chart-custom.js}"></script>
+
+    <!-- customizer js -->
+    <script th:src="@{/assets/js/customizer.js}"></script>
+
+    <!-- ratio js -->
+    <script th:src="@{/assets/js/ratio.js}"></script>
+
+    <!-- sidebar effect -->
+    <script th:src="@{/assets/js/sidebareffect.js}"></script>
+
+    <!-- Theme js -->
+    <script th:src="@{/assets/js/script.js}"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

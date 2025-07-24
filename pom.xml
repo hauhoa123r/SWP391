@@ -82,7 +82,7 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 		<!-- H2 Database for testing -->
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -231,6 +231,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-http44</artifactId>
+			<version>1.36.0</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<repositories>

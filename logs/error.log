@@ -1,0 +1,3 @@
+2025-07-24 11:23:01.116 [http-nio-8080-exec-10] ERROR - ❌ [2025-07-24T11:23:01.116002800] GET /frontend/assets/images/01.png | User: tuanhai362005tttt@gmail.com | Message: No static resource frontend/assets/images/01.png.
+2025-07-24 11:23:58.295 [http-nio-8080-exec-6] ERROR - ❌ [2025-07-24T11:23:58.295495700] GET /api/patient/booking/patient/page/0 | User: tuanhai362005tttt@gmail.com | Message: Cannot invoke "org.project.entity.UserEntity.getId()" because "userEntity" is null
+2025-07-24 11:25:25.415 [http-nio-8080-exec-10] ERROR - ❌ [2025-07-24T11:25:25.415433500] GET /.well-known/appspecific/com.chrome.devtools.json | User: tuanhai362005tttt@gmail.com | Message: No static resource .well-known/appspecific/com.chrome.devtools.json.

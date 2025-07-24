@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbox Fragment</title>
+    <style>
+        /* Đảm bảo không bị ghi đè bởi các style khác */
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000; /* Z-index cao để luôn nằm trên các thành phần khác */
+        }
+
+        .chat-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #1AB8D6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .chat-icon:hover {
+            background-color: #139bb3;
+        }
+
+        .chat-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .chatbox {
+            width: 280px; /* Kích thước nhỏ hơn */
+            height: 350px;
+            background: #ffffff;
+            border: 2px solid #1AB8D6;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbox-header {
+            background-color: #1AB8D6;
+            color: white;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #139bb3;
+        }
+
+        .chatbox-header .close-btn {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .chatbox-body {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+
+        .chatbox-body .message {
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            max-width: 80%;
+            line-height: 1.4;
+            font-size: 13px;
+        }
+
+        .chatbox-body .user-message {
+            background-color: #1AB8D6;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .chatbox-body .bot-message {
+            background-color: #e9ecef;
+            color: #333;
+            margin-right: auto;
+        }
+
+        .chatbox-footer {
+            padding: 8px;
+            background-color: #fff;
+            border-top: 1px solid #1AB8D6;
+        }
+
+        .chatbox-footer input {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #1AB8D6;
+            border-radius: 6px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .chatbox-footer input:focus {
+            border-color: #139bb3;
+        }
+    </style>
+</head>
+<body>
+<div th:fragment="chatbox" class="chat-container">
+    <!-- Chat Icon -->
+    <div class="chat-icon" id="chat-icon">
+        <svg viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+            <path d="M9 11h6v2H9z"/>
+        </svg>
+    </div>
+
+    <!-- Chatbox -->
+    <div class="chatbox" id="chatbox" th:class="${chatboxOpen} ? 'chatbox d-flex' : 'chatbox'">
+        <div class="chatbox-header">
+            <span th:text="${chatTitle} ?: 'Chat Hỗ Trợ'"></span>
+            <span class="close-btn" id="close-chat">×</span>
+        </div>
+        <div class="chatbox-body" id="chatbox-body">
+            <div class="message bot-message" th:each="message : ${messages}">
+                <span th:text="${message}"></span>
+            </div>
+            <div class="message bot-message" th:unless="${messages}">Chào bạn! Tôi là trợ lý ảo, sẵn sàng hỗ trợ bạn.</div>
+        </div>
+        <div class="chatbox-footer">
+            <input type="text" id="chat-input" th:placeholder="${inputPlaceholder} ?: 'Nhập tin nhắn...'" />
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatIcon = document.getElementById('chat-icon');
+        const chatbox = document.getElementById('chatbox');
+        const closeChat = document.getElementById('close-chat');
+        const chatInput = document.getElementById('chat-input');
+        const chatBody = document.getElementById('chatbox-body');
+
+        // Hiển thị/ẩn chatbox khi click vào icon
+        chatIcon.addEventListener('click', () => {
+            chatbox.style.display = chatbox.style.display === 'none' ? 'flex' : 'none';
+        });
+
+        // Ẩn chatbox khi click vào nút đóng
+        closeChat.addEventListener('click', () => {
+            chatbox.style.display = 'none';
+        });
+
+        // Xử lý gửi tin nhắn
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && chatInput.value.trim()) {
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user-message';
+                userMessage.textContent = chatInput.value;
+                chatBody.appendChild(userMessage);
+
+                // Giả lập phản hồi từ bot
+                setTimeout(() => {
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'message bot-message';
+                    botMessage.textContent = 'Cảm ơn bạn! Tôi sẽ hỗ trợ ngay.';
+                    chatBody.appendChild(botMessage);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                }, 500);
+
+                chatInput.value = '';
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+        });
+    });
+</script>
+</body>
+</html>

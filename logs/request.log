@@ -1,0 +1,222 @@
+2025-07-24 11:18:38.028 [http-nio-8080-exec-1] INFO  - 📌 [2025-07-24T11:18:38.028586800] GET /api/admin/users từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: page=0&size=10
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 273 ms
+📦 Phản hồi trả về: {"content":[{"userId":1,"userRole":"PATIENT","phoneNumber":"0682631474","email":"user_1@example.com","userStatus":"ACTIVE","isVerified":true,"twoFactorEnabled":true},{"userId":2,"userRole":"STAFF","phoneNumber":"0983199986","email":"user_2@example.com","userStatus":"ACTIVE","isVerified":true,"twoFactorEnabled":false},{"userId":3,"userRole":"ADMIN","phoneNumber":"0756420532","email":"user_3@example.com","userStatus":"ACTIVE","isVerified":true,"twoFactorEnabled":false},{"userId":4,"userRole":"PATI...
+
+2025-07-24 11:18:38.043 [http-nio-8080-exec-2] INFO  - 📌 [2025-07-24T11:18:38.043489200] GET /api/admin/users từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: page=0&size=10
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 6 ms
+📦 Phản hồi trả về: {"content":[{"userId":1,"userRole":"PATIENT","phoneNumber":"0682631474","email":"user_1@example.com","userStatus":"ACTIVE","isVerified":true,"twoFactorEnabled":true},{"userId":2,"userRole":"STAFF","phoneNumber":"0983199986","email":"user_2@example.com","userStatus":"ACTIVE","isVerified":true,"twoFactorEnabled":false},{"userId":3,"userRole":"ADMIN","phoneNumber":"0756420532","email":"user_3@example.com","userStatus":"ACTIVE","isVerified":true,"twoFactorEnabled":false},{"userId":4,"userRole":"PATI...
+
+2025-07-24 11:19:27.756 [http-nio-8080-exec-4] INFO  - 📌 [2025-07-24T11:19:27.756455] DELETE /api/admin/users/1 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 100 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:19:27.769 [http-nio-8080-exec-5] INFO  - 📌 [2025-07-24T11:19:27.769455800] GET /api/admin/users từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: page=0&size=10
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 8 ms
+📦 Phản hồi trả về: {"content":[{"userId":2,"userRole":"STAFF","phoneNumber":"0983199986","email":"user_2@example.com","userStatus":"ACTIVE","isVerified":true,"twoFactorEnabled":false},{"userId":3,"userRole":"ADMIN","phoneNumber":"0756420532","email":"user_3@example.com","userStatus":"ACTIVE","isVerified":true,"twoFactorEnabled":false},{"userId":4,"userRole":"PATIENT","phoneNumber":"0007755867","email":"user_4@example.com","userStatus":"ACTIVE","isVerified":true,"twoFactorEnabled":false},{"userId":5,"userRole":"PAT...
+
+2025-07-24 11:22:07.819 [http-nio-8080-exec-1] INFO  - 📌 [2025-07-24T11:22:07.819027] GET / từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 1618 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:22:09.878 [http-nio-8080-exec-7] INFO  - 📌 [2025-07-24T11:22:09.878919300] GET /frontend/assets/images/general/service.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 10 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:22:09.878 [http-nio-8080-exec-6] INFO  - 📌 [2025-07-24T11:22:09.878919300] GET /frontend/assets/images/general/doctor.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 10 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:22:09.878 [http-nio-8080-exec-10] INFO  - 📌 [2025-07-24T11:22:09.878919300] GET /frontend/assets/images/general/treatment.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 10 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:22:16.040 [http-nio-8080-exec-9] INFO  - 📌 [2025-07-24T11:22:16.040828900] GET /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: (redirectTo=/patient/appointment)
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 46 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:22:21.016 [http-nio-8080-exec-2] INFO  - 📌 [2025-07-24T11:22:21.016213700] GET /auth-view/register từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 80 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:22:47.057 [http-nio-8080-exec-5] INFO  - 📌 [2025-07-24T11:22:47.057350300] POST /auth-view/register từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: email=[HIDDEN]&phoneNumber=0983019065&password=*****&fullName=Ph%C3%B9ng+Tu%E1%BA%A5n+H%E1%BA%A3i&address=210+Nguy%E1%BB%85n+%C4%90%C3%ACnh+Chi%E1%BB%83u&birthdate=2025-07-03&gender=MALE&familyRelationship=SELF
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 67 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:22:55.935 [http-nio-8080-exec-4] INFO  - 📌 [2025-07-24T11:22:55.935120500] POST /auth-view/register từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: email=[HIDDEN]&phoneNumber=0983019065&password=*****&fullName=Ph%C3%B9ng+Tu%E1%BA%A5n+H%E1%BA%A3i&address=210+Nguy%E1%BB%85n+%C4%90%C3%ACnh+Chi%E1%BB%83u&birthdate=2025-07-03&gender=MALE&familyRelationship=SELF
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 169 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:23:00.891 [http-nio-8080-exec-6] INFO  - 📌 [2025-07-24T11:23:00.891099800] POST /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: redirectTo=&email=[HIDDEN]&password=*****
+📤 Trạng thái HTTP: 302, Thời gian xử lý: 219 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:23:01.044 [http-nio-8080-exec-10] INFO  - 📌 [2025-07-24T11:23:01.044299500] GET /patient/showAddPrevious từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 85 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:23:26.311 [http-nio-8080-exec-5] INFO  - 📌 [2025-07-24T11:23:26.311297100] GET / từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 194 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:23:27.169 [http-nio-8080-exec-4] INFO  - 📌 [2025-07-24T11:23:27.169995700] GET /frontend/assets/images/general/service.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 1 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:23:27.169 [http-nio-8080-exec-9] INFO  - 📌 [2025-07-24T11:23:27.169995700] GET /frontend/assets/images/general/treatment.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 1 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:23:27.169 [http-nio-8080-exec-7] INFO  - 📌 [2025-07-24T11:23:27.169995700] GET /frontend/assets/images/general/doctor.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 1 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:23:29.314 [http-nio-8080-exec-6] INFO  - 📌 [2025-07-24T11:23:29.314415] GET /patient/appointment từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 115 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:23:29.730 [http-nio-8080-exec-2] INFO  - 📌 [2025-07-24T11:23:29.730793700] GET /api/patient/booking/hospital/page/0 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 100 ms
+📦 Phản hồi trả về: {"currentPage":0,"hospitals":[{"id":1,"name":"San Jose General Hospital","address":"6256 Main St, San Jose, USA","email":"info@generalhospital.org","phoneNumber":"(379) 500-3673","avatarUrl":"https://api.dicebear.com/6.x/identicon/svg?seed=10"},{"id":2,"name":"San Francisco Metropolitan General Hospital","address":"3347 Pine Street, San Francisco, USA","email":"info@metropolitangeneralhospital.org","phoneNumber":"(169) 234-5643","avatarUrl":"https://api.dicebear.com/6.x/identicon/svg?seed=15"},{...
+
+2025-07-24 11:23:40.121 [http-nio-8080-exec-4] INFO  - 📌 [2025-07-24T11:23:40.121394800] GET /api/department/page/0/hospital/1 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 12 ms
+📦 Phản hồi trả về: {"currentPage":0,"totalPages":3,"departments":[{"id":1,"name":"Internal Medicine","slogan":"Sức khỏe của bạn là ưu tiên của chúng tôi","description":"Specializes in diagnosing and treating internal diseases such as cardiovascular, respiratory, and digestive disorders. The department is equipped with modern facilities and staffed by experienced,\n    dedicated medical professionals. We are committed to providing high-quality healthcare services and ensuring patient satisfaction.","bannerUrl":"htt...
+
+2025-07-24 11:23:43.935 [http-nio-8080-exec-3] INFO  - 📌 [2025-07-24T11:23:43.935091500] GET /api/doctor/page/0/hospital/1/department/1 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 61 ms
+📦 Phản hồi trả về: {"currentPage":0,"totalPages":2,"doctors":[{"id":263,"staffEntity":{"id":263,"fullName":"Mr. Jennifer Garcia","avatarUrl":"https://api.dicebear.com/6.x/avataaars/svg?seed=20","departmentEntity":{"id":1,"name":"Internal Medicine","slogan":"Sức khỏe của bạn là ưu tiên của chúng tôi","description":"Specializes in diagnosing and treating internal diseases such as cardiovascular, respiratory, and digestive disorders. The department is equipped with modern facilities and staffed by experienced,\n    d...
+
+2025-07-24 11:23:48.614 [http-nio-8080-exec-10] INFO  - 📌 [2025-07-24T11:23:48.614074400] GET /api/service/page/0/department/1 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 39 ms
+📦 Phản hồi trả về: {"currentPage":0,"services":[{"serviceFeatureEntities":[{"id":643,"name":"Comprehensive Assessment","description":"Thorough evaluation of your health status using modern diagnostic methods and professional expertise."},{"id":180,"name":"Professional Consultation","description":"One-on-one session with a qualified healthcare professional to address your specific needs and concerns."},{"id":1106,"name":"Detailed Documentation","description":"Complete medical records and recommendations provided in...
+
+2025-07-24 11:23:58.295 [http-nio-8080-exec-6] INFO  - 📌 [2025-07-24T11:23:58.295495700] GET /api/patient/booking/patient/page/0 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 0 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:24:11.193 [http-nio-8080-exec-9] INFO  - 📌 [2025-07-24T11:24:11.193079900] GET /service từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 59 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:24:11.457 [http-nio-8080-exec-3] INFO  - 📌 [2025-07-24T11:24:11.457348900] GET /api/service/page/0 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 42 ms
+📦 Phản hồi trả về: {"currentPage":0,"services":[{"serviceFeatureEntities":[{"id":1418,"name":"Follow-up Care","description":"Additional check-up appointments included to monitor progress and adjust treatment as needed."},{"id":505,"name":"Comprehensive Assessment","description":"Thorough evaluation of your health status using modern diagnostic methods and professional expertise."},{"id":968,"name":"Detailed Documentation","description":"Complete medical records and recommendations provided in both digital and prin...
+
+2025-07-24 11:24:16.174 [http-nio-8080-exec-10] INFO  - 📌 [2025-07-24T11:24:16.174364900] GET /service/detail/262 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 65 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:24:50.405 [http-nio-8080-exec-9] INFO  - 📌 [2025-07-24T11:24:50.405959900] GET /department từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 54 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:24:50.615 [http-nio-8080-exec-1] INFO  - 📌 [2025-07-24T11:24:50.615702100] GET /api/department/page/0 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 10 ms
+📦 Phản hồi trả về: {"currentPage":0,"totalPages":3,"departments":[{"id":1,"name":"Internal Medicine","slogan":"Sức khỏe của bạn là ưu tiên của chúng tôi","description":"Specializes in diagnosing and treating internal diseases such as cardiovascular, respiratory, and digestive disorders. The department is equipped with modern facilities and staffed by experienced,\n    dedicated medical professionals. We are committed to providing high-quality healthcare services and ensuring patient satisfaction.","bannerUrl":"htt...
+
+2025-07-24 11:24:53.414 [http-nio-8080-exec-8] INFO  - 📌 [2025-07-24T11:24:53.414807] GET /department/detail/1 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 95 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:25:25.373 [http-nio-8080-exec-3] INFO  - 📌 [2025-07-24T11:25:25.373475900] GET /department/detail/1 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 75 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:25:25.416 [http-nio-8080-exec-10] INFO  - 📌 [2025-07-24T11:25:25.416443700] GET /.well-known/appspecific/com.chrome.devtools.json từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 4 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:25:25.546 [http-nio-8080-exec-3] INFO  - 📌 [2025-07-24T11:25:25.546584200] GET /frontend/assets/css/maps/kivicare.min.css.map từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 27 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:25:25.548 [http-nio-8080-exec-9] INFO  - 📌 [2025-07-24T11:25:25.548034100] GET /frontend/assets/css/maps/customizer.min.css.map từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 29 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:25:25.549 [http-nio-8080-exec-5] INFO  - 📌 [2025-07-24T11:25:25.549205300] GET /frontend/assets/css/maps/rtl.min.css.map từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 29 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:25:25.549 [http-nio-8080-exec-8] INFO  - 📌 [2025-07-24T11:25:25.549205300] GET /frontend/assets/css/maps/custom.min.css.map từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 30 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 11:25:35.930 [http-nio-8080-exec-8] INFO  - 📌 [2025-07-24T11:25:35.930487900] GET /department/detail/1 từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: tuanhai362005tttt@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 120 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
