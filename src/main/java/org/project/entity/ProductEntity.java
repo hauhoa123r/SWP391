@@ -58,7 +58,6 @@ public class ProductEntity {
     private String imageUrl;
 
     @OneToMany
-    private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
     private final Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
@@ -71,18 +70,14 @@ public class ProductEntity {
     private MedicineEntity medicineEntity;
 
     @OneToMany(mappedBy = "productEntity")
-    private Set<OrderItemEntity> orderItemEntities = new LinkedHashSet<>();
     private final Set<OrderItemEntity> orderItemEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
     private PricingPlanEntity pricingPlanEntity;
 
     @OneToMany(mappedBy = "productEntity")
-    private Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities = new LinkedHashSet<>();
     private final Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities = new LinkedHashSet<>();
 
-    @ManyToMany
-    private Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
     @ManyToMany(mappedBy = "productEntities")
     private final Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
 
@@ -94,24 +89,16 @@ public class ProductEntity {
     )
     private final Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
 
-    @ManyToMany
-    private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
-    @OneToMany(mappedBy = "productEntity")
-    private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
-
     private final Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
     @OneToMany(mappedBy = "productEntity")
-    private Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
+    private final Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
 
     @OneToOne(mappedBy = "productEntity")
     private TestEntity testEntity;
 
-    private final Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
     @ManyToMany
     private Set<DepartmentEntity> departmentEntities = new LinkedHashSet<>();
     @ManyToMany
-    private Set<UserEntity> userEntities = new LinkedHashSet<>();
-
     private final Set<UserEntity> userEntities = new LinkedHashSet<>();
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'MEDICAL_PRODUCT'")

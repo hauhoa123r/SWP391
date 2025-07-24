@@ -15,6 +15,8 @@ import java.util.List;
 public interface StaffRepository extends JpaRepository<StaffEntity, Long> {
     Page<StaffEntity> findAllByStaffRole(StaffRole staffRole, Pageable pageable);
 
+    StaffEntity getById(Long id);
+
     Page<StaffEntity> findAllByStaffRoleAndDepartmentEntityName(StaffRole staffRole, String departmentEntityName, Pageable pageable);
 
     List<StaffEntity> findAllByStaffRoleAndDepartmentEntityNameAndIdIsNot(StaffRole staffRole, String departmentEntityName, Long id);
@@ -30,6 +32,4 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long> {
     List<StaffEntity> findByStaffRoleAndHospitalEntity_IdAndTechnicianEntity_TechnicianRank(StaffRole staffRole, Long hospitalEntityId, TechnicianRank technicianEntityTechnicianRank);
 
     StaffEntity findByUserEntity_Id(Long userEntityId);
-public interface StaffRepository extends JpaRepository<StaffEntity, Long>{
-	StaffEntity getById(Long id);
 }

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--/*@thymesVar id="breadCrumbTitle" type="String"*/-->
+<div class="iq-breadcrumb bg-primary-subtle" th:fragment="bread-crumb"
+     th:if="${!(#strings.isEmpty(#strings.trim(breadCrumbTitle)))}">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="text-center">
+            <h2 class="title" th:text="${breadCrumbTitle}">Tiêu đề trang</h2>
+            <ol class="breadcrumb justify-content-center mt-2 mb-0">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">Trang chủ</a>
+                </li>
+                <!--/*@thymesVar id="breadCrumbTexts" type="String[]"*/-->
+                <!--/*@thymesVar id="breadCrumbLinks" type="String[]"*/-->
+                <li class="breadcrumb-item" th:classappend="${index.last} ? 'acitve' : ''"
+                    th:each="text, index : ${breadCrumbTexts}">
+                    <th:block th:if="${index.last}" th:text="${text}">Tên mục</th:block>
+                    <a th:href="@{${breadCrumbLinks[index]}}" th:if="${!index.last}" th:text="${text}">Tên mục</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+</body>
+</html>
