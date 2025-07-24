@@ -27,29 +27,29 @@ public class AppointmentVController {
         Long userId = 8L;
         DoctorHeaderResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
-        model.addAttribute("content","dashboard-doctor/doctor_homepage");
-        return "dashboard-doctor/doctor_layout";
+        model.addAttribute("content","doctor-ui/doctor_homepage");
+        return "doctor-ui/doctor_layout";
     }
     @GetMapping("/appointments")
     public String doctorAppointments(Model model) {
         Long userId = 8L;
         DoctorHeaderResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
-        model.addAttribute("content", "dashboard-doctor/doctor_appointments");
-        return "dashboard-doctor/doctor_layout";
+        model.addAttribute("content", "doctor-ui/doctor_appointments");
+        return "doctor-ui/doctor_layout";
     }
     @GetMapping("/in-progress")
     public String doctorInProgress(Model model, @RequestParam("id") Long id) {
         Long userId = 8L;
         DoctorHeaderResponse doctorResponse = doctorService.getDoctorByUserId(userId);
         model.addAttribute("doctor", doctorResponse);
-        model.addAttribute("content", "dashboard-doctor/appointment_progress");
+        model.addAttribute("content", "doctor-ui/appointment_progress");
         model.addAttribute("id", id);
-        return "dashboard-doctor/doctor_layout";
+        return "doctor-ui/doctor_layout";
     }
     @GetMapping("/test-result")
     public String doctorLabTestResult(Model model) {
-        model.addAttribute("content","dashboard-doctor/doctor_result");
-        return "dashboard-doctor/doctor_layout";
+        model.addAttribute("content","doctor-ui/doctor_result");
+        return "doctor-ui/doctor_layout";
     }
 }

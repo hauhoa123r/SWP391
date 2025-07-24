@@ -7,9 +7,9 @@
     <title th:text="${pageTitle ?: 'KiviCare - Doctor Portal'}">KiviCare - Doctor Portal</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/core/libs.min.css}" />
-    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/kivicare.min.css}" />
-    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/font-awesome/css/all.min.css}" />
+    <link rel="stylesheet" th:href="@{/doctor-ui/assets/css/core/libs.min.css}" />
+    <link rel="stylesheet" th:href="@{/doctor-ui/assets/css/kivicare.min.css}" />
+    <link rel="stylesheet" th:href="@{/doctor-ui/assets/vendor/font-awesome/css/all.min.css}" />
     <!-- Custom CSS -->
     <style>
         body {
@@ -169,7 +169,7 @@
 <body>
     <div class="main-wrapper">
         <!-- Header -->
-        <div th:replace="~{/dashboard-doctor/doctor_header}"></div>
+        <div th:replace="~{/doctor-ui/doctor_header}"></div>
 
         <!-- Main Content -->
         <main class="content-wrapper">
@@ -212,8 +212,8 @@
 
 
     <!-- Scripts -->
-    <script th:src="@{/dashboard-doctor/assets/js/core/libs.min.js}"></script>
-    <script th:src="@{/dashboard-doctor/assets/js/core/external.min.js}"></script>
+    <script th:src="@{/doctor-ui/assets/js/core/libs.min.js}"></script>
+    <script th:src="@{/doctor-ui/assets/js/core/external.min.js}"></script>
     <!-- Additional JavaScript placeholder for page-specific scripts -->
     <th:block th:fragment="additionalJS"></th:block>
 </body>
