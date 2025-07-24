@@ -71,7 +71,7 @@ public class ShopController {
         log.info("Processing shop request: searchQuery={}, sortType={}, page={}, size={}, categoryId={}, minPrice={}, maxPrice={}, tag={}, label={}",
                 searchQuery, sortType, page, size, categoryId, minPrice, maxPrice, tagRaw, label);
 
-        ModelAndView mv = new ModelAndView("shop");
+        ModelAndView mv = new ModelAndView("frontend/shop");
         
         // Convert "%23" back to "#" for tag searches if needed
         String tagProcessed = tagRaw != null ? tagRaw.replace("%23", "#") : null;
@@ -233,7 +233,7 @@ public class ShopController {
     @GetMapping("/checkout")
     public ModelAndView checkout() {
         log.debug("Accessing checkout page");
-        return new ModelAndView("checkout");
+        return new ModelAndView("frontend/checkout");
     }
 
     /**
@@ -243,7 +243,7 @@ public class ShopController {
     @GetMapping("/my-account")
     public ModelAndView myAccount() {
         log.debug("Accessing my account page");
-        return new ModelAndView("my-account");
+        return new ModelAndView("frontend/my-account");
     }
 
     /**
@@ -253,7 +253,7 @@ public class ShopController {
     @GetMapping("/track-order")
     public ModelAndView trackOrder() {
         log.debug("Accessing track order page");
-        return new ModelAndView("track-order");
+        return new ModelAndView("frontend/track-order");
     }
 
     /**
@@ -263,7 +263,7 @@ public class ShopController {
     @GetMapping("/product-new")
     public ModelAndView productNew() {
         log.debug("Accessing new products page");
-        return new ModelAndView("product-new");
+        return new ModelAndView("frontend/product-new");
     }
 
     /**
@@ -273,7 +273,7 @@ public class ShopController {
     @GetMapping("/product-sale")
     public ModelAndView productSale() {
         log.debug("Accessing product sale page");
-        return new ModelAndView("product-sale");
+        return new ModelAndView("frontend/product-sale");
     }
 
     /**
@@ -283,7 +283,7 @@ public class ShopController {
     @GetMapping("/shop-left-sidebar")
     public ModelAndView shopLeftSidebar() {
         log.debug("Accessing shop with left sidebar");
-        return new ModelAndView("shop-left-sidebar");
+        return new ModelAndView("frontend/shop-left-sidebar");
     }
 
     /**
@@ -293,7 +293,7 @@ public class ShopController {
     @GetMapping("/shop-right-sidebar")
     public ModelAndView shopRightSidebar() {
         log.debug("Accessing shop with right sidebar");
-        return new ModelAndView("shop-right-sidebar");
+        return new ModelAndView("frontend/shop-right-sidebar");
     }
 
     /**
@@ -303,7 +303,7 @@ public class ShopController {
     @GetMapping("/shop-no-sidebar")
     public ModelAndView shopNoSidebar() {
         log.debug("Accessing shop with no sidebar");
-        return new ModelAndView("shop-no-sidebar");
+        return new ModelAndView("frontend/shop-no-sidebar");
     }
 
     // ==================== Helper methods ====================

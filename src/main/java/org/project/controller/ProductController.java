@@ -18,7 +18,7 @@ public class ProductController {
 
     @GetMapping("/product-standard/")
     public ModelAndView product() {
-        ModelAndView mv = new ModelAndView("/frontend/product-standard");
+        ModelAndView mv = new ModelAndView("frontend/product-standard");
         return mv;
     }
 
@@ -57,12 +57,12 @@ public class ProductController {
         model.addAttribute("relatedProducts",
                 pharmacyServiceImpl.findRandomProductsByType(detailDTO.getProduct().getType().toString()));
         // Return the view name
-        return "/frontend/product-standard";
+        return "frontend/product-standard";
     }
 
     @GetMapping("/product-home")
     public ModelAndView productHome() {
-        ModelAndView mv = new ModelAndView("/frontend/product-home");
+        ModelAndView mv = new ModelAndView("frontend/product-home");
         // Fetch top 10 products for the home page
         mv.addObject("products", pharmacyServiceImpl.findTop10Products());
         return mv;
@@ -70,7 +70,7 @@ public class ProductController {
 
     @GetMapping("/cart")
     public ModelAndView cart() {
-        ModelAndView mv = new ModelAndView("/frontend/cart");
+        ModelAndView mv = new ModelAndView("frontend/cart");
         return mv;
     }
 

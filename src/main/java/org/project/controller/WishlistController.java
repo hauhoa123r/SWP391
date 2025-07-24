@@ -36,7 +36,7 @@ public class WishlistController {
     public String viewWishlist(Model model, HttpSession session) {
         List<PharmacyResponse> items = wishlistService.getWishlistItems(getCurrentUserId(session));
         model.addAttribute("items", items);
-        return "wishlist"; // renders templates/wishlist.html
+        return "frontend/wishlist"; // renders templates/frontend/wishlist.html
     }
 
     /**

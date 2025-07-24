@@ -3,6 +3,8 @@ package org.project.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.converter.ConverterPharmacyProduct;
+import org.project.entity.ProductEntity;
+import org.project.entity.UserEntity;
 import org.project.entity.WishlistProductEntity;
 import org.project.entity.WishlistProductEntityId;
 import org.project.model.response.PharmacyResponse;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -58,15 +61,35 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     @Transactional
     public void addProduct(Long userId, Long productId, Integer quantity) {
+        // Check if already exists in wishlist
         WishlistProductEntityId id = new WishlistProductEntityId(userId, productId);
         if (wishlistRepo.existsById(id)) {
+            log.debug("Product {} already in wishlist for user {}", productId, userId);
             return;
         }
+        
+        // Fetch entities and validate they exist
+        Optional<ProductEntity> productOpt = productRepository.findById(productId);
+        Optional<UserEntity> userOpt = userRepository.findById(userId);
+        
+        if (productOpt.isEmpty()) {
+            log.error("Cannot add product to wishlist: Product with ID {} not found", productId);
+            return;
+        }
+        
+        if (userOpt.isEmpty()) {
+            log.error("Cannot add product to wishlist: User with ID {} not found", userId);
+            return;
+        }
+        
+        // Create and save the wishlist entry
         WishlistProductEntity entity = new WishlistProductEntity();
         entity.setId(id);
-        productRepository.findById(productId).ifPresent(entity::setProductEntity);
-        userRepository.findById(userId).ifPresent(entity::setUserEntity);
+        entity.setProductEntity(productOpt.get());
+        entity.setUserEntity(userOpt.get());
+        
         wishlistRepo.save(entity);
+        log.info("Added product {} to wishlist for user {}", productId, userId);
     }
 
     @Override

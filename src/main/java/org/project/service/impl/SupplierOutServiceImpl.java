@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.HashSet;
 
 @Service
 public class SupplierOutServiceImpl extends AbstractBaseTransactionServiceImpl<SupplierOutDTO> implements SupplierOutService {
@@ -224,28 +226,13 @@ public class SupplierOutServiceImpl extends AbstractBaseTransactionServiceImpl<S
     protected SupplierOutDTO convertToDTO(SupplierTransactionsEntity entity) {
         SupplierOutDTO dto = new SupplierOutDTO();
         
+        // Set basic information
         dto.setId(entity.getId());
-        
-        // Safely set supplier details
-        if (entity.getSupplierEntity() != null) {
         dto.setSupplierId(entity.getSupplierEntity().getId());
         dto.setSupplierName(entity.getSupplierEntity().getName());
-        dto.setSupplierContact(entity.getSupplierEntity().getPhoneNumber());
-        }
-        
-        // Safely set inventory manager details
-        if (entity.getInventoryManagerEntity() != null) {
-            dto.setInventoryManagerId(entity.getInventoryManagerEntity().getId());
-            
-            // Safely get staff name from inventory manager
-            try {
-            dto.setInventoryManagerName(entity.getInventoryManagerEntity().getStaffEntity().getFullName());
-            } catch (Exception e) {
-                dto.setInventoryManagerName("Unknown Manager");
-            }
-        }
-        
-        // Set transaction details
+        dto.setInventoryManagerId(entity.getInventoryManagerEntity().getId());
+        // TODO: Fix this if inventoryManagerEntity.getUser() is needed
+        dto.setInventoryManagerName(null); 
         dto.setTotalAmount(entity.getTotalAmount());
         dto.setTransactionDate(entity.getTransactionDate());
         dto.setStatus(entity.getStatus());
@@ -258,64 +245,67 @@ public class SupplierOutServiceImpl extends AbstractBaseTransactionServiceImpl<S
         dto.setPaymentMethod(entity.getPaymentMethod());
         dto.setDueDate(entity.getDueDate());
         dto.setPaymentDate(entity.getPaymentDate());
+        
+        // Set specific StockOut fields
         dto.setRecipient(entity.getRecipient());
         dto.setStockOutReason(entity.getStockOutReason());
+        dto.setTransactionType(entity.getTransactionType());
         
-        // Set transaction type (always STOCK_OUT for this service)
-        dto.setTransactionType(SupplierTransactionType.STOCK_OUT);
-        
-        // Set items if available
+        // Set items
         if (entity.getSupplierTransactionItemEntities() != null && !entity.getSupplierTransactionItemEntities().isEmpty()) {
             List<SupplierRequestItemDTO> items = new ArrayList<>();
             
             for (SupplierTransactionItemEntity itemEntity : entity.getSupplierTransactionItemEntities()) {
                 SupplierRequestItemDTO itemDTO = new SupplierRequestItemDTO();
                 
-                if (itemEntity.getId() != null) {
-                    itemDTO.setProductId(itemEntity.getId().getProductId());
-                }
-                
+                // Map item fields
+                itemDTO.setProductId(itemEntity.getProductEntity().getId());
+                itemDTO.setProductName(itemEntity.getProductEntity().getName());
                 itemDTO.setQuantity(itemEntity.getQuantity());
                 itemDTO.setUnitPrice(itemEntity.getUnitPrice());
                 
-                // Set product details if available
-                if (itemEntity.getProductEntity() != null) {
-                    itemDTO.setProductName(itemEntity.getProductEntity().getName());
-                    
-                    // Only set if these fields exist in DTO
-                    if (itemEntity.getProductEntity().getProductType() != null) {
-                        try {
-                            itemDTO.setProductType(itemEntity.getProductEntity().getProductType());
-                        } catch (Exception e) {
-                            // Field might not exist, ignore
-                        }
-                    }
-                    
-                    try {
-                        itemDTO.setProductUnit(itemEntity.getProductEntity().getUnit());
-                    } catch (Exception e) {
-                        // Field might not exist, ignore
-                    }
+                // Set product type if available
+                if (itemEntity.getProductEntity() != null && itemEntity.getProductEntity().getProductType() != null) {
+                    itemDTO.setProductType(itemEntity.getProductEntity().getProductType());
                 }
                 
                 items.add(itemDTO);
             }
             
             dto.setItems(items);
-        }
-        
-        // Set type based on first product (if available)
-        if (entity.getSupplierTransactionItemEntities() != null && !entity.getSupplierTransactionItemEntities().isEmpty()) {
-            try {
-                ProductEntity firstProduct = entity.getSupplierTransactionItemEntities().iterator().next().getProductEntity();
-                if (firstProduct != null && firstProduct.getProductType() != null) {
-                    dto.setType(firstProduct.getProductType().name());
-                }
-            } catch (Exception e) {
-                dto.setType(null);
-            }
+            
+            // Determine and set the type field based on items
+            dto.setType(determineProductType(entity.getSupplierTransactionItemEntities()));
+        } else {
+            dto.setItems(new ArrayList<>());
+            // Set default type for orders without items
+            dto.setType("MEDICAL_PRODUCT");
         }
         
         return dto;
+    }
+    
+    /**
+     * Determine the product type for an order based on its items
+     * @param items The collection of items in the order
+     * @return The determined product type (MEDICINE or MEDICAL_PRODUCT)
+     */
+    private String determineProductType(Collection<SupplierTransactionItemEntity> items) {
+        // Nếu không có sản phẩm, mặc định là thiết bị y tế
+        if (items == null || items.isEmpty()) {
+            return "MEDICAL_PRODUCT";
+        }
+        
+        // Lấy sản phẩm đầu tiên trong danh sách
+        SupplierTransactionItemEntity firstItem = items.iterator().next();
+        
+        // Kiểm tra và lấy loại của sản phẩm đầu tiên
+        if (firstItem.getProductEntity() != null && 
+            firstItem.getProductEntity().getProductType() != null) {
+            return firstItem.getProductEntity().getProductType().name();
+        }
+        
+        // Nếu không lấy được loại của sản phẩm đầu tiên, mặc định là thiết bị y tế
+        return "MEDICAL_PRODUCT";
     }
 } 
