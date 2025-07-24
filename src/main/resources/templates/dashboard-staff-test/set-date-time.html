@@ -772,7 +772,7 @@
                         <div class="col-md-12">
                             <div class="flex-wrap d-flex justify-content-between align-items-center flex-wrap gap-3">
                                 <div>
-                                    <h1 class="fw-bold mb-0 rtl-primary-color">Set Date Time</h1>
+                                    <h1 class="fw-bold mb-0 rtl-primary-color">Lập lịch lấy mẫu</h1>
                                 </div>
                             </div>
                         </div>
@@ -802,14 +802,14 @@
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between mb-0">
                                     <div class="header-title">
-                                        <h4 class="card-title">Order Patient's</h4>
+                                        <h4 class="card-title">Thông tin bệnh nhân</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <form>
                                         <div class="form-group">
                                             <div class="profile-img-edit position-relative">
-                                                <img src="./assets/images/avatars/01.png" th:src="@{/dashboard-staff-test/assets/images/avatars/01.png}"
+                                                <img th:src="${patient.getImagePatient()}"
  alt="profile-pic"
                                                     class="theme-color-default-img profile-pic rounded avatar-100"
                                                     loading="lazy">
@@ -838,19 +838,19 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="form-label" for="patientName">Patient Name</label>
+                                            <label class="form-label" for="patientName">Tên bệnh nhân</label>
                                             <input type="text" class="form-control readonly-input" id="patientName"
                                                 placeholder="Patient Name" readonly th:value="${patient.getPatientName()}">
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="form-label" for="department" >Department</label>
+                                            <label class="form-label" for="department" >Khoa</label>
                                             <input type="text" class="form-control readonly-input" id="department"
                                                 placeholder="Referring Department" readonly th:value="${patient.getDepartmentName()}">
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="form-label" for="testType">Test Type:</label>
+                                            <label class="form-label" for="testType">Loại xét nghiệm:</label>
                                             <input type="text" class="form-control readonly-input" id="testType"
                                                 placeholder="Test Type" readonly th:value="${patient.getTestType()}">
                                         </div>
@@ -863,7 +863,7 @@
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between mb-0">
                                     <div class="header-title">
-                                        <h4 class="card-title">Set Date And Time</h4>
+                                        <h4 class="card-title">Gửi ngày và giờ xét nghiệm</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -873,29 +873,29 @@
                                             <input type="hidden" name="testRequestId" th:value="${patient.getTestRequestId()}">
                                             <div class="row">
                                                 <div class="form-group col-md-4">
-                                                    <label class="form-label" for="fname">Date</label>
+                                                    <label class="form-label" for="fname">Ngày</label>
                                                     <div id="dateTrigger" class="form-control date-select-box invalid"
                                                         onclick="showDatePicker(this)">
-                                                        <span class="date-text">Click to select date</span>
+                                                        <span class="date-text">Bấm để chọn ngày</span>
                                                         <i class="bi bi-x-circle-fill status-icon"></i>
                                                         <input type="hidden" id="selectedDateValue" name="date">
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label class="form-label" for="timeTrigger">Time:</label>
+                                                    <label class="form-label" for="timeTrigger">Giờ:</label>
                                                     <div class="time-select-box invalid" onclick="showTimePicker(this)">
-                                                        <span class="time-text">Click to select time</span>
+                                                        <span class="time-text">Bấm đề chọn giờ</span>
                                                         <i class="bi bi-x-circle-fill status-icon"></i>
                                                         <input type="hidden" id="selectedTimeValue" name="time">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group col-md-4">
-                                                    <label class="form-label" for="managerSelect">Manager:</label>
+                                                    <label class="form-label" for="managerSelect">Người lấy mẫu:</label>
                                                     <div class="manager-select-group">
                                                         <select class="form-select manager-select" id="managerSelect"
                                                             required name="managerId">
-                                                            <option value="">-- Chọn người quản lý --</option>
+                                                            <option value="">-- Chọn người lấy mẫu --</option>
                                                             <option th:each="item : ${patient.getManagerName()}"
                                                                     th:text="${item.getName()}"
                                                                     th:value="${item.getId()}">
@@ -906,17 +906,17 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12 position-relative">
-                                                    <label class="form-label" for="note">Note:</label>
+                                                    <label class="form-label" for="note">Ghi chú:</label>
                                                     <div class="note-input-wrapper form-control p-0"
                                                         style="position: relative;">
                                                         <textarea id="note" class="form-control border-0" rows="4"
-                                                            placeholder="Enter your note here..." required
+                                                            placeholder="Nhập ghi chú ở đây..." required
                                                             style="resize: vertical; box-shadow: none;" name = "note"></textarea>
                                                         <i id="note-status-icon" class="bi bi-x-circle-fill status-icon"
                                                             style="position: absolute; top: 10px; right: 10px; color: #dc3545; font-size: 1.3em;"></i>
                                                     </div>
                                                     <div class="note-error text-danger"
-                                                        style="display:none; font-size: 0.95em;">Please write something!
+                                                        style="display:none; font-size: 0.95em;">Điền bất kì gì!
                                                     </div>
                                                 </div>
 
@@ -926,7 +926,7 @@
                                             <div class="d-flex justify-content-end">
                                                 <button type="submit" class="btn btn-primary">
                                                     <span class="btn-inner">
-                                                        <span class="text d-inline-block align-middle">Submit</span>
+                                                        <span class="text d-inline-block align-middle">Gửi</span>
                                                         <span class="icon d-inline-block align-middle ms-1 ps-2">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
                                                                 viewBox="0 0 8 8" fill="none">
@@ -939,7 +939,7 @@
                                                 </button>
                                                 <button type="button" class="btn btn-secondary ms-2"
                                                     onclick="window.location.href='sampling-schedule'">
-                                                    Cancel
+                                                    Quay lại
                                                 </button>
 
                                             </div>
@@ -1972,7 +1972,7 @@
                         icon.classList.remove("bi-check-circle-fill");
                         icon.classList.add("bi-x-circle-fill");
                         icon.style.color = "#dc3545";
-                        timeSpan.textContent = "Can not select past time";
+                        timeSpan.textContent = "Không thể chọn thời gian quá khứ";
                         document.getElementById('selectedTimeValue').value = "";
                     } else {
                         el.classList.remove("invalid");
@@ -2098,28 +2098,30 @@
  defer></script>
 </body>
 <script>
-    document.getElementById('create-sample-form').addEventListener('submit', function (e) {
-        e.preventDefault();
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('create-sample-form').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-        const form = e.target;
-        const formData = new FormData(form);
+            const form = e.target;
+            const formData = new FormData(form);
 
-        fetch('/api/sample/create', {
-            method: 'POST',
-            body: formData
-        })
-            .then(async response => {
-                const message = await response.text();
-                if (response.ok) {
-                    window.location.href = '/lab/sampling-schedule';
-                } else {
-                    alert("Tạo không thành công: " + message);
-                }
+            fetch('/api/sample/create', {
+                method: 'POST',
+                body: formData
             })
-            .catch(error => {
-                console.error("Lỗi khi gửi request:", error);
-                alert("Đã có lỗi xảy ra trong quá trình gửi dữ liệu");
-            });
+                .then(async response => {
+                    const message = await response.text();
+                    if (response.ok) {
+                        window.location.href = '/lab/sampling-schedule';
+                    } else {
+                        alert("Tạo không thành công: " + message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi khi gửi request:", error);
+                    alert("Đã có lỗi xảy ra trong quá trình gửi dữ liệu");
+                });
+        });
     });
 </script>
 

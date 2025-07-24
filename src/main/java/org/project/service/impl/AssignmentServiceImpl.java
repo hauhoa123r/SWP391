@@ -1,11 +1,14 @@
 package org.project.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.project.converter.AssignmentListConverter;
+import org.project.entity.SampleEntity;
 import org.project.entity.TestRequestEntity;
 import org.project.enums.RequestStatus;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.AssignmentListDTO;
 import org.project.repository.AssignmentRepository;
+import org.project.repository.SampleScheduleRepository;
 import org.project.repository.impl.AssignmentRepositoryCustomImpl;
 import org.project.service.AssignmentService;
 import org.springframework.data.domain.Page;
@@ -15,16 +18,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class AssignmentServiceImpl implements AssignmentService {
     private final AssignmentRepositoryCustomImpl assignmentRepositoryCustom;
     private final AssignmentListConverter assignmentListConverter;
     private final AssignmentRepository assignmentRepository;
-
+    private final SampleScheduleRepository sampleScheduleRepositoryImpl;
     public AssignmentServiceImpl(AssignmentRepositoryCustomImpl assignmentRepositoryCustom,
-                                 AssignmentListConverter assignmentListConverter, AssignmentRepository assignmentRepository) {
+                                 AssignmentListConverter assignmentListConverter,
+                                 AssignmentRepository assignmentRepository,
+                                 SampleScheduleRepository sampleScheduleRepositoryImpl) {
         this.assignmentRepositoryCustom = assignmentRepositoryCustom;
         this.assignmentListConverter = assignmentListConverter;
         this.assignmentRepository = assignmentRepository;
+        this.sampleScheduleRepositoryImpl = sampleScheduleRepositoryImpl;
     }
 
     @Override
@@ -45,6 +52,10 @@ public class AssignmentServiceImpl implements AssignmentService {
         }
         TestRequestEntity testRequestEntity = optionalTestRequestEntity.get();
         testRequestEntity.setRequestStatus(RequestStatus.received);
+        SampleEntity sampleEntity = new SampleEntity();
+        sampleEntity.setSampleStatus("pending");
+        sampleEntity.setTestRequest(testRequestEntity);
+        sampleScheduleRepositoryImpl.save(sampleEntity);
         assignmentRepository.save(testRequestEntity);
         return true;
     }

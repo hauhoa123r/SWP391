@@ -9,14 +9,12 @@ import org.project.model.response.UserLoginResponse;
 import org.project.repository.UserRepository;
 import org.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import org.project.converter.toConverterLogin;
 @Service
 public class UserServiceImpl implements UserService {
 

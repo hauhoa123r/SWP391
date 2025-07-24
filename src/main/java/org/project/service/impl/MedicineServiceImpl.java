@@ -238,7 +238,6 @@ public class MedicineServiceImpl implements MedicineService {
                     .map(CategoryEntity::getName).collect(Collectors.joining(", "));
             dto.setCategory(categories);
             //set batches
-            dto.setBatches(batchesService.findDTOByMedicine(entity));
         }
         
         return dto;

@@ -8,6 +8,7 @@ import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,8 +25,7 @@ public class PatientAPI {
     }
 
     @GetMapping("/api/patient/booking/patient/page/{pageIndex}")
-    public ResponseEntity<Map<String, Object>> getAllPatients(@PathVariable int pageIndex, HttpSession httpSession) {
-        UserEntity userEntity = (UserEntity) httpSession.getAttribute("user");
+    public ResponseEntity<Map<String, Object>> getAllPatients(@AuthenticationPrincipal UserEntity userEntity, @PathVariable int pageIndex, HttpSession httpSession) {
         Page<PatientResponse> patientResponsePage = patientService.getPatientsByUser(userEntity.getId(), pageIndex, PAGE_SIZE);
         return ResponseEntity.ok(
                 Map.of(
@@ -36,12 +36,12 @@ public class PatientAPI {
         );
     }
 
-    @GetMapping("/api/patient/booking/patient/page/{pageIndex}/user/{userId}/search/{keyword}")
+    @GetMapping("/api/patient/booking/patient/page/{pageIndex}/search/{keyword}")
     public ResponseEntity<Map<String, Object>> getPatientsByUserAndKeyword(
+            @AuthenticationPrincipal UserEntity userEntity,
             @PathVariable int pageIndex,
-            @PathVariable Long userId,
             @PathVariable String keyword) {
-        Page<PatientResponse> patientResponsePage = patientService.getPatientsByUserAndKeyword(userId, keyword, pageIndex, PAGE_SIZE);
+        Page<PatientResponse> patientResponsePage = patientService.getPatientsByUserAndKeyword(userEntity.getId(), keyword, pageIndex, PAGE_SIZE);
         return ResponseEntity.ok(
                 Map.of(
                         "patients", patientResponsePage.getContent(),

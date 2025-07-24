@@ -124,7 +124,21 @@
 <script
         th:src="@{/frontend/assets/vendor/flatpickr/dist/flatpickr.min.js}"></script>
 <script defer th:src="@{/frontend/assets/js/plugins/flatpickr.js}"></script>
+<script th:inline="javascript" type="module">
+    import toast from "/templates/frontend/assets/js/plugins/toast.js";
 
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastType = /*[[${toastType}]]*/ null;
+        const toastMessage = /*[[${toastMessage}]]*/ null;
+        if (toastType && toastMessage) {
+            toast[toastType](toastMessage, {
+                duration: 3000,
+                icon: true,
+                progress: toastType === "success"
+            });
+        }
+    });
+</script>
 <th:block layout:fragment="custom-js"></th:block>
 </body>
 </html>
