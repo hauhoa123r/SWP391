@@ -84,7 +84,6 @@ public class PatientServiceImpl implements PatientService {
     public Page<PatientResponse> getPatientsByUser(Long userId, int index, int size) {
         Pageable pageable = pageUtils.getPageable(index, size);
         Page<PatientEntity> patientEntityPage = patientRepository.findAllByUserEntityIdAndPatientStatus(userId, pageable, WebConstant.PATIENT_STATUS_ACTIVE);
-        pageUtils.validatePage(patientEntityPage, PatientEntity.class);
         return patientEntityPage.map(patientConverter::toResponse);
     }
 

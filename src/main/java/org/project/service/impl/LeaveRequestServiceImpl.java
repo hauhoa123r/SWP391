@@ -11,6 +11,7 @@ import org.project.model.dto.LeaveRequestDTO;
 import org.project.model.response.LeaveBalanceResponse;
 import org.project.model.response.LeaveRequestResponse;
 import org.project.model.response.LeaveRequestStatisticResponse;
+import org.project.repository.AppointmentRepository;
 import org.project.repository.LeaveBalanceRepository;
 import org.project.repository.LeaveRequestRepository;
 import org.project.service.LeaveRequestService;
@@ -35,6 +36,7 @@ import java.util.List;
 @Service
 public class LeaveRequestServiceImpl implements LeaveRequestService {
 
+
     private LeaveRequestConverter leaveRequestConverter;
 
     private StaffService staffService;
@@ -46,6 +48,13 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     private LeaveBalanceRepository leaveBalanceRepository;
 
     private LeaveBalanceConverter leaveBalanceConverter;
+
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+    }
 
     @Autowired
     public void setLeaveBalanceConverter(LeaveBalanceConverter leaveBalanceConverter) {
@@ -156,7 +165,6 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     public Page<LeaveRequestResponse> getLeaveRequestByManagerId(Long managerId, int index, int size) {
         Pageable pageable = pageUtils.getPageable(index, size);
         Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findFutureLeaveRequestByManager(managerId, pageable);
-        pageUtils.validatePage(leaveRequestEntities, LeaveRequestEntity.class);
 
         Page<LeaveRequestResponse> leaveRequestResponses = leaveRequestEntities.map(entity -> {
             LeaveRequestResponse response = leaveRequestConverter.toResponse(entity);
@@ -182,7 +190,6 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         Pageable pageable = pageUtils.getPageable(index, size);
 
         Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findAllByStaffEntity_IdOrderByCreatedAtDesc(staffId, pageable);
-        pageUtils.validatePage(leaveRequestEntities, LeaveRequestEntity.class);
 
         Page<LeaveRequestResponse> leaveRequestResponses = leaveRequestEntities.map(entity -> {
             LeaveRequestResponse response = leaveRequestConverter.toResponse(entity);
@@ -303,6 +310,36 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
             leaveRequestResponse.setHalfDayType("Toàn ngày");
         }
         return leaveRequestResponse;
+    }
+
+    @Override
+    public boolean changeStatus(Long id, LeaveStatus status, String reason) {
+        if ("APPROVED".equals(status)){
+            transferAppointments(id);
+        }
+        return leaveRequestRepository.updateLeaveRequestStatus(id, status, reason) > 0;
+    }
+
+    @Override
+    public void transferAppointments(Long leaveRequestId) {
+        LeaveRequestEntity leaveRequestEntity = leaveRequestRepository.getById(leaveRequestId);
+        String halfDayType = amOrPm(leaveRequestEntity.getStartDate(), leaveRequestEntity.getEndDate());
+        if (leaveRequestEntity.getStaffSubstitute() != null) {
+            if ("AM".equals(halfDayType)) {
+                appointmentRepository.transferMorningShiftAppointments(leaveRequestEntity.getStaffEntity().getId(),
+                        leaveRequestEntity.getStaffSubstitute().getId(),
+                        leaveRequestEntity.getStartDate());
+            } else if ("PM".equals(halfDayType)) {
+                appointmentRepository.transferAfternoonShiftAppointments(leaveRequestEntity.getStaffEntity().getId(),
+                        leaveRequestEntity.getStaffSubstitute().getId(),
+                        leaveRequestEntity.getStartDate());
+            } else {
+                appointmentRepository.transferFullDayAppointments(leaveRequestEntity.getStaffEntity().getId(),
+                        leaveRequestEntity.getStaffSubstitute().getId(),
+                        leaveRequestEntity.getStartDate(),
+                        leaveRequestEntity.getEndDate());
+            }
+        }
     }
 
 }

@@ -830,9 +830,6 @@
             <button class="btn btn-outline" id="cancelBtn">
                 <i class="fas fa-times"></i> Hủy đơn
             </button>
-            <button class="btn btn-outline" id="printBtn">
-                <i class="fas fa-print"></i> In đơn
-            </button>
         </div>
     </div>
 </div>
@@ -860,6 +857,7 @@
 </div>
 
 <script >
+    let currentRequestId = null;
     function openModal() {
         document.getElementById('detailModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -877,7 +875,7 @@
     document.querySelectorAll('.view-detail').forEach(btn => {
         btn.addEventListener('click', async () => {
             const id = btn.dataset.id;  // data-id đã có sẵn từ Thymeleaf
-
+            currentRequestId = id;
             try {
                 const resp = await fetch(`/api/leave-request/get-modal/${id}`);
                 if (!resp.ok) throw new Error('Không tải được dữ liệu');
@@ -908,6 +906,21 @@
                 statusBadge.textContent = label;
                 statusBadge.className   = 'status-badge ' + cls;
 
+                const cancelBtn = document.getElementById('cancelBtn');
+                // Chỉ cho phép hủy đơn khi ở trạng thái PENDING
+                cancelBtn.disabled = leave.status !== 'PENDING';
+
+                // Cập nhật giao diện nút
+                if (cancelBtn.disabled) {
+                    cancelBtn.classList.add('disabled');
+                    cancelBtn.style.opacity = '0.6';
+                    cancelBtn.style.cursor = 'not-allowed';
+                } else {
+                    cancelBtn.classList.remove('disabled');
+                    cancelBtn.style.opacity = '';
+                    cancelBtn.style.cursor = '';
+                }
+
                 // 5. Hiển thị modal
                 openModal();
             } catch (err) {
@@ -915,14 +928,45 @@
             }
         });
     });
+    document.getElementById('cancelBtn').addEventListener('click', async () => {
+        if (!currentRequestId) return;
 
-    // 6. (Tuỳ chọn) nút hủy đơn trong modal
-    document.getElementById('cancelBtn').addEventListener('click', () => {
-        if (confirm('Bạn có chắc chắn muốn hủy đơn nghỉ phép này?')) {
-            alert('Đơn đã được hủy thành công!');
-            closeModal();
+        if (!confirm('Bạn có chắc chắn muốn huỷ đơn nghỉ phép này?')) return;
+
+        try {
+            const response = await fetch(`/api/leave-request/staff/cancel/${currentRequestId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const text = await response.text(); // đọc plain text
+            if (response.ok) {
+                alert(text);  // “Huỷ thành công!”
+                closeModal();
+                location.reload();
+            } else {
+                alert('Huỷ đơn thất bại: ' + text);
+            }
+        } catch (err) {
+            console.error('Error cancelling leave:', err);
+            alert('Huỷ đơn thất bại: ' + err.message);
         }
     });
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #e5e7eb;
+            border-color: #d1d5db;
+            color: #6b7280;
+        }
+        .btn-outline:disabled {
+            background-color: transparent;
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 </body>
 </html>

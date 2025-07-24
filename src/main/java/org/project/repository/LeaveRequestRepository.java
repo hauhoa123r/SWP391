@@ -1,10 +1,12 @@
 package org.project.repository;
 
+import jakarta.transaction.Transactional;
 import org.project.entity.LeaveRequestEntity;
 import org.project.enums.LeaveStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -39,10 +41,12 @@ public interface LeaveRequestRepository extends JpaRepository<LeaveRequestEntity
 
     Page<LeaveRequestEntity> findAllByStaffEntity_IdOrderByCreatedAtDesc(Long staffId, Pageable pageable);
 
-    @Query("UPDATE LeaveRequestEntity r SET r.status = :status, r.approvedBy.id = :approvedById WHERE r.id = :leaveRequestId")
+    @Modifying
+    @Transactional
+    @Query("UPDATE LeaveRequestEntity r SET r.status = :status, r.rejectionReason =:rejectReason WHERE r.id = :leaveRequestId")
     int updateLeaveRequestStatus(@Param("leaveRequestId") Long leaveRequestId,
                                  @Param("status") LeaveStatus status,
-                                 @Param("approvedById") Long approvedById);
-
+                                 @Param("rejectReason")String rejectReason
+                                );
 
 }

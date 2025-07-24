@@ -1,5 +1,6 @@
 package org.project.api;
 
+import org.project.enums.LeaveStatus;
 import org.project.exception.LeaveLeftNotEnoughException;
 import org.project.model.dto.LeaveRequestDTO;
 import org.project.model.response.LeaveRequestResponse;
@@ -41,5 +42,36 @@ public class LeaveRequestAPI {
     @GetMapping("get-modal/{requestId}")
     public LeaveRequestResponse getLeaveRequest(@PathVariable("requestId") Long requestId) {
         return leaveRequestService.getLeaveRequestById(requestId);
+    }
+
+    @PatchMapping("/manager/confirm/{requestId}")
+    public ResponseEntity<?> confirmLeaveRequest(@PathVariable("requestId") Long requestId){
+        boolean isConfirm = leaveRequestService.changeStatus(requestId, LeaveStatus.APPROVED, null);
+        if (isConfirm) {
+           return ResponseEntity.ok("Chấp nhận thành công!");
+        } else {
+           return ResponseEntity.badRequest().body("Chấp nhận thất bại!");
+        }
+    }
+
+    @PatchMapping("/manager/reject/{requestId}")
+    public ResponseEntity<?> rejectLeaveRequest(@PathVariable("requestId") Long requestId,
+                                                @RequestParam("reason") String reason){
+        boolean isReject = leaveRequestService.changeStatus(requestId, LeaveStatus.REJECTED, reason);
+        if (isReject) {
+            return ResponseEntity.ok("Từ chối thành công!");
+        } else {
+            return ResponseEntity.badRequest().body("Từ chối thất bại!");
+        }
+    }
+
+    @PatchMapping("/staff/cancel/{requestId}")
+    public ResponseEntity<?> cancelLeaveRequest(@PathVariable("requestId") Long requestId){
+        boolean isCancel = leaveRequestService.changeStatus(requestId, LeaveStatus.CANCELLED, null);
+        if(isCancel) {
+            return ResponseEntity.ok("Huỷ thành công!");
+        } else {
+            return ResponseEntity.badRequest().body("Huỷ thật bại!");
+        }
     }
 }

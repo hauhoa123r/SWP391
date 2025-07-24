@@ -24,4 +24,5 @@ public interface AppointmentService {
     AppointmentAvailableResponse getAvailableAppointmentsByDoctorIdForSuggestion(Long staffId, Long patientId, Timestamp availableTimeStamp, int maxDays);
 
     Boolean changeAppointment(ChangeAppointmentDTO changeAppointmentDTO);
+
 }
