@@ -10,7 +10,6 @@ import org.project.repository.UserRepository;
 import org.project.service.ForgotPasswordService;
 import org.project.service.UserSecurityService;
 import org.project.service.UserSecutiryServiceImpl;
-import org.project.service.UserService;
 import org.project.utils.ChangePassword;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,6 +33,7 @@ public class AuthViewController {
     private final UserRepository userRepository;
 
     private final UserSecutiryServiceImpl userSecurityServiceImpl;
+
     @GetMapping("/login")
     public String showLoginPage(@RequestParam(value = "redirectTo", required = false) String redirectTo, Model model) {
         model.addAttribute("redirectTo", redirectTo);
@@ -50,13 +50,13 @@ public class AuthViewController {
         try {
             String view = userSecurityServiceImpl.login(email, password, redirectTo, response);
             return view;
-
         } catch (Exception e) {
             model.addAttribute("error", "Email hoặc mật khẩu sai!");
             model.addAttribute("redirectTo", redirectTo);
             return "frontend/login";
         }
     }
+
     @GetMapping("/logout")
     public String logout(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 
@@ -65,7 +65,8 @@ public class AuthViewController {
         cookie.setHttpOnly(true);
         cookie.setMaxAge(0); // xóa ngay lập tức
         response.addCookie(cookie);
-        redirectAttributes.addFlashAttribute("logoutSuccess", "Đăng xuất thành công!");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        redirectAttributes.addFlashAttribute("toastMessage", "Đăng xuất thành công!");
         return "redirect:/";
     }
 
@@ -109,7 +110,6 @@ public class AuthViewController {
         model.addAttribute("success", "Đăng ký thành công! Vui lòng đăng nhập.");
         return "frontend/login";
     }
-
 
 
     @GetMapping("/forgot-password")
