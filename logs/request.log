@@ -1,0 +1,282 @@
+2025-07-24 00:56:57.003 [http-nio-8089-exec-3] INFO  - 📌 [2025-07-24T00:56:57.003491] GET / từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 177 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 00:57:09.753 [http-nio-8089-exec-5] INFO  - 📌 [2025-07-24T00:57:09.753377100] GET / từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 22 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:01:43.831 [http-nio-8089-exec-1] INFO  - 📌 [2025-07-24T01:01:43.831184400] GET / từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 1384 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:01:49.298 [http-nio-8089-exec-1] INFO  - 📌 [2025-07-24T01:01:49.298034200] GET /frontend/assets/images/general/treatment.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 4 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:01:49.298 [http-nio-8089-exec-5] INFO  - 📌 [2025-07-24T01:01:49.298034200] GET /frontend/assets/images/general/doctor.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 4 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:01:49.298 [http-nio-8089-exec-10] INFO  - 📌 [2025-07-24T01:01:49.298034200] GET /frontend/assets/images/general/service.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 4 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:01:54.008 [http-nio-8089-exec-7] INFO  - 📌 [2025-07-24T01:01:54.008010600] GET /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: (redirectTo=/patient/appointment)
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 14 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:02:10.860 [http-nio-8089-exec-8] INFO  - 📌 [2025-07-24T01:02:10.860151800] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 500, Thời gian xử lý: 639 ms
+📦 Phản hồi trả về: {"message":"Login failed: No result found for query [SELECT u FROM UserEntity u WHERE u.email = :email]"}
+
+2025-07-24 01:05:35.656 [http-nio-8089-exec-4] INFO  - 📌 [2025-07-24T01:05:35.656292500] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 500, Thời gian xử lý: 818 ms
+📦 Phản hồi trả về: {"message":"Login failed: No result found for query [SELECT u FROM UserEntity u WHERE u.email = :email]"}
+
+2025-07-24 01:06:47.733 [http-nio-8089-exec-5] INFO  - 📌 [2025-07-24T01:06:47.733001300] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 500, Thời gian xử lý: 27538 ms
+📦 Phản hồi trả về: {"message":"Login failed: No result found for query [SELECT u FROM UserEntity u WHERE u.email = :email]"}
+
+2025-07-24 01:11:56.033 [http-nio-8089-exec-3] INFO  - 📌 [2025-07-24T01:11:56.033240100] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 500, Thời gian xử lý: 5241 ms
+📦 Phản hồi trả về: {"message":"Login failed: No result found for query [SELECT u FROM UserEntity u WHERE u.email = :email]"}
+
+2025-07-24 01:12:36.869 [http-nio-8089-exec-1] INFO  - 📌 [2025-07-24T01:12:36.869133400] GET /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: (redirectTo=/patient/appointment)
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 437 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:12:51.018 [http-nio-8089-exec-5] INFO  - 📌 [2025-07-24T01:12:51.018143500] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 500, Thời gian xử lý: 9111 ms
+📦 Phản hồi trả về: {"message":"Login failed: No result found for query [SELECT u FROM UserEntity u WHERE u.email = :email]"}
+
+2025-07-24 01:13:33.542 [http-nio-8089-exec-1] INFO  - 📌 [2025-07-24T01:13:33.541282200] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 500, Thời gian xử lý: 3865 ms
+📦 Phản hồi trả về: {"message":"Login failed: No result found for query [SELECT u FROM UserEntity u WHERE u.email = :email]"}
+
+2025-07-24 01:16:12.752 [http-nio-8089-exec-3] INFO  - 📌 [2025-07-24T01:16:12.752938300] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 500, Thời gian xử lý: 20727 ms
+📦 Phản hồi trả về: {"message":"Login failed: No result found for query [SELECT u FROM UserEntity u WHERE u.email = :email]"}
+
+2025-07-24 01:21:19.777 [http-nio-8089-exec-1] INFO  - 📌 [2025-07-24T01:21:19.777916200] GET /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: (redirectTo=/patient/appointment)
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 364 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:21:30.514 [http-nio-8089-exec-3] INFO  - 📌 [2025-07-24T01:21:30.514820200] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 500, Thời gian xử lý: 5411 ms
+📦 Phản hồi trả về: {"message":"Login failed: No result found for query [SELECT u FROM UserEntity u WHERE u.email = :email]"}
+
+2025-07-24 01:22:22.256 [http-nio-8089-exec-4] INFO  - 📌 [2025-07-24T01:22:22.256556800] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 500, Thời gian xử lý: 11669 ms
+📦 Phản hồi trả về: {"message":"Login failed: No result found for query [SELECT u FROM UserEntity u WHERE u.email = :email]"}
+
+2025-07-24 01:23:14.062 [http-nio-8089-exec-1] INFO  - 📌 [2025-07-24T01:23:14.062711700] GET /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: (redirectTo=/patient/appointment)
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 307 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:23:27.241 [http-nio-8089-exec-3] INFO  - 📌 [2025-07-24T01:23:27.241736800] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 6026 ms
+📦 Phản hồi trả về: {"message":"Google login success"}
+
+2025-07-24 01:25:42.296 [http-nio-8089-exec-4] INFO  - 📌 [2025-07-24T01:25:42.296038] GET /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: (redirectTo=/patient/appointment)
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 329 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:25:48.307 [http-nio-8089-exec-6] INFO  - 📌 [2025-07-24T01:25:48.307673700] POST /auth/google từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: {"token":"[HIDDEN]"}
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 809 ms
+📦 Phản hồi trả về: {"message":"Google login success"}
+
+2025-07-24 01:25:48.451 [http-nio-8089-exec-7] INFO  - 📌 [2025-07-24T01:25:48.451835400] GET /patient/showAddPrevious từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: hoahvhe186810@fpt.edu.vn (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 65 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:25:56.821 [http-nio-8089-exec-1] INFO  - 📌 [2025-07-24T01:25:56.821606300] GET /auth-view/logout từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: hoahvhe186810@fpt.edu.vn (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 302, Thời gian xử lý: 49 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:25:57.804 [http-nio-8089-exec-4] INFO  - 📌 [2025-07-24T01:25:57.804882200] GET / từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 978 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:25:58.940 [http-nio-8089-exec-2] INFO  - 📌 [2025-07-24T01:25:58.940447700] GET /frontend/assets/images/general/doctor.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 2 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:25:58.940 [http-nio-8089-exec-3] INFO  - 📌 [2025-07-24T01:25:58.940447700] GET /frontend/assets/images/general/treatment.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 2 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:25:58.940 [http-nio-8089-exec-4] INFO  - 📌 [2025-07-24T01:25:58.940447700] GET /frontend/assets/images/general/service.svg từ IP: 127.0.0.1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 2 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:26:05.247 [http-nio-8089-exec-1] INFO  - 📌 [2025-07-24T01:26:05.247757100] GET /auth-view/logout từ IP: 127.0.0.1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 302, Thời gian xử lý: 1 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:26:05.544 [http-nio-8089-exec-8] INFO  - 📌 [2025-07-24T01:26:05.544457200] GET / từ IP: 127.0.0.1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 290 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:26:13.075 [http-nio-8089-exec-1] INFO  - 📌 [2025-07-24T01:26:13.075383200] GET /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 4 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:26:35.865 [http-nio-8089-exec-4] INFO  - 📌 [2025-07-24T01:26:35.865320100] GET /auth-view/register từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 44 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:27:02.956 [http-nio-8089-exec-9] INFO  - 📌 [2025-07-24T01:27:02.956195200] POST /auth-view/register từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: email=[HIDDEN]&phoneNumber=0392004902&password=*****&fullName=Hau+Van+Hoa&address=Ha+Noi&birthdate=2018-07-11&gender=MALE&familyRelationship=SELF
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 141 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:27:13.657 [http-nio-8089-exec-6] INFO  - 📌 [2025-07-24T01:27:13.657434900] POST /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: redirectTo=&email=[HIDDEN]&password=*****
+📤 Trạng thái HTTP: 302, Thời gian xử lý: 156 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:27:13.687 [http-nio-8089-exec-4] INFO  - 📌 [2025-07-24T01:27:13.687549600] GET /patient/showAddPrevious từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: hauhoa784@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 12 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:27:18.344 [http-nio-8089-exec-9] INFO  - 📌 [2025-07-24T01:27:18.344444500] GET /auth-view/logout từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: hauhoa784@gmail.com (vai trò: ROLE_PATIENT)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 302, Thời gian xử lý: 5 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:27:18.570 [http-nio-8089-exec-7] INFO  - 📌 [2025-07-24T01:27:18.570758500] GET / từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 222 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:27:19.384 [http-nio-8089-exec-7] INFO  - 📌 [2025-07-24T01:27:19.384111100] GET /frontend/assets/images/general/treatment.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 2 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:27:19.384 [http-nio-8089-exec-1] INFO  - 📌 [2025-07-24T01:27:19.384111100] GET /frontend/assets/images/general/service.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 2 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:27:19.384 [http-nio-8089-exec-6] INFO  - 📌 [2025-07-24T01:27:19.384111100] GET /frontend/assets/images/general/doctor.svg từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 2 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:27:23.667 [http-nio-8089-exec-10] INFO  - 📌 [2025-07-24T01:27:23.667119300] GET /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 3 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:27:24.708 [http-nio-8089-exec-5] INFO  - 📌 [2025-07-24T01:27:24.708314900] GET /auth-view/forgot-password từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 7 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:28:35.045 [http-nio-8089-exec-6] INFO  - 📌 [2025-07-24T01:28:35.045063900] GET /auth-view/forgot-password từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 5 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:28:35.819 [http-nio-8089-exec-10] INFO  - 📌 [2025-07-24T01:28:35.819763800] GET /auth-view/forgot-password từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 5 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:28:36.264 [http-nio-8089-exec-2] INFO  - 📌 [2025-07-24T01:28:36.264836400] GET /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 2 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 01:28:37.583 [http-nio-8089-exec-3] INFO  - 📌 [2025-07-24T01:28:37.583798200] GET /auth-view/forgot-password từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 3 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
+2025-07-24 17:05:23.251 [http-nio-8089-exec-4] INFO  - 📌 [2025-07-24T17:05:23.251035500] GET /auth-view/login từ IP: 0:0:0:0:0:0:0:1
+👤 Người dùng: anonymousUser (vai trò: ROLE_ANONYMOUS)
+📥 Nội dung gửi: [Không có]
+📤 Trạng thái HTTP: 200, Thời gian xử lý: 300 ms
+📦 Phản hồi trả về: [BỎ QUA - PHẢN HỒI HTML]
+
