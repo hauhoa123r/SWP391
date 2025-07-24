@@ -68,4 +68,6 @@ public class AppointmentEntity {
     @Column(name = "appointment_status")
     private AppointmentStatus appointmentStatus;
 
+    @Column(name = "result_url")
+    private String resultUrl;
 }

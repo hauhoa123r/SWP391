@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sửa thông tin nhân viên</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+        .main-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+        .form-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border: none;
+        }
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card-body {
+            padding: 2.5rem;
+        }
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+        .section-title {
+            color: #495057;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            background: white;
+        }
+        .form-control:hover, .form-select:hover {
+            border-color: #adb5bd;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+        .invalid-feedback {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .form-floating {
+            position: relative;
+        }
+        .input-group {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            z-index: 10;
+            font-size: 1.1rem;
+        }
+        .form-control.with-icon {
+            padding-left: 3rem;
+        }
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem 0;
+            }
+            .card-body {
+                padding: 1.5rem;
+            }
+            .form-section {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                <div class="form-card">
+                    <div class="card-header">
+                        <h3 class="card-title">✏️ Sửa thông tin nhân viên</h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{|/admin/staffs/edit/${staffId}|}" method="post" th:object="${staffRequest}">
+                            <!-- Thông tin cá nhân -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <i class="fas fa-user"></i>
+                                    Thông tin cá nhân
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">👤 Họ tên</label>
+                                        <div class="input-group">
+                                            <span class="input-icon">👤</span>
+                                            <input type="text" th:field="*{fullName}" class="form-control with-icon" placeholder="Nhập họ tên đầy đủ"/>
+                                        </div>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">🖼️ Ảnh đại diện (URL)</label>
+                                        <div class="input-group">
+                                            <span class="input-icon">🖼️</span>
+                                            <input type="text" th:field="*{avatarUrl}" class="form-control with-icon" placeholder="Nhập link ảnh đại diện"/>
+                                        </div>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('avatarUrl')}" th:errors="*{avatarUrl}"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Thông tin công việc -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <i class="fas fa-building"></i>
+                                    Thông tin công việc
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">🏥 Bệnh viện</label>
+                                        <select th:field="*{hospitalId}" class="form-select">
+                                            <option value="">-- Chọn bệnh viện --</option>
+                                            <option th:each="h : ${hospitals}" th:value="${h.id}" th:text="${h.name}"></option>
+                                        </select>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('hospitalId')}" th:errors="*{hospitalId}"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">🏢 Phòng ban</label>
+                                        <select th:field="*{departmentId}" class="form-select">
+                                            <option value="">-- Chọn phòng ban --</option>
+                                            <option th:each="d : ${departments}" th:value="${d.id}" th:text="${d.name}"></option>
+                                        </select>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chi tiết chức vụ -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <i class="fas fa-user-tie"></i>
+                                    Chi tiết chức vụ
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label">🎯 Vai trò</label>
+                                        <select th:field="*{staffRole}" class="form-select">
+                                            <option value="">-- Chọn vai trò --</option>
+                                            <option value="DOCTOR">👨‍⚕️ Bác sĩ</option>
+                                            <option value="TECHNICIAN">🔧 Kỹ thuật viên</option>
+                                            <option value="NURSE">👩‍⚕️ Y tá</option>
+                                            <option value="SCHEDULING_COORDINATOR">📅 Điều phối viên lịch</option>
+                                            <option value="PHARMACIST">💊 Dược sĩ</option>
+                                            <option value="INVENTORY_MANAGER">📦 Quản lý thiết bị</option>
+                                            <option value="LAB_RECEIVER">🧪 Tiếp nhận xét nghiệm</option>
+                                        </select>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('staffRole')}" th:errors="*{staffRole}"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">🕒 Loại hình làm việc</label>
+                                        <select th:field="*{staffType}" class="form-select">
+                                            <option value="">-- Chọn loại hình --</option>
+                                            <option value="FULL_TIME">⏰ Toàn thời gian</option>
+                                            <option value="PART_TIME_CONTRACT">⏳ Bán thời gian (hợp đồng)</option>
+                                            <option value="INTERN">🎓 Thực tập sinh</option>
+                                            <option value="CONSULTANT">💼 Tư vấn viên</option>
+                                        </select>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('staffType')}" th:errors="*{staffType}"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">⭐ Hạng nhân viên</label>
+                                        <div class="input-group">
+                                            <span class="input-icon">⭐</span>
+                                            <input type="number" th:field="*{rankLevel}" class="form-control with-icon" min="1" placeholder="Nhập hạng (1-10)"/>
+                                        </div>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('rankLevel')}" th:errors="*{rankLevel}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Nút hành động -->
+                            <div class="text-center pt-3">
+                                <button type="submit" class="btn btn-primary me-3">
+                                    <i class="fas fa-save me-2"></i>💾 Cập nhật thông tin
+                                </button>
+                                <a th:href="@{|/admin/staffs/detail/${staffId}|}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>↩️ Quay lại
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -40,4 +40,15 @@ public class PageUtils<T> {
             throw new PageNotFoundException(entityClass, page.getNumber(), page.getSize());
         }
     }
+    
+    /**
+     * Tạo một đối tượng Page từ danh sách
+     * @param list Danh sách cần phân trang
+     * @param pageable Thông tin phân trang
+     * @param total Tổng số mục
+     * @return Page chứa các mục trong danh sách
+     */
+    public Page<T> createPage(List<T> list, Pageable pageable, long total) {
+        return new PageImpl<>(list, pageable, total);
+    }
 }

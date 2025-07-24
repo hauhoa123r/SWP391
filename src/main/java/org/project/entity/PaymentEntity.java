@@ -41,16 +41,9 @@ public class PaymentEntity {
     @OneToMany
     private Set<WalletTransactionEntity> walletTransactionEntities = new LinkedHashSet<>();
 
-/*
- TODO [Reverse Engineering] create field to map the 'payment_method' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @Column(name = "payment_method", columnDefinition = "enum not null")
-    private Object paymentMethod;
-*/
-/*
- TODO [Reverse Engineering] create field to map the 'payment_status' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @Column(name = "payment_status", columnDefinition = "enum not null")
-    private Object paymentStatus;
-*/
+    @Column(name = "payment_method")
+    private String method;
+
+    @Column(name = "payment_status")
+    private String status;
 }
