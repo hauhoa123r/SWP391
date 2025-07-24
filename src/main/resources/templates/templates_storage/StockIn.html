@@ -421,8 +421,7 @@
                                             </td>
                                             <td th:text="${supplierIn?.supplierName ?: 'N/A'}">Nhà cung cấp</td>
                                             <td th:text="${supplierIn?.transactionDate != null ? #dates.format(supplierIn.transactionDate, 'dd-MM-yyyy') : 'N/A'}">Ngày tạo</td>
-                                            <td class="text-end"><strong th:text="${supplierIn?.totalAmount != null ? #numbers.formatDecimal(supplierIn.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}">0 VNĐ</strong></td>
-                                            <td class="text-end">
+                                                <td class="text-end">
                                                 <span th:with="totalAmount=${supplierIn?.items != null ? #aggregates.sum(supplierIn.items.?[unitPrice != null && quantity != null].![unitPrice * quantity]) : 0}">
                                                     <strong th:text="${#numbers.formatDecimal(totalAmount * 1000, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong>
                                                 </span>

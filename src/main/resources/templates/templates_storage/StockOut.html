@@ -463,9 +463,6 @@
                                                 <!-- Hiển thị loại sản phẩm -->
                                                 <span th:if="${supplierOut?.type != null && supplierOut.type == 'MEDICINE'}" class="badge bg-success">Thuốc</span>
                                                 <span th:if="${supplierOut?.type != null && supplierOut.type == 'MEDICAL_EQUIPMENT'}" class="badge bg-info">Thiết bị y tế</span>
-                                                <span th:if="${supplierOut?.type != null && supplierOut.type == 'MEDICAL_PRODUCT'}" class="badge bg-info">Thiết bị y tế</span>
-                                                <span th:if="${supplierOut?.type != null && supplierOut.type == 'MIXED'}" class="badge bg-warning">Hỗn hợp</span>
-                                                <span th:if="${supplierOut?.type == null || supplierOut.type == 'UNDEFINED'}" class="badge bg-secondary">Không xác định</span>
                                             </td>
                                             <td>
                                                 <!-- Simple badge implementation -->
