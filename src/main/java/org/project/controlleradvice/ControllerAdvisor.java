@@ -1,10 +1,7 @@
 package org.project.controlleradvice;
 
 
-import org.project.exception.ErrorResponse;
 import org.project.exception.ResourceNotFoundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.project.exception.page.InvalidPageException;
 import org.project.exception.page.PageNotFoundException;
 import org.project.exception.sql.EntityNotFoundException;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ControllerAdvisor {
-
 
     @ExceptionHandler(exception = {
             InvalidPageException.class,

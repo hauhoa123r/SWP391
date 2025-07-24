@@ -7,8 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 import org.hibernate.Remove;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.Label;
 import org.project.enums.ProductStatus;
@@ -88,16 +88,10 @@ public class ProductEntity {
             inverseJoinColumns = @JoinColumn(name = "product_review_id")
     )
     private final Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
-
+    @OneToMany(mappedBy = "productEntity")
     private final Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
     @OneToMany(mappedBy = "productEntity")
     private final Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
-
-    @OneToOne(mappedBy = "productEntity")
-    private TestEntity testEntity;
-
-    @ManyToMany
-    private Set<DepartmentEntity> departmentEntities = new LinkedHashSet<>();
     @ManyToMany
     private final Set<UserEntity> userEntities = new LinkedHashSet<>();
     @Enumerated(EnumType.STRING)
