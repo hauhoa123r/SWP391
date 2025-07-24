@@ -24,13 +24,13 @@ public class SecurityConfig {
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private JWTAuthFilter jwtAuthFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
+                // TODO: Cần phải cấu hình lại để phù hợp với các API
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/auth/**",
@@ -47,20 +47,26 @@ public class SecurityConfig {
                                 "frontend/assets/**",
                                 "dashboard-staff-test/assets/**",
                                 "templates_storage/assets/**",
-                                "/"
+                                "/",
+                                "/home",
+                                "/about-us",
+                                "/hospital/**",
+                                "/department/**",
+                                "/doctor/**",
+                                "/service/**",
+                                "/templates/**"
                         ).permitAll()
 
-
+                        // TODO: Sửa lại đường dẫn để phù hợp với các API
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/patient/**").hasRole("PATIENT")
                         .requestMatchers("/staff/pharmacy/**").hasRole("STAFF_PHARMACIST")
                         .requestMatchers("/staff/lab/**").hasRole("STAFF_TECHNICIAN")
+                        .requestMatchers("/lab/**").hasRole("STAFF_TECHNICIAN")
                         .requestMatchers("/staff/schedule/**").hasRole("STAFF_SCHEDULING_COORDINATOR")
                         .requestMatchers("/staff/inventory/**").hasRole("STAFF_INVENTORY_MANAGER")
                         .requestMatchers("/staff/lab-receive/**").hasRole("STAFF_LAB_RECEIVER")
                         .requestMatchers("/staff/doctor/**").hasRole("STAFF_DOCTOR")
-                        .requestMatchers("/").hasAnyRole("ADMIN", "PATIENT", "STAFF")
-
 
                         .anyRequest().authenticated()
                 )
@@ -69,6 +75,17 @@ public class SecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint((request, response, authException) -> {
+                    // Xử lý lỗi 401: chưa đăng nhập
+                    response.sendRedirect("/auth-view/login");
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    // Xử lý lỗi 403: không đủ quyền
+                    response.sendRedirect("/home");
+                })
+        );
 
         return http.build();
     }
