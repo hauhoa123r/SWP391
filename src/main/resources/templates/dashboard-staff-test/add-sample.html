@@ -1602,22 +1602,7 @@
         <tr data-item="list">
                                     <th scope="row">${item.name}</th>
                                     <td>
-                                        <a class="d-inline-block pe-2" data-bs-toggle="offcanvas" href="#offcanvasProductEdit" aria-controls="offcanvasProductEdit">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                                        </a>
-                                        <a href="#" class="d-inline-block ps-2 delete-btn" >
+                                        <a href="#" class="d-inline-block ps-2 delete-btn cursor-pointer" data-id="${item.id}">
                         <span class="text-danger">
                            <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -1692,6 +1677,92 @@
         attachInputEvents();
         fetchFilteredData(0);
     });
+    function collectSampleData() {
+        const samples = [];
+        const sampleGroups = document.querySelectorAll('#sample-container .sample-group');
 
+        sampleGroups.forEach((group, index) => {
+            const sample = {
+                name: group.querySelector(`#add_Name_${index}`).value.trim(),
+                unit: group.querySelector(`#add_Unit_${index}`).value.trim(),
+                low: group.querySelector(`#add_Low_${index}`).value.trim(),
+                high: group.querySelector(`#add_High_${index}`).value.trim(),
+                lowSuspect: group.querySelector(`#add_Low_Suspect_${index}`).value.trim(),
+                highSuspect: group.querySelector(`#add_High_Suspect_${index}`).value.trim()
+            };
+            samples.push(sample);
+        });
+
+        return samples;
+    }
+    $(document).on('click', '.offcanvas-footer .btn-primary', function (e) {
+        e.preventDefault();
+
+        if (!validateSampleForm()) {
+            alert("Vui lòng nhập đầy đủ tất cả các trường!");
+            return;
+        }
+
+        const id = $('#add_Id').val().trim();
+        const samples = collectSampleData();
+
+        const payload = {
+            sampleGroupId: id,
+            samples: samples
+        };
+
+        $.ajax({
+            url: '/api/test/create',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(payload),
+            success: function (res) {
+                alert("Tạo mẫu thành công!");
+                $('#offcanvasProductAdd').offcanvas('hide');
+            },
+            error: function () {
+                alert("Tạo mẫu thất bại!");
+            }
+        });
+    });
+    function validateSampleForm() {
+        let isValid = true;
+        const groupName = $('#add_Id').val();
+        if (!groupName || groupName.trim() === '') {
+            isValid = false;
+        }
+        $('#sample-container input').each(function () {
+            const value = $(this).val();
+            if (!value || value.trim() === '') {
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    }
+
+    $(document).on('click', '.delete-btn', async function (e) {
+        e.preventDefault();
+
+        const id = $(this).data('id');
+        if (!id) return;
+
+        try {
+            const response = await fetch(`/api/test/delete/${id}`, {
+                method: 'GET'
+            });
+
+            if (response.ok) {
+                alert("Xóa thành công!");
+                window.location.reload();
+            } else {
+                const text = await response.text();
+                alert("Xóa thất bại: " + text);
+            }
+        } catch (error) {
+            console.error("Lỗi khi gọi API:", error);
+            alert("Đã xảy ra lỗi khi xóa.");
+        }
+    });
 </script>
 </html>

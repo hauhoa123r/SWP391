@@ -17,6 +17,7 @@ public class SampleFilterConverter {
     private SampleScheduleRepository sampleScheduleRepository;
 
     public Page<SampleFilterResponse> toSampleFilterDTOPage(FilterSampleNameDTO filterSampleNameDTO) throws IllegalAccessException {
+        filterSampleNameDTO.setStatus("active");
         Page<TestTypeEntity> testTypeEntities = sampleScheduleRepository.filterNameSample(filterSampleNameDTO);
         if (testTypeEntities == null) {
             throw new ResourceNotFoundException("Not found");
@@ -30,4 +31,19 @@ public class SampleFilterConverter {
         });
     }
 
+
+    public Page<SampleFilterResponse> toSampleFilterDTOInactive(FilterSampleNameDTO filterSampleNameDTO) throws IllegalAccessException {
+        filterSampleNameDTO.setStatus("inactive");
+        Page<TestTypeEntity> testTypeEntities = sampleScheduleRepository.filterNameSample(filterSampleNameDTO);
+        if (testTypeEntities == null) {
+            throw new ResourceNotFoundException("Not found");
+        }
+
+        return testTypeEntities.map(testTypeEntity -> {
+            SampleFilterResponse sampleFilterResponse = new SampleFilterResponse();
+            sampleFilterResponse.setId(testTypeEntity.getId());
+            sampleFilterResponse.setName(testTypeEntity.getTestTypeName());
+            return sampleFilterResponse;
+        });
+    }
 }

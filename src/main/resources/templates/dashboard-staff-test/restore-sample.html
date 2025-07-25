@@ -129,101 +129,63 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap"
             rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
 </head>
 <style>
-    .date-select-box,
-    .time-select-box {
-        border: 2px solid #dc3545;
-        padding: 0.5rem 0.75rem;
-        cursor: pointer;
-        position: relative;
+    .status-badge {
+        padding: 0.25rem 0.5rem;
         border-radius: 0.375rem;
-        background-color: #fff;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: inline-block;
     }
 
-    .date-select-box.valid,
-    .time-select-box.valid {
-        border-color: #28a745;
+    .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
     }
 
-    .date-select-box .status-icon,
-    .time-select-box .status-icon {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1rem;
+    .status-not-received {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
     }
 
-    .date-select-box.valid .status-icon,
-    .time-select-box.valid .status-icon {
-        color: #28a745;
+    .table-modern th {
+        background-color: #f8f9fa;
+        color: #495057;
+        font-weight: 600;
     }
 
-    .date-select-box.invalid .status-icon,
-    .time-select-box.invalid .status-icon {
-        color: #dc3545;
+    .table-modern td {
+        vertical-align: middle;
     }
 
-    .flatpickr-day.disabled {
-        color: #999 !important;
-        background: #f3f3f3 !important;
-        cursor: not-allowed !important;
-        border-color: transparent !important;
+    .status-badge {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-weight: 500;
     }
 
-    .readonly-input {
-        cursor: not-allowed;
-        background-color: #e9ecef;
+    .status-not-received {
+        background-color: #f8d7da;
+        color: #842029;
     }
 
-    .date-required {
-        border: 2px solid #dc3545;
-        background-color: #fff;
-        color: #000;
+    .status-received {
+        background-color: #fff3cd;
+        color: #856404;
     }
 
-    .note-input-wrapper {
-        position: relative;
+    .status-processing {
+        background-color: #cfe2ff;
+        color: #084298;
     }
 
-    .status-icon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        pointer-events: none;
-    }
-
-    textarea:invalid {
-        border: 2px solid #dc3545 !important;
-        background-color: #fff0f1;
-    }
-
-    textarea:valid {
-        border: 2px solid #28a745 !important;
-        background-color: #f0fff5;
-    }
-
-    .manager-select-group {
-        position: relative;
-        width: 100%;
-    }
-
-    .manager-status-icon {
-        position: absolute;
-        top: 50%;
-        right: 16px;
-        transform: translateY(-50%);
-        font-size: 1.2em;
-        pointer-events: none;
-        transition: color 0.2s;
-    }
-
-    .manager-select {
-        padding-right: 2.2em;
-        /* chừa khoảng cho icon */
+    .status-completed {
+        background-color: #d1e7dd;
+        color: #0f5132;
     }
 </style>
 
@@ -238,14 +200,51 @@
     </div>
 </div>
 <!-- loader END -->
+<aside class="sidebar sidebar-base " id="first-tour" data-toggle="main-sidebar" data-sidebar="responsive">
+    <div class="sidebar-header d-flex align-items-center justify-content-start position-relative">
+        <a href="./index.html" th:href="@{/lab/homepage}"
+           class="navbar-brand">
+
+            <!--Logo start-->
+            <div class="logo-main">
+                <img class="logo-normal img-fluid" src="./assets/images/logo.png" th:src="@{/dashboard-staff-test/assets/images/logo.png}"
+                     height="30" alt="logo">
+                <img class="logo-normal dark-normal img-fluid" src="./assets/images/logo-dark.png" th:src="@{/dashboard-staff-test/assets/images/logo-dark.png}"
+                     height="30"
+                     alt="logo">
+                <img class="logo-normal white-normal img-fluid" src="./assets/images/logo-white.png" th:src="@{/dashboard-staff-test/assets/images/logo-white.png}"
+                     height="30"
+                     alt="logo">
+                <img class="logo-mini img-fluid" src="./assets/images/logo-mini.png" th:src="@{/dashboard-staff-test/assets/images/logo-mini.png}"
+                     height="30" alt="logo">
+                <img class="logo-mini dark-mini img-fluid" src="./assets/images/logo-mini-dark.png" th:src="@{/dashboard-staff-test/assets/images/logo-mini-dark.png}"
+                     height="30"
+                     alt="logo">
+                <img class="logo-mini white-mini img-fluid" src="./assets/images/logo-mini-white.png" th:src="@{/dashboard-staff-test/assets/images/logo-mini-white.png}"
+                     height="30"
+                     alt="logo">
+            </div>
+            <!--logo End-->
+        </a>
+        <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
+            <i class="icon">
+                <svg class="icon-20 icon-arrow" width="20" viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.5 19L8.5 12L15.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"></path>
+                </svg>
+            </i>
+        </div>
+    </div>
+    <div th:insert="~{dashboard-staff-test/fragments/sidebar :: sidebar}"></div>
+</aside>
 <main class="main-content">
-    <div class="position-relative  iq-banner ">
+    <div class="position-relative ">
         <!--Nav Start-->
         <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar">
             <div class="container-fluid navbar-inner">
-                <a href="/lab/homepage"
+                <a href="./index.html" th:href="@{/dashboard-staff-test/index.html}"
                    class="navbar-brand">
-
                     <!--Logo start-->
                     <div class="logo-main">
                         <img class="logo-normal img-fluid" src="./assets/images/logo.png" th:src="@{/dashboard-staff-test/assets/images/logo.png}"
@@ -257,8 +256,7 @@
 
                              height="30" alt="logo">
                         <img class="logo-mini img-fluid" src="./assets/images/logo-mini.png" th:src="@{/dashboard-staff-test/assets/images/logo-mini.png}"
-                             height="30"
-                             alt="logo">
+                             height="30" alt="logo">
                         <img class="logo-mini dark-mini img-fluid" src="./assets/images/logo-mini-dark.png" th:src="@{/dashboard-staff-test/assets/images/logo-mini-dark.png}"
 
                              height="30" alt="logo">
@@ -275,11 +273,6 @@
                                   d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
                         </svg>
                     </i>
-                </div>
-                <div class="d-flex align-items-center justify-content-between product-offcanvas">
-                    <div class="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabindex="-1"
-                         id="offcanvasBottomNav">
-                    </div>
                 </div>
                 <div class="d-flex align-items-center">
                     <button id="navbar-toggle" class="navbar-toggler px-0" type="button" data-bs-toggle="collapse"
@@ -315,6 +308,7 @@
                                 </label>
                             </div>
                         </li>
+
                         <li class="nav-item dropdown iq-responsive-menu d-block d-xl-none">
                             <div class="btn btn-sm px-0 border-0" id="navbarDropdown-search-11" role="button"
                                  data-bs-toggle="dropdown" aria-expanded="false">
@@ -431,9 +425,8 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="nav-item iq-full-screen d-none d-xl-block" id="fullscreen-item">
 
-                        </li>
+
                         <li class="nav-item dropdown" id="itemdropdown1">
                             <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown"
                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -453,8 +446,8 @@
                                     >Profile</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="setting.html">
-                                        Setting</a>
+                                    <a class="dropdown-item" href="./setting.html" th:href="@{/dashboard-staff-test/setting.html}"
+                                    >Setting</a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -468,139 +461,126 @@
                     </ul>
                 </div>
             </div>
-        </nav> <!-- Nav Header Component Start -->
-        <div class="iq-navbar-header">
-            <div class="container-fluid iq-container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="flex-wrap d-flex justify-content-between align-items-center flex-wrap gap-3">
-                            <div>
-                                <h1 class="fw-bold mb-0 rtl-primary-color">Kết quả mẫu</h1>
-                            </div>
+        </nav>
+        <!--Nav End-->
+    </div>
+    <div class="content-inner container-fluid pb-0" id="page_layout">
+
+        <div class="d-flex align-items-center mb-4 mb-4 pb-3 pt-3">
+            <svg class="icon-18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                        d="M9.15722 20.7714V17.7047C9.1572 16.9246 9.79312 16.2908 10.581 16.2856H13.4671C14.2587 16.2856 14.9005 16.9209 14.9005 17.7047V17.7047V20.7809C14.9003 21.4432 15.4343 21.9845 16.103 22H18.0271C19.9451 22 21.5 20.4607 21.5 18.5618V18.5618V9.83784C21.4898 9.09083 21.1355 8.38935 20.538 7.93303L13.9577 2.6853C12.8049 1.77157 11.1662 1.77157 10.0134 2.6853L3.46203 7.94256C2.86226 8.39702 2.50739 9.09967 2.5 9.84736V18.5618C2.5 20.4607 4.05488 22 5.97291 22H7.89696C8.58235 22 9.13797 21.4499 9.13797 20.7714V20.7714"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <svg class="mx-1 icon-18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+            </svg>
+            <span class="head-title fw-500 mt-1">Danh sách mẫu</span>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+                        <div>
+                            <h4>Tất cả loại mẫu</h4>
+                            <span id="totalSample"></span>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="iq-header-img">
-                <img src="./assets/images/dashboard/top-header.png" th:src="@{/dashboard-staff-test/assets/images/dashboard/top-header.png}"
-                     alt="header"
-                     class="theme-color-default-img img-fluid w-100 h-100" loading="lazy">
-            </div>
-        </div>
-
-        <div class="offcanvas offcanvas-end offcanvas-breadcrumb" tabindex="-1" id="offcanvasBreadcrumb"
-             aria-labelledby="offcanvasBreadcrumbLabel">
-            <div class="offcanvas-header border-bottom">
-                <h3 class="offcanvas-title" id="offcanvasBreadcrumbLabel">Appointment</h3>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-            </div>
-        </div>
-        <div class="content-inner container-fluid pb-0" id="page_layout">
-            <div>
-                <div class="row">
-                    <div class="col-xl-3 col-lg-4">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between mb-0">
-                                <div class="header-title">
-                                    <h4 class="card-title">Thông tin bệnh nhân</h4>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <form>
-                                    <div class="form-group">
-                                        <div class="profile-img-edit position-relative">
-                                            <img th:src="${result.imagePatient}"
-                                                 alt="profile-pic"
-                                                 class="theme-color-default-img profile-pic rounded avatar-100"
-                                                 loading="lazy">
-                                            <img src="./assets/images/avatars/avtar_1.png" th:src="@{/dashboard-staff-test/assets/images/avatars/avtar_1.png}"
-                                                 alt="profile-pic"
-                                                 class="theme-color-purple-img profile-pic rounded avatar-100"
-                                                 loading="lazy">
-                                            <img src="./assets/images/avatars/avtar_2.png" th:src="@{/dashboard-staff-test/assets/images/avatars/avtar_2.png}"
-                                                 alt="profile-pic"
-                                                 class="theme-color-blue-img profile-pic rounded avatar-100"
-                                                 loading="lazy">
-                                            <img src="./assets/images/avatars/avtar_4.png" th:src="@{/dashboard-staff-test/assets/images/avatars/avtar_4.png}"
-                                                 alt="profile-pic"
-                                                 class="theme-color-green-img profile-pic rounded avatar-100"
-                                                 loading="lazy">
-                                            <img src="./assets/images/avatars/avtar_5.png" th:src="@{/dashboard-staff-test/assets/images/avatars/avtar_5.png}"
-                                                 alt="profile-pic"
-                                                 class="theme-color-yellow-img profile-pic rounded avatar-100"
-                                                 loading="lazy">
-                                            <img src="./assets/images/avatars/avtar_3.png" th:src="@{/dashboard-staff-test/assets/images/avatars/avtar_3.png}"
-                                                 alt="profile-pic"
-                                                 class="theme-color-pink-img profile-pic rounded avatar-100"
-                                                 loading="lazy">
-                                        </div>
-
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="patientName">Tên bệnh nhân</label>
-                                        <input type="text" class="form-control readonly-input" id="patientName"
-                                               placeholder="Patient Name" readonly th:value="${result.getPatientName()}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="department" >Khoa</label>
-                                        <input type="text" class="form-control readonly-input" id="department"
-                                               placeholder="Referring Department" readonly th:value="${result.getDepartment()}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="testType">Bác sĩ yêu cầu:</label>
-                                        <input type="text" class="form-control readonly-input" id="testType"
-                                               placeholder="Test Type" readonly th:value="${result.getDoctorName()}">
-                                    </div>
-
-                                </form>
-                            </div>
+                    <div class="card-body pt-0">
+                        <div class="table-responsive">
+                            <table id="input-datatable" class="table">
+                                <thead class="table-dark">
+                                <tr>
+                                    <th>Tên mẫu</th>
+                                    <th>Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th title="Tên Mẫu">
+                                        <input type="text" id="sampleName" name="sampleName" class="form-control form-control-sm" placeholder="Tìm kiếm mẫu">
+                                    </th>
+                                    <th>
+                                    </th>
+                                </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-xl-9 col-lg-8">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between mb-0">
-                                <div class="header-title">
-                                    <h4 class="card-title">Kết quả xét nghiệm</h4>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="new-user-info">
-                                    <form id="create-sample-form">
-                                        <div class="row">
-                                            <div class="card p-4" style="background-color: #f9f9f9; border-radius: 8px;">
-                                                <p th:text="'Ngày gửi yêu cầu: ' + ${result.dateRequest}"></p>
-                                                <hr>
-                                                <div th:text="${result.note}" style="white-space: pre-line;"></div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                    <div class="mt-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <span id="total-items"></span>
                         </div>
+                        <nav>
+                            <ul class="pagination mb-0" id="pagination-container"></ul>
+                        </nav>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Footer Section Start -->
-        <footer class="footer">
-            <div class="footer-body">
-                <ul class="left-panel list-inline mb-0 p-0">
-                    <li class="list-inline-item fw-500"><a class="footer-link"
-                                                           href="./extra/privacy-policy.html" th:href="@{/dashboard-staff-test/extra/privacy-policy.html}"
-                    >Privacy Policy</a></li>
-                    <li class="list-inline-item fw-500"><a class="footer-link"
-                                                           href="./extra/terms-of-service.html" th:href="@{/dashboard-staff-test/extra/terms-of-service.html}"
-                    >Terms of Use</a></li>
-                </ul>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasProductAdd"
+         aria-labelledby="offcanvasProductAddLabel">
+        <div class="offcanvas-header border-bottom">
+            <h3 class="offcanvas-title" id="offcanvasProductAddLabel">Thêm mẫu</h3>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group">
+                <label class="form-label" for="add_Id">Tên Mẫu<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="add_Id" >
             </div>
-        </footer>
-        <!-- Footer Section End -->
+            <div id="sample-container">
+            </div>
+            <button type="button" class="btn btn-success mt-2" onclick="addSampleFields()">+</button>
+        </div>
+        <div class="offcanvas-footer border-top">
+            <div class="d-grid d-md-flex gap-3 p-3">
+                <button type="submit" class="btn btn-primary d-block">
+            <span class="btn-inner">
+               <span class="text d-inline-block align-middle">Lưu</span>
+               <span class="icon d-inline-block align-middle ms-1 ps-2">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
+                        <path
+                                d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                fill="currentColor" />
+                     </svg>
+               </span>
+            </span>
+                </button>
+                <button class="btn btn-secondary d-block" type="button" data-bs-dismiss="offcanvas">
+            <span class="btn-inner">
+               <span class="text d-inline-block align-middle">Đóng</span>
+               <span class="icon d-inline-block align-middle ms-1 ps-2">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
+                        <path
+                                d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                fill="currentColor" />
+                     </svg>
+               </span>
+            </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Footer Section Start -->
+    <footer class="footer">
+        <div class="footer-body">
+            <ul class="left-panel list-inline mb-0 p-0">
+                <li class="list-inline-item fw-500"><a class="footer-link"
+                                                       href="./extra/privacy-policy.html" th:href="@{/dashboard-staff-test/extra/privacy-policy.html}"
+                >Chính sách bảo mật</a></li>
+                <li class="list-inline-item fw-500"><a class="footer-link"
+                                                       href="./extra/terms-of-service.html" th:href="@{/dashboard-staff-test/extra/terms-of-service.html}"
+                >Điều khoản sử dụng</a></li>
+            </ul>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
 </main>
 <!-- Live Customizer start -->
 <!-- Setting offcanvas start here -->
@@ -1236,61 +1216,6 @@
 
                         <hr class="hr-horizontal">
 
-                        <!-- Banner style start here -->
-                        <div>
-                            <h6 class="mt-4 mb-3">Banner Style</h6>
-                            <div class="d-grid gap-3 grid-cols-3 mb-4">
-                                <div data-setting="radio" class="text-center">
-                                    <input type="radio" value="navs-bg-color" class="btn-check" name="header_banner"
-                                           id="header-banner-color">
-                                    <label class="btn btn-border p-0 d-block overflow-hidden"
-                                           for="header-banner-color">
-                                        <img src="./assets/images/settings/dark/11.png" th:src="@{/dashboard-staff-test/assets/images/settings/dark/11.png}"
-                                             alt="hover"
-                                             class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                        <img src="./assets/images/settings/light/11.png" th:src="@{/dashboard-staff-test/assets/images/settings/light/11.png}"
-                                             alt="hover"
-                                             class="mode light-img img-fluid" width="200" height="200"
-                                             loading="lazy">
-                                    </label>
-                                    <span class="mt-2">Color</span>
-                                </div>
-                                <div data-setting="radio" class="text-center">
-                                    <input type="radio" value="default" class="btn-check" name="header_banner"
-                                           id="header-banner-default">
-                                    <label class="btn btn-border p-0 d-block overflow-hidden"
-                                           for="header-banner-default">
-                                        <img src="./assets/images/settings/dark/04.png" th:src="@{/dashboard-staff-test/assets/images/settings/dark/04.png}"
-                                             alt="hover"
-                                             class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                        <img src="./assets/images/settings/light/04.png" th:src="@{/dashboard-staff-test/assets/images/settings/light/04.png}"
-                                             alt="hover"
-                                             class="mode light-img img-fluid" width="200" height="200"
-                                             loading="lazy">
-                                    </label>
-                                    <span class="mt-2">Image</span>
-                                </div>
-                                <div data-setting="radio" class="text-center">
-                                    <input type="radio" value="hide" class="btn-check" name="header_banner"
-                                           id="hide-banner" checked>
-                                    <label class="btn btn-border position-relative p-0 d-block overflow-hidden"
-                                           for="hide-banner">
-                                        <img src="./assets/images/settings/dark/05.png" th:src="@{/dashboard-staff-test/assets/images/settings/dark/05.png}"
-                                             alt="boxed"
-                                             class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                        <img src="./assets/images/settings/light/05.png" th:src="@{/dashboard-staff-test/assets/images/settings/light/05.png}"
-                                             alt="boxed"
-                                             class="mode light-img img-fluid" width="200" height="200"
-                                             loading="lazy">
-                                    </label>
-                                    <span class="mt-2">Hide</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Banner style end here -->
-
-                        <hr class="hr-horizontal">
-
                         <!-- Page Animation start here -->
                         <div class="mt-4 mb-3">
                             <h6 class="d-inline-block mb-0 me-2">Footer </h6>
@@ -1451,7 +1376,6 @@
                                     Animation</label>
                             </div>
                         </div>
-                        <!-- Page Animation start here -->
 
                         <div>
                             <h6 class="mb-3 d-inline-block">Storage</h6>
@@ -1488,30 +1412,21 @@
     </div>
 </div>
 
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-
-
-
-
 <!-- Library Bundle Script -->
 <script src="./assets/js/core/libs.min.js" th:src="@{/dashboard-staff-test/assets/js/core/libs.min.js}"
 ></script>
 <!-- Plugin Scripts -->
+<!-- Tour plugin Start -->
+<script src="./assets/vendor/sheperd/dist/js/sheperd.min.js" th:src="@{/dashboard-staff-test/assets/vendor/sheperd/dist/js/sheperd.min.js}"
+></script>
+<script src="./assets/js/plugins/tour.js" th:src="@{/dashboard-staff-test/assets/js/plugins/tour.js}"
+        defer></script>
 
 <!-- Flatpickr Script -->
 <script src="./assets/vendor/flatpickr/dist/flatpickr.min.js" th:src="@{/dashboard-staff-test/assets/vendor/flatpickr/dist/flatpickr.min.js}"
 ></script>
 <script src="./assets/js/plugins/flatpickr.js" th:src="@{/dashboard-staff-test/assets/js/plugins/flatpickr.js}"
         defer></script>
-
-
 
 <!-- Slider-tab Script -->
 <script src="./assets/js/plugins/slider-tabs.js" th:src="@{/dashboard-staff-test/assets/js/plugins/slider-tabs.js}"
@@ -1521,16 +1436,9 @@
 <!-- fslightbox Script -->
 <script src="./assets/js/plugins/fslightbox.js" th:src="@{/dashboard-staff-test/assets/js/plugins/fslightbox.js}"
         defer></script>
-
-
-
-
 <!-- Select2 Script -->
 <script src="./assets/js/plugins/select2.js" th:src="@{/dashboard-staff-test/assets/js/plugins/select2.js}"
         defer></script>
-
-
-
 
 <!-- Lodash Utility -->
 <script src="./assets/vendor/lodash/lodash.min.js" th:src="@{/dashboard-staff-test/assets/vendor/lodash/lodash.min.js}"
@@ -1560,13 +1468,181 @@
         defer></script>
 <script src="./assets/js/sidebar.js?v=1.4.1" th:src="@{/dashboard-staff-test/assets/js/sidebar.js?v=1.4.1}"
         defer></script>
-
 <!-- Icons -->
 <script src="./assets/js/solid-icon-search-filter.js?v=1.4.1" th:src="@{/dashboard-staff-test/assets/js/solid-icon-search-filter.js?v=1.4.1}"
         defer></script>
+
 </body>
 <script>
+    function getFilterParams() {
+        return {
+            sampleName: $('#sampleName').val(),
+        };
+    }
 
+    function fetchFilteredData(page = 0) {
+        const filters = getFilterParams();
+        filters.page = page;
+
+        $.ajax({
+            url: '/api/sample/filter/inactive',
+            type: 'GET',
+            data: filters,
+            success: function (data) {
+                renderTable(data.content);
+                renderPagination(data);
+                $('#totalSample').text(`Có hơn: ${data.totalElements} mẫu`);
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function renderTable(data) {
+        let html = '';
+        data.forEach(item => {
+            html += `
+        <tr data-item="list">
+                                    <th scope="row">${item.name}</th>
+                                    <td>
+                                     <button type="button" class="btn btn-info" data-id="${item.id}">Khôi phục</button>
+                                    </td>
+                                </tr>`;
+        });
+
+        $('#input-datatable tbody').html(html);
+    }
+
+    function renderPagination(pageData) {
+        const currentPage = pageData.number;
+        const totalPages = pageData.totalPages;
+        let html = '';
+
+        html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Trước</a></li>`;
+
+        if (currentPage > 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+            if (currentPage > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+
+        for (let i = Math.max(0, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
+        }
+
+        if (currentPage < totalPages - 3) {
+            html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+        if (currentPage < totalPages - 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
+        }
+
+        html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Sau</a></li>`;
+
+        $('#pagination-container').html(html);
+    }
+
+    $(document).on('click', '.pagination a.page-link', function (e) {
+        e.preventDefault();
+        const page = parseInt($(this).data('page'));
+        fetchFilteredData(page);
+    });
+
+    let typingTimer;
+    const typingDelay = 600;
+
+    function attachInputEvents() {
+        $('#sampleName').off('input').on('input', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => fetchFilteredData(0), typingDelay);
+        });
+    }
+
+    $(document).ready(function () {
+        attachInputEvents();
+        fetchFilteredData(0);
+    });
+    function collectSampleData() {
+        const samples = [];
+        const sampleGroups = document.querySelectorAll('#sample-container .sample-group');
+
+        sampleGroups.forEach((group, index) => {
+            const sample = {
+                name: group.querySelector(`#add_Name_${index}`).value.trim(),
+                unit: group.querySelector(`#add_Unit_${index}`).value.trim(),
+                low: group.querySelector(`#add_Low_${index}`).value.trim(),
+                high: group.querySelector(`#add_High_${index}`).value.trim(),
+                lowSuspect: group.querySelector(`#add_Low_Suspect_${index}`).value.trim(),
+                highSuspect: group.querySelector(`#add_High_Suspect_${index}`).value.trim()
+            };
+            samples.push(sample);
+        });
+
+        return samples;
+    }
+    $(document).on('click', '.offcanvas-footer .btn-primary', function (e) {
+        e.preventDefault();
+
+        if (!validateSampleForm()) {
+            alert("Vui lòng nhập đầy đủ tất cả các trường!");
+            return;
+        }
+
+        const id = $('#add_Id').val().trim();
+        const samples = collectSampleData();
+
+        const payload = {
+            sampleGroupId: id,
+            samples: samples
+        };
+
+        $.ajax({
+            url: '/api/test/create',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(payload),
+            success: function (res) {
+                alert("Tạo mẫu thành công!");
+                $('#offcanvasProductAdd').offcanvas('hide');
+            },
+            error: function () {
+                alert("Tạo mẫu thất bại!");
+            }
+        });
+    });
+    function validateSampleForm() {
+        let isValid = true;
+        const groupName = $('#add_Id').val();
+        if (!groupName || groupName.trim() === '') {
+            isValid = false;
+        }
+        $('#sample-container input').each(function () {
+            const value = $(this).val();
+            if (!value || value.trim() === '') {
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    }
+
+    $(document).on('click', '.btn-info', function () {
+        const id = $(this).data('id');
+        if (!id) return;
+
+        $.ajax({
+            url: '/api/test/restore/' + id,
+            type: 'GET',
+            success: function () {
+                alert("Khôi phục thành công!");
+                window.location.reload();
+            },
+            error: function () {
+                alert("Khôi phục thất bại!");
+            }
+        });
+    });
 </script>
-
 </html>

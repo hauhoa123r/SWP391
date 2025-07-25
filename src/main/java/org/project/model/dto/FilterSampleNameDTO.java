@@ -11,4 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FilterSampleNameDTO extends AbstractServiceDTO{
     private String sampleName;
+    private String status;
 }

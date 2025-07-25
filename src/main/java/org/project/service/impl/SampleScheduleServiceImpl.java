@@ -120,4 +120,10 @@ public class SampleScheduleServiceImpl implements SampleScheduleService {
         Page<SampleFilterResponse> results = sampleFilterConverter.toSampleFilterDTOPage(filterSampleNameDTO);
         return results;
     }
+
+    @Override
+    public Page<SampleFilterResponse> searchSampleInactive(FilterSampleNameDTO filterSampleNameDTO) throws IllegalAccessException {
+        Page<SampleFilterResponse> results = sampleFilterConverter.toSampleFilterDTOInactive(filterSampleNameDTO);
+        return results;
+    }
 }

@@ -22,5 +22,5 @@ public interface SampleScheduleService {
     Page<ResultSampleResponse> getAllResultSample(SampleFilterDTO sampleFilterDTO) throws IllegalAccessException;
 
     Page<SampleFilterResponse> searchSampleSchedule(FilterSampleNameDTO filterSampleNameDTO) throws IllegalAccessException;
-
+    Page<SampleFilterResponse> searchSampleInactive(FilterSampleNameDTO filterSampleNameDTO) throws IllegalAccessException;
 }

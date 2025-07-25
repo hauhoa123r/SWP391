@@ -24,6 +24,9 @@ public class TestTypeEntity {
     @Column(name = "test_type_name", nullable = false, length = 100)
     private String testTypeName;
 
+    @Column(name = "status")
+    private String status;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity product;

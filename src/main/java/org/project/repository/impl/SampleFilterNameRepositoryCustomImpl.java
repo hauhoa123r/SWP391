@@ -27,6 +27,8 @@ public class SampleFilterNameRepositoryCustomImpl implements SampleFilterNameRep
             results.append("AND t.test_type_name LIKE :sampleName\n");
             params.put("sampleName", "%" + filterSampleNameDTO.getSampleName() + "%");
         }
+        results.append("AND t.status = :sampleStatus\n");
+        params.put("sampleStatus", filterSampleNameDTO.getStatus());
         return results.toString();
     }
 

@@ -133,4 +133,17 @@ public class SampleAPI {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping("/filter/inactive")
+    public ResponseEntity<?> filterSampleInactive(@ModelAttribute FilterSampleNameDTO filterSampleNameDTO){
+        try {
+            Page<SampleFilterResponse> results = sampleScheduleServiceImpl.searchSampleInactive(filterSampleNameDTO);
+            if (results == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid search parameters");
+            }
+            return ResponseEntity.ok(results);
+        }  catch (ResourceNotFoundException | IllegalAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }
