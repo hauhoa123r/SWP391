@@ -81,7 +81,7 @@ public class GeocodingService {
     public String toGetAddressShortest(Long userId) {
         List<HospitalEntity> hospitalEntities = hospitalRepository.findAll();
         ArrayList<DistanceShortestResponse> distanceShortestResponses = new ArrayList<>();
-        PatientEntity patientEntity = patientRepository.findByUserEntity_IdAndUserEntity_UserRoleAndFamilyRelationship(userId, UserRole.PATIENT, FamilyRelationship.SELF);
+        PatientEntity patientEntity = patientRepository.findByUserEntity_Id(userId);
         for (HospitalEntity hospitalEntity : hospitalEntities) {
             DistanceShortestResponse distanceShortestResponse = new DistanceShortestResponse();
             distanceShortestResponse.setDistance(toGetDistanceAddressUserToHospital(patientEntity.getAddress(), hospitalEntity.getAddress()));

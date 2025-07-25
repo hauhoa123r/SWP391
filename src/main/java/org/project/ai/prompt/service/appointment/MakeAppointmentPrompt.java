@@ -47,9 +47,4 @@ public class MakeAppointmentPrompt implements PromptAnswer {
        return "Bạn muốn đặt lịch cho ai, họ đang từng khám ở cơ sở bệnh viện nào thuộc về hệ thống của chúng tôi chưa?" +
                "nếu chưa bạn hãy tạo hồ sơ trước nhé!";
     }
-    private String checkRelationshipUser(PatientBasicInfo patientBasicInfo){
-            return "";
-    }
-
-
 }
