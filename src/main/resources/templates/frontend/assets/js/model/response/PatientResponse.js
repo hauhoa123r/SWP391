@@ -7,12 +7,12 @@ export class PatientResponse extends BaseResponse {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.fullName = fullName;
-        this.avatarUrl = avatarUrl;
+        this.avatarUrl = avatarUrl || "/frontend/assets/images/error/mr.nobody.jpg";
         this.address = address;
         this.birthdate = birthdate;
         this.familyRelationship = familyRelationship;
         this.gender = gender;
-        this.bloodType = bloodType;
+        this.bloodType = bloodType || "Chưa xác định";
     }
 
     static fromJson(json) {
