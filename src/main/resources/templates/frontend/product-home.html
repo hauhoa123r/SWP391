@@ -876,7 +876,8 @@
                                                th:href="@{/product-standard/{id}(id=${product.id})}"
                                                th:text="${product.name}"></a>
                                         </h5>
-                                        <h6 class="price-value fw-semibold mb-2" th:text="'$'+${product.price}"></h6>
+                                        <h6 class="price-value fw-semibold mb-2"
+                                            th:text="${#numbers.formatCurrency(product.price)}"></h6>
                                         <div class="ratting">
                                             <div class="ratting">
                                                 <svg class="icon-20" fill="none"
@@ -1290,7 +1291,8 @@
                                                th:href="@{/product-standard/{id}(id=${product.id})}"
                                                th:text="${product.name}"></a>
                                         </h5>
-                                        <h6 class="price-value fw-semibold mb-2" th:text="'$'+${product.price}"></h6>
+                                        <h6 class="price-value fw-semibold mb-2"
+                                            th:text="${#numbers.formatCurrency(product.price)}"></h6>
                                         <div class="ratting">
                                             <div class="ratting">
                                                 <svg class="icon-20" fill="none"
