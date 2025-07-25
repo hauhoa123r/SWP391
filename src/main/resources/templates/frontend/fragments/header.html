@@ -365,16 +365,16 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-user">
                                     <th:block sec:authorize="isAnonymous()">
-                                        <li><a class="dropdown-item border-bottom" th:href="@{/auth-view/login}">Đăng
+                                        <li><a class="dropdown-item border-bottom" th:href="@{/login}">Đăng
                                             nhập</a></li>
-                                        <li><a class="dropdown-item" th:href="@{/auth-view/register}">Đăng
+                                        <li><a class="dropdown-item" th:href="@{/register}">Đăng
                                             ký</a></li>
                                     </th:block>
                                     <th:block sec:authorize="isAuthenticated()">
                                         <li><a class="dropdown-item border-bottom"
                                                th:href="@{/home}">Trang quản lý</a></li>
                                         <li><a class="dropdown-item"
-                                               th:href="@{/auth-view/logout}">Đăng
+                                               th:href="@{/logout}">Đăng
                                             xuất</a></li>
                                     </th:block>
                                 </ul>
