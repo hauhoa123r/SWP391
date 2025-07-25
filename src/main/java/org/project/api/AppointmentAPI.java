@@ -4,6 +4,7 @@ import org.project.entity.UserEntity;
 import org.project.enums.AppointmentStatus;
 import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.ChangeAppointmentDTO;
+import org.project.security.AccountDetails;
 import org.project.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,8 @@ public class AppointmentAPI {
     }
 
     @PostMapping("/api/patient/appointment")
-    public ResponseEntity<String> saveAppointment(@AuthenticationPrincipal UserEntity userEntity, @RequestBody AppointmentDTO appointmentDTO) {
+    public ResponseEntity<String> saveAppointment(@AuthenticationPrincipal AccountDetails accountDetails, @RequestBody AppointmentDTO appointmentDTO) {
+        UserEntity userEntity = accountDetails.getUserEntity();
         appointmentDTO.setPatientEntityUserEntityId(userEntity.getId());
         appointmentService.saveAppointment(appointmentDTO);
         return ResponseEntity.ok("Appointment created successfully");
