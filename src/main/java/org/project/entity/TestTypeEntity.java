@@ -19,8 +19,7 @@ public class TestTypeEntity {
     @Column(name = "test_type_id", nullable = false)
     private Long id;
 
-    @Size(max = 100)
-    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "test_type_name", nullable = false, length = 100)
     private String testTypeName;
 
