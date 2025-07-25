@@ -219,4 +219,11 @@ public class StaffTestLabController {
         modelAndView.addObject("result", viewResultResponse);
         return modelAndView;
     }
+
+    @GetMapping("/add/sample")
+    public ModelAndView addSampleView(HttpServletRequest request, Model model) {
+        ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/add-sample");
+        modelAndView.addObject("currentURI", request.getRequestURI());
+        return modelAndView;
+    }
 }
