@@ -35,10 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 // Show success message
                 Swal.fire({
-                    title: 'Success!',
-                    text: 'Product added to wishlist',
+                    title: 'Thành công!',
+                    text: 'Đã thêm sản phẩm vào danh sách yêu thích',
                     icon: 'success',
-                    confirmButtonText: 'Continue shopping'
+                    confirmButtonText: 'Tiếp tục mua sắm'
                 });
                 
                 // Visual feedback - change button appearance
@@ -47,8 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error adding to wishlist:', error);
                 Swal.fire({
-                    title: 'Error!',
-                    text: 'Could not add to wishlist. Please try again.',
+                    title: 'Lỗi!',
+                    text: 'Không thể thêm vào danh sách yêu thích. Vui lòng thử lại.',
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
@@ -98,8 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Show success message
                 Swal.fire({
-                    title: 'Success!',
-                    text: 'Product removed from wishlist',
+                    title: 'Thành công!',
+                    text: 'Đã xóa sản phẩm khỏi danh sách yêu thích',
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
@@ -107,8 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error removing from wishlist:', error);
                 Swal.fire({
-                    title: 'Error!',
-                    text: 'Could not remove from wishlist. Please try again.',
+                    title: 'Lỗi!',
+                    text: 'Không thể xóa khỏi danh sách yêu thích. Vui lòng thử lại.',
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
