@@ -6,6 +6,9 @@ export class FormDataUtils {
      * @returns {Object} - The converted plain object.
      */
     static getObjectFromFormData(instance, formData) {
+        if (!instance || instance === {}) {
+            return Object.fromEntries(formData.entries());
+        }
         Object.keys(instance).forEach(key => {
             const value = formData.has(key) ? formData.get(key) : undefined;
             if (value !== undefined && value !== null) {
