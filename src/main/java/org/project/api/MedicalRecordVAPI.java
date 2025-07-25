@@ -14,6 +14,11 @@ public class MedicalRecordVAPI {
     @Autowired
     private MedicalRecordService medicalRecordService;
 
+    @PostMapping("/create/{appointmentId}")
+    public Boolean createMedicalRecord(@PathVariable Long appointmentId) {
+        return medicalRecordService.addMedicalRecord(appointmentId);
+    }
+
     @GetMapping("/{appointment_id}/main-reason")
     public ResponseEntity<String> getMainReason(@PathVariable Long appointment_id) {
         return ResponseEntity.ok(medicalRecordService.getMainReason(appointment_id));

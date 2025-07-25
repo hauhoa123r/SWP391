@@ -19,7 +19,7 @@ public class AppointmentVController {
 
     @GetMapping
     public ResponseEntity<DoctorHeaderResponse> getDoctorId(){
-        return ResponseEntity.ok(doctorService.getDoctorByUserId(9l));
+        return ResponseEntity.ok(doctorService.getDoctorByUserId(8L));
     }
 
     @GetMapping("/home-page")

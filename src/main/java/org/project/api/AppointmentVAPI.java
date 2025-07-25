@@ -1,6 +1,7 @@
 package org.project.api;
 
 import org.project.model.dto.AppointmentChangeStatusDTO;
+import org.project.model.request.FilterVAppointmentRequest;
 import org.project.model.response.AppointmentDetailResponse;
 import org.project.model.response.AppointmentListResponse;
 import org.project.service.AppointmentVService;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -20,13 +23,11 @@ public class AppointmentVAPI {
     public Page<AppointmentListResponse> getAppointments(
             @PathVariable Long doctorId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size,
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String dateFilter,
-            @RequestParam(required = false) String specificDate
-    ) {
-        return appointmentService.searchAppointments(doctorId, page, size, search, status, dateFilter, specificDate);
+            @RequestParam(defaultValue = "6") int size,
+            @ModelAttribute FilterVAppointmentRequest filterVAppointmentRequest
+            )
+    {
+        return appointmentService.searchAppointments(doctorId,page,size,filterVAppointmentRequest);
     }
 
     @GetMapping("/in-progress/{id}")

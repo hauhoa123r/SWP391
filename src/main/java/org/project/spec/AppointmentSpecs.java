@@ -1,9 +1,14 @@
 package org.project.spec;
 
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Order;
 import org.project.entity.AppointmentEntity;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class AppointmentSpecs {
     public static Specification<AppointmentEntity> byDoctorId(Long doctorId) {
@@ -26,25 +31,66 @@ public class AppointmentSpecs {
         };
     }
 
-    public static Specification<AppointmentEntity> dateFilter(String dateFilter, String specificDate) {
+    public static Specification<AppointmentEntity> dateFilter(String dateFilter, LocalDate startDate, LocalDate endDate) {
         return (root, query, cb) -> {
-            if ("today".equals(dateFilter)) {
-                return cb.equal(root.get("startTime").as(LocalDate.class), LocalDate.now());
-            } else if ("tomorrow".equals(dateFilter)) {
-                return cb.equal(root.get("startTime").as(LocalDate.class), LocalDate.now().plusDays(1));
-            } else if ("week".equals(dateFilter)) {
-                LocalDate now = LocalDate.now();
-                LocalDate start = now.with(java.time.DayOfWeek.MONDAY);
-                LocalDate end = now.with(java.time.DayOfWeek.SUNDAY);
-                return cb.between(root.get("startTime").as(LocalDate.class), start, end);
-            } else if ("month".equals(dateFilter)) {
-                LocalDate now = LocalDate.now();
-                LocalDate start = now.withDayOfMonth(1);
-                LocalDate end = now.withDayOfMonth(now.lengthOfMonth());
-                return cb.between(root.get("startTime").as(LocalDate.class), start, end);
-            } else if ("custom".equals(dateFilter) && specificDate != null && !specificDate.isBlank()) {
-                return cb.equal(root.get("startTime").as(LocalDate.class), LocalDate.parse(specificDate));
+            if (dateFilter == null && startDate == null) {
+                return null;
             }
+
+            // Lấy trường startTime dưới dạng Timestamp
+            Expression<Timestamp> startTime = root.get("startTime");
+
+            if (dateFilter != null) {
+                LocalDate now = LocalDate.now();
+                switch (dateFilter) {
+                    case "today":
+                        return cb.between(startTime,
+                                Timestamp.valueOf(now.atStartOfDay()),
+                                Timestamp.valueOf(now.atTime(23, 59, 59)));
+                    case "tomorrow":
+                        LocalDate tomorrow = now.plusDays(1);
+                        return cb.between(startTime,
+                                Timestamp.valueOf(tomorrow.atStartOfDay()),
+                                Timestamp.valueOf(tomorrow.atTime(23, 59, 59)));
+                    case "week":
+                        LocalDate startOfWeek = now.with(DayOfWeek.MONDAY);
+                        LocalDate endOfWeek = now.with(DayOfWeek.SUNDAY);
+                        return cb.between(startTime,
+                                Timestamp.valueOf(startOfWeek.atStartOfDay()),
+                                Timestamp.valueOf(endOfWeek.atTime(23, 59, 59)));
+                    case "month":
+                        LocalDate startOfMonth = now.withDayOfMonth(1);
+                        LocalDate endOfMonth = now.withDayOfMonth(now.lengthOfMonth());
+                        return cb.between(startTime,
+                                Timestamp.valueOf(startOfMonth.atStartOfDay()),
+                                Timestamp.valueOf(endOfMonth.atTime(23, 59, 59)));
+                }
+            }
+
+            if (startDate != null && endDate != null) {
+                return cb.between(startTime,
+                        Timestamp.valueOf(startDate.atStartOfDay()),
+                        Timestamp.valueOf(endDate.atTime(23, 59, 59)));
+            }
+
+            return null;
+        };
+    }
+    public static Specification<AppointmentEntity> sortByTimeOfDay(String sortOrder) {
+        return (root, query, cb) -> {
+            if (sortOrder == null || sortOrder.isEmpty()) {
+                return null;
+            }
+
+            Expression<Integer> hour = cb.function("HOUR", Integer.class, root.get("startTime"));
+            Expression<Integer> minute = cb.function("MINUTE", Integer.class, root.get("startTime"));
+
+            Order timeOrder = sortOrder.equalsIgnoreCase("asc")
+                    ? cb.asc(hour) : cb.desc(hour);
+            Order minuteOrder = sortOrder.equalsIgnoreCase("asc")
+                    ? cb.asc(minute) : cb.desc(minute);
+
+            query.orderBy(timeOrder, minuteOrder);
             return null;
         };
     }

@@ -1,6 +1,7 @@
 package org.project.service;
 
 public interface MedicalRecordService {
+    boolean addMedicalRecord(Long appointmentId);
     String getMainReason(Long appointmentId);
     String getDiagnosis(Long appointmentId);
     String getPlan(Long appointmentId);

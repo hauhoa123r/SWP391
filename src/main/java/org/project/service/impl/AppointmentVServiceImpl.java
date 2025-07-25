@@ -4,6 +4,7 @@ import org.project.converter.AppointmentsConverter;
 import org.project.entity.AppointmentEntity;
 import org.project.enums.AppointmentStatus;
 import org.project.model.dto.AppointmentChangeStatusDTO;
+import org.project.model.request.FilterVAppointmentRequest;
 import org.project.model.response.AppointmentDetailResponse;
 import org.project.model.response.AppointmentListResponse;
 import org.project.repository.AppointmentVRepository;
@@ -70,12 +71,13 @@ public class AppointmentVServiceImpl implements AppointmentVService {
     }
 
     @Override
-    public Page<AppointmentListResponse> searchAppointments(Long doctorId, int page, int size, String search, String status, String dateFilter, String specificDate) {
+    public Page<AppointmentListResponse> searchAppointments(Long doctorId,int page, int size,FilterVAppointmentRequest filter) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("startTime").descending());
         Specification<AppointmentEntity> spec = AppointmentSpecs.byDoctorId(doctorId)
-                .and(AppointmentSpecs.search(search))
-                .and(AppointmentSpecs.status(status))
-                .and(AppointmentSpecs.dateFilter(dateFilter, specificDate));
+                .and(AppointmentSpecs.search(filter.getSearch()))
+                .and(AppointmentSpecs.status(filter.getStatus()))
+                .and(AppointmentSpecs.dateFilter(filter.getDateFilter(), filter.getStartDate(), filter.getEndDate()))
+                .and(AppointmentSpecs.sortByTimeOfDay(filter.getSortTime()));
         Page<AppointmentEntity> pageResult = appointmentRepository.findAll(spec, pageable);
         return pageResult.map(appointmentConverter::toAppointmentListResponse);
     }
