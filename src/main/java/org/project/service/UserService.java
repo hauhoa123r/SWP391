@@ -1,9 +1,9 @@
 package org.project.service;
 
 import org.project.entity.UserEntity;
-import org.springframework.data.domain.Page;
 import org.project.model.dto.UserLoginDTO;
 import org.project.model.response.UserLoginResponse;
+import org.springframework.data.domain.Page;
 
 public interface UserService {
     // Phân trang người dùng
@@ -43,13 +43,14 @@ public interface UserService {
 
     // Xóa người dùng vĩnh viễn
     void deleteUser(Long id);
+
     // Lấy danh sách người dùng đã bị xóa tạm
     Page<UserEntity> getDeletedUsers(int page, int size);
 
     // Khôi phục người dùng đã bị xóa tạm
     void restoreUser(Long id);
 
-
-
     UserLoginResponse isLogin(UserLoginDTO userLoginDTO);
+
+    void resetPassword(String email);
 }
