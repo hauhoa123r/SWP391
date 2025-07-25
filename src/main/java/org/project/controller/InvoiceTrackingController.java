@@ -29,7 +29,7 @@ public class InvoiceTrackingController {
      * @param id Transaction ID
      * @return View name
      */
-    @GetMapping("/invoiceintracking.html")
+    @GetMapping("/warehouse/invoice/in/tracking")
     public String getSupplierInTracking(@RequestParam Long id, Model model) {
         log.info("Loading supplier in tracking page for ID: {}", id);
         
@@ -45,11 +45,11 @@ public class InvoiceTrackingController {
             
             // Not found
             model.addAttribute("errorMessage", "Không tìm thấy đơn nhập kho có ID: " + id);
-            return "redirect:/supplier-ins";
+            return "redirect:/warehouse/stock-in";
         } catch (Exception e) {
             log.error("Error loading supplier in tracking for ID {}: {}", id, e.getMessage(), e);
             model.addAttribute("errorMessage", "Lỗi khi tải dữ liệu theo dõi đơn nhập kho: " + e.getMessage());
-            return "redirect:/supplier-ins";
+            return "redirect:/warehouse/stock-in";
         }
     }
 
@@ -58,7 +58,7 @@ public class InvoiceTrackingController {
      * @param id Transaction ID
      * @return View name
      */
-    @GetMapping("/invoiceouttracking.html")
+    @GetMapping("/warehouse/invoice/out/tracking")
     public String getSupplierOutTracking(@RequestParam Long id, Model model) {
         log.info("Loading supplier out tracking page for ID: {}", id);
         
@@ -74,11 +74,11 @@ public class InvoiceTrackingController {
             
             // Not found
             model.addAttribute("errorMessage", "Không tìm thấy đơn xuất kho có ID: " + id);
-            return "redirect:/supplier-outs";
+            return "redirect:/warehouse/stock-out";
         } catch (Exception e) {
             log.error("Error loading supplier out tracking for ID {}: {}", id, e.getMessage(), e);
             model.addAttribute("errorMessage", "Lỗi khi tải dữ liệu theo dõi đơn xuất kho: " + e.getMessage());
-            return "redirect:/supplier-outs";
+            return "redirect:/warehouse/stock-out";
         }
     }
 } 

@@ -18,7 +18,7 @@ public class ProductController {
 
     @GetMapping("/product-standard/")
     public ModelAndView product() {
-        ModelAndView mv = new ModelAndView("frontend/product-standard");
+        ModelAndView mv = new ModelAndView("product-standard");
         return mv;
     }
 
@@ -62,7 +62,7 @@ public class ProductController {
 
     @GetMapping("/product-home")
     public ModelAndView productHome() {
-        ModelAndView mv = new ModelAndView("frontend/product-home");
+        ModelAndView mv = new ModelAndView("product-home");
         // Fetch top 10 products for the home page
         mv.addObject("products", pharmacyServiceImpl.findTop10Products());
         return mv;

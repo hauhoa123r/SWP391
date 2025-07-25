@@ -17,7 +17,6 @@ import org.project.service.SupplierInService;
 import org.project.service.SupplierOutInvoiceService;
 import org.project.utils.LogUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,7 +45,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/supplier-ins")
+@RequestMapping("/warehouse/stock-in")
 public class SupplierInController {
 
     private final SupplierInService supplierInService;
@@ -57,7 +56,7 @@ public class SupplierInController {
     @Autowired
     private SupplierOutInvoiceService supplierOutInvoiceService;
     
-    private static final String REDIRECT_SUPPLIER_INS = "redirect:/supplier-ins";
+    private static final String REDIRECT_SUPPLIER_INS = "redirect:/warehouse/stock-in";
     private static final String TEMPLATE_STOCK_IN = "templates_storage/StockIn";
     private static final String TEMPLATE_STOCK_IN_DETAIL = "templates_storage/StockInDetail";
 
@@ -165,7 +164,7 @@ public class SupplierInController {
                 mv.addObject("allowedStatuses", allowedStatuses);
                 
                 // Add page navigation links
-                addPaginationToModelAndView(mv, "supplier-ins", supplierInsPage);
+                addPaginationToModelAndView(mv, "warehouse/stock-in", supplierInsPage);
                 
                 // Add debug info
                 mv.addObject("debugInfo", "Trang hiển thị " + supplierInsPage.getNumberOfElements() + 
@@ -359,7 +358,7 @@ public class SupplierInController {
                 addSuccessMessage(redirectAttributes, "Đơn nhập kho đã hoàn thành và chuyển tới hóa đơn nhập kho");
                 
                 // Redirect to invoices
-                mv.setViewName("redirect:/supplier-in-invoices");
+                mv.setViewName("redirect:/warehouse/invoices/in");
                 return mv;
             } else if (SupplierTransactionStatus.REJECTED.name().equals(status)) {
                 // Handle rejection
@@ -421,12 +420,12 @@ public class SupplierInController {
                     typeDisplayName = "thuốc";
                 } else {
                     // Mặc định là thiết bị y tế
-                    targetUrl = "redirect:/medical-equipment";
+                    targetUrl = "redirect:/warehouse/medical-equipment";
                     typeDisplayName = "thiết bị y tế";
                 }
             } else {
                 // Nếu không có thông tin loại, mặc định chuyển đến trang thiết bị y tế
-                targetUrl = "redirect:/medical-equipment";
+                targetUrl = "redirect:/warehouse/medical-equipment";
                 typeDisplayName = "thiết bị y tế";
             }
             

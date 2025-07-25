@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.project.service.SupplierInInvoiceService;
 
 @Controller
-@RequestMapping("/medicines")
+@RequestMapping("/warehouse/medicines")
 public class MedicineController {
 
     @Autowired
@@ -60,26 +60,26 @@ public class MedicineController {
     @PostMapping("/create")
     public String createMedicine(@ModelAttribute MedicineDTO medicineDTO, Model model) {
         medicineService.createMedicine(medicineDTO);
-        return "redirect:/medicines";
+        return "redirect:/warehouse/medicines";
     }
 
     @PostMapping("/update/{id}")
     public String updateMedicine(@PathVariable Long id, @ModelAttribute MedicineDTO medicineDTO, Model model) {
         medicineDTO.setId(id);
         medicineService.updateMedicine(medicineDTO);
-        return "redirect:/medicines";
+        return "redirect:/warehouse/medicines";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteMedicine(@PathVariable Long id, Model model) {
         medicineService.deleteById(id);
-        return "redirect:/medicines";
+        return "redirect:/warehouse/medicines";
     }
 
     @PostMapping("/create-supplier-in")
     public String createSupplierIn(@ModelAttribute SupplierInDTO supplierInDTO, Model model) {
         supplierInService.createSupplierIn(supplierInDTO);
-        return "redirect:/medicines";
+        return "redirect:/warehouse/medicines";
     }
 
     @PostMapping("/process-supplier-in/{supplierInId}")
@@ -89,7 +89,7 @@ public class MedicineController {
             medicineService.processSupplierIn(supplierIn);
             supplierInService.updateSupplierInStatus(supplierInId, "COMPLETED");
         }
-        return "redirect:/medicines";
+        return "redirect:/warehouse/medicines";
     }
     
     /**
@@ -135,6 +135,6 @@ public class MedicineController {
                     "Lỗi khi xử lý nhập kho: " + e.getMessage());
         }
         
-        return "redirect:/medicines";
+        return "redirect:/warehouse/medicines";
     }
 }

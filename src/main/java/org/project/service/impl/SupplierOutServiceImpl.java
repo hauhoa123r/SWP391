@@ -28,12 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.Collection;
-import java.util.HashSet;
 
 @Service
 public class SupplierOutServiceImpl extends AbstractBaseTransactionServiceImpl<SupplierOutDTO> implements SupplierOutService {
@@ -290,22 +286,18 @@ public class SupplierOutServiceImpl extends AbstractBaseTransactionServiceImpl<S
      * @param items The collection of items in the order
      * @return The determined product type (MEDICINE or MEDICAL_PRODUCT)
      */
-    private String determineProductType(Collection<SupplierTransactionItemEntity> items) {
-        // Nếu không có sản phẩm, mặc định là thiết bị y tế
+    private String determineProductType(Set<SupplierTransactionItemEntity> items) {
         if (items == null || items.isEmpty()) {
-            return "MEDICAL_PRODUCT";
+            return null;
         }
-        
-        // Lấy sản phẩm đầu tiên trong danh sách
-        SupplierTransactionItemEntity firstItem = items.iterator().next();
-        
-        // Kiểm tra và lấy loại của sản phẩm đầu tiên
-        if (firstItem.getProductEntity() != null && 
-            firstItem.getProductEntity().getProductType() != null) {
-            return firstItem.getProductEntity().getProductType().name();
-        }
-        
-        // Nếu không lấy được loại của sản phẩm đầu tiên, mặc định là thiết bị y tế
-        return "MEDICAL_PRODUCT";
+
+        return items.stream()
+                .filter(item -> item != null
+                        && item.getProductEntity() != null
+                        && item.getProductEntity().getProductType() != null)
+                .map(item -> item.getProductEntity().getProductType().name())
+                .findFirst()
+                .orElse(null);
     }
+
 } 

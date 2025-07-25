@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/supplier-outs")
+@RequestMapping("/warehouse/stock-out")
 public class SupplierOutController {
 
     private final SupplierOutService supplierOutService;
@@ -49,7 +49,7 @@ public class SupplierOutController {
     private final ProductRepository productRepository;
     private final SupplierEntityRepository supplierRepository;
     
-    private static final String REDIRECT_SUPPLIER_OUTS = "redirect:/supplier-outs";
+    private static final String REDIRECT_SUPPLIER_OUTS = "redirect:/warehouse/stock-out";
     private static final String TEMPLATE_STOCK_OUT = "templates_storage/StockOut";
     private static final String TEMPLATE_STOCK_OUT_DETAIL = "templates_storage/StockOutDetail";
 
@@ -184,7 +184,7 @@ public class SupplierOutController {
             mv.addObject("allowedStatuses", allowedStatuses);
             
             // Add pagination links
-            addPaginationToModelAndView(mv, "supplier-outs", filteredPage);
+            addPaginationToModelAndView(mv, "warehouse/stock-out", filteredPage);
             
             // Add debug info
             mv.addObject("debugInfo", "Trang hiển thị " + filteredPage.getContent().size() + 
@@ -422,7 +422,7 @@ public class SupplierOutController {
                 processCompletedSupplierOut(id);
                         
                         // Redirect to invoice
-                mv.setViewName("redirect:/supplier-out-invoices");
+                mv.setViewName("redirect:/warehouse/invoices/out");
                         addSuccessMessage(redirectAttributes, "Đơn xuất kho đã hoàn thành và chuyển sang hóa đơn");
                         return mv;
                     } catch (Exception e) {
@@ -580,7 +580,7 @@ public class SupplierOutController {
             SupplierOutDTO supplierOutDTO = supplierOutService.getSupplierOutById(id);
             if (supplierOutDTO == null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy đơn xuất kho có ID: " + id);
-                return "redirect:/supplier-outs";
+                return "redirect:/warehouse/stock-out";
             }
             
             // Set status to REJECTED
@@ -606,7 +606,7 @@ public class SupplierOutController {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi từ chối đơn xuất kho: " + e.getMessage());
         }
         
-        return "redirect:/supplier-outs";
+        return "redirect:/warehouse/stock-out";
     }
 
     /**
@@ -929,7 +929,7 @@ public class SupplierOutController {
      * @return Redirect URL
      */
     private String getRedirectToDetail(Long id) {
-        return "redirect:/supplier-outs/" + id;
+        return "redirect:/warehouse/stock-out/" + id;
     }
     
     /**

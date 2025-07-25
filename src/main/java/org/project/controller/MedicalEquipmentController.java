@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/medical-equipment")
+@RequestMapping("/warehouse/medical-equipment")
 public class MedicalEquipmentController {
 
     private final MedicalProductService medicalProductService;
@@ -97,16 +97,16 @@ public class MedicalEquipmentController {
                 log.debug("Medical equipment details loaded for ID: {}", id);
                 // Redirect to main equipment page instead of non-existent detail page
                 model.addAttribute("successMessage", "Đã tải thông tin thiết bị y tế: " + equipment.getName());
-                return "redirect:/medical-equipment";
+                return "redirect:/warehouse/medical-equipment";
             } else {
                 log.warn("Medical equipment with ID {} not found", id);
                 model.addAttribute("errorMessage", "Không tìm thấy thiết bị y tế với ID: " + id);
-                return "redirect:/medical-equipment";
+                return "redirect:/warehouse/medical-equipment";
             }
         } catch (Exception e) {
             log.error("Error loading medical equipment details for ID {}: {}", id, e.getMessage(), e);
             model.addAttribute("errorMessage", "Lỗi khi tải thông tin thiết bị y tế: " + e.getMessage());
-            return "redirect:/medical-equipment";
+            return "redirect:/warehouse/medical-equipment";
         }
     }
 
@@ -131,7 +131,7 @@ public class MedicalEquipmentController {
             model.addAttribute("errorMessage", "Lỗi khi tạo thiết bị y tế: " + e.getMessage());
         }
         
-        return "redirect:/medical-equipment";
+        return "redirect:/warehouse/medical-equipment";
     }
 
     /**
@@ -167,7 +167,7 @@ public class MedicalEquipmentController {
             model.addAttribute("errorMessage", "Lỗi khi cập nhật thiết bị y tế: " + e.getMessage());
         }
         
-        return "redirect:/medical-equipment";
+        return "redirect:/warehouse/medical-equipment";
     }
 
     /**
@@ -189,7 +189,7 @@ public class MedicalEquipmentController {
             model.addAttribute("errorMessage", "Lỗi khi xóa thiết bị y tế: " + e.getMessage());
         }
         
-        return "redirect:/medical-equipment";
+        return "redirect:/warehouse/medical-equipment";
     }
 
     /**
@@ -240,6 +240,6 @@ public class MedicalEquipmentController {
                     "Lỗi khi xử lý nhập kho: " + e.getMessage());
         }
         
-        return "redirect:/medical-equipment";
+        return "redirect:/warehouse/medical-equipment";
     }
 }

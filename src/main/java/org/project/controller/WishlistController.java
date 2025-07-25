@@ -14,7 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Controller to handle wishlist related interactions (view, add, remove products).
@@ -28,15 +31,86 @@ import java.util.List;
 public class WishlistController {
 
     private final WishlistService wishlistService;
+    private static final int PAGE_SIZE = 10; // Số sản phẩm trên một trang
 
     /**
      * Display the wishlist page.
      */
     @GetMapping("/wishlist")
-    public String viewWishlist(Model model, HttpSession session) {
-        List<PharmacyResponse> items = wishlistService.getWishlistItems(getCurrentUserId(session));
-        model.addAttribute("items", items);
-        return "frontend/wishlist"; // renders templates/frontend/wishlist.html
+    public String viewWishlist(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false, defaultValue = "date_desc") String sort,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            Model model, 
+            HttpSession session) {
+        
+        // Lấy tất cả items từ wishlist
+        List<PharmacyResponse> allItems = wishlistService.getWishlistItems(getCurrentUserId(session));
+        
+        // Lọc theo tìm kiếm nếu có
+        List<PharmacyResponse> filteredItems = allItems;
+        if (search != null && !search.trim().isEmpty()) {
+            String searchLower = search.toLowerCase();
+            filteredItems = allItems.stream()
+                    .filter(item -> item.getName().toLowerCase().contains(searchLower) || 
+                                    (item.getDescription() != null && 
+                                     item.getDescription().toLowerCase().contains(searchLower)))
+                    .collect(Collectors.toList());
+        }
+        
+        // Sắp xếp dữ liệu
+        switch (sort) {
+            case "name_asc":
+                filteredItems.sort(Comparator.comparing(PharmacyResponse::getName));
+                break;
+            case "name_desc":
+                filteredItems.sort(Comparator.comparing(PharmacyResponse::getName).reversed());
+                break;
+            case "price_asc":
+                filteredItems.sort(Comparator.comparing(PharmacyResponse::getPrice));
+                break;
+            case "price_desc":
+                filteredItems.sort(Comparator.comparing(PharmacyResponse::getPrice).reversed());
+                break;
+            case "date_asc":
+                // Giả định rằng ID sẽ tăng theo thời gian tạo
+                filteredItems.sort(Comparator.comparing(PharmacyResponse::getId));
+                break;
+            case "date_desc":
+            default:
+                // Giả định rằng ID sẽ tăng theo thời gian tạo
+                filteredItems.sort(Comparator.comparing(PharmacyResponse::getId).reversed());
+                break;
+        }
+        
+        // Tính toán thông tin phân trang
+        int totalItems = filteredItems.size();
+        int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
+        
+        // Đảm bảo page trong phạm vi hợp lệ
+        if (page < 0) {
+            page = 0;
+        } else if (page >= totalPages && totalPages > 0) {
+            page = totalPages - 1;
+        }
+        
+        // Lấy dữ liệu trang hiện tại
+        List<PharmacyResponse> pagedItems;
+        if (!filteredItems.isEmpty()) {
+            int start = page * PAGE_SIZE;
+            int end = Math.min(start + PAGE_SIZE, totalItems);
+            pagedItems = filteredItems.subList(start, end);
+        } else {
+            pagedItems = new ArrayList<>();
+        }
+        
+        // Thêm thuộc tính vào model
+        model.addAttribute("items", pagedItems);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalItems", totalItems);
+        
+        return "/wishlist"; // renders templates/frontend/wishlist.html
     }
 
     /**

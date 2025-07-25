@@ -4,12 +4,10 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.enums.ProductSortType;
-import org.project.model.dto.ProductDetailDTO;
 import org.project.model.response.CategoryListResponse;
 import org.project.model.response.PharmacyResponse;
 import org.project.service.CategoryService;
 import org.project.service.ProductService;
-import org.project.service.WishlistService;
 import org.project.repository.ProductTagRepository;
 
 import java.math.BigDecimal;
@@ -17,14 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +34,6 @@ public class ShopController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final ProductTagRepository productTagRepository;
-    private final WishlistService wishlistService;
 
     private static final String PREVIOUS_SEARCH_KEY = "previousSearch";
 
@@ -61,7 +55,7 @@ public class ShopController {
             @RequestParam(value = "search", required = false) String searchQuery,
             @RequestParam(value = "sort", required = false) ProductSortType sortType,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "40") int size,
+            @RequestParam(defaultValue = "18") int size,
             @RequestParam(value = "categoryId", required = false) Long categoryId,
             @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
             @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
@@ -71,7 +65,7 @@ public class ShopController {
         log.info("Processing shop request: searchQuery={}, sortType={}, page={}, size={}, categoryId={}, minPrice={}, maxPrice={}, tag={}, label={}",
                 searchQuery, sortType, page, size, categoryId, minPrice, maxPrice, tagRaw, label);
 
-        ModelAndView mv = new ModelAndView("frontend/shop");
+        ModelAndView mv = new ModelAndView("/shop");
         
         // Convert "%23" back to "#" for tag searches if needed
         String tagProcessed = tagRaw != null ? tagRaw.replace("%23", "#") : null;
@@ -188,41 +182,6 @@ public class ShopController {
         return redirectUrl.toString();
     }
 
-    /**
-     * Product home page displaying top products
-     * @return ModelAndView for product home page
-     */
-//    @GetMapping("/product-home")
-//    public ModelAndView productHome() {
-//        log.info("Loading product home page");
-//
-//        ModelAndView mv = new ModelAndView("product-home");
-//
-//        try {
-//            // Fetch top 10 products for the home page
-//            List<PharmacyResponse> products = productService.findTop10Products();
-//
-//            // Validate returned list
-//            if (products == null) {
-//                log.warn("findTop10Products returned null, using empty list");
-//                products = Collections.emptyList();
-//            } else if (products.isEmpty()) {
-//                log.debug("No products found, returning empty list");
-//            } else {
-//                log.debug("Loaded {} products for home page", products.size());
-//            }
-//
-//            // Add products to model
-//            mv.addObject("products", products);
-//
-//        } catch (Exception e) {
-//            log.error("Error fetching top 10 products: {}", e.getMessage(), e);
-//            // Return empty list on error to avoid rendering issues
-//            mv.addObject("products", Collections.emptyList());
-//        }
-//
-//        return mv;
-//    }
 
     // ==================== Other page mappings ====================
 
@@ -236,75 +195,6 @@ public class ShopController {
         return new ModelAndView("frontend/checkout");
     }
 
-    /**
-     * User account page
-     * @return ModelAndView for account page
-     */
-    @GetMapping("/my-account")
-    public ModelAndView myAccount() {
-        log.debug("Accessing my account page");
-        return new ModelAndView("frontend/my-account");
-    }
-
-    /**
-     * Order tracking page
-     * @return ModelAndView for order tracking page
-     */
-    @GetMapping("/track-order")
-    public ModelAndView trackOrder() {
-        log.debug("Accessing track order page");
-        return new ModelAndView("frontend/track-order");
-    }
-
-    /**
-     * New products page
-     * @return ModelAndView for new products page
-     */
-    @GetMapping("/product-new")
-    public ModelAndView productNew() {
-        log.debug("Accessing new products page");
-        return new ModelAndView("frontend/product-new");
-    }
-
-    /**
-     * Product sale page
-     * @return ModelAndView for product sale page
-     */
-    @GetMapping("/product-sale")
-    public ModelAndView productSale() {
-        log.debug("Accessing product sale page");
-        return new ModelAndView("frontend/product-sale");
-    }
-
-    /**
-     * Shop page with left sidebar layout
-     * @return ModelAndView for shop page with left sidebar
-     */
-    @GetMapping("/shop-left-sidebar")
-    public ModelAndView shopLeftSidebar() {
-        log.debug("Accessing shop with left sidebar");
-        return new ModelAndView("frontend/shop-left-sidebar");
-    }
-
-    /**
-     * Shop page with right sidebar layout
-     * @return ModelAndView for shop page with right sidebar
-     */
-    @GetMapping("/shop-right-sidebar")
-    public ModelAndView shopRightSidebar() {
-        log.debug("Accessing shop with right sidebar");
-        return new ModelAndView("frontend/shop-right-sidebar");
-    }
-
-    /**
-     * Shop page without sidebar layout
-     * @return ModelAndView for shop page without sidebar
-     */
-    @GetMapping("/shop-no-sidebar")
-    public ModelAndView shopNoSidebar() {
-        log.debug("Accessing shop with no sidebar");
-        return new ModelAndView("frontend/shop-no-sidebar");
-    }
 
     // ==================== Helper methods ====================
     

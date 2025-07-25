@@ -8,7 +8,6 @@ import org.project.entity.SupplierTransactionItemEntityId;
 import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
-import org.project.enums.ProductType;
 import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierRequestItemDTO;
 import org.project.repository.InventoryManagerRepository;
@@ -22,8 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -259,7 +256,7 @@ public class SupplierInServiceImpl extends AbstractBaseTransactionServiceImpl<Su
         dto.setPaymentMethod(entity.getPaymentMethod());
         dto.setDueDate(entity.getDueDate());
         dto.setPaymentDate(entity.getPaymentDate());
-        
+
         // Set transaction type (always STOCK_IN for this service)
         dto.setTransactionType(SupplierTransactionType.STOCK_IN);
         
@@ -291,16 +288,14 @@ public class SupplierInServiceImpl extends AbstractBaseTransactionServiceImpl<Su
         }
         
         // Set type based on first product (if available)
-        if (entity.getSupplierTransactionItemEntities() != null && !entity.getSupplierTransactionItemEntities().isEmpty()) {
-            try {
-                SupplierTransactionItemEntity firstItem = entity.getSupplierTransactionItemEntities().iterator().next();
-                if (firstItem != null && firstItem.getProductEntity() != null && firstItem.getProductEntity().getProductType() != null) {
-                    dto.setType(firstItem.getProductEntity().getProductType().name());
-                }
-            } catch (Exception e) {
-                dto.setType(null);
-            }
-        }
+        Optional<String> typeOptional = entity.getSupplierTransactionItemEntities().stream()
+                .filter(item -> item != null
+                        && item.getProductEntity() != null
+                        && item.getProductEntity().getProductType() != null)
+                .map(item -> item.getProductEntity().getProductType().name())
+                .findFirst();
+
+        dto.setType(typeOptional.orElse(null));
         
         return dto;
     }
