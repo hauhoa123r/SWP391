@@ -29,70 +29,21 @@
                         <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${doctor.staffEntity.averageRating}, reviewCount=${doctor.staffEntity.reviewCount})}"></div>
                         <div class="iq-team-info position-absolute d-block w-100">
                             <div class="iq-team-main-detail bg-white">
-                                <h5 th:text="${doctor.staffEntity.fullName}">Gunner Peha</h5>
+                                <h5 th:text="${doctor.staffEntity.fullName}"></h5>
                                 <p class="mb-0 text-uppercase fw-bolder text-primary fw-500"
-                                   th:text="${doctor.staffEntity.departmentEntity.name}">Cardiologist</p>
+                                   th:text="${doctor.staffEntity.departmentEntity.name}"></p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- TODO: Đổi thành tiếng việt -->
-                <div class="mt-5 sidebar-widget-working-hour bg-secondary-subtle text-body p-3 p-md-5">
-                    <div class="icon mb-4">
-                        <i class="far fa-clock"></i>
-                    </div>
-                    <h4 class="mb-3 fw-500">Opening Time</h4>
-                    <ul class="list-inline m-0">
-                        <li class="mb-2 pb-2 border-bottom d-flex align-items-center justify-content-between">
-                            <span>Monday - Friday</span>
-                            <span>6:00 - 7:00 pm</span>
-                        </li>
-                        <li class="mb-2 pb-2 border-bottom d-flex align-items-center justify-content-between">
-                            <span>Saturday</span>
-                            <span>8:00 - 9:00 pm </span>
-                        </li>
-                        <li class="d-flex align-items-center justify-content-between">
-                            <span>Sunday</span>
-                            <span>Closed</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- TODO: Đổi thành tiếng việt -->
-                <div class="mt-5 sidebar-widget-services bg-primary-subtle text-body p-3 p-md-5">
-                    <div class="image mb-5">
-                        <img
-                                th:src="@{/frontend/assets/images/pages/short-logo.png}">
-                    </div>
-                    <h4 class="mb-3">KiviCare Services</h4>
-                    <ul class="list-inline m-0">
-                        <li class="mb-2">
-                            <span><b>Call :</b></span>
-                            <span>+123456789</span>
-                        </li>
-                        <li class="mb-2">
-                            <span><b>Mail :</b></span>
-                            <span>support@example.com</span>
-                        </li>
-                        <li>
-                            <span><b>Address :</b></span>
-                            <span>1234, North Avenue, Luke Lane, South Bend, IN 360001</span>
-                        </li>
-                    </ul>
                 </div>
             </div>
             <div class="col-lg-8 mt-lg-0 mt-5">
                 <div class="iq-title-box">
                     <h3 class="iq-title iq-heading-title mb-3">
                             <span class="right-text text-capitalize"
-                                  th:text="${doctor.staffEntity.departmentEntity.name}">General</span>
+                                  th:text="${doctor.staffEntity.departmentEntity.name}"></span>
                     </h3>
-                    <p class="iq-title-desc text-body" th:text="${doctor.staffEntity.hospitalEntityName}">
-                        Dr. Mantooth has done Basic and Advanced training in Reproductive Medicine and IVF- Homerton
-                        University hospital London UK. He is an active member of London Fertility Society and has
-                        helped
-                        in conducting workshops in IFS conference.
-                    </p>
+                    <p class="iq-title-desc text-body" th:text="${doctor.staffEntity.hospitalEntityName}"></p>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -105,8 +56,7 @@
                                         <i aria-hidden="true" class="flaticon flaticon-flaticon flaticon-award"></i>
                                     </div>
                                     <h6 class="mt-1 mb-0"
-                                        th:text="${qualification.issueDate + ' ' + qualification.title}">2020 World
-                                        Health Organization Vaccine Research Award</h6>
+                                        th:text="${qualification.issueDate + ' ' + qualification.title}"></h6>
                                 </div>
                             </div>
                         </div>
@@ -116,9 +66,9 @@
                         <div class="mt-5" th:each="skill : ${doctor.staffEntity.staffSkillEntities}">
                             <div class="wrapper-progress">
                                 <div class="percentage-progress d-flex justify-content-between">
-                                    <h6 class="mb-2 text-body" th:text="${skill.name}">Technique</h6>
+                                    <h6 class="mb-2 text-body" th:text="${skill.name}"></h6>
                                     <div><span class="counter"
-                                               th:text="${skill.proficiencyPercentage + '%'}">70%</span></div>
+                                               th:text="${skill.proficiencyPercentage + '%'}"></span></div>
                                 </div>
                             </div>
                             <div class="progress mb-3" style="height:10px">
@@ -144,7 +94,7 @@
                                 <li class="mb-2"
                                     th:each="speciality : ${doctor.staffEntity.staffSpecialityEntities}">
                                     <span class="text-primary"><i class="far fa-star"></i></span>
-                                    <span class="ms-1" th:text="${speciality.title}">Gynecologist</span>
+                                    <span class="ms-1" th:text="${speciality.title}"></span>
                                 </li>
                             </ul>
                         </div>
@@ -178,7 +128,7 @@
                                     th:each="experience : ${doctor.staffEntity.staffExperienceEntities}">
                                     <span class="text-primary"><i class="fas fa-file-alt"></i></span>
                                     <span class="ms-1"
-                                          th:text="${experience.year + ' In ' + experience.position}">15 Years of experience in medicine</span>
+                                          th:text="${experience.year + ' làm ' + experience.position}"></span>
                                 </li>
                             </ul>
                         </div>

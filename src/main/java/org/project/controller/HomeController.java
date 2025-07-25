@@ -3,6 +3,7 @@ package org.project.controller;
 import org.project.entity.UserEntity;
 import org.project.enums.StaffRole;
 import org.project.enums.UserRole;
+import org.project.security.AccountDetails;
 import org.project.service.AppointmentService;
 import org.project.service.DoctorService;
 import org.project.service.ReviewService;
@@ -63,9 +64,15 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String getHomeByRole(@AuthenticationPrincipal UserEntity userEntity) {
+    public String getHomeByRole(@AuthenticationPrincipal AccountDetails accountDetails) {
+        if (accountDetails == null) {
+            return "redirect:/login";
+        }
+
+        UserEntity userEntity = accountDetails.getUserEntity();
+
         if (userEntity == null) {
-            return "redirect:/auth-view/login";
+            return "redirect:/login";
         }
 
         // TODO: Sửa redirect cho các role USER

@@ -3,19 +3,24 @@ package org.project.service.impl;
 import org.project.entity.UserEntity;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
+import org.project.exception.ErrorResponse;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.UserLoginDTO;
 import org.project.model.response.UserLoginResponse;
 import org.project.repository.UserRepository;
+import org.project.service.EmailService;
 import org.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -24,9 +29,26 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private EmailService emailService;
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public Page<UserEntity> getAllUsers(int page, int size) {
         return userRepository.findByUserStatusNot(UserStatus.INACTIVE, PageRequest.of(page, size));
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
     }
 
     @Override
@@ -83,6 +105,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserLoginResponse isLogin(UserLoginDTO userLoginDTO) {
         return null;
+    }
+
+    private String generateNewPassword() {
+        // Password contains only alphanumeric characters
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder newPassword = new StringBuilder();
+        for (int i = 0; i < 6; i++) { // Length
+            int index = (int) (Math.random() * characters.length());
+            newPassword.append(characters.charAt(index));
+        }
+        return newPassword.toString();
+    }
+
+    @Override
+    public void resetPassword(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if (userEntity == null) {
+            throw new ErrorResponse("Không tìm thấy người dùng với email: " + email);
+        }
+
+        String newPassword = generateNewPassword();
+        userEntity.setPasswordHash(passwordEncoder.encode(newPassword));
+        userRepository.save(userEntity);
+        emailService.sendResetPasswordEmail(email, newPassword);
     }
 
     @Override

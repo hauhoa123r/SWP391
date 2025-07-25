@@ -3,8 +3,10 @@ package org.project.converter;
 import org.modelmapper.ModelMapper;
 import org.project.config.ModelMapperConfig;
 import org.project.entity.PatientEntity;
+import org.project.enums.FamilyRelationship;
 import org.project.exception.mapping.ErrorMappingException;
 import org.project.model.dto.PatientDTO;
+import org.project.model.dto.UserRegisterDTO;
 import org.project.model.response.PatientResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,16 @@ public class PatientConverter {
     @Autowired
     public void setModelMapperConfig(ModelMapperConfig modelMapperConfig) {
         this.modelMapperConfig = modelMapperConfig;
+        this.modelMapperConfig.mapper().typeMap(UserRegisterDTO.class, PatientEntity.class).setPostConverter(
+                mappingContext -> {
+                    UserRegisterDTO source = mappingContext.getSource();
+                    PatientEntity destination = mappingContext.getDestination();
+                    destination.setEmail(source.getEmail());
+                    destination.setPhoneNumber(source.getPhoneNumber());
+                    destination.setFamilyRelationship(FamilyRelationship.SELF);
+                    return destination;
+                }
+        );
     }
 
     public Optional<PatientEntity> toConvertEntity(PatientDTO patientDTO) {
@@ -50,6 +62,11 @@ public class PatientConverter {
     public PatientResponse toResponse(PatientEntity patientEntity) {
         Optional<PatientResponse> patientResponseOptional = Optional.ofNullable(modelMapperConfig.mapper().map(patientEntity, PatientResponse.class));
         return patientResponseOptional.orElseThrow(() -> new ErrorMappingException(PatientEntity.class, PatientResponse.class));
+    }
+
+    public PatientEntity toEntity(UserRegisterDTO userRegisterDTO) {
+        return Optional.ofNullable(modelMapperConfig.mapper().map(userRegisterDTO, PatientEntity.class))
+                .orElseThrow(() -> new ErrorMappingException(UserRegisterDTO.class, PatientEntity.class));
     }
 }
 
