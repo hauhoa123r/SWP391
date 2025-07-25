@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-bs-theme="light" dir="ltr" class="landing-pages" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" data-bs-theme="light" dir="ltr" class="landing-pages" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -91,7 +91,7 @@
                       <div class="col-lg-6 col-md-5 text-md-end">
                          <ul
                             class="iq-social list-inline d-flex align-items-center justify-content-end gap-3 m-0">
-                            <li class="label text-body fw-500">Follow us :</li>
+                            <li class="label text-body fw-500">Theo dõi chúng tôi:</li>
                             <li>
                                <a href="https://facebook.com/">
                                   <svg class="base-circle animated" width="38" height="38"
@@ -167,80 +167,18 @@
                                </div>
                                <ul class="navbar-nav iq-nav-menu  list-unstyled" id="header-menu">
                                   <li class="nav-item">
-                                     <a class="nav-link" data-bs-toggle="collapse" href="#homePages" role="button" aria-expanded="false" aria-controls="homePages">
-                                        <span class="item-name">Home</span>
-                                        <span class="menu-icon">
-                                           <svg width="10" height="10" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                              <path d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z" fill="currentColor"/>
-                                           </svg>
-                                        </span>
+                                     <a class="nav-link" data-bs-toggle="collapse" th:href="@{/}" role="button" aria-expanded="false" aria-controls="homePages">
+                                        <span class="item-name">Trang Chủ</span>
+<!--                                        <span class="menu-icon">-->
+<!--                                           <svg width="10" height="10" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                                              <path d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z" fill="currentColor"/>-->
+<!--                                           </svg>-->
+<!--                                        </span>-->
                                      </a>
-                                     <ul class="sub-nav collapse  list-unstyled" id="homePages">
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./index.html">
-                                           general doctor
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./dentist.html">
-                                           dentist
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./eye-care.html">
-                                           eye care
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./skin-specialist.html">
-                                           skin specialist
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./fertility-clinic.html">
-                                           Fertility Clinic
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./ent-clinic.html">
-                                           ENT Clinic
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./product-home.html" th:href="@{/product-home}">
-                                           Product Home
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./psychiatrist.html">
-                                           Psychiatrist
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./paediatrician.html">
-                                           Paediatrician
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./cardiac.html">
-                                           Cardiac
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./orthopedics.html">
-                                           Orthopedics
-                                           </a>
-                                        </li>
-                                        <li class="nav-item">
-                                           <a class="nav-link " href="./laboratory.html">
-                                           Laboratory
-                                           </a>
-                                        </li>
-                                     </ul>
                                   </li>
                                   <li class="nav-item">
                                      <a class="nav-link" data-bs-toggle="collapse" href="#allPages" role="button" aria-expanded="false" aria-controls="allPages">
-                                        <span class="item-name">Pages</span>
+                                        <span class="item-name"></span>
                                         <span class="menu-icon">
                                            <svg width="10" height="10" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                                               <path d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z" fill="currentColor"/>
@@ -995,7 +933,7 @@
                    <p>Phone : (480) 555-0103</p>
                 </div>
                 <div class="mb-5">
-                   <h4 class="mb-3">Follow Us:</h4>
+                   <h4 class="mb-3">Theo Dõi Chúng Tôi:</h4>
                    <ul class="iq-social list-inline d-flex align-items-center gap-3 m-0">
                       <li>
                          <a href="https://facebook.com/">
@@ -1366,7 +1304,7 @@
                                        <h4 class="product-title mt-1 mb-2">
                                           <a th:href="@{/product-standard/{id}(id=${product.id})}" th:text="${product.name}">Product Name</a>
                                        </h4>
-                                       <h6 class="price-value fw-semibold mb-2" th:text="'$' + ${product.price}">Price</h6>
+                                       <h6 class="price-value fw-semibold mb-2" th:text="${#numbers.formatDecimal(product.price * 23000, 0, 'COMMA', 0, 'POINT') + '₫'}">Price</h6>
                                        <div class="ratting">
                                           <div th:if="${product.rating != null and product.rating > 0}">
                                              <th:block th:each="i : ${#numbers.sequence(1, product.rating)}">
@@ -1390,7 +1328,7 @@
                                                       <input type="hidden" name="productId" th:value="${product.id}" />
                                                       <input type="hidden" name="quantity" value="1" />
                                                       <button type="submit" class="iq-button text-capitalize">
-                                                         <span class="iq-btn-text-holder position-relative">add to cart</span>
+                                                         <span class="iq-btn-text-holder position-relative">Thêm vào giỏ hàng</span>
                                                       <span class="iq-btn-icon-holder">
                                     <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                <path d="M5 0.5C5.34518 0.5 5.625 0.779822 5.625 1.125V4.875H9.375C9.72018 4.875 10 5.15482 10 5.5C10 5.84518 9.72018 6.125 9.375 6.125H5.625V9.875C5.625 10.2202 5.34518 10.5 5 10.5C4.65482 10.5 4.375 10.2202 4.375 9.875V6.125H0.625C0.279822 6.125 0 5.84518 0 5.5C0 5.15482 0.279822 4.875 0.625 4.875H4.375V1.125C4.375 0.779822 4.65482 0.5 5 0.5Z" fill="currentColor" />
@@ -1956,7 +1894,7 @@
                                   </li>
                               </ul>
                               <ul class="iq-social list-inline d-flex align-items-center mt-5 gap-3 m-0">
-                                  <li class="label text-dark fw-500">Follow us :</li>
+                                  <li class="label text-dark fw-500">Theo dõi chúng tôi:</li>
                                    <li>
                                       <a href="https://facebook.com/">
                                           <svg class="base-circle animated" width="38" height="38" viewBox="0 0 50 50">

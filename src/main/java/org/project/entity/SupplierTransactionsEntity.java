@@ -25,7 +25,7 @@ import java.util.Set;
 public class SupplierTransactionsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "supplier_transaction_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull

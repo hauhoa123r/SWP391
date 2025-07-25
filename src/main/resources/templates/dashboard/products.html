@@ -1745,7 +1745,7 @@
                   <td>173 Sold</td>
                   <td th:text="${product.productStatus}">ACTIVE</td>
                   <td>
-                     <a class="d-inline-block pe-2"  th:href="@{/admin/product/edit/{id}(id=${product.id})}">
+                     <a class="d-inline-block pe-2"  th:href="@{/users/admin/product/edit/{id}(id=${product.id})}">
                         <span class="text-success">
                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
@@ -1761,7 +1761,7 @@
                         </span>
                      </a>
                      
-                     <form th:action="@{/admin/products/delete/{id}(id=${product.id})}" method="post" 
+                     <form th:action="@{/users/admin/products/delete/{id}(id=${product.id})}" method="post"
                      onsubmit="return confirm('Are you sure you want to delete this product?')" 
                      style="display:inline-block;">  
                      <button type="submit" class="d-inline-block ps-2 delete-btn" >
@@ -1847,7 +1847,7 @@
     <!-- Trang đầu -->
     <li class="text-center rounded"
         th:classappend="${currentPage == 1} ? ' bg-primary text-white' : ' bg-primary-subtle text-primary'">
-        <a th:href="@{/admin/products(page=1)}" 
+        <a th:href="@{/users/admin/products(page=1)}"
         th:classappend="${currentPage == 1} ? ' bg-primary text-white' : ' bg-primary-subtle text-primary'" 
         th:text="1">1</a>
     </li>
@@ -1859,7 +1859,7 @@
     <li th:each="i : ${#numbers.sequence((currentPage - 1 > 1 ? (currentPage - 1) : 2), ((currentPage + 1 < totalPages) ? (currentPage + 1) : (totalPages - 1)))}"
         class="text-center rounded"
         th:classappend="${i == currentPage} ? ' bg-primary text-white' : ' bg-primary-subtle text-primary'">
-        <a th:href="@{/admin/products(page=${i})}"
+        <a th:href="@{/users/admin/products(page=${i})}"
         th:classappend="${i == currentPage} ? 'bg-primary text-white' : 'bg-primary-subtle text-primary'"
         th:text="${i}">2</a>
     </li>
@@ -1870,7 +1870,7 @@
     <!-- Trang cuối -->
     <li th:if="${totalPages > 1}" class="text-center rounded"
         th:classappend="${currentPage == totalPages} ? ' bg-primary text-white' : ' bg-primary-subtle text-primary'">
-        <a th:href="@{/admin/products(page=${totalPages})}" 
+        <a th:href="@{/users/admin/products(page=${totalPages})}"
         th:classappend="${currentPage == totalPages} ? 'bg-primary text-white' : 'bg-primary-subtle text-primary'" 
         th:text="${totalPages}">72</a>
     </li>
@@ -1906,7 +1906,7 @@
 
           <div>
               <a class="btn btn-secondary text-white me-3" type="button"
-                      th:href="@{/admin/products(page=${currentPage - 1})}"
+                      th:href="@{/users/admin/products(page=${currentPage - 1})}"
                       th:if="${currentPage > 1}">
                   <span class="btn-inner">
                       <span class="text d-inline-block align-middle">Previous</span>
@@ -1918,7 +1918,7 @@
                   </span>
               </a>
               <a class="btn btn-primary me-3" type="button"
-                      th:href="@{/admin/products(page=${currentPage + 1})}"
+                      th:href="@{/users/admin/products(page=${currentPage + 1})}"
                       th:if="${currentPage < totalPages}">
                   <span class="btn-inner">
                       <span class="text d-inline-block align-middle">Next</span>
@@ -2154,7 +2154,7 @@
             </div>
 
 
-<form th:action="@{/admin/products/create}" method="post" enctype="multipart/form-data" th:object="${productDTO}">
+<form th:action="@{users/admin/products/create}" method="post" enctype="multipart/form-data" th:object="${productDTO}">
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasProductAdd"
    aria-labelledby="offcanvasProductAddLabel">
    <div class="offcanvas-header border-bottom">

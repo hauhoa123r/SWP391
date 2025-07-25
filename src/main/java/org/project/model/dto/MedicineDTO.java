@@ -31,5 +31,5 @@ public class MedicineDTO {
     private Long reviewCount;
     private String category;
     private final Integer minStock = 100;
-    private Set<BatchDTO> batches;
+    private List<SupplierInDTO> batches;
 } 

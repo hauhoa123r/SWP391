@@ -244,10 +244,10 @@ public class SupplierInServiceImpl implements SupplierInService {
         dto.setSupplierContact(entity.getSupplierEntity().getPhoneNumber());
         dto.setInventoryManagerId(entity.getInventoryManagerEntity().getId());
 
-        // Get staff name from inventory manager's staff entity
-        if (entity.getInventoryManagerEntity().getStaffEntity() != null) {
-            dto.setInventoryManagerName(entity.getInventoryManagerEntity().getStaffEntity().getFullName());
-        }
+//        // Get staff name from inventory manager's staff entity
+//        if (entity.getInventoryManagerEntity().getStaffEntity() != null) {
+//            dto.setInventoryManagerName(entity.getInventoryManagerEntity().getStaffEntity().getFullName());
+//        }
 
         dto.setTotalAmount(entity.getTotalAmount());
         dto.setTransactionDate(entity.getTransactionDate());

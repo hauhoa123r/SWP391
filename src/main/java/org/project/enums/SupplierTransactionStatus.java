@@ -11,5 +11,6 @@ public enum SupplierTransactionStatus {
     PROBLEM,
     PARTIALLY_COMPLETED,
     CANCELLED,
-    RECEIVED
+    RECEIVED,
+    PAID
 }

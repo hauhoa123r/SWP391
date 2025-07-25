@@ -700,7 +700,7 @@
 
         medicines.forEach(medicine => {
             medicine.batches.forEach(batch => {
-                const expDate = new Date(batch.expireDate);
+                const expDate = new Date(batch.expiryDate);
                 const today = new Date();
                 const daysToExpiry = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
 
@@ -720,12 +720,12 @@
                 const row = `
     <tr>
     <td>${medicine.name}</td>
-    <td>${batch.batchCode}</td>
+    <td>${batch.batchNumber}</td>
     <td>${batch.quantity}</td>
-    <td>${batch.expireDate}</td>
+    <td>${batch.expiryDate}</td>
     <td><span class="${statusClass}">${statusText}</span></td>
     <td>
-        <button class="btn btn-sm btn-warning" onclick="handleExpiredBatch('${batch.batchCode}')">
+        <button class="btn btn-sm btn-warning" onclick="handleExpiredBatch('${batch.batchNumber}')">
             <i class="ri-alert-line"></i> Xử lý
         </button>
     </td>
@@ -747,8 +747,8 @@
         <div class="row">
         <div class="col-md-8">
         <h6>Đơn nhập: ${order.id}</h6>
-    <p>Nhà cung cấp: ${order.supplier}</p>
-    <p>Ngày: ${order.date}</p>
+    <p>Nhà cung cấp: ${order.supplierName}</p>
+    <p>Ngày: ${order.approvedDate}</p>
     <p>Trạng thái: <span class="badge bg-info">${getOrderStatusText(order.status)}</span></p>
     </div>
     <div class="col-md-4 text-end">
@@ -894,9 +894,9 @@
                                                         </td>
                                                         <td>
                                                             <strong>${medicine.name}</strong><br>
-                                                            <small class="text-muted">${medicine.code}</small>
+                                                            <small class="text-muted">${medicine.id}</small>
                                                         </td>
-                                                        <td class="${getStockStatus(medicine.stock, medicine.minStock).class}">${medicine.stock}</td>
+                                                        <td class="${getStockStatus(medicine.stockQuantities, medicine.minStock).class}">${medicine.stockQuantities}</td>
                                                         <td>
                                                             <input type="number" class="form-control" name="quantity_${medicine.id}" min="1" value="100">
                                                         </td>

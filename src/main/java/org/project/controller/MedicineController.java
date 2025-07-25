@@ -2,9 +2,11 @@ package org.project.controller;
 
 import org.project.model.dto.MedicineDTO;
 import org.project.model.dto.SupplierInDTO;
+import org.project.model.dto.SupplierTransactionDTO;
 import org.project.service.MedicineService;
 import org.project.service.SupplierInService;
 import org.project.enums.operation.SortDirection;
+import org.project.service.SupplierTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,9 @@ public class MedicineController {
 
     @Autowired
     private SupplierInService supplierInService;
+
+    @Autowired
+    private SupplierTransactionService  supplierTransactionService;
 
     @GetMapping
     public String getAllMedicines(
@@ -40,6 +45,7 @@ public class MedicineController {
         model.addAttribute("totalPages", medicinePage.getTotalPages());
         model.addAttribute("newMedicine", new MedicineDTO());
         model.addAttribute("supplierIn", new SupplierInDTO());
+        model.addAttribute("order", supplierInService.getAllSupplierIns());
         //add medicine page for paging
         model.addAttribute("medicinePage", medicinePage);
         return "templates_storage/medicine";
