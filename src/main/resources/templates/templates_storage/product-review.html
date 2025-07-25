@@ -84,14 +84,14 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
@@ -191,7 +191,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/index.html}" data-bs-original-title="" title="">
+                    <a th:href="@{/warehouse/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -202,7 +202,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -217,7 +217,7 @@
                         <ul class="sidebar-links" id="simple-bar">
                             <li class="back-btn"></li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/index.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/warehouse/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -229,10 +229,10 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockIn.html}">Nhập kho</a>
+                                        <a th:href="@{/warehouse/stock-in}">Nhập kho</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/StockOut.html}">Xuất kho</a>
+                                        <a th:href="@{/warehouse/stock-out}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -243,13 +243,13 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockInInvoice.html}">Hóa đơn nhập kho</a>
+                                        <a th:href="@{/warehouse/invoices/in}">Hóa đơn nhập kho</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
+                                        <a th:href="@{/warehouse/invoices/out}">Hóa đơn xuất kho</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/CustomerInvoice.html}">Hóa đơn khách hàng</a>
+                                        <a th:href="@{/customer-invoice}">Hóa đơn khách hàng</a>
                                     </li>
                                 </ul>
                             </li>
@@ -260,10 +260,10 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                        <a th:href="@{/warehouse/medical-equipment}">Thiết bị y tế</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/medicine.html}">Thuốc</a>
+                                        <a th:href="@{/warehouse/medicines}">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>
@@ -275,21 +275,21 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
+                                        <a th:href="@{/coupon-list}">Danh sách mã giảm giá</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
+                                        <a th:href="@{/create-coupon}">Tạo mã giảm giá</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review}">
                                     <i class="ri-star-line"></i>
                                     <span>Đánh giá sản phẩm</span>
                                 </a>
                             </li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports}">
                                     <i class="ri-file-chart-line"></i>
                                     <span>Báo cáo</span>
                                 </a>
@@ -558,7 +558,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 <div class="button-box">
                     <button type="button" class="btn btn--no" data-bs-dismiss="modal">Không</button>
-                    <button type="button" onclick="location.href = 'login.html';"
+                    <button type="button" onclick="location.href = '/login';"
                             class="btn btn--yes btn-primary">Có</button>
                 </div>
             </div>

@@ -59,10 +59,10 @@
         
         /* Style for action buttons */
         .btn-group form button.btn {
-            width: 38px;
-            height: 38px;
+            width: 55px;
+            height: 45px;
             padding: 0;
-            margin-right: 2px;
+            margin-right: -2px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -111,14 +111,14 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
@@ -189,7 +189,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
+                    <a th:href="@{/warehouse/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -200,7 +200,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -216,7 +216,7 @@
                             <li class="back-btn"></li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/warehouse/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -229,11 +229,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/supplier-ins}">Nhập kho</a>
+                                        <a th:href="@{/warehouse/stock-in}">Nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/supplier-outs}">Xuất kho</a>
+                                        <a th:href="@{/warehouse/stock-out}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -245,11 +245,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/supplier-in-invoices}">Hóa đơn nhập kho</a>
+                                        <a th:href="@{/warehouse/invoices/in}">Hóa đơn nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/supplier-out-invoices}">Hóa đơn xuất kho</a>
+                                        <a th:href="@{/warehouse/invoices/out}">Hóa đơn xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -261,11 +261,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                        <a th:href="@{/warehouse/medical-equipment}">Thiết bị y tế</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/medicine.html}">Thuốc</a>
+                                        <a th:href="@{/warehouse/medicines}">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>
@@ -278,24 +278,24 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
+                                        <a th:href="@{/coupon-list}">Danh sách mã giảm giá</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
+                                        <a th:href="@{/create-coupon}">Tạo mã giảm giá</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review}">
                                     <i class="ri-star-line"></i>
                                     <span>Đánh giá sản phẩm</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports}">
                                     <i class="ri-file-chart-line"></i>
                                     <span>Báo cáo</span>
                                 </a>
@@ -336,7 +336,7 @@
                             <!-- Filter Section -->
                             <div class="card-body">
                                 <!-- Tìm kiếm và bộ lọc -->
-                                <form th:action="@{/supplier-ins}" method="get" id="filterForm" class="mb-3">
+                                <form th:action="@{/warehouse/stock-in}" method="get" id="filterForm" class="mb-3">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="input-group mb-3">
@@ -415,7 +415,7 @@
                                             <td>
                                                 <!-- Improved type implementation to handle all types -->
                                                 <span th:if="${supplierIn?.type == 'MEDICINE'}" class="badge bg-success">Thuốc</span>
-                                                <span th:if="${supplierIn?.type == 'MEDICAL_EQUIPMENT'}" class="badge bg-info">Thiết bị y tế</span>
+                                                <span th:if="${supplierIn?.type == 'MEDICAL_PRODUCT'}" class="badge bg-info">Thiết bị y tế</span>
                                                 <span th:if="${supplierIn?.type == 'MIXED'}" class="badge bg-warning">Hỗn hợp</span>
                                                 <span th:if="${supplierIn?.type == null || supplierIn?.type == 'UNDEFINED'}" class="badge bg-secondary">Không xác định</span>
                                             </td>
@@ -430,7 +430,7 @@
                                                 <!-- Use the displayName property directly -->
                                                 <span th:if="${supplierIn?.status != null}" th:class="${'status-' + (
                                                     supplierIn.status.name() == 'PENDING' ? 'pending' : 
-                                                    supplierIn.status.name() == 'APPROVED' ? 'processing' : 
+                                                    supplierIn.status.name() == 'APPROVED' ? 'processing' :
                                                     supplierIn.status.name() == 'REJECTED' ? 'rejected' : 
                                                     supplierIn.status.name() == 'WAITING_FOR_DELIVERY' ? 'pending' : 
                                                     supplierIn.status.name() == 'DELIVERED' ? 'received' : 
@@ -445,16 +445,16 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" style="display: flex !important;">
-                                                    <a th:href="@{'/supplier-ins/' + ${supplierIn?.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
+                                                    <a th:href="@{'/warehouse/stock-in/' + ${supplierIn?.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
                                                         <i class="ri-eye-line text-white"></i>
                                                     </a>
-                                                    <a th:href="@{'/invoiceintracking.html?id=' + ${supplierIn?.id}}" class="btn btn-sm btn-info" title="Theo dõi">
+                                                    <a th:href="@{'/invoiceintracking?id=' + ${supplierIn?.id}}" class="btn btn-sm btn-info" title="Theo dõi">
                                                         <i class="ri-route-line text-white"></i>
                                                     </a>
                                                       
                                                     <!-- Status update buttons based on current status -->
                                                     <form th:if="${supplierIn?.status != null && supplierIn.status.name() == 'WAITING_FOR_DELIVERY'}" 
-                                                          th:action="@{'/supplier-ins/' + ${supplierIn?.id} + '/status'}" 
+                                                          th:action="@{'/warehouse/stock-in/' + ${supplierIn?.id} + '/status'}" 
                                                           method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="RECEIVED" />
                                                         <button type="submit" class="btn btn-sm btn-success" 
@@ -465,7 +465,7 @@
                                                     </form>
 
                                                     <form th:if="${supplierIn?.status != null && supplierIn.status.name() == 'RECEIVED'}" 
-                                                          th:action="@{'/supplier-ins/' + ${supplierIn?.id} + '/status'}" 
+                                                          th:action="@{'/warehouse/stock-in/' + ${supplierIn?.id} + '/status'}" 
                                                           method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="INSPECTED" />
                                                         <button type="submit" class="btn btn-sm btn-info" 
@@ -476,7 +476,7 @@
                                                     </form>
                                                     
                                                     <form th:if="${supplierIn?.status != null && supplierIn.status.name() == 'INSPECTED'}" 
-                                                          th:action="@{'/supplier-ins/' + ${supplierIn?.id} + '/status'}" 
+                                                          th:action="@{'/warehouse/stock-in/' + ${supplierIn?.id} + '/status'}" 
                                                           method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="COMPLETED" />
                                                         <button type="submit" class="btn btn-sm btn-success" 
@@ -513,33 +513,33 @@
                                     <ul class="pagination justify-content-center">
                                         <!-- First page button -->
                                         <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                                            <a class="page-link" th:href="@{/supplier-ins(page=0, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="First">
+                                            <a class="page-link" th:href="@{/warehouse/stock-in(page=0, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="First">
                                                 <span aria-hidden="true">&laquo;&laquo;</span>
                                             </a>
                                         </li>
                                         
                                         <!-- Previous button -->
                                         <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                                            <a class="page-link" th:href="@{/supplier-ins(page=${currentPage - 1}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="Previous">
+                                            <a class="page-link" th:href="@{/warehouse/stock-in(page=${currentPage - 1}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
                                         
                                         <!-- Page numbers -->
                                         <li class="page-item" th:each="pageNumber : ${pageNumbers}" th:classappend="${pageNumber == currentPage ? 'active' : ''}">
-                                            <a class="page-link" th:href="@{/supplier-ins(page=${pageNumber}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" th:text="${pageNumber + 1}">1</a>
+                                            <a class="page-link" th:href="@{/warehouse/stock-in(page=${pageNumber}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" th:text="${pageNumber + 1}">1</a>
                                         </li>
                                         
                                         <!-- Next button -->
                                         <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                                            <a class="page-link" th:href="@{/supplier-ins(page=${currentPage + 1}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="Next">
+                                            <a class="page-link" th:href="@{/warehouse/stock-in(page=${currentPage + 1}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
                                         
                                         <!-- Last page button -->
                                         <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                                            <a class="page-link" th:href="@{/supplier-ins(page=${totalPages - 1}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="Last">
+                                            <a class="page-link" th:href="@{/warehouse/stock-in(page=${totalPages - 1}, size=${pageSize}, status=${param.status}, search=${param.search}, type=${param.type})}" aria-label="Last">
                                                 <span aria-hidden="true">&raquo;&raquo;</span>
                                             </a>
                                         </li>
@@ -653,7 +653,7 @@ function rejectOrder() {
     showNotification('Đang xử lý từ chối đơn hàng...', 'info');
     
     // Gửi AJAX request
-    fetch(`/supplier-ins/${orderId}/reject`, {
+    fetch(`/warehouse/stock-in/${orderId}/reject`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -725,7 +725,7 @@ function handleStatusChange(form, newStatus) {
             // Chuẩn bị form để submit
             const processForm = document.createElement('form');
             processForm.method = 'POST';
-            processForm.action = `/supplier-ins/${orderId}/process`;
+            processForm.action = `/warehouse/stock-in/${orderId}/process`;
             
             // Thêm CSRF token nếu có
             const csrfInput = form.querySelector('input[name="_csrf"]');
@@ -769,7 +769,7 @@ function handleStatusChange(form, newStatus) {
     $button.prop('disabled', true);
     
     // Gửi AJAX request
-    fetch(`/supplier-ins/${orderId}/status`, {
+    fetch(`/warehouse/stock-in/${orderId}/status`, {
         method: 'POST',
         body: formData,
     })
@@ -827,7 +827,7 @@ function handleStatusChange(form, newStatus) {
                         status: supplierIn.status ? (typeof supplierIn.status === 'string' ? supplierIn.status : supplierIn.status.name || 'PENDING') : 'PENDING',
                         products: supplierIn.items || [],
                         total: supplierIn.totalAmount || 0,
-                        source: supplierIn.type === 'MEDICINE' ? 'medicine.html' : 'medical-equipment.html'
+                        source: supplierIn.type === 'MEDICINE' ? '/warehouse/medicines' : '/warehouse/medical-equipment'
                     };
                 }
             }
@@ -930,7 +930,7 @@ function handleStatusChange(form, newStatus) {
             const orderType = $(`tr[data-id="${orderId}"]`).data('type');
             
             // Chuyển hướng đến trang xử lý tương ứng
-            let targetUrl = orderType === 'MEDICINE' ? 'medicine.html' : 'medical-equipment.html';
+            let targetUrl = orderType === 'MEDICINE' ? '/warehouse/medicines' : '/warehouse/medical-equipment';
             targetUrl += `?stockin=${orderId}`;
             
             showNotification(`Đang chuyển đến trang xử lý ${orderType === 'MEDICINE' ? 'thuốc' : 'thiết bị y tế'}...`, 'info');
@@ -958,7 +958,7 @@ function handleStatusChange(form, newStatus) {
         $button.prop('disabled', true);
         
         // Gửi AJAX request
-        fetch(`/supplier-ins/${orderId}/status?redirect=false`, {
+        fetch(`/warehouse/stock-in/${orderId}/status?redirect=false`, {
             method: 'POST',
             body: formData,
             headers: {
@@ -1092,7 +1092,7 @@ function handleStatusChange(form, newStatus) {
 
             // Simulate sending to StockInInvoice
             setTimeout(() => {
-                window.location.href = 'StockInInvoice.html?new=' + orderId;
+                window.location.href = 'warehouse/invoices/in?new=' + orderId;
             }, 1000);
         }
     }
@@ -1117,7 +1117,7 @@ function handleStatusChange(form, newStatus) {
         const row = $(`tr[data-id="${orderId}"]`);
         const actionCell = row.find('td:last-child .btn-group');
 
-        let buttons = `<a th:href="@{StockInDetail.html?id=${orderId}}" class="btn btn-sm btn-primary">
+        let buttons = `<a th:href="@{/warehouse/stock-in/${orderId}}" class="btn btn-sm btn-primary">
                             <i class="ri-eye-line"></i>
                           </a>`;
 
@@ -1213,7 +1213,7 @@ function handleStatusChange(form, newStatus) {
             
             // Thiết lập form để submit vào iframe
             const originalAction = form.action;
-            form.action = `${window.location.origin}/api/supplier-ins/${orderId}/status`;
+            form.action = `${window.location.origin}/api/warehouse/stock-in/${orderId}/status`;
             const originalTarget = form.target;
             form.target = targetIframe;
             
@@ -1269,7 +1269,7 @@ function handleStatusChange(form, newStatus) {
         
         // Tạo và thêm form vào body
         const formHTML = `
-            <form id="${formId}" action="${window.location.origin}/api/supplier-ins/${orderId}/status" method="post" target="${targetIframe}" style="display:none;">
+            <form id="${formId}" action="${window.location.origin}/api/warehouse/stock-in/${orderId}/status" method="post" target="${targetIframe}" style="display:none;">
                 <input type="hidden" name="status" value="REJECTED">
                 <input type="hidden" name="reason" value="${reason}">
                 ${$('input[name="_csrf"]').val() ? `<input type="hidden" name="_csrf" value="${$('input[name="_csrf"]').val()}">` : ''}
@@ -1288,7 +1288,7 @@ function handleStatusChange(form, newStatus) {
             
             // Chuyển đến trang hóa đơn nhập kho để lưu trữ
             setTimeout(() => {
-                window.location.href = `StockInInvoice.html?rejected=${orderId}`;
+                window.location.href = `warehouse/invoices/in?rejected=${orderId}`;
             }, 1500);
             
             // Dọn dẹp

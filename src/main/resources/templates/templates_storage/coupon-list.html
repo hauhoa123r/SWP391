@@ -72,14 +72,14 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
@@ -178,7 +178,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
+                    <a th:href="@{/warehouse/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -189,7 +189,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -204,7 +204,7 @@
                         <ul class="sidebar-links" id="simple-bar">
                             <li class="back-btn"></li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/warehouse/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -216,10 +216,10 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockIn.html}">Nhập kho</a>
+                                        <a th:href="@{/warehouse/stock-in}">Nhập kho</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/StockOut.html}">Xuất kho</a>
+                                        <a th:href="@{/warehouse/stock-out}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -230,10 +230,10 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockInInvoice.html}">Hóa đơn nhập kho</a>
+                                        <a th:href="@{/warehouse/invoices/in}">Hóa đơn nhập kho</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
+                                        <a th:href="@{/warehouse/invoices/out}">Hóa đơn xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -244,10 +244,10 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                        <a th:href="@{/warehouse/medical-equipment}">Thiết bị y tế</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/medicine.html}">Thuốc</a>
+                                        <a th:href="@{/warehouse/medicines}">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>

@@ -108,10 +108,10 @@
         
         /* Style for action buttons */
         .btn-group form button.btn {
-            width: 38px;
-            height: 38px;
+            width: 55px;
+            height: 45px;
             padding: 0;
-            margin-right: 2px;
+            margin-right: -2px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -142,14 +142,14 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
@@ -233,7 +233,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
+                    <a th:href="@{/warehouse/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -244,7 +244,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -260,7 +260,7 @@
                             <li class="back-btn"></li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/warehouse/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -273,11 +273,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/supplier-ins}">Nhập kho</a>
+                                        <a th:href="@{/warehouse/stock-in}">Nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/supplier-outs}">Xuất kho</a>
+                                        <a th:href="@{/warehouse/stock-out}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -289,11 +289,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/supplier-in-invoices}">Hóa đơn nhập kho</a>
+                                        <a th:href="@{/warehouse/invoices/in}">Hóa đơn nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/supplier-out-invoices}">Hóa đơn xuất kho</a>
+                                        <a th:href="@{/warehouse/invoices/out}">Hóa đơn xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -305,11 +305,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                        <a th:href="@{/warehouse/medical-equipment}">Thiết bị y tế</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/medicine.html}">Thuốc</a>
+                                        <a th:href="@{/warehouse/medicines}">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>
@@ -323,24 +323,24 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
+                                        <a th:href="@{/coupon-list}">Danh sách mã giảm giá</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
+                                        <a th:href="@{/create-coupon}">Tạo mã giảm giá</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review}">
                                     <i class="ri-star-line"></i>
                                     <span>Đánh giá sản phẩm</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports}">
                                     <i class="ri-file-chart-line"></i>
                                     <span>Báo cáo</span>
                                 </a>
@@ -385,7 +385,7 @@
                             <!-- Filter Section -->
                             <div class="card-body">
                                 <!-- Form tìm kiếm -->
-                                <form th:action="@{/supplier-outs}" method="get" id="filterForm" class="mb-3">
+                                <form th:action="@{/warehouse/stock-out}" method="get" id="filterForm" class="mb-3">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="input-group mb-3">
@@ -462,7 +462,7 @@
                                             <td>
                                                 <!-- Hiển thị loại sản phẩm -->
                                                 <span th:if="${supplierOut?.type != null && supplierOut.type == 'MEDICINE'}" class="badge bg-success">Thuốc</span>
-                                                <span th:if="${supplierOut?.type != null && supplierOut.type == 'MEDICAL_EQUIPMENT'}" class="badge bg-info">Thiết bị y tế</span>
+                                                <span th:if="${supplierOut?.type != null && supplierOut.type == 'MEDICAL_PRODUCT'}" class="badge bg-info">Thiết bị y tế</span>
                                             </td>
                                             <td>
                                                 <!-- Simple badge implementation -->
@@ -486,16 +486,16 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" style="display: flex !important;">
-                                                    <a th:href="@{'/supplier-outs/' + ${supplierOut?.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
+                                                    <a th:href="@{'/warehouse/stock-out/' + ${supplierOut?.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
                                                         <i class="ri-eye-line text-white"></i>
                                                     </a>
-                                                    <a th:href="@{'/invoiceouttracking.html?id=' + ${supplierOut?.id}}" class="btn btn-sm btn-info" title="Theo dõi">
+                                                    <a th:href="@{'/invoiceouttracking?id=' + ${supplierOut?.id}}" class="btn btn-sm btn-info" title="Theo dõi">
                                                         <i class="ri-route-line text-white"></i>
                                                     </a>
                                                       
                                                     <!-- Status update buttons based on current status -->
                                                     <form th:if="${supplierOut?.status != null && supplierOut.status.name() == 'PREPARE_DELIVERY'}" 
-                                                          th:action="@{'/supplier-outs/' + ${supplierOut?.id} + '/status'}" 
+                                                          th:action="@{'/warehouse/stock-out/' + ${supplierOut?.id} + '/status'}" 
                                                           method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="DELIVERING" />
                                                         <button type="submit" class="btn btn-sm btn-success" 
@@ -506,7 +506,7 @@
                                                     </form>
 
                                                     <form th:if="${supplierOut?.status != null && supplierOut.status.name() == 'DELIVERING'}" 
-                                                          th:action="@{'/supplier-outs/' + ${supplierOut?.id} + '/status'}" 
+                                                          th:action="@{'/warehouse/stock-out/' + ${supplierOut?.id} + '/status'}" 
                                                           method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="DELIVERED" />
                                                         <button type="submit" class="btn btn-sm btn-success" 
@@ -517,7 +517,7 @@
                                                     </form>
                                                     
                                                     <form th:if="${supplierOut?.status != null && supplierOut.status.name() == 'DELIVERED'}" 
-                                                          th:action="@{'/supplier-outs/' + ${supplierOut?.id} + '/status'}" 
+                                                          th:action="@{'/warehouse/stock-out/' + ${supplierOut?.id} + '/status'}" 
                                                           method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="PENDING" />
                                                         <button type="submit" class="btn btn-sm btn-warning" 
@@ -528,7 +528,7 @@
                                                     </form>
                                                     
                                                     <form th:if="${supplierOut?.status != null && supplierOut.status.name() == 'PENDING'}" 
-                                                          th:action="@{'/supplier-outs/' + ${supplierOut?.id} + '/status'}" 
+                                                          th:action="@{'/warehouse/stock-out/' + ${supplierOut?.id} + '/status'}" 
                                                           method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="PAID" />
                                                         <button type="submit" class="btn btn-sm btn-info" 
@@ -539,7 +539,7 @@
                                                     </form>
                                                     
                                                     <form th:if="${supplierOut?.status != null && supplierOut.status.name() == 'PAID'}" 
-                                                          th:action="@{'/supplier-outs/' + ${supplierOut?.id} + '/status'}" 
+                                                          th:action="@{'/warehouse/stock-out/' + ${supplierOut?.id} + '/status'}" 
                                                           method="post" style="display:inline-block !important;">
                                                         <input type="hidden" name="status" value="COMPLETED" />
                                                         <button type="submit" class="btn btn-sm btn-success" 
@@ -574,26 +574,26 @@
                                 <nav class="ms-auto me-auto" aria-label="...">
                                     <ul class="pagination pagination-primary">
                                         <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                                            <a class="page-link" th:href="@{/supplier-outs(page=0, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="First">
+                                            <a class="page-link" th:href="@{/warehouse/stock-out(page=0, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="First">
                                                 <span aria-hidden="true">&laquo;&laquo;</span>
                                             </a>
                                         </li>
                                         <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                                            <a class="page-link" th:href="@{/supplier-outs(page=${currentPage - 1}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="Previous">
+                                            <a class="page-link" th:href="@{/warehouse/stock-out(page=${currentPage - 1}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
                                         <li class="page-item" th:each="i : ${pageNumbers}"
                                             th:classappend="${i == currentPage ? 'active' : ''}">
-                                            <a class="page-link" th:href="@{/supplier-outs(page=${i}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" th:text="${i + 1}"></a>
+                                            <a class="page-link" th:href="@{/warehouse/stock-out(page=${i}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" th:text="${i + 1}"></a>
                                         </li>
                                         <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                                            <a class="page-link" th:href="@{/supplier-outs(page=${currentPage + 1}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="Next">
+                                            <a class="page-link" th:href="@{/warehouse/stock-out(page=${currentPage + 1}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
                                         <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                                            <a class="page-link" th:href="@{/supplier-outs(page=${totalPages - 1}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="Last">
+                                            <a class="page-link" th:href="@{/warehouse/stock-out(page=${totalPages - 1}, size=${pageSize}, status=${currentStatus}, search=${currentSearch}, type=${currentType})}" aria-label="Last">
                                                 <span aria-hidden="true">&raquo;&raquo;</span>
                                             </a>
                                         </li>
@@ -636,7 +636,7 @@
                 <h5 class="modal-title" id="createStockOutModalLabel">Tạo đơn xuất kho mới</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form th:action="@{/supplier-outs}" method="post">
+            <form th:action="@{/warehouse/stock-out}" method="post">
                 <div class="modal-body">
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -837,7 +837,7 @@
             // Tạo form để submit
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = `/supplier-outs/${orderId}/status`;
+            form.action = `/warehouse/stock-out/${orderId}/status`;
             
             const statusInput = document.createElement('input');
             statusInput.type = 'hidden';
@@ -1414,7 +1414,7 @@
             console.log("Order type:", orderType);
             
             // Chuyển hướng đến trang xử lý tương ứng
-            let targetUrl = 'StockOutInvoice.html';
+            let targetUrl = 'warehouse/invoices/out';
             targetUrl += `?completed=${orderId}`;
             
             showNotification(`Đang chuyển đến trang hóa đơn xuất kho...`, 'info');
@@ -1442,7 +1442,7 @@
         $button.prop('disabled', true);
         
         // Gửi AJAX request
-        fetch(`/supplier-outs/${orderId}/status?redirect=false`, {
+        fetch(`/warehouse/stock-out/${orderId}/status?redirect=false`, {
             method: 'POST',
             body: formData,
             headers: {
@@ -1546,7 +1546,7 @@
         
         // Tạo và thêm form vào body
         const formHTML = `
-            <form id="${formId}" action="${window.location.origin}/supplier-outs/${orderId}/status" method="post" target="${targetIframe}" style="display:none;">
+            <form id="${formId}" action="${window.location.origin}/warehouse/stock-out/${orderId}/status" method="post" target="${targetIframe}" style="display:none;">
                 <input type="hidden" name="status" value="REJECTED">
                 <input type="hidden" name="reason" value="${reason}">
                 ${$('input[name="_csrf"]').val() ? `<input type="hidden" name="_csrf" value="${$('input[name="_csrf"]').val()}">` : ''}
@@ -1564,9 +1564,8 @@
             showNotification('Đã từ chối đơn hàng', 'success');
             
             // Chuyển đến trang hóa đơn xuất kho để lưu trữ
-            setTimeout(() => {
-                window.location.href = `StockOutInvoice.html?rejected=${orderId}`;
-            }, 1500);
+            let targetUrl = 'warehouse/invoices/out';
+            window.location.href = `warehouse/invoices/out?rejected=${orderId}`;
             
             // Dọn dẹp
             setTimeout(() => {
@@ -1594,7 +1593,7 @@
                     <pre id="formDebugContent"></pre>
                 </div>
                 
-                <form id="createOrderForm" method="post" th:action="@{/supplier-outs}">
+                <form id="createOrderForm" method="post" th:action="@{/warehouse/stock-out}">
                     <input type="hidden" name="status" value="PREPARE_DELIVERY">
                     <input type="hidden" name="transactionType" value="STOCK_OUT">
                     <input type="hidden" id="inventoryManagerId" name="inventoryManagerId" th:value="${currentUser?.id ?: 256}">
@@ -1957,7 +1956,7 @@
                 console.error("Reject form not found");
                 return;
             }
-            form.action = `/supplier-outs/${currentRejectId}/reject`;
+            form.action = `/warehouse/stock-out/${currentRejectId}/reject`;
             form.submit();
         });
         
@@ -2062,7 +2061,7 @@
                 return;
             }
             
-            fetch(`/supplier-outs/api/suppliers?query=${encodeURIComponent(query)}`)
+            fetch(`/warehouse/stock-out/api/suppliers?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     supplierSearchResults.innerHTML = '';
@@ -2117,7 +2116,7 @@
             
             document.getElementById('supplierLoading').style.display = 'block';
             
-            fetch(`/supplier-outs/api/suppliers?query=${encodeURIComponent(query)}`)
+            fetch(`/warehouse/stock-out/api/suppliers?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     supplierModalResults.innerHTML = '';
@@ -2261,7 +2260,7 @@
         }
         
         // Build the API URL with query parameters
-        let apiUrl = '/supplier-outs/api/products?';
+        let apiUrl = '/warehouse/stock-out/api/products?';
         const params = [];
         
         if (query && query.length >= 2) {
@@ -2705,7 +2704,7 @@
         }
         
         const form = document.getElementById('rejectForm');
-        form.action = `/supplier-outs/${currentRejectId}/reject`;
+        form.action = `/warehouse/stock-out/${currentRejectId}/reject`;
         form.submit();
     });
 

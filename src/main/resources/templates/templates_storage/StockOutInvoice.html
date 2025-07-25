@@ -121,14 +121,14 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
@@ -211,7 +211,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
+                    <a th:href="@{/warehouse/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -222,7 +222,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -238,7 +238,7 @@
                             <li class="back-btn"></li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/warehouse/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -251,11 +251,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockIn.html}">Nhập kho</a>
+                                        <a th:href="@{/warehouse/stock-in}">Nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/StockOut.html}">Xuất kho</a>
+                                        <a th:href="@{/warehouse/stock-out}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -267,11 +267,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockInInvoice.html}">Hóa đơn nhập kho</a>
+                                        <a th:href="@{/warehouse/invoices/in}">Hóa đơn nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
+                                        <a th:href="@{/warehouse/invoices/out}">Hóa đơn xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -283,11 +283,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                        <a th:href="@{/warehouse/medical-equipment}">Thiết bị y tế</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/medicine.html}">Thuốc</a>
+                                        <a th:href="@{/warehouse/medicines}">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>
@@ -299,24 +299,24 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
+                                        <a th:href="@{/coupon-list}">Danh sách mã giảm giá</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
+                                        <a th:href="@{/create-coupon}">Tạo mã giảm giá</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review}">
                                     <i class="ri-star-line"></i>
                                     <span>Đánh giá sản phẩm</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports}">
                                     <i class="ri-file-chart-line"></i>
                                     <span>Báo cáo</span>
                                 </a>
@@ -403,10 +403,10 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" style="display: flex !important;">
-                                                    <a th:href="@{'/supplier-out-invoices/' + ${invoice.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
+                                                    <a th:href="@{'/warehouse/invoices/out/' + ${invoice.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
                                                         <i class="ri-eye-line text-white"></i>
                                                     </a>
-                                                    <a th:href="@{'/invoiceouttracking.html?id=' + ${invoice.id}}" class="btn btn-sm btn-info" title="Theo dõi">
+                                                    <a th:href="@{'/invoiceouttracking?id=' + ${invoice.id}}" class="btn btn-sm btn-info" title="Theo dõi">
                                                         <i class="ri-route-line text-white"></i>
                                                     </a>
                                                     <a href="#" class="btn btn-sm btn-secondary" title="Tải xuống" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
@@ -427,27 +427,27 @@
                     <nav class="ms-auto me-auto" aria-label="...">
                         <ul class="pagination pagination-primary">
                             <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                                <a class="page-link" th:href="@{/supplier-out-invoices(page=0, size=10, keyword=${keyword}, status=${status})}" aria-label="First">
+                                <a class="page-link" th:href="@{/warehouse/invoices/out(page=0, size=10, keyword=${keyword}, status=${status})}" aria-label="First">
                                     <span aria-hidden="true">&laquo;&laquo;</span>
                                 </a>
                             </li>
                             <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                                <a class="page-link" th:href="@{/supplier-out-invoices(page=${currentPage - 1}, size=10, keyword=${keyword}, status=${status})}" aria-label="Previous">
+                                <a class="page-link" th:href="@{/warehouse/invoices/out(page=${currentPage - 1}, size=10, keyword=${keyword}, status=${status})}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
                             <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                                 th:classappend="${i == currentPage ? 'active' : ''}"
                                 th:if="${i >= currentPage - 2 && i <= currentPage + 2}">
-                                <a class="page-link" th:href="@{/supplier-out-invoices(page=${i}, size=10, keyword=${keyword}, status=${status})}" th:text="${i + 1}"></a>
+                                <a class="page-link" th:href="@{/warehouse/invoices/out(page=${i}, size=10, keyword=${keyword}, status=${status})}" th:text="${i + 1}"></a>
                             </li>
                             <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                                <a class="page-link" th:href="@{/supplier-out-invoices(page=${currentPage + 1}, size=10, keyword=${keyword}, status=${status})}" aria-label="Next">
+                                <a class="page-link" th:href="@{/warehouse/invoices/out(page=${currentPage + 1}, size=10, keyword=${keyword}, status=${status})}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
                             <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                                <a class="page-link" th:href="@{/supplier-out-invoices(page=${totalPages - 1}, size=10, keyword=${keyword}, status=${status})}" aria-label="Last">
+                                <a class="page-link" th:href="@{/warehouse/invoices/out(page=${totalPages - 1}, size=10, keyword=${keyword}, status=${status})}" aria-label="Last">
                                     <span aria-hidden="true">&raquo;&raquo;</span>
                                 </a>
                             </li>
@@ -637,9 +637,9 @@
         }
 
         if (type === 'in') {
-            window.location.href = 'invoiceintracking.html?id=' + selectedId;
+            window.location.href = 'invoiceintracking?id=' + selectedId;
         } else {
-            window.location.href = 'invoiceouttracking.html?id=' + selectedId;
+            window.location.href = 'invoiceouttracking?id=' + selectedId;
         }
     }
 </script>
@@ -656,7 +656,7 @@
         function filterTable() {
             const searchText = $('#searchFilter').val().toLowerCase();
             const status = $('#statusFilter').val();
-            const reason = $('#reasonFilter').val();
+            const reason = $('#reasonFilter').on('change', filterTable);
 
             // Loop through all table rows
             $('#table_id tbody tr').each(function() {
