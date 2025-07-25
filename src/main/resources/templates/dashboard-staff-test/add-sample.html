@@ -484,12 +484,12 @@
                     <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
                         <div>
                             <h4>Tất cả loại mẫu</h4>
-                            <span>More Than 400+ New Products</span>
+                            <span id="totalSample"></span>
                         </div>
                         <button class="btn btn-primary " type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasProductAdd" aria-controls="offcanvasProductAdd">
          <span class="btn-inner">
-            <span class="text d-inline-block align-middle">Add Product</span>
+            <span class="text d-inline-block align-middle">Thêm mẫu</span>
             <span class="icon d-inline-block align-middle ms-1 ps-2">
                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
                   <path
@@ -502,88 +502,81 @@
                     </div>
                     <div class="card-body pt-0">
                         <div class="table-responsive">
-                            <table class="table border-end border-start align-middle mb-0 rounded">
+                            <table id="input-datatable" class="table">
                                 <thead class="table-dark">
                                 <tr>
                                     <th>Tên mẫu</th>
-                                    <th>Action</th>
+                                    <th>Hành động</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr data-item="list">
-                                    <th scope="row">Máu</th>
-                                    <td>
-                                        <a class="d-inline-block pe-2" data-bs-toggle="offcanvas" href="#offcanvasProductEdit" aria-controls="offcanvasProductEdit">
-                        <span class="text-success">
-                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                                        </a>
-                                        <a href="#" class="d-inline-block ps-2 delete-btn" >
-                        <span class="text-danger">
-                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                      d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                      stroke-linejoin="round" />
-                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                              <path
-                                      d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                      stroke-linejoin="round" />
-                           </svg>
-                        </span>
-                                        </a>
-                                    </td>
-                                </tr>
                                 </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th title="Tên Mẫu">
+                                        <input type="text" id="sampleName" name="sampleName" class="form-control form-control-sm" placeholder="Tìm kiếm mẫu">
+                                    </th>
+                                    <th>
+                                    </th>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
-                    <div class="card-footer pt-0">
-                        <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-                            <ul class="page-number m-0 p-0 list-unstyled d-flex gap-2">
-                                <li class="text-center bg-primary text-white rounded">1</li>
-                                <li class="text-center bg-primary-subtle text-primary rounded ">2</li>
-                                <li class="text-center text-primary rounded fs-1">...</li>
-                                <li class="text-center bg-primary-subtle text-primary rounded">6</li>
-                            </ul>
-                            <div>
-                                <button class="btn btn-secondary text-white me-3" type="button">
-                  <span class="btn-inner">
-                      <span class="text d-inline-block align-middle">Previous</span>
-                      <span class="icon d-inline-block align-middle ms-1 ps-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
-                              <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z" fill="currentColor" />
-                          </svg>
-                      </span>
-                  </span>
-                                </button>
-                                <button class="btn btn-primary me-3" type="button">
-                  <span class="btn-inner">
-                      <span class="text d-inline-block align-middle">Next</span>
-                      <span class="icon d-inline-block align-middle ms-1 ps-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
-                              <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z" fill="currentColor" />
-                          </svg>
-                      </span>
-                  </span>
-                                </button>
-                            </div>
+                    <div class="mt-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <span id="total-items"></span>
                         </div>
+                        <nav>
+                            <ul class="pagination mb-0" id="pagination-container"></ul>
+                        </nav>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasProductAdd"
+         aria-labelledby="offcanvasProductAddLabel">
+        <div class="offcanvas-header border-bottom">
+            <h3 class="offcanvas-title" id="offcanvasProductAddLabel">Thêm mẫu</h3>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group">
+                <label class="form-label" for="add_Id">Tên Mẫu<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="add_Id" >
+            </div>
+            <div id="sample-container">
+            </div>
+            <button type="button" class="btn btn-success mt-2" onclick="addSampleFields()">+</button>
+        </div>
+        <div class="offcanvas-footer border-top">
+            <div class="d-grid d-md-flex gap-3 p-3">
+                <button type="submit" class="btn btn-primary d-block">
+            <span class="btn-inner">
+               <span class="text d-inline-block align-middle">Lưu</span>
+               <span class="icon d-inline-block align-middle ms-1 ps-2">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
+                        <path
+                                d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                fill="currentColor" />
+                     </svg>
+               </span>
+            </span>
+                </button>
+                <button class="btn btn-secondary d-block" type="button" data-bs-dismiss="offcanvas">
+            <span class="btn-inner">
+               <span class="text d-inline-block align-middle">Đóng</span>
+               <span class="icon d-inline-block align-middle ms-1 ps-2">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
+                        <path
+                                d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                fill="currentColor" />
+                     </svg>
+               </span>
+            </span>
+                </button>
             </div>
         </div>
     </div>
@@ -593,10 +586,10 @@
             <ul class="left-panel list-inline mb-0 p-0">
                 <li class="list-inline-item fw-500"><a class="footer-link"
                                                        href="./extra/privacy-policy.html" th:href="@{/dashboard-staff-test/extra/privacy-policy.html}"
-                >Privacy Policy</a></li>
+                >Chính sách bảo mật</a></li>
                 <li class="list-inline-item fw-500"><a class="footer-link"
                                                        href="./extra/terms-of-service.html" th:href="@{/dashboard-staff-test/extra/terms-of-service.html}"
-                >Terms of Use</a></li>
+                >Điều khoản sử dụng</a></li>
             </ul>
         </div>
     </footer>
@@ -1494,5 +1487,211 @@
 
 </body>
 <script>
+    function addSampleFields() {
+        const sampleContainer = document.getElementById('sample-container');
+        const currentCount = sampleContainer.getElementsByClassName('sample-group').length;
+        const sampleIndex = currentCount;
+        const sampleGroup = document.createElement('div');
+        sampleGroup.className = 'sample-group mt-3';
+        sampleGroup.id = `sampleGroup_${sampleIndex}`;
+        sampleGroup.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSample_${sampleIndex}" aria-expanded="false" aria-controls="collapseSample_${sampleIndex}">
+                        Mẫu Xét Nghiệm ${sampleIndex + 1}
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeSampleFields('sampleGroup_${sampleIndex}')">Xóa</button>
+                </div>
+                <div class="collapse" id="collapseSample_${sampleIndex}">
+                    <div class="card card-body">
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="add_Name_${sampleIndex}">Tên xét nghiệm<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_Name_${sampleIndex}">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="add_Unit_${sampleIndex}">Đơn vị<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_Unit_${sampleIndex}">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="add_Low_${sampleIndex}">Giá trị thấp<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_Low_${sampleIndex}">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="add_High_${sampleIndex}">Giá trị cao<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_High_${sampleIndex}">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="add_Low_Suspect_${sampleIndex}">Nghi vấn nếu thấp<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_Low_Suspect_${sampleIndex}">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="add_High_Suspect_${sampleIndex}">Nghi vấn nếu cao<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_High_Suspect_${sampleIndex}">
+                        </div>
+                    </div>
+                </div>
+            `;
+        sampleContainer.appendChild(sampleGroup);
+    }
+
+    function removeSampleFields(groupId) {
+        const sampleGroup = document.getElementById(groupId);
+        if (sampleGroup) {
+            sampleGroup.remove();
+            reindexSampleGroups();
+        }
+    }
+
+    function reindexSampleGroups() {
+        const sampleContainer = document.getElementById('sample-container');
+        const sampleGroups = sampleContainer.getElementsByClassName('sample-group');
+        Array.from(sampleGroups).forEach((group, index) => {
+            group.id = `sampleGroup_${index}`;
+            const toggleButton = group.querySelector('button.btn-primary');
+            toggleButton.setAttribute('data-bs-target', `#collapseSample_${index}`);
+            toggleButton.setAttribute('aria-controls', `collapseSample_${index}`);
+            toggleButton.textContent = `Mẫu Xét Nghiệm ${index + 1}`;
+            const deleteButton = group.querySelector('button.btn-danger');
+            deleteButton.setAttribute('onclick', `removeSampleFields('sampleGroup_${index}')`);
+            const collapseDiv = group.querySelector('.collapse');
+            collapseDiv.id = `collapseSample_${index}`;
+            const inputs = [
+                { prefix: 'add_Name_', label: 'Tên xét nghiệm' },
+                { prefix: 'add_Unit_', label: 'Đơn vị' },
+                { prefix: 'add_Low_', label: 'Giá trị thấp' },
+                { prefix: 'add_High_', label: 'Giá trị cao' },
+                { prefix: 'add_Low_Suspect_', label: 'Nghi vấn nếu thấp' },
+                { prefix: 'add_High_Suspect_', label: 'Nghi vấn nếu cao' }
+            ];
+            inputs.forEach(input => {
+                const inputElement = group.querySelector(`#${input.prefix}${group.id.split('_')[1]}`);
+                inputElement.id = `${input.prefix}${index}`;
+                const label = group.querySelector(`label[for="${input.prefix}${group.id.split('_')[1]}"]`);
+                label.setAttribute('for', `${input.prefix}${index}`);
+            });
+        });
+    }
+
+    function getFilterParams() {
+        return {
+            sampleName: $('#sampleName').val(),
+        };
+    }
+
+    function fetchFilteredData(page = 0) {
+        const filters = getFilterParams();
+        filters.page = page;
+
+        $.ajax({
+            url: '/api/sample/filter/name',
+            type: 'GET',
+            data: filters,
+            success: function (data) {
+                renderTable(data.content);
+                renderPagination(data);
+                $('#totalSample').text(`Có hơn: ${data.totalElements} mẫu`);
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function renderTable(data) {
+        let html = '';
+        data.forEach(item => {
+            html += `
+        <tr data-item="list">
+                                    <th scope="row">${item.name}</th>
+                                    <td>
+                                        <a class="d-inline-block pe-2" data-bs-toggle="offcanvas" href="#offcanvasProductEdit" aria-controls="offcanvasProductEdit">
+                        <span class="text-success">
+                           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                              <path d="M9.31055 14.3321H14.75" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                              <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                              <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                           </svg>
+                        </span>
+                                        </a>
+                                        <a href="#" class="d-inline-block ps-2 delete-btn" >
+                        <span class="text-danger">
+                           <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                      d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
+                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round" />
+                              <path d="M13.5312 3.67969H0.812744" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                              <path
+                                      d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
+                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round" />
+                           </svg>
+                        </span>
+                                        </a>
+                                    </td>
+                                </tr>`;
+        });
+
+        $('#input-datatable tbody').html(html);
+    }
+
+    function renderPagination(pageData) {
+        const currentPage = pageData.number;
+        const totalPages = pageData.totalPages;
+        let html = '';
+
+        html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Trước</a></li>`;
+
+        if (currentPage > 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+            if (currentPage > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+
+        for (let i = Math.max(0, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
+        }
+
+        if (currentPage < totalPages - 3) {
+            html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+        if (currentPage < totalPages - 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
+        }
+
+        html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Sau</a></li>`;
+
+        $('#pagination-container').html(html);
+    }
+
+    $(document).on('click', '.pagination a.page-link', function (e) {
+        e.preventDefault();
+        const page = parseInt($(this).data('page'));
+        fetchFilteredData(page);
+    });
+
+    let typingTimer;
+    const typingDelay = 600;
+
+    function attachInputEvents() {
+        $('#sampleName').off('input').on('input', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => fetchFilteredData(0), typingDelay);
+        });
+    }
+
+    $(document).ready(function () {
+        attachInputEvents();
+        fetchFilteredData(0);
+    });
+
 </script>
 </html>

@@ -163,19 +163,6 @@ public class StaffTestLabController {
         return modelAndView;
     }
 
-    @GetMapping("/helpsupport")
-    public ModelAndView helpSupportView(HttpServletRequest request, Model model) {
-        ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/helpsupport");
-        modelAndView.addObject("currentURI", request.getRequestURI());
-        return modelAndView;
-    }
-
-    @GetMapping("/setting")
-    public ModelAndView settingView(HttpServletRequest request, Model model) {
-        ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/setting");
-        modelAndView.addObject("currentURI", request.getRequestURI());
-        return modelAndView;
-    }
 
     @GetMapping("/result/{id}")
     public ModelAndView resultView(HttpServletRequest request, Model model, @PathVariable Long id) {
