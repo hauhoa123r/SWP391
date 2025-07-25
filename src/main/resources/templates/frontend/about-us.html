@@ -1,0 +1,384 @@
+<!doctype html>
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        breadCrumbTitle = ${'Giới thiệu'},
+        breadCrumbTexts = ${{{'Giới thiệu'}}},
+        breadCrumbLinks = ${{{''}}},
+        navActive = ${2}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Giới thiệu</title>
+</head>
+<body class=" body-bg landing-pages">
+<section layout:fragment="content">
+    <div class="section-padding">
+        <div class="container position-relative">
+            <div class="row pt-5">
+                <div class="col-lg-4 col-md-6 text-center h-100">
+                    <div class="iq-fancy-box position-relative bg-white">
+                        <div class="iq-img-area bg-primary d-block m-auto">
+                            <img alt="icon" class="img-fluid" loading="lazy"
+                                 th:src="@{/frontend/assets/images/generalal/doctor.svg}">
+                        </div>
+                        <div class="iq-fancy-box-content mt-5">
+                            <h4 class="mb-2">Đội ngũ bác sĩ chuyên môn cao</h4>
+                            <p class="text-body m-0">
+                                Các bác sĩ đều có bằng cấp, được Hội đồng Y khoa công nhận và đăng ký hành nghề.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mt-5 mt-md-0 text-center h-100">
+                    <div class="iq-fancy-box position-relative bg-white">
+                        <div class="iq-img-area bg-primary d-block m-auto">
+                            <img alt="icon" class="img-fluid" loading="lazy"
+                                 th:src="@{/frontend/assets/images/generalal/treatment.svg}">
+                        </div>
+                        <div class="iq-fancy-box-content mt-5">
+                            <h4 class="mb-2">Phương pháp điều trị uy tín</h4>
+                            <p class="text-body m-0">
+                                KiviCare cung cấp nhiều phương pháp điều trị giúp cải thiện triệu chứng cho mọi loại
+                                bệnh lý.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 mt-5 mt-lg-0 text-center">
+                    <div class="iq-fancy-box position-relative bg-white h-100">
+                        <div class="iq-img-area bg-primary d-block m-auto">
+                            <img alt="icon" class="img-fluid" loading="lazy"
+                                 th:src="@{/frontend/assets/images/generalal/service.svg}">
+                        </div>
+                        <div class="iq-fancy-box-content mt-5">
+                            <h4 class="mb-2">Dịch vụ 24/7</h4>
+                            <p class="text-body m-0">
+                                KiviCare luôn sẵn sàng phục vụ 24/7, mang đến dịch vụ y tế tốt nhất cho mọi khách hàng.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-primary-subtle section-padding">
+        <div class="container position-relative">
+            <div class="row">
+                <div class="col-md-6 pe-md-5">
+                    <div class="scrolling-text position-absolute">
+                        <div class="iq-title text-uppercase">Về chúng tôi</div>
+                    </div>
+                    <div class="iq-title-box">
+                        <span class="iq-subtitle text-uppercase">Giới thiệu dịch vụ</span>
+                        <h2 class="iq-title iq-heading-title">
+                            <span class="right-text text-capitalize fw-500">Sức khỏe </span>
+                            <span class="left-text text-capitalize fw-light">và cam kết</span>
+                        </h2>
+                        <p class="iq-title-desc text-body mt-3 mb-0">
+                            Chúng tôi luôn sẵn sàng hỗ trợ bạn về y tế, sức khỏe và các dịch vụ chăm sóc, với đội ngũ
+                            bác sĩ và nhân viên tận tâm. Sự hài lòng của bệnh nhân là ưu tiên hàng đầu của chúng tôi.
+                        </p>
+                    </div>
+                    <div class="block-progressbar">
+                        <ul class="list-inline m-0">
+                            <li class="mb-4">
+                                <div class="wrapper-progress">
+                                    <div class="percentage-progress d-flex justify-content-between">
+                                        <h6 class="mb-2 text-body">Ca khám và điều trị thành công</h6>
+                                        <div><span>80%</span></div>
+                                    </div>
+                                </div>
+                                <div class="progress" style="height:10px">
+                                    <div class="progress-bar bg-primary" role="progressbar"
+                                         style="width: 80%; height:10px"></div>
+                                </div>
+                            </li>
+                            <li class="mb-4">
+                                <div class="wrapper-progress">
+                                    <div class="percentage-progress d-flex justify-content-between">
+                                        <h6 class="mb-2 text-body">Thấu hiểu bệnh nhân</h6>
+                                        <div><span>90%</span></div>
+                                    </div>
+                                </div>
+                                <div class="progress" style="height:10px">
+                                    <div class="progress-bar bg-primary" role="progressbar"
+                                         style="width: 90%; height:10px"></div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="wrapper-progress">
+                                    <div class="percentage-progress d-flex justify-content-between">
+                                        <h6 class="mb-2 text-body">Vệ sinh an toàn</h6>
+                                        <div><span>100%</span></div>
+                                    </div>
+                                </div>
+                                <div class="progress" style="height:10px">
+                                    <div class="progress-bar bg-primary" role="progressbar"
+                                         style="width: 100%; height:10px"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img alt="banner" class="img-fluid" th:src="@{/frontend/assets/images/general/about-us.jpg}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-padding testimonial-section">
+        <div class="container position-relative">
+            <div class="scrolling-text position-absolute">
+                <div class="iq-title text-uppercase">Đánh giá</div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-md-6 position-relative">
+                    <div class="iq-title-box">
+                        <span class="iq-subtitle text-uppercase">Ý kiến bệnh nhân</span>
+                        <h2 class="iq-title iq-heading-title">
+                            <span class="right-text text-capitalize fw-500">Nhận xét của </span>
+                            <span class="left-text text-capitalize fw-light">bệnh nhân</span>
+                        </h2>
+                        <p class="iq-title-desc text-body mt-3 mb-0">
+                            Dưới đây là những chia sẻ thực tế của bệnh nhân về bác sĩ và dịch vụ tại phòng khám.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 position-relative">
+                    <div class="overflow-hidden swiper swiper-general" data-autoplay="true" data-laptop="1"
+                         data-loop="true"
+                         data-mobile="1" data-mobile-sm="1" data-navigation="true" data-pagination="true" data-slide="1"
+                         data-tab="1">
+                        <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline">
+                            <li class="swiper-slide" th:each="review : ${reviews}">
+                                <div class="iq-testimonial testimonial-standard">
+                                    <div class="iq-testimonial-content">
+                                        <p class="text-body fw-normal fst-italic" th:text="${review.content}"></p>
+                                    </div>
+                                    <div class="iq-testimonial-member mt-5 d-flex gap-3">
+                                        <div class="iq-testimonial-avtar">
+                                            <img alt="user" class="img-fluid rounded-circle"
+                                                 loading="lazy"
+                                                 th:src="@{${review.patientEntity.avatarUrl}}">
+                                        </div>
+                                        <div class="avtar-name">
+                                            <h5 class="iq-lead text-capitalize m-0"
+                                                th:text="${review.patientEntity.fullName}"></h5>
+                                            <span class="iq-post-meta text-secondary text-capitalize">Bệnh nhân</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="arrow-joint">
+                            <div aria-label="Next slide" class="swiper-button swiper-button-next" role="button"
+                                 tabindex="0"></div>
+                            <div aria-label="Previous slide" class="swiper-button swiper-button-prev" role="button"
+                                 tabindex="0"></div>
+                        </div>
+                        <span aria-atomic="true" aria-live="assertive" class="swiper-notification"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-padding bg-secondary-subtle text-body position-relative">
+        <div class="container">
+            <div class="text-left position-relative">
+                <div class="scrolling-text position-absolute">
+                    <div class="iq-title text-uppercase">Lịch sử
+                        <br>
+                        <br>
+                        hình thành
+                    </div>
+                </div>
+            </div>
+            <div class="iq-title-box">
+                <span class="iq-subtitle text-uppercase">LỊCH SỬ</span>
+                <h2 class="iq-title iq-heading-title">
+                    <span class="right-text text-capitalize fw-500">Quá trình </span>
+                    <span class="left-text text-capitalize fw-light">phát triển</span>
+                </h2>
+                <p class="iq-title-desc text-body mt-3 mb-0">
+                    Dưới đây là các giai đoạn phát triển nổi bật của chúng tôi qua các năm.
+                </p>
+            </div>
+            <ul class="list-inline m-0">
+                <li class="mb-5 pb-5 border-bottom">
+                    <div class="history">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 border-end">
+                                <div class="d-flex align-items-center gap-3 gap-lg-5 flex-lg-auto flex-wrap">
+                                    <h5>2012 – 2013</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-10 ps-md-5 mt-md-0 mt-3">
+                                <p class="mb-0">Khởi đầu hoạt động với đội ngũ nhỏ, tập trung vào dịch vụ chăm sóc sức
+                                    khỏe cơ bản cho cộng đồng.</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="mb-5 pb-5 border-bottom">
+                    <div class="history">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 border-end">
+                                <div class="d-flex align-items-center gap-3 gap-lg-5 flex-lg-auto flex-wrap">
+                                    <h5>2013 – 2014</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-10 ps-md-5 mt-md-0 mt-3">
+                                <p class="mb-0">Mở rộng thêm các dịch vụ chuyên sâu, nâng cấp trang thiết bị và đào tạo
+                                    nhân sự.</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="mb-5 pb-5 border-bottom">
+                    <div class="history">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 border-end">
+                                <div class="d-flex align-items-center gap-3 gap-lg-5 flex-lg-auto flex-wrap">
+                                    <h5>2014 – 2015</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-10 ps-md-5 mt-md-0 mt-3">
+                                <p class="mb-0">Xây dựng uy tín trong lĩnh vực y tế, phục vụ ngày càng nhiều bệnh nhân
+                                    và nhận được nhiều phản hồi tích cực.</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="history">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 border-end">
+                                <div class="d-flex align-items-center gap-3 gap-lg-5 flex-lg-auto flex-wrap">
+                                    <h5>2015 – 2020</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-10 ps-md-5 mt-md-0 mt-3">
+                                <p class="mb-0">Tiếp tục phát triển, mở rộng quy mô hoạt động và nâng cao chất lượng
+                                    dịch vụ chăm sóc sức khỏe cho cộng đồng.</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="team-section section-padding">
+        <div class="container">
+            <div class="text-center position-relative">
+                <div class="scrolling-text position-absolute">
+                    <div class="iq-title text-uppercase">
+                        Bác sĩ
+                        <br>
+                        <br>
+                        của chúng tôi
+                    </div>
+                </div>
+                <div class="iq-title-box">
+                    <span class="iq-subtitle text-uppercase">Bác sĩ</span>
+                    <h2 class="iq-title iq-heading-title">
+                        <span class="right-text text-capitalize fw-500">Các bác sĩ</span>
+                        <span class="left-text text-capitalize fw-light">Hàng đầu</span>
+                    </h2>
+                    <p class="iq-title-desc text-body mt-3 mb-0">
+
+                    </p>
+                </div>
+            </div>
+            <div class="overflow-hidden swiper swiper-general" data-autoplay="true" data-laptop="3" data-loop="true"
+                 data-mobile="1" data-mobile-sm="1" data-navigation="true" data-pagination="true" data-slide="3"
+                 data-tab="2">
+                <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline">
+                    <li class="swiper-slide cursor-pointer" th:each="doctor : ${doctors}">
+                        <div class="iq-team-block team-overdetail position-relative p-2 team-standard"
+                             th:onclick="'window.location.href=\'/doctor/detail/' + ${doctor.id} + '\''">
+                            <div class="iq-team-img">
+                                <div th:replace="~{/frontend/fragments/doctor/rating :: rating(averageRating=${doctor.staffEntity.averageRating}, reviewCount=${doctor.staffEntity.reviewCount})}"></div>
+                                <img alt="team"
+                                     class="img-fluid w-100"
+                                     loading="lazy"
+                                     onerror="this.onerror=null;this.src='/assets/images/error/mr.nobody.jpg'"
+                                     th:src="${doctor.staffEntity.avatarUrl}">
+                            </div>
+                            <div class="iq-team-info position-absolute d-block w-100">
+                                <div class="iq-team-main-detail bg-white">
+                                    <h5 th:text="${doctor.staffEntity.fullName}"></h5>
+                                    <p class="mb-0 text-uppercase fw-bolder text-primary fw-500"
+                                       th:text="${doctor.staffEntity.departmentEntity.name}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="section-padding bg-primary-subtle text-body">
+        <div class="container">
+            <div class="text-center position-relative">
+                <div class="scrolling-text position-absolute">
+                    <div class="iq-title text-uppercase">Vì sao chọn
+                        <br>
+                        <br>
+                        chúng tôi
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="iq-title-box">
+                        <span class="iq-subtitle text-uppercase">Dịch vụ</span>
+                        <h2 class="iq-title iq-heading-title">
+                            <span class="right-text text-capitalize fw-500">Lý do </span>
+                            <span class="left-text text-capitalize fw-light">bạn nên chọn chúng tôi</span>
+                        </h2>
+                        <p class="iq-title-desc text-body mt-3 mb-0">
+                            Chúng tôi mang đến giải pháp chăm sóc sức khỏe toàn diện, nhanh chóng và tận tâm cho mỗi
+                            khách hàng.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <p>Đội ngũ y bác sĩ chuyên nghiệp, dịch vụ đa dạng, quy trình khám chữa bệnh thuận tiện và không
+                        gian thân thiện sẽ giúp bạn luôn hài lòng khi sử dụng dịch vụ của chúng tôi.</p>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-lg-3 col-md-6" th:classappend="${serviceStatus.first ? '' : 'mt-md-0 mt-5'}"
+                     th:each="service, serviceStatus : ${services}">
+                    <div class="iq-icon-box iconbox-border h-100 position-relative bg-white">
+                        <div class="iq-img-area pulse-shrink-on-hover text-primary">
+                            <img alt="icon" class="img-fluid" loading="lazy"
+                                 th:src="@{${service.productEntity.imageUrl}}">
+                        </div>
+                        <div class="icon-box-content mt-5">
+                            <h5 class="icon-title text-capitalize mb-2" th:text="${service.productEntity.name}"></h5>
+                            <p class="m-0" th:text="${service.productEntity.description}"></p>
+                            <div class="iconbox-button mt-5">
+                                <div class="iq-btn-container">
+                                    <a class="iq-button iq-btn-link text-capitalize"
+                                       th:href="@{${'/service/detail/' + service.id}}">
+                                        Xem thêm
+                                        <span class="btn-link-icon">
+                              <svg fill="none" height="10" viewBox="0 0 8 8" width="10"
+                                   xmlns="http://www.w3.org/2000/svg">
+                                 <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                       fill="currentColor"></path>
+                              </svg>
+                           </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

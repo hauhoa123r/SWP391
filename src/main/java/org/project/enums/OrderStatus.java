@@ -1,16 +1,15 @@
 package org.project.enums;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum OrderStatus {
     PENDING("pending"),
-    FULFILLED("fulfilled"),;
+    FULLFILED("fullfiled"),
+    CANCELLED("cancelled");
 
     private final String value;
-
-    OrderStatus(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
 }

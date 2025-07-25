@@ -9,26 +9,24 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "samples", schema = "swp391")
 public class SampleEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sample_id", nullable = false)
     private Long id;
 
     @NotNull
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "test_request_id", nullable = false)
     private TestRequestEntity testRequest;
 
     @Size(max = 50)
-    @NotNull
     @Column(name = "barcode", nullable = false, length = 50)
     private String barcode;
 
@@ -56,7 +54,7 @@ public class SampleEntity {
     @Column(name = "retest_time")
     private Instant retestTime;
 
-    @OneToMany(mappedBy = "sampleEntity")
-    private Set<ResultEntity> results = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "sampleEntity")
+    private ResultEntity results;
 
 }

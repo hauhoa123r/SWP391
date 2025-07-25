@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
+import org.project.enums.SupplierTransactionStatus;
+import org.project.enums.SupplierTransactionType;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -23,18 +25,18 @@ import java.util.Set;
 public class SupplierTransactionsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "supplier_transaction_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "inventory_manager_id", nullable = false)
-    private InventoryManagerEntity inventoryManagerEntity;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "supplier_id", nullable = false)
     private SupplierEntity supplierEntity;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "inventory_manager_id", nullable = false)
+    private InventoryManagerEntity inventoryManagerEntity;
 
     @NotNull
     @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
@@ -44,7 +46,55 @@ public class SupplierTransactionsEntity {
     @Column(name = "transaction_date", nullable = false)
     private Timestamp transactionDate;
 
-    @OneToMany
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SupplierTransactionType transactionType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SupplierTransactionStatus status;
+
+    @Column
+    private Timestamp approvedDate;
+
+    @Column(length = 500)
+    private String notes;
+
+    @Column
+    private Timestamp expectedDeliveryDate;
+
+    // Xóa hoặc đổi tên trường này vì nó không có trong database
+    // @ManyToOne
+    // @JoinColumn(name = "approved_by_id")
+    // private InventoryManagerEntity approvedBy;
+
+    @Column(nullable = false, unique = true)
+    private String invoiceNumber;
+
+    @Column(precision = 15, scale = 2)
+    private BigDecimal taxAmount;
+
+    @Column(precision = 15, scale = 2)
+    private BigDecimal shippingCost;
+
+    @Column(length = 50)
+    private String paymentMethod;
+
+    @Column
+    private Timestamp dueDate;
+
+    @Column
+    private Timestamp paymentDate;
+    
+    @Column(name = "recipient", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'Hospital'")
+    private String recipient;
+    
+    @Column(name = "stock_out_reason", columnDefinition = "TEXT")
+    private String stockOutReason;
+
+    @OneToMany(mappedBy = "supplierTransactionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "supplierTransactionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<SupplierTransactionInvoiceMappingEntity> transactionInvoiceMappings = new LinkedHashSet<>();
 }

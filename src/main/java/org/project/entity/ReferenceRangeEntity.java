@@ -40,8 +40,9 @@ public class ReferenceRangeEntity {
     @Column(name = "max_value", precision = 10, scale = 2)
     private BigDecimal maxValue;
 
-    @Lob
-    @Column(name = "suspected_condition")
-    private String suspectedCondition;
+    @Column(name = "max_condition")
+    private String maxCondition;
 
+    @Column(name = "min_condition")
+    private String minCondition;
 }

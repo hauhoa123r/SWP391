@@ -10,10 +10,13 @@ import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.StaffRole;
+import org.project.enums.StaffStatus;
 import org.project.enums.StaffType;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -36,7 +39,7 @@ public class StaffEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
-    private StaffEntity staffEntity;
+    private StaffEntity manager;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -84,7 +87,11 @@ public class StaffEntity {
     @Column(name = "staff_type")
     private StaffType staffType;
 
-    @OneToMany(mappedBy = "staffEntity")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "staff_status")
+    private StaffStatus staffStatus;
+
+    @OneToMany(mappedBy = "manager")
     private Set<StaffEntity> staffs = new LinkedHashSet<>();
 
     @NotNull
@@ -100,6 +107,18 @@ public class StaffEntity {
 
     @OneToOne(mappedBy = "staffEntity")
     private DoctorEntity doctorEntity;
+
+    @OneToMany(mappedBy = "manager")
+    private List<StaffEntity> subordinates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "staffEntity")
+    private List<LeaveRequestEntity> leaveRequestEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "staffSubstitute")
+    private List<LeaveRequestEntity> leaveRequestSubstituteEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "staffEntity")
+    private List<LeaveBalanceEntity> leaveBalanceEntities = new ArrayList<>();
 
     public Double getAverageRating() {
         return reviewEntities.stream()

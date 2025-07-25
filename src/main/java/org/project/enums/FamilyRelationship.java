@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum FamilyRelationship {
     SELF("Self"),
-    WIFE("Wife"),
-    HUSBAND("Husband"),
     FATHER("Father"),
     MOTHER("Mother"),
+    HUSBAND("Husband"),
     BROTHER("Brother"),
     SISTER("Sister"),
+    WIFE("Wife"),
     SON("Son"),
     DAUGHTER("Daughter"),
     GRAND_FATHER("Grandfather"),

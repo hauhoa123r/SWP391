@@ -13,11 +13,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChatMessageRequest {
     @JsonProperty(value = "id")
-    private Long patientId;
+    private Long userId;
     @NotBlank
     private String userMessage;
 
     private String prompt;
 
     private String language;
+
+    private boolean intentType;
 }

@@ -5,18 +5,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.project.enums.RequestStatus;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "test_requests", schema = "swp391")
 @Builder
+@Table(name = "test_requests", schema = "swp391")
 public class TestRequestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +25,7 @@ public class TestRequestEntity {
     private RequestStatus requestStatus;
 
     @Column(name = "request_time")
-    private LocalDate requestTime;
+    private Date requestTime;
 
     @Column(name = "reason")
     private String reason;
@@ -52,8 +49,8 @@ public class TestRequestEntity {
     @JoinColumn(name = "doctor_id", nullable = false)
     private DoctorEntity doctorEntity;
 
-    @OneToMany(mappedBy = "testRequest", fetch = FetchType.LAZY)
-    private Set<SampleEntity> samples = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "testRequest", fetch = FetchType.LAZY)
+    private SampleEntity samples;
 
 
 }
