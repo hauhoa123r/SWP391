@@ -32,81 +32,88 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartController {
 
-	// private static final String SESSION_USER_ID = "userId";
+    // private static final String SESSION_USER_ID = "userId";
 
-	private final CartService cartService;
+    private final CartService cartService;
+    //hard-code userId
+    Long userId = 2l;
+    // view all cart items of the user
+    // including the total amount of money and number of item in cart
+    @GetMapping
+    public String viewCart(Model model) {
 
-	// view all cart items of the user
-	// including the total amount of money and number of item in cart
-	@GetMapping
-	public String viewCart(Model model) {
-		Long userId = 2l;
+        List<CartItemEntity> cartItems = cartService.getCart(userId);
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("total", cartService.calculateTotal(userId));
+        model.addAttribute("size", cartItems.size());
+        return "frontend/cart";
+    }
+//    @PostMapping("/add")
+//    public String addToCart(@RequestParam Long userId, @RequestParam Long productId,
+//                            @RequestParam(defaultValue = "1") int quantity) {
+//        cartService.addItem(userId, productId, quantity);
+//        return "redirect:/shop";
+//    }
 
-		List<CartItemEntity> cartItems = cartService.getCart(userId);
-		model.addAttribute("cartItems", cartItems);
-		model.addAttribute("total", cartService.calculateTotal(userId));
-		model.addAttribute("size", cartItems.size());
-		return "frontend/cart";
-	}
-	@PostMapping("/add-to-cart")
-	public String addToCart(@RequestParam Long userId, @RequestParam Long productId,
-							@RequestParam(defaultValue = "1") int quantity) {
-		cartService.addItem(userId, productId, quantity);
-		return "redirect:/shop";
-	}
-	// hard delete from cart
-	@PostMapping("/delete")
-	public String deleteCartItem(@RequestParam Long productId) {
-		Long userId = 2l;
-		cartService.removeItem(userId, productId);
+    @PostMapping("/add")
+    public String addToCart(@RequestParam Long productId,
+                            @RequestParam(defaultValue = "1") int quantity) {
+        cartService.addItem(userId, productId, quantity);
+        return "redirect:/shop";
+    }
+    // hard delete from cart
+    @PostMapping("/delete")
+    public String deleteCartItem(@RequestParam Long productId) {
+        Long userId = 2l;
+        cartService.removeItem(userId, productId);
 
-		// Redirect back to cart
-		return "redirect:/cart";
-	}
+        // Redirect back to cart
+        return "redirect:/cart";
+    }
 
-	// change item quantity by pressing + -
-	@PostMapping("/update")
-	public String updateCartItemQuantity(@RequestParam Long cartId, @RequestParam Long userId,
-			@RequestParam String action) {
-		userId = 2l;
-		CartItemEntityId id = new CartItemEntityId(cartId, userId);
-		CartItemEntity item = cartService.getItemById(id);
-		if (item == null) {
-			System.out.println("no cart item found"); // debugging
-			return "redirect:/cart";
-		}
+    // change item quantity by pressing + -
+    @PostMapping("/update")
+    public String updateCartItemQuantity(@RequestParam Long cartId, @RequestParam Long userId,
+                                         @RequestParam String action) {
+        userId = 2l;
+        CartItemEntityId id = new CartItemEntityId(cartId, userId);
+        CartItemEntity item = cartService.getItemById(id);
+        if (item == null) {
+            System.out.println("no cart item found"); // debugging
+            return "redirect:/cart";
+        }
 
-		int quantity = item.getQuantity();
+        int quantity = item.getQuantity();
 
-		if ("increment".equals(action)) {
-			item.setQuantity(quantity + 1);
-		} else if ("decrement".equals(action) && quantity > 1) {
-			item.setQuantity(quantity - 1);
-		}
+        if ("increment".equals(action)) {
+            item.setQuantity(quantity + 1);
+        } else if ("decrement".equals(action) && quantity > 1) {
+            item.setQuantity(quantity - 1);
+        }
 
-		cartService.updateItem(item);
-		return "redirect:/cart";
-	}
+        cartService.updateItem(item);
+        return "redirect:/cart";
+    }
 
-	// change item quantity by directly entering value
-	@PostMapping("/update-quantity")
-	public String updateCartItemQuantity(@RequestParam Long cartId, @RequestParam Long userId,
-			@RequestParam int quantity) {
+    // change item quantity by directly entering value
+    @PostMapping("/update-quantity")
+    public String updateCartItemQuantity(@RequestParam Long cartId, @RequestParam Long userId,
+                                         @RequestParam int quantity) {
 
-		CartItemEntityId id = new CartItemEntityId(cartId, userId);
-		CartItemEntity item = cartService.getItemById(id);
+        CartItemEntityId id = new CartItemEntityId(cartId, userId);
+        CartItemEntity item = cartService.getItemById(id);
 
-		if (item != null && quantity > 0) {
-			item.setQuantity(quantity);
-			cartService.updateItem(item);
-		}
-		return "redirect:/cart";
-	}
+        if (item != null && quantity > 0) {
+            item.setQuantity(quantity);
+            cartService.updateItem(item);
+        }
+        return "redirect:/cart";
+    }
 
 
-	@GetMapping("/checkout")
-	public String checkout() {
-		return "/frontend/checkout";
-	}
+    @GetMapping("/checkout")
+    public String checkout() {
+        return "/frontend/checkout";
+    }
 
 }

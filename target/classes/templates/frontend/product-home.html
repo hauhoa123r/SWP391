@@ -1,12 +1,11 @@
 <!doctype html>
-<html lang="en" data-bs-theme="light" dir="ltr" class="landing-pages"
+<html lang="vi" data-bs-theme="light" dir="ltr" class="landing-pages"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Kivicare | Medical Clinic & Patient Management Html
-	Template</title>
+<title>Kivicare | Phòng Khám và Quản Lý Bệnh Nhân</title>
 <!-- Config Options -->
 <meta name="setting_options"
 	content='{&quot;saveLocal&quot;:&quot;sessionStorage&quot;,&quot;storeKey&quot;:&quot;huisetting&quot;,&quot;setting&quot;:{&quot;app_name&quot;:{&quot;value&quot;:&quot;Kivicare&quot;}}}'>
@@ -14,39 +13,39 @@
 <meta name="google_font_api"
 	content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
 <!-- Favicon -->
-<link rel="shortcut icon" href="/frontend-assets/assets/images/favicon.ico" />
+<link rel="shortcut icon" href="/frontend_assets/assets/images/favicon.ico" />
 
 <!-- Library / Plugin Css Build -->
-<link rel="stylesheet" href="/frontend-assets/assets/css/core/libs.min.css" />
+<link rel="stylesheet" href="/frontend_assets/assets/css/core/libs.min.css" />
 
 <!-- flaticon css -->
-<link rel="stylesheet" href="/frontend-assets/assets/vendor/flaticon/css/flaticon.css" />
+<link rel="stylesheet" href="/frontend_assets/assets/vendor/flaticon/css/flaticon.css" />
 
 <!-- font-awesome css -->
 <link rel="stylesheet"
-	href="/frontend-assets/assets/vendor/font-awesome/css/all.min.css" />
+	href="/frontend_assets/assets/vendor/font-awesome/css/all.min.css" />
 
 
 <!-- Sweetlaert2 css -->
 <link rel="stylesheet"
-	href="/frontend-assets/assets/vendor/sweetalert2/dist/sweetalert2.min.css" />
+	href="/frontend_assets/assets/vendor/sweetalert2/dist/sweetalert2.min.css" />
 
 
 <!-- SwiperSlider css -->
 <link rel="stylesheet"
-	href="/frontend-assets/assets/vendor/swiperSlider/swiper-bundle.min.css">
+	href="/frontend_assets/assets/vendor/swiperSlider/swiper-bundle.min.css">
 
 <!-- Kivicare Design System Css -->
-<link rel="stylesheet" href="/frontend-assets/assets/css/kivicare.min.css?v=1.4.1" />
+<link rel="stylesheet" href="/frontend_assets/assets/css/kivicare.min.css?v=1.4.1" />
 
 <!-- Custom Css -->
-<link rel="stylesheet" href="/frontend-assets/assets/css/custom.min.css?v=1.4.1" />
+<link rel="stylesheet" href="/frontend_assets/assets/css/custom.min.css?v=1.4.1" />
 
 <!-- Rtl Css -->
-<link rel="stylesheet" href="/frontend-assets/assets/css/rtl.min.css?v=1.4.1" />
+<link rel="stylesheet" href="/frontend_assets/assets/css/rtl.min.css?v=1.4.1" />
 
 <!-- Customizer Css -->
-<link rel="stylesheet" href="/frontend-assets/assets/css/customizer.min.css?v=1.4.1" />
+<link rel="stylesheet" href="/frontend_assets/assets/css/customizer.min.css?v=1.4.1" />
 
 <!-- Google Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,7 +63,7 @@
 	<div id="loading">
 		<div class="loader simple-loader">
 			<div class="loader-body">
-				<img src="/frontend-assets/assets/images/loader.gif" alt="loader"
+				<img src="/frontend_assets/assets/images/loader.gif" alt="loader"
 					class="light-loader img-fluid " width="200">
 			</div>
 		</div>
@@ -77,9 +76,8 @@
 				<div class="top-header bg-primary d-none d-md-block">
 					<div class="container-fluid">
 						<div class="text-center">
-							<span class="text-white">Sign up for 35% off your first
-								order. <a href=".//shop.html"
-								class="text-white text-decoration-underline text-capitalize">subscribe</a>
+							<span class="text-white">Hãy đăng ký để được giảm giá 15% <a href=".//shop.html"
+								class="text-white text-decoration-underline text-capitalize">Đăng Ký</a>
 							</span>
 						</div>
 					</div>
@@ -102,7 +100,7 @@
 								</div>
 								<a href="./index.html" class="navbar-brand m-0"> <span
 									class="logo-normal"> <img
-										src="/frontend-assets/assets/images/logo/logo.png" alt="logo"
+										src="/frontend_assets/assets/images/logo/logo.png" alt="logo"
 										class="img-fluid" loading="lazy">
 								</span>
 								</a>
@@ -112,414 +110,49 @@
 								class="mobile-offcanvas nav navbar navbar-expand-xl hover-nav horizontal-nav mega-menu-content py-xl-0">
 								<div class="container-fluid p-lg-0">
 									<div class="offcanvas-header px-0">
-										<a href="./index.html" class="navbar-brand m-0"> <span
+										<a th:href="@{/}" class="navbar-brand m-0"> <span
 											class="logo-normal"> <img
-												src="/frontend-assets/assets/images/logo/logo.png" alt="logo"
+												src="/frontend_assets/assets/images/logo/logo.png" alt="logo"
 												class="img-fluid" loading="lazy">
 										</span>
 										</a>
 										<button class="btn-close float-end px-3"></button>
 									</div>
-									<ul class="navbar-nav iq-nav-menu  list-unstyled"
-										id="header-menu">
-										<li class="nav-item"><a class="nav-link"
-											data-bs-toggle="collapse" href="#homePages" role="button"
-											aria-expanded="false" aria-controls="homePages"> <span
-												class="item-name">Home</span> <span class="menu-icon">
-													<svg width="8" height="9" viewBox="0 0 8 9" fill="none"
-														xmlns="http://www.w3.org/2000/svg">
-                                                  <path
-															d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z"
-															fill="currentColor" />
-                                              </svg>
-											</span>
-										</a>
-											<ul class="sub-nav mega-menu-item collapse list-unstyled"
-												id="homePages">
-												<li class="nav-item"><a class="nav-link "
-													href="./index.html"> <img
-														src="/frontend-assets/assets/images/mega/home-01.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3">general doctor</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./dentist.html"> <img
-														src="/frontend-assets/assets/images/mega/home-02.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3">dentist</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./eye-care.html"> <img
-														src="/frontend-assets/assets/images/mega/home-03.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3">eye care</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./skin-specialist.html"> <img
-														src="/frontend-assets/assets/images/mega/home-04.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3"> skin
-															specialist</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./fertility-clinic.html"> <img
-														src="/frontend-assets/assets/images/mega/home-05.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3">Fertility
-															Clinic</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./ent-clinic.html"> <img
-														src="/frontend-assets/assets/images/mega/home-06.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3"> ent clinic</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link active"
-													href="./product-home.html" th:href="@{/product-home}">
-														<img src="/frontend-assets/assets/images/mega/home-07.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3">Product Home</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./psychiatrist.html"> <img
-														src="/frontend-assets/assets/images/mega/home-08.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3"> Psychiatrist</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./paediatrician.html"> <img
-														src="/frontend-assets/assets/images/mega/home-09.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3">Paediatrician</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./cardiac.html"> <img
-														src="/frontend-assets/assets/images/mega/home-10.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3">Cardiac</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./orthopedics.html"> <img
-														src="/frontend-assets/assets/images/mega/home-11.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3">Orthopedics</span>
-												</a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./laboratory.html"> <img
-														src="/frontend-assets/assets/images/mega/home-12.webp" alt="img"
-														class="img-fluid d-xl-block d-none"> <span
-														class="d-inline-block mt-0 mt-xl-3">Laboratory</span>
-												</a></li>
-											</ul></li>
-										<li class="nav-item"><a class="nav-link"
-											data-bs-toggle="collapse" href="#allPages" role="button"
-											aria-expanded="false" aria-controls="allPages"> <span
-												class="item-name">Pages</span> <span class="menu-icon">
-													<svg width="8" height="9" viewBox="0 0 8 9" fill="none"
-														xmlns="http://www.w3.org/2000/svg">
-                                                  <path
-															d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z"
-															fill="currentColor" />
-                                              </svg>
-											</span>
-										</a>
-											<ul class="sub-nav collapse  list-unstyled" id="allPages">
-												<li class="nav-item"><a class="nav-link"
-													data-bs-toggle="collapse" href="#docPages" role="button"
-													aria-expanded="false" aria-controls="docPages"> <span
-														class="item-name">Doctors</span> <span class="menu-icon">
-															<svg class="icon-32" width="32" viewBox="0 0 24 24"
-																fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                              <path
-																	d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-																	stroke-width="1.5" stroke-linecap="round"
-																	stroke-linejoin="round"></path>
-                                                          </svg>
-													</span>
-												</a>
-													<ul class="sub-nav collapse  list-unstyled" id="docPages">
-														<li class="nav-item"><a class="nav-link "
-															href="./tab-two-column.html"> tab two column </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./tab-three-column.html"> tab three column </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./doctor-details.html"> doctor details </a></li>
-													</ul></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./about-us.html"> about-us </a></li>
-												<li class="nav-item"><a class="nav-link"
-													data-bs-toggle="collapse" href="#pageServices"
-													role="button" aria-expanded="false"
-													aria-controls="pageServices"> <span class="item-name">Service</span>
-														<span class="menu-icon"> <svg class="icon-32"
-																width="32" viewBox="0 0 24 24" fill="none"
-																xmlns="http://www.w3.org/2000/svg">
-                                                              <path
-																	d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-																	stroke-width="1.5" stroke-linecap="round"
-																	stroke-linejoin="round"></path>
-                                                          </svg>
-													</span>
-												</a>
-													<ul class="sub-nav collapse  list-unstyled"
-														id="pageServices">
-														<li class="nav-item"><a class="nav-link "
-															href="./service1.html"> service 1 </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./service2.html"> service 2 </a></li>
-													</ul></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./client.html"> client </a></li>
-												<li class="nav-item"><a class="nav-link"
-													data-bs-toggle="collapse" href="#pricingPlan" role="button"
-													aria-expanded="false" aria-controls="pricingPlan"> <span
-														class="item-name">Pricing Plan</span> <span
-														class="menu-icon"> <svg class="icon-32" width="32"
-																viewBox="0 0 24 24" fill="none"
-																xmlns="http://www.w3.org/2000/svg">
-                                                              <path
-																	d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-																	stroke-width="1.5" stroke-linecap="round"
-																	stroke-linejoin="round"></path>
-                                                          </svg>
-													</span>
-												</a>
-													<ul class="sub-nav collapse  list-unstyled"
-														id="pricingPlan">
-														<li class="nav-item"><a class="nav-link "
-															href="./pricing-plan-one.html"> Pricing plan 1 </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./pricing-plan-two.html"> Pricing plan 2 </a></li>
-													</ul></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./faq.html"> faq </a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./404.html"> 404 </a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./contactus.html"> contact us </a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./comingsoon.html"> coming soon </a></li>
-											</ul></li>
-										<li class="nav-item"><a class="nav-link"
-											data-bs-toggle="collapse" href="#specializationPages"
-											role="button" aria-expanded="false"
-											aria-controls="specializationPages"> <span
-												class="item-name">Specialization</span> <span
-												class="menu-icon"> <svg width="8" height="9"
-														viewBox="0 0 8 9" fill="none"
-														xmlns="http://www.w3.org/2000/svg">
-                                                  <path
-															d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z"
-															fill="currentColor" />
-                                              </svg>
-											</span>
-										</a>
-											<ul class="sub-nav collapse  list-unstyled"
-												id="specializationPages">
-												<li class="nav-item"><a class="nav-link "
-													href="./oncologist.html"> oncologist </a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./neurologist.html"> neurologist </a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./ent-specialist.html"> ent specialist </a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./cardiologist.html"> cardiologist </a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./audiologist.html"> audiologist </a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./psychiatrists.html"> psychiatrists </a></li>
-											</ul></li>
-										<li class="nav-item"><a class="nav-link"
-											data-bs-toggle="collapse" href="#blogPages" role="button"
-											aria-expanded="false" aria-controls="blogPages"> <span
-												class="item-name">Blog</span> <span class="menu-icon">
-													<svg width="8" height="9" viewBox="0 0 8 9" fill="none"
-														xmlns="http://www.w3.org/2000/svg">
-                                                  <path
-															d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z"
-															fill="currentColor" />
-                                              </svg>
-											</span>
-										</a>
-											<ul class="sub-nav collapse  list-unstyled" id="blogPages">
-												<li class="nav-item"><a class="nav-link "
-													href="./blog-lists.html"> Blog Listing </a></li>
-												<li class="nav-item"><a class="nav-link "
-													href="./blog-masonry.html"> blog masonry </a></li>
-												<li class="nav-item"><a class="nav-link"
-													data-bs-toggle="collapse" href="#blogGrid" role="button"
-													aria-expanded="false" aria-controls="blogGrid"> <span
-														class="item-name">Blog Grid</span> <span class="menu-icon">
-															<svg class="icon-32" width="32" viewBox="0 0 24 24"
-																fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                          <path
-																	d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-																	stroke-width="1.5" stroke-linecap="round"
-																	stroke-linejoin="round"></path>
-                                                      </svg>
-													</span>
-												</a>
-													<ul class="sub-nav collapse  list-unstyled" id="blogGrid">
-														<li class="nav-item"><a class="nav-link "
-															href="./two-column-blog.html"> two column blog </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./three-column-blog.html"> three column blog </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./three-column-full-width-blog.html"> three
-																column full width blog </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./four-column-blog.html"> four column blog </a></li>
-													</ul></li>
-												<li class="nav-item"><a class="nav-link"
-													data-bs-toggle="collapse" href="#blogSidebar" role="button"
-													aria-expanded="false" aria-controls="blogSidebar"> <span
-														class="item-name">Blog Sidebar</span> <span
-														class="menu-icon"> <svg class="icon-32" width="32"
-																viewBox="0 0 24 24" fill="none"
-																xmlns="http://www.w3.org/2000/svg">
-                                                          <path
-																	d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-																	stroke-width="1.5" stroke-linecap="round"
-																	stroke-linejoin="round"></path>
-                                                      </svg>
-													</span>
-												</a>
-													<ul class="sub-nav collapse  list-unstyled"
-														id="blogSidebar">
-														<li class="nav-item"><a class="nav-link "
-															href="./left-sidebar-grid-1.html"> left sidebar
-																grid-1 </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./left-sidebar-grid-2.html"> left sidebar
-																grid-2 </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./right-sidebar-grid-1.html"> Right sidebar
-																grid-1 </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./right-sidebar-grid-2.html"> Right sidebar
-																grid-2 </a></li>
-													</ul></li>
-												<li class="nav-item"><a class="nav-link"
-													data-bs-toggle="collapse" href="#blogSingle" role="button"
-													aria-expanded="false" aria-controls="docPages"> <span
-														class="item-name">Blog Single</span> <span
-														class="menu-icon"> <svg class="icon-32" width="32"
-																viewBox="0 0 24 24" fill="none"
-																xmlns="http://www.w3.org/2000/svg">
-                                                          <path
-																	d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-																	stroke-width="1.5" stroke-linecap="round"
-																	stroke-linejoin="round"></path>
-                                                      </svg>
-													</span>
-												</a>
-													<ul class="sub-nav collapse  list-unstyled" id="blogSingle">
-														<li class="nav-item"><a class="nav-link "
-															href="./blog-standard.html"> blog standard </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./blog-video.html"> blog video </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./blog-gallary.html"> blog gallary </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./blog-audio.html"> blog audio </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./blog-link.html"> blog link </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./blog-quote.html"> blog quote </a></li>
-													</ul></li>
-											</ul></li>
-										<li class="nav-item"><a class="nav-link"
-											data-bs-toggle="collapse" href="#shopPage" role="button"
-											aria-expanded="false" aria-controls="shopPage"> <span
-												class="item-name">Shop</span> <span class="menu-icon">
-													<svg width="8" height="9" viewBox="0 0 8 9" fill="none"
-														xmlns="http://www.w3.org/2000/svg">
-                                                  <path
-															d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z"
-															fill="currentColor" />
-                                              </svg>
-											</span>
-										</a>
-											<ul class="sub-nav collapse  list-unstyled" id="shopPage">
-												<li class="nav-item"><a class="nav-link "
-													href="./shop.html" th:href="@{/shop}"> Shop </a></li>
-												<li class="nav-item"><a class="nav-link"
-													data-bs-toggle="collapse" href="#productSidebar"
-													role="button" aria-expanded="false"
-													aria-controls="productSidebar"> <span class="item-name">Product
-															Sidebar</span> <span class="menu-icon"> <svg
-																class="icon-32" width="32" viewBox="0 0 24 24"
-																fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                          <path
-																	d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-																	stroke-width="1.5" stroke-linecap="round"
-																	stroke-linejoin="round"></path>
-                                                      </svg>
-													</span>
-												</a>
-													<ul class="sub-nav collapse  list-unstyled"
-														id="productSidebar">
-														<li class="nav-item"><a class="nav-link "
-															href="./shop-left-sidebar.html" th:href="@{/shop-left-sidebar}"> shop left sidebar </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./shop-right-sidebar.html" th:href="@{/shop-right-sidebar}" > shop right sidebar
-														</a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./shop-no-sidebar.html" th:href="@{/shop-no-sidebar}"> shop no sidebar </a></li>
-													</ul></li>
-												<li class="nav-item"><a class="nav-link"
-													data-bs-toggle="collapse" href="#sPages" role="button"
-													aria-expanded="false" aria-controls="sPages"> <span
-														class="item-name">Shop Pages</span> <span
-														class="menu-icon"> <svg class="icon-32" width="32"
-																viewBox="0 0 24 24" fill="none"
-																xmlns="http://www.w3.org/2000/svg">
-                                                          <path
-																	d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-																	stroke-width="1.5" stroke-linecap="round"
-																	stroke-linejoin="round"></path>
-                                                      </svg>
-													</span>
-												</a>
-													<ul class="sub-nav collapse  list-unstyled" id="sPages">
-														<li class="nav-item"><a class="nav-link "
-															href="./cart.html" th:href="@{/cart}"> cart </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./checkout.html" th:href="@{/checkout}">
-																checkout </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./wishlist.html" th:href="@{/wishlist}">
-																wishlist </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./my-account.html" th:href="@{/my-account}"> my
-																account </a></li>
-														<li class="nav-item"><a class="nav-link "
-															href="./track-order.html" th:href="@{/track-order}">
-																track-order </a></li>
-													</ul></li>
-												<li class="nav-item"><a class="nav-link"
-													data-bs-toggle="collapse" href="#proType" role="button"
-													aria-expanded="false" aria-controls="proType"> <span
-														class="item-name">Product Type</span> <span
-														class="menu-icon"> <svg class="icon-32" width="32"
-																viewBox="0 0 24 24" fill="none"
-																xmlns="http://www.w3.org/2000/svg">
-                                                          <path
-																	d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-																	stroke-width="1.5" stroke-linecap="round"
-																	stroke-linejoin="round"></path>
-                                                      </svg>
-													</span>
-												</a>
-													<ul class="sub-nav collapse  list-unstyled" id="proType">
-														<li class="nav-item"><a class="nav-link "
-															href="./product-standard.html"
-															th:href="@{/product-standard}"> product standard </a></li>
-														<li class="nav-item"><a class="nav-link " href="./product-new.html" th:href="@{/product-new}"> product new </a></li>
-														<li class="nav-item"><a class="nav-link " href="./product-sale.html" th:href="@{/product-sale}"> product sale </a></li>
+									<ul class="navbar-nav iq-nav-menu list-unstyled" id="header-menu">
+										<!-- Trang chủ -->
+										<li class="nav-item">
+											<a class="nav-link" th:href="@{/}">
+												<span class="item-name">Trang Chủ</span>
+											</a>
+										</li>
 
-													</ul></li>
-											</ul></li>
+										<!-- Giới thiệu -->
+										<li class="nav-item">
+											<a class="nav-link" th:href="@{/about}">
+												<span class="item-name">Giới Thiệu</span>
+											</a>
+										</li>
+
+										<!-- Bệnh viện -->
+										<li class="nav-item">
+											<a class="nav-link" th:href="@{/hospital}">
+												<span class="item-name">Bệnh Viện</span>
+											</a>
+										</li>
+
+										<!-- Phòng ban -->
+										<li class="nav-item">
+											<a class="nav-link" th:href="@{/departments}">
+												<span class="item-name">Phòng Ban</span>
+											</a>
+										</li>
+
+										<!-- Shop -->
+										<li class="nav-item">
+											<a class="nav-link" th:href="@{/shop}">
+												<span class="item-name">Shop</span>
+											</a>
+										</li>
 									</ul>
 								</div>
 								<!-- container-fluid.// -->
@@ -618,14 +251,14 @@
 															<div class="d-flex justify-content-between">
 																<div class="d-flex align-items-center">
 																	<img class="avatar-40 rounded"
-																		src="/frontend-assets/assets/images/shop/product-1.webp" alt=""
+																		src="/frontend_assets/assets/images/shop/product-1.webp" alt=""
 																		loading="lazy" />
 																	<div class="ms-3 flex-grow-1">
 																		<h6 class="mb-0 ">Electric Toothbrush</h6>
 																		<div
 																			class="d-flex justify-content-between align-items-center">
 																			<p class="mb-0">
-																				<span>1</span> * <span>$123.00</span>
+																				<span>1</span> * <span>2.829.000₫</span>
 																			</p>
 																		</div>
 																	</div>
@@ -639,14 +272,14 @@
 															<div class="d-flex justify-content-between">
 																<div class="d-flex align-items-center">
 																	<img class="avatar-40 rounded"
-																		src="/frontend-assets/assets/images/shop/product-2.webp" alt=""
+																		src="/frontend_assets/assets/images/shop/product-2.webp" alt=""
 																		loading="lazy" />
 																	<div class="ms-3 flex-grow-1">
 																		<h6 class="mb-0 ">Medical Box</h6>
 																		<div
 																			class="d-flex justify-content-between align-items-center">
 																			<p class="mb-0">
-																				<span>1</span> * <span>$92.00</span>
+																				<span>1</span> * <span>2.116.000₫</span>
 																			</p>
 																		</div>
 																	</div>
@@ -660,14 +293,14 @@
 															<div class="d-flex justify-content-between">
 																<div class="d-flex align-items-center">
 																	<img class="avatar-40 rounded"
-																		src="/frontend-assets/assets/images/shop/product-3.webp" alt=""
+																		src="/frontend_assets/assets/images/shop/product-3.webp" alt=""
 																		loading="lazy" />
 																	<div class="ms-3 flex-grow-1">
 																		<h6 class="mb-0 ">Hand Sanitizer Bottle</h6>
 																		<div
 																			class="d-flex justify-content-between align-items-center">
 																			<p class="mb-0">
-																				<span>1</span> * <span>$90.00</span>
+																				<span>1</span> * <span>2.070.000₫</span>
 																			</p>
 																		</div>
 																	</div>
@@ -681,14 +314,14 @@
 															<div class="d-flex justify-content-between">
 																<div class="d-flex align-items-center">
 																	<img class="avatar-40 rounded"
-																		src="/frontend-assets/assets/images/shop/product-4.webp" alt=""
+																		src="/frontend_assets/assets/images/shop/product-4.webp" alt=""
 																		loading="lazy" />
 																	<div class="ms-3 flex-grow-1">
 																		<h6 class="mb-0 ">Wheel Chair</h6>
 																		<div
 																			class="d-flex justify-content-between align-items-center">
 																			<p class="mb-0">
-																				<span>1</span> * <span>$89.00</span>
+																				<span>1</span> * <span>2.047.000₫</span>
 																			</p>
 																		</div>
 																	</div>
@@ -702,7 +335,7 @@
 													<div class="card-footer pt-3 px-0 pb-0 text-center">
 														<div
 															class="d-flex align-items-center justify-content-between ">
-															<strong>Subtotal:</strong> <span>$64.00</span>
+															<strong>Tổng phụ:</strong> <span>1.472.000₫</span>
 														</div>
 														<div
 															class="d-flex align-items-center justify-content-between my-3 pt-3 border-top">
@@ -815,7 +448,7 @@
 				<div class="offcanvas-header border-bottom px-5 mb-5 py-4">
 					<a href="./index.html" class="navbar-brand m-0"> <span
 						class="logo-normal"> <img
-							src="/frontend-assets/assets/images/logo/logo.png" alt="logo" class="img-fluid"
+							src="/frontend_assets/assets/images/logo/logo.png" alt="logo" class="img-fluid"
 							loading="lazy">
 					</span>
 					</a>
@@ -829,50 +462,50 @@
 						<div class="row row-cols-xl-3 row-cols-md-2 row-cols-2 gx-3 gy-3">
 							<div class="col">
 								<a data-fslightbox="sidebar-gallery"
-									href="/frontend-assets/assets/images/gallery/blog-1.jpg"> <img
-									src="/frontend-assets/assets/images/gallery/blog-1.jpg"
+									href="/frontend_assets/assets/images/gallery/blog-1.jpg"> <img
+									src="/frontend_assets/assets/images/gallery/blog-1.jpg"
 									class="img-fluid w-100" alt="profile-image" loading="lazy">
 								</a>
 							</div>
 							<div class="col">
 								<a data-fslightbox="sidebar-gallery"
-									href="/frontend-assets/assets/images/gallery/blog-2.jpg"> <img
-									src="/frontend-assets/assets/images/gallery/blog-2.jpg"
+									href="/frontend_assets/assets/images/gallery/blog-2.jpg"> <img
+									src="/frontend_assets/assets/images/gallery/blog-2.jpg"
 									class="img-fluid w-100" alt="profile-image" loading="lazy">
 								</a>
 							</div>
 							<div class="col">
 								<a data-fslightbox="sidebar-gallery"
-									href="/frontend-assets/assets/images/gallery/blog-3.jpg"> <img
-									src="/frontend-assets/assets/images/gallery/blog-3.jpg"
+									href="/frontend_assets/assets/images/gallery/blog-3.jpg"> <img
+									src="/frontend_assets/assets/images/gallery/blog-3.jpg"
 									class="img-fluid w-100" alt="profile-image" loading="lazy">
 								</a>
 							</div>
 							<div class="col">
 								<a data-fslightbox="sidebar-gallery"
-									href="/frontend-assets/assets/images/gallery/blog-4.jpg"> <img
-									src="/frontend-assets/assets/images/gallery/blog-4.jpg"
+									href="/frontend_assets/assets/images/gallery/blog-4.jpg"> <img
+									src="/frontend_assets/assets/images/gallery/blog-4.jpg"
 									class="img-fluid w-100" alt="profile-image" loading="lazy">
 								</a>
 							</div>
 							<div class="col">
 								<a data-fslightbox="sidebar-gallery"
-									href="/frontend-assets/assets/images/gallery/blog-5.jpg"> <img
-									src="/frontend-assets/assets/images/gallery/blog-5.jpg"
+									href="/frontend_assets/assets/images/gallery/blog-5.jpg"> <img
+									src="/frontend_assets/assets/images/gallery/blog-5.jpg"
 									class="img-fluid w-100" alt="profile-image" loading="lazy">
 								</a>
 							</div>
 							<div class="col">
 								<a data-fslightbox="sidebar-gallery"
-									href="/frontend-assets/assets/images/gallery/blog-6.jpg"> <img
-									src="/frontend-assets/assets/images/gallery/blog-6.jpg"
+									href="/frontend_assets/assets/images/gallery/blog-6.jpg"> <img
+									src="/frontend_assets/assets/images/gallery/blog-6.jpg"
 									class="img-fluid w-100" alt="profile-image" loading="lazy">
 								</a>
 							</div>
 						</div>
 					</div>
 					<div class="mb-5 pb-5 border-bottom">
-						<h4 class="mb-3">Contact Us:</h4>
+						<h4 class="mb-3">Liên hệ với chúng tôi:</h4>
 						<p>4517, Washington Ave, Manchester, Kentucky, England 524163.</p>
 						<p>kivicare@example.com</p>
 						<p>Phone : (480) 555-0103</p>
@@ -919,7 +552,7 @@
 		</div>
 		<div
 			class="product-home-banner section-padding bg-primary-subtle position-relative px-0 rtl-image-flip"
-			style="background-image: url('/frontend-assets/assets/images/product-home/product-home-banner.png'); background-repeat: no-repeat; background-position: top right;">
+			style="background-image: url('/frontend_assets/assets/images/product-home/product-home-banner.png'); background-repeat: no-repeat; background-position: top right;">
 			<div class="container-fluid h-100 rtl-image-flip-container">
 				<div class="row align-items-center h-100">
 					<div class="col-lg-5">
@@ -927,14 +560,10 @@
 							<div class="iq-title-box">
 								<span class="iq-subtitle text-uppercase"></span>
 								<h2 class="iq-title iq-heading-title">
-									<span class="right-text text-capitalize fw-500"> Our
-										Prices Make Your Heart</span> <span
-										class="left-text text-capitalize fw-light">Healthy Too</span>
+									<span class="right-text text-capitalize fw-500"> Giá Của Chúng Tôi Làm Cho Trái Tim Bạn</span> <span
+										class="left-text text-capitalize fw-light">Khỏe Mạnh Hơn</span>
 								</h2>
-								<p class="iq-title-desc text-body mt-3 mb-0">Nulla et
-									aliquam arcu. Sed porttitor pellentesque ultricies. Vestibulum
-									ullamcorper erat eu mi lacinia, id elementum nunc blandit.
-									Morbi sed enim porttitor, porta urna eget, commodo nibh</p>
+								<p class="iq-title-desc text-body mt-3 mb-0">Dịch vụ chăm sóc sức khỏe chất lượng cao với giá cả phải chăng. Đội ngũ y bác sĩ giàu kinh nghiệm luôn sẵn sàng phục vụ bạn.</p>
 							</div>
 						</div>
 						<div class="pt-xl-5">
@@ -942,7 +571,7 @@
 								<div class="iq-btn-container">
 									<a class="iq-button text-capitalize" href="./shop.html"
 										th:href="@{/shop}"> <span
-										class="iq-btn-text-holder position-relative">Shop Home</span>
+										class="iq-btn-text-holder position-relative">Mua Sắm Ngay</span>
 										<span class="iq-btn-icon-holder"> <svg
 												xmlns="http://www.w3.org/2000/svg" width="10" height="10"
 												viewBox="0 0 8 8" fill="none">
@@ -966,15 +595,14 @@
 					<div class="container-fluid">
 						<div class="position-relative text-center">
 							<div class="scrolling-text position-absolute">
-								<div class="iq-title text-uppercase">Latest Products</div>
+								<div class="iq-title text-uppercase">Sản Phẩm Mới Nhất</div>
 							</div>
 						</div>
 						<div class="text-center">
 							<div class="iq-title-box">
-								<span class="iq-subtitle text-uppercase">Product</span>
+								<span class="iq-subtitle text-uppercase">Sản Phẩm</span>
 								<h2 class="iq-title iq-heading-title">
-									<span class="right-text text-capitalize fw-500">All Our
-										Latest</span> <span class="left-text text-capitalize fw-light">Products</span>
+									<span class="right-text text-capitalize fw-500">Tất Cả Sản Phẩm</span> <span class="left-text text-capitalize fw-light">Mới Nhất</span>
 								</h2>
 								<p class="iq-title-desc text-body mt-3 mb-0"></p>
 							</div>
@@ -988,7 +616,7 @@
 										<a href="shop-detail.html"></a>
 										<div class="iq-product-image position-relative">
 											<div class="animate:hover-media-wrap">
-												<img src="/frontend-assets/assets/images//shop/product-1.webp" alt="icon"
+												<img src="/frontend_assets/assets/images//shop/product-1.webp" alt="icon"
 													class="img-fluid hover-media" loading="lazy">
 											</div>
 											<div class="iq-button-holder d-inline-block">
@@ -1113,7 +741,7 @@
 										<a href="shop-detail.html"></a>
 										<div class="iq-product-image position-relative">
 											<div class="animate:hover-media-wrap">
-												<img src="/frontend-assets/assets/images//shop/product-1.webp" alt="icon"
+												<img src="/frontend_assets/assets/images//shop/product-1.webp" alt="icon"
 													class="img-fluid hover-media" loading="lazy" th:src="@{${product.imageUrl}}"> 
 											</div>
 											<div class="iq-button-holder d-inline-block">
@@ -1186,7 +814,7 @@
 												<a href="./product-standard.html"
 													th:href="@{/product-standard/{id}(id=${product.id})}" th:text="${product.name}"></a>
 											</h5>
-											<h6 class="price-value fw-semibold mb-2" th:text="'$'+${product.price}"></h6>
+											<h6 class="price-value fw-semibold mb-2" th:text="${#numbers.formatDecimal(product.price * 23000, 0, 'COMMA', 0, 'POINT') + '₫'}"></h6>
 											<div class="ratting">
 												<div class="ratting">
 													<svg class="icon-20" xmlns="http://www.w3.org/2000/svg"
@@ -1236,37 +864,36 @@
 			</div>
 		</div>
 		<div class="section-padding rtl-image-flip"
-			style="background-image: url('/frontend-assets/assets/images/product-home/Deal-of-the-day-1.jpg'); background-position: center center; background-repeat: no-repeat; background-size: cover;">
+			style="background-image: url('/frontend_assets/assets/images/product-home/Deal-of-the-day-1.jpg'); background-position: center center; background-repeat: no-repeat; background-size: cover;">
 			<div class="container rtl-image-flip-container">
 				<div class="row">
 					<div class="col-md-5">
 						<div class="iq-title-box">
-							<span class="iq-subtitle text-uppercase">Product</span>
+							<span class="iq-subtitle text-uppercase">Sản Phẩm</span>
 							<h2 class="iq-title iq-heading-title">
-								<span class="right-text text-capitalize fw-500">Deal of</span> <span
-									class="left-text text-capitalize fw-light">the Week</span>
+								<span class="right-text text-capitalize fw-500">Ưu Đãi</span> <span
+									class="left-text text-capitalize fw-light">Trong Tuần</span>
 							</h2>
-							<p class="iq-title-desc text-body mt-3 mb-0">At vero eos et
-								accusamus et iusto odio dignissimos ducimus qui</p>
+							<p class="iq-title-desc text-body mt-3 mb-0">Chúng tôi mang đến những sản phẩm chất lượng cao với giá ưu đãi</p>
 						</div>
 						<ul
 							class="countdown d-flex align-items-center list-inline count-down"
 							data-date=30-05-2025>
 							<li class="position-relative d-inline-lock"><span data-days
 								class="numberDisplay">0</span><span
-								class="text-center text-body text-uppercase fw-semibold">Days</span>
+								class="text-center text-body text-uppercase fw-semibold">Ngày</span>
 							</li>
 							<li class="position-relative d-inline-block"><span
 								data-hours class="numberDisplay">0</span><span
-								class="text-center text-body text-uppercase fw-semibold">Hours</span>
+								class="text-center text-body text-uppercase fw-semibold">Giờ</span>
 							</li>
 							<li class="position-relative d-inline-block"><span
 								data-minutes class="numberDisplay">0</span><span
-								class="text-center text-body text-uppercase fw-semibold">Minutes</span>
+								class="text-center text-body text-uppercase fw-semibold">Phút</span>
 							</li>
 							<li class="position-relative d-inline-block"><span
 								data-seconds class="numberDisplay">0</span><span
-								class="text-center text-body text-uppercase fw-semibold">Seconds</span>
+								class="text-center text-body text-uppercase fw-semibold">Giây</span>
 							</li>
 						</ul>
 						<div class="button-primary mt-xl-5">
@@ -1295,22 +922,20 @@
 				<div class="row gy-4">
 					<div class="col-lg-6">
 						<div class="p-5 rtl-image-flip"
-							style="background-image: url('/frontend-assets/assets/images/product-home/banner.jpg'); background-position: center center; background-repeat: no-repeat; background-size: cover;">
+							style="background-image: url('/frontend_assets/assets/images/product-home/banner.jpg'); background-position: center center; background-repeat: no-repeat; background-size: cover;">
 							<div class="p-lg-5 rtl-image-flip-container">
 								<div class="iq-title-box">
-									<span class="iq-subtitle text-uppercase">UPTO 50% OFF</span>
+									<span class="iq-subtitle text-uppercase">GIẢM GIÁ 50%</span>
 									<h2 class="iq-title iq-heading-title">
-										<span class="right-text text-capitalize fw-500">Super
-											Offer</span> <span class="left-text text-capitalize fw-light"></span>
+										<span class="right-text text-capitalize fw-500">Ưu Đãi</span> <span class="left-text text-capitalize fw-light">Đặc Biệt</span>
 									</h2>
-									<p class="iq-title-desc text-body mt-3 mb-0">amazing deals
-										are here . Grab the offer</p>
+									<p class="iq-title-desc text-body mt-3 mb-0">Khuyến mãi hấp dẫn đang chờ đợi bạn. Hãy nhanh tay!</p>
 								</div>
 								<div class="button-primary pt-md-5">
 									<div class="iq-btn-container">
 										<a class="iq-button text-capitalize" href="./shop.html"
 											th:href="@{/shop}"> <span
-											class="iq-btn-text-holder position-relative">Order Now</span>
+											class="iq-btn-text-holder position-relative">Đặt Hàng Ngay</span>
 											<span class="iq-btn-icon-holder"> <svg
 													xmlns="http://www.w3.org/2000/svg" width="10" height="10"
 													viewBox="0 0 8 8" fill="none">
@@ -1327,22 +952,21 @@
 					</div>
 					<div class="col-lg-6">
 						<div class="p-5 rtl-image-flip"
-							style="background-image: url('/frontend-assets/assets/images/product-home/banner2.jpg'); background-position: center center; background-repeat: no-repeat; background-size: cover;">
+							style="background-image: url('/frontend_assets/assets/images/product-home/banner2.jpg'); background-position: center center; background-repeat: no-repeat; background-size: cover;">
 							<div class="p-lg-5 rtl-image-flip-container">
 								<div class="iq-title-box">
-									<span class="iq-subtitle text-uppercase">Now & Never</span>
+									<span class="iq-subtitle text-uppercase">Chỉ Có Lúc Này</span>
 									<h2 class="iq-title iq-heading-title">
-										<span class="right-text text-capitalize fw-500">Upto
-											70% Off</span> <span class="left-text text-capitalize fw-light"></span>
+										<span class="right-text text-capitalize fw-500">Giảm Giá
+											Đến 70%</span> <span class="left-text text-capitalize fw-light"></span>
 									</h2>
-									<p class="iq-title-desc text-body mt-3 mb-0">amazing deals
-										are here . Grab the offer</p>
+									<p class="iq-title-desc text-body mt-3 mb-0">Nhiều ưu đãi đang chờ bạn. Hãy nhanh tay!</p>
 								</div>
 								<div class="pt-md-5">
 									<div class="iq-btn-container">
 										<a class="iq-button text-capitalize" href="./shop.html"
 											th:href="@{/shop}"> <span
-											class="iq-btn-text-holder position-relative">Order Now</span>
+											class="iq-btn-text-holder position-relative">Đặt Hàng Ngay</span>
 											<span class="iq-btn-icon-holder"> <svg
 													xmlns="http://www.w3.org/2000/svg" width="10" height="10"
 													viewBox="0 0 8 8" fill="none">
@@ -1366,15 +990,14 @@
 					<div class="container-fluid">
 						<div class="position-relative text-center">
 							<div class="scrolling-text position-absolute">
-								<div class="iq-title text-uppercase">Latest Products</div>
+								<div class="iq-title text-uppercase">Sản Phẩm Mới Nhất</div>
 							</div>
 						</div>
 						<div class="text-center">
 							<div class="iq-title-box">
-								<span class="iq-subtitle text-uppercase">Product</span>
+								<span class="iq-subtitle text-uppercase">Sản Phẩm</span>
 								<h2 class="iq-title iq-heading-title">
-									<span class="right-text text-capitalize fw-500">Best
-										selling</span> <span class="left-text text-capitalize fw-light">Products</span>
+									<span class="right-text text-capitalize fw-500">Sản Phẩm</span> <span class="left-text text-capitalize fw-light">Bán Chạy Nhất</span>
 								</h2>
 								<p class="iq-title-desc text-body mt-3 mb-0"></p>
 							</div>
@@ -1390,7 +1013,7 @@
 										<a href="shop-detail.html"></a>
 										<div class="iq-product-image position-relative">
 											<div class="animate:hover-media-wrap">
-												<img src="/frontend-assets/assets/images//shop/product-4.webp" alt="icon"
+												<img src="/frontend_assets/assets/images//shop/product-4.webp" alt="icon"
 													class="img-fluid hover-media" loading="lazy">
 											</div>
 											<div class="iq-button-holder d-inline-block">
@@ -1463,7 +1086,7 @@
 												<a href="./product-standard.html"
 													th:href="@{/product-standard}">Wheel Chair</a>
 											</h5>
-											<h6 class="price-value fw-semibold mb-2">$89</h6>
+											<h6 class="price-value fw-semibold mb-2">2.047.000₫</h6>
 											<div class="ratting">
 												<div class="ratting">
 													<svg class="icon-20" xmlns="http://www.w3.org/2000/svg"
@@ -1515,7 +1138,7 @@
 										<a href="shop-detail.html"></a>
 										<div class="iq-product-image position-relative">
 											<div class="animate:hover-media-wrap">
-												<img src="/frontend-assets/assets/images//shop/product-4.webp" alt="icon"
+												<img src="/frontend_assets/assets/images//shop/product-4.webp" alt="icon"
 													class="img-fluid hover-media" loading="lazy" th:src="@{${product.imageUrl}}">
 											</div>
 											<div class="iq-button-holder d-inline-block">
@@ -1588,7 +1211,7 @@
 												<a href="./product-standard.html"
 													th:href="@{/product-standard/{id}(id=${product.id})}" th:text="${product.name}"></a>
 											</h5>
-											<h6 class="price-value fw-semibold mb-2" th:text="'$'+${product.price}"></h6>
+											<h6 class="price-value fw-semibold mb-2" th:text="${#numbers.formatDecimal(product.price * 23000, 0, 'COMMA', 0, 'POINT') + '₫'}"></h6>
 											<div class="ratting">
 												<div class="ratting">
 													<svg class="icon-20" xmlns="http://www.w3.org/2000/svg"
@@ -1640,7 +1263,7 @@
 										<a href="shop-detail.html"></a>
 										<div class="iq-product-image position-relative">
 											<div class="animate:hover-media-wrap">
-												<img src="/frontend-assets/assets/images//shop/product-9.webp" alt="icon"
+												<img src="/frontend_assets/assets/images//shop/product-9.webp" alt="icon"
 													class="img-fluid hover-media" loading="lazy">
 											</div>
 											<div class="iq-button-holder d-inline-block">
@@ -1713,7 +1336,7 @@
 												<a href="./product-standard.html"
 													th:href="@{/product-standard}">Asthma Inhaler</a>
 											</h5>
-											<h6 class="price-value fw-semibold mb-2">$45</h6>
+											<h6 class="price-value fw-semibold mb-2">1.035.000₫</h6>
 											<div class="ratting">
 												<div class="ratting">
 													<svg class="icon-20" xmlns="http://www.w3.org/2000/svg"
@@ -1765,7 +1388,7 @@
 										<a href="shop-detail.html"></a>
 										<div class="iq-product-image position-relative">
 											<div class="animate:hover-media-wrap">
-												<img src="/frontend-assets/assets/images//shop/product-3.webp" alt="icon"
+												<img src="/frontend_assets/assets/images//shop/product-3.webp" alt="icon"
 													class="img-fluid hover-media" loading="lazy">
 											</div>
 											<div class="iq-button-holder d-inline-block">
@@ -1837,7 +1460,7 @@
 												<a href="./product-standard.html"
 													th:href="@{/product-standard}">Hand Sanitizer Bottle</a>
 											</h5>
-											<h6 class="price-value fw-semibold mb-2">$90</h6>
+											<h6 class="price-value fw-semibold mb-2">2.070.000₫</h6>
 											<div class="ratting">
 												<div class="ratting">
 													<svg class="icon-20" xmlns="http://www.w3.org/2000/svg"
@@ -1888,7 +1511,7 @@
 										<a href="shop-detail.html"></a>
 										<div class="iq-product-image position-relative">
 											<div class="animate:hover-media-wrap">
-												<img src="/frontend-assets/assets/images//shop/product-1.webp" alt="icon"
+												<img src="/frontend_assets/assets/images//shop/product-1.webp" alt="icon"
 													class="img-fluid hover-media" loading="lazy">
 											</div>
 											<div class="iq-button-holder d-inline-block">
@@ -2013,7 +1636,7 @@
 		<div class="video-popup">
 			<div class="container-fluid">
 				<div class="position-relative padding-200"
-					style="background-image: url(/frontend-assets/assets/images/product-home/product-home-popup.jpg); background-size: cover">
+					style="background-image: url(/frontend_assets/assets/images/product-home/product-home-popup.jpg); background-size: cover">
 					<div class="section-padding">
 						<div
 							class="position-absolute h-100 w-100 bg-light opacity-25 top-0 start-0"></div>
@@ -2044,16 +1667,15 @@
 					<div class="col-12">
 						<div class="position-relative text-center">
 							<div class="scrolling-text position-absolute">
-								<div class="iq-title text-uppercase">Latest Blog</div>
+								<div class="iq-title text-uppercase">Bài Viết Mới Nhất</div>
 							</div>
 						</div>
 						<div class="text-center">
 							<div class="iq-title-box">
-								<span class="iq-subtitle text-uppercase">Blogs</span>
+								<span class="iq-subtitle text-uppercase">Bài Viết</span>
 								<h2 class="iq-title iq-heading-title">
-									<span class="right-text text-capitalize fw-500">Read Our
-										Latest</span> <span class="left-text text-capitalize fw-light">News
-										And Advices</span>
+									<span class="right-text text-capitalize fw-500">Đọc Các Bài Viết</span>
+									<span class="left-text text-capitalize fw-light">Và Lời Khuyên Mới Nhất</span>
 								</h2>
 								<p class="iq-title-desc text-body mt-3 mb-0"></p>
 							</div>
@@ -2072,7 +1694,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-1.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-1.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2119,7 +1741,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-2.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-2.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2166,7 +1788,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-3.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-3.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2213,7 +1835,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-4.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-4.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2260,7 +1882,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-5.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-5.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2307,7 +1929,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-6.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-6.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2354,7 +1976,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-7.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-7.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2401,7 +2023,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-8.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-8.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2448,7 +2070,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-9.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-9.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2495,7 +2117,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-10.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-10.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2542,7 +2164,7 @@
 									<div class="iq-blog shadow-none image-hover">
 										<a href="./blog-details.html"
 											class="blog-image d-block overflow-hidden"> <img
-											src="/frontend-assets/assets/images/blog/blog-11.webp" alt="blog-image"
+											src="/frontend_assets/assets/images/blog/blog-11.webp" alt="blog-image"
 											class="img-fluid w-100" loading="lazy">
 										</a>
 										<div
@@ -2598,16 +2220,15 @@
 					<div class="container">
 						<div class="position-relative text-center">
 							<div class="scrolling-text position-absolute">
-								<div class="iq-title text-uppercase">Testimonial</div>
+								<div class="iq-title text-uppercase">Đánh Giá</div>
 							</div>
 						</div>
 						<div class="text-center">
 							<div class="iq-title-box">
-								<span class="iq-subtitle text-uppercase">Testimonials</span>
+								<span class="iq-subtitle text-uppercase">Đánh Giá</span>
 								<h2 class="iq-title iq-heading-title">
-									<span class="right-text text-capitalize fw-500">What Our</span>
-									<span class="left-text text-capitalize fw-light">Client's
-										Say</span>
+									<span class="right-text text-capitalize fw-500">Khách Hàng</span>
+									<span class="left-text text-capitalize fw-light">Nói Gì Về Chúng Tôi</span>
 								</h2>
 								<p class="iq-title-desc text-body mt-3 mb-0"></p>
 							</div>
@@ -2629,7 +2250,7 @@
 												<div class="iq-testimonial-content d-lg-flex">
 													<div
 														class="iq-testimonial-avtar me-lg-5 pe-lg-5 mb-lg-0 mb-5 flex-shrink-0">
-														<img src="/frontend-assets/assets/images/testimonial/user-1.webp"
+														<img src="/frontend_assets/assets/images/testimonial/user-1.webp"
 															alt="user" class="img-fluid" loading="lazy">
 													</div>
 													<div class="iq-testimonial-content-inner">
@@ -2692,7 +2313,7 @@
 												<div class="iq-testimonial-content d-lg-flex">
 													<div
 														class="iq-testimonial-avtar me-lg-5 pe-lg-5 mb-lg-0 mb-5 flex-shrink-0">
-														<img src="/frontend-assets/assets/images/testimonial/user-2.webp"
+														<img src="/frontend_assets/assets/images/testimonial/user-2.webp"
 															alt="user" class="img-fluid" loading="lazy">
 													</div>
 													<div class="iq-testimonial-content-inner">
@@ -2757,7 +2378,7 @@
 												<div class="iq-testimonial-content d-lg-flex">
 													<div
 														class="iq-testimonial-avtar me-lg-5 pe-lg-5 mb-lg-0 mb-5 flex-shrink-0">
-														<img src="/frontend-assets/assets/images/testimonial/user-3.webp"
+														<img src="/frontend_assets/assets/images/testimonial/user-3.webp"
 															alt="user" class="img-fluid" loading="lazy">
 													</div>
 													<div class="iq-testimonial-content-inner">
@@ -2836,48 +2457,48 @@
 					<div class="col-lg-3 col-sm-6">
 						<div class="iq-icon-box column d-flex align-items-center gap-2">
 							<div class="icon-box-img">
-								<img src="/frontend-assets/assets/images/product-home/Traced.png" alt="icon"
+								<img src="/frontend_assets/assets/images/product-home/Traced.png" alt="icon"
 									class="img-fluid" loading="lazy">
 							</div>
 							<div class="icon-box-content">
-								<h5 class="icon-box-title">Free Shipping Worldwide</h5>
-								<p class="icon-box-desc mb-0">For all order over $200</p>
+								<h5 class="icon-box-title">Miễn Phí Vận Chuyển Toàn Cầu</h5>
+							<p class="icon-box-desc mb-0">Cho tất cả đơn hàng trên 200.000₫</p>
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-6">
 						<div class="iq-icon-box column d-flex align-items-center gap-2">
 							<div class="icon-box-img">
-								<img src="/frontend-assets/assets/images/product-home/back.png" alt="icon"
+								<img src="/frontend_assets/assets/images/product-home/back.png" alt="icon"
 									class="img-fluid" loading="lazy">
 							</div>
 							<div class="icon-box-content">
-								<h5 class="icon-box-title">Easy Return Avaliable</h5>
-								<p class="icon-box-desc mb-0">Return product within 31 days</p>
+								<h5 class="icon-box-title">Dễ Dàng Đổi Trả</h5>
+								<p class="icon-box-desc mb-0">Đổi trả sản phẩm trong vòng 31 ngày</p>
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-6">
 						<div class="iq-icon-box column d-flex align-items-center gap-2">
 							<div class="icon-box-img">
-								<img src="/frontend-assets/assets/images/product-home/doller.png" alt="icon"
+								<img src="/frontend_assets/assets/images/product-home/doller.png" alt="icon"
 									class="img-fluid" loading="lazy">
 							</div>
 							<div class="icon-box-content">
-								<h5 class="icon-box-title">Secure Payment</h5>
-								<p class="icon-box-desc mb-0">Payment is 100% secure</p>
+								<h5 class="icon-box-title">Thanh Toán An Toàn</h5>
+								<p class="icon-box-desc mb-0">Thanh toán 100% bảo mật</p>
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-6">
 						<div class="iq-icon-box column d-flex align-items-center gap-2">
 							<div class="icon-box-img">
-								<img src="/frontend-assets/assets/images/product-home/Traced.png" alt="icon"
+								<img src="/frontend_assets/assets/images/product-home/Traced.png" alt="icon"
 									class="img-fluid" loading="lazy">
 							</div>
 							<div class="icon-box-content">
-								<h5 class="icon-box-title">Customer Support</h5>
-								<p class="icon-box-desc mb-0">24 hours support avaliable</p>
+								<h5 class="icon-box-title">Hỗ Trợ Khách Hàng</h5>
+								<p class="icon-box-desc mb-0">Hỗ trợ 24 giờ</p>
 							</div>
 						</div>
 					</div>
@@ -2887,20 +2508,18 @@
 		<div>
 			<div class="container">
 				<div class="section-padding px-5 rtl-image-flip"
-					style="background-image: url('/frontend-assets/assets/images/product-home/banner-bg.jpg'); background-position: center center; background-repeat: no-repeat; background-size: cover;">
+					style="background-image: url('/frontend_assets/assets/images/product-home/banner-bg.jpg'); background-position: center center; background-repeat: no-repeat; background-size: cover;">
 					<div class="px-lg-5 rtl-image-flip-container">
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="iq-title-box mb-0">
-									<h2 class="iq-title iq-heading-title">
-										<span class="right-text text-capitalize fw-500">Shop
-											&amp; Shipment</span> <span
-											class="left-text text-capitalize fw-light">Across The
-											Worldwide</span>
-									</h2>
-									<p class="iq-title-desc text-body mt-3 mb-0">Enjoy 15% off
-										on your first purchase</p>
-								</div>
+						<h2 class="iq-title iq-heading-title">
+							<span class="right-text text-capitalize fw-500">Mua Sắm
+								&amp; Vận Chuyển</span> <span
+								class="left-text text-capitalize fw-light">Trên Toàn Thế Giới</span>
+						</h2>
+						<p class="iq-title-desc text-body mt-3 mb-0">Giảm giá 15% cho lần mua đầu tiên</p>
+					</div>
 							</div>
 							<div class="col-lg-6 d-lg-none d-none"></div>
 						</div>
@@ -2921,7 +2540,7 @@
 						<div class="pe-lg-5">
 							<a href="./index.html" class="navbar-brand m-0"> <span
 								class="logo-normal"> <img
-									src="/frontend-assets/assets/images/logo/logo.png" alt="logo"
+									src="/frontend_assets/assets/images/logo/logo.png" alt="logo"
 									class="img-fluid" loading="lazy">
 							</span>
 							</a>
@@ -2937,18 +2556,18 @@
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6  mb-5 mb-lg-0">
-						<h5 class="mb-4">Departments</h5>
+						<h5 class="mb-4">Phòng Ban</h5>
 						<ul class="m-0 p-0 list-unstyled footer-menu-link">
 							<li class="mb-3"><a href="./oncologist.html"><i
-									class="fas fa-angle-right me-2"></i>Oncologist</a></li>
+									class="fas fa-angle-right me-2"></i>Khoa Ung Thư</a></li>
 							<li class="mb-3"><a href="./neurologist.html"><i
-									class="fas fa-angle-right me-2"></i>Neurologist</a></li>
+									class="fas fa-angle-right me-2"></i>Khoa Thần Kinh</a></li>
 							<li class="mb-3"><a href="./ent-specialist.html"><i
-									class="fas fa-angle-right me-2"></i>ENT Specialist</a></li>
+									class="fas fa-angle-right me-2"></i>Chuyên Khoa Tai Mũi Họng</a></li>
 							<li class="mb-3"><a href="./audiologist.html"><i
-									class="fas fa-angle-right me-2"></i>Audiologist</a></li>
+									class="fas fa-angle-right me-2"></i>Chuyên Khoa Thính Học</a></li>
 							<li><a href="./psychiatrists.html"><i
-									class="fas fa-angle-right me-2"></i>Psychiatrists</a></li>
+									class="fas fa-angle-right me-2"></i>Tâm Thần Học</a></li>
 						</ul>
 
 					</div>
@@ -2959,7 +2578,7 @@
 								<ul class="list-inline m-0 p-0">
 									<li class="d-flex align-items-center gap-3 border-0 mb-4">
 										<div class="img-holder">
-											<img src="/frontend-assets/assets/images/shop/product-9.webp" alt="product"
+											<img src="/frontend_assets/assets/images/shop/product-9.webp" alt="product"
 												class="img-fluid ">
 										</div>
 										<div class="post-blog">
@@ -3005,12 +2624,12 @@
 														fill="#FFD329" />
                                                        </svg>
 											</div>
-											<span class="fw-bolder price text-body">$45.00</span>
+											<span class="fw-bolder price text-body">1.035.000₫</span>
 										</div>
 									</li>
 									<li class="d-flex align-items-center gap-3 border-0 mb-4">
 										<div class="img-holder">
-											<img src="/frontend-assets/assets/images/shop/product-12.webp" alt="product"
+											<img src="/frontend_assets/assets/images/shop/product-12.webp" alt="product"
 												class="img-fluid ">
 										</div>
 										<div class="post-blog">
@@ -3056,7 +2675,7 @@
 														fill="#FFD329" />
                                                        </svg>
 											</div>
-											<span class="fw-bolder price text-body">$22.00</span>
+											<span class="fw-bolder price text-body">506.000₫</span>
 										</div>
 									</li>
 								</ul>
@@ -3065,42 +2684,42 @@
 
 					</div>
 					<div class="col-lg-3 col-md-6 mt-md-0 mt-5">
-						<h5 class="mb-4">Opening Hours</h5>
+						<h5 class="mb-4">Giờ Làm Việc</h5>
 						<ul class="list-inline m-0 p-0">
 							<li
 								class="mb-3 pb-2 border-bottom d-flex align-items-center justify-content-between">
-								<span>Weekdays</span> <span class="text-secondary fw-500">09:00
+								<span>Ngày Trong Tuần</span> <span class="text-secondary fw-500">09:00
 									- 20:00</span>
 							</li>
 							<li
 								class="mb-3 pb-2 border-bottom d-flex align-items-center justify-content-between">
-								<span>Saturday</span> <span class="text-secondary fw-500">08:00
+								<span>Thứ Bảy</span> <span class="text-secondary fw-500">08:00
 									- 12:00</span>
 							</li>
 							<li class="d-flex align-items-center justify-content-between">
-								<span>Sunday</span> <span class="text-secondary fw-500">Close</span>
+								<span>Chủ Nhật</span> <span class="text-secondary fw-500">Đóng Cửa</span>
 							</li>
 						</ul>
 						<ul
 							class="list-inline mt-5 mb-0 p-0 d-flex align-items-center gap-5">
 							<li><a href="https://www.visa.co.in/" target="_blank"
 								rel="noopener noreferrer"> <img
-									src="/frontend-assets/assets/images/product-home/visa-logo.png"
+									src="/frontend_assets/assets/images/product-home/visa-logo.png"
 									class="img-fluid" alt="VisaLogo">
 							</a></li>
 							<li><a href="https://www.mastercard.co.in/en-in.html"
 								target="_blank" rel="noopener noreferrer"> <img
-									src="/frontend-assets/assets/images/product-home/Mastercard.png"
+									src="/frontend_assets/assets/images/product-home/Mastercard.png"
 									class="img-fluid" alt="Mastercard">
 							</a></li>
 							<li><a href="https://www.paypal.com/in/home" target="_blank"
 								rel="noopener noreferrer"> <img
-									src="/frontend-assets/assets/images/product-home/PayPal.png" class="img-fluid"
+									src="/frontend_assets/assets/images/product-home/PayPal.png" class="img-fluid"
 									alt="PayPal">
 							</a></li>
 							<li><a href="https://www.mastercard.co.in/en-in.html"
 								target="_blank" rel="noopener noreferrer"> <img
-									src="/frontend-assets/assets/images/product-home/Mastercard.png"
+									src="/frontend_assets/assets/images/product-home/Mastercard.png"
 									class="img-fluid" alt="Mastercard">
 							</a></li>
 
@@ -3118,7 +2737,7 @@
 							<script>
 								document.write(new Date().getFullYear())
 							</script>
-							KiviCare All Rights Reserved.
+							KiviCare - Tất Cả Quyền Được Bảo Lưu.
 						</p>
 					</div>
 				</div>
@@ -3202,40 +2821,40 @@
 	<!-- Back To Top -->
 
 	<!-- Library Bundle Script -->
-	<script src="/frontend-assets/assets/js/core/libs.min.js"></script>
+	<script src="/frontend_assets/assets/js/core/libs.min.js"></script>
 	<!-- Plugin Scripts -->
 
 	<!-- Slider-tab Script -->
-	<script src="/frontend-assets/assets/js/plugins/slider-tabs.js"></script>
+	<script src="/frontend_assets/assets/js/plugins/slider-tabs.js"></script>
 
 	<!-- fslightbox Script -->
-	<script src="/frontend-assets/assets/js/plugins/fslightbox.js" defer></script>
+	<script src="/frontend_assets/assets/js/plugins/fslightbox.js" defer></script>
 
 	<!-- Sweet-alert Script -->
-	<script src="/frontend-assets/assets/vendor/sweetalert2/dist/sweetalert2.min.js" async></script>
-	<script src="/frontend-assets/assets/js/plugins/sweet-alert.js" defer></script>
+	<script src="/frontend_assets/assets/vendor/sweetalert2/dist/sweetalert2.min.js" async></script>
+	<script src="/frontend_assets/assets/js/plugins/sweet-alert.js" defer></script>
 
 
 
 
 	<!-- SwiperSlider Script -->
-	<script src="/frontend-assets/assets/vendor/swiperSlider/swiper-bundle.min.js"></script>
+	<script src="/frontend_assets/assets/vendor/swiperSlider/swiper-bundle.min.js"></script>
 	<!-- Lodash Utility -->
-	<script src="/frontend-assets/assets/vendor/lodash/lodash.min.js"></script>
+	<script src="/frontend_assets/assets/vendor/lodash/lodash.min.js"></script>
 	<!-- Utilities Functions -->
-	<script src="/frontend-assets/assets/js/iqonic-script/utility.min.js"></script>
+	<script src="/frontend_assets/assets/js/iqonic-script/utility.min.js"></script>
 	<!-- Settings Script -->
-	<script src="/frontend-assets/assets/js/iqonic-script/setting.min.js"></script>
+	<script src="/frontend_assets/assets/js/iqonic-script/setting.min.js"></script>
 	<!-- Settings Init Script -->
-	<script src="/frontend-assets/assets/js/iqonic-script/setting-init.js"></script>
+	<script src="/frontend_assets/assets/js/iqonic-script/setting-init.js"></script>
 	<!-- External Library Bundle Script -->
-	<script src="/frontend-assets/assets/js/core/external.min.js"></script>
+	<script src="/frontend_assets/assets/js/core/external.min.js"></script>
 	<!-- Kivicare Script -->
-	<script src="/frontend-assets/assets/js/kivicare.js?v=1.4.1" defer></script>
-	<script src="/frontend-assets/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
+	<script src="/frontend_assets/assets/js/kivicare.js?v=1.4.1" defer></script>
+	<script src="/frontend_assets/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
 	<!-- Kivicare Pages Script -->
-	<script src="/frontend-assets/assets/js/slider.js" defer></script>
-	<script src="/frontend-assets/assets/js/scroll-text.js" defer></script>
-	<script src="/frontend-assets/assets/js/plugins/countdown.js"></script>
+	<script src="/frontend_assets/assets/js/slider.js" defer></script>
+	<script src="/frontend_assets/assets/js/scroll-text.js" defer></script>
+	<script src="/frontend_assets/assets/js/plugins/countdown.js"></script>
 </body>
 </html>

@@ -68,11 +68,5 @@ public class ProductController {
         return mv;
     }
 
-    @GetMapping("/cart")
-    public ModelAndView cart() {
-        ModelAndView mv = new ModelAndView("/frontend/cart");
-        return mv;
-    }
-
 
 }

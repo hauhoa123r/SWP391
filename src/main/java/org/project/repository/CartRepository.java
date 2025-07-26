@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 @Repository
 public interface CartRepository extends JpaRepository<CartItemEntity, CartItemEntityId>{
-	List<CartItemEntity> findByUserEntityId(Long userId);
+    List<CartItemEntity> findByUserEntityId(Long userId);
     void deleteByUserEntityIdAndProductEntityId(Long userId, Long productId);
     Optional<CartItemEntity> findByUserEntityIdAndProductEntityId(Long userId, Long productId);
+
+    List<CartItemEntity> findByUserEntity_Id(Long userEntityId);
 }

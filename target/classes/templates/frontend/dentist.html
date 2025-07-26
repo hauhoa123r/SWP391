@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-bs-theme="light" dir="ltr" class="landing-pages">
+<html lang="en" data-bs-theme="light" dir="ltr" class="landing-pages" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,36 +9,36 @@
       <!-- Google Font Api KEY-->
       <meta name="google_font_api" content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
       <!-- Favicon -->
-      <link rel="shortcut icon" href="./assets/images/favicon.ico" />
+      <link rel="shortcut icon" href="/frontend_assets/assets/images/favicon.ico" />
       
       <!-- Library / Plugin Css Build -->
-      <link rel="stylesheet" href="./assets/css/core/libs.min.css" />
+      <link rel="stylesheet" href="/frontend_assets/assets/css/core/libs.min.css" />
       
       <!-- flaticon css -->
-      <link rel="stylesheet" href="./assets/vendor/flaticon/css/flaticon.css" />
+      <link rel="stylesheet" href="/frontend_assets/assets/vendor/flaticon/css/flaticon.css" />
       
       <!-- font-awesome css -->
-      <link rel="stylesheet" href="./assets/vendor/font-awesome/css/all.min.css" />
+      <link rel="stylesheet" href="/frontend_assets/assets/vendor/font-awesome/css/all.min.css" />
       
       
       <!-- Sweetlaert2 css -->
-      <link rel="stylesheet" href="./assets/vendor/sweetalert2/dist/sweetalert2.min.css"/>
+      <link rel="stylesheet" href="/frontend_assets/assets/vendor/sweetalert2/dist/sweetalert2.min.css"/>
       
       
       <!-- SwiperSlider css -->
-      <link rel="stylesheet" href="./assets/vendor/swiperSlider/swiper-bundle.min.css">
+      <link rel="stylesheet" href="/frontend_assets/assets/vendor/swiperSlider/swiper-bundle.min.css">
       
       <!-- Kivicare Design System Css -->
-      <link rel="stylesheet" href="./assets/css/kivicare.min.css?v=1.4.1" />
+      <link rel="stylesheet" href="/frontend_assets/assets/css/kivicare.min.css?v=1.4.1" />
       
       <!-- Custom Css -->
-      <link rel="stylesheet" href="./assets/css/custom.min.css?v=1.4.1" />
+      <link rel="stylesheet" href="/frontend_assets/assets/css/custom.min.css?v=1.4.1" />
       
       <!-- Rtl Css -->
-      <link rel="stylesheet" href="./assets/css/rtl.min.css?v=1.4.1" />
+      <link rel="stylesheet" href="/frontend_assets/assets/css/rtl.min.css?v=1.4.1" />
       
       <!-- Customizer Css -->
-      <link rel="stylesheet" href="./assets/css/customizer.min.css?v=1.4.1"/>
+      <link rel="stylesheet" href="/frontend_assets/assets/css/customizer.min.css?v=1.4.1"/>
       
       <!-- Google Font -->
       <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,7 +54,7 @@
     <div id="loading">
       <div class="loader simple-loader">
           <div class="loader-body">
-              <img src="./assets/images/loader.gif" alt="loader" class="light-loader img-fluid " width="200">
+              <img src="/frontend_assets/assets/images/loader.gif" alt="loader" class="light-loader img-fluid " width="200">
           </div>
       </div>    </div>
     <!-- loader END -->
@@ -69,7 +69,7 @@
                               <div class="d-flex gap-3 gap-xl-0 align-items-center">                                  
                                   <a href="./index.html" class="navbar-brand m-0">
                                      <span class="logo-normal">
-                                        <img src="./assets/images/logo/logo-skyblue.png" alt="logo" class="img-fluid" loading="lazy">
+                                        <img src="/frontend_assets/assets/images/logo/logo-skyblue.png" alt="logo" class="img-fluid" loading="lazy">
                                      </span>
                                   </a>
                               </div>
@@ -151,7 +151,7 @@
                                      <div class="offcanvas-header px-0">
                                          <a href="./index.html" class="navbar-brand m-0">
                                             <span class="logo-normal">
-                                               <img src="./assets/images/logo/logo-skyblue.png" alt="logo" class="img-fluid" loading="lazy">
+                                               <img src="/frontend_assets/assets/images/logo/logo-skyblue.png" alt="logo" class="img-fluid" loading="lazy">
                                             </span>
                                          </a>
                                         <button class="btn-close float-end px-3"></button>
@@ -169,73 +169,73 @@
                                             <ul class="sub-nav mega-menu-item collapse list-unstyled" id="homePages">
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./index.html">
-                                                      <img src="./assets/images/mega/home-01.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                      <img src="/frontend_assets/assets/images/mega/home-01.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                       <span class="d-inline-block mt-0 mt-xl-3">general doctor</span>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link active" href="./dentist.html">
-                                                      <img src="./assets/images/mega/home-02.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                      <img src="/frontend_assets/assets/images/mega/home-02.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                        <span class="d-inline-block mt-0 mt-xl-3">dentist</span> 
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./eye-care.html">
-                                                     <img src="./assets/images/mega/home-03.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                     <img src="/frontend_assets/assets/images/mega/home-03.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                      <span class="d-inline-block mt-0 mt-xl-3">eye care</span>
                                                     </a>
                                                 </li>
                                                  <li class="nav-item">
                                                     <a class="nav-link " href="./skin-specialist.html">
-                                                     <img src="./assets/images/mega/home-04.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                     <img src="/frontend_assets/assets/images/mega/home-04.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                      <span class="d-inline-block mt-0 mt-xl-3"> skin specialist</span>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./fertility-clinic.html">
-                                                     <img src="./assets/images/mega/home-05.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                     <img src="/frontend_assets/assets/images/mega/home-05.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                      <span class="d-inline-block mt-0 mt-xl-3">Fertility Clinic</span>    
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./ent-clinic.html">
-                                                     <img src="./assets/images/mega/home-06.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                     <img src="/frontend_assets/assets/images/mega/home-06.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                      <span class="d-inline-block mt-0 mt-xl-3"> ent clinic</span>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link " href="./product-home.html">
-                                                     <img src="./assets/images/mega/home-07.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                    <a class="nav-link " href="./product-home.html" th:href="@{/product-home}">
+                                                     <img src="/frontend_assets/assets/images/mega/home-07.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                      <span class="d-inline-block mt-0 mt-xl-3">Product Home</span>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./psychiatrist.html">
-                                                     <img src="./assets/images/mega/home-08.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                     <img src="/frontend_assets/assets/images/mega/home-08.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                      <span class="d-inline-block mt-0 mt-xl-3"> Psychiatrist</span>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./paediatrician.html">
-                                                     <img src="./assets/images/mega/home-09.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                     <img src="/frontend_assets/assets/images/mega/home-09.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                      <span class="d-inline-block mt-0 mt-xl-3">Paediatrician</span>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./cardiac.html">
-                                                     <img src="./assets/images/mega/home-10.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                     <img src="/frontend_assets/assets/images/mega/home-10.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                      <span class="d-inline-block mt-0 mt-xl-3">Cardiac</span>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./orthopedics.html">
-                                                     <img src="./assets/images/mega/home-11.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                     <img src="/frontend_assets/assets/images/mega/home-11.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                      <span class="d-inline-block mt-0 mt-xl-3">Orthopedics</span>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./laboratory.html">
-                                                     <img src="./assets/images/mega/home-12.webp" alt="img" class="img-fluid d-xl-block d-none">
+                                                     <img src="/frontend_assets/assets/images/mega/home-12.webp" alt="img" class="img-fluid d-xl-block d-none">
                                                      <span class="d-inline-block mt-0 mt-xl-3">Laboratory</span>       
                                                     </a>
                                                 </li>
@@ -535,7 +535,7 @@
                                             </a>
                                             <ul class="sub-nav collapse  list-unstyled" id="shopPage">
                                                 <li class="nav-item">
-                                                    <a class="nav-link " href="./shop.html">
+                                                    <a class="nav-link " href="./shop.html" th:href="@{/shop}">
                                                       Shop
                                                     </a>
                                                 </li>
@@ -754,7 +754,7 @@
                                                       <div class="iq-sub-card" data-item="list">
                                                           <div class="d-flex justify-content-between">
                                                               <div class="d-flex align-items-center">
-                                                                  <img class="avatar-40 rounded" src="./assets/images/shop/product-1.webp" alt=""
+                                                                  <img class="avatar-40 rounded" src="/frontend_assets/assets/images/shop/product-1.webp" alt=""
                                                                       loading="lazy" />
                                                                   <div class="ms-3 flex-grow-1">
                                                                       <h6 class="mb-0 ">Electric Toothbrush</h6>
@@ -769,7 +769,7 @@
                                                       <div class="iq-sub-card" data-item="list">
                                                           <div class="d-flex justify-content-between">
                                                               <div class="d-flex align-items-center">
-                                                                  <img class="avatar-40 rounded" src="./assets/images/shop/product-2.webp" alt=""
+                                                                  <img class="avatar-40 rounded" src="/frontend_assets/assets/images/shop/product-2.webp" alt=""
                                                                       loading="lazy" />
                                                                   <div class="ms-3 flex-grow-1">
                                                                       <h6 class="mb-0 ">Medical Box</h6>
@@ -784,7 +784,7 @@
                                                       <div class="iq-sub-card" data-item="list">
                                                           <div class="d-flex justify-content-between">
                                                               <div class="d-flex align-items-center">
-                                                                  <img class="avatar-40 rounded" src="./assets/images/shop/product-3.webp" alt=""
+                                                                  <img class="avatar-40 rounded" src="/frontend_assets/assets/images/shop/product-3.webp" alt=""
                                                                       loading="lazy" />
                                                                   <div class="ms-3 flex-grow-1">
                                                                       <h6 class="mb-0 ">Hand Sanitizer Bottle</h6>
@@ -799,7 +799,7 @@
                                                       <div class="iq-sub-card" data-item="list">
                                                           <div class="d-flex justify-content-between">
                                                               <div class="d-flex align-items-center">
-                                                                  <img class="avatar-40 rounded" src="./assets/images/shop/product-4.webp" alt=""
+                                                                  <img class="avatar-40 rounded" src="/frontend_assets/assets/images/shop/product-4.webp" alt=""
                                                                       loading="lazy" />
                                                                   <div class="ms-3 flex-grow-1">
                                                                       <h6 class="mb-0 ">Wheel Chair</h6>
@@ -886,7 +886,7 @@
              <div class="offcanvas-header border-bottom px-5 mb-5 py-4">
                 <a href="./index.html" class="navbar-brand m-0">
                    <span class="logo-normal">
-                      <img src="./assets/images/logo/logo-skyblue.png" alt="logo" class="img-fluid" loading="lazy">
+                      <img src="/frontend_assets/assets/images/logo/logo-skyblue.png" alt="logo" class="img-fluid" loading="lazy">
                    </span>
                 </a>
                 <button type="button" class="btn-close text-reset"
@@ -898,48 +898,48 @@
                    <div class="row row-cols-xl-3 row-cols-md-2 row-cols-2 gx-3 gy-3">
                       <div class="col">
                          <a data-fslightbox="sidebar-gallery"
-                            href="./assets/images/gallery/blog-1.jpg">
-                            <img src="./assets/images/gallery/blog-1.jpg"
+                            href="/frontend_assets/assets/images/gallery/blog-1.jpg">
+                            <img src="/frontend_assets/assets/images/gallery/blog-1.jpg"
                                class="img-fluid w-100"
                                alt="profile-image" loading="lazy">
                          </a>
                       </div>
                       <div class="col">
                          <a data-fslightbox="sidebar-gallery"
-                            href="./assets/images/gallery/blog-2.jpg">
-                            <img src="./assets/images/gallery/blog-2.jpg"
+                            href="/frontend_assets/assets/images/gallery/blog-2.jpg">
+                            <img src="/frontend_assets/assets/images/gallery/blog-2.jpg"
                                class="img-fluid w-100"
                                alt="profile-image" loading="lazy">
                          </a>
                       </div>
                       <div class="col">
                          <a data-fslightbox="sidebar-gallery"
-                            href="./assets/images/gallery/blog-3.jpg">
-                            <img src="./assets/images/gallery/blog-3.jpg"
+                            href="/frontend_assets/assets/images/gallery/blog-3.jpg">
+                            <img src="/frontend_assets/assets/images/gallery/blog-3.jpg"
                                class="img-fluid w-100"
                                alt="profile-image" loading="lazy">
                          </a>
                       </div>
                       <div class="col">
                          <a data-fslightbox="sidebar-gallery"
-                            href="./assets/images/gallery/blog-4.jpg">
-                            <img src="./assets/images/gallery/blog-4.jpg"
+                            href="/frontend_assets/assets/images/gallery/blog-4.jpg">
+                            <img src="/frontend_assets/assets/images/gallery/blog-4.jpg"
                                class="img-fluid w-100"
                                alt="profile-image" loading="lazy">
                          </a>
                       </div>
                       <div class="col">
                          <a data-fslightbox="sidebar-gallery"
-                            href="./assets/images/gallery/blog-5.jpg">
-                            <img src="./assets/images/gallery/blog-5.jpg"
+                            href="/frontend_assets/assets/images/gallery/blog-5.jpg">
+                            <img src="/frontend_assets/assets/images/gallery/blog-5.jpg"
                                class="img-fluid w-100"
                                alt="profile-image" loading="lazy">
                          </a>
                       </div>
                       <div class="col">
                          <a data-fslightbox="sidebar-gallery"
-                            href="./assets/images/gallery/blog-6.jpg">
-                            <img src="./assets/images/gallery/blog-6.jpg"
+                            href="/frontend_assets/assets/images/gallery/blog-6.jpg">
+                            <img src="/frontend_assets/assets/images/gallery/blog-6.jpg"
                                class="img-fluid w-100"
                                alt="profile-image" loading="lazy">
                          </a>
@@ -1032,12 +1032,12 @@
          </div>
          <div class="col-lg-5 col-md-6">
             <div>
-               <img src="./assets/images/Dentist-Page/dentist-banner.webp" alt=""
+               <img src="/frontend_assets/assets/images/Dentist-Page/dentist-banner.webp" alt=""
                   class="img-fluid rtl-image-flip">
             </div>
          </div>
          <div class="col-lg-2 col-md-12">
-            <img src="./assets/images/Dentist-Page/dentist-banner-icon.webp" alt=""
+            <img src="/frontend_assets/assets/images/Dentist-Page/dentist-banner-icon.webp" alt=""
                class="img-fluid ">
             <p class="mt-4 text-dark">
                Get upto $25 off on your first appointment you book
@@ -1047,7 +1047,7 @@
       <div class="icon-box-right position-absolute">
          <div class="iq-icon-box column d-flex align-items-center gap-2">
             <div class="icon-box-img">
-               <img src="./assets/images//Dentist-Page/dentist-banner-phone.webp" alt="icon" class="img-fluid" loading="lazy">
+               <img src="/frontend_assets/assets/images//Dentist-Page/dentist-banner-phone.webp" alt="icon" class="img-fluid" loading="lazy">
             </div>
             <div class="icon-box-content">
                <h5 class="icon-box-title">24 Hours Service</h5>
@@ -1113,7 +1113,7 @@
                <div class="col-sm-6">
                   <div class="iq-icon-box iconbox-border position-relative bg-white">
                      <div class="iq-img-area pulse-shrink-on-hover">
-                        <img src="./assets/images/./Dentist-Page/clean-icon.svg" alt="icon" class="img-fluid" loading="lazy">
+                        <img src="/frontend_assets/assets/images/./Dentist-Page/clean-icon.svg" alt="icon" class="img-fluid" loading="lazy">
                      </div>
                      <div class="icon-box-content mt-5">
                         <h5 class="icon-title text-capitalize mb-2">Clean & modern studios</h5>
@@ -1123,7 +1123,7 @@
                <div class="col-sm-6 mt-sm-0 mt-5">
                   <div class="iq-icon-box iconbox-border position-relative bg-white">
                      <div class="iq-img-area pulse-shrink-on-hover">
-                        <img src="./assets/images/./Dentist-Page/Highest-rated-dentistry.svg" alt="icon" class="img-fluid" loading="lazy">
+                        <img src="/frontend_assets/assets/images/./Dentist-Page/Highest-rated-dentistry.svg" alt="icon" class="img-fluid" loading="lazy">
                      </div>
                      <div class="icon-box-content mt-5">
                         <h5 class="icon-title text-capitalize mb-2">Highest-rated dentistry</h5>
@@ -1135,7 +1135,7 @@
                <div class="col-sm-6">
                   <div class="iq-icon-box iconbox-border position-relative bg-white">
                      <div class="iq-img-area pulse-shrink-on-hover">
-                        <img src="./assets/images/./Dentist-Page/care-schedule.svg" alt="icon" class="img-fluid" loading="lazy">
+                        <img src="/frontend_assets/assets/images/./Dentist-Page/care-schedule.svg" alt="icon" class="img-fluid" loading="lazy">
                      </div>
                      <div class="icon-box-content mt-5">
                         <h5 class="icon-title text-capitalize mb-2">Care On Your Schedule</h5>
@@ -1145,7 +1145,7 @@
                <div class="col-sm-6 mt-sm-0 mt-5">
                   <div class="iq-icon-box iconbox-border position-relative bg-white">
                      <div class="iq-img-area pulse-shrink-on-hover">
-                        <img src="./assets/images/./Dentist-Page/pricing.svg" alt="icon" class="img-fluid" loading="lazy">
+                        <img src="/frontend_assets/assets/images/./Dentist-Page/pricing.svg" alt="icon" class="img-fluid" loading="lazy">
                      </div>
                      <div class="icon-box-content mt-5">
                         <h5 class="icon-title text-capitalize mb-2">Transparent care and pricing</h5>
@@ -1293,7 +1293,7 @@
    <div class="container">
       <div class="row">
          <div class="col-12">
-            <div class="position-relative padding-200 rtl-image-flip" style="background-image: url(./assets/images/Dentist-Page/dentist-video-bg.webp); background-size:cover">
+            <div class="position-relative padding-200 rtl-image-flip" style="background-image: url(/frontend_assets/assets/images/Dentist-Page/dentist-video-bg.webp); background-size:cover">
                <div class="background-overlay position-absolute h-100 w-100 opacity-50 bg-primary top-0 start-0"></div>
                <div class="iq-popup-video">
                   <div class="iq-video-icon position-absolute ">
@@ -1343,7 +1343,7 @@
                        <div class="iq-icon-box transprent iconbox-has-border">
                            <div class="iq-img-area pulse-shrink-on-hover d-inline-block">
                              <img
-                               src="./assets/images/Dentist-Page/service-1.webp"
+                               src="/frontend_assets/assets/images/Dentist-Page/service-1.webp"
                                alt="icon"
                                class="img-fluid"
                                loading="lazy"
@@ -1385,7 +1385,7 @@
                        <div class="iq-icon-box transprent iconbox-has-border">
                            <div class="iq-img-area pulse-shrink-on-hover d-inline-block">
                              <img
-                               src="./assets/images/Dentist-Page/service-2.webp"
+                               src="/frontend_assets/assets/images/Dentist-Page/service-2.webp"
                                alt="icon"
                                class="img-fluid"
                                loading="lazy"
@@ -1427,7 +1427,7 @@
                        <div class="iq-icon-box transprent">
                            <div class="iq-img-area pulse-shrink-on-hover d-inline-block">
                              <img
-                               src="./assets/images/Dentist-Page/service-3.webp"
+                               src="/frontend_assets/assets/images/Dentist-Page/service-3.webp"
                                alt="icon"
                                class="img-fluid"
                                loading="lazy"
@@ -1475,8 +1475,8 @@
       <div class="row">
          <div class="col-md-3">
             <div class="pb-4 gallery-overlay position-relative h-50">
-               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="./assets/images/gallery/square-1.jpg">
-                  <img src="./assets/images/gallery/square-1.jpg" class="img-fluid h-100 w-100" alt="profile-image" loading="lazy">
+               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="/frontend_assets/assets/images/gallery/square-1.jpg">
+                  <img src="/frontend_assets/assets/images/gallery/square-1.jpg" class="img-fluid h-100 w-100" alt="profile-image" loading="lazy">
                   <div class="view-image">
                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 20 17" fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1614 8.05311C13.1614 9.79911 11.7454 11.2141 9.99938 11.2141C8.25338 11.2141 6.83838 9.79911 6.83838 8.05311C6.83838 6.30611 8.25338 4.89111 9.99938 4.89111C11.7454 4.89111 13.1614 6.30611 13.1614 8.05311Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -1486,8 +1486,8 @@
                </a>
             </div>
             <div class="mb-md-0 mb-4 gallery-overlay position-relative h-50">
-               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="./assets/images/gallery/square-2.jpg">
-                  <img src="./assets/images/gallery/square-2.jpg" class="img-fluid h-100 w-100" alt="profile-image" loading="lazy">
+               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="/frontend_assets/assets/images/gallery/square-2.jpg">
+                  <img src="/frontend_assets/assets/images/gallery/square-2.jpg" class="img-fluid h-100 w-100" alt="profile-image" loading="lazy">
                   <div class="view-image">
                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 20 17" fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1614 8.05311C13.1614 9.79911 11.7454 11.2141 9.99938 11.2141C8.25338 11.2141 6.83838 9.79911 6.83838 8.05311C6.83838 6.30611 8.25338 4.89111 9.99938 4.89111C11.7454 4.89111 13.1614 6.30611 13.1614 8.05311Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -1499,8 +1499,8 @@
          </div>
          <div class="col-md-3">
             <div class="mb-md-0 mb-4 gallery-overlay position-relative h-100 py-4 py-md-0">
-               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="./assets/images/gallery/portrait-1.jpg">
-                  <img src="./assets/images/gallery/portrait-1.jpg" class="img-fluid h-100" alt="profile-image" loading="lazy">
+               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="/frontend_assets/assets/images/gallery/portrait-1.jpg">
+                  <img src="/frontend_assets/assets/images/gallery/portrait-1.jpg" class="img-fluid h-100" alt="profile-image" loading="lazy">
                   <div class="view-image">
                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 20 17" fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1614 8.05311C13.1614 9.79911 11.7454 11.2141 9.99938 11.2141C8.25338 11.2141 6.83838 9.79911 6.83838 8.05311C6.83838 6.30611 8.25338 4.89111 9.99938 4.89111C11.7454 4.89111 13.1614 6.30611 13.1614 8.05311Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -1512,8 +1512,8 @@
          </div>
          <div class="col-md-3">
             <div class="pb-4 gallery-overlay position-relative h-50">
-               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="./assets/images/gallery/square-3.jpg">
-                  <img src="./assets/images/gallery/square-3.jpg" class="img-fluid h-100 w-100" alt="profile-image" loading="lazy">
+               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="/frontend_assets/assets/images/gallery/square-3.jpg">
+                  <img src="/frontend_assets/assets/images/gallery/square-3.jpg" class="img-fluid h-100 w-100" alt="profile-image" loading="lazy">
                   <div class="view-image">
                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 20 17" fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1614 8.05311C13.1614 9.79911 11.7454 11.2141 9.99938 11.2141C8.25338 11.2141 6.83838 9.79911 6.83838 8.05311C6.83838 6.30611 8.25338 4.89111 9.99938 4.89111C11.7454 4.89111 13.1614 6.30611 13.1614 8.05311Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -1523,8 +1523,8 @@
                </a>
             </div>
             <div class="mb-md-0 mb-4 gallery-overlay position-relative h-50">
-               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="./assets/images/gallery/square-4.jpg">
-                  <img src="./assets/images/gallery/square-4.jpg" class="img-fluid h-100 w-100" alt="profile-image" loading="lazy">
+               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="/frontend_assets/assets/images/gallery/square-4.jpg">
+                  <img src="/frontend_assets/assets/images/gallery/square-4.jpg" class="img-fluid h-100 w-100" alt="profile-image" loading="lazy">
                   <div class="view-image">
                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 20 17" fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1614 8.05311C13.1614 9.79911 11.7454 11.2141 9.99938 11.2141C8.25338 11.2141 6.83838 9.79911 6.83838 8.05311C6.83838 6.30611 8.25338 4.89111 9.99938 4.89111C11.7454 4.89111 13.1614 6.30611 13.1614 8.05311Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -1536,8 +1536,8 @@
          </div>
          <div class="col-md-3">
             <div class="gallery-overlay position-relative h-100 pt-4 pt-md-0">
-               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="./assets/images/gallery/portrait-2.jpg">
-                  <img src="./assets/images/gallery/portrait-2.jpg" class="img-fluid h-100" alt="profile-image" loading="lazy">
+               <a data-fslightbox="gallery" class="h-100 gallery-overlay-box" href="/frontend_assets/assets/images/gallery/portrait-2.jpg">
+                  <img src="/frontend_assets/assets/images/gallery/portrait-2.jpg" class="img-fluid h-100" alt="profile-image" loading="lazy">
                   <div class="view-image">
                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 20 17" fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1614 8.05311C13.1614 9.79911 11.7454 11.2141 9.99938 11.2141C8.25338 11.2141 6.83838 9.79911 6.83838 8.05311C6.83838 6.30611 8.25338 4.89111 9.99938 4.89111C11.7454 4.89111 13.1614 6.30611 13.1614 8.05311Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -1569,8 +1569,8 @@
                   </p>
                </div>               <div class='position-relative before-after-container'>
                   <div class="image-container">
-                     <img class="image-before before-after-image" src="./assets/images/Dentist-Page/before-img.webp" alt="before-image">
-                     <img class="image-after before-after-image" src="./assets/images/Dentist-Page/after-img.webp" alt="after-image">
+                     <img class="image-before before-after-image" src="/frontend_assets/assets/images/Dentist-Page/before-img.webp" alt="before-image">
+                     <img class="image-after before-after-image" src="/frontend_assets/assets/images/Dentist-Page/after-img.webp" alt="after-image">
                   </div>
                   <input type="range" min="0" max="100" value="50" class="before-after-slider">
                   <div class="before-after-slider-line" aria-hidden="true"></div>
@@ -1601,7 +1601,7 @@
             <li class="swiper-slide">
                <div class="iq-team-block team-standard position-relative">
                   <div class="iq-team-img">
-                     <img src="./assets/images//team/team-1.webp" alt="team" class="img-fluid w-100" loading="lazy">
+                     <img src="/frontend_assets/assets/images//team/team-1.webp" alt="team" class="img-fluid w-100" loading="lazy">
                   </div>
                   <div class="share iq-team-social position-absolute text-center w-100">
                      <ul class="list-inline d-flex align-items-center justify-content-center gap-3">
@@ -1632,7 +1632,7 @@
             <li class="swiper-slide">
                <div class="iq-team-block team-standard position-relative">
                   <div class="iq-team-img">
-                     <img src="./assets/images//team/team-2.webp" alt="team" class="img-fluid w-100" loading="lazy">
+                     <img src="/frontend_assets/assets/images//team/team-2.webp" alt="team" class="img-fluid w-100" loading="lazy">
                   </div>
                   <div class="share iq-team-social position-absolute text-center w-100">
                      <ul class="list-inline d-flex align-items-center justify-content-center gap-3">
@@ -1663,7 +1663,7 @@
             <li class="swiper-slide">
                <div class="iq-team-block team-standard position-relative">
                   <div class="iq-team-img">
-                     <img src="./assets/images//team/team-3.webp" alt="team" class="img-fluid w-100" loading="lazy">
+                     <img src="/frontend_assets/assets/images//team/team-3.webp" alt="team" class="img-fluid w-100" loading="lazy">
                   </div>
                   <div class="share iq-team-social position-absolute text-center w-100">
                      <ul class="list-inline d-flex align-items-center justify-content-center gap-3">
@@ -1694,7 +1694,7 @@
             <li class="swiper-slide">
                <div class="iq-team-block team-standard position-relative">
                   <div class="iq-team-img">
-                     <img src="./assets/images//team/team-4.webp" alt="team" class="img-fluid w-100" loading="lazy">
+                     <img src="/frontend_assets/assets/images//team/team-4.webp" alt="team" class="img-fluid w-100" loading="lazy">
                   </div>
                   <div class="share iq-team-social position-absolute text-center w-100">
                      <ul class="list-inline d-flex align-items-center justify-content-center gap-3">
@@ -1725,7 +1725,7 @@
             <li class="swiper-slide">
                <div class="iq-team-block team-standard position-relative">
                   <div class="iq-team-img">
-                     <img src="./assets/images//team/team-5.webp" alt="team" class="img-fluid w-100" loading="lazy">
+                     <img src="/frontend_assets/assets/images//team/team-5.webp" alt="team" class="img-fluid w-100" loading="lazy">
                   </div>
                   <div class="share iq-team-social position-absolute text-center w-100">
                      <ul class="list-inline d-flex align-items-center justify-content-center gap-3">
@@ -1760,7 +1760,7 @@
 </div>
 
 <div class="position-relative section-padding rtl-image-flip"
-   style="background-image: url(./assets/images/Dentist-Page/testimonial-bg.webp); background-size: cover; background-position: right center;">
+   style="background-image: url(/frontend_assets/assets/images/Dentist-Page/testimonial-bg.webp); background-size: cover; background-position: right center;">
    <div class="container-fluid rtl-image-flip-container">
       <div class="row">
          <div class="col-md-6"></div>
@@ -1771,7 +1771,7 @@
                      <div class="iq-testimonial testimonial-standard">
                         <div class="iq-testimonial-content">
                            <div class="testimonial-icon">
-                              <img src="./assets/images/testimonial/quote.svg" alt="quote" class="img-fluid" loading="lazy">
+                              <img src="/frontend_assets/assets/images/testimonial/quote.svg" alt="quote" class="img-fluid" loading="lazy">
                            </div>
                            <p class="text-body fw-normal fst-italic">
                               “You can’t go wrong here. I receive the best
@@ -1808,7 +1808,7 @@
                      <div class="iq-testimonial testimonial-standard">
                         <div class="iq-testimonial-content">
                            <div class="testimonial-icon">
-                              <img src="./assets/images/testimonial/quote.svg" alt="quote" class="img-fluid" loading="lazy">
+                              <img src="/frontend_assets/assets/images/testimonial/quote.svg" alt="quote" class="img-fluid" loading="lazy">
                            </div>
                            <p class="text-body fw-normal fst-italic">
                               “Still very professional but a much more
@@ -1845,7 +1845,7 @@
                      <div class="iq-testimonial testimonial-standard">
                         <div class="iq-testimonial-content">
                            <div class="testimonial-icon">
-                              <img src="./assets/images/testimonial/quote.svg" alt="quote" class="img-fluid" loading="lazy">
+                              <img src="/frontend_assets/assets/images/testimonial/quote.svg" alt="quote" class="img-fluid" loading="lazy">
                            </div>
                            <p class="text-body fw-normal fst-italic">
                               “It has been very effective, in my
@@ -1887,28 +1887,28 @@
    <div class="overflow-hidden swiper swiper-general"  data-slide="6" data-laptop="4" data-tab="2" data-mobile="2" data-mobile-sm="2" data-autoplay="true" data-loop="true"  data-navigation="true" data-pagination="true">
       <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline text-center">
          <li class="swiper-slide">
-            <img src="./assets/images/client/client-1.webp" alt="client" class="iq-client-img" loading="lazy" />
+            <img src="/frontend_assets/assets/images/client/client-1.webp" alt="client" class="iq-client-img" loading="lazy" />
          </li>
          <li class="swiper-slide">
-            <img src="./assets/images/client/client-2.webp" alt="client" class="iq-client-img" loading="lazy" />
+            <img src="/frontend_assets/assets/images/client/client-2.webp" alt="client" class="iq-client-img" loading="lazy" />
          </li>
          <li class="swiper-slide">
-            <img src="./assets/images/client/client-3.webp" alt="client" class="iq-client-img" loading="lazy" />
+            <img src="/frontend_assets/assets/images/client/client-3.webp" alt="client" class="iq-client-img" loading="lazy" />
          </li>
          <li class="swiper-slide">
-            <img src="./assets/images/client/client-4.webp" alt="client" class="iq-client-img" loading="lazy" />
+            <img src="/frontend_assets/assets/images/client/client-4.webp" alt="client" class="iq-client-img" loading="lazy" />
          </li>
          <li class="swiper-slide">
-            <img src="./assets/images/client/client-5.webp" alt="client" class="iq-client-img" loading="lazy" />
+            <img src="/frontend_assets/assets/images/client/client-5.webp" alt="client" class="iq-client-img" loading="lazy" />
          </li>
          <li class="swiper-slide">
-            <img src="./assets/images/client/client-1.webp" alt="client" class="iq-client-img" loading="lazy" />
+            <img src="/frontend_assets/assets/images/client/client-1.webp" alt="client" class="iq-client-img" loading="lazy" />
          </li>
          <li class="swiper-slide">
-            <img src="./assets/images/client/client-2.webp" alt="client" class="iq-client-img" loading="lazy" />
+            <img src="/frontend_assets/assets/images/client/client-2.webp" alt="client" class="iq-client-img" loading="lazy" />
          </li>
          <li class="swiper-slide">
-            <img src="./assets/images/client/client-3.webp" alt="client" class="iq-client-img" loading="lazy" />
+            <img src="/frontend_assets/assets/images/client/client-3.webp" alt="client" class="iq-client-img" loading="lazy" />
          </li>
       </ul>
    </div></div>
@@ -1934,7 +1934,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-1.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-1.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -1974,7 +1974,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-2.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-2.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2014,7 +2014,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-3.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-3.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2054,7 +2054,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-4.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-4.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2094,7 +2094,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-5.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-5.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2134,7 +2134,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-6.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-6.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2174,7 +2174,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-7.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-7.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2214,7 +2214,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-8.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-8.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2254,7 +2254,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-9.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-9.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2294,7 +2294,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-10.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-10.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2334,7 +2334,7 @@
             <li class="swiper-slide">
                <div class="iq-blog shadow-none image-hover">
                   <a href="./blog-details.html" class="blog-image d-block overflow-hidden">
-                  <img src="./assets/images/blog/blog-11.webp" alt="blog-image" class="img-fluid w-100"
+                  <img src="/frontend_assets/assets/images/blog/blog-11.webp" alt="blog-image" class="img-fluid w-100"
                      loading="lazy">
                   </a>
                   <div class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2388,7 +2388,7 @@
                                 <div class="pe-lg-5">
                                     <a href="./index.html" class="navbar-brand m-0">
                                        <span class="logo-normal">
-                                          <img src="./assets/images/logo/logo-skyblue-footer.png" alt="logo" class="img-fluid" loading="lazy">
+                                          <img src="/frontend_assets/assets/images/logo/logo-skyblue-footer.png" alt="logo" class="img-fluid" loading="lazy">
                                        </span>
                                     </a>
                                     <p class="mt-4 mb-4 text-white">Best Quality of Treatment & Patient Care by professional Doctors </p>
@@ -2408,7 +2408,7 @@
                                 <ul class="p-0 m-0 footer-blog-post">
                                     <li class="d-flex align-items-center gap-3 border-0 mb-4">
                                         <div class="img-holder">
-                                            <img src="./assets/images/blog/blog-1.webp" alt="product" class="avatar-80 rounded-0">
+                                            <img src="/frontend_assets/assets/images/blog/blog-1.webp" alt="product" class="avatar-80 rounded-0">
                                         </div>
                                         <div class="post-blog">
                                             <a href="./blog-date.html" class="d-block meta-data">
@@ -2426,7 +2426,7 @@
                                     </li>
                                     <li class="d-flex align-items-center gap-3 border-0 mb-4">
                                         <div class="img-holder">
-                                            <img src="./assets/images/blog/blog-2.webp" alt="product" class="avatar-80 rounded-0">
+                                            <img src="/frontend_assets/assets/images/blog/blog-2.webp" alt="product" class="avatar-80 rounded-0">
                                         </div>
                                         <div class="post-blog">
                                             <a href="./blog-date.html" class="d-block meta-data">
@@ -2466,10 +2466,10 @@
                                <h6 class="text-white">Download our App and Have Our Services</h6>
                                <div class="d-flex flex-wrap align-items-center gap-2 mt-4">
                                     <span>
-                                        <img src="./assets/images/pages/appstore-123.svg" alt="appstore" class="img-fluid d-inline-block">
+                                        <img src="/frontend_assets/assets/images/pages/appstore-123.svg" alt="appstore" class="img-fluid d-inline-block">
                                     </span>
                                     <span>
-                                        <img src="./assets/images/pages/google-play-store.svg" alt="google-play-store" class="img-fluid d-inline-block">
+                                        <img src="/frontend_assets/assets/images/pages/google-play-store.svg" alt="google-play-store" class="img-fluid d-inline-block">
                                     </span>
                                 </div>
                                 <ul class="iq-social list-inline d-flex align-items-center mt-5 gap-3 m-0">
@@ -2584,41 +2584,41 @@
     <!-- Back To Top -->
     
     <!-- Library Bundle Script -->
-    <script src="./assets/js/core/libs.min.js"></script>
+    <script src="/frontend_assets/assets/js/core/libs.min.js"></script>
     <!-- Plugin Scripts -->
     
     <!-- Slider-tab Script -->
-    <script src="./assets/js/plugins/slider-tabs.js"></script>
+    <script src="/frontend_assets/assets/js/plugins/slider-tabs.js"></script>
     
     <!-- fslightbox Script -->
-    <script src="./assets/js/plugins/fslightbox.js" defer></script>
+    <script src="/frontend_assets/assets/js/plugins/fslightbox.js" defer></script>
     
     <!-- Sweet-alert Script -->
-    <script src="./assets/vendor/sweetalert2/dist/sweetalert2.min.js" async></script>
-    <script src="./assets/js/plugins/sweet-alert.js" defer></script>
+    <script src="/frontend_assets/assets/vendor/sweetalert2/dist/sweetalert2.min.js" async></script>
+    <script src="/frontend_assets/assets/js/plugins/sweet-alert.js" defer></script>
     
     <!-- Circle-Progress Script -->
-    <script src="./assets/js/plugins/circle-progress.js"></script>
-    <script src="./assets/js/plugins/custom-circle-progress.js" defer></script>
+    <script src="/frontend_assets/assets/js/plugins/circle-progress.js"></script>
+    <script src="/frontend_assets/assets/js/plugins/custom-circle-progress.js" defer></script>
     
     
     
     <!-- SwiperSlider Script -->
-    <script src="./assets/vendor/swiperSlider/swiper-bundle.min.js"></script>
+    <script src="/frontend_assets/assets/vendor/swiperSlider/swiper-bundle.min.js"></script>
     <!-- Lodash Utility -->
-    <script src="./assets/vendor/lodash/lodash.min.js"></script>
+    <script src="/frontend_assets/assets/vendor/lodash/lodash.min.js"></script>
     <!-- Utilities Functions -->
-    <script src="./assets/js/iqonic-script/utility.min.js"></script>
+    <script src="/frontend_assets/assets/js/iqonic-script/utility.min.js"></script>
     <!-- Settings Script -->
-    <script src="./assets/js/iqonic-script/setting.min.js"></script>
+    <script src="/frontend_assets/assets/js/iqonic-script/setting.min.js"></script>
     <!-- Settings Init Script -->
-    <script src="./assets/js/iqonic-script/setting-init.js"></script>
+    <script src="/frontend_assets/assets/js/iqonic-script/setting-init.js"></script>
     <!-- External Library Bundle Script -->
-    <script src="./assets/js/core/external.min.js"></script>
+    <script src="/frontend_assets/assets/js/core/external.min.js"></script>
     <!-- Kivicare Script -->
-    <script src="./assets/js/kivicare.js?v=1.4.1" defer></script>
-    <script src="./assets/js/kivicare-advance.js?v=1.4.1" defer></script>
+    <script src="/frontend_assets/assets/js/kivicare.js?v=1.4.1" defer></script>
+    <script src="/frontend_assets/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
     <!-- Kivicare Pages Script -->
-    <script src="./assets/js/slider.js" defer></script>
-    <script src="./assets/js/scroll-text.js" defer></script>  </body>
+    <script src="/frontend_assets/assets/js/slider.js" defer></script>
+    <script src="/frontend_assets/assets/js/scroll-text.js" defer></script>  </body>
 </html>

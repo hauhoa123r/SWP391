@@ -1,6 +1,9 @@
 package org.project.model.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.project.enums.SupplierTransactionStatus;
 
 import java.math.BigDecimal;
@@ -11,7 +14,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class SupplierInDTO {
     private Long id;
     private Long supplierId;

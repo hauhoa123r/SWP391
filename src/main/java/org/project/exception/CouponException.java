@@ -1,11 +1,7 @@
 package org.project.exception;
 
-public class CouponException extends Exception {
-
-	// TODO Auto-generated constructor stub
-	public CouponException(String message) {
-		super(message);
-
-	}
-
+public class CouponException extends RuntimeException {
+    public CouponException(String message) {
+        super(message);
+    }
 }

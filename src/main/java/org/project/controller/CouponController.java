@@ -1,5 +1,6 @@
 package org.project.controller;
 
+
 import org.project.exception.CouponException;
 import org.project.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class CouponController {
 //                redirectAttributes.addFlashAttribute("couponError", "User not logged in.");
 //                return "redirect:/login";
 //            }
-        	Long userId=2l;
+            Long userId=2l;
 
             couponService.applyCoupon(code, userId, session);
             redirectAttributes.addFlashAttribute("couponSuccess", "Coupon applied successfully!");
@@ -48,4 +49,3 @@ public class CouponController {
         return "redirect:/cart";
     }
 }
-

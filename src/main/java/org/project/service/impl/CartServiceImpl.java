@@ -10,6 +10,7 @@ import org.project.entity.CartItemEntityId;
 import org.project.entity.CouponEntity;
 import org.project.entity.ProductEntity;
 import org.project.entity.UserEntity;
+import org.project.model.dto.CartItemDTO;
 import org.project.repository.*;
 import org.project.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,88 +25,108 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Slf4j
 public class CartServiceImpl implements CartService {
-	@Autowired
-	private final CartRepository cartRepo;
-	@Autowired
-	private final ProductRepository productRepo;
-	@Autowired
-	private final CouponRepository couponRepo;
-	@Autowired
-	private final UserRepository userRepo;
+    @Autowired
+    private final CartRepository cartRepo;
+    @Autowired
+    private final ProductRepository productRepo;
+    @Autowired
+    private final CouponRepository couponRepo;
+    @Autowired
+    private final UserRepository userRepo;
 
-	public CartServiceImpl(CartRepository cartRepo, ProductRepository productRepo, CouponRepository couponRepo,
-			UserRepository userRepo) {
-		this.cartRepo = cartRepo;
-		this.productRepo = productRepo;
-		this.couponRepo = couponRepo;
-		this.userRepo = userRepo;
-	}
+    public CartServiceImpl(CartRepository cartRepo, ProductRepository productRepo, CouponRepository couponRepo,
+                           UserRepository userRepo) {
+        this.cartRepo = cartRepo;
+        this.productRepo = productRepo;
+        this.couponRepo = couponRepo;
+        this.userRepo = userRepo;
+    }
 
-	@Override
-	public List<CartItemEntity> getCart(Long userId) {
-		return cartRepo.findByUserEntityId(userId);
-	}
+    @Override
+    public List<CartItemEntity> getCart(Long userId) {
+        return cartRepo.findByUserEntityId(userId);
+    }
 
-	@Override
-	public void removeItem(Long userId, Long productId) {
-		cartRepo.deleteByUserEntityIdAndProductEntityId(userId, productId);
-	}
+    @Override
+    public void removeItem(Long userId, Long productId) {
+        cartRepo.deleteByUserEntityIdAndProductEntityId(userId, productId);
+    }
 
-	public CartItemEntity getItemById(CartItemEntityId id) {
-		CartItemEntity item = cartRepo.findById(id).orElse(null);
-		return item;
-	}
+    public CartItemEntity getItemById(CartItemEntityId id) {
+        CartItemEntity item = cartRepo.findById(id).orElse(null);
+        return item;
+    }
 
-	@Override
-	public void updateItem(CartItemEntity item) {
-		cartRepo.save(item); // save() updates if ID is present
-	}
+    @Override
+    public void updateItem(CartItemEntity item) {
+        cartRepo.save(item); // save() updates if ID is present
+    }
 
-	// calculate total amount of money in cart (no coupon applied)
-	@Override
-	public BigDecimal calculateTotal(Long userId) {
-		// get items from user
-		List<CartItemEntity> items = cartRepo.findByUserEntityId(userId);
-		return items.stream().map(item -> {
-			BigDecimal price = item.getProductEntity().getPrice();
-			Integer quantity = item.getQuantity();
-			if (price == null) {
-				price = BigDecimal.ZERO;
-			}
-			return price.multiply(BigDecimal.valueOf(quantity));
-		}).reduce(BigDecimal.ZERO, BigDecimal::add);
-	}
+    // calculate total amount of money in cart (no coupon applied)
+    @Override
+    public BigDecimal calculateTotal(Long userId) {
+        // get items from user
+        List<CartItemEntity> items = cartRepo.findByUserEntityId(userId);
+        return items.stream().map(item -> {
+            BigDecimal price = item.getProductEntity().getPrice();
+            Integer quantity = item.getQuantity();
+            if (price == null) {
+                price = BigDecimal.ZERO;
+            }
+            return price.multiply(BigDecimal.valueOf(quantity));
+        }).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
-	// add item to cart
-	@Override
-	public void addItem(Long userId, Long productId, Integer quantity) {
-		// Load the user and product entities
-		UserEntity user = userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-		ProductEntity product = productRepo.findById(productId)
-				.orElseThrow(() -> new EntityNotFoundException("Product not found"));
+    // add item to cart
+    @Override
+    public void addItem(Long userId, Long productId, Integer quantity) {
+        // Load the user and product entities
+        UserEntity user = userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        ProductEntity product = productRepo.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-		// Create composite key
-		CartItemEntityId cartItemId = new CartItemEntityId();
-		cartItemId.setUserId(userId);
-		cartItemId.setCartItemId(productId); // Link cartItemId to productId
+        // Create composite key
+        CartItemEntityId cartItemId = new CartItemEntityId();
+        cartItemId.setUserId(userId);
+        cartItemId.setCartItemId(productId); // Link cartItemId to productId
 
-		// Try to find existing cart item
-		Optional<CartItemEntity> optionalCartItem = cartRepo.findById(cartItemId);
+        // Try to find existing cart item
+        Optional<CartItemEntity> optionalCartItem = cartRepo.findById(cartItemId);
 
-		if (optionalCartItem.isPresent()) {
-			// get quantity
-			CartItemEntity existingItem = optionalCartItem.get();
-			existingItem.setQuantity(existingItem.getQuantity() + quantity);
-		} else {
-			// Create new cart item
-			CartItemEntity newItem = new CartItemEntity();
-			newItem.setId(cartItemId);
-			newItem.setUserEntity(user);
-			newItem.setProductEntity(product);
-			newItem.setQuantity(quantity);
-			cartRepo.save(newItem);
-		}
+        if (optionalCartItem.isPresent()) {
+            // get quantity
+            CartItemEntity existingItem = optionalCartItem.get();
+            existingItem.setQuantity(existingItem.getQuantity() + quantity);
+        } else {
+            // Create new cart item
+            CartItemEntity newItem = new CartItemEntity();
+            newItem.setId(cartItemId);
+            newItem.setUserEntity(user);
+            newItem.setProductEntity(product);
+            newItem.setQuantity(quantity);
+            cartRepo.save(newItem);
+        }
 
-	}
+    }
+
+    @Override
+    public CartItemDTO convertToCartItemDTO(CartItemEntity cartItem) {
+        CartItemDTO cartItemDTO = new CartItemDTO();
+        //set userId
+        cartItemDTO.setUserId(cartItem.getUserEntity().getId());
+        //set product Id
+        cartItemDTO.setProductId(cartItem.getProductEntity().getId());
+        //set product name
+        cartItemDTO.setProductName(cartItem.getProductEntity().getName());
+        //set quantity
+        cartItemDTO.setQuantity(cartItem.getQuantity());
+        //set image
+        cartItemDTO.setProductImage(cartItem.getProductEntity().getImageUrl());
+        //set unit price
+        cartItemDTO.setUnitPrice(cartItem.getProductEntity().getPrice());
+        //set subtotal
+        cartItemDTO.setSubtotal(cartItem.getProductEntity().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+        return cartItemDTO;
+    }
 
 }

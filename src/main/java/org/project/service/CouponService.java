@@ -9,5 +9,5 @@ import jakarta.servlet.http.HttpSession;
 
 @Service
 public interface CouponService {
-	BigDecimal applyCoupon(String code, Long userId, HttpSession session) throws CouponException;
+    BigDecimal applyCoupon(String code, Long userId, HttpSession session) throws CouponException;
 }

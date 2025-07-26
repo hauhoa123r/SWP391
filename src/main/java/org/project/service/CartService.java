@@ -6,20 +6,24 @@ import java.util.Optional;
 
 import org.project.entity.CartItemEntity;
 import org.project.entity.CartItemEntityId;
+import org.project.model.dto.CartItemDTO;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface CartService {
 
-	List<CartItemEntity> getCart(Long userId);
+    List<CartItemEntity> getCart(Long userId);
 
-	void removeItem(Long userId, Long productId);
+    void removeItem(Long userId, Long productId);
 
-	CartItemEntity getItemById(CartItemEntityId id);
+    CartItemEntity getItemById(CartItemEntityId id);
 
-	void updateItem(CartItemEntity item);
+    void updateItem(CartItemEntity item);
 
-	BigDecimal calculateTotal(Long userId);
+    BigDecimal calculateTotal(Long userId);
 
-	void addItem(Long userId, Long productId, Integer quantity);
+    void addItem(Long userId, Long productId, Integer quantity);
+
+    //convert to dto
+    CartItemDTO convertToCartItemDTO(CartItemEntity cartItem);
 }
