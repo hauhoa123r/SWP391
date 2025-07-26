@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
@@ -19,56 +18,48 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
-@FieldNameConstants
+@Table(name = "users", schema = "swp391")
 public class UserEntity {
     @Id
     @Column(name = "user_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Size(max = 255)
-    @Column(name = "email")
-    private String email;
-
-    @Size(max = 255)
-    @Column(name = "password_hash")
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
+    @Transient
+    private boolean isPasswordSet = false;
+    @Size(max = 255)
+    @Column(name = "email", unique = true)
+    private String email;
     @Size(max = 255)
     @Column(name = "phone_number")
     private String phoneNumber;
-
     @Size(max = 255)
     @Column(name = "verification_token")
     private String verificationToken;
-
     @Column(name = "is_verified")
     private Boolean isVerified;
-
     @Column(name = "two_factor_enabled")
     private Boolean twoFactorEnabled;
-
     @OneToOne(mappedBy = "userEntity")
     private StaffEntity staffEntity;
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ForgotPassword forgotPassword;
     @OneToMany(mappedBy = "userEntity")
     private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "userEntity")
     private Set<NotificationEntity> notificationEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PatientEntity> patientEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "userEntity")
     private Set<ShippingAddressEntity> shippingAddressEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "userEntity")
     private Set<UserCouponEntity> userCouponEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "userEntity")
     private Set<WalletEntity> walletEntities = new LinkedHashSet<>();
-
     @ManyToMany
     @JoinTable(name = "wishlist_products",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -82,12 +73,27 @@ public class UserEntity {
     */
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'PATIENT'")
-    @Column(name = "user_role", columnDefinition = "enum not null")
+    @Column(name = "user_role", nullable = false)
     private UserRole userRole;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
     private UserStatus userStatus;
+
+    public boolean isPasswordSet() {
+        return isPasswordSet;
+    }
+
+    public void setPasswordSet(boolean passwordSet) {
+        this.isPasswordSet = passwordSet;
+    }
+
+    public String getRole() {
+        if (staffEntity != null && staffEntity.getStaffRole() != null) {
+            return userRole.name() + "_" + staffEntity.getStaffRole().name();
+        } else {
+            return userRole.name();
+        }
+    }
 
     public void addPatientEntity(PatientEntity patientEntity) {
         this.patientEntities.add(patientEntity);

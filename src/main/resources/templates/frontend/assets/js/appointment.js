@@ -124,7 +124,7 @@ class BookingManager {
                                     manager.searchKeywords.dateTime = selectedDate;
                                     manager.loadData(0);
                                 } else {
-                                    toast.warning("Please select a date first.", {
+                                    toast.warning("Vui lòng chọn ngày giờ trước.", {
                                         position: "top-right",
                                         icon: true,
                                         duration: 3000,
@@ -233,7 +233,7 @@ class BookingManager {
                         this.tabConfigs.department.urlFilter = `/hospital/${this.selectedIds.hospital}`;
                         await this.nextTab();
                     } else {
-                        toast.warning("Please select a hospital first.", {
+                        toast.warning("Vui lòng chọn bệnh viện trước.", {
                             position: "top-right",
                             icon: true,
                             duration: 3000
@@ -260,7 +260,7 @@ class BookingManager {
                         this.tabConfigs.doctor.urlFilter = `/hospital/${this.selectedIds.hospital}/department/${this.selectedIds.department}`;
                         await this.nextTab();
                     } else {
-                        toast.warning("Please select a department first.", {
+                        toast.warning("Vui lòng chọn phòng ban trước.", {
                             position: "top-right",
                             icon: true,
                             duration: 3000
@@ -297,7 +297,7 @@ class BookingManager {
                         this.tabConfigs.service.urlFilter = `/department/${this.selectedIds.department}`;
                         await this.nextTab();
                     } else {
-                        toast.warning("Please select a doctor first.", {
+                        toast.warning("Vui lòng chọn bác sĩ trước.", {
                             position: "top-right",
                             icon: true,
                             duration: 3000
@@ -332,7 +332,7 @@ class BookingManager {
                         this.selectedIds.service = inputServiceElement.value;
                         await this.nextTab();
                     } else {
-                        toast.warning("Please select a service first.", {
+                        toast.warning("Vui lòng chọn dịch vụ trước.", {
                             position: "top-right",
                             icon: true,
                             duration: 3000
@@ -370,7 +370,7 @@ class BookingManager {
                         this.selectedIds.patient = inputPatientElement.value;
                         await this.nextTab();
                     } else {
-                        toast.warning("Please select a patient first.", {
+                        toast.warning("Vui lòng chọn hồ sơ bệnh nhân trước.", {
                             position: "top-right",
                             icon: true,
                             duration: 3000
@@ -415,7 +415,7 @@ class BookingManager {
                         this.selectedIds.dateTime = inputTimeElement.value;
                         this.showConfirmation();
                     } else {
-                        toast.warning("Please select a time slot first.", {
+                        toast.warning("Vui lòng chọn thời gian.", {
                             position: "top-right",
                             icon: true,
                             duration: 3000
@@ -459,7 +459,7 @@ class BookingManager {
                     );
 
                     if (data !== null) {
-                        toast.success("Booking confirmed successfully!", {
+                        toast.success("Đặt lịch thành công!", {
                             position: "top-right",
                             icon: true,
                             duration: 3000

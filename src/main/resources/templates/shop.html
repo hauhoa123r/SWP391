@@ -1,0 +1,1010 @@
+<!doctype html>
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        navActive = ${7},
+        breadCrumbTitle = ${'Danh sách sản phẩm'},
+        breadCrumbTexts = ${{{'Danh sách sản phẩm'}}},
+        breadCrumbLinks = ${{{''}}}
+"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Danh sách sản phẩm</title>
+    <th:block layout:fragment="custom-css">
+        <style>
+            /* highlight chosen category */
+            .active-cat > a,
+            .active-cat .archiveCount {
+                color: #f10a38 !important;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+<main class="main-content" layout:fragment="content">
+    <div class="section-padding">
+        <div class="container">
+            <!-- Add wishlist notification -->
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" th:if="${wishlistMessage}">
+                <span th:text="${wishlistMessage}"></span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+            <div class="row">
+                <div class="col-xl-3">
+                    <div class="widget bg-primary-subtle p-3 p-md-4 mb-5">
+                        <form method="post" th:action="@{/submit}">
+                            <div class="custom-form-field shop-search position-relative">
+                                <input name="sort" th:value="${selectedSort != null ? selectedSort.name() : 'DEFAULT'}"
+                                       type="hidden">
+                                <!-- Preserve other parameters -->
+                                <input name="categoryId" th:if="${categoryId != null}" th:value="${categoryId}"
+                                       type="hidden">
+                                <input name="tag" th:if="${selectedTag != null}" th:value="${selectedTag}"
+                                       type="hidden">
+                                <input name="minPrice" th:if="${minPrice != null}" th:value="${minPrice}" type="hidden">
+                                <input name="maxPrice" th:if="${maxPrice != null}" th:value="${maxPrice}" type="hidden">
+
+                                <input class="form-control rm-cancel-btn mb-5 bg-white border" name="search"
+                                       placeholder="Search Products..."
+                                       th:value="${search}"
+                                       type="search">
+                                <button class="position-absolute  end-0 top-0 text-body p-0 border-0 bg-transparent cursor-pointer"
+                                        type="submit">
+                                    <svg class="icon-20" fill="none" viewBox="0 0 24 24" width="22"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5"></circle>
+                                        <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              stroke-width="1.5"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                        <h4 class="product-title mb-4">Product Categories</h4>
+                        <ul class="p-0 mb-5 list-unstyled">
+                            <li class="shop-cat-item border-0 pb-0"
+                                th:classappend="${category.id == categoryId} ? ' active-cat'"
+                                th:each="category : ${categories}">
+                                <a th:class="'position-relative text-uppercase letter-spacing-2' + (${category.id != null} ? '' : ' text-muted')"
+                                   th:href="@{/shop(categoryId=${category.id}, search=${search!=null?search:''}, tag=${selectedTag!=null?selectedTag:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}"
+                                   th:if="${category.id != null}"
+                                   th:text="${category.name}">Category Name</a>
+                                <span class="position-relative text-uppercase letter-spacing-2 text-muted"
+                                      th:if="${category.id == null}"
+                                      th:text="${category.name}">Category Name</span>
+                                <span class="archiveCount fw-500 ms-1"
+                                      th:text="'(' + (${category.productCount} != null ? ${category.productCount} : 0) + ')'">(0)</span>
+                            </li>
+                        </ul>
+                        <h4 class="product-title mb-4">Price Filter</h4>
+                        <form class="mb-5" method="get" th:action="@{/shop}">
+                            <input name="search" th:value="${search}" type="hidden">
+                            <input name="categoryId" th:value="${categoryId}" type="hidden">
+                            <input name="tag" th:value="${selectedTag}" type="hidden">
+                            <div class="d-flex align-items-center gap-2 mt-3">
+                                <input class="form-control" min="0" name="minPrice" placeholder="Min" step="0.01"
+                                       th:value="${minPrice}"
+                                       type="number">
+                                <span>-</span>
+                                <input class="form-control" min="0" name="maxPrice" placeholder="Max" step="0.01"
+                                       th:value="${maxPrice}"
+                                       type="number">
+                            </div>
+                            <button class="btn btn-primary w-100 mt-2" type="submit">Apply</button>
+                        </form>
+                    </div>
+                    <div class="product-list-widget p-3 p-md-4 bg-primary-subtle mb-5">
+                        <h4 class="product-title mb-4">Top Rated Products</h4>
+                        <ul class="p-0 m-0">
+                            <li class="d-flex align-items-center gap-3 border-0 mb-4" th:each="p : ${topProducts}">
+                                <div class="img-holder">
+                                    <img alt="" class="img-fluid" th:src="@{${p.imageUrl}}">
+                                </div>
+                                <div>
+                                    <a class="new-link" th:href="@{/product-standard/{id}(id=${p.id})}">
+                                        <h6 class="post-title fw-500 mb-0 text-capitalize" th:text="${p.name}">
+                                            Product</h6>
+                                    </a>
+                                    <div class="ratting" th:with="filled=${T(java.lang.Math).round(p.rating)}">
+                           <span th:each="i : ${#numbers.sequence(1, filled)}">
+                              <svg class="icon-20" fill="none" viewBox="0 0 24 24" width="20"
+                                   xmlns="http://www.w3.org/2000/svg">
+                                 <path clip-rule="evenodd"
+                                       d="M13.1043 4.17701L14.9317 7.82776C15.1108 8.18616 15.4565 8.43467 15.8573 8.49218L19.9453 9.08062C20.9554 9.22644 21.3573 10.4505 20.6263 11.1519L17.6702 13.9924C17.3797 14.2718 17.2474 14.6733 17.3162 15.0676L18.0138 19.0778C18.1856 20.0698 17.1298 20.8267 16.227 20.3574L12.5732 18.4627C12.215 18.2768 11.786 18.2768 11.4268 18.4627L7.773 20.3574C6.87023 20.8267 5.81439 20.0698 5.98724 19.0778L6.68385 15.0676C6.75257 14.6733 6.62033 14.2718 6.32982 13.9924L3.37368 11.1519C2.64272 10.4505 3.04464 9.22644 4.05466 9.08062L8.14265 8.49218C8.54354 8.43467 8.89028 8.18616 9.06937 7.82776L10.8957 4.17701C11.3477 3.27433 12.6523 3.27433 13.1043 4.17701Z"
+                                       fill="#FFD329"
+                                       fill-rule="evenodd"/>
+                              </svg>
+                           </span>
+                                    </div>
+                                    <span class="fw-bolder price text-body"
+                                          th:text="${#numbers.formatDecimal(p.price,1,2)}">$0.00</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="widget widget_tags p-3 p-md-4 bg-primary-subtle">
+                        <h4 class="product-title mb-4">Tags</h4>
+                        <ul class="p-0 m-0 list-unstyled">
+                            <!-- "All" option -->
+                            <li class="cat-item mb-0 pb-0 border-0 d-inline"
+                                th:classappend="${selectedTag == null || selectedTag == ''} ? 'active'">
+                                <a class="position-relative"
+                                   th:href="@{/shop(search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}">All</a>
+                            </li>
+                            <!-- Dynamic tag list -->
+                            <li class="cat-item mb-0 pb-0 border-0 d-inline"
+                                th:classappend="${t} == ${selectedTag} ? 'active'"
+                                th:each="t : ${tags}">
+                                <a class="position-relative"
+                                   th:href="@{/shop(tag=${t}, search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}"
+                                   th:text="${t}">
+                                    Tag</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-9">
+                    <div class="top-panel mb-5">
+                        <div class="row align-items-center">
+                            <div class="col-sm-3 text-center text-sm-start">
+                                <p class="m-0"
+                                   th:text="'Showing ' + ${productPage.getNumberOfElements() > 0 ? (productPage.getNumber() * productPage.getSize() + 1) : 0} + '–' + ${productPage.getNumberOfElements() + productPage.getNumber() * productPage.getSize()} + ' of ' + ${productPage.getTotalElements()} + ' results'"></p>
+                                <form class="d-inline-block mt-2" method="get" th:action="@{/shop}">
+                                    <input name="search" th:value="${search != null ? search : ''}" type="hidden">
+                                    <input name="sort" th:value="${selectedSort != null ? selectedSort : 'DEFAULT'}"
+                                           type="hidden">
+                                    <input name="page" th:value="${productPage.getNumber()}" type="hidden">
+                                    <input name="categoryId" th:value="${categoryId != null ? categoryId : ''}"
+                                           type="hidden">
+                                    <label class="me-2" for="size">Items per page:</label>
+                                    <select class="form-select d-inline-block w-auto" id="size" name="size"
+                                            onchange="this.form.submit()">
+                                        <option th:selected="${productPage.getSize() == 12}" value="12">12</option>
+                                        <option th:selected="${productPage.getSize() == 24}" value="24">24</option>
+                                        <option th:selected="${productPage.getSize() == 40}" value="40">40</option>
+                                    </select>
+                                </form>
+                            </div>
+                            <!-- Product Label Filters -->
+                            <div class="col-sm-6 mb-4">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a class="btn"
+                                       th:classappend="${selectedLabel == null ? 'btn-primary' : 'btn-outline-primary'}"
+                                       th:href="@{/shop(search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}">
+                                        All
+                                    </a>
+                                    <a class="btn"
+                                       th:classappend="${selectedLabel == 'NEW' ? 'btn-primary' : 'btn-outline-primary'}"
+                                       th:href="@{/shop(label='NEW', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}">
+                                        New Products
+                                    </a>
+                                    <a class="btn"
+                                       th:classappend="${selectedLabel == 'SALE' ? 'btn-primary' : 'btn-outline-primary'}"
+                                       th:href="@{/shop(label='SALE', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}">
+                                        Sale Products
+                                    </a>
+                                    <a class="btn"
+                                       th:classappend="${selectedLabel == 'STANDARD' ? 'btn-primary' : 'btn-outline-primary'}"
+                                       th:href="@{/shop(label='STANDARD', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}">
+                                        Standard Products
+                                    </a>
+                                </div>
+                            </div>
+                            <div
+                                    class="col-sm-3 mt-3 mt-sm-0 d-flex align-items-center justify-content-center justify-content-sm-end gap-3">
+                                <ul class="list-inline m-0 nav nav-pills iq-product-filter d-none d-md-flex bg-transparent align-items-center"
+                                    role="tablist">
+                                    <li class="nav-item">
+                                        <button aria-selected="true" class="nav-link rounded-pill"
+                                                data-bs-target="#pills-list"
+                                                data-bs-toggle="pill" id="grid-list-tab" role="tab"
+                                                type="button">
+                              <span class="btn-inner">
+                                 <svg fill="none" height="16" viewBox="0 0 18 16" width="18"
+                                      xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_1379_355)">
+                                       <path d="M3.42857 0H0V3.42857H3.42857V0Z" fill="currentColor">
+                                       </path>
+                                       <path d="M18 0.857422H6V2.57171H18V0.857422Z" fill="currentColor">
+                                       </path>
+                                       <path d="M3.42857 6H0V9.42857H3.42857V6Z" fill="currentColor">
+                                       </path>
+                                       <path d="M18 6.85742H6V8.57171H18V6.85742Z" fill="currentColor">
+                                       </path>
+                                       <path d="M3.42857 12H0V15.4286H3.42857V12Z" fill="currentColor">
+                                       </path>
+                                       <path d="M18 12.8574H6V14.5717H18V12.8574Z" fill="currentColor">
+                                       </path>
+                                    </g>
+                                    <defs>
+                                       <clipPath id="clip0_1379_355">
+                                          <rect fill="currentColor" height="15.4286" width="18"></rect>
+                                       </clipPath>
+                                    </defs>
+                                 </svg>
+                              </span>
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button aria-controls="pills-grid-two" aria-selected="true"
+                                                class="nav-link rounded-pill"
+                                                data-bs-target="#pills-grid-two" data-bs-toggle="pill" id="grid-two-tab"
+                                                role="tab" type="button">
+                              <span class="btn-inner">
+                                 <svg fill="none" height="18" viewBox="0 0 17 17" width="18"
+                                      xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.57143 0H0V8.57143H8.57143V0Z" fill="currentcolor"></path>
+                                    <path d="M17.9999 0H9.42847V8.57143H17.9999V0Z" fill="currentcolor">
+                                    </path>
+                                    <path d="M8.57143 9.42871H0V18.0001H8.57143V9.42871Z"
+                                          fill="currentcolor"></path>
+                                    <path d="M17.9999 9.42871H9.42847V18.0001H17.9999V9.42871Z"
+                                          fill="currentcolor"></path>
+                                 </svg>
+                              </span>
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button aria-controls="pills-grid-three" aria-selected="true"
+                                                class="nav-link rounded-pill active" data-bs-target="#pills-grid-three"
+                                                data-bs-toggle="pill"
+                                                id="grid-three-tab" role="tab" type="button">
+                              <span class="btn-inner">
+                                 <svg fill="none" height="18" viewBox="0 0 18 18" width="18"
+                                      xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.90909 0H0V4.90909H4.90909V0Z" fill="currentColor"></path>
+                                    <path d="M11.4545 0H6.54541V4.90909H11.4545V0Z" fill="currentColor">
+                                    </path>
+                                    <path d="M17.9999 0H13.0908V4.90909H17.9999V0Z" fill="currentColor">
+                                    </path>
+                                    <path d="M4.90909 6.5459H0V11.455H4.90909V6.5459Z" fill="currentColor">
+                                    </path>
+                                    <path d="M11.4545 6.5459H6.54541V11.455H11.4545V6.5459Z"
+                                          fill="currentColor"></path>
+                                    <path d="M17.9999 6.5459H13.0908V11.455H17.9999V6.5459Z"
+                                          fill="currentColor"></path>
+                                    <path d="M4.90909 13.0908H0V17.9999H4.90909V13.0908Z"
+                                          fill="currentColor"></path>
+                                    <path d="M11.4545 13.0908H6.54541V17.9999H11.4545V13.0908Z"
+                                          fill="currentColor"></path>
+                                    <path d="M17.9999 13.0908H13.0908V17.9999H17.9999V13.0908Z"
+                                          fill="currentColor"></path>
+                                 </svg>
+                              </span>
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button aria-controls="pills-grid-four" aria-selected="true"
+                                                class="nav-link rounded-pill"
+                                                data-bs-target="#pills-grid-four" data-bs-toggle="pill"
+                                                id="grid-four-tab"
+                                                role="tab" type="button">
+                              <span class="btn-inner">
+                                 <svg fill="none" height="18" viewBox="0 0 17 17" width="18"
+                                      xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3.85714 0H0V3.85714H3.85714V0Z" fill="currentColor"></path>
+                                    <path d="M8.5715 0H4.71436V3.85714H8.5715V0Z" fill="currentColor">
+                                    </path>
+                                    <path d="M13.2856 0H9.42847V3.85714H13.2856V0Z" fill="currentColor">
+                                    </path>
+                                    <path d="M18 0H14.1428V3.85714H18V0Z" fill="currentColor"></path>
+                                    <path d="M3.85714 4.71387H0V8.57101H3.85714V4.71387Z"
+                                          fill="currentColor"></path>
+                                    <path d="M8.5715 4.71387H4.71436V8.57101H8.5715V4.71387Z"
+                                          fill="currentColor"></path>
+                                    <path d="M13.2856 4.71387H9.42847V8.57101H13.2856V4.71387Z"
+                                          fill="currentColor"></path>
+                                    <path d="M18 4.71387H14.1428V8.57101H18V4.71387Z" fill="currentColor">
+                                    </path>
+                                    <path d="M3.85714 9.42871H0V13.2859H3.85714V9.42871Z"
+                                          fill="currentColor"></path>
+                                    <path d="M8.5715 9.42871H4.71436V13.2859H8.5715V9.42871Z"
+                                          fill="currentColor"></path>
+                                    <path d="M13.2856 9.42871H9.42847V13.2859H13.2856V9.42871Z"
+                                          fill="currentColor"></path>
+                                    <path d="M18 9.42871H14.1428V13.2859H18V9.42871Z" fill="currentColor">
+                                    </path>
+                                    <path d="M3.85714 14.1426H0V17.9997H3.85714V14.1426Z"
+                                          fill="currentColor"></path>
+                                    <path d="M8.5715 14.1426H4.71436V17.9997H8.5715V14.1426Z"
+                                          fill="currentColor"></path>
+                                    <path d="M13.2856 14.1426H9.42847V17.9997H13.2856V14.1426Z"
+                                          fill="currentColor"></path>
+                                    <path d="M18 14.1426H14.1428V17.9997H18V14.1426Z" fill="currentColor">
+                                    </path>
+                                 </svg>
+                              </span>
+                                        </button>
+                                    </li>
+                                </ul>
+                                <div class="product-filter">
+                                    <form action="submit" id="sortForm" method="post">
+                                        <input name="search" th:value="${search}" type="hidden">
+                                        <select class="select2-basic-single js-states" name="sort"
+                                                onchange="document.getElementById('sortForm').submit()">
+                                            <option disabled hidden selected value="">Sort by...</option>
+                                            <option th:selected="${selectedSort == 'DEFAULT'}" value="DEFAULT">Default
+                                            </option>
+                                            <option th:selected="${selectedSort == 'RATING'}" value="RATING">rating
+                                            </option>
+                                            <option th:selected="${selectedSort == 'PRICE_ASC'}" value="PRICE_ASC">low
+                                                to high
+                                            </option>
+                                            <option th:selected="${selectedSort == 'PRICE_DESC'}" value="PRICE_DESC">
+                                                high to low
+                                            </option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-content">
+                        <div aria-labelledby="grid-list-tab" class="tab-pane fade" id="pills-list" role="tabpanel">
+                            <div class="row row-cols-1">
+                                <div class="col" th:each="product : ${products}">
+                                    <div class="iq-product-box position-relative product-list">
+                                        <div class="iq-inner-box">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="iq-product-image position-relative">
+                                                        <img alt="product-image" class="img-fluid"
+                                                             loading="lazy" th:src="${product.imageUrl}">
+                                                        <div class="iq-button-holder d-inline-block">
+                                                            <ul class="list-inline d-flex align-items-center gap-5 m-0 bg-white">
+                                                                <li class="quick-view line-height-0">
+                                                                    <a class="cursor-pointer" data-bs-toggle="modal"
+                                                                       th:attr="data-bs-target='#woosq-popup-' + ${product.id}">
+                                                                        <svg fill="none"
+                                                                             height="20" viewBox="0 0 20 17" width="22"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                            <path clip-rule="evenodd"
+                                                                                  d="M13.1614 8.05311C13.1614 9.79911 11.7454 11.2141 9.99938 11.2141C8.25338 11.2141 6.83838 9.79911 6.83838 8.05311C6.83838 6.30611 8.25338 4.89111 9.99938 4.89111C11.7454 4.89111 13.1614 6.30611 13.1614 8.05311Z"
+                                                                                  fill-rule="evenodd"
+                                                                                  stroke="currentColor"
+                                                                                  stroke-linecap="round"
+                                                                                  stroke-linejoin="round"
+                                                                                  stroke-width="1.5"/>
+                                                                            <path clip-rule="evenodd"
+                                                                                  d="M9.998 15.3549C13.806 15.3549 17.289 12.6169 19.25 8.05292C17.289 3.48892 13.806 0.750916 9.998 0.750916H10.002C6.194 0.750916 2.711 3.48892 0.75 8.05292C2.711 12.6169 6.194 15.3549 10.002 15.3549H9.998Z"
+                                                                                  fill-rule="evenodd"
+                                                                                  stroke="currentColor"
+                                                                                  stroke-linecap="round"
+                                                                                  stroke-linejoin="round"
+                                                                                  stroke-width="1.5"/>
+                                                                        </svg>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8 mt-4 mt-sm-0">
+                                                    <div class="product-caption">
+                                                        <h4 class="product-title mt-1 mb-2">
+                                                            <a th:href="@{/product-standard/{id}(id=${product.id})}"
+                                                               th:text="${product.name}">Product Name</a>
+                                                        </h4>
+                                                        <h6 class="price-value fw-semibold mb-2"
+                                                            th:text="${#numbers.formatCurrency(product.price)}">
+                                                            Price</h6>
+                                                        <div class="ratting">
+                                                            <div th:if="${product.rating != null and product.rating > 0}">
+                                                                <th:block
+                                                                        th:each="i : ${#numbers.sequence(1, product.rating)}">
+                                                                    <svg class="icon-20"
+                                                                         fill="none" viewBox="0 0 24 24"
+                                                                         width="20" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path clip-rule="evenodd"
+                                                                              d="M13.1043 4.17701L14.9317 7.82776C15.1108 8.18616 15.4565 8.43467 15.8573 8.49218L19.9453 9.08062C20.9554 9.22644 21.3573 10.4505 20.6263 11.1519L17.6702 13.9924C17.3797 14.2718 17.2474 14.6733 17.3162 15.0676L18.0138 19.0778C18.1856 20.0698 17.1298 20.8267 16.227 20.3574L12.5732 18.4627C12.215 18.2768 11.786 18.2768 11.4268 18.4627L7.773 20.3574C6.87023 20.8267 5.81439 20.0698 5.98724 19.0778L6.68385 15.0676C6.75257 14.6733 6.62033 14.2718 6.32982 13.9924L3.37368 11.1519C2.64272 10.4505 3.04464 9.22644 4.05466 9.08062L8.14265 8.49218C8.54354 8.43467 8.89028 8.18616 9.06937 7.82776L10.8957 4.17701C11.3477 3.27433 12.6523 3.27433 13.1043 4.17701Z"
+                                                                              fill="#FFD329"
+                                                                              fill-rule="evenodd"/>
+                                                                    </svg>
+                                                                </th:block>
+                                                            </div>
+                                                            <div th:if="${product.rating == null or product.rating == 0}">
+                                                                <span>Chưa có đánh giá</span>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="list-buttons mt-3">
+                                                            <ul class="list-inline m-0 d-flex align-items-center">
+                                                                <li>
+                                                                    <div class="iq-btn-container">
+                                                                        <form method="post" th:action="@{/cart/add}">
+                                                                            <input name="productId"
+                                                                                   th:value="${product.id}"
+                                                                                   type="hidden"/>
+                                                                            <input name="quantity" type="hidden"
+                                                                                   value="1"/>
+                                                                            <button class="iq-button text-capitalize"
+                                                                                    type="submit">
+                                                                                <span class="iq-btn-text-holder position-relative">add to cart</span>
+                                                                                <span class="iq-btn-icon-holder">
+                                    <svg fill="none" height="11" viewBox="0 0 10 11" width="10"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                                               <path d="M5 0.5C5.34518 0.5 5.625 0.779822 5.625 1.125V4.875H9.375C9.72018 4.875 10 5.15482 10 5.5C10 5.84518 9.72018 6.125 9.375 6.125H5.625V9.875C5.625 10.2202 5.34518 10.5 5 10.5C4.65482 10.5 4.375 10.2202 4.375 9.875V6.125H0.625C0.279822 6.125 0 5.84518 0 5.5C0 5.15482 0.279822 4.875 0.625 4.875H4.375V1.125C4.375 0.779822 4.65482 0.5 5 0.5Z"
+                                                                     fill="currentColor"/>
+                                    </svg>
+                                 </span>
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="wish-list bg-primary-subtle ms-3">
+                                                                    <form class="m-0 p-0" method="post"
+                                                                          th:action="@{/wishlist/add}">
+                                                                        <input name="productId" th:value="${product.id}"
+                                                                               type="hidden"/>
+                                                                        <button class="btn btn-transparent p-0 border-0"
+                                                                                type="submit">
+                                                      <span class="btn-inner">
+                                                         <svg fill="none" height="20" viewBox="0 0 22 20"
+                                                              width="22" xmlns="http://www.w3.org/2000/svg">
+                                                            <path clip-rule="evenodd"
+                                                                  d="M1.87187 9.59832C0.798865 6.24832 2.05287 2.41932 5.56986 1.28632C7.41986 0.689322 9.46186 1.04132 10.9999 2.19832C12.4549 1.07332 14.5719 0.693322 16.4199 1.28632C19.9369 2.41932 21.1989 6.24832 20.1269 9.59832C18.4569 14.9083 10.9999 18.9983 10.9999 18.9983C10.9999 18.9983 3.59787 14.9703 1.87187 9.59832Z"
+                                                                  fill-rule="evenodd"
+                                                                  stroke="currentColor" stroke-linecap="round"
+                                                                  stroke-linejoin="round" stroke-width="1.5"/>
+                                                            <path d="M15 4.70001C16.07 5.04601 16.826 6.00101 16.917 7.12201"
+                                                                  stroke="currentColor" stroke-linecap="round"
+                                                                  stroke-linejoin="round" stroke-width="1.5"/>
+                                                         </svg>
+                                                      </span>
+                                                                        </button>
+                                                                    </form>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <p class="product-desc mt-4 mb-0"
+                                                           th:text="${product.description}">Product Description</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-labelledby="grid-two-tab" class="tab-pane fade" id="pills-grid-two" role="tabpanel">
+                            <div class="row row-cols-1 row-cols-sm-2">
+                                <div class="col" th:each="product : ${products}">
+                                    <div class="iq-product-box position-relative animate:hover-media">
+                                        <div class="iq-inner-box">
+                                            <a href="shop-detail.html"></a>
+                                            <div class="iq-product-image position-relative">
+                                                <div class="animate:hover-media-wrap">
+                                                    <img alt="icon" class="img-fluid hover-media"
+                                                         loading="lazy" th:src="${product.imageUrl}">
+                                                </div>
+                                                <div class="iq-button-holder d-inline-block">
+                                                    <ul class="list-inline d-flex align-items-center gap-5 m-0 bg-white py-3 px-5">
+                                                        <li class="quick-view">
+                                                            <a class="cursor-pointer" data-bs-toggle="modal"
+                                                               th:attr="data-bs-target='#woosq-popup-' + ${product.id}">
+                                                                <svg fill="none" height="20"
+                                                                     viewBox="0 0 20 17" width="22"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path clip-rule="evenodd"
+                                                                          d="M13.1614 8.05311C13.1614 9.79911 11.7454 11.2141 9.99938 11.2141C8.25338 11.2141 6.83838 9.79911 6.83838 8.05311C6.83838 6.30611 8.25338 4.89111 9.99938 4.89111C11.7454 4.89111 13.1614 6.30611 13.1614 8.05311Z"
+                                                                          fill-rule="evenodd"
+                                                                          stroke="currentColor" stroke-linecap="round"
+                                                                          stroke-linejoin="round"
+                                                                          stroke-width="1.5"/>
+                                                                    <path clip-rule="evenodd"
+                                                                          d="M9.998 15.3549C13.806 15.3549 17.289 12.6169 19.25 8.05292C17.289 3.48892 13.806 0.750916 9.998 0.750916H10.002C6.194 0.750916 2.711 3.48892 0.75 8.05292C2.711 12.6169 6.194 15.3549 10.002 15.3549H9.998Z"
+                                                                          fill-rule="evenodd"
+                                                                          stroke="currentColor" stroke-linecap="round"
+                                                                          stroke-linejoin="round"
+                                                                          stroke-width="1.5"/>
+                                                                </svg>
+                                                            </a>
+                                                        </li>
+                                                        <li class="wish-list">
+                                                            <form class="m-0 p-0" method="post"
+                                                                  th:action="@{/wishlist/add}">
+                                                                <input name="productId" th:value="${product.id}"
+                                                                       type="hidden"/>
+                                                                <button class="btn btn-transparent p-0 border-0"
+                                                                        type="submit">
+                                             <span class="btn-inner">
+                                                   <svg fill="none" height="20" viewBox="0 0 22 20"
+                                                        width="22" xmlns="http://www.w3.org/2000/svg">
+                                                   <path clip-rule="evenodd"
+                                                         d="M1.87187 9.59832C0.798865 6.24832 2.05287 2.41932 5.56986 1.28632C7.41986 0.689322 9.46186 1.04132 10.9999 2.19832C12.4549 1.07332 14.5719 0.693322 16.4199 1.28632C19.9369 2.41932 21.1989 6.24832 20.1269 9.59832C18.4569 14.9083 10.9999 18.9983 10.9999 18.9983C10.9999 18.9983 3.59787 14.9703 1.87187 9.59832Z"
+                                                         fill-rule="evenodd"
+                                                         stroke="currentColor" stroke-linecap="round"
+                                                         stroke-linejoin="round"
+                                                         stroke-width="1.5"/>
+                                                   <path d="M15 4.70001C16.07 5.04601 16.826 6.00101 16.917 7.12201"
+                                                         stroke="currentColor" stroke-linecap="round"
+                                                         stroke-linejoin="round"
+                                                         stroke-width="1.5"/>
+                                                </svg>
+                                             </span>
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                        <li class="add-to-cart">
+                                                            <form method="post" th:action="@{/cart/add}">
+                                                                <input name="productId" th:value="${product.id}"
+                                                                       type="hidden"/>
+                                                                <input name="quantity" type="hidden" value="1"/>
+                                                                <button class="btn btn-link p-0 border-0" type="submit">
+                                                                    <svg fill="none" height="21"
+                                                                         viewBox="0 0 20 21" width="22"
+                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M0.750122 1.24988L2.83012 1.60988L3.79312 13.0829C3.87012 14.0199 4.65312 14.7389 5.59312 14.7359H16.5021C17.3991 14.7379 18.1601 14.0779 18.2871 13.1899L19.2361 6.63188C19.3421 5.89888 18.8331 5.21888 18.1011 5.11288C18.0371 5.10388 3.16412 5.09888 3.16412 5.09888"
+                                                                              stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                        <path d="M12.1251 8.7948H14.8981"
+                                                                              stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                        <path clip-rule="evenodd"
+                                                                              d="M5.15447 18.2025C5.45547 18.2025 5.69847 18.4465 5.69847 18.7465C5.69847 19.0475 5.45547 19.2915 5.15447 19.2915C4.85347 19.2915 4.61047 19.0475 4.61047 18.7465C4.61047 18.4465 4.85347 18.2025 5.15447 18.2025Z"
+                                                                              fill="currentColor"
+                                                                              fill-rule="evenodd" stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                        <path clip-rule="evenodd"
+                                                                              d="M16.4347 18.2025C16.7357 18.2025 16.9797 18.4465 16.9797 18.7465C16.9797 19.0475 16.7357 19.2915 16.4347 19.2915C16.1337 19.2915 15.8907 19.0475 15.8907 18.7465C15.8907 18.4465 16.1337 18.2025 16.4347 18.2025Z"
+                                                                              fill="currentColor"
+                                                                              fill-rule="evenodd" stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                    </svg>
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <span class="iq-on-sale badge bg-primary" th:text="${product.label}">Label</span>
+                                            </div>
+                                            <div class="product-caption text-center mt-3">
+                                                <span class="iq-category"
+                                                      th:text="${#strings.replace(product.productType, '_', ' ')}">category</span>
+                                                <h5 class="product-title mt-1 mb-2">
+                                                    <a th:href="@{/product-standard/{id}(id=${product.id})}"
+                                                       th:text="${product.name}">Product Name</a>
+                                                </h5>
+                                                <h6 class="price-value fw-semibold mb-2"
+                                                    th:text="${#numbers.formatCurrency(product.price)}">Price</h6>
+                                                <div class="ratting">
+                                                    <th:block th:if="${product.rating != null and product.rating > 0}">
+                                                        <th:block th:each="i : ${#numbers.sequence(1, product.rating)}">
+                                                            <svg class="icon-20" fill="none"
+                                                                 viewBox="0 0 24 24" width="20"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path clip-rule="evenodd"
+                                                                      d="M13.1043 4.17701L14.9317 7.82776C15.1108 8.18616 15.4565 8.43467 15.8573 8.49218L19.9453 9.08062C20.9554 9.22644 21.3573 10.4505 20.6263 11.1519L17.6702 13.9924C17.3797 14.2718 17.2474 14.6733 17.3162 15.0676L18.0138 19.0778C18.1856 20.0698 17.1298 20.8267 16.227 20.3574L12.5732 18.4627C12.215 18.2768 11.786 18.2768 11.4268 18.4627L7.773 20.3574C6.87023 20.8267 5.81439 20.0698 5.98724 19.0778L6.68385 15.0676C6.75257 14.6733 6.62033 14.2718 6.32982 13.9924L3.37368 11.1519C2.64272 10.4505 3.04464 9.22644 4.05466 9.08062L8.14265 8.49218C8.54354 8.43467 8.89028 8.18616 9.06937 7.82776L10.8957 4.17701C11.3477 3.27433 12.6523 3.27433 13.1043 4.17701Z"
+                                                                      fill="#FFD329"
+                                                                      fill-rule="evenodd"/>
+                                                            </svg>
+                                                        </th:block>
+                                                    </th:block>
+                                                    <th:block th:if="${product.rating == null or product.rating == 0}">
+                                                        <span>Chưa có đánh giá</span>
+                                                    </th:block>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-labelledby="grid-three-tab" class="tab-pane fade show active" id="pills-grid-three"
+                             role="tabpanel">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                                <div class="col" th:each="product : ${products}">
+                                    <div class="iq-product-box position-relative animate:hover-media">
+                                        <div class="iq-inner-box">
+                                            <a href="shop-detail.html"></a>
+                                            <div class="iq-product-image position-relative">
+                                                <div class="animate:hover-media-wrap">
+                                                    <img alt="icon" class="img-fluid hover-media"
+                                                         loading="lazy" th:src="${product.imageUrl}">
+                                                </div>
+                                                <div class="iq-button-holder d-inline-block">
+                                                    <ul class="list-inline d-flex align-items-center gap-5 m-0 bg-white py-3 px-5">
+                                                        <li class="quick-view">
+                                                            <a class="cursor-pointer" data-bs-toggle="modal"
+                                                               th:attr="data-bs-target='#woosq-popup-' + ${product.id}">
+                                                                <svg fill="none" height="20"
+                                                                     viewBox="0 0 20 17" width="22"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path clip-rule="evenodd"
+                                                                          d="M13.1614 8.05311C13.1614 9.79911 11.7454 11.2141 9.99938 11.2141C8.25338 11.2141 6.83838 9.79911 6.83838 8.05311C6.83838 6.30611 8.25338 4.89111 9.99938 4.89111C11.7454 4.89111 13.1614 6.30611 13.1614 8.05311Z"
+                                                                          fill-rule="evenodd"
+                                                                          stroke="currentColor" stroke-linecap="round"
+                                                                          stroke-linejoin="round"
+                                                                          stroke-width="1.5"/>
+                                                                    <path clip-rule="evenodd"
+                                                                          d="M9.998 15.3549C13.806 15.3549 17.289 12.6169 19.25 8.05292C17.289 3.48892 13.806 0.750916 9.998 0.750916H10.002C6.194 0.750916 2.711 3.48892 0.75 8.05292C2.711 12.6169 6.194 15.3549 10.002 15.3549H9.998Z"
+                                                                          fill-rule="evenodd"
+                                                                          stroke="currentColor" stroke-linecap="round"
+                                                                          stroke-linejoin="round"
+                                                                          stroke-width="1.5"/>
+                                                                </svg>
+                                                            </a>
+                                                        </li>
+                                                        <li class="wish-list">
+                                                            <form class="m-0 p-0" method="post"
+                                                                  th:action="@{/wishlist/add}">
+                                                                <input name="productId" th:value="${product.id}"
+                                                                       type="hidden"/>
+                                                                <button class="btn btn-transparent p-0 border-0"
+                                                                        type="submit">
+                                             <span class="btn-inner">
+                                                   <svg fill="none" height="20" viewBox="0 0 22 20"
+                                                        width="22" xmlns="http://www.w3.org/2000/svg">
+                                                   <path clip-rule="evenodd"
+                                                         d="M1.87187 9.59832C0.798865 6.24832 2.05287 2.41932 5.56986 1.28632C7.41986 0.689322 9.46186 1.04132 10.9999 2.19832C12.4549 1.07332 14.5719 0.693322 16.4199 1.28632C19.9369 2.41932 21.1989 6.24832 20.1269 9.59832C18.4569 14.9083 10.9999 18.9983 10.9999 18.9983C10.9999 18.9983 3.59787 14.9703 1.87187 9.59832Z"
+                                                         fill-rule="evenodd"
+                                                         stroke="currentColor" stroke-linecap="round"
+                                                         stroke-linejoin="round"
+                                                         stroke-width="1.5"/>
+                                                   <path d="M15 4.70001C16.07 5.04601 16.826 6.00101 16.917 7.12201"
+                                                         stroke="currentColor" stroke-linecap="round"
+                                                         stroke-linejoin="round"
+                                                         stroke-width="1.5"/>
+                                                </svg>
+                                             </span>
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                        <li class="add-to-cart">
+                                                            <form method="post" th:action="@{/cart/add}">
+                                                                <input name="productId" th:value="${product.id}"
+                                                                       type="hidden"/>
+                                                                <input name="quantity" type="hidden" value="1"/>
+                                                                <button class="btn btn-link p-0 border-0" type="submit">
+                                                                    <svg fill="none" height="21"
+                                                                         viewBox="0 0 20 21" width="22"
+                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M0.750122 1.24988L2.83012 1.60988L3.79312 13.0829C3.87012 14.0199 4.65312 14.7389 5.59312 14.7359H16.5021C17.3991 14.7379 18.1601 14.0779 18.2871 13.1899L19.2361 6.63188C19.3421 5.89888 18.8331 5.21888 18.1011 5.11288C18.0371 5.10388 3.16412 5.09888 3.16412 5.09888"
+                                                                              stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                        <path d="M12.1251 8.7948H14.8981"
+                                                                              stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                        <path clip-rule="evenodd"
+                                                                              d="M5.15447 18.2025C5.45547 18.2025 5.69847 18.4465 5.69847 18.7465C5.69847 19.0475 5.45547 19.2915 5.15447 19.2915C4.85347 19.2915 4.61047 19.0475 4.61047 18.7465C4.61047 18.4465 4.85347 18.2025 5.15447 18.2025Z"
+                                                                              fill="currentColor"
+                                                                              fill-rule="evenodd" stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                        <path clip-rule="evenodd"
+                                                                              d="M16.4347 18.2025C16.7357 18.2025 16.9797 18.4465 16.9797 18.7465C16.9797 19.0475 16.7357 19.2915 16.4347 19.2915C16.1337 19.2915 15.8907 19.0475 15.8907 18.7465C15.8907 18.4465 16.1337 18.2025 16.4347 18.2025Z"
+                                                                              fill="currentColor"
+                                                                              fill-rule="evenodd" stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                    </svg>
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <span class="iq-on-sale badge bg-primary" th:text="${product.label}">Label</span>
+                                            </div>
+                                            <div class="product-caption text-center mt-3">
+                                                <span class="iq-category"
+                                                      th:text="${#strings.replace(product.productType, '_', ' ')}">category</span>
+                                                <h5 class="product-title mt-1 mb-2">
+                                                    <a th:href="@{/product-standard/{id}(id=${product.id})}"
+                                                       th:text="${product.name}">Product Name</a></h5>
+                                                <h6 class="price-value fw-semibold mb-2"
+                                                    th:text="${#numbers.formatCurrency(product.price)}">Price</h6>
+                                                <div class="ratting">
+                                                    <th:block th:if="${product.rating != null and product.rating > 0}">
+                                                        <th:block th:each="i : ${#numbers.sequence(1, product.rating)}">
+                                                            <svg class="icon-20" fill="none"
+                                                                 viewBox="0 0 24 24" width="20"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path clip-rule="evenodd"
+                                                                      d="M13.1043 4.17701L14.9317 7.82776C15.1108 8.18616 15.4565 8.43467 15.8573 8.49218L19.9453 9.08062C20.9554 9.22644 21.3573 10.4505 20.6263 11.1519L17.6702 13.9924C17.3797 14.2718 17.2474 14.6733 17.3162 15.0676L18.0138 19.0778C18.1856 20.0698 17.1298 20.8267 16.227 20.3574L12.5732 18.4627C12.215 18.2768 11.786 18.2768 11.4268 18.4627L7.773 20.3574C6.87023 20.8267 5.81439 20.0698 5.98724 19.0778L6.68385 15.0676C6.75257 14.6733 6.62033 14.2718 6.32982 13.9924L3.37368 11.1519C2.64272 10.4505 3.04464 9.22644 4.05466 9.08062L8.14265 8.49218C8.54354 8.43467 8.89028 8.18616 9.06937 7.82776L10.8957 4.17701C11.3477 3.27433 12.6523 3.27433 13.1043 4.17701Z"
+                                                                      fill="#FFD329"
+                                                                      fill-rule="evenodd"/>
+                                                            </svg>
+                                                        </th:block>
+                                                    </th:block>
+                                                    <th:block th:if="${product.rating == null or product.rating == 0}">
+                                                        <span>Chưa có đánh giá</span>
+                                                    </th:block>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-labelledby="grid-four-tab" class="tab-pane fade" id="pills-grid-four" role="tabpanel">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+                                <div class="col" th:each="product : ${products}">
+                                    <div class="iq-product-box position-relative animate:hover-media">
+                                        <div class="iq-inner-box">
+                                            <a href="shop-detail.html"></a>
+                                            <div class="iq-product-image position-relative">
+                                                <div class="animate:hover-media-wrap">
+                                                    <img alt="icon" class="img-fluid hover-media"
+                                                         loading="lazy" th:src="${product.imageUrl}">
+                                                </div>
+                                                <div class="iq-button-holder d-inline-block">
+                                                    <ul class="list-inline d-flex align-items-center gap-5 m-0 bg-white py-3 px-5">
+                                                        <li class="quick-view">
+                                                            <a class="cursor-pointer" data-bs-target="#woosq-popup"
+                                                               data-bs-toggle="modal">
+                                                                <svg fill="none" height="20"
+                                                                     viewBox="0 0 20 17" width="22"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path clip-rule="evenodd"
+                                                                          d="M13.1614 8.05311C13.1614 9.79911 11.7454 11.2141 9.99938 11.2141C8.25338 11.2141 6.83838 9.79911 6.83838 8.05311C6.83838 6.30611 8.25338 4.89111 9.99938 4.89111C11.7454 4.89111 13.1614 6.30611 13.1614 8.05311Z"
+                                                                          fill-rule="evenodd"
+                                                                          stroke="currentColor" stroke-linecap="round"
+                                                                          stroke-linejoin="round"
+                                                                          stroke-width="1.5"/>
+                                                                    <path clip-rule="evenodd"
+                                                                          d="M9.998 15.3549C13.806 15.3549 17.289 12.6169 19.25 8.05292C17.289 3.48892 13.806 0.750916 9.998 0.750916H10.002C6.194 0.750916 2.711 3.48892 0.75 8.05292C2.711 12.6169 6.194 15.3549 10.002 15.3549H9.998Z"
+                                                                          fill-rule="evenodd"
+                                                                          stroke="currentColor" stroke-linecap="round"
+                                                                          stroke-linejoin="round"
+                                                                          stroke-width="1.5"/>
+                                                                </svg>
+                                                            </a>
+                                                        </li>
+                                                        <li class="wish-list">
+                                                            <form class="m-0 p-0" method="post"
+                                                                  th:action="@{/wishlist/add}">
+                                                                <input name="productId" th:value="${product.id}"
+                                                                       type="hidden"/>
+                                                                <button class="btn btn-transparent p-0 border-0"
+                                                                        type="submit">
+                                             <span class="btn-inner">
+                                                   <svg fill="none" height="20" viewBox="0 0 22 20"
+                                                        width="22" xmlns="http://www.w3.org/2000/svg">
+                                                   <path clip-rule="evenodd"
+                                                         d="M1.87187 9.59832C0.798865 6.24832 2.05287 2.41932 5.56986 1.28632C7.41986 0.689322 9.46186 1.04132 10.9999 2.19832C12.4549 1.07332 14.5719 0.693322 16.4199 1.28632C19.9369 2.41932 21.1989 6.24832 20.1269 9.59832C18.4569 14.9083 10.9999 18.9983 10.9999 18.9983C10.9999 18.9983 3.59787 14.9703 1.87187 9.59832Z"
+                                                         fill-rule="evenodd"
+                                                         stroke="currentColor" stroke-linecap="round"
+                                                         stroke-linejoin="round"
+                                                         stroke-width="1.5"/>
+                                                   <path d="M15 4.70001C16.07 5.04601 16.826 6.00101 16.917 7.12201"
+                                                         stroke="currentColor" stroke-linecap="round"
+                                                         stroke-linejoin="round"
+                                                         stroke-width="1.5"/>
+                                                </svg>
+                                             </span>
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                        <li class="add-to-cart">
+                                                            <form method="post" th:action="@{/cart/add}">
+                                                                <input name="productId" th:value="${product.id}"
+                                                                       type="hidden"/>
+                                                                <input name="quantity" type="hidden" value="1"/>
+                                                                <button class="btn btn-link p-0 border-0" type="submit">
+                                                                    <svg fill="none" height="21"
+                                                                         viewBox="0 0 20 21" width="22"
+                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M0.750122 1.24988L2.83012 1.60988L3.79312 13.0829C3.87012 14.0199 4.65312 14.7389 5.59312 14.7359H16.5021C17.3991 14.7379 18.1601 14.0779 18.2871 13.1899L19.2361 6.63188C19.3421 5.89888 18.8331 5.21888 18.1011 5.11288C18.0371 5.10388 3.16412 5.09888 3.16412 5.09888"
+                                                                              stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                        <path d="M12.1251 8.7948H14.8981"
+                                                                              stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                        <path clip-rule="evenodd"
+                                                                              d="M5.15447 18.2025C5.45547 18.2025 5.69847 18.4465 5.69847 18.7465C5.69847 19.0475 5.45547 19.2915 5.15447 19.2915C4.85347 19.2915 4.61047 19.0475 4.61047 18.7465C4.61047 18.4465 4.85347 18.2025 5.15447 18.2025Z"
+                                                                              fill="currentColor"
+                                                                              fill-rule="evenodd" stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                        <path clip-rule="evenodd"
+                                                                              d="M16.4347 18.2025C16.7357 18.2025 16.9797 18.4465 16.9797 18.7465C16.9797 19.0475 16.7357 19.2915 16.4347 19.2915C16.1337 19.2915 15.8907 19.0475 15.8907 18.7465C15.8907 18.4465 16.1337 18.2025 16.4347 18.2025Z"
+                                                                              fill="currentColor"
+                                                                              fill-rule="evenodd" stroke="currentColor"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="1.5"/>
+                                                                    </svg>
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="product-caption text-center mt-3">
+                                                <span class="iq-category"
+                                                      th:text="${#strings.replace(product.productType, '_', ' ')}">category</span>
+                                                <h5 class="product-title mt-1 mb-2">
+                                                    <a th:href="@{/product-standard/{id}(id=${product.id})}"
+                                                       th:text="${product.name}">Product Name</a>
+                                                </h5>
+                                                <h6 class="price-value fw-semibold mb-2"
+                                                    th:text="${#numbers.formatCurrency(product.price)}">
+                                                </h6>
+                                                <div class="ratting">
+                                                    <th:block th:if="${product.rating != null and product.rating > 0}">
+                                                        <th:block th:each="i : ${#numbers.sequence(1, product.rating)}">
+                                                            <svg class="icon-20" fill="none"
+                                                                 viewBox="0 0 24 24" width="20"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path clip-rule="evenodd"
+                                                                      d="M13.1043 4.17701L14.9317 7.82776C15.1108 8.18616 15.4565 8.43467 15.8573 8.49218L19.9453 9.08062C20.9554 9.22644 21.3573 10.4505 20.6263 11.1519L17.6702 13.9924C17.3797 14.2718 17.2474 14.6733 17.3162 15.0676L18.0138 19.0778C18.1856 20.0698 17.1298 20.8267 16.227 20.3574L12.5732 18.4627C12.215 18.2768 11.786 18.2768 11.4268 18.4627L7.773 20.3574C6.87023 20.8267 5.81439 20.0698 5.98724 19.0778L6.68385 15.0676C6.75257 14.6733 6.62033 14.2718 6.32982 13.9924L3.37368 11.1519C2.64272 10.4505 3.04464 9.22644 4.05466 9.08062L8.14265 8.49218C8.54354 8.43467 8.89028 8.18616 9.06937 7.82776L10.8957 4.17701C11.3477 3.27433 12.6523 3.27433 13.1043 4.17701Z"
+                                                                      fill="#FFD329"
+                                                                      fill-rule="evenodd"/>
+                                                            </svg>
+                                                        </th:block>
+                                                    </th:block>
+                                                    <th:block th:if="${product.rating == null or product.rating == 0}">
+                                                        <span>Chưa có đánh giá</span>
+                                                    </th:block>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <nav aria-label="pagination" th:if="${productPage.getTotalPages() > 0}">
+                        <ul class="pagination justify-content-center gap-3">
+                            <!-- Previous -->
+                            <li class="page-item" th:classappend="${!productPage.hasPrevious()} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{/shop(page=${productPage.getNumber() - 1}, size=${productPage.getSize()}, search=${search != null ? search : ''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'}, categoryId=${categoryId != null ? categoryId : ''}, minPrice=${minPrice != null ? minPrice : ''}, maxPrice=${maxPrice != null ? maxPrice : ''})}">
+                                    Trước
+                                </a>
+                            </li>
+
+                            <!-- First page -->
+                            <li class="page-item" th:classappend="${productPage.getNumber() == 0} ? 'active'">
+                                <a class="page-link"
+                                   th:href="@{/shop(page=0, size=${productPage.getSize()}, search=${search != null ? search : ''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'}, categoryId=${categoryId != null ? categoryId : ''}, minPrice=${minPrice != null ? minPrice : ''}, maxPrice=${maxPrice != null ? maxPrice : ''})}">1</a>
+                            </li>
+
+                            <!-- Ellipsis before range if needed -->
+                            <li class="page-item disabled"
+                                th:if="${productPage.getTotalPages() > 10 && productPage.getNumber() > 4}">
+                                <span class="page-link">...</span>
+                            </li>
+
+                            <!-- Page range (up to 10 pages, centered around current page) -->
+                            <li class="page-item" th:classappend="${i == productPage.getNumber()} ? 'active'" th:each="i : ${#numbers.sequence(
+                           productPage.getTotalPages() > 10 ? (productPage.getNumber() < 4 ? 1 : productPage.getNumber() > productPage.getTotalPages() - 5 ? productPage.getTotalPages() - 9 : productPage.getNumber() - 3) : 1,
+                           productPage.getTotalPages() > 10 ? (productPage.getNumber() < 4 ? (productPage.getTotalPages() < 10 ? productPage.getTotalPages() - 1 : 9) : productPage.getNumber() > productPage.getTotalPages() - 5 ? productPage.getTotalPages() - 1 : productPage.getNumber() + 5) : productPage.getTotalPages() - 1
+                       )}">
+                                <a class="page-link"
+                                   th:href="@{/shop(page=${i}, size=${productPage.getSize()}, search=${search != null ? search : ''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'}, categoryId=${categoryId != null ? categoryId : ''}, minPrice=${minPrice != null ? minPrice : ''}, maxPrice=${maxPrice != null ? maxPrice : ''})}"
+                                   th:text="${i + 1}"></a>
+                            </li>
+
+                            <!-- Ellipsis after range if needed -->
+                            <li class="page-item disabled"
+                                th:if="${productPage.getTotalPages() > 10 && productPage.getNumber() < productPage.getTotalPages() - 5}">
+                                <span class="page-link">...</span>
+                            </li>
+
+                            <!-- Last page (if more than 1 page) -->
+                            <li class="page-item"
+                                th:classappend="${productPage.getNumber() == productPage.getTotalPages() - 1} ? 'active'"
+                                th:if="${productPage.getTotalPages() > 1}">
+                                <a class="page-link"
+                                   th:href="@{/shop(page=${productPage.getTotalPages() - 1}, size=${productPage.getSize()}, search=${search != null ? search : ''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'}, categoryId=${categoryId != null ? categoryId : ''}, minPrice=${minPrice != null ? minPrice : ''}, maxPrice=${maxPrice != null ? maxPrice : ''})}"
+                                   th:text="${productPage.getTotalPages()}"></a>
+                            </li>
+
+                            <!-- Next -->
+                            <li class="page-item" th:classappend="${!productPage.hasNext()} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{/shop(page=${productPage.getNumber() + 1}, size=${productPage.getSize()}, search=${search != null ? search : ''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'}, categoryId=${categoryId != null ? categoryId : ''}, minPrice=${minPrice != null ? minPrice : ''}, maxPrice=${maxPrice != null ? maxPrice : ''})}">
+                                    Sau
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div aria-hidden="true" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="woosq-popup"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered positon-relative">
+            <div class="modal-content rounded-0 border-0">
+                <div class="modal-body py-0">
+                    <button aria-label="Close" class="btn-close position-absolute end-0" data-bs-dismiss="modal"
+                            type="button"></button>
+                    <div class="row align-items-center">
+                        <div class="col-md-6 p-0">
+                            <img alt="shop-img" class="img-fluid" src="frontend/assets/images/shop/product-1.webp">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="px-2 py-3 p-md-4">
+                                <h3>Electric Toothbrush</h3>
+                                <h5 class="fw-semibold mb-2">$123.00</h5>
+                                <p class="mb-0 line-count-2">An electric toothbrush is a toothbrush that cleans teeth
+                                    using quick, automatic
+                                    bristle movements such as rotational oscillation or back-and-forth oscillation. A
+                                    motor propels objects at or below sonic speeds.
+                                </p>
+                                <ul class="list-inline m-0 p-0 d-flex align-items-center gap-3 flex-wrap pt-0 pt-md-4 pb-5">
+                                    <li>
+                                        <div class="btn-group iq-qty-btn" data-qty="btn" role="group">
+                                            <button class="btn btn-sm btn-outline-light px-0 py-3 iq-quantity-minus"
+                                                    type="button">
+                                                <svg fill="none" height="3" viewBox="0 0 6 3"
+                                                     width="6" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5.22727 0.886364H0.136364V2.13636H5.22727V0.886364Z"
+                                                          fill="currentColor"></path>
+                                                </svg>
+                                            </button>
+                                            <input class="btn btn-sm btn-outline-light px-0 py-3 input-display w-25"
+                                                   data-qty="input"
+                                                   maxlength="2" minlength="1" pattern="^(0|[1-9][0-9]*)$"
+                                                   title="Qty"
+                                                   type="text" value="2">
+                                            <button class="btn btn-sm btn-outline-light px-0 py-3 iq-quantity-plus"
+                                                    type="button">
+                                                <svg fill="none" height="8" viewBox="0 0 9 8"
+                                                     width="9" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                            d="M3.63636 7.70455H4.90909V4.59091H8.02273V3.31818H4.90909V0.204545H3.63636V3.31818H0.522727V4.59091H3.63636V7.70455Z"
+                                                            fill="currentColor"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="iq-btn-container">
+                                            <a class="iq-button text-uppercase cart-btn">
+                                                <span class="iq-btn-text-holder position-relative cart-btn">Add to Cart</span>
+                                                <span class="iq-btn-icon-holder">
+                                    <svg fill="none" height="11" viewBox="0 0 10 11" width="10"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                       <path
+                                               d="M5 0.5C5.34518 0.5 5.625 0.779822 5.625 1.125V4.875H9.375C9.72018 4.875 10 5.15482 10 5.5C10 5.84518 9.72018 6.125 9.375 6.125H5.625V9.875C5.625 10.2202 5.34518 10.5 5 10.5C4.65482 10.5 4.375 10.2202 4.375 9.875V6.125H0.625C0.279822 6.125 0 5.84518 0 5.5C0 5.15482 0.279822 4.875 0.625 4.875H4.375V1.125C4.375 0.779822 4.65482 0.5 5 0.5Z"
+                                               fill="currentColor"></path>
+                                    </svg>
+                                 </span>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="d-flex align-items-center">
+                                    <span>Categories :</span>
+                                    <h6 class="d-inline text-primary mb-0">Home Equipment</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
+

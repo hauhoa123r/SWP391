@@ -115,15 +115,17 @@ public class StaffEntity {
     @OneToMany(mappedBy = "staffEntity")
     private List<LeaveBalanceEntity> leaveBalanceEntities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "approvedBy")
+    private Set<LeaveRequestEntity> leaveRequests = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "staffEntity", fetch = FetchType.LAZY)
+    private TechnicianEntity technicianEntity;
+
     public Double getAverageRating() {
         return reviewEntities.stream()
                 .mapToDouble(ReviewEntity::getRating)
                 .average()
                 .orElse(0.0);
     }
-
-    @OneToOne(mappedBy = "staffEntity", fetch = FetchType.LAZY)
-    private TechnicianEntity technicianEntity;
 
     public Integer getReviewCount() {
         return reviewEntities.size();
