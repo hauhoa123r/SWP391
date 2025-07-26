@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.StaffRole;
+import org.project.enums.StaffStatus;
 import org.project.enums.StaffType;
 
 import java.sql.Date;
@@ -120,6 +121,10 @@ public class StaffEntity {
     @OneToOne(mappedBy = "staffEntity", fetch = FetchType.LAZY)
     private TechnicianEntity technicianEntity;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "staff_status")
+    private StaffStatus staffStatus;
+
     public Double getAverageRating() {
         return reviewEntities.stream()
                 .mapToDouble(ReviewEntity::getRating)
@@ -130,4 +135,6 @@ public class StaffEntity {
     public Integer getReviewCount() {
         return reviewEntities.size();
     }
+
+
 }

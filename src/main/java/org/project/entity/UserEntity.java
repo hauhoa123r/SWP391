@@ -46,8 +46,6 @@ public class UserEntity {
     private Boolean twoFactorEnabled;
     @OneToOne(mappedBy = "userEntity")
     private StaffEntity staffEntity;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ForgotPassword forgotPassword;
     @OneToMany(mappedBy = "userEntity")
     private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
     @OneToMany(mappedBy = "userEntity")
