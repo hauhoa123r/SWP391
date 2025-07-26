@@ -2,6 +2,7 @@ package org.project.admin.service.impl;
 
 import org.project.admin.dto.request.UserRequest;
 import org.project.admin.dto.request.UserSearchRequest;
+import org.project.admin.dto.request.UserUpdateRequest;
 import org.project.admin.dto.response.UserResponse;
 import org.project.admin.entity.User;
 import org.project.admin.enums.AuditAction;
@@ -34,6 +35,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse createUser(UserRequest dto) {
+        // Kiểm tra email đã tồn tại
+        if (userRepository.existsByEmailAndDeletedFalse(dto.getEmail())) {
+            throw new IllegalArgumentException("Email đã được sử dụng bởi người dùng khác");
+        }
+
+        // Kiểm tra số điện thoại đã tồn tại
+        if (dto.getPhoneNumber() != null && !dto.getPhoneNumber().trim().isEmpty() &&
+            userRepository.existsByPhoneNumberAndDeletedFalse(dto.getPhoneNumber())) {
+            throw new IllegalArgumentException("Số điện thoại đã được sử dụng bởi người dùng khác");
+        }
+
         User user = userMapper.toEntity(dto);
         if (dto.getPassword() != null) {
             user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
@@ -47,16 +59,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateUser(Long id, UserRequest dto) {
+    public UserResponse updateUser(Long id, UserUpdateRequest dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Không tìm thấy người dùng"));
+
+        // Kiểm tra email trùng với user khác (không phải chính user hiện tại)
+        if (!user.getEmail().equals(dto.getEmail()) &&
+            userRepository.existsByEmailAndDeletedFalseAndUserIdNot(dto.getEmail(), id)) {
+            throw new IllegalArgumentException("Email đã được sử dụng bởi người dùng khác");
+        }
+
+        // Kiểm tra số điện thoại trùng với user khác (không phải chính user hiện tại)
+        if (dto.getPhoneNumber() != null && !dto.getPhoneNumber().trim().isEmpty() &&
+            !user.getPhoneNumber().equals(dto.getPhoneNumber()) &&
+            userRepository.existsByPhoneNumberAndDeletedFalseAndUserIdNot(dto.getPhoneNumber(), id)) {
+            throw new IllegalArgumentException("Số điện thoại đã được sử dụng bởi người dùng khác");
+        }
+
         // Lưu trạng thái cũ để log
         UserResponse oldUser = userMapper.toResponse(user);
 
-        userMapper.updateEntityFromDto(dto, user);
-        if (dto.getPassword() != null) {
+        // Cập nhật thông tin cơ bản
+        if (dto.getUserRole() != null) user.setUserRole(dto.getUserRole());
+        if (dto.getPhoneNumber() != null) user.setPhoneNumber(dto.getPhoneNumber());
+        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
+        if (dto.getUserStatus() != null) user.setUserStatus(dto.getUserStatus());
+        if (dto.getTwoFactorEnabled() != null) user.setTwoFactorEnabled(dto.getTwoFactorEnabled());
+
+        // Chỉ cập nhật password nếu có giá trị trong request
+        if (dto.getPassword() != null && !dto.getPassword().trim().isEmpty()) {
             user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
         }
+        // Nếu password null hoặc empty thì giữ nguyên password cũ
+
         User saved = userRepository.save(user);
 
         // Ghi log update
@@ -72,10 +107,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Không tìm thấy người dùng"));
 
-        // Đánh dấu xóa mềm
+
         user.setDeleted(true);
         user.setUserStatus(UserStatus.INACTIVE);
-        userRepository.save(user);  // Cập nhật
+        userRepository.save(user);
 
         userLogService.logUserAction(user, AuditAction.DELETE);
     }

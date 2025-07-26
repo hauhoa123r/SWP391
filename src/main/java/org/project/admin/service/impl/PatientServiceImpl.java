@@ -68,25 +68,58 @@ public class PatientServiceImpl implements PatientService {
     @Override
     @Transactional
     public PatientResponse createPatient(PatientRequest req) {
+        //Kiểm tra User tồn tại và có role PATIENT
         User user = userRepository.findById(req.getUserId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+                .orElseThrow(() -> new IllegalArgumentException("User ID không tồn tại trong hệ thống"));
+
+        if (!org.project.admin.enums.users.UserRole.PATIENT.equals(user.getUserRole())) {
+            throw new IllegalArgumentException("Chỉ tài khoản có vai trò PATIENT mới được tạo hồ sơ bệnh nhân");
+        }
+
+        //Kiểm tra email đã tồn tại trong hệ thống bệnh nhân
+        if (patientRepository.existsByEmailAndDeletedFalse(req.getEmail())) {
+            throw new IllegalArgumentException("Email đã được sử dụng bởi bệnh nhân khác");
+        }
+
+        //  Kiểm tra số điện thoại đã tồn tại trong hệ thống bệnh nhân
+        if (patientRepository.existsByPhoneNumberAndDeletedFalse(req.getPhoneNumber())) {
+            throw new IllegalArgumentException("Số điện thoại đã được sử dụng bởi bệnh nhân khác");
+        }
+
         Patient patient = patientMapper.toEntity(req, user);
         patient = patientRepository.save(patient);
         patientLogService.logPatientAction(patient, AuditAction.CREATE);
         return patientMapper.toResponse(patient);
     }
 
-
     @Override
     @Transactional
     public PatientResponse updatePatient(Long id, PatientRequest req) {
         Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy bệnh nhân"));
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy bệnh nhân"));
+
+        //  Kiểm tra User tồn tại và có role PATIENT
+        User user = userRepository.findById(req.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User ID không tồn tại trong hệ thống"));
+
+        if (!org.project.admin.enums.users.UserRole.PATIENT.equals(user.getUserRole())) {
+            throw new IllegalArgumentException("Chỉ tài khoản có vai trò PATIENT mới được tạo hồ sơ bệnh nhân");
+        }
+
+        //  Kiểm tra email trùng với patient khác (không phải chính patient hiện tại)
+        if (!patient.getEmail().equals(req.getEmail()) &&
+            patientRepository.existsByEmailAndDeletedFalseAndPatientIdNot(req.getEmail(), id)) {
+            throw new IllegalArgumentException("Email đã được sử dụng bởi bệnh nhân khác");
+        }
+
+        //  Kiểm tra số điện thoại trùng với patient khác (không phải chính patient hiện tại)
+        if (!patient.getPhoneNumber().equals(req.getPhoneNumber()) &&
+            patientRepository.existsByPhoneNumberAndDeletedFalseAndPatientIdNot(req.getPhoneNumber(), id)) {
+            throw new IllegalArgumentException("Số điện thoại đã được sử dụng bởi bệnh nhân khác");
+        }
 
         PatientResponse oldPatient = patientMapper.toResponse(patient);
 
-        User user = userRepository.findById(req.getUserId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
         patient.setUser(user);
         patient.setPhoneNumber(req.getPhoneNumber());
         patient.setEmail(req.getEmail());
@@ -94,7 +127,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setAvatarUrl(req.getAvatarUrl());
         patient.setRelationship(req.getRelationship());
         patient.setAddress(req.getAddress());
-//        patient.setGender(req.getGender());
+        patient.setGender(req.getGender());
         patient.setBirthdate(req.getBirthdate());
         patient.setBloodType(req.getBloodType());
 

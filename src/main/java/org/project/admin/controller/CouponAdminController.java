@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/coupons")
@@ -33,7 +34,7 @@ public class CouponAdminController {
     }
 
     @PostMapping
-    public ResponseEntity<CouponResponse> createCoupon(@RequestBody CouponRequest couponRequest) {
+    public ResponseEntity<CouponResponse> createCoupon(@Valid @RequestBody CouponRequest couponRequest) {
         CouponResponse couponResponse = couponService.createCoupon(couponRequest);
         return new ResponseEntity<>(couponResponse, HttpStatus.CREATED);
     }
@@ -51,7 +52,7 @@ public class CouponAdminController {
 
     @PutMapping("/{couponId}")
     public ResponseEntity<CouponResponse> updateCoupon(
-            @PathVariable Long couponId, @RequestBody CouponRequest couponRequest) {
+            @PathVariable Long couponId, @Valid @RequestBody CouponRequest couponRequest) {
         CouponResponse couponResponse = couponService.updateCoupon(couponId, couponRequest);
         return new ResponseEntity<>(couponResponse, HttpStatus.OK);
     }

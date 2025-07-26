@@ -5,6 +5,8 @@ import org.project.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -19,6 +21,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -51,48 +59,97 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Định nghĩa các endpoints công khai
-        String[] publicEndpoints = {
-                "/auth/**",         // Login và đăng ký
-                "/auth-view/**",    // Các trang view công khai
-                "/auth/google",     // Google OAuth
-                "/assets/**",       // Tài nguyên tĩnh như CSS, JS
-                "/css/**",
-                "/js/**",
-                "/images/**",
-                "/vendor/**",
-                "/forgotPassword/**", // Endpoint quên mật khẩu
-                "/webjars/**",
-                "/favicon.ico",
-                "frontend/assets/**",
-                "dashboard-staff-test/assets/**",
-                "templates_storage/assets/**",
-                "/"
-        };
-
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Sử dụng cấu hình CORS từ bean
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(publicEndpoints).permitAll() // Cho phép các endpoints công khai
-                        .requestMatchers("/api/**").permitAll() // Các API yêu cầu không xác thực
-                        .requestMatchers("/admin/**").hasRole("ADMIN")  // Chỉ Admin mới được truy cập /admin/**
-                        .requestMatchers("/doctor/**").hasRole("DOCTOR")  // Chỉ Doctor mới được truy cập /doctor/**
-                        .requestMatchers("/patient/**").hasRole("PATIENT")  // Chỉ Patient mới được truy cập /patient/**
-                        .requestMatchers("/staff/**").hasRole("STAFF") // Các endpoint của staff có thể được truy cập theo vai trò
-                        .requestMatchers("/home").hasAnyRole("ADMIN", "DOCTOR", "PATIENT", "STAFF") // Cho phép Admin, Doctor, Patient, và Staff truy cập /home
-                        .anyRequest().authenticated()  // Các request khác cần phải xác thực
+                        .requestMatchers(
+                                "/auth/**",
+                                "/auth-view/**",
+                                "/auth/google",
+                                "/assets/**",
+                                "/frontend/assets/**",
+                                "/dashboard-staff-test/assets/**",
+                                "/templates_storage/assets/**",
+                                "/",
+                                "/home",
+                                "/about-us",
+                                "/hospital/**",
+                                "/department/**",
+                                "/doctor/**",
+                                "/service/**",
+                                "/templates/**",
+                                "/patient/appointment-result/**",
+                                "/api/appointments/in-progress/**",
+                                "/api/medical-record/**",
+                                "/api/medical-profile/**",
+                                "/api/medical-record-symptom/**",
+                                "/api/vital/**",
+                                "/api/respiratory/**",
+                                "/api/cardiac/**",
+                                "/api/neurologic/**",
+                                "/api/gastro/**",
+                                "/api/genitourinary/**",
+                                "/api/musculoskeletal/**",
+                                "/api/dermatologic/**",
+                                "/api/notes/**",
+                                "/api/test-request/**"
+                        ).permitAll()
+                        .requestMatchers("/api/**").hasAnyRole("ADMIN","STAFF_DOCTOR")
+                        .requestMatchers("/patient/**").hasRole("PATIENT")
+                        .requestMatchers("/staff/doctor/**").hasRole("STAFF_DOCTOR")
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Không sử dụng session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/404b"))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-                .authenticationProvider(authenticationProvider())  // Sử dụng provider để xác thực
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);  // Thêm filter JWT
-
+        http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint((request, response, authException) -> {
+                    if (request.getRequestURI().startsWith("/api")) {
+                        response.setContentType("application/json");
+                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                        response.getWriter().write("{\"error\":\"Unauthorized\"}");
+                    } else {
+                        response.sendRedirect("/auth-view/login");
+                    }
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    if (request.getRequestURI().startsWith("/api")) {
+                        response.setContentType("application/json");
+                        response.setStatus(HttpStatus.FORBIDDEN.value());
+                        response.getWriter().write("{\"error\":\"Forbidden\"}");
+                    } else {
+                        response.sendRedirect("/auth-view/login");
+                    }
+                }));
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000",
+                "http://localhost:8080"
+        ));
+        configuration.setAllowedMethods(Arrays.asList(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH"
+        ));
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization", "Content-Type", "X-Requested-With", "Accept"
+        ));
+        configuration.setExposedHeaders(Arrays.asList(
+                "Authorization", "Content-Disposition"
+        ));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
 

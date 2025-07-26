@@ -16,6 +16,18 @@ import java.util.Optional;
 public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpecificationExecutor<Patient> {
     List<Patient> findByFullNameContainingIgnoreCase(String name);
 
+    // Kiểm tra email đã tồn tại trong hệ thống bệnh nhân (chưa bị xóa)
+    boolean existsByEmailAndDeletedFalse(String email);
+
+    // Kiểm tra email trùng với patient khác (không phải patient hiện tại)
+    boolean existsByEmailAndDeletedFalseAndPatientIdNot(String email, Long patientId);
+
+    // Kiểm tra số điện thoại đã tồn tại trong hệ thống bệnh nhân (chưa bị xóa)
+    boolean existsByPhoneNumberAndDeletedFalse(String phoneNumber);
+
+    // Kiểm tra số điện thoại trùng với patient khác (không phải patient hiện tại)
+    boolean existsByPhoneNumberAndDeletedFalseAndPatientIdNot(String phoneNumber, Long patientId);
+
     @Query(value = "SELECT * FROM patients WHERE patient_id = :id", nativeQuery = true)
     Optional<Patient> findByIdIncludingDeleted(@Param("id") Long id);
 

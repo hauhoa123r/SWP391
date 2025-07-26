@@ -8,6 +8,7 @@ import org.project.admin.util.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -35,12 +36,12 @@ public class PatientAdminController {
     }
 
     @PostMapping
-    public PatientResponse createPatient(@RequestBody PatientRequest req) {
+    public PatientResponse createPatient(@Valid @RequestBody PatientRequest req) {
         return patientService.createPatient(req);
     }
 
     @PutMapping("/{id}")
-    public PatientResponse updatePatient(@PathVariable Long id, @RequestBody PatientRequest req) {
+    public PatientResponse updatePatient(@PathVariable Long id, @Valid @RequestBody PatientRequest req) {
         return patientService.updatePatient(id, req);
     }
 

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface MedicalRecordRepository extends JpaRepository <MedicalRecordEntity, Long>{
     List<MedicalRecordEntity> findByPatientEntity_Id(Long patientId);
+    MedicalRecordEntity findMedicalRecordEntityByAppointmentEntityId(Long id);
 }

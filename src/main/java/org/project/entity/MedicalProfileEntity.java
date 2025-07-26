@@ -21,11 +21,9 @@ public class MedicalProfileEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Column(name = "allergies", nullable = false)
     private String allergies;
 
-    @NotNull
     @Column(name = "chronic_diseases", nullable = false)
     private String chronicDiseases;
 

@@ -42,39 +42,43 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public StaffResponse createStaff(StaffRequest request) {
-        if (request.getUserId() != null) {
-            User user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
-            if (!UserRole.STAFF.equals(user.getUserRole())) {
-                throw new RuntimeException("Chỉ tài khoản nhân viên mới được tạo hồ sơ nhân viên!");
-            }
+        // Validation 1: Kiểm tra User tồn tại và có role STAFF
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User ID không tồn tại trong hệ thống"));
+
+        if (!UserRole.STAFF.equals(user.getUserRole())) {
+            throw new IllegalArgumentException("Chỉ tài khoản có vai trò STAFF mới được tạo hồ sơ nhân viên");
         }
 
-        Department department = null;
-        if (request.getDepartmentId() != null) {
-            department = departmentRepository.findById(request.getDepartmentId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy phòng ban"));
+        // Validation 2: Kiểm tra StaffRole thuộc danh sách cho phép
+        List<StaffRole> allowedRoles = List.of(
+            StaffRole.DOCTOR,
+            StaffRole.TECHNICIAN,
+            StaffRole.SCHEDULING_COORDINATOR,
+            StaffRole.PHARMACIST,
+            StaffRole.INVENTORY_MANAGER
+        );
+
+        if (!allowedRoles.contains(request.getStaffRole())) {
+            throw new IllegalArgumentException("Vai trò nhân viên phải là một trong: DOCTOR, TECHNICIAN, SCHEDULING_COORDINATOR, PHARMACIST, INVENTORY_MANAGER");
         }
 
-        Hospital hospital = null;
-        if (request.getHospitalId() != null) {
-            hospital = hospitalRepository.findById(request.getHospitalId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy bệnh viện"));
-        }
+        // Validation 3: Kiểm tra Department tồn tại
+        Department department = departmentRepository.findById(request.getDepartmentId())
+                .orElseThrow(() -> new IllegalArgumentException("Phòng ban không tồn tại trong hệ thống"));
 
+        // Validation 4: Kiểm tra Hospital tồn tại
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
+                .orElseThrow(() -> new IllegalArgumentException("Bệnh viện không tồn tại trong hệ thống"));
+
+        // Validation 5: Kiểm tra Manager nếu có
         Staff manager = null;
         if (request.getManagerId() != null) {
             manager = staffRepository.findById(request.getManagerId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy quản lý"));
+                    .orElseThrow(() -> new IllegalArgumentException("Quản lý không tồn tại trong hệ thống"));
         }
 
-        User user = null;
-        if (request.getUserId() != null) {
-            user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
-        }
-
-
+        // Tạo Staff entity
         Staff staff = staffMapper.toEntity(request);
         staff.setDepartment(department);
         staff.setHospital(hospital);
@@ -83,13 +87,13 @@ public class StaffServiceImpl implements StaffService {
 
         staff = staffRepository.save(staff);
 
+        // Tạo Doctor record nếu là DOCTOR role
         if (request.getStaffRole() == StaffRole.DOCTOR) {
             DoctorRequest doctorRequest = new DoctorRequest();
             doctorRequest.setStaffId(staff.getStaffId());
             doctorRequest.setRankLevel(request.getRankLevel());
             doctorService.createDoctor(doctorRequest);
         }
-
 
         staffLogService.logStaffAction(staff, AuditAction.CREATE);
         return staffMapper.toResponse(staff);
@@ -120,35 +124,48 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public StaffResponse updateStaff(Long id, StaffRequest request) {
-        // 1. Lấy staff hiện tại
+        // Lấy staff hiện tại
         Staff staff = staffRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy nhân viên"));
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy nhân viên"));
         StaffResponse oldStaff = staffMapper.toResponse(staff);
 
-        Department department = null;
-        if (request.getDepartmentId() != null) {
-            department = departmentRepository.findById(request.getDepartmentId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy phòng ban"));
+        // Validation 1: Kiểm tra User tồn tại và có role STAFF
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User ID không tồn tại trong hệ thống"));
+
+        if (!UserRole.STAFF.equals(user.getUserRole())) {
+            throw new IllegalArgumentException("Chỉ tài khoản có vai trò STAFF mới được tạo hồ sơ nhân viên");
         }
 
-        Hospital hospital = null;
-        if (request.getHospitalId() != null) {
-            hospital = hospitalRepository.findById(request.getHospitalId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy bệnh viện"));
+        // Validation 2: Kiểm tra StaffRole thuộc danh sách cho phép
+        List<StaffRole> allowedRoles = List.of(
+            StaffRole.DOCTOR,
+            StaffRole.TECHNICIAN,
+            StaffRole.SCHEDULING_COORDINATOR,
+            StaffRole.PHARMACIST,
+            StaffRole.INVENTORY_MANAGER
+        );
+
+        if (!allowedRoles.contains(request.getStaffRole())) {
+            throw new IllegalArgumentException("Vai trò nhân viên phải là một trong: DOCTOR, TECHNICIAN, SCHEDULING_COORDINATOR, PHARMACIST, INVENTORY_MANAGER");
         }
 
+        // Validation 3: Kiểm tra Department tồn tại
+        Department department = departmentRepository.findById(request.getDepartmentId())
+                .orElseThrow(() -> new IllegalArgumentException("Phòng ban không tồn tại trong hệ thống"));
+
+        // Validation 4: Kiểm tra Hospital tồn tại
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
+                .orElseThrow(() -> new IllegalArgumentException("Bệnh viện không tồn tại trong hệ thống"));
+
+        // Validation 5: Kiểm tra Manager nếu có
         Staff manager = null;
         if (request.getManagerId() != null) {
             manager = staffRepository.findById(request.getManagerId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy quản lý"));
+                    .orElseThrow(() -> new IllegalArgumentException("Quản lý không tồn tại trong hệ thống"));
         }
 
-        User user = null;
-        if (request.getUserId() != null) {
-            user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
-        }
-
+        // Cập nhật thông tin staff
         staff.setDepartment(department);
         staff.setHospital(hospital);
         staff.setManager(manager);
@@ -162,6 +179,7 @@ public class StaffServiceImpl implements StaffService {
 
         staff = staffRepository.save(staff);
 
+        // Xử lý Doctor record
         if (request.getStaffRole() == StaffRole.DOCTOR) {
             Doctor doctor = doctorRepository.findById(staff.getStaffId()).orElse(null);
             if (doctor == null) {
@@ -172,8 +190,8 @@ public class StaffServiceImpl implements StaffService {
             doctor.setDoctorRank(doctorMapper.mapRankLevelToEnum(request.getRankLevel()));
             doctorRepository.save(doctor);
         } else {
-//           Nếu không còn là DOCTOR, tuỳ nhu cầu, có thể xoá luôn record Doctor:
-             doctorRepository.deleteById(staff.getStaffId());
+            // Nếu không còn là DOCTOR, xóa record Doctor
+            doctorRepository.deleteById(staff.getStaffId());
         }
 
         StaffResponse newStaff = staffMapper.toResponse(staff);

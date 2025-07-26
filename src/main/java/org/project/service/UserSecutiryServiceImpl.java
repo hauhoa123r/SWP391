@@ -3,6 +3,7 @@ package org.project.service;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.project.dto.RegisterDTO;
+import org.project.dto.request.LoginRequest;
 import org.project.dto.response.Response;
 import org.project.entity.PatientEntity;
 import org.project.entity.UserEntity;
@@ -93,6 +94,31 @@ public class UserSecutiryServiceImpl implements UserSecurityService {
         return response;
     }
 
+    public Response login1(LoginRequest loginRequest) {
+        Response response = new Response();
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            var user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new OurException("Không tìm thấy người dùng"));
+
+            var token = jwtUtils.generateToken(user);
+            response.setStatusCode(200);
+            response.setToken(token);
+            response.setRole(user.getUserRole().getName());
+            response.setExpirationTime("7 Days");
+            response.setMessage("successful");
+
+        } catch (OurException e) {
+            response.setStatusCode(404);
+            response.setMessage(e.getMessage());
+
+        } catch (Exception e) {
+
+            response.setStatusCode(500);
+            response.setMessage("Error Occurred During USer Login " + e.getMessage());
+        }
+        return response;
+    }
+
 
     public String login(String email, String password, String redirectTo, HttpServletResponse response) throws Exception {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
@@ -115,7 +141,7 @@ public class UserSecutiryServiceImpl implements UserSecurityService {
         String redirectUrl;
         switch (user.getUserRole()) {
             case ADMIN:
-                redirectUrl = "redirect:/admin";
+                redirectUrl = "redirect:http://localhost:3000/";
                 break;
             case PATIENT:
                 redirectUrl = "redirect:/patient/showAddPrevious";
@@ -124,29 +150,31 @@ public class UserSecutiryServiceImpl implements UserSecurityService {
                 if (user.getStaffEntity() != null && user.getStaffEntity().getStaffRole() != null) {
                     switch (user.getStaffEntity().getStaffRole()) {
                         case DOCTOR:
-                            redirectUrl = "redirect:/doctor";
+                            redirectUrl = "redirect:/staff/doctor/home-page";
+                            break;
                         case PHARMACIST:
                             redirectUrl = "redirect:/staff/pharmacy";
                             break;
                         case TECHNICIAN:
-                            redirectUrl = "redirect:/lab/homepage";
+                            redirectUrl = "redirect:/";
                             break;
                         case SCHEDULING_COORDINATOR:
                             redirectUrl = "redirect:/staff/schedule";
                             break;
                         case INVENTORY_MANAGER:
-                            redirectUrl = "redirect:/staff/inventory";
+                            redirectUrl = "redirect:/dashboard/main";
                             break;
 
                         default:
-                            throw new RuntimeException("Unknown staff role");
+                            throw new RuntimeException("Vai trò nhân viên không xác định");
                     }
                 } else {
-                    throw new RuntimeException("Missing staff role for staff user");
+                    throw new RuntimeException("\n" +
+                            "Thiếu vai trò nhân viên cho người dùng nhân viên");
                 }
                 break;
             default:
-                throw new RuntimeException("Unknown user role");
+                throw new RuntimeException("Vai trò người dùng không xác định");
         }
 
         return redirectUrl;

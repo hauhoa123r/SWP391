@@ -7,7 +7,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.project.admin.enums.patients.BloodType;
 import org.project.admin.enums.patients.Relationship;
-import org.project.enums.Gender;
+import org.project.admin.enums.patients.Gender;
 import org.project.admin.converter.BloodTypeConverter;
 
 import java.time.LocalDate;

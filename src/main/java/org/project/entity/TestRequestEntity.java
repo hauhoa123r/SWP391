@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.project.enums.RequestStatus;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @AllArgsConstructor
@@ -25,7 +26,7 @@ public class TestRequestEntity {
     private RequestStatus requestStatus;
 
     @Column(name = "request_time")
-    private Date requestTime;
+    private LocalDate requestTime;
 
     @Column(name = "reason")
     private String reason;

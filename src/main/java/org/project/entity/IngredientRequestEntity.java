@@ -1,7 +1,6 @@
 package org.project.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,17 +23,14 @@ public class IngredientRequestEntity {
     @Column(name = "ingredient_request_id", nullable = false)
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "appointment_id", nullable = false)
     private AppointmentEntity appointmentEntity;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "pharmacist_id", nullable = false)
     private PharmacistEntity pharmacistEntity;
 
-    @NotNull
     @Lob
     @Column(name = "reason", nullable = false)
     private String reason;

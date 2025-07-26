@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @Table(name = "appointments")
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE appointments SET deleted = true WHERE appointment_id=?")
+//@SQLDelete(sql = "UPDATE appointments SET deleted = true WHERE appointment_id=?")
 
-@Where(clause = "deleted = false")
+//@Where(clause = "deleted = false")
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,8 +49,8 @@ public class Appointment {
     @JoinColumn(name = "scheduling_coordinator_id")
     private Staff schedulingCoordinator;
 
-    @Column(name = "deleted", nullable = false, columnDefinition = "boolean default false")
-    private boolean deleted = false;
+//    @Column(name = "deleted", nullable = false, columnDefinition = "boolean default false")
+//    private boolean deleted = false;
 
 }
 

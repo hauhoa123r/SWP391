@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 
 @Service
@@ -31,23 +33,26 @@ public class JWTUtils {
 
     public String generateToken(UserDetails userDetails) {
         Long userId = null;
+
         String role = null;
-        String staffSubRole = null; // ✅ Thêm khai báo
+        String staffSubRole = null;
+        List<String> roles = new ArrayList<>();
 
         if (userDetails instanceof UserEntity userEntity) {
             userId = userEntity.getId();
             role = userEntity.getUserRole().name();
+            roles.add( role);
             if (role.equals("STAFF") && userEntity.getStaffEntity() != null) {
                 staffSubRole = userEntity.getStaffEntity().getStaffRole().name();
+                roles.add("STAFF_" + staffSubRole);
             }
         }
-
         var builder = Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .claim("userId", userId)
-                .claim("role", role);
+                .claim("roles", roles);
 
         if (staffSubRole != null) {
             builder.claim("staffRole", staffSubRole);

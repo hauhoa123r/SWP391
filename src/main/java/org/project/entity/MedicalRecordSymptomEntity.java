@@ -22,7 +22,7 @@ public class MedicalRecordSymptomEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "medical_record_id")
-    private MedicalRecordEntity medicalRecord;
+    private MedicalRecordEntity medicalRecordEntity;
 
     @Size(max = 255)
     @Column(name = "symptom_name")

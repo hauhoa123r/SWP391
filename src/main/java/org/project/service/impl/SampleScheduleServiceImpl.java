@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Service
@@ -52,7 +53,7 @@ public class SampleScheduleServiceImpl implements SampleScheduleService {
                 .findById(rejectSampleScheduleDTO.getTestRequestId())
                 .orElseThrow();
         testRequestEntity.setReason(rejectSampleScheduleDTO.getReason());
-        testRequestEntity.setRequestTime(Date.from(Instant.now()));
+        testRequestEntity.setRequestTime(LocalDate.now());
         testRequestEntity.setRequestStatus(RequestStatus.pending);
         assignmentRepositoryImpl.save(testRequestEntity);
         return true;

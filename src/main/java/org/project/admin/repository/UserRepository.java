@@ -18,14 +18,24 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     Optional<User> findByPhoneNumber(String phoneNumber);
 //    Optional<User> findByUserRole(UserRole userRole);
 
+    // Kiểm tra email đã tồn tại (chưa bị xóa)
+    boolean existsByEmailAndDeletedFalse(String email);
+
+    // Kiểm tra email trùng với user khác (không phải user hiện tại)
+    boolean existsByEmailAndDeletedFalseAndUserIdNot(String email, Long userId);
+
+    // Kiểm tra số điện thoại đã tồn tại (chưa bị xóa)
+    boolean existsByPhoneNumberAndDeletedFalse(String phoneNumber);
+
+    // Kiểm tra số điện thoại trùng với user khác (không phải user hiện tại)
+    boolean existsByPhoneNumberAndDeletedFalseAndUserIdNot(String phoneNumber, Long userId);
+
     @Query("SELECT u FROM User u WHERE u.deleted = false")
     Page<User> findAllByDeletedFalse(Pageable pageable);
 
     @Query(value = "SELECT * FROM users WHERE user_id = :id", nativeQuery = true)
     Optional<User> findByIdIncludingDeleted(@Param("id") Long id);
 
-
     @Query(value = "SELECT * FROM users WHERE deleted = true", nativeQuery = true)
     Page<User> findAllDeleted(Pageable pageable);
-
 }
