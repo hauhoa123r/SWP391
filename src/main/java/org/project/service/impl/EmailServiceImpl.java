@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.project.exception.ErrorResponse;
 import org.project.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class EmailServiceImpl implements EmailService {
     private JavaMailSender javaMailSender;
+    @Value("${MAIL_USERNAME}")
+    private String mailUsername;
 
     @Autowired
     public void setJavaMailSender(JavaMailSender javaMailSender) {
@@ -27,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
         simpleMailMessage.setTo(to);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(body);
-        simpleMailMessage.setFrom("he186966thieuvanhieu@gmail.com");
+        simpleMailMessage.setFrom(mailUsername);
         javaMailSender.send(simpleMailMessage);
     }
 
@@ -39,7 +42,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(body, true);
-            helper.setFrom("he186966thieuvanhieu@gmail.com");
+            helper.setFrom(mailUsername);
             javaMailSender.send(message);
         } catch (MessagingException ex) {
             throw new ErrorResponse("Gửi email thất bại");
