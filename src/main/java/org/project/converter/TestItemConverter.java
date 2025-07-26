@@ -52,7 +52,6 @@ public class TestItemConverter {
         result.setTestItemName(testItemName);
         result.setUnitName(unitName);
         result.setTestTypeId(testRequestEntity.getTestTypeEntity().getId());
-        result.setImagePatient(patientEntity.getAvatarUrl() != null ? patientEntity.getAvatarUrl() : "");
         return result;
     }
 }

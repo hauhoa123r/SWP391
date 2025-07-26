@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-
+@AllArgsConstructor
 public enum DoctorRank {
     INTERN("Intern"),
     RESIDENT("Resident"),
@@ -15,8 +15,4 @@ public enum DoctorRank {
     CHIEF_PHYSICIAN("Chief Physician");
 
     private final String rank;
-
-    DoctorRank(String rank) {
-        this.rank = rank;
-    }
 }

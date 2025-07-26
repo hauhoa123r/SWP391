@@ -36,6 +36,7 @@ public class StaffServiceImpl implements StaffService {
                     staffEntity.getDepartmentEntity().getId(),
                     staffEntity.getHospitalEntity().getId(),
                     availability.getStaffId(),
+                    staffEntity.getStaffRole().toString(),
                     availability.getStartTime(),
                     availability.getEndTime()
             );

@@ -50,7 +50,6 @@ public class SetDateConverter {
         }
         SampleEntity sampleEntity = sampleScheduleRepository.findByTestRequest_Id(testRequestEntity.get().getId());
         SetDateGetSampleResponse setDateGetSampleResponse = new SetDateGetSampleResponse();
-        setDateGetSampleResponse.setImagePatient(testRequestEntity.get().getPatientEntity().getAvatarUrl() != null ? testRequestEntity.get().getPatientEntity().getAvatarUrl() : "");
         setDateGetSampleResponse.setSampleId(sampleEntity.getId());
         setDateGetSampleResponse.setTestType(testRequestEntity.get().getTestTypeEntity().getTestTypeName());
         setDateGetSampleResponse.setPatientName(testRequestEntity.get().getAppointmentEntity().getPatientEntity().getFullName());

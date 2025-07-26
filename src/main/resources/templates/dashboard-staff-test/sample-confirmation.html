@@ -476,14 +476,14 @@
                     <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round"></path>
                 </svg>
-                <span class="head-title fw-500 mt-1">Xác nhận lấy mẫu</span>
+                <span class="head-title fw-500 mt-1">Home</span>
             </div>
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h4 class="card-title">Xác nhận lấy mẫu</h4>
+                                <h4 class="card-title">Lab Test Orders</h4>
                             </div>
                         </div>
                         <div class="card-body">
@@ -491,12 +491,12 @@
                                 <table id="input-datatable" class="table">
                                     <thead>
                                         <tr>
-                                            <th>Tên bệnh nhân</th>
-                                            <th>Loại xét nghiệm</th>
-                                            <th>Thời gian lấy mẫu</th>
-                                            <th>Người lấy mẫu</th>
-                                            <th>Ghi chú</th>
-                                            <th>Hành động</th>
+                                            <th>Patient Name</th>
+                                            <th>Test Type</th>
+                                            <th>Sample Time</th>
+                                            <th>Sampler</th>
+                                            <th>Note</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1656,7 +1656,7 @@
         let html = '';
 
         html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
-        <a class="page-link" href="#" data-page="${currentPage - 1}">Trước</a></li>`;
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a></li>`;
 
         if (currentPage > 2) {
             html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
@@ -1676,7 +1676,7 @@
         }
 
         html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
-        <a class="page-link" href="#" data-page="${currentPage + 1}">Sau</a></li>`;
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a></li>`;
 
         $('#pagination-container').html(html);
     }

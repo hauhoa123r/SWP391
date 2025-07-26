@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-
+@AllArgsConstructor
 public enum BloodType {
     A_POSITIVE("A+"),
     A_NEGATIVE("A-"),
@@ -16,8 +16,4 @@ public enum BloodType {
     O_NEGATIVE("O-");
 
     private final String type;
-
-    BloodType(String type) {
-        this.type = type;
-    }
 }

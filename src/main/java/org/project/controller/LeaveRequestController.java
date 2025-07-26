@@ -25,7 +25,7 @@ public class LeaveRequestController {
         this.leaveRequestService = leaveRequestService;
     }
 
-    @GetMapping("/leave-staff/{staffId}")
+    @GetMapping("staff/leave-staff/{staffId}")
     public String showLeaveRequestPage(@PathVariable Long staffId, Model model) {
         Year currentYear = Year.now();
         List<LeaveRequestResponse> leaveRequests = leaveRequestService.getLeaveRequestsByStaffId(staffId);
@@ -33,10 +33,10 @@ public class LeaveRequestController {
         model.addAttribute("staffId", staffId);
         model.addAttribute("leaveBalance", leaveBalanceResponse);
         model.addAttribute("leaveRequests", leaveRequests);
-        return "frontend/leave"; // Adjust the view name as necessary
+        return "dashboard-staff/leave"; // Adjust the view name as necessary
     }
 
-    @GetMapping("/leave-manager/{managerId}")
+    @GetMapping("staff/manager/leave-manager/{managerId}")
     public String showManagerLeaveRequests(@PathVariable Long managerId,
                                            @RequestParam(defaultValue = "0") int pageIndex,
                                            Model model
@@ -49,19 +49,22 @@ public class LeaveRequestController {
         model.addAttribute("leaveRequests", leaveRequestResponses);
         model.addAttribute("pageIndex", pageIndex);
         model.addAttribute("totalPages", leaveRequests.getTotalPages());
-        return "frontend/leave-manager"; // Adjust the view name as necessary
+        return "dashboard-staff/leave-manager"; // Adjust the view name as necessary
     }
 
-    @GetMapping("/leave-staff-list/{staffId}")
+    @GetMapping("staff/leave-staff-list/{staffId}")
     public String showStaffLeaveRequests(@PathVariable Long staffId,
                                          @RequestParam(defaultValue = "0") int pageIndex,
                                          Model model) {
+        Year currentYear = Year.now();
         Page<LeaveRequestResponse> leaveRequests = leaveRequestService.getLeaveRequestByStaffId(staffId, pageIndex, 8);
+        LeaveBalanceResponse leaveBalanceResponse = leaveRequestService.getLeaveBalanceByStaffIdAndYear(staffId, currentYear);
         List<LeaveRequestResponse> leaveRequestResponses = leaveRequests.getContent();
         model.addAttribute("staffId", staffId);
+        model.addAttribute("leaveBalance", leaveBalanceResponse);
         model.addAttribute("leaveRequests", leaveRequestResponses);
         model.addAttribute("pageIndex", pageIndex);
         model.addAttribute("totalPages", leaveRequests.getTotalPages());
-        return "frontend/staff-leave-list"; // Adjust the view name as necessary
+        return "dashboard-staff/staff-leave-list"; // Adjust the view name as necessary
     }
 }

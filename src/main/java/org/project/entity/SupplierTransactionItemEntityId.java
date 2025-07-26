@@ -19,7 +19,6 @@ import java.util.Objects;
 @Embeddable
 public class SupplierTransactionItemEntityId implements Serializable {
     private static final long serialVersionUID = -574245831273568671L;
-
     @NotNull
     @Column(name = "supplier_transaction_id", nullable = false)
     private Long supplierTransactionId;
@@ -41,4 +40,5 @@ public class SupplierTransactionItemEntityId implements Serializable {
     public int hashCode() {
         return Objects.hash(productId, supplierTransactionId);
     }
+
 }

@@ -165,7 +165,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     public List<DoctorResponse> getTopDoctors(int top) {
         Pageable pageable = pageUtils.getPageable(0, top);
-        Page<DoctorEntity> doctorEntityPage = doctorRepository.findTopOrderByStaffEntityAverageRatingDescAndStaffEntityReviewCountDesc(pageable);
+        List<SearchCriteria> searchCriterias = List.of();
+        List<SortCriteria> sortCriterias = List.of(new SortCriteria(FieldNameUtils.joinFields(DoctorEntity.Fields.staffEntity, StaffEntity.Fields.reviewEntities, ReviewEntity.Fields.rating), AggregationFunction.AVG, SortDirection.DESC, JoinType.LEFT), new SortCriteria(FieldNameUtils.joinFields(DoctorEntity.Fields.staffEntity, StaffEntity.Fields.reviewEntities, ReviewEntity.Fields.id), AggregationFunction.COUNT, SortDirection.DESC, JoinType.LEFT));
+        Page<DoctorEntity> doctorEntityPage = pageSpecificationUtils.getPage(specificationUtils.reset().getSpecifications(searchCriterias, sortCriterias), pageable, DoctorEntity.class, true);
         return doctorEntityPage.stream().map(doctorConverter::toResponse).toList();
     }
 

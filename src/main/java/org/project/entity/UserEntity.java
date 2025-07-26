@@ -6,46 +6,33 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
-import org.project.enums.StaffRole;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "users", schema = "swp391")
-public class UserEntity implements UserDetails {
+@Table(name = "users")
+@FieldNameConstants
+public class UserEntity {
     @Id
     @Column(name = "user_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Size(max = 255)
-    @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
-
-    @Transient
-    private boolean isPasswordSet = false;
-
-    public boolean isPasswordSet() {
-        return isPasswordSet;
-    }
-
-    public void setPasswordSet(boolean passwordSet) {
-        this.isPasswordSet = passwordSet;
-    }
+    @Column(name = "email")
+    private String email;
 
     @Size(max = 255)
-    @Column(name = "email", unique = true)
-    private String email;
+    @Column(name = "password_hash")
+    private String passwordHash;
 
     @Size(max = 255)
     @Column(name = "phone_number")
@@ -63,9 +50,6 @@ public class UserEntity implements UserDetails {
 
     @OneToOne(mappedBy = "userEntity")
     private StaffEntity staffEntity;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ForgotPassword forgotPassword;
 
     @OneToMany(mappedBy = "userEntity")
     private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
@@ -98,51 +82,16 @@ public class UserEntity implements UserDetails {
     */
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'PATIENT'")
-    @Column(name = "user_role", nullable = false)
+    @Column(name = "user_role", columnDefinition = "enum not null")
     private UserRole userRole;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
     private UserStatus userStatus;
 
-
     public void addPatientEntity(PatientEntity patientEntity) {
         this.patientEntities.add(patientEntity);
         patientEntity.setUserEntity(this);
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.name()));
-
-        if (userRole == UserRole.STAFF && staffEntity != null && staffEntity.getStaffRole() != null) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_STAFF_" + staffEntity.getStaffRole().name()));
-        }
-
-        return authorities;
-    }
-    @Override
-    public boolean isAccountNonExpired() { return true; }
-
-    @Override
-    public boolean isAccountNonLocked() { return true; }
-
-    @Override
-    public boolean isCredentialsNonExpired() {  return true; }
-
-    @Override
-    public boolean isEnabled() { return true; }
-
-
-    @Override
-    public String getPassword() {
-        return passwordHash;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
     }
 
 }

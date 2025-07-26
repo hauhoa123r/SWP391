@@ -10,7 +10,6 @@ import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
 import org.project.enums.StaffRole;
-import org.project.enums.StaffStatus;
 import org.project.enums.StaffType;
 
 import java.sql.Date;
@@ -86,10 +85,6 @@ public class StaffEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "staff_type")
     private StaffType staffType;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "staff_status")
-    private StaffStatus staffStatus;
 
     @OneToMany(mappedBy = "manager")
     private Set<StaffEntity> staffs = new LinkedHashSet<>();

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/appointment")
 public class AppointmentApprovalController {
 
     private AppointmentService appointmentService;
@@ -22,10 +21,11 @@ public class AppointmentApprovalController {
         this.appointmentService = appointmentService;
     }
 
-    @GetMapping("/showPending/{staffId}")
+    @GetMapping("staff/coordinator/showPending/{staffId}")
     public String showPendingAppointmentsByHospitalId(@PathVariable Long staffId,
                                                         Model model) {
         List<AppointmentApprovalResponse> pendingAppointments = appointmentService.getAppointmentsHaveStatusPendingByStaffId(staffId);
+
         model.addAttribute("staffId", staffId);
         model.addAttribute("pendingAppointments", pendingAppointments);
         return "frontend/appointment-approval";

@@ -31,4 +31,3 @@ public class AdminStaffUpdateRequest {
     @NotNull
     private String staffType;
 }
-

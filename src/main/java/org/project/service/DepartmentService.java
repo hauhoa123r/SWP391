@@ -20,8 +20,4 @@ public interface DepartmentService {
     List<DepartmentResponse> getDepartmentsHaveDoctor();
 
     boolean isDepartmentNameExist(String departmentName);
-
-    List<DepartmentResponse> getAll();
-
-
 }

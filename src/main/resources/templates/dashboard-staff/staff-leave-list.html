@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đơn nghỉ phép của tôi - Bệnh viện Đa khoa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/dashboard-staff/assets/css/staff-leave-list.css}"/>
+
+    <link rel="stylesheet" th:href="@{/dashboard-staff/assets/css/header.css}"/>
+
+    <link rel="stylesheet" th:href="@{/dashboard-staff/assets/css/sidebar.css}"/>
+
+    <div th:replace="~{dashboard-staff/fragments/header :: header}"></div>
+
+    <div th:replace="~{dashboard-staff/fragments/sidebar :: sidebar}"></div>
+
+    <style>
+
+    </style>
+</head>
+<body>
+<!-- Mobile menu toggle button -->
+<div class="menu-toggle" id="menuToggle">
+    <i class="fas fa-bars"></i>
+</div>
+
+<div class="container">
+    <!-- Page header -->
+    <div class="page-header">
+        <div class="page-title">
+            <i class="fas fa-file-medical"></i>
+            <span>Đơn nghỉ phép của tôi</span>
+        </div>
+        <a href="/leave-staff" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Tạo đơn mới
+        </a>
+    </div>
+
+    <!-- Leave statistics -->
+    <div class="leave-stats">
+        <div class="stat-card total-days">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-number" th:text="${leaveBalance.totalLeave}">15</div>
+            <div class="stat-label">Tổng ngày phép</div>
+        </div>
+        <div class="stat-card used-days">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-minus"></i>
+            </div>
+            <div class="stat-number" th:text="${leaveBalance.usedLeave}">5</div>
+            <div class="stat-label">Đã sử dụng</div>
+        </div>
+        <div class="stat-card remaining-days">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-plus"></i>
+            </div>
+            <div class="stat-number" th:text="${leaveBalance.leaveLeft}">10</div>
+            <div class="stat-label">Còn lại</div>
+        </div>
+        <div class="stat-card pending-days">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-number" th:text="${leaveBalance.pendingLeave}">2</div>
+            <div class="stat-label">Đang chờ</div>
+        </div>
+    </div>
+
+    <!-- Leave List -->
+    <div class="leave-list-card">
+        <div class="table-header">
+            <div class="section-title">
+                <i class="fas fa-list"></i>
+                <span>Danh sách đơn nghỉ phép</span>
+            </div>
+            <div class="results-info">
+                Hiển thị <span th:text="${leaveRequests.size()}"></span> kết quả
+            </div>
+        </div>
+
+        <table class="leave-table">
+            <thead>
+            <tr>
+                <th>Mã đơn</th>
+                <th>Ngày tạo</th>
+                <th>Thời gian nghỉ</th>
+                <th>Loại phép</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Hiển thị khi không có dữ liệu -->
+            <tr th:if="${leaveRequests.isEmpty()}">
+                <td colspan="6" class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Không có đơn nghỉ phép nào</p>
+                </td>
+            </tr>
+
+            <!-- Lặp qua danh sách đơn nghỉ phép -->
+            <tr th:each="leave : ${leaveRequests}">
+                <td th:text="${leave.requestId}">20231001</td>
+                <td th:text="${leave.createdAt}">15/07/2023</td>
+                <td>
+                    <span th:text="${leave.startDate} + ' - ' + ${leave.endDate}"></span>
+                    (<span th:text="${leave.totalDays}"></span> ngày)
+                </td>
+                <td th:text="${leave.leaveType}">Nghỉ phép năm</td>
+                <td>
+                        <span th:switch="${leave.status}" class="status-badge">
+                                  <span th:case="'APPROVED'"
+                                        class="status-approved"
+                                        th:text="'Đã duyệt'">Đã duyệt</span>
+                                  <span th:case="'REJECTED'"
+                                        class="status-rejected"
+                                        th:text="'Từ chối'">Từ chối</span>
+                                  <span th:case="'PENDING'"
+                                        class="status-pending"
+                                        th:text="'Chờ duyệt'">Chờ duyệt</span>
+                                  <span th:case="*"
+                                        class="status-cancelled"
+                                        th:text="'Đã hủy'">Đã hủy</span>
+                                </span>
+                </td>
+                <td>
+                        <span class="action-link view-detail"
+                              th:attr="data-id=${leave.requestId}">
+                          <i class="fas fa-eye"></i> Xem chi tiết
+                        </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+        <div class="pagination" th:if="${totalPages > 1}">
+            <!-- Prev -->
+            <a th:href="@{staff/leave-staff-list/{staffId}(staffId=${staffId}, pageIndex=${pageIndex > 0 ? pageIndex - 1 : 0})}"
+               class="page-btn"
+               th:classappend="${pageIndex == 0} ? ' disabled' : ''">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+
+            <!-- Số trang -->
+            <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+               th:href="@{staff/leave-staff-list/{staffId}(staffId=${staffId}, pageIndex=${i})}"
+               class="page-btn"
+               th:text="${i + 1}"
+               th:classappend="${i == pageIndex} ? ' active' : ''">
+            </a>
+
+            <!-- Next -->
+            <a th:href="@{staff/leave-staff-list/{staffId}(staffId=${staffId}, pageIndex=${pageIndex < totalPages - 1 ? pageIndex + 1 : totalPages - 1})}"
+               class="page-btn"
+               th:classappend="${pageIndex == totalPages - 1} ? ' disabled' : ''">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+
+            <!-- Thông tin trang -->
+            <div class="page-info">
+                Trang <span th:text="${pageIndex + 1}"></span> / <span th:text="${totalPages}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal chi tiết đơn nghỉ phép -->
+<div class="modal" id="detailModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                <i class="fas fa-file-medical"></i>
+                <span>Chi tiết đơn nghỉ phép</span>
+            </h3>
+            <button class="close-modal" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="detail-section">
+                <div class="detail-title">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Thông tin chung</span>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Mã đơn:</div>
+                    <div class="detail-value" id="modal-requestId">LV20231002</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Ngày tạo:</div>
+                    <div class="detail-value" id="modal-createdAt">16/07/2023</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Người duyệt:</div>
+                    <div class="detail-value" id="modal-staffApprovalName">Trần Văn B (Trưởng khoa)</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Trạng thái:</div>
+                    <div class="detail-value">
+                        <span class="status-badge" id="modal-status">Chờ duyệt</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Thời gian nghỉ</span>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Loại nghỉ phép:</div>
+                    <div class="detail-value" id="modal-leaveType">Việc riêng</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Ngày bắt đầu:</div>
+                    <div class="detail-value" id="modal-startDate">25/07/2023</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Ngày kết thúc:</div>
+                    <div class="detail-value" id="modal-endDate">25/07/2023</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Số ngày nghỉ:</div>
+                    <div class="detail-value" id="modal-totalDays">1 ngày</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Nửa ngày:</div>
+                    <div class="detail-value" id="modal-halfDayType">Buổi chiều</div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Nội dung đơn</span>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Lý do:</div>
+                    <div class="detail-value" id="modal-reason">Tôi cần nghỉ buổi chiều...</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Người thay thế:</div>
+                    <div class="detail-value" id="modal-substituteStaffName">Lê Văn D (Khoa Nội)</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Liên hệ khẩn:</div>
+                    <div class="detail-value" id="modal-emergencyContact">Chị Nguyễn Thị H - 0909123456</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="cancelBtn">
+                <i class="fas fa-times"></i> Hủy đơn
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile menu -->
+<div class="mobile-menu">
+    <div class="mobile-menu-items">
+        <a href="/dashboard" class="mobile-menu-item">
+            <i class="fas fa-home"></i>
+            <span>Trang chủ</span>
+        </a>
+        <a href="/leave-staff" class="mobile-menu-item">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Nghỉ phép</span>
+        </a>
+        <a href="/schedule" class="mobile-menu-item">
+            <i class="fas fa-calendar-check"></i>
+            <span>Lịch trực</span>
+        </a>
+        <a href="/profile" class="mobile-menu-item">
+            <i class="fas fa-user"></i>
+            <span>Cá nhân</span>
+        </a>
+    </div>
+</div>
+
+<script >
+    let currentRequestId = null;
+    function openModal() {
+        document.getElementById('detailModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+        document.getElementById('detailModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('detailModal').addEventListener('click', e => {
+        if (e.target.id === 'detailModal') closeModal();
+    });
+
+    // 2. Khi click vào nút "Xem chi tiết"
+    document.querySelectorAll('.view-detail').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;  // data-id đã có sẵn từ Thymeleaf
+            currentRequestId = id;
+            try {
+                const resp = await fetch(`/api/leave-request/get-modal/${id}`);
+                if (!resp.ok) throw new Error('Không tải được dữ liệu');
+                const leave = await resp.json();
+
+                // 3. Điền dữ liệu vào modal
+                document.getElementById('modal-requestId').textContent         = leave.requestId;
+                document.getElementById('modal-createdAt').textContent         = leave.createdAt;
+                document.getElementById('modal-staffApprovalName').textContent = leave.staffApprovalName;
+                document.getElementById('modal-leaveType').textContent         = leave.leaveType;
+                document.getElementById('modal-startDate').textContent         = leave.startDate;
+                document.getElementById('modal-endDate').textContent           = leave.endDate;
+                document.getElementById('modal-totalDays').textContent         = leave.totalDays + ' ngày';
+                document.getElementById('modal-halfDayType').textContent       = leave.halfDayType || 'Không áp dụng';
+                document.getElementById('modal-reason').textContent            = leave.reason;
+                document.getElementById('modal-substituteStaffName').textContent = leave.substituteStaffName;
+                document.getElementById('modal-emergencyContact').textContent  = leave.emergencyContact;
+
+                // 4. Cập nhật trạng thái và class
+                const statusBadge = document.getElementById('modal-status');
+                let label, cls;
+                switch (leave.status) {
+                    case 'PENDING':  label='Chờ duyệt';   cls='status-pending';  break;
+                    case 'APPROVED': label='Đã duyệt';    cls='status-approved'; break;
+                    case 'REJECTED': label='Đã từ chối';  cls='status-rejected'; break;
+                    default:         label='Đã hủy';      cls='status-cancelled';
+                }
+                statusBadge.textContent = label;
+                statusBadge.className   = 'status-badge ' + cls;
+
+                const cancelBtn = document.getElementById('cancelBtn');
+                // Chỉ cho phép hủy đơn khi ở trạng thái PENDING
+                cancelBtn.disabled = leave.status !== 'PENDING';
+
+                // Cập nhật giao diện nút
+                if (cancelBtn.disabled) {
+                    cancelBtn.classList.add('disabled');
+                    cancelBtn.style.opacity = '0.6';
+                    cancelBtn.style.cursor = 'not-allowed';
+                } else {
+                    cancelBtn.classList.remove('disabled');
+                    cancelBtn.style.opacity = '';
+                    cancelBtn.style.cursor = '';
+                }
+
+                // 5. Hiển thị modal
+                openModal();
+            } catch (err) {
+                alert('Lỗi khi tải chi tiết: ' + err.message);
+            }
+        });
+    });
+    document.getElementById('cancelBtn').addEventListener('click', async () => {
+        if (!currentRequestId) return;
+
+        if (!confirm('Bạn có chắc chắn muốn huỷ đơn nghỉ phép này?')) return;
+
+        try {
+            const response = await fetch(`/api/leave-request/staff/cancel/${currentRequestId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const text = await response.text(); // đọc plain text
+            if (response.ok) {
+                alert(text);  // “Huỷ thành công!”
+                closeModal();
+                location.reload();
+            } else {
+                alert('Huỷ đơn thất bại: ' + text);
+            }
+        } catch (err) {
+            console.error('Error cancelling leave:', err);
+            alert('Huỷ đơn thất bại: ' + err.message);
+        }
+    });
+    const style = document.createElement('style');
+    style.innerHTML = `
+            .btn:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                background-color: #e5e7eb;
+                border-color: #d1d5db;
+                color: #6b7280;
+            }
+            .btn-outline:disabled {
+                background-color: transparent;
+            }
+        `;
+    document.head.appendChild(style);
+
+    // Menu toggle for mobile
+    document.getElementById('menuToggle').addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+    });
+</script>
+<script th:src="@{/dashboard-staff/assets/js/header.js}"></script>
+<script th:src="@{/dashboard-staff/assets/js/sidebar.js}"></script>
+</body>
+</html>

@@ -32,4 +32,5 @@ public class OrderItemEntity {
     @NotNull
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
+
 }

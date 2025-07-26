@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
-import org.project.enums.DiscountType;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -49,15 +48,16 @@ public class CouponEntity {
     @NotNull
     @Column(name = "expiration_date", nullable = false)
     private Date expirationDate;
-    
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    @Column(name = "discount_type", nullable = false)
-    private DiscountType discountType;
 
     @OneToMany
     private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
-    
     @OneToMany
     private Set<UserCouponEntity> userCouponEntities = new LinkedHashSet<>();
+
+/*
+ TODO [Reverse Engineering] create field to map the 'discount_type' column
+ Available actions: Define target Java type | Uncomment as is | Remove column mapping
+    @Column(name = "discount_type", columnDefinition = "enum not null")
+    private Object discountType;
+*/
 }

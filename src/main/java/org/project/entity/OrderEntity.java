@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
-import org.project.enums.OrderStatus;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
@@ -64,8 +63,10 @@ public class OrderEntity {
     @Column(name = "order_type", columnDefinition = "enum not null")
     private Object orderType;
 */
-    @Enumerated(EnumType.STRING)
+/*
+ TODO [Reverse Engineering] create field to map the 'order_status' column
+ Available actions: Define target Java type | Uncomment as is | Remove column mapping
     @Column(name = "order_status", columnDefinition = "enum not null")
-    private OrderStatus orderStatus;
-
+    private Object orderStatus;
+*/
 }

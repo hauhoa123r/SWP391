@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-
+@AllArgsConstructor
 public enum StaffType {
     PART_TIME_CONTRACT("part_time_contract"),
     INTERN("intern"),
@@ -12,8 +12,4 @@ public enum StaffType {
     FULL_TIME("full_time");
 
     private final String value;
-
-    StaffType(String value) {
-        this.value = value;
-    }
 }
