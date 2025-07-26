@@ -27,7 +27,7 @@ public class DeletedEntityController {
                                               @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> usersPage = restoreQueryService.getDeletedUsers(pageable);
-        return new PageResponse<>(usersPage); // Return wrapped PageResponse
+        return new PageResponse<>(usersPage);
     }
 
     @GetMapping("/patients")
@@ -35,7 +35,7 @@ public class DeletedEntityController {
                                                     @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Patient> patientsPage = restoreQueryService.getDeletedPatients(pageable);
-        return new PageResponse<>(patientsPage); // Return wrapped PageResponse
+        return new PageResponse<>(patientsPage);
     }
 
     @GetMapping("/staffs")
@@ -43,7 +43,7 @@ public class DeletedEntityController {
                                                 @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Staff> staffsPage = restoreQueryService.getDeletedStaffs(pageable);
-        return new PageResponse<>(staffsPage); // Return wrapped PageResponse
+        return new PageResponse<>(staffsPage);
     }
 
     @GetMapping("/products")
@@ -51,7 +51,7 @@ public class DeletedEntityController {
                                                     @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productsPage = restoreQueryService.getDeletedProducts(pageable);
-        return new PageResponse<>(productsPage); // Return wrapped PageResponse
+        return new PageResponse<>(productsPage);
     }
 
     @GetMapping("/coupons")
@@ -59,7 +59,7 @@ public class DeletedEntityController {
                                                   @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Coupon> couponsPage = restoreQueryService.getDeletedCoupons(pageable);
-        return new PageResponse<>(couponsPage); // Return wrapped PageResponse
+        return new PageResponse<>(couponsPage);
     }
 
     @GetMapping("/all")

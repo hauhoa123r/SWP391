@@ -2,9 +2,10 @@ package org.project.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.project.dto.RegisterDTO;
+import org.project.dto.request.LoginRequest;
 import org.project.dto.response.Response;
-import org.project.service.GoogleAuthService;
-import org.project.service.UserSecurityService;
+import org.project.service.GoogleAuthService;;
+import org.project.service.UserSecutiryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
-    private UserSecurityService userService;
+    private UserSecutiryServiceImpl userService;
 
     @Autowired
     private GoogleAuthService googleAuthService;
@@ -34,10 +35,15 @@ public class AuthController {
         return ResponseEntity.status(status).body(response);
     }
 
+     @PostMapping("/login")
+     public ResponseEntity<Response> login1(@RequestBody LoginRequest loginRequest) {
+          Response response = userService.login1(loginRequest);
+          return ResponseEntity.status(response.getStatusCode()).body(response);
+     }
 
 
-    @PostMapping("/google")
-    public ResponseEntity<?> loginWithGoogle(@RequestBody Map<String, String> body,
+     @PostMapping("/google")
+     public ResponseEntity<?> loginWithGoogle(@RequestBody Map<String, String> body,
                                              HttpServletResponse response) {
         return googleAuthService.loginWithGoogle(body, response);
     }

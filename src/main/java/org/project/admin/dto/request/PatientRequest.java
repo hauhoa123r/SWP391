@@ -11,34 +11,36 @@ import java.time.LocalDate;
 @Data
 public class PatientRequest {
 
-    @NotNull(message = "User ID cannot be null")
+    @NotNull(message = "User ID không được để trống")
     private Long userId;
 
-    @NotBlank(message = "Phone number cannot be blank")
-    @Pattern(regexp = "^\\+?\\d{10,15}$", message = "Phone number must be valid (10-15 digits, optional '+' sign)")
+    @NotBlank(message = "Số điện thoại không được để trống")
+    @Pattern(regexp = "^(02|08|09|05|00)\\d{8}$",
+             message = "Số điện thoại phải có 10 số và bắt đầu bằng 02/08/09/05/00")
     private String phoneNumber;
 
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Email must be a valid format")
+    @NotBlank(message = "Email không được để trống")
+    @Email(message = "Email phải đúng định dạng")
+    @Size(max = 255, message = "Email không được vượt quá 255 ký tự")
     private String email;
 
-    @NotBlank(message = "Full name cannot be blank")
-    @Size(min = 1, max = 100, message = "Full name must be between 1 and 100 characters")
+    @NotBlank(message = "Họ và tên không được để trống")
+    @Size(min = 2, max = 100, message = "Họ và tên phải từ 2 đến 100 ký tự")
     private String fullName;
 
     private String avatarUrl;
 
-    @NotNull(message = "Relationship cannot be null")
+    @NotNull(message = "Mối quan hệ không được để trống")
     private Relationship relationship;
 
-    @Size(max = 255, message = "Address cannot be longer than 255 characters")
+    @Size(max = 255, message = "Địa chỉ không được vượt quá 255 ký tự")
     private String address;
 
-    @NotNull(message = "Gender cannot be null")
+    @NotNull(message = "Giới tính không được để trống")
     private Gender gender;
 
-    @NotNull(message = "Birthdate cannot be null")
-    @Past(message = "Birthdate must be in the past")
+    @NotNull(message = "Ngày sinh không được để trống")
+    @Past(message = "Ngày sinh phải là ngày trong quá khứ")
     private LocalDate birthdate;
 
     private BloodType bloodType;

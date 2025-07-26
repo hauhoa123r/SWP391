@@ -27,5 +27,5 @@ public class PatientLog {
 
     @Column(name = "log_detail", columnDefinition = "TEXT")
     private String logDetail;
-
 }
+

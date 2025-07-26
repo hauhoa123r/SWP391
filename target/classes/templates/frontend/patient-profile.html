@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hồ sơ cá nhân</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            font-weight: 700;
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .card {
+            margin-bottom: 2rem;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #007bff, #00b4d8);
+            color: white;
+            font-size: 1.25rem;
+            padding: 1rem 1.5rem;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-header::before {
+            content: '📋';
+            font-size: 1.5rem;
+        }
+
+        /* Table styles */
+        .table {
+            margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            table-layout: auto;
+        }
+
+        .table th {
+            background-color: #edf2f7;
+            color: #4a5568;
+            font-weight: 600;
+            padding: 1rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            text-align: center;
+            white-space: nowrap;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+            font-size: 0.95rem;
+            color: #2d3748;
+            text-align: left;
+            word-break: break-word;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f7fafc;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #e2e8f0;
+            transition: background-color 0.3s ease;
+        }
+
+        .table th:last-child, .table td:last-child {
+            border-right: none;
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #007bff, #00b4d8);
+            color: white;
+            border-radius: 8px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            color: white;
+        }
+
+        .btn-back svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .card-header {
+                font-size: 1.1rem;
+            }
+
+            .table th, .table td {
+                font-size: 0.85rem;
+                padding: 0.75rem;
+            }
+
+            .btn-back {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        .card:nth-child(1) .card-header::before { content: '👤'; }
+        .card:nth-child(2) .card-header::before { content: '📅'; }
+        .card:nth-child(3) .card-header::before { content: '📄'; }
+
+        /* Personal info table styles */
+        .personal-info {
+            border-collapse: collapse; /* Ensure clean borders */
+        }
+
+        .personal-info th {
+            text-align: left;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1a202c; /* Darker color for labels */
+            padding: 1.2rem 1.5rem;
+            background-color: #edf2f7;
+            border-bottom: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            width: 30%; /* Ensure labels have consistent width */
+        }
+
+        .personal-info td {
+            padding: 1.2rem 1.5rem;
+            font-size: 0.95rem;
+            color: #4a5568; /* Slightly lighter for data */
+            border-bottom: 1px solid #e2e8f0;
+            border-right: none; /* Remove right border for data */
+            background-color: #ffffff;
+        }
+
+        .personal-info tr:nth-child(even) td {
+            background-color: #f7fafc; /* Subtle alternating background */
+        }
+
+        .personal-info tr:hover td {
+            background-color: #e2e8f0; /* Hover effect */
+            transition: background-color 0.3s ease;
+        }
+
+        .personal-info tr:last-child th,
+        .personal-info tr:last-child td {
+            border-bottom: none; /* Remove bottom border for last row */
+        }
+
+        .personal-info th:last-child {
+            border-right: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">👤 Hồ sơ cá nhân</h2>
+
+    <div class="mb-4">
+        <a th:href="@{/}" class="btn-back">
+            <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Quay về
+        </a>
+    </div>
+
+    <div th:if="${message}" class="alert alert-warning text-center" th:text="${message}"></div>
+
+    <div class="card">
+        <div class="card-header">Thông tin cá nhân</div>
+        <div class="card-body p-0">
+            <table class="table table-bordered mb-0 personal-info">
+                <tr><th>Họ tên:</th><td th:text="${patient.fullName}"></td></tr>
+                <tr><th>Giới tính:</th><td th:text="${patient.gender}"></td></tr>
+                <tr><th>Ngày sinh:</th><td th:text="${patient.birthdate}"></td></tr>
+                <tr><th>Số điện thoại:</th><td th:text="${patient.phoneNumber}"></td></tr>
+                <tr><th>Email:</th><td th:text="${patient.email}"></td></tr>
+                <tr><th>Địa chỉ:</th><td th:text="${patient.address}"></td></tr>
+                <tr><th>Nhóm máu:</th><td th:text="${patient.bloodType}"></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">📅 Lịch khám</div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Ngày khám</th>
+                        <th>Dịch vụ</th>
+                        <th>Bác sĩ</th>
+                        <th>Bệnh viện</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="a : ${appointments}">
+                        <td th:text="${a.startTime}">[Ngày khám]</td>
+                        <td th:text="${a.serviceName}">[Dịch vụ]</td>
+                        <td th:text="${a.doctorName}">[Bác sĩ]</td>
+                        <td th:text="${a.departmentName}">[Bệnh viện]</td>
+                        <td th:text="${a.status}">[Trạng thái]</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">📄 Hồ sơ bệnh án</div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Ngày nhập viện</th>
+                        <th>Ngày xuất viện</th>
+                        <th>Triệu chứng chính</th>
+                        <th>Chẩn đoán</th>
+                        <th>Phác đồ</th>
+                        <th>Kết quả</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="m : ${medicalRecords}">
+                        <td th:text="${m.admissionDate}"></td>
+                        <td th:text="${m.dischargeDate}"></td>
+                        <td th:text="${m.mainComplaint}"></td>
+                        <td th:text="${m.diagnosis}"></td>
+                        <td th:text="${m.treatmentPlan}"></td>
+                        <td th:text="${m.outcome}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -20,12 +21,12 @@ public class StaffScheduleAdminController {
     private final StaffScheduleService staffScheduleService;
 
     @PostMapping
-    public StaffScheduleResponse create(@RequestBody StaffScheduleRequest request) {
+    public StaffScheduleResponse create(@Valid @RequestBody StaffScheduleRequest request) {
         return staffScheduleService.create(request);
     }
 
     @PutMapping("/{id}")
-    public StaffScheduleResponse update(@PathVariable Long id, @RequestBody StaffScheduleRequest request) {
+    public StaffScheduleResponse update(@PathVariable Long id, @Valid @RequestBody StaffScheduleRequest request) {
         return staffScheduleService.update(id, request);
     }
 

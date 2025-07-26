@@ -7,12 +7,11 @@ import org.project.admin.dto.request.PatientRequest;
 import org.project.admin.dto.response.PatientResponse;
 import org.project.admin.entity.Patient;
 import org.project.admin.entity.User;
-import org.project.enums.Gender;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-07-24T11:18:08+0700",
+    date = "2025-07-25T22:32:21+0700",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.6 (Oracle Corporation)"
 )
 @Component
@@ -34,7 +33,7 @@ public class PatientMapperImpl implements PatientMapper {
         patientResponse.setAvatarUrl( entity.getAvatarUrl() );
         patientResponse.setRelationship( entity.getRelationship() );
         patientResponse.setAddress( entity.getAddress() );
-        patientResponse.setGender( genderToGender( entity.getGender() ) );
+        patientResponse.setGender( entity.getGender() );
         patientResponse.setBirthdate( entity.getBirthdate() );
         patientResponse.setBloodType( entity.getBloodType() );
 
@@ -69,7 +68,7 @@ public class PatientMapperImpl implements PatientMapper {
         patient.setAvatarUrl( request.getAvatarUrl() );
         patient.setRelationship( request.getRelationship() );
         patient.setAddress( request.getAddress() );
-        patient.setGender( genderToGender1( request.getGender() ) );
+        patient.setGender( request.getGender() );
         patient.setBirthdate( request.getBirthdate() );
         patient.setBloodType( request.getBloodType() );
 
@@ -89,45 +88,5 @@ public class PatientMapperImpl implements PatientMapper {
             return null;
         }
         return userId;
-    }
-
-    protected org.project.admin.enums.patients.Gender genderToGender(Gender gender) {
-        if ( gender == null ) {
-            return null;
-        }
-
-        org.project.admin.enums.patients.Gender gender1;
-
-        switch ( gender ) {
-            case MALE: gender1 = org.project.admin.enums.patients.Gender.MALE;
-            break;
-            case FEMALE: gender1 = org.project.admin.enums.patients.Gender.FEMALE;
-            break;
-            case OTHER: gender1 = org.project.admin.enums.patients.Gender.OTHER;
-            break;
-            default: throw new IllegalArgumentException( "Unexpected enum constant: " + gender );
-        }
-
-        return gender1;
-    }
-
-    protected Gender genderToGender1(org.project.admin.enums.patients.Gender gender) {
-        if ( gender == null ) {
-            return null;
-        }
-
-        Gender gender1;
-
-        switch ( gender ) {
-            case MALE: gender1 = Gender.MALE;
-            break;
-            case FEMALE: gender1 = Gender.FEMALE;
-            break;
-            case OTHER: gender1 = Gender.OTHER;
-            break;
-            default: throw new IllegalArgumentException( "Unexpected enum constant: " + gender );
-        }
-
-        return gender1;
     }
 }

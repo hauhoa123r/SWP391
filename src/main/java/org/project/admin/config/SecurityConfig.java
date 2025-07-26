@@ -51,49 +51,67 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Định nghĩa các endpoints công khai
-        String[] publicEndpoints = {
-                "/auth/**",         // Login và đăng ký
-                "/auth-view/**",    // Các trang view công khai
-                "/auth/google",     // Google OAuth
-                "/assets/**",       // Tài nguyên tĩnh như CSS, JS
-                "/css/**",
-                "/js/**",
-                "/images/**",
-                "/vendor/**",
-                "/forgotPassword/**", // Endpoint quên mật khẩu
-                "/webjars/**",
-                "/favicon.ico",
-                "frontend/assets/**",
-                "dashboard-staff-test/assets/**",
-                "templates_storage/assets/**",
-                "/"
-        };
-
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(publicEndpoints).permitAll() // Cho phép các endpoints công khai
-                        .requestMatchers("/api/**").permitAll() // Các API yêu cầu không xác thực
-                        .requestMatchers("/admin/**").hasRole("ADMIN")  // Chỉ Admin mới được truy cập /admin/**
-                        .requestMatchers("/doctor/**").hasRole("DOCTOR")  // Chỉ Doctor mới được truy cập /doctor/**
-                        .requestMatchers("/patient/**").hasRole("PATIENT")  // Chỉ Patient mới được truy cập /patient/**
-                        .requestMatchers("/staff/**").hasRole("STAFF") // Các endpoint của staff có thể được truy cập theo vai trò
-                        .requestMatchers("/home").hasAnyRole("ADMIN", "DOCTOR", "PATIENT", "STAFF") // Cho phép Admin, Doctor, Patient, và Staff truy cập /home
-                        .anyRequest().authenticated()  // Các request khác cần phải xác thực
+                        .requestMatchers(
+                                "/auth/**",
+                                "/auth-view/**",
+                                "/auth/google",
+                                "/assets/**",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/vendor/**",
+                                "/forgotPassword/**",
+                                "/webjars/**",
+                                "/favicon.ico",
+                                "frontend/assets/**",
+                                "dashboard-staff-test/assets/**",
+                                "templates_storage/assets/**",
+                                "/",
+                                "/home",
+                                "/about-us",
+                                "/hospital/**",
+                                "/department/**",
+                                "/doctor/**",
+                                "/service/**",
+                                "/templates/**"
+                        ).permitAll()
+
+
+                        .requestMatchers("/api/**").hasRole("ADMIN")
+                        .requestMatchers("/patient/**").hasRole("PATIENT")
+                        .requestMatchers("/staff/pharmacy/**").hasRole("STAFF_PHARMACIST")
+                        .requestMatchers("/staff/lab/**").hasRole("STAFF_TECHNICIAN")
+                        .requestMatchers("/abc/**").hasRole("STAFF_TECHNICIAN")
+                        .requestMatchers("/staff/schedule/**").hasRole("STAFF_SCHEDULING_COORDINATOR")
+                        .requestMatchers("/staff/inventory/**").hasRole("STAFF_INVENTORY_MANAGER")
+                        .requestMatchers("/staff/lab-receive/**").hasRole("STAFF_LAB_RECEIVER")
+                        .requestMatchers("/lab/**").hasRole("STAFF_DOCTOR")
+
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Không sử dụng session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/404b"))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-                .authenticationProvider(authenticationProvider())  // Sử dụng provider để xác thực
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);  // Thêm filter JWT
+        http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.sendRedirect("/auth-view/login");
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+
+                    response.sendRedirect("/auth-view/login");
+                })
+        );
 
         return http.build();
     }
+
 }
 
 

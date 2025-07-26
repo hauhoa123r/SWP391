@@ -1,6 +1,7 @@
 package org.project.admin.controller;
 
 import org.project.admin.dto.request.UserRequest;
+import org.project.admin.dto.request.UserUpdateRequest;
 import org.project.admin.dto.request.UserSearchRequest;
 import org.project.admin.dto.response.UserResponse;
 import org.project.admin.service.UserService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/admin/users")
@@ -18,12 +20,12 @@ public class UserAdminController {
     private final UserService userService;
 
     @PostMapping
-    public UserResponse createUser(@RequestBody UserRequest dto) {
+    public UserResponse createUser(@Valid @RequestBody UserRequest dto) {
         return userService.createUser(dto);
     }
 
     @PutMapping("/{id}")
-    public UserResponse updateUser(@PathVariable Long id, @RequestBody UserRequest dto) {
+    public UserResponse updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest dto) {
         return userService.updateUser(id, dto);
     }
 
@@ -56,4 +58,3 @@ public class UserAdminController {
     }
 
 }
-

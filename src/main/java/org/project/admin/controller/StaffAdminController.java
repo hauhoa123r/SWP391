@@ -8,6 +8,7 @@ import org.project.admin.service.StaffService;
 import org.project.admin.util.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class StaffAdminController {
     private final StaffService staffService;
 
     @PostMapping
-    public StaffResponse create(@RequestBody StaffRequest request) {
+    public StaffResponse create(@Valid @RequestBody StaffRequest request) {
         return staffService.createStaff(request);
     }
 
@@ -46,7 +47,7 @@ public class StaffAdminController {
     }
 
     @PutMapping("/{id}")
-    public StaffResponse update(@PathVariable Long id, @RequestBody StaffRequest request) {
+    public StaffResponse update(@PathVariable Long id, @Valid @RequestBody StaffRequest request) {
         return staffService.updateStaff(id, request);
     }
 

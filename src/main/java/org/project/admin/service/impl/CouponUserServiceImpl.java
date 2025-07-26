@@ -10,9 +10,11 @@ import org.project.admin.repository.CouponRepository;
 import org.project.admin.repository.CouponUserRepository;
 import org.project.admin.repository.UserRepository;
 import org.project.admin.service.CouponUserService;
+import org.project.admin.service.email.EmailService;
 import org.project.admin.util.PageResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,14 @@ import java.util.List;
 
 @Service("adminCouponUserService")
 @RequiredArgsConstructor
+@Slf4j
 public class CouponUserServiceImpl implements CouponUserService {
 
     private final CouponRepository couponRepository;
     private final UserRepository userRepository;
     private final CouponUserRepository couponUserRepository;
     private final CouponUserMapper couponUserMapper;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -42,6 +46,14 @@ public class CouponUserServiceImpl implements CouponUserService {
                 cu.setUser(user);
                 cu.setUsedCount(0);
                 couponUserRepository.save(cu);
+
+                if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+                    try {
+                        emailService.sendCouponNotificationEmail(user.getEmail(), coupon);
+                    } catch (Exception e) {
+                        log.error("Không thể gửi email thông báo cho user {}: {}", user.getUserId(), e.getMessage());
+                    }
+                }
             }
         }
     }

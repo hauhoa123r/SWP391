@@ -57,7 +57,9 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(token);
+                    Long userId = jwtUtils.extractUserId(jwtToken);
                 }
+
             }
         } catch (Exception e) {
             System.out.println("JWT validation failed: " + e.getMessage());

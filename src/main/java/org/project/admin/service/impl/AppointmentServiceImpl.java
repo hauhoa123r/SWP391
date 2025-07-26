@@ -32,6 +32,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentResponse create(AppointmentRequest req) {
+        // Validate entities exist
         Staff doctor = staffRepository.findById(req.getDoctorId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy bác sĩ"));
         Patient patient = patientRepository.findById(req.getPatientId())
@@ -43,6 +44,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             coordinator = staffRepository.findById(req.getSchedulingCoordinatorId())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy điều phối viên"));
         }
+
         Appointment entity = appointmentMapper.toEntity(req, doctor, patient, service, coordinator);
         entity = appointmentRepository.save(entity);
         return appointmentMapper.toResponse(entity);
@@ -52,6 +54,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentResponse update(Long id, AppointmentRequest req) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy lịch hẹn"));
+
+        // Validate entities exist
         Staff doctor = staffRepository.findById(req.getDoctorId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy bác sĩ"));
         Patient patient = patientRepository.findById(req.getPatientId())
@@ -63,6 +67,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             coordinator = staffRepository.findById(req.getSchedulingCoordinatorId())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy điều phối viên"));
         }
+
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
         appointment.setService(service);
@@ -73,6 +78,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment = appointmentRepository.save(appointment);
         return appointmentMapper.toResponse(appointment);
     }
+
 
     @Override
     public AppointmentResponse getById(Long id) {

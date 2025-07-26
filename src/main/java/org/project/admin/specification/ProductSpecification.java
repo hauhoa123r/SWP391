@@ -11,7 +11,6 @@ public class ProductSpecification {
         return (root, query, cb) -> {
             Predicate predicate = cb.conjunction();
 
-            // Search by keyword (name or description, case-insensitive)
             if (req.getKeyword() != null && !req.getKeyword().trim().isEmpty()) {
                 String pattern = "%" + req.getKeyword().trim().toLowerCase() + "%";
                 Predicate byName = cb.like(cb.lower(root.get("name")), pattern);
