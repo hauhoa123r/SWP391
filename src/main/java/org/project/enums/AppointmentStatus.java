@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+
 public enum AppointmentStatus {
     PENDING("Pending"),
     CONFIRMED("Confirmed"),
@@ -14,4 +14,7 @@ public enum AppointmentStatus {
     CONFLICTED("Conflicted");
 
     private final String status;
+    AppointmentStatus(String status) {
+        this.status = status;
+    }
 }

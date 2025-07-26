@@ -8,6 +8,7 @@ import org.project.entity.SupplierTransactionItemEntityId;
 import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
+import org.project.enums.ProductType;
 import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierRequestItemDTO;
 import org.project.repository.InventoryManagerRepository;
@@ -16,6 +17,7 @@ import org.project.repository.SupplierEntityRepository;
 import org.project.repository.SupplierTransactionItemRepository;
 import org.project.repository.SupplierTransactionRepository;
 import org.project.service.SupplierInService;
+import org.project.service.base.AbstractBaseTransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -39,70 +41,66 @@ public class SupplierInServiceImpl implements SupplierInService {
     private SupplierTransactionRepository supplierTransactionRepository;
 
     @Autowired
-    private SupplierEntityRepository supplierEntityRepository;
-
-    @Autowired
-    private InventoryManagerRepository inventoryManagerRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private SupplierTransactionItemRepository supplierTransactionItemRepository;
-
-    @Override
-    public List<SupplierInDTO> getAllSupplierIns() {
-        List<SupplierTransactionsEntity> transactions = supplierTransactionRepository.findByTransactionType(SupplierTransactionType.STOCK_IN);
-        return transactions.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public SupplierInServiceImpl(
+        SupplierTransactionRepository supplierTransactionRepository,
+        SupplierEntityRepository supplierEntityRepository,
+        InventoryManagerRepository inventoryManagerRepository,
+        ProductRepository productRepository,
+        SupplierTransactionItemRepository supplierTransactionItemRepository) {
+        super(supplierTransactionRepository, supplierEntityRepository, inventoryManagerRepository,
+              productRepository, supplierTransactionItemRepository, SupplierTransactionType.STOCK_IN);
     }
 
     @Override
-    public Page<SupplierInDTO> getAllSupplierIns(int page, int size, String keyword, String status) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<SupplierInDTO> getFilteredSupplierInsForStockIn(int page, int size, String status, String search,
+                                                            String type, List<SupplierTransactionStatus> allowedStatuses) {
+        return getFilteredTransactions(page, size, search, status, allowedStatuses, SupplierTransactionType.STOCK_IN);
+    }
 
-        // Thực hiện tìm kiếm dựa trên keyword và status
-        Page<SupplierTransactionsEntity> transactionsPage;
+    @Override
+    @Transactional(readOnly = true)
+    public Page<SupplierInDTO> getFilteredTransactions(int page, int size, String status, String search, String type) {
+        PageRequest pageRequest = PageRequest.of(page, size);
 
-        if (keyword != null && !keyword.isEmpty() && status != null && !status.isEmpty()) {
-            // Tìm kiếm theo cả keyword và status
-            SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status);
-            transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatusAndInvoiceNumberContaining(
-                    SupplierTransactionType.STOCK_IN, statusEnum, keyword, pageable);
-        } else if (keyword != null && !keyword.isEmpty()) {
-            // Chỉ tìm kiếm theo keyword
-            transactionsPage = supplierTransactionRepository.findByTransactionTypeAndInvoiceNumberContaining(
-                    SupplierTransactionType.STOCK_IN, keyword, pageable);
+        Page<SupplierTransactionsEntity> transactions;
+
+        // Apply filters
+                if (search != null && !search.isEmpty()) {
+            if (status != null && !status.isEmpty()) {
+                try {
+                    SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status);
+                    transactions = transactionRepository.findByTransactionTypeAndStatusAndSupplierEntityNameContainingIgnoreCase(
+                            SupplierTransactionType.STOCK_IN, statusEnum, search, pageRequest);
+                } catch (IllegalArgumentException e) {
+                    transactions = transactionRepository.findByTransactionTypeAndSupplierEntityNameContainingIgnoreCase(
+                            SupplierTransactionType.STOCK_IN, search, pageRequest);
+                }
+            } else {
+                transactions = transactionRepository.findByTransactionTypeAndSupplierEntityNameContainingIgnoreCase(
+                        SupplierTransactionType.STOCK_IN, search, pageRequest);
+            }
         } else if (status != null && !status.isEmpty()) {
-            // Chỉ tìm kiếm theo status
-            SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status);
-            transactionsPage = supplierTransactionRepository.findByTransactionTypeAndStatus(
-                    SupplierTransactionType.STOCK_IN, statusEnum, pageable);
+            try {
+                SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status);
+                transactions = transactionRepository.findByTransactionTypeAndStatus(
+                        SupplierTransactionType.STOCK_IN, statusEnum, pageRequest);
+            } catch (IllegalArgumentException e) {
+                transactions = transactionRepository.findByTransactionType(SupplierTransactionType.STOCK_IN, pageRequest);
+            }
         } else {
-            // Không có điều kiện tìm kiếm
-            transactionsPage = supplierTransactionRepository.findByTransactionType(
-                    SupplierTransactionType.STOCK_IN, pageable);
+            transactions = transactionRepository.findByTransactionType(SupplierTransactionType.STOCK_IN, pageRequest);
         }
 
-        List<SupplierInDTO> dtoList = transactionsPage.getContent().stream()
+        List<SupplierInDTO> dtos = transactions.getContent().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(dtoList, pageable, transactionsPage.getTotalElements());
-    }
-
-    @Override
-    public SupplierInDTO getSupplierInById(Long id) {
-        Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
-        return transactionOpt.filter(t -> t.getTransactionType() == SupplierTransactionType.STOCK_IN)
-                .map(this::convertToDTO)
-                .orElse(null);
+        return new PageImpl<>(dtos, pageRequest, transactions.getTotalElements());
     }
 
     @Override
     @Transactional
-    public SupplierInDTO createSupplierIn(SupplierInDTO supplierInDTO) {
+    public SupplierInDTO createTransaction(SupplierInDTO supplierInDTO) {
         SupplierTransactionsEntity transaction = new SupplierTransactionsEntity();
 
         // Set basic information
@@ -120,63 +118,56 @@ public class SupplierInServiceImpl implements SupplierInService {
         transaction.setPaymentDate(supplierInDTO.getPaymentDate());
 
         // Set supplier
-        SupplierEntity supplier = supplierEntityRepository.findById(supplierInDTO.getSupplierId())
-                .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + supplierInDTO.getSupplierId()));
-        transaction.setSupplierEntity(supplier);
+        if (supplierInDTO.getSupplierId() != null) {
+            SupplierEntity supplier = supplierRepository.findById(supplierInDTO.getSupplierId())
+                    .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + supplierInDTO.getSupplierId()));
+            transaction.setSupplierEntity(supplier);
+        }
 
         // Set inventory manager
-        InventoryManagerEntity manager = inventoryManagerRepository.findById(supplierInDTO.getInventoryManagerId())
-                .orElseThrow(() -> new RuntimeException("Inventory Manager not found with id: " + supplierInDTO.getInventoryManagerId()));
-        transaction.setInventoryManagerEntity(manager);
+        if (supplierInDTO.getInventoryManagerId() != null) {
+            InventoryManagerEntity inventoryManager = inventoryManagerRepository.findById(supplierInDTO.getInventoryManagerId())
+                    .orElseThrow(() -> new RuntimeException("Inventory manager not found with id: " + supplierInDTO.getInventoryManagerId()));
+            transaction.setInventoryManagerEntity(inventoryManager);
+        }
 
-        // Save transaction first to get ID
-        SupplierTransactionsEntity savedTransaction = supplierTransactionRepository.save(transaction);
+        // Save transaction to get ID
+        SupplierTransactionsEntity savedTransaction = transactionRepository.save(transaction);
 
-        // Process items if available
+        // Add transaction items if provided
         if (supplierInDTO.getItems() != null && !supplierInDTO.getItems().isEmpty()) {
-            List<SupplierTransactionItemEntity> itemEntities = new ArrayList<>();
-
             for (SupplierRequestItemDTO itemDTO : supplierInDTO.getItems()) {
-                SupplierTransactionItemEntity itemEntity = new SupplierTransactionItemEntity();
+                SupplierTransactionItemEntity item = new SupplierTransactionItemEntity();
 
                 // Create composite key
                 SupplierTransactionItemEntityId id = new SupplierTransactionItemEntityId();
                 id.setSupplierTransactionId(savedTransaction.getId());
                 id.setProductId(itemDTO.getProductId());
-                itemEntity.setId(id);
-
-                // Set transaction reference
-                itemEntity.setSupplierTransactionEntity(savedTransaction);
-
-                // Set product reference
-                ProductEntity product = productRepository.findById(itemDTO.getProductId())
-                        .orElseThrow(() -> new RuntimeException("Product not found with id: " + itemDTO.getProductId()));
-                itemEntity.setProductEntity(product);
+                item.setId(id);
 
                 // Set other fields
-                itemEntity.setQuantity(itemDTO.getQuantity());
-                itemEntity.setUnitPrice(itemDTO.getUnitPrice());
-                itemEntity.setManufactureDate(itemDTO.getManufactureDate());
-                itemEntity.setExpirationDate(itemDTO.getExpirationDate());
-                itemEntity.setBatchNumber(itemDTO.getBatchNumber());
-                itemEntity.setStorageLocation(itemDTO.getStorageLocation());
-                itemEntity.setNotes(itemDTO.getNotes());
+                item.setQuantity(itemDTO.getQuantity());
+                item.setUnitPrice(itemDTO.getUnitPrice());
 
-                itemEntities.add(itemEntity);
+                // Set references
+                item.setSupplierTransactionEntity(savedTransaction);
+
+                ProductEntity product = productRepository.findById(itemDTO.getProductId())
+                        .orElseThrow(() -> new RuntimeException("Product not found with id: " + itemDTO.getProductId()));
+                item.setProductEntity(product);
+
+                // Save item
+                itemRepository.save(item);
             }
-
-            // Save all items
-            supplierTransactionItemRepository.saveAll(itemEntities);
         }
 
-        // Return the DTO with updated information
-        return getSupplierInById(savedTransaction.getId());
+        return getTransactionById(savedTransaction.getId());
     }
 
     @Override
     @Transactional
-    public SupplierInDTO updateSupplierIn(Long id, SupplierInDTO supplierInDTO) {
-        Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
+    public SupplierInDTO updateTransaction(Long id, SupplierInDTO supplierInDTO) {
+        Optional<SupplierTransactionsEntity> transactionOpt = transactionRepository.findById(id);
         if (transactionOpt.isEmpty() || transactionOpt.get().getTransactionType() != SupplierTransactionType.STOCK_IN) {
             return null;
         }
@@ -197,72 +188,74 @@ public class SupplierInServiceImpl implements SupplierInService {
 
         // Update supplier if provided
         if (supplierInDTO.getSupplierId() != null) {
-            SupplierEntity supplier = supplierEntityRepository.findById(supplierInDTO.getSupplierId())
+            SupplierEntity supplier = supplierRepository.findById(supplierInDTO.getSupplierId())
                     .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + supplierInDTO.getSupplierId()));
             transaction.setSupplierEntity(supplier);
         }
 
         // Save updated transaction
-        supplierTransactionRepository.save(transaction);
+        transactionRepository.save(transaction);
 
         // Return the updated DTO
-        return getSupplierInById(id);
+        return getTransactionById(id);
     }
 
     @Override
     @Transactional
-    public void updateSupplierInStatus(Long id, String status) {
-        Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
-        if (transactionOpt.isPresent() && transactionOpt.get().getTransactionType() == SupplierTransactionType.STOCK_IN) {
-            SupplierTransactionsEntity transaction = transactionOpt.get();
-            transaction.setStatus(SupplierTransactionStatus.valueOf(status));
-
-            // If status is APPROVED, set approvedDate
-            if (SupplierTransactionStatus.APPROVED.name().equals(status)) {
-                transaction.setApprovedDate(Timestamp.from(Instant.now()));
-            }
-
-            supplierTransactionRepository.save(transaction);
+    public void deleteTransaction(Long id) {
+        Optional<SupplierTransactionsEntity> transaction = transactionRepository.findById(id);
+        if (transaction.isPresent() && transaction.get().getTransactionType() == SupplierTransactionType.STOCK_IN) {
+            transactionRepository.deleteById(id);
         }
     }
 
     @Override
     @Transactional
-    public void deleteSupplierIn(Long id) {
-        Optional<SupplierTransactionsEntity> transactionOpt = supplierTransactionRepository.findById(id);
-        if (transactionOpt.isPresent() && transactionOpt.get().getTransactionType() == SupplierTransactionType.STOCK_IN) {
-            supplierTransactionRepository.deleteById(id);
+    public void addRejectionReason(Long id, String reason) {
+        Optional<SupplierTransactionsEntity> transactionOpt = transactionRepository.findById(id);
+        if (transactionOpt.isEmpty() || transactionOpt.get().getTransactionType() != SupplierTransactionType.STOCK_IN) {
+            return;
         }
+
+        SupplierTransactionsEntity transaction = transactionOpt.get();
+        transaction.setNotes("Rejected: " + reason + "\n\n" + (transaction.getNotes() != null ? transaction.getNotes() : ""));
+        transaction.setStatus(SupplierTransactionStatus.REJECTED);
+
+        transactionRepository.save(transaction);
     }
 
-    private SupplierInDTO convertToDTO(SupplierTransactionsEntity entity) {
+    @Override
+    protected SupplierInDTO convertToDTO(SupplierTransactionsEntity entity) {
         SupplierInDTO dto = new SupplierInDTO();
 
         dto.setId(entity.getId());
-        dto.setSupplierId(entity.getSupplierEntity().getId());
-        dto.setSupplierName(entity.getSupplierEntity().getName());
-        dto.setSupplierContact(entity.getSupplierEntity().getPhoneNumber());
-        dto.setInventoryManagerId(entity.getInventoryManagerEntity().getId());
 
-//        // Get staff name from inventory manager's staff entity
-//        if (entity.getInventoryManagerEntity().getStaffEntity() != null) {
-//            dto.setInventoryManagerName(entity.getInventoryManagerEntity().getStaffEntity().getFullName());
-//        }
+        // Safely set supplier details
+        if (entity.getSupplierEntity() != null) {
+            dto.setSupplierId(entity.getSupplierEntity().getId());
+            dto.setSupplierName(entity.getSupplierEntity().getName());
+            dto.setSupplierContact(entity.getSupplierEntity().getPhoneNumber());
+        }
 
+        // Safely set inventory manager details
+        if (entity.getInventoryManagerEntity() != null) {
+            dto.setInventoryManagerId(entity.getInventoryManagerEntity().getId());
+
+            // Safely get staff name from inventory manager
+            try {
+                dto.setInventoryManagerName(entity.getInventoryManagerEntity().getStaffEntity().getFullName());
+            } catch (Exception e) {
+                dto.setInventoryManagerName("Unknown Manager");
+            }
+        }
+
+        // Set transaction details
         dto.setTotalAmount(entity.getTotalAmount());
         dto.setTransactionDate(entity.getTransactionDate());
         dto.setStatus(entity.getStatus());
         dto.setApprovedDate(entity.getApprovedDate());
         dto.setNotes(entity.getNotes());
         dto.setExpectedDeliveryDate(entity.getExpectedDeliveryDate());
-
-//        if (entity.getApprovedBy() != null) {
-//            dto.setApprovedById(entity.getApprovedBy().getId());
-//            if (entity.getApprovedBy().getStaffEntity() != null) {
-//                dto.setApprovedByName(entity.getApprovedBy().getStaffEntity().getFullName());
-//            }
-//        }
-
         dto.setInvoiceNumber(entity.getInvoiceNumber());
         dto.setTaxAmount(entity.getTaxAmount());
         dto.setShippingCost(entity.getShippingCost());
@@ -270,29 +263,47 @@ public class SupplierInServiceImpl implements SupplierInService {
         dto.setDueDate(entity.getDueDate());
         dto.setPaymentDate(entity.getPaymentDate());
 
-        // Convert items
-        if (entity.getSupplierTransactionItemEntities() != null) {
-            List<SupplierRequestItemDTO> itemDTOs = entity.getSupplierTransactionItemEntities().stream()
-                    .map(this::convertItemToDTO)
-                    .collect(Collectors.toList());
-            dto.setItems(itemDTOs);
+        // Set transaction type (always STOCK_IN for this service)
+        dto.setTransactionType(SupplierTransactionType.STOCK_IN);
+
+        // Set items if available
+        if (entity.getSupplierTransactionItemEntities() != null && !entity.getSupplierTransactionItemEntities().isEmpty()) {
+            List<SupplierRequestItemDTO> items = new ArrayList<>();
+
+            for (SupplierTransactionItemEntity itemEntity : entity.getSupplierTransactionItemEntities()) {
+                SupplierRequestItemDTO itemDTO = new SupplierRequestItemDTO();
+
+                if (itemEntity.getId() != null) {
+                    itemDTO.setProductId(itemEntity.getId().getProductId());
+                }
+
+                itemDTO.setQuantity(itemEntity.getQuantity());
+                itemDTO.setUnitPrice(itemEntity.getUnitPrice());
+
+                // Set product details if available
+                if (itemEntity.getProductEntity() != null) {
+                    itemDTO.setProductName(itemEntity.getProductEntity().getName());
+                    itemDTO.setProductType(itemEntity.getProductEntity().getProductType());
+                    itemDTO.setProductUnit(itemEntity.getProductEntity().getUnit());
+                }
+
+                items.add(itemDTO);
+            }
+
+            dto.setItems(items);
         }
 
-        return dto;
-    }
-
-    private SupplierRequestItemDTO convertItemToDTO(SupplierTransactionItemEntity entity) {
-        SupplierRequestItemDTO dto = new SupplierRequestItemDTO();
-
-        dto.setProductId(entity.getProductEntity().getId());
-        dto.setProductName(entity.getProductEntity().getName());
-        dto.setQuantity(entity.getQuantity());
-        dto.setUnitPrice(entity.getUnitPrice());
-        dto.setManufactureDate(entity.getManufactureDate());
-        dto.setExpirationDate(entity.getExpirationDate());
-        dto.setBatchNumber(entity.getBatchNumber());
-        dto.setStorageLocation(entity.getStorageLocation());
-        dto.setNotes(entity.getNotes());
+        // Set type based on first product (if available)
+        if (entity.getSupplierTransactionItemEntities() != null && !entity.getSupplierTransactionItemEntities().isEmpty()) {
+            try {
+                SupplierTransactionItemEntity firstItem = entity.getSupplierTransactionItemEntities().iterator().next();
+                if (firstItem != null && firstItem.getProductEntity() != null && firstItem.getProductEntity().getProductType() != null) {
+                    dto.setType(firstItem.getProductEntity().getProductType().name());
+                }
+            } catch (Exception e) {
+                dto.setType(null);
+            }
+        }
 
         return dto;
     }

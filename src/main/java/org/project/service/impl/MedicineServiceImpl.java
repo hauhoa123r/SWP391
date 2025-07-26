@@ -234,6 +234,7 @@ public class MedicineServiceImpl implements MedicineService {
             String categories = entity.getProductEntity().getCategoryEntities().stream()
                     .map(CategoryEntity::getName).collect(Collectors.joining(", "));
             dto.setCategory(categories);
+            //set batches
         }
         
         return dto;

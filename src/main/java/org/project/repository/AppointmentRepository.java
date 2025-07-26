@@ -23,11 +23,13 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             "where date(startTime) = now()")
     int countTotalAppointmentsToday();
 
+
     Collection<? extends AppointmentEntity> findByPatientEntityIdAndStartTimeBetween(Long patientEntityId, Timestamp startTimeAfter, Timestamp startTimeBefore);
 
     Long countByAppointmentStatusAndServiceEntityDepartmentEntityId(AppointmentStatus appointmentStatus, Long serviceEntityDepartmentEntityId);
 
     Long countByAppointmentStatus(AppointmentStatus appointmentStatus);
+
 
     List<AppointmentEntity> findByDoctorEntity_StaffEntity_HospitalEntity_IdAndAppointmentStatus(Long hospitalId, AppointmentStatus appointmentStatus);
 

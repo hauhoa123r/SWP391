@@ -19,4 +19,5 @@ public class SetResultResponse extends SampleServiceResponse{
     private List<String> unitName;
     private String testTypeName;
     private List<String> testItemName;
+    private String imagePatient;
 }

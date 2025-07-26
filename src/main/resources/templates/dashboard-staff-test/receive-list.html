@@ -456,31 +456,31 @@
                     <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round"></path>
                 </svg>
-                <span class="head-title fw-500 mt-1">Home</span>
+                <span class="head-title fw-500 mt-1">Tiếp nhận chỉ định</span>
             </div>
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h4 class="card-title">Lab Test Orders</h4>
+                                <h4 class="card-title">Tiếp nhận chỉ định</h4>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div class="mt-3 text-end">
-                                    <button id="submit-selection" class="btn btn-success">Submit Selected</button>
+                                    <button id="submit-selection" class="btn btn-success">Gửi tất cả</button>
                                 </div>
                                 <table id="input-datatable" class="table">
                                     <thead>
                                     <tr>
                                         <th><input type="checkbox" id="select-all"></th>
-                                        <th>Patient Name</th>
-                                        <th>Doctor Name</th>
-                                        <th>Referring Department</th>
-                                        <th>Test Type</th>
-                                        <th>Requested At</th>
-                                        <th>Action</th>
+                                        <th>Tên bệnh nhân</th>
+                                        <th>Bác sĩ yêu cầu</th>
+                                        <th>Khoa</th>
+                                        <th>Loại test</th>
+                                        <th>Thời gian gửi</th>
+                                        <th>Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody id="table-body">
@@ -490,19 +490,19 @@
                                     <tr>
                                         <th></th>
                                         <th title="Patient Name">
-                                            Patient Name
+                                            Tìm kiếm bệnh nhân
                                             <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" />
                                         </th>
                                         <th title="Doctor Name">
-                                            Doctor Name
+                                            Tìm kiếm bác sĩ
                                             <input type="text" id="doctorName" name="doctorName" class="form-control form-control-sm" />
                                         </th>
                                         <th title="Department">
-                                            Department
+                                            Tìm kiếm khoa
                                             <input type="text" id="referringDepartment" name="referringDepartment" class="form-control form-control-sm" />
                                         </th>
                                         <th title="Test Type">
-                                            Test Type
+                                            Tìm kiếm loại xét nghiệm
                                             <input type="text" id="testType" name="testType" class="form-control form-control-sm" />
                                         </th>
                                         <th></th>
@@ -1611,7 +1611,7 @@
             let html = '';
 
             html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
-        <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Trước</a>
     </li>`;
 
             if (currentPage > 2) {
@@ -1633,7 +1633,7 @@
             }
 
             html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
-        <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Sau</a>
     </li>`;
 
             $('#pagination-container').html(html);

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.project.enums.ProductType;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -21,6 +22,10 @@ public class SupplierRequestItemDTO {
     private Long productId;
     
     private String productName;
+    
+    // Thêm trường productType và productUnit
+    private ProductType productType;
+    private String productUnit;
 
     @NotNull(message = "Quantity is required")
     @Min(value = 1, message = "Quantity must be at least 1")
@@ -31,9 +36,6 @@ public class SupplierRequestItemDTO {
     private Date manufactureDate;
 
     private Date expirationDate;
-
-    @Size(max = 255, message = "Batch number cannot exceed 255 characters")
-    private String batchNumber;
 
     @Size(max = 255, message = "Storage location cannot exceed 255 characters")
     private String storageLocation;

@@ -25,6 +25,38 @@
         .status-checked { background-color: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-completed { background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .batch-info { font-size: 0.8em; color: #666; }
+        
+        /* Logo style */
+        .warehouse-logo {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2e8b57; /* Màu xanh lá cây */
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Style for action buttons */
+        /* Không áp dụng CSS cho tất cả các nút */
+        /*.btn {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            margin-right: 2px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }*/
+        
+        /* Make all buttons in update status section equal width */
+        .d-flex.flex-wrap.gap-2 .btn {
+            min-width: 120px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 
@@ -37,34 +69,21 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
             </div>
 
-            <form class="form-inline search-full" action="#" method="get">
-                <div class="form-group w-100">
-                    <div class="Typeahead Typeahead--twitterUsers">
-                        <div class="u-posRelative">
-                            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-                                   placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
-                            <i class="close-search" data-feather="x"></i>
-                            <div class="spinner-border Typeahead-spinner" role="status">
-                                <span class="sr-only">Đang tải...</span>
-                            </div>
-                        </div>
-                        <div class="Typeahead-menu"></div>
-                    </div>
-                </div>
-            </form>
+            <!-- Tiêu đề mới -->
+            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
             <div class="nav-right col-6 pull-right right-header p-0">
                 <ul class="nav-menus">
                     <li>
@@ -125,39 +144,7 @@
                                 <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                             </div>
                         </div>
-                        <ul class="profile-dropdown onhover-show-div">
-                            <li>
-                                <a th:href="@{/all-users.html}">
-                                    <i data-feather="users"></i>
-                                    <span>Người dùng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/order-list.html}">
-                                    <i data-feather="archive"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/support-ticket.html}">
-                                    <i data-feather="phone"></i>
-                                    <span>Vé hỗ trợ</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a th:href="@{/profile-setting.html}">
-                                    <i data-feather="settings"></i>
-                                    <span>Cài đặt</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                   href="#">
-                                    <i data-feather="log-out"></i>
-                                    <span>Đăng xuất</span>
-                                </a>
-                            </li>
-                        </ul>
+
                     </li>
                 </ul>
             </div>
@@ -172,7 +159,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/index.html}" data-bs-original-title="" title="">
+                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -183,7 +170,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/index.html}">
+                    <a th:href="@{/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -198,7 +185,7 @@
                         <ul class="sidebar-links" id="simple-bar">
                             <li class="back-btn"></li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/index.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -229,9 +216,6 @@
                                     <li>
                                         <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
                                     </li>
-                                    <li>
-                                        <a th:href="@{/CustomerInvoice.html}">Hóa đơn khách hàng</a>
-                                    </li>
                                 </ul>
                             </li>
                             <li class="sidebar-list">
@@ -245,23 +229,6 @@
                                     </li>
                                     <li>
                                         <a th:href="@{/medicine.html}">Thuốc</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <i class="ri-archive-line"></i>
-                                    <span>Đơn hàng</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    <li>
-                                        <a th:href="@{/order-list.html}">Danh sách đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-detail.html}">Chi tiết đơn hàng</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/order-tracking.html}">Theo dõi đơn hàng</a>
                                     </li>
                                 </ul>
                             </li>
@@ -360,7 +327,6 @@
                                                 <tr>
                                                     <th>STT</th>
                                                     <th>Sản phẩm</th>
-                                                    <th>Số lô</th>
                                                     <th>Số lượng</th>
                                                     <th>Đơn giá</th>
                                                     <th>Thành tiền</th>
@@ -376,16 +342,18 @@
                                                             <span th:if="${item.expirationDate != null}"> | HSD: <span th:text="${#dates.format(item.expirationDate, 'dd/MM/yyyy')}">01/01/2025</span></span>
                                                         </div>
                                                     </td>
-                                                    <td th:text="${item.batchNumber != null ? item.batchNumber : 'N/A'}">LOT001</td>
                                                     <td th:text="${item.quantity}">10</td>
                                                     <td th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">100,000 VNĐ</td>
-                                                    <td th:text="${#numbers.formatDecimal(item.quantity * item.unitPrice, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">1,000,000 VNĐ</td>
+                                                    <td th:text="${#numbers.formatDecimal(item.quantity * item.unitPrice, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}" class="totalMoney">1,000,000 VNĐ</td>
                                                 </tr>
                                                 </tbody>
                                                 <tfoot>
                                                 <tr>
-                                                    <td colspan="5" class="text-end"><strong>Tổng tiền:</strong></td>
-                                                    <td th:text="${#numbers.formatDecimal(supplierIn.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">1,000,000 VNĐ</td>
+                                                    <td colspan="4" class="text-end"><strong>Tổng tiền:</strong></td>
+                                                    <td>
+                                                        <!-- Tính tổng từ các mặt hàng -->
+                                                        <strong id="sumMoney"></strong>
+                                                    </td>
                                                 </tr>
                                                 </tfoot>
                                             </table>
@@ -455,7 +423,7 @@
         // Show notification if there's a success or error message
         const successMessage = "[[${successMessage}]]";
         const errorMessage = "[[${errorMessage}]]";
-
+        totalMoney()
         if (successMessage && successMessage !== "[[${successMessage}]]") {
             $.notify({
                 message: successMessage
@@ -492,6 +460,14 @@
             });
         }
     });
+    function totalMoney() {
+        let temp = 0;
+        const data = $('.totalMoney').each(function() {
+            const value = $(this).text().replace(/[^0-9]/g, '');
+            temp += parseInt(value);
+        });
+        $('#sumMoney').text(temp.toLocaleString('vi-VN') + ' VNĐ');
+    }
 </script>
 </body>
 </html>

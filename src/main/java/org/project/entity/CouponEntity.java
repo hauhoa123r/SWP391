@@ -50,13 +50,14 @@ public class CouponEntity {
     @Column(name = "expiration_date", nullable = false)
     private Date expirationDate;
 
-    @OneToMany
-    private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
-    @OneToMany
-    private Set<UserCouponEntity> userCouponEntities = new LinkedHashSet<>();
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "discount_type", columnDefinition = "enum not null")
+    @NotNull
+    @Column(name = "discount_type", nullable = false)
     private DiscountType discountType;
 
+    @OneToMany
+    private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
+
+    @OneToMany
+    private Set<UserCouponEntity> userCouponEntities = new LinkedHashSet<>();
 }

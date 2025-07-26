@@ -3,11 +3,15 @@ package org.project.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.project.converter.ReviewConverter;
 import org.project.entity.ReviewEntity;
+import org.project.enums.ReviewStatus;
+import org.project.model.dto.ReviewDTO;
+import org.project.model.dto.ReviewReplyDTO;
 import org.project.model.response.ReviewResponse;
 import org.project.repository.ReviewRepository;
 import org.project.service.ReviewService;
 import org.project.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -49,6 +53,41 @@ public class ReviewServiceImpl implements ReviewService {
         Sort sort = Sort.by(Sort.Direction.DESC, "rating");
         Pageable pageable = pageUtils.getPageable(0, 5, sort);
         return reviewRepository.findAll(pageable).map(reviewConverter::toResponse).getContent();
+    }
+
+    @Override
+    public Page<ReviewDTO> findReviews(int page, int size, String search, Integer rating, ReviewStatus status, String sort, String direction) {
+        return null;
+    }
+
+    @Override
+    public ReviewDTO findReviewById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void updateReviewStatus(Long id, ReviewStatus status, String hideReason) {
+
+    }
+
+    @Override
+    public ReviewReplyDTO addReviewReply(ReviewReplyDTO replyDTO) {
+        return null;
+    }
+
+    @Override
+    public List<ReviewDTO> findReviewsByProduct(Long productId) {
+        return List.of();
+    }
+
+    @Override
+    public List<ReviewDTO> findReviewsByUser(Long userId) {
+        return List.of();
+    }
+
+    @Override
+    public long countReviewsByStatus(ReviewStatus status) {
+        return 0;
     }
 
     @Override

@@ -85,6 +85,12 @@ public class SupplierTransactionsEntity {
 
     @Column
     private Timestamp paymentDate;
+    
+    @Column(name = "recipient", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'Hospital'")
+    private String recipient;
+    
+    @Column(name = "stock_out_reason", columnDefinition = "TEXT")
+    private String stockOutReason;
 
     @OneToMany(mappedBy = "supplierTransactionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
