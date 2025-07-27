@@ -99,7 +99,7 @@ public interface SupplierInService extends BaseSupplierTransactionService<Suppli
     }
     
     /**
-     * @deprecated Sử dụng {@link #createTransaction(SupplierInDTO)} thay thế
+     * @deprecated Sử dụng {@link #createTransaction(Object)} (SupplierInDTO)} thay thế
      */
     @Deprecated
     default SupplierInDTO createSupplierIn(SupplierInDTO supplierInDTO) {
@@ -107,7 +107,7 @@ public interface SupplierInService extends BaseSupplierTransactionService<Suppli
     }
     
     /**
-     * @deprecated Sử dụng {@link #updateTransaction(Long, SupplierInDTO)} thay thế
+     * @deprecated Sử dụng {@link #updateTransaction(Long, Object)} (Long, SupplierInDTO)} thay thế
      */
     @Deprecated
     default SupplierInDTO updateSupplierIn(Long id, SupplierInDTO supplierInDTO) {
