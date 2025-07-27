@@ -1,6 +1,7 @@
 package org.project.model.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class StocksDTO {
     private Long medicineId;
     private String medicineName;
@@ -18,7 +20,6 @@ public class StocksDTO {
     private Integer quantity;
     private BigDecimal unitCost;
     private LocalDate expiryDate; // nếu cần cho thuốc
-    private String batchNumber; // nếu cần
     private LocalDate transactionDate;
     private String sourceOrSupplierName; // tên NCC hoặc tên kho nguồn
 }

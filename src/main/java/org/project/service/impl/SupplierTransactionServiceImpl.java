@@ -46,7 +46,6 @@ public class SupplierTransactionServiceImpl implements SupplierTransactionServic
                             item.getQuantity(),
                             item.getUnitPrice(),
                             item.getExpirationDate().toLocalDate(),
-                            item.getBatchNumber(),
                             transaction.getTransactionDate().toLocalDateTime().toLocalDate(),
                             transaction.getSupplierEntity().getName()
                     );

@@ -33,10 +33,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequiredArgsConstructor
 public class CouponController {
-
     private final CouponService couponService;
     private final UserCouponService userCouponService;
-
     /**
      * Hiển thị danh sách coupon
      */
@@ -50,7 +48,7 @@ public class CouponController {
             Model model) {
 
         log.info("Fetching coupons with page={}, size={}, keyword={}, sortBy={}, sortDir={}",
-                 page, size, keyword, sortBy, sortDir);
+                page, size, keyword, sortBy, sortDir);
 
         Page<CouponDTO> couponPage;
         if (keyword != null && !keyword.isEmpty()) {
@@ -136,7 +134,7 @@ public class CouponController {
      */
     @PostMapping("/edit-coupon/{id}")
     public String updateCoupon(@PathVariable Long id, @ModelAttribute CouponDTO coupon,
-            RedirectAttributes redirectAttributes) {
+                               RedirectAttributes redirectAttributes) {
         log.info("Updating coupon with ID: {}", id);
 
         try {
@@ -157,8 +155,10 @@ public class CouponController {
      * Xóa coupon
      */
     @PostMapping("/delete-coupon/{id}")
-    public String deleteCoupon(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        log.info("Deleting coupon with ID: {}", id);
+    public String deleteCoupon(@PathVariable Long id, RedirectAttributes redirectAttributes,
+                               @RequestParam("code") String code,
+                               HttpSession session) {
+         log.info("Deleting coupon with ID: {}", id);
 
         try {
 //            // Get userId from session (update this based on your app's auth setup)
@@ -168,7 +168,6 @@ public class CouponController {
 //                return "redirect:/login";
 //            }
             Long userId=2l;
-
             couponService.applyCoupon(code, userId, session);
             redirectAttributes.addFlashAttribute("couponSuccess", "Coupon applied successfully!");
         } catch (CouponException e) {
@@ -206,7 +205,7 @@ public class CouponController {
 
         return "redirect:/cart";
     }
-}
+
     /**
      * Hiển thị danh sách coupon còn hạn
      */
@@ -219,7 +218,7 @@ public class CouponController {
             Model model) {
 
         log.info("Fetching valid coupons with page={}, size={}, sortBy={}, sortDir={}",
-                 page, size, sortBy, sortDir);
+                page, size, sortBy, sortDir);
 
         Page<CouponDTO> couponPage = couponService.findValidCoupons(page, size, sortBy, sortDir);
 
@@ -247,7 +246,7 @@ public class CouponController {
             Model model) {
 
         log.info("Fetching expired coupons with page={}, size={}, sortBy={}, sortDir={}",
-                 page, size, sortBy, sortDir);
+                page, size, sortBy, sortDir);
 
         Page<CouponDTO> couponPage = couponService.findExpiredCoupons(page, size, sortBy, sortDir);
 
@@ -307,12 +306,12 @@ public class CouponController {
 
             // Check minimum order amount if set
             if (orderTotal != null && coupon.getMinimumOrderAmount() != null &&
-                orderTotal.compareTo(coupon.getMinimumOrderAmount()) < 0) {
+                    orderTotal.compareTo(coupon.getMinimumOrderAmount()) < 0) {
                 log.warn("Order total {} does not meet minimum amount {} for coupon {}",
-                         orderTotal, coupon.getMinimumOrderAmount(), code);
+                        orderTotal, coupon.getMinimumOrderAmount(), code);
                 response.put("success", false);
                 response.put("message", "This coupon requires a minimum order of " +
-                            coupon.getMinimumOrderAmount() + ".");
+                        coupon.getMinimumOrderAmount() + ".");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
 
@@ -349,3 +348,4 @@ public class CouponController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+}

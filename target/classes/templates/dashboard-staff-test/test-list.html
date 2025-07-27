@@ -131,10 +131,6 @@
         rel="stylesheet">
 </head>
 <style>
-    body {
-        font-size: 16px;
-    }
-
     .table-modern th {
         background-color: #f8f9fa;
         color: #495057;
@@ -262,269 +258,6 @@
                                     d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
                             </svg>
                         </i>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between product-offcanvas">
-                        <div class="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabindex="-1"
-                            id="offcanvasBottomNav">
-                            <div class="offcanvas-body">
-                                <ul class="iq-nav-menu list-unstyled">
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start active" href="./index.html" th:href="@{/dashboard-staff-test/index.html}"
->
-                                            <span class="nav-text">Home</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
-                                            href="#allPagesData" role="button" aria-expanded="false"
-                                            aria-controls="allPagesData">
-                                            <span class="nav-text">Pages</span>
-                                        </a>
-                                        <ul class="iq-header-sub-menu list-unstyled collapse" id="allPagesData">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="./component.html" th:href="@{/dashboard-staff-test/component.html}"
->Components</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="./ui-color.html" th:href="@{/dashboard-staff-test/ui-color.html}"
->UI Color</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#authSkins" role="button" aria-expanded="false">
-                                                    Auth skins
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="defaultAuth">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/sign-in.html" th:href="@{/dashboard-staff-test/auth/sign-in.html}"
->Sign In</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/sign-up.html" th:href="@{/dashboard-staff-test/auth/sign-up.html}"
->Sign Up</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/confirm-mail.html" th:href="@{/dashboard-staff-test/auth/confirm-mail.html}"
->Email Verified</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/recoverpw.html" th:href="@{/dashboard-staff-test/auth/recoverpw.html}"
->Reset
-                                                            Password</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/lock-screen.html" th:href="@{/dashboard-staff-test/auth/lock-screen.html}"
->Lock Screen</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#userApps" role="button" aria-expanded="false"
-                                                    aria-controls="userApps">
-                                                    User
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="userApps">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-profile.html" th:href="@{/dashboard-staff-test/app/user-profile.html}"
->User Profile</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-add.html" th:href="@{/dashboard-staff-test/app/user-add.html}"
->User Add</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-list.html" th:href="@{/dashboard-staff-test/app/user-list.html}"
->User List</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#utilities" role="button" aria-expanded="false"
-                                                    aria-controls="utilities">
-                                                    Utilities
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="utilities">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/maintenance.html" th:href="@{/dashboard-staff-test/errors/maintenance.html}"
->Maintenance</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/error404.html" th:href="@{/dashboard-staff-test/errors/error404.html}"
->404</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/error500.html" th:href="@{/dashboard-staff-test/errors/error500.html}"
->500</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#widgetsPage" role="button" aria-expanded="false"
-                                                    aria-controls="widgetsPage">
-                                                    Widgets
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="widgetsPage">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetbasic.html" th:href="@{/dashboard-staff-test/widget/widgetbasic.html}"
->Widget Basic</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetchart.html" th:href="@{/dashboard-staff-test/widget/widgetchart.html}"
->Widget Chart</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetcard.html" th:href="@{/dashboard-staff-test/widget/widgetcard.html}"
->Widget Card</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#mapPages" role="button" aria-expanded="false"
-                                                    aria-controls="mapPages">
-                                                    Map
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="mapPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./maps/google.html" th:href="@{/dashboard-staff-test/maps/google.html}"
->Google</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./maps/vector.html" th:href="@{/dashboard-staff-test/maps/vector.html}"
->Vector</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#formsPages" role="button" aria-expanded="false"
-                                                    aria-controls="formsPages">
-                                                    Form
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="formsPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./form/form-element.html" th:href="@{/dashboard-staff-test/form/form-element.html}"
->Element</a></li>
-
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./form/form-validation.html" th:href="@{/dashboard-staff-test/form/form-validation.html}"
->Validation</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#tablesPages" role="button" aria-expanded="false"
-                                                    aria-controls="tablesPages">
-                                                    Table
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="tablesPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/bootstrap-table.html" th:href="@{/dashboard-staff-test/table/bootstrap-table.html}"
->Bootstrap Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/table-data.html" th:href="@{/dashboard-staff-test/table/table-data.html}"
->Data Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/border-table.html" th:href="@{/dashboard-staff-test/table/border-table.html}"
->Bordered Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/fancy-table.html" th:href="@{/dashboard-staff-test/table/fancy-table.html}"
->Fancy Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/fixed-table.html" th:href="@{/dashboard-staff-test/table/fixed-table.html}"
->Fixed Table</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#iconsPages" role="button" aria-expanded="false"
-                                                    aria-controls="iconsPages">
-                                                    Icons
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="iconsPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/solid.html" th:href="@{/dashboard-staff-test/icons/solid.html}"
->Solid</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/outline.html" th:href="@{/dashboard-staff-test/icons/outline.html}"
->Outlined</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/dual-tone.html" th:href="@{/dashboard-staff-test/icons/dual-tone.html}"
->Dual Tone</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                     <div class="d-flex align-items-center">
                         <button id="navbar-toggle" class="navbar-toggler px-0" type="button" data-bs-toggle="collapse"
@@ -728,14 +461,14 @@
                     <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round"></path>
                 </svg>
-                <span class="head-title fw-500 mt-1">Home</span>
+                <span class="head-title fw-500 mt-1">Danh sách chỉ định</span>
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h4 class="card-title">Assignment List</h4>
+                                <h4 class="card-title">Danh sách chỉ định</h4>
                             </div>
                         </div>
                         <div class="card-body">
@@ -744,12 +477,12 @@
                                     <table class="table w-100">
                                         <thead>
                                         <tr>
-                                            <th>Patient Name</th>
-                                            <th>Referring Department</th>
-                                            <th>Test Type</th>
-                                            <th>Requested At</th>
-                                            <th>Status</th>
-                                            <th>Reason</th>
+                                            <th>Tên bệnh nhân</th>
+                                            <th>Khoa</th>
+                                            <th>Loại kiểm tra</th>
+                                            <th>Thời gian gửi</th>
+                                            <th>Trạng thái</th>
+                                            <th>Lý do</th>
                                         </tr>
                                         </thead>
                                         <tbody id="assignmentBody">
@@ -757,26 +490,32 @@
                                         <tfoot>
                                         <tr>
                                             <th>
-                                                Patient Name<br/>
-                                                <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" />
+                                                Tìm kiếm bệnh nhân<br/>
+                                                <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" placeholder="Nhập"/>
                                             </th>
                                             <th>
-                                                Department<br/>
-                                                <input type="text" id="departmentName" name="departmentName" class="form-control form-control-sm" />
+                                                Tìm kiếm khoa<br/>
+                                                <input type="text" id="departmentName" name="departmentName" class="form-control form-control-sm" placeholder="Nhập"/>
                                             </th>
                                             <th>
-                                                Test Type<br/>
-                                                <input type="text" id="testType" name="testType" class="form-control form-control-sm" />
+                                                Tìm kiếm loại xét nghiệm<br/>
+                                                <input type="text" id="testType" name="testType" class="form-control form-control-sm" placeholder="Nhập"/>
                                             </th>
                                             <th></th>
-                                            <th>Status</th>
+                                            <th></th>
                                             <th></th>
                                         </tr>
                                         </tfoot>
                                     </table>
                                 </form>
-                                <nav id="pagination" class="mt-3 text-center">
-                                </nav>
+                                <div class="mt-4 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span id="total-items"></span>
+                                    </div>
+                                    <nav>
+                                        <ul class="pagination mb-0" id="pagination-container"></ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1660,19 +1399,13 @@
                     page: page,
                     size: pageSize
                 },
-                success: function (res) {
-                    if (!res || !res.content) {
-                        $('#assignmentBody').html('<tr><td colspan="6">No data found</td></tr>');
-                        $('#pagination').html('');
-                        return;
-                    }
-                    renderTable(res.content);
-                    renderPagination(res.totalPages, res.number);
+                success: function (data) {
+                    renderTable(data.content);
+                    renderPagination(data);
+                    $('#total-items').text(`Tổng số: ${data.totalElements} mẫu`);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching assignments:', error);
-                    $('#assignmentBody').html('<tr><td colspan="6">Error loading data: ' + (xhr.responseText || 'Unknown error') + '</td></tr>');
-                    $('#pagination').html('');
                 }
             });
         }
@@ -1735,55 +1468,35 @@
             });
             tbody.html(html);
         }
+        function renderPagination(pageData) {
+            const currentPage = pageData.number;
+            const totalPages = pageData.totalPages;
+            let html = '';
 
-        function renderPagination(totalPages, currentPage) {
-            const pagination = $('#pagination');
-            if (!totalPages || totalPages <= 0) {
-                pagination.html('<p>No pages available</p>');
-                return;
-            }
-
-            let html = '<ul class="pagination justify-content-center">';
             html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
-        <a class="page-link" href="#" data-page="0" aria-label="First">First</a>
-    </li>`;
-            html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
-        <a class="page-link" href="#" data-page="${currentPage - 1}" aria-label="Previous">«</a>
-    </li>`;
+        <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a></li>`;
 
-            for (let i = 0; i < totalPages; i++) {
-                if (i < 2 || i > totalPages - 3 || (i >= currentPage - 1 && i <= currentPage + 1)) {
-                    html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
-                <a class="page-link" href="#" data-page="${i}">${i + 1}</a>
-            </li>`;
-                }
+            if (currentPage > 2) {
+                html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+                if (currentPage > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
             }
 
-            if (currentPage > 3) {
-                html += '<li class="page-item disabled"><span class="page-link">...</span></li>';
-            }
-            if (currentPage < totalPages - 4) {
-                html += '<li class="page-item disabled"><span class="page-link">...</span></li>';
+            for (let i = Math.max(0, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+                html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
             }
 
-            html += `<li class="page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}">
-        <a class="page-link" href="#" data-page="${currentPage + 1}" aria-label="Next">»</a>
-    </li>`;
-            html += `<li class="page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}">
-        <a class="page-link" href="#" data-page="${totalPages - 1}" aria-label="Last">Last</a>
-    </li>`;
-            html += '</ul>';
+            if (currentPage < totalPages - 3) {
+                html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            }
+            if (currentPage < totalPages - 2) {
+                html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
+            }
 
-            pagination.html(html);
+            html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a></li>`;
 
-            $('.page-link').on('click', function (e) {
-                e.preventDefault();
-                const page = $(this).data('page');
-                if (page !== undefined && page >= 0 && page < totalPages) {
-                    currentPage = page;
-                    fetchAssignments(page);
-                }
-            });
+            $('#pagination-container').html(html);
         }
 
         $('#patientName, #departmentName, #testType').on('input', function () {
@@ -1799,6 +1512,11 @@
             });
         });
 
+        $(document).on('click', '.pagination a.page-link', function (e) {
+            e.preventDefault();
+            const page = parseInt($(this).data('page'));
+            fetchAssignments(page);
+        });
 
         $(document).ready(() => fetchAssignments());
         $(document).ready(function () {

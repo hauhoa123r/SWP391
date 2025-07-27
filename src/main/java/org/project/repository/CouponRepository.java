@@ -21,8 +21,6 @@ public interface CouponRepository extends JpaRepository<CouponEntity, Long> {
      */
     Optional<CouponEntity> findByCode(String code);
 
-    Object existsByCode(String code);
-
     /**
      * Tìm kiếm coupon với nhiều điều kiện kết hợp
      * Note: Removed LOWER() from description field because it's a CLOB type

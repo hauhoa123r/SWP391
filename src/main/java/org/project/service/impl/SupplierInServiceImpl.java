@@ -41,20 +41,41 @@ public class SupplierInServiceImpl implements SupplierInService {
     private SupplierTransactionRepository supplierTransactionRepository;
 
     @Autowired
+    private SupplierTransactionRepository transactionRepository;
+
+    private SupplierEntityRepository supplierRepository;
+    private InventoryManagerRepository inventoryManagerRepository;
+    private ProductRepository productRepository;
+    private SupplierTransactionItemRepository itemRepository;
+
+    @Autowired
     public SupplierInServiceImpl(
         SupplierTransactionRepository supplierTransactionRepository,
-        SupplierEntityRepository supplierEntityRepository,
+        SupplierEntityRepository supplierRepository,
         InventoryManagerRepository inventoryManagerRepository,
         ProductRepository productRepository,
         SupplierTransactionItemRepository supplierTransactionItemRepository) {
-        super(supplierTransactionRepository, supplierEntityRepository, inventoryManagerRepository,
-              productRepository, supplierTransactionItemRepository, SupplierTransactionType.STOCK_IN);
+        this.supplierTransactionRepository = supplierTransactionRepository;
+        this.supplierRepository = supplierRepository;
+        this.inventoryManagerRepository = inventoryManagerRepository;
+        this.productRepository = productRepository;
+        this.itemRepository = supplierTransactionItemRepository;
     }
 
     @Override
     public Page<SupplierInDTO> getFilteredSupplierInsForStockIn(int page, int size, String status, String search,
                                                             String type, List<SupplierTransactionStatus> allowedStatuses) {
         return getFilteredTransactions(page, size, search, status, allowedStatuses, SupplierTransactionType.STOCK_IN);
+    }
+
+    @Override
+    public List<SupplierInDTO> getAllTransactions() {
+        return List.of();
+    }
+
+    @Override
+    public Page<SupplierInDTO> getAllTransactions(int page, int size, String keyword, String status) {
+        return null;
     }
 
     @Override
@@ -96,6 +117,21 @@ public class SupplierInServiceImpl implements SupplierInService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(dtos, pageRequest, transactions.getTotalElements());
+    }
+
+    @Override
+    public Page<SupplierInDTO> getFilteredTransactionsForView(int page, int size, String status, String search, String type, List<SupplierTransactionStatus> allowedStatuses) {
+        return null;
+    }
+
+    @Override
+    public Page<SupplierInDTO> getFilteredTransactions(int page, int size, String keyword, String status, List<SupplierTransactionStatus> allowedStatuses, SupplierTransactionType transactionType) {
+        return null;
+    }
+
+    @Override
+    public SupplierInDTO getTransactionById(Long id) {
+        return null;
     }
 
     @Override
@@ -201,6 +237,11 @@ public class SupplierInServiceImpl implements SupplierInService {
     }
 
     @Override
+    public SupplierInDTO updateTransactionStatus(Long id, String status) {
+        return null;
+    }
+
+    @Override
     @Transactional
     public void deleteTransaction(Long id) {
         Optional<SupplierTransactionsEntity> transaction = transactionRepository.findById(id);
@@ -225,7 +266,7 @@ public class SupplierInServiceImpl implements SupplierInService {
     }
 
     @Override
-    protected SupplierInDTO convertToDTO(SupplierTransactionsEntity entity) {
+    public SupplierInDTO convertToDTO(SupplierTransactionsEntity entity) {
         SupplierInDTO dto = new SupplierInDTO();
 
         dto.setId(entity.getId());

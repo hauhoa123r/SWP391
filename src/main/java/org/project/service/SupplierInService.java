@@ -1,5 +1,6 @@
 package org.project.service;
 
+import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
 import org.project.model.dto.SupplierInDTO;
@@ -128,4 +129,7 @@ public interface SupplierInService extends BaseSupplierTransactionService<Suppli
     default void deleteSupplierIn(Long id) {
         deleteTransaction(id);
     }
+
+    //convert to dto
+    SupplierInDTO convertToDTO(SupplierTransactionsEntity entity);
 } 

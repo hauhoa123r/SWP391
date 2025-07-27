@@ -2,9 +2,8 @@ package org.project.service.impl;
 
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.entity.CouponEntity;
@@ -23,10 +22,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.Optional;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 
 @Slf4j
 @Service
@@ -35,8 +32,6 @@ import jakarta.transaction.Transactional;
 public class CouponServiceImpl implements CouponService {
     @Autowired
     private CouponRepository couponRepository;
-
-    private final CouponRepository couponRepository;
     private final UserCouponService userCouponService;
 
     @Override
@@ -87,7 +82,7 @@ public class CouponServiceImpl implements CouponService {
 
         CouponEntity coupon = optionalCoupon.get();
 
-        if (coupon.getExpirationDate().before(new Date())) {
+        if (coupon.getExpirationDate().before(new java.util.Date())) {
             throw new CouponException("Coupon has expired.");
         }
 
