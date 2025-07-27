@@ -6,18 +6,16 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.mapping.ToOne;
 
 import java.time.Instant;
 import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "samples", schema = "swp391")
 public class SampleEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sample_id", nullable = false)
@@ -29,7 +27,6 @@ public class SampleEntity {
     private TestRequestEntity testRequest;
 
     @Size(max = 50)
-    @NotNull
     @Column(name = "barcode", nullable = false, length = 50)
     private String barcode;
 

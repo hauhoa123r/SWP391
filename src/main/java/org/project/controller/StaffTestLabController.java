@@ -85,7 +85,7 @@ public class StaffTestLabController {
     @GetMapping("/homepage")
     public ModelAndView homePageView(HttpServletRequest request, Model model) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/index");
-        StaffEntity staffEntity = staffRepository.findByStaffRoleAndId(StaffRole.DOCTOR, 602L);
+        StaffEntity staffEntity = staffRepository.findByStaffRoleAndId(StaffRole.DOCTOR, 60L);
         modelAndView.addObject("staffs", staffEntity);
         modelAndView.addObject("totalPatient", patientRepository.countAllPatients());
         modelAndView.addObject("currentURI", request.getRequestURI());
@@ -163,19 +163,6 @@ public class StaffTestLabController {
         return modelAndView;
     }
 
-    @GetMapping("/helpsupport")
-    public ModelAndView helpSupportView(HttpServletRequest request, Model model) {
-        ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/helpsupport");
-        modelAndView.addObject("currentURI", request.getRequestURI());
-        return modelAndView;
-    }
-
-    @GetMapping("/setting")
-    public ModelAndView settingView(HttpServletRequest request, Model model) {
-        ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/setting");
-        modelAndView.addObject("currentURI", request.getRequestURI());
-        return modelAndView;
-    }
 
     @GetMapping("/result/{id}")
     public ModelAndView resultView(HttpServletRequest request, Model model, @PathVariable Long id) {
@@ -217,6 +204,20 @@ public class StaffTestLabController {
         ViewResultResponse viewResultResponse = viewTestRequestDetailConverter.viewTestRequestDetailConverter(id);
         modelAndView.addObject("currentURI", request.getRequestURI());
         modelAndView.addObject("result", viewResultResponse);
+        return modelAndView;
+    }
+
+    @GetMapping("/add/sample")
+    public ModelAndView addSampleView(HttpServletRequest request, Model model) {
+        ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/add-sample");
+        modelAndView.addObject("currentURI", request.getRequestURI());
+        return modelAndView;
+    }
+
+    @GetMapping("/restore/sample")
+    public ModelAndView storeSampleView(HttpServletRequest request, Model model) {
+        ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/restore-sample");
+        modelAndView.addObject("currentURI", request.getRequestURI());
         return modelAndView;
     }
 }

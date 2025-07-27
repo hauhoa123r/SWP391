@@ -1,6 +1,6 @@
 /*
-* Version: 1.4.0
-* Template: kivicare - Medical Clinic & Patient Management Template
+* Version: 1.1.0
+* Template: kivicare Clinic And Patient Management Dashboard
 * Author: iqonic.design
 * Author URL: https://iqonic.design/
 * Design and Developed by: iqonic.design
@@ -410,38 +410,29 @@
     }
 
     // get color shade & tint Functions
-    this.IQUtils.getColorShadeTint = (color, value, dark) => {
+    this.IQUtils.getColorShadeTint = (color, value) => {
+        console.log(color, value)
         let colors = {}
-        if(dark) {
-          colors[`${color}-shade-80`] = IQUtils.tintColor(value, 80);
-          colors[`${color}-shade-60`] = IQUtils.tintColor(value, 60);
-          colors[`${color}-shade-40`] = IQUtils.tintColor(value, 40);
-          colors[`${color}-shade-20`] = IQUtils.tintColor(value, 20);
-          colors[`${color}-shade-10`] = IQUtils.tintColor(value, 10);
-          colors[`${color}-tint-10`] = IQUtils.shadeColor(value, 10);
-          colors[`${color}-tint-20`] = IQUtils.shadeColor(value, 20);
-          colors[`${color}-tint-40`] = IQUtils.shadeColor(value, 40);
-          colors[`${color}-tint-60`] = IQUtils.shadeColor(value, 60);
-          colors[`${color}-tint-80`] = IQUtils.shadeColor(value, 80);
-          colors[`${color}-tint-90`] = IQUtils.shadeColor(value, 90);
-          colors[`${color}-rgb`] = IQUtils.hexToRgb(value);
-          colors[color] = value;
-        } else {
-          colors[`${color}-shade-80`] = IQUtils.shadeColor(value, 80);
-          colors[`${color}-shade-60`] = IQUtils.shadeColor(value, 60);
-          colors[`${color}-shade-40`] = IQUtils.shadeColor(value, 40);
-          colors[`${color}-shade-20`] = IQUtils.shadeColor(value, 20);
-          colors[`${color}-shade-10`] = IQUtils.shadeColor(value, 10);
-          colors[`${color}-tint-10`] = IQUtils.tintColor(value, 10);
-          colors[`${color}-tint-20`] = IQUtils.tintColor(value, 20);
-          colors[`${color}-tint-40`] = IQUtils.tintColor(value, 40);
-          colors[`${color}-tint-60`] = IQUtils.tintColor(value, 60);
-          colors[`${color}-tint-80`] = IQUtils.tintColor(value, 80);
-          colors[`${color}-tint-90`] = IQUtils.tintColor(value, 90);
-          colors[`${color}-rgb`] = IQUtils.hexToRgb(value);
-          colors[color] = value;
-        }
-
+        const style = document.createElement('style')
+        style.setAttribute('class', 'custom-color')
+        style.innerHTML = `
+            [data-bs-theme-color="custom"] {
+                ${color}: ${value};
+                ${color}-rgb: ${IQUtils.hexToRgb(value)};
+                ${color}-bg-subtle: ${IQUtils.tintColor(value, 80)};
+                ${color}-border-subtle: var(${color}-bg-subtle);
+                --bs-link-color-rgb: var(${color}-rgb);
+                ${color}-hover-bg: ${IQUtils.shadeColor(value, 20)};
+                ${color}-hover-border: ${IQUtils.shadeColor(value, 30)};
+                ${color}-active-bg: ${IQUtils.shadeColor(value, 20)};
+                ${color}-active-border: ${IQUtils.shadeColor(value, 30)};
+            }
+            [data-bs-theme-color="custom"][data-bs-theme="dark"] {
+                ${color}-text-emphasis:  ${IQUtils.tintColor(value, 40)};
+                ${color}-bg-subtle:  ${IQUtils.shadeColor(value, 80)};
+              }
+        `;
+        document.head.appendChild(style)
         return colors
     }
 
@@ -481,26 +472,26 @@
     }
 
     this.IQUtils.getVariableColor = () => {
-      let prefix = getComputedStyle(document.body).getPropertyValue('--prefix') || 'bs-';
-      if (prefix) {
-        prefix = prefix.trim()
+        let prefix = getComputedStyle(document.body).getPropertyValue('--prefix') || 'bs-';
+        if (prefix) {
+          prefix = prefix.trim()
+        }
+        const color1 = getComputedStyle(document.body).getPropertyValue(`--${prefix}primary`);
+        const color2 = getComputedStyle(document.body).getPropertyValue(`--${prefix}info`);
+        const color3 = getComputedStyle(document.body).getPropertyValue(`--${prefix}success`);
+        const color4 = getComputedStyle(document.body).getPropertyValue(`--${prefix}warning`);
+        const color5 = getComputedStyle(document.body).getPropertyValue(`--${prefix}secondary`);
+        const color6 = getComputedStyle(document.body).getPropertyValue(`--${prefix}danger`);
+        
+        return {
+          primary: color1.trim(),
+          info: color2.trim(),
+          warning: color4.trim(),
+          success: color3.trim(),
+          secondary: color5.trim(),
+          danger: color6.trim(),
+        };
       }
-      const color1 = getComputedStyle(document.body).getPropertyValue(`--${prefix}primary`);
-      const color2 = getComputedStyle(document.body).getPropertyValue(`--${prefix}info`);
-      const color3 = getComputedStyle(document.body).getPropertyValue(`--${prefix}primary-tint-20`);
-      const color4 = getComputedStyle(document.body).getPropertyValue(`--${prefix}warning`);
-      const color5 = getComputedStyle(document.body).getPropertyValue(`--${prefix}secondary`);
-      const color6 = getComputedStyle(document.body).getPropertyValue(`--${prefix}secondary-tint-20`);
-      
-      return {
-        primary: color1.trim(),
-        info: color2.trim(),
-        warning: color4.trim(),
-        primary_light: color3.trim(),
-        secondary: color5.trim(),
-        secondary_light: color6.trim(),
-      };
-    }
 
     return this.IQUtils;
 })();

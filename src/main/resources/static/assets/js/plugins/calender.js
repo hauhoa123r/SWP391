@@ -1,6 +1,6 @@
 /*
-Version: 1.4.0
-Template: kivicare - Medical Clinic & Patient Management Html Template
+Version: 1.3.0
+Template: kivicare Clinic And Patient Management Dashboard
 Author: iqonic.design
 Design and Developed by: iqonic.design
 NOTE: This file contains the all calender events.

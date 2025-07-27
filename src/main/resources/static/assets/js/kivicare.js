@@ -1,6 +1,6 @@
 /*
-* Version: 1.4.0
-* Template: kivicare - Medical Clinic & Patient Management Html Template
+* Version: 1.3.0
+* Template: kivicare Clinic And Patient Management Dashboard
 * Author: iqonic.design
 * Design and Developed by: iqonic.design
 * NOTE: This file contains the script for initialize & listener Template.
@@ -10,14 +10,14 @@ Index Of Script
 ------------------------------------------------
 ------- Plugin Init --------
 :: LoaderInit
-:: Sticky-Header
+:: Sticky-Nav
 :: Popover
 :: Tooltip
 :: Progress Bar
 :: NoUiSlider
 :: CopyToClipboard
 :: Minus-plus
-:: Vanila Datepicker
+:: Flatpickr
 :: Range Flatpickr
 :: Wrap Flatpickr
 :: Time Flatpickr
@@ -25,8 +25,11 @@ Index Of Script
 :: CounterUp 2
 :: SliderTab
 :: Data Tables
+:: Active Class for Pricing Table
+------ Functions --------
 :: Resize Plugins
 :: Back To Top
+------- Listners ---------
 :: DOMContentLoaded
 :: Window Resize
 :: Form Validation
@@ -46,15 +49,18 @@ Index Of Script
       }, 200)
     }
   }
-  /*----------Sticky-Header-----------*/
-  jQuery(window).scroll(function () {
-    var sticky = jQuery('header .iq-navbar'),
-      scroll = jQuery(window).scrollTop();
-
-    if (scroll >= 100) sticky.addClass('fixed');
-    else sticky.removeClass('fixed');
+  /*----------Sticky-Nav-----------*/
+  window.addEventListener('scroll', function () {
+    let yOffset = document.documentElement.scrollTop;
+    let navbar = document.querySelector(".navs-sticky")
+    if (navbar !== null) {
+      if (yOffset >= 100) {
+        navbar.classList.add("menu-sticky");
+      } else {
+        navbar.classList.remove("menu-sticky");
+      }
+    }
   });
- 
   /*------------Popover--------------*/
   const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
   if (typeof bootstrap !== typeof undefined) {
@@ -238,6 +244,38 @@ Index Of Script
       })
     }
   })
+  /*-------------Dob Picker--------------*/
+  const date_dob_flatpickr = document.querySelectorAll('.date_flatpicker.dob')
+  Array.from(date_dob_flatpickr, (elem) => {
+    if (typeof flatpickr !== typeof undefined) {
+      flatpickr(elem, {
+        maxDate: "today",
+        dateFormat: "Y-m-d",
+      })
+    }
+  })
+  /*----------Range Flatpickr--------------*/
+  const range_dob_flatpicker = document.querySelectorAll('.range_flatpicker.dob')
+  Array.from(range_dob_flatpicker, (elem) => {
+    if (typeof flatpickr !== typeof undefined) {
+      flatpickr(elem, {
+        mode: "range",
+        maxDate: "today",
+        dateFormat: "Y-m-d",
+      })
+    }
+  })
+  /*------------Wrap Flatpickr---------------*/
+  const wrap_dob_flatpicker = document.querySelectorAll('.wrap_flatpicker.dob')
+  Array.from(wrap_dob_flatpicker, (elem) => {
+    if (typeof flatpickr !== typeof undefined) {
+      flatpickr(elem, {
+        wrap: true,
+        maxDate: "today",
+        dateFormat: "Y-m-d",
+      })
+    }
+  })
 
   /*-------------CounterUp 2--------------*/
   if (window.counterUp !== undefined) {
@@ -281,7 +319,7 @@ Index Of Script
     if ($('[data-toggle="data-table"]').length) {
       $('[data-toggle="data-table"]').DataTable({
         "autoWidth": false,
-        "dom": '<"row align-items-center"<"col-md-6" l><"col-md-6" f>><"table-responsive my-3" rt><"row align-items-center" <"col-md-6" i><"col-md-6" p>><"clear">',
+        "dom": '<"row align-items-center gy-2"<"col-md-6" l><"col-md-6" f>><"table-responsive my-3" rt><"row align-items-center" <"col-md-6" i><"col-md-6" p>><"clear">',
       });
     }
     // Column hidden datatable
@@ -335,6 +373,25 @@ Index Of Script
     };
   };
 
+  /*--------------Active Class for Pricing Table------------------------*/
+  const tableTh = document.querySelectorAll('#my-table tr th')
+  const tableTd = document.querySelectorAll('#my-table td')
+  if (tableTh !== null) {
+    Array.from(tableTh, (elem) => {
+      elem.addEventListener('click', (e) => {
+        Array.from(tableTh, (th) => {
+          if (th.children.length) {
+            th.children[0].classList.remove('active')
+          }
+        })
+        elem.children[0].classList.add('active')
+        Array.from(tableTd, (td) => td.classList.remove('active'))
+        const col = Array.prototype.indexOf.call(document.querySelector('#my-table tr').children, elem);
+        const tdIcons = document.querySelectorAll("#my-table tr td:nth-child(" + parseInt(col + 1) + ")");
+        Array.from(tdIcons, (td) => td.classList.add('active'))
+      })
+    })
+  }
   /*------------Resize Plugins--------------*/
   const resizePlugins = () => {
     // For sidebar-mini & responsive
@@ -452,5 +509,4 @@ Index Of Script
       }, false);
     });
   }, false);
-
 })();

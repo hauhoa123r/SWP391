@@ -1870,20 +1870,6 @@
         defer></script>
 
 
-<script>
-    const sendResult = async () => {
-        const data = document.getElementById('appointmentId').value;
-        const response = await fetch('/api/result-lab/send/' + data, {
-            method: 'GET'
-        });
-        if(response.ok){
-            alert('Successfully sent');
-        }else{
-            alert('Failed to send');
-        }
-    }
-</script>
-
 <!-- Lodash Utility -->
 <script src="./assets/vendor/lodash/lodash.min.js" th:src="@{/dashboard-staff-test/assets/vendor/lodash/lodash.min.js}"
 ></script>

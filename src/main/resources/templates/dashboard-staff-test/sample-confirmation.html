@@ -1708,11 +1708,9 @@
             url: '/api/sample/approve/' + id,
             type: 'GET',
             success: function () {
-                alert('Approved');
                 window.location.reload();
             },
             fail: function () {
-                alert('Submit Error');
                 window.location.reload();
             }
         })
@@ -1735,11 +1733,9 @@
             data:  JSON.stringify(data),
             contentType: 'application/json',
             success: function () {
-                alert("send sucess")
                 window.location.reload();
             },
             fail: function () {
-                alert('Submit Error');
                 window.location.reload();
             }
         });
@@ -1760,7 +1756,6 @@
             data:  JSON.stringify(data),
             contentType: 'application/json',
             success: function () {
-                alert('Rejected');
                 window.location.reload();
             },
             fail: function () {

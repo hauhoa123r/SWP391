@@ -44,4 +44,6 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
 
     @Query("FROM PatientEntity pe ORDER BY RAND() LIMIT 1")
     PatientEntity getRandom();
+
+    PatientEntity findByUserEntity_Id(Long userEntityId);
 }

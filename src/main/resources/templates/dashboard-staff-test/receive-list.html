@@ -170,6 +170,10 @@
 </style>
 
 <body class="  ">
+<div id="custom-alert" class="alert alert-success alert-dismissible fade" role="alert" style="position: fixed; top: 20px; right: -400px; z-index: 9999; transition: right 0.5s ease;">
+ Đã nhận thành công.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
     <!-- loader Start -->
     <div id="loading">
         <div class="loader simple-loader">
@@ -1465,7 +1469,6 @@
                     renderPagination(data);
                 },
                 error: function () {
-                    alert('Lỗi khi lọc dữ liệu');
                 }
             });
         }
@@ -1563,11 +1566,9 @@
                 url: '/api/receives/' + convertId,
                 type: 'GET',
                 success: function () {
-                    alert('Received');
-                    fetchFilteredData();
+                    window.location.reload();
                 },
                 error: function () {
-                    alert('Error');
                 }
             });
         });
@@ -1578,11 +1579,17 @@
                 url: '/api/receive/' + id,
                 type: 'GET',
                 success: function () {
-                    alert('Received');
-                    fetchFilteredData();
+                    fetchFilteredData(page = 0)
+                    const $alert = $('#custom-alert');
+                    $alert.addClass('show');
+                    $alert.css('right', '20px');
+                    setTimeout(function () {
+                        $alert.removeClass('show');
+                        $alert.css('right', '-400px');
+                    }, 3000);
+
                 },
-                error: function () {
-                    alert('Error');
+                error: function () {;
                 }
             });
         });

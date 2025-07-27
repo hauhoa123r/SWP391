@@ -576,21 +576,11 @@
                                             <div class="card p-4" style="background-color: #f9f9f9; border-radius: 8px;">
                                                 <p th:text="'Ngày gửi yêu cầu: ' + ${result.dateRequest}"></p>
                                                 <hr>
-                                                <div th:text="${result.getNote()}"></div>
+                                                <div th:text="${result.note}" style="white-space: pre-line;"></div>
                                             </div>
-                                        </div>
-
-                                        <hr>
-                                        <div class="d-flex justify-content-end">
-                                            <button type="button" class="btn btn-secondary ms-2"
-                                                    onclick="window.location.href='/lab/send-result'">
-                                                Quay lại
-                                            </button>
-
                                         </div>
                                     </form>
                                 </div>
-
                             </div>
                         </div>
                     </div>
