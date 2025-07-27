@@ -85,7 +85,7 @@ public class StaffTestLabController {
     @GetMapping("/homepage")
     public ModelAndView homePageView(HttpServletRequest request, Model model) {
         ModelAndView modelAndView = new ModelAndView("dashboard-staff-test/index");
-        StaffEntity staffEntity = staffRepository.findByStaffRoleAndId(StaffRole.DOCTOR, 602L);
+        StaffEntity staffEntity = staffRepository.findByStaffRoleAndId(StaffRole.DOCTOR, 60L);
         modelAndView.addObject("staffs", staffEntity);
         modelAndView.addObject("totalPatient", patientRepository.countAllPatients());
         modelAndView.addObject("currentURI", request.getRequestURI());

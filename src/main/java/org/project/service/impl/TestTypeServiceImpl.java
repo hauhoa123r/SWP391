@@ -53,6 +53,7 @@ public class TestTypeServiceImpl implements TestTypeService {
         TestTypeEntity testTypeEntity = new TestTypeEntity();
         testTypeEntity.setTestTypeName(sampleRequestDTO.getSampleGroupId());
         testTypeEntity.setProduct(null);
+        testTypeEntity.setStatus("active");
         testTypeRepository.save(testTypeEntity);
 
         sampleRequestDTO.getSamples().forEach(sample -> {
