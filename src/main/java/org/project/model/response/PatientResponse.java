@@ -17,6 +17,7 @@ public class PatientResponse {
     private String avatarUrl;
     private String address;
     private String birthdate;
+    private Long age;
     private String familyRelationship;
     private String gender;
     private String bloodType;
