@@ -126,9 +126,9 @@
 </script>
 <script th:inline="javascript" type="module">
 
-    import toast from "/templates/frontend/assets/js/plugins/toast.js";
-    import {FetchingUtils} from "/templates/frontend/assets/js/utils/fetching-utils.js";
-    import {FormDataUtils} from "/templates/frontend/assets/js/utils/form-data.js";
+    import toast from "/templates/shared/assets/js/plugins/toast.js";
+    import {FetchingUtils} from "/templates/shared/assets/js/utils/fetching-utils.js";
+    import {FormDataUtils} from "/templates/shared/assets/js/utils/form-data.js";
 
     document.getElementById("register-form").addEventListener("submit", async function (e) {
         e.preventDefault();

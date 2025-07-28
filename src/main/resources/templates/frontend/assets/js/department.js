@@ -1,11 +1,11 @@
-import {DepartmentDTO} from "/templates/frontend/assets/js/model/dto/DepartmentDTO.js";
+import {DepartmentDTO} from "/templates/shared/assets/js/model/dto/DepartmentDTO.js";
 import {
     DepartmentResponse, renderDepartmentResponseForList
-} from "/templates/frontend/assets/js/model/response/DepartmentResponse.js";
-import {FetchingUtils} from "/templates/frontend/assets/js/utils/fetching-utils.js";
-import {FormDataUtils} from "/templates/frontend/assets/js/utils/form-data.js";
-import {Pagination} from "/templates/frontend/assets/js/utils/pagination.js";
-import {SearchParamsUtils} from "/templates/frontend/assets/js/utils/search-params-utils.js";
+} from "/templates/shared/assets/js/model/response/DepartmentResponse.js";
+import {FetchingUtils} from "/templates/shared/assets/js/utils/fetching-utils.js";
+import {FormDataUtils} from "/templates/shared/assets/js/utils/form-data.js";
+import {Pagination} from "/templates/shared/assets/js/utils/pagination.js";
+import {SearchParamsUtils} from "/templates/shared/assets/js/utils/search-params-utils.js";
 
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);

@@ -1,23 +1,23 @@
-import {AppointmentDTO} from "/templates/frontend/assets/js/model/dto/AppointmentDTO.js";
+import {AppointmentDTO} from "/templates/shared/assets/js/model/dto/AppointmentDTO.js";
 import {
     DepartmentResponse, renderDepartmentResponseForBooking
-} from "/templates/frontend/assets/js/model/response/DepartmentResponse.js";
+} from "/templates/shared/assets/js/model/response/DepartmentResponse.js";
 import {
     DoctorResponse, renderDoctorResponseForBooking
-} from "/templates/frontend/assets/js/model/response/DoctorResponse.js";
+} from "/templates/shared/assets/js/model/response/DoctorResponse.js";
 import {
     HospitalResponse, renderHospitalResponseForBooking
-} from "/templates/frontend/assets/js/model/response/HospitalResponse.js";
+} from "/templates/shared/assets/js/model/response/HospitalResponse.js";
 import {
     PatientResponse, renderPatientResponseForBooking
-} from "/templates/frontend/assets/js/model/response/PatientResponse.js";
+} from "/templates/shared/assets/js/model/response/PatientResponse.js";
 import {
     renderServiceResponseForBooking, ServiceResponse
-} from "/templates/frontend/assets/js/model/response/ServiceResponse.js";
-import {renderTimeResponseForBooking, TimeResponse} from "/templates/frontend/assets/js/model/response/TimeResponse.js";
-import toast from "/templates/frontend/assets/js/plugins/toast.js";
-import {FetchingUtils} from "/templates/frontend/assets/js/utils/fetching-utils.js";
-import {Pagination} from "/templates/frontend/assets/js/utils/pagination.js";
+} from "/templates/shared/assets/js/model/response/ServiceResponse.js";
+import {renderTimeResponseForBooking, TimeResponse} from "/templates/shared/assets/js/model/response/TimeResponse.js";
+import toast from "/templates/shared/assets/js/plugins/toast.js";
+import {FetchingUtils} from "/templates/shared/assets/js/utils/fetching-utils.js";
+import {Pagination} from "/templates/shared/assets/js/utils/pagination.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const bookingManager = new BookingManager();
