@@ -475,7 +475,7 @@
                                             </td>
                                             <td class="text-end">
                                                 <span th:with="totalAmount=${supplierOut?.items != null ? #aggregates.sum(supplierOut.items.?[unitPrice != null && quantity != null].![unitPrice * quantity]) : 0}">
-                                                    <strong th:text="${#numbers.formatDecimal(totalAmount * 1000, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong>
+                                                    <strong th:text="${#numbers.formatDecimal(totalAmount , 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong>
                                                 </span>
                                             </td>
                                             <td>
@@ -489,7 +489,7 @@
                                                     <a th:href="@{'/warehouse/stock-out/' + ${supplierOut?.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
                                                         <i class="ri-eye-line text-white"></i>
                                                     </a>
-                                                    <a th:href="@{'/invoiceouttracking?id=' + ${supplierOut?.id}}" class="btn btn-sm btn-info" title="Theo dõi">
+                                                    <a th:href="@{'/warehouse/invoice/out/tracking?id=' + ${supplierOut?.id}}" class="btn btn-sm btn-info" title="Theo dõi">
                                                         <i class="ri-route-line text-white"></i>
                                                     </a>
                                                       
@@ -701,7 +701,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <a href="#" class="btn btn-outline-primary btn-sm" id="downloadTemplate">
+                    <a href="/warehouse/stock-out/download-template" class="btn btn-outline-primary btn-sm" id="downloadTemplate">
                         <i class="ri-download-line"></i> Tải template mẫu
                     </a>
                 </div>
@@ -920,50 +920,14 @@
         if (downloadTemplate) {
             downloadTemplate.addEventListener('click', function(e) {
                 e.preventDefault();
-                downloadExcelTemplate();
+                downloadTemplate();
             });
         }
     });
     
-    // Xử lý file Excel
-    function handleExcelFile(file) {
-        if (!file) return;
-        
-        // Kiểm tra định dạng file
-        const validExtensions = ['xlsx', 'xls'];
-        const fileExt = file.name.split('.').pop().toLowerCase();
-        
-        if (!validExtensions.includes(fileExt)) {
-            alert('Chỉ hỗ trợ file Excel (.xlsx, .xls)');
-            return;
-        }
-        
-        // Hiển thị preview
-        const preview = document.getElementById('excelPreview');
-        if (preview) {
-            preview.style.display = 'block';
-        }
-        
-        // Enable nút xử lý
-        const processBtn = document.getElementById('processExcel');
-        if (processBtn) {
-            processBtn.disabled = false;
-        }
-        
-        // TODO: Xử lý đọc file Excel (cần thư viện đọc Excel như SheetJS/xlsx)
-        showNotification('Đã tải file lên thành công', 'success');
-    }
+
     
-    // Tạo file Excel template
-    function downloadExcelTemplate() {
-        // TODO: Tạo file Excel template
-        showNotification('Đang tải template...', 'info');
-        
-        // Giả lập tải file
-        setTimeout(() => {
-            showNotification('Đã tải template thành công', 'success');
-        }, 1500);
-    }
+
     
     // Hiển thị thông báo
     function showNotification(message, type) {
@@ -1148,33 +1112,77 @@
 
     // Process Excel data
     function processExcelData() {
-        // Here you would process the Excel data and create stock out records
-        alert('Đang xử lý dữ liệu Excel...');
+        const fileInput = document.getElementById('excelFile');
+        const file = fileInput.files[0];
+        
+        if (!file) {
+            alert('Vui lòng chọn file Excel trước khi xử lý!');
+            return;
+        }
 
-        // Simulate processing
-        setTimeout(() => {
-            alert('Đã xử lý thành công dữ liệu Excel!');
-            $('#uploadExcelModal').modal('hide');
-            refreshStockOut();
-        }, 2000);
+        // Create FormData to send file
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Show loading state
+        const processBtn = document.getElementById('processExcel');
+        const originalText = processBtn.innerHTML;
+        processBtn.innerHTML = '<i class="ri-loader-4-line"></i> Đang xử lý...';
+        processBtn.disabled = true;
+
+        // Send file to server
+        fetch('/warehouse/stock-out/import-excel', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Lỗi khi xử lý file Excel');
+            }
+        })
+        .then(html => {
+            // Redirect to the response page (which will show success/error message)
+            document.open();
+            document.write(html);
+            document.close();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Lỗi khi xử lý file Excel: ' + error.message);
+            
+            // Reset button state
+            processBtn.innerHTML = originalText;
+            processBtn.disabled = false;
+        });
     }
 
     // Download template
     function downloadTemplate() {
-        // Get template data from controller or use default
-        let templateData = [];
-        
-        /*<![CDATA[*/
-        templateData = /*[[${templateData}]]*/ [
-            ['Ngày xuất', 'Người nhận', 'Lý do xuất', 'Mã sản phẩm', 'Tên sản phẩm', 'Số lô', 'Số lượng', 'Đơn giá', 'Ghi chú'],
-            ['YYYY-MM-DD', 'Tên người nhận', 'SALE/TRANSFER/RETURN/EXPIRED/DAMAGED/OTHER', 'XXXXX', 'Tên sản phẩm', 'LXXXX', '0', '0', '']
+        // Template với đầy đủ các trường từ bảng supplier_transactions
+        let templateData = [
+            [
+                'Ngày xuất', 'Người nhận', 'Lý do xuất', 'Tên sản phẩm', 'Số lượng', 'Đơn giá', 
+                'Ghi chú', 'Số hóa đơn', 'Thuế', 'Phí vận chuyển', 'Phương thức thanh toán', 
+                'Ngày đến hạn', 'Ngày thanh toán', 'Ngày giao hàng dự kiến'
+            ],
+            [
+                '2024-01-15', 'Nguyễn Văn A', 'SALE', 'Paracetamol 500mg', '10', '5000', 
+                'Xuất cho bệnh nhân', 'INV-001', '500', '0', 'CASH', 
+                '2024-02-15', '', '2024-01-20'
+            ]
         ];
-        /*]]>*/
 
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.aoa_to_sheet(templateData);
+        
+        // Auto-size columns
+        const colWidths = [12, 15, 12, 20, 8, 10, 20, 12, 8, 15, 20, 12, 12, 20];
+        ws['!cols'] = colWidths.map(width => ({ width }));
+        
         XLSX.utils.book_append_sheet(wb, ws, 'Template');
-        XLSX.writeFile(wb, 'template_xuat_kho.xlsx');
+        XLSX.writeFile(wb, 'template_xuat_kho_chi_tiet.xlsx');
     }
 
     // Add product row
@@ -1255,7 +1263,7 @@
         /*]]>*/
         
         // Alternatively, make an AJAX call to get the data
-        // $.getJSON(`/api/products/${productId}/batches`, function(data) {
+        // $.getJSON(`/warehouse/stock-out/api/products/${productId}/batches`, function(data) {
         //     // process batch data
         // });
 

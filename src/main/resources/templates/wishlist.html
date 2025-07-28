@@ -1,51 +1,18 @@
 <!doctype html>
-<html class="landing-pages" data-bs-theme="light" dir="ltr" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        navActive = ${8},
+        breadCrumbTitle = ${'Danh sách yêu thích'},
+        breadCrumbTexts = ${{{'Danh sách yêu thích'}}},
+        breadCrumbLinks = ${{{''}}}
+"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      class="landing-pages" data-bs-theme="light" dir="ltr" lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Kivicare | Medical Clinic & Patient Management Html Template</title>
-    <!-- Config Options -->
-    <meta content='{&quot;saveLocal&quot;:&quot;sessionStorage&quot;,&quot;storeKey&quot;:&quot;huisetting&quot;,&quot;setting&quot;:{&quot;app_name&quot;:{&quot;value&quot;:&quot;Kivicare&quot;}}}'
-          name="setting_options">
-    <!-- Google Font Api KEY-->
-    <meta content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k" name="google_font_api">
-    <!-- Favicon -->
-    <link href="frontend/assets/images/favicon.ico" rel="shortcut icon"/>
 
-    <!-- Library / Plugin Css Build -->
-    <link href="frontend/assets/css/core/libs.min.css" rel="stylesheet"/>
-
-    <!-- flaticon css -->
-    <link href="frontend/assets/vendor/flaticon/css/flaticon.css" rel="stylesheet"/>
-
-    <!-- font-awesome css -->
-    <link href="frontend/assets/vendor/font-awesome/css/all.min.css" rel="stylesheet"/>
-
-
-    <!-- Sweetlaert2 css -->
-    <link href="frontend/assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet"/>
-
-
-    <!-- Kivicare Design System Css -->
-    <link href="frontend/assets/css/kivicare.min.css?v=1.4.1" rel="stylesheet"/>
-
-    <!-- Custom Css -->
-    <link href="frontend/assets/css/custom.min.css?v=1.4.1" rel="stylesheet"/>
-
-    <!-- Rtl Css -->
-    <link href="frontend/assets/css/rtl.min.css?v=1.4.1" rel="stylesheet"/>
-
-    <!-- Customizer Css -->
-    <link href="frontend/assets/css/customizer.min.css?v=1.4.1" rel="stylesheet"/>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap"
-          rel="stylesheet">
-
-
-    <meta content='' name="page_colors">
+    <title>Danh sách yêu thích</title>
+    <!-- Giữ lại các thẻ meta/link/css cần thiết cho wishlist -->
 </head>
 <body class=" body-bg landing-pages">
 <span class="screen-darken"></span>
@@ -101,14 +68,14 @@
                                               stroke-linejoin="round"
                                               stroke-width="1.5"></path>
                                     </svg>
-                                    <span>1234 North Avenue Luke Lane</span>
+                                    <span>1234 Đại Lộ Bắc Luke Lane</span>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-lg-6 col-md-5 text-md-end">
                             <ul
                                     class="iq-social list-inline d-flex align-items-center justify-content-end gap-3 m-0">
-                                <li class="label text-body fw-500">Follow us :</li>
+                                <li class="label text-body fw-500">Theo dõi chúng tôi:</li>
                                 <li>
                                     <a href="https://facebook.com/">
                                         <svg class="base-circle animated" height="38" viewBox="0 0 50 50"
@@ -189,7 +156,7 @@
                                         <li class="nav-item">
                                             <a aria-controls="homePages" aria-expanded="false" class="nav-link"
                                                data-bs-toggle="collapse" href="#homePages" role="button">
-                                                <span class="item-name">Home</span>
+                                                <span class="item-name">Trang Chủ</span>
                                                 <span class="menu-icon">
                                            <svg fill="none" height="10" viewBox="0 0 8 8" width="10"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -201,72 +168,71 @@
                                             <ul class="sub-nav collapse  list-unstyled" id="homePages">
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./index.html">
-                                                        general doctor
+                                                        bác sĩ đa khoa
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./dentist.html">
-                                                        dentist
+                                                        nha sĩ
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./eye-care.html">
-                                                        eye care
+                                                        chăm sóc mắt
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./skin-specialist.html">
-                                                        skin specialist
+                                                        bác sĩ da liễu
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./fertility-clinic.html">
-                                                        Fertility Clinic
+                                                        Phòng khám sinh sản
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./ent-clinic.html">
-                                                        ENT Clinic
+                                                        Phòng khám tai mũi họng
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./product-home.html"
                                                        th:href="@{/product-home}">
-                                                        Product Home
+                                                        Trang sản phẩm
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./psychiatrist.html">
-                                                        Psychiatrist
+                                                        bác sĩ tâm thần
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./paediatrician.html">
-                                                        Paediatrician
+                                                        bác sĩ nhi khoa
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./cardiac.html">
-                                                        Cardiac
+                                                        tim mạch
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./orthopedics.html">
-                                                        Orthopedics
+                                                        chỉnh hình
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./laboratory.html">
-                                                        Laboratory
+                                                        phòng thí nghiệm
                                                     </a>
                                                 </li>
                                             </ul>
                                         </li>
                                         <li class="nav-item">
                                             <a aria-controls="allPages" aria-expanded="false" class="nav-link"
-                                               data-bs-toggle="collapse"
-                                               href="#allPages" role="button">
-                                                <span class="item-name">Pages</span>
+                                               data-bs-toggle="collapse" href="#allPages" role="button">
+                                                <span class="item-name">Trang</span>
                                                 <span class="menu-icon">
                                            <svg fill="none" height="10" viewBox="0 0 8 8" width="10"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -279,7 +245,7 @@
                                                 <li class="nav-item">
                                                     <a aria-controls="docPages" aria-expanded="false" class="nav-link"
                                                        data-bs-toggle="collapse" href="#docPages" role="button">
-                                                        <span class="item-name">Doctors</span>
+                                                        <span class="item-name">Bác Sĩ</span>
                                                         <span class="menu-icon">
                                                  <svg class="icon-32" fill="none" viewBox="0 0 24 24" width="32"
                                                       xmlns="http://www.w3.org/2000/svg">
@@ -292,31 +258,31 @@
                                                     <ul class="sub-nav collapse  list-unstyled" id="docPages">
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./tab-two-column.html">
-                                                                tab two column
+                                                                tab hai cột
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./tab-three-column.html">
-                                                                tab three column
+                                                                tab ba cột
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./doctor-details.html">
-                                                                doctor details
+                                                                chi tiết bác sĩ
                                                             </a>
                                                         </li>
                                                     </ul>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./about-us.html">
-                                                        about-us
+                                                        về chúng tôi
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a aria-controls="pageServices" aria-expanded="false"
                                                        class="nav-link"
                                                        data-bs-toggle="collapse" href="#pageServices" role="button">
-                                                        <span class="item-name">Service</span>
+                                                        <span class="item-name">Dịch Vụ</span>
                                                         <span class="menu-icon">
                                                  <svg class="icon-32" fill="none" viewBox="0 0 24 24" width="32"
                                                       xmlns="http://www.w3.org/2000/svg">
@@ -329,26 +295,26 @@
                                                     <ul class="sub-nav collapse  list-unstyled" id="pageServices">
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./service1.html">
-                                                                service 1
+                                                                dịch vụ 1
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./service2.html">
-                                                                service 2
+                                                                dịch vụ 2
                                                             </a>
                                                         </li>
                                                     </ul>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./client.html">
-                                                        client
+                                                        khách hàng
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a aria-controls="pricingPlan" aria-expanded="false"
                                                        class="nav-link"
                                                        data-bs-toggle="collapse" href="#pricingPlan" role="button">
-                                                        <span class="item-name">Pricing Plan</span>
+                                                        <span class="item-name">Kế Hoạch Giá</span>
                                                         <span class="menu-icon">
                                                  <svg class="icon-32" fill="none" viewBox="0 0 24 24" width="32"
                                                       xmlns="http://www.w3.org/2000/svg">
@@ -361,12 +327,12 @@
                                                     <ul class="sub-nav collapse  list-unstyled" id="pricingPlan">
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./pricing-plan-one.html">
-                                                                Pricing plan 1
+                                                                kế hoạch giá 1
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./pricing-plan-two.html">
-                                                                Pricing plan 2
+                                                                kế hoạch giá 2
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -383,12 +349,12 @@
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./contactus.html">
-                                                        contact us
+                                                        liên hệ
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./comingsoon.html">
-                                                        coming soon
+                                                        sắp ra mắt
                                                     </a>
                                                 </li>
                                             </ul>
@@ -397,7 +363,7 @@
                                             <a aria-controls="specializationPages" aria-expanded="false"
                                                class="nav-link"
                                                data-bs-toggle="collapse" href="#specializationPages" role="button">
-                                                <span class="item-name">Specialization</span>
+                                                <span class="item-name">Chuyên Môn</span>
                                                 <span class="menu-icon">
                                            <svg fill="none" height="10" viewBox="0 0 8 8" width="10"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -409,32 +375,32 @@
                                             <ul class="sub-nav collapse  list-unstyled" id="specializationPages">
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./oncologist.html">
-                                                        oncologist
+                                                        bác sĩ ung thư
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./neurologist.html">
-                                                        neurologist
+                                                        bác sĩ thần kinh
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./ent-specialist.html">
-                                                        ent specialist
+                                                        bác sĩ tai mũi họng
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./cardiologist.html">
-                                                        cardiologist
+                                                        bác sĩ tim mạch
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./audiologist.html">
-                                                        audiologist
+                                                        bác sĩ thính giác
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./psychiatrists.html">
-                                                        psychiatrists
+                                                        bác sĩ tâm thần
                                                     </a>
                                                 </li>
                                             </ul>
@@ -454,7 +420,7 @@
                                             <ul class="sub-nav collapse  list-unstyled" id="blogPages">
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./blog-lists.html">
-                                                        Blog Listing
+                                                        danh sách blog
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
@@ -478,23 +444,23 @@
                                                     <ul class="sub-nav collapse  list-unstyled" id="blogGrid">
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./two-column-blog.html">
-                                                                two column blog
+                                                                blog hai cột
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./three-column-blog.html">
-                                                                three column blog
+                                                                blog ba cột
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link "
                                                                href="./three-column-full-width-blog.html">
-                                                                three column full width blog
+                                                                blog ba cột toàn chiều rộng
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./four-column-blog.html">
-                                                                four column blog
+                                                                blog bốn cột
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -516,22 +482,22 @@
                                                     <ul class="sub-nav collapse  list-unstyled" id="blogSidebar">
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./left-sidebar-grid-1.html">
-                                                                left sidebar grid-1
+                                                                thanh bên trái lưới 1
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./left-sidebar-grid-2.html">
-                                                                left sidebar grid-2
+                                                                thanh bên trái lưới 2
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./right-sidebar-grid-1.html">
-                                                                Right sidebar grid-1
+                                                                thanh bên phải lưới 1
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./right-sidebar-grid-2.html">
-                                                                Right sidebar grid-2
+                                                                thanh bên phải lưới 2
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -552,7 +518,7 @@
                                                     <ul class="sub-nav collapse  list-unstyled" id="blogSingle">
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./blog-standard.html">
-                                                                blog standard
+                                                                blog tiêu chuẩn
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
@@ -562,22 +528,22 @@
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./blog-gallary.html">
-                                                                blog gallary
+                                                                blog thư viện
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./blog-audio.html">
-                                                                blog audio
+                                                                blog âm thanh
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./blog-link.html">
-                                                                blog link
+                                                                blog liên kết
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./blog-quote.html">
-                                                                blog quote
+                                                                blog trích dẫn
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -588,7 +554,7 @@
                                             <a aria-controls="shopPage" aria-expanded="false" class="nav-link"
                                                data-bs-toggle="collapse"
                                                href="#shopPage" role="button">
-                                                <span class="item-name">Shop</span>
+                                                <span class="item-name">Cửa Hàng</span>
                                                 <span class="menu-icon">
                                            <svg fill="none" height="10" viewBox="0 0 8 8" width="10"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -600,7 +566,7 @@
                                             <ul class="sub-nav collapse  list-unstyled" id="shopPage">
                                                 <li class="nav-item">
                                                     <a class="nav-link " href="./shop.html" th:href="@{/shop}">
-                                                        Shop
+                                                        cửa hàng
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
@@ -622,19 +588,19 @@
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./shop-left-sidebar.html"
                                                                th:href="@{/shop-left-sidebar}">
-                                                                shop left sidebar
+                                                                cửa hàng thanh bên trái
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./shop-right-sidebar.html"
                                                                th:href="@{/shop-right-sidebar}">
-                                                                shop right sidebar
+                                                                cửa hàng thanh bên phải
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./shop-no-sidebar.html"
                                                                th:href="@{/shop-no-sidebar}">
-                                                                shop no sidebar
+                                                                cửa hàng không thanh bên
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -655,31 +621,31 @@
                                                     <ul class="sub-nav collapse  list-unstyled" id="sPages">
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./cart.html" th:href="@{/cart}">
-                                                                cart
+                                                                giỏ hàng
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./checkout.html"
                                                                th:href="@{/checkout}">
-                                                                checkout
+                                                                thanh toán
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link active" href="./wishlist.html"
                                                                th:href="@{/wishlist}">
-                                                                wishlist
+                                                                danh sách yêu thích
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./my-account.html"
                                                                th:href="@{/my-account}">
-                                                                my account
+                                                                tài khoản của tôi
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./track-order.html"
                                                                th:href="@{/track-order}">
-                                                                track order
+                                                                theo dõi đơn hàng
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -701,19 +667,19 @@
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./product-standard.html"
                                                                th:href="@{/product-standard}">
-                                                                product standard
+                                                                sản phẩm tiêu chuẩn
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./product-new.html"
                                                                th:href="@{/product-new}">
-                                                                product new
+                                                                sản phẩm mới
                                                             </a>
                                                         </li>
                                                         <li class="nav-item">
                                                             <a class="nav-link " href="./product-sale.html"
                                                                th:href="@{/product-sale}">
-                                                                product sale
+                                                                sản phẩm giảm giá
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -745,8 +711,7 @@
                                             <div class="btn-icon btn-sm rounded-pill btn-action">
                                         <span class="btn-inner">
                                            <svg class="icon-20" fill="none"
-                                                viewBox="0 0 24 24" width="20"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                                viewBox="0 0 24 24" width="20px">
                                               <circle cx="11.7669" cy="11.7666"
                                                       r="8.98856" stroke="currentColor"
                                                       stroke-linecap="round" stroke-linejoin="round"
@@ -767,7 +732,7 @@
                                             <li class="p-0">
                                                 <div class="form-group input-group mb-0">
                                                     <input class="form-control border-0"
-                                                           placeholder="Search..."
+                                                           placeholder="Tìm kiếm..."
                                                            type="text">
                                                     <span class="input-group-text border-0">
                                               <svg class="icon-20" fill="none" height="20"
@@ -813,11 +778,11 @@
                                                     fill="currentColor"
                                                     fill-rule="evenodd"></path>
                                               <path clip-rule="evenodd"
-                                                    d="M5.28732 16.784C4.69232 16.784 4.20898 16.2998 4.20898 15.7048C4.20898 15.1098 4.69232 14.6265 5.28732 14.6265C5.88232 14.6265 6.36648 15.1098 6.36648 15.7048C6.36648 16.2998 5.88232 16.784 5.28732 16.784"
+                                                    d="M5.28732 16.784C4.69232 16.784 4.20898 16.2998 4.20898 15.7048C4.20898 14.1098 4.69232 14.6265 5.28732 14.6265C5.88232 14.6265 6.36648 15.1098 6.36648 15.7048C6.36648 16.2998 5.88232 16.784 5.28732 16.784"
                                                     fill="currentColor"
                                                     fill-rule="evenodd"></path>
                                               <path clip-rule="evenodd"
-                                                    d="M14.6877 16.784C14.0927 16.784 13.6094 16.2998 13.6094 15.7048C13.6094 15.1098 14.0927 14.6265 14.6877 14.6265C15.2835 14.6265 15.7677 15.1098 15.7677 15.7048C15.7677 16.2998 15.2835 16.784 14.6877 16.784"
+                                                    d="M14.6877 16.784C14.0927 16.784 13.6094 16.2998 13.6094 15.7048C13.6094 14.1098 14.0927 14.6265 14.6877 14.6265C15.2835 14.6265 15.7677 15.1098 15.7677 15.7048C15.7677 16.2998 15.2835 16.784 14.6877 16.784"
                                                     fill="currentColor"
                                                     fill-rule="evenodd"></path>
                                            </svg>
@@ -836,7 +801,7 @@
                                                                      loading="lazy"
                                                                      src="frontend/assets/images/shop/product-1.webp"/>
                                                                 <div class="ms-3 flex-grow-1">
-                                                                    <h6 class="mb-0 ">Electric Toothbrush</h6>
+                                                                    <h6 class="mb-0 ">Bàn chải đánh răng điện</h6>
                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                         <p class="mb-0"><span>1</span> *
                                                                             <span>$123.00</span></p>
@@ -855,7 +820,7 @@
                                                                      loading="lazy"
                                                                      src="frontend/assets/images/shop/product-2.webp"/>
                                                                 <div class="ms-3 flex-grow-1">
-                                                                    <h6 class="mb-0 ">Medical Box</h6>
+                                                                    <h6 class="mb-0 ">Hộp thuốc</h6>
                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                         <p class="mb-0"><span>1</span> *
                                                                             <span>$92.00</span></p>
@@ -874,7 +839,7 @@
                                                                      loading="lazy"
                                                                      src="frontend/assets/images/shop/product-3.webp"/>
                                                                 <div class="ms-3 flex-grow-1">
-                                                                    <h6 class="mb-0 ">Hand Sanitizer Bottle</h6>
+                                                                    <h6 class="mb-0 ">Chai nước rửa tay</h6>
                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                         <p class="mb-0"><span>1</span> *
                                                                             <span>$90.00</span></p>
@@ -893,7 +858,7 @@
                                                                      loading="lazy"
                                                                      src="frontend/assets/images/shop/product-4.webp"/>
                                                                 <div class="ms-3 flex-grow-1">
-                                                                    <h6 class="mb-0 ">Wheel Chair</h6>
+                                                                    <h6 class="mb-0 ">Xe lăn</h6>
                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                         <p class="mb-0"><span>1</span> *
                                                                             <span>$89.00</span></p>
@@ -907,15 +872,15 @@
                                                 </div>
                                                 <div class="card-footer pt-3 px-0 pb-0 text-center">
                                                     <div class="d-flex align-items-center justify-content-between ">
-                                                        <strong>Subtotal:</strong>
+                                                        <strong>Tổng:</strong>
                                                         <span>$64.00</span>
                                                     </div>
                                                     <div class="d-flex align-items-center justify-content-between my-3 pt-3 border-top">
                                                         <div class="cart-menu">
                                                             <div class="iq-btn-container">
                                                                 <a class="iq-button text-capitalize" href="./cart.html">
-                                                              <span class="iq-btn-text-holder position-relative">View
-                                                                  Cart</span>
+                                                              <span class="iq-btn-text-holder position-relative">Xem
+                                                                  giỏ hàng</span>
                                                                     <span class="iq-btn-icon-holder">
                                                                   <svg fill="none" height="10"
                                                                        viewBox="0 0 8 8" width="10"
@@ -932,7 +897,8 @@
                                                             <div class="iq-btn-container">
                                                                 <a class="iq-button text-capitalize"
                                                                    href="./checkout.html">
-                                                                    <span class="iq-btn-text-holder position-relative">Checkout</span>
+                                                                    <span class="iq-btn-text-holder position-relative">Thanh
+                                                                        toán</span>
                                                                     <span class="iq-btn-icon-holder">
                                                                   <svg fill="none" height="10"
                                                                        viewBox="0 0 8 8" width="10"
@@ -984,7 +950,7 @@
                                               </mask>
                                               <g>
                                                  <path clip-rule="evenodd"
-                                                       d="M9.93367 3.08038C8.14951 3.08038 6.69784 4.53121 6.69784 6.31538C6.69201 8.09371 8.13284 9.54371 9.9095 9.55038L9.93367 10.1454V9.55038C11.717 9.55038 13.1678 8.09871 13.1678 6.31538C13.1678 4.53121 11.717 3.08038 9.93367 3.08038ZM9.93367 10.7395H9.90701C7.47201 10.732 5.49951 8.74622 5.50784 6.31288C5.50784 3.87538 7.49284 1.89038 9.93367 1.89038C12.3737 1.89038 14.3578 3.87538 14.3578 6.31538C14.3578 8.75538 12.3737 10.7395 9.93367 10.7395Z"
+                                                       d="M8.12802 10.9092L11.5039 16.3861C11.6516 16.6261 11.8824 16.6234 11.9756 16.6104C12.0688 16.5975 12.2932 16.5403 12.3744 16.268L16.5958 2.0103C16.6697 1.75829 16.534 1.58659 16.4731 1.52566C16.414 1.46474 16.2451 1.33458 16.0004 1.40381L1.73262 5.58187C1.46214 5.66126 1.40306 5.88835 1.39014 5.98158C1.37722 6.07667 1.37352 6.31206 1.61261 6.46253L7.15228 9.92702L12.0467 4.98092C12.3153 4.70952 12.7538 4.70675 13.0261 4.97538C13.2984 5.24401 13.3003 5.68341 13.0317 5.95481L8.12802 10.9092ZM11.9036 18.0007C11.2611 18.0007 10.6722 17.6739 10.3251 17.1127L6.74614 11.3053L0.878763 7.63589C0.246423 7.23987 -0.0840551 6.5346 0.0184117 5.79334C0.119955 5.05207 0.628597 4.46311 1.34309 4.25356L15.6109 0.0755041C16.2672 -0.116506 16.9707 0.0653497 17.4544 0.547221C17.9381 1.03371 18.1181 1.74451 17.9224 2.40362L13.701 16.6604C13.4896 17.3776 12.8988 17.8844 12.1593 17.9832C12.0726 17.9943 11.9886 18.0007 11.9036 18.0007V18.0007Z"
                                                        fill="currentColor"
                                                        fill-rule="evenodd"></path>
                                               </g>
@@ -996,17 +962,16 @@
                                                 aria-labelledby="navbarDropdown"
                                                 class="dropdown-menu dropdown-menu-end dropdown-user">
                                             <li><a class="dropdown-item border-bottom"
-                                                   href="./login.html">Sign in</a></li>
+                                                   href="./login.html">Đăng nhập</a></li>
                                             <li><a class="dropdown-item"
-                                                   href="./registration.html">Sign
-                                                up</a>
+                                                   href="./registration.html">Đăng ký</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li>
                                         <div class="iq-btn-container">
                                             <a class="iq-button text-capitalize" href="./appointment.html">
-                                                <span class="iq-btn-text-holder position-relative">Appointment</span>
+                                                <span class="iq-btn-text-holder position-relative">Lịch hẹn</span>
                                                 <span class="iq-btn-icon-holder">
                                            <svg fill="none" height="10" viewBox="0 0 8 8"
                                                 width="10" xmlns="http://www.w3.org/2000/svg">
@@ -1049,66 +1014,60 @@
             </div>
             <div class="offcanvas-body px-5 d-flex flex-column justify-content-between">
                 <div class="mb-5 pb-5 border-bottom">
-                    <h4 class="mb-3">Gallery:</h4>
+                    <h4 class="mb-3">Thư viện:</h4>
                     <div class="row row-cols-xl-3 row-cols-md-2 row-cols-2 gx-3 gy-3">
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="frontend/assets/images/gallery/blog-1.jpg">
-                                <img alt="profile-image"
-                                     class="img-fluid w-100"
+                                <img alt="hình ảnh" class="img-fluid w-100"
                                      loading="lazy" src="frontend/assets/images/gallery/blog-1.jpg">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="frontend/assets/images/gallery/blog-2.jpg">
-                                <img alt="profile-image"
-                                     class="img-fluid w-100"
+                                <img alt="hình ảnh" class="img-fluid w-100"
                                      loading="lazy" src="frontend/assets/images/gallery/blog-2.jpg">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="frontend/assets/images/gallery/blog-3.jpg">
-                                <img alt="profile-image"
-                                     class="img-fluid w-100"
+                                <img alt="hình ảnh" class="img-fluid w-100"
                                      loading="lazy" src="frontend/assets/images/gallery/blog-3.jpg">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="frontend/assets/images/gallery/blog-4.jpg">
-                                <img alt="profile-image"
-                                     class="img-fluid w-100"
+                                <img alt="hình ảnh" class="img-fluid w-100"
                                      loading="lazy" src="frontend/assets/images/gallery/blog-4.jpg">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="frontend/assets/images/gallery/blog-5.jpg">
-                                <img alt="profile-image"
-                                     class="img-fluid w-100"
+                                <img alt="hình ảnh" class="img-fluid w-100"
                                      loading="lazy" src="frontend/assets/images/gallery/blog-5.jpg">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
                                href="frontend/assets/images/gallery/blog-6.jpg">
-                                <img alt="profile-image"
-                                     class="img-fluid w-100"
+                                <img alt="hình ảnh" class="img-fluid w-100"
                                      loading="lazy" src="frontend/assets/images/gallery/blog-6.jpg">
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="mb-5 pb-5 border-bottom">
-                    <h4 class="mb-3">Contact Us:</h4>
-                    <p>4517, Washington Ave, Manchester, Kentucky, England 524163.</p>
+                    <h4 class="mb-3">Liên hệ:</h4>
+                    <p>4517, Đại Lộ Bắc Luke Lane, Manchester, Kentucky, Anh 524163.</p>
                     <p>kivicare@example.com</p>
-                    <p>Phone : (480) 555-0103</p>
+                    <p>Điện thoại : (480) 555-0103</p>
                 </div>
                 <div class="mb-5">
-                    <h4 class="mb-3">Follow Us:</h4>
+                    <h4 class="mb-3">Theo dõi chúng tôi:</h4>
                     <ul class="iq-social list-inline d-flex align-items-center gap-3 m-0">
                         <li>
                             <a href="https://facebook.com/">
@@ -1145,23 +1104,22 @@
                         </li>
                     </ul>
                 </div>
-                <p class="pt-3 mb-0 border-top">©
+                <p class="pt-3 mb-0 border-top"> 
                     <script>document.write(new Date().getFullYear());</script>
-                    KiviCare, All
-                    Rights Reserved.
+                    KiviCare, Tất cả quyền được bảo lưu.
                 </p>
             </div>
         </div>        <!--bread-crumb-->
         <div class="iq-breadcrumb bg-primary-subtle">
             <div class="container">
                 <nav aria-label="breadcrumb" class="text-center">
-                    <h2 class="title">Wishlist</h2>
+                    <h2 class="title">Danh sách yêu thích</h2>
                     <ol class="breadcrumb justify-content-center mt-2 mb-0">
                         <li class="breadcrumb-item">
-                            <a href="index.html">Home</a>
+                            <a href="index.html" th:href="@{/}">Trang Chủ</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            Wishlist
+                            Danh sách yêu thích
                         </li>
                     </ol>
                 </nav>
@@ -1176,15 +1134,15 @@
                 <span th:text="${wishlistMessage}"></span>
                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
             </div>
-            <h3 class="mb-5">Your Wishlist</h3>
+            <h3 class="mb-5">Danh sách yêu thích của bạn</h3>
             <div class="table-responsive">
                 <table class="table cart-table">
                     <thead class="border-bottom">
                     <tr>
                         <th class="fw-bold fs-5 text-primary" scope="col"></th>
-                        <th class="fw-bold fs-5 text-primary px-3" scope="col">Product Name</th>
-                        <th class="fw-bold fs-5 text-primary px-3" scope="col">Unit Price</th>
-                        <th class="fw-bold fs-5 text-primary px-3" scope="col">Available Quantity</th>
+                        <th class="fw-bold fs-5 text-primary px-3" scope="col">Tên sản phẩm</th>
+                        <th class="fw-bold fs-5 text-primary px-3" scope="col">Giá</th>
+                        <th class="fw-bold fs-5 text-primary px-3" scope="col">Số lượng có sẵn</th>
                         <th class="fw-bold fs-5 text-primary" scope="col"></th>
                     </tr>
                     </thead>
@@ -1225,7 +1183,7 @@
                 </table>
             </div>
             <div class="product-social-share mt-5">
-                <h5 class="mb-3">Share:</h5>
+                <h5 class="mb-3">Chia sẻ:</h5>
                 <ul class="list-inline m-0 p-0 d-flex flex-wrap align-items-center gap-2">
                     <li class="flex-shrink-0">
                         <a class="d-inline-block border-radius rounded-circle bg-primary text-white text-center"
@@ -1282,15 +1240,13 @@
                                              src="frontend/assets/images/logo/logo.png">
                                      </span>
                         </a>
-                        <h5 class="iq-heading-title mt-5">Newsletter</h5>
-                        <p class=" mt-2 mb-4">It is a long established fact that a reader will be distracted by the
-                            readable content of a page when
-                            looking at its layout. </p>
+                        <h5 class="iq-heading-title mt-5">Tin tức</h5>
+                        <p class=" mt-2 mb-4">Đây là một thực tế đã được thiết lập từ lâu rằng một người đọc sẽ bị phân tâm bởi nội dung có thể đọc được của một trang khi nhìn vào bố cục của trang.</p>
                         <div class="custom-form-field pe-sm-5 me-sm-5">
                             <div class="pe-sm-3 pe-5">
                                 <div class="custom-form-field">
                                     <form class="mail-box position-relative">
-                                        <input class="form-control bg-white" name="EMAIL" placeholder="Enter your Email"
+                                        <input class="form-control bg-white" name="EMAIL" placeholder="Nhập email của bạn"
                                                required="" type="email">
                                         <button class="btn-submit position-absolute bg-primary border-0 rounded-0 text-white"
                                                 type="submit"
@@ -1304,14 +1260,14 @@
                                                           d="M0 0.000366211H18V18.0004H0V0.000366211Z"
                                                           fill="currentColor"
                                                           fill-rule="evenodd"></path>
-                                                </mask>
-                                                <g>
-                                                    <path clip-rule="evenodd"
-                                                          d="M8.12802 10.9092L11.5039 16.3861C11.6516 16.6261 11.8824 16.6234 11.9756 16.6104C12.0688 16.5975 12.2932 16.5403 12.3744 16.268L16.5958 2.0103C16.6697 1.75829 16.534 1.58659 16.4731 1.52566C16.414 1.46474 16.2451 1.33458 16.0004 1.40381L1.73262 5.58187C1.46214 5.66126 1.40306 5.88835 1.39014 5.98158C1.37722 6.07667 1.37352 6.31206 1.61261 6.46253L7.15228 9.92702L12.0467 4.98092C12.3153 4.70952 12.7538 4.70675 13.0261 4.97538C13.2984 5.24401 13.3003 5.68341 13.0317 5.95481L8.12802 10.9092ZM11.9036 18.0007C11.2611 18.0007 10.6722 17.6739 10.3251 17.1127L6.74614 11.3053L0.878763 7.63589C0.246423 7.23987 -0.0840551 6.5346 0.0184117 5.79334C0.119955 5.05207 0.628597 4.46311 1.34309 4.25356L15.6109 0.0755041C16.2672 -0.116506 16.9707 0.0653497 17.4544 0.547221C17.9381 1.03371 18.1181 1.74451 17.9224 2.40362L13.701 16.6604C13.4896 17.3776 12.8988 17.8844 12.1593 17.9832C12.0726 17.9943 11.9886 18.0007 11.9036 18.0007V18.0007Z"
-                                                          fill="currentColor"
-                                                          fill-rule="evenodd"></path>
-                                                </g>
-                                            </svg>
+                                                  </mask>
+                                                  <g>
+                                                      <path clip-rule="evenodd"
+                                                            d="M8.12802 10.9092L11.5039 16.3861C11.6516 16.6261 11.8824 16.6234 11.9756 16.6104C12.0688 16.5975 12.2932 16.5403 12.3744 16.268L16.5958 2.0103C16.6697 1.75829 16.534 1.58659 16.4731 1.52566C16.414 1.46474 16.2451 1.33458 16.0004 1.40381L1.73262 5.58187C1.46214 5.66126 1.40306 5.88835 1.39014 5.98158C1.37722 6.07667 1.37352 6.31206 1.61261 6.46253L7.15228 9.92702L12.0467 4.98092C12.3153 4.70952 12.7538 4.70675 13.0261 4.97538C13.2984 5.24401 13.3003 5.68341 13.0317 5.95481L8.12802 10.9092ZM11.9036 18.0007C11.2611 18.0007 10.6722 17.6739 10.3251 17.1127L6.74614 11.3053L0.878763 7.63589C0.246423 7.23987 -0.0840551 6.5346 0.0184117 5.79334C0.119955 5.05207 0.628597 4.46311 1.34309 4.25356L15.6109 0.0755041C16.2672 -0.116506 16.9707 0.0653497 17.4544 0.547221C17.9381 1.03371 18.1181 1.74451 17.9224 2.40362L13.701 16.6604C13.4896 17.3776 12.8988 17.8844 12.1593 17.9832C12.0726 17.9943 11.9886 18.0007 11.9036 18.0007V18.0007Z"
+                                                            fill="currentColor"
+                                                            fill-rule="evenodd"></path>
+                                                  </g>
+                                              </svg>
                                         </button>
                                     </form>
                                 </div>
@@ -1320,45 +1276,45 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6  mb-5 mb-lg-0">
-                    <h5 class="mb-4 ">Useful Links</h5>
+                    <h5 class="mb-4 ">Liên kết hữu ích</h5>
                     <ul class="m-0 p-0 list-unstyled footer-menu-link">
                         <li class="mb-3"><a href="./about-us.html"><i
-                                class="fas fa-angle-right me-2"></i>About us</a></li>
+                                class="fas fa-angle-right me-2"></i>Về chúng tôi</a></li>
                         <li class="mb-3"><a href="./service1.html"><i
-                                class="fas fa-angle-right me-2"></i>service</a></li>
+                                class="fas fa-angle-right me-2"></i>Dịch vụ</a></li>
                         <li class="mb-3"><a href="./tab-three-column.html"><i
-                                class="fas fa-angle-right me-2"></i>Team</a></li>
+                                class="fas fa-angle-right me-2"></i>Đội ngũ</a></li>
                         <li><a href="./contactus.html"><i
-                                class="fas fa-angle-right me-2"></i>Contact Us</a></li>
+                                class="fas fa-angle-right me-2"></i>Liên hệ</a></li>
                     </ul>
 
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="pe-lg-5">
-                        <h5 class="mb-4 ">Working Days</h5>
+                        <h5 class="mb-4 ">Giờ làm việc</h5>
                         <ul class="list-inline m-0">
                             <li class="mb-3 pb-2 border-bottom d-flex align-items-center justify-content-between">
-                                <span>Monday - Thursday</span>
+                                <span>Thứ hai - thứ năm</span>
                                 <span class="text-secondary fw-500">6:00 - 7:00 pm</span>
                             </li>
                             <li class="mb-3 pb-2 border-bottom d-flex align-items-center justify-content-between">
-                                <span>Friday</span>
+                                <span>Thứ sáu</span>
                                 <span class="text-secondary fw-500">8:00 - 9:00 pm </span>
                             </li>
                             <li class="mb-3 pb-2 border-bottom d-flex align-items-center justify-content-between">
-                                <span>Saturday</span>
+                                <span>Thứ bảy</span>
                                 <span class="text-secondary fw-500">8:00 - 2:00 pm </span>
                             </li>
                             <li class="d-flex align-items-center justify-content-between">
-                                <span>Sunday</span>
-                                <span class="text-secondary fw-500">Closed</span>
+                                <span>Chủ nhật</span>
+                                <span class="text-secondary fw-500">Đóng cửa</span>
                             </li>
                         </ul>
                     </div>
 
                 </div>
                 <div class="col-lg-3 col-md-6 mt-md-0 mt-5">
-                    <h5 class="mb-4 ">Reach Us</h5>
+                    <h5 class="mb-4 ">Liên hệ:</h5>
 
                     <ul class="p-0 m-0 list-unstyled">
                         <li class="mb-3">
@@ -1399,10 +1355,11 @@
                                                         fill-rule="evenodd"></path>
                                                   <mask height="25" maskUnits="userSpaceOnUse" style="mask-type:alpha"
                                                         width="28"
-                                                        x="0"
-                                                        y="0">
-                                                      <path clip-rule="evenodd" d="M0.25 0.5H27.1249V24.875H0.25V0.5Z"
-                                                            fill="white" fill-rule="evenodd"></path>
+                                                        x="0" y="0">
+                                                      <path clip-rule="evenodd" d="M0 0.5H27.6244V24.875H0V0.5Z"
+                                                            fill="white"
+                                                            fill-rule="evenodd">
+                                                  </path>
                                                   </mask>
                                                   <g>
                                                       <path clip-rule="evenodd"
@@ -1431,7 +1388,7 @@
                                                   <path clip-rule="evenodd" d="M0 0.5H20.6244V24.875H0V0.5Z"
                                                         fill="white"
                                                         fill-rule="evenodd">
-                                                  </path>
+                                              </path>
                                               </mask>
                                               <g>
                                                   <path clip-rule="evenodd"
@@ -1441,11 +1398,11 @@
                                               </g>
                                           </svg>
                                       </span>
-                            <span>1234, North Avenue, Luke Lane, South Bend, IN 360001</span>
+                            <span>1234, Đại Lộ Bắc Luke Lane, South Bend, IN 360001</span>
                         </li>
                     </ul>
                     <ul class="iq-social list-inline d-flex align-items-center mt-5 gap-3 m-0">
-                        <li class="label text-dark fw-500">Follow us :</li>
+                        <li class="label text-dark fw-500">Theo dõi chúng tôi :</li>
                         <li>
                             <a href="https://facebook.com/">
                                 <svg class="base-circle animated" height="38" viewBox="0 0 50 50" width="38">
@@ -1483,7 +1440,7 @@
             <div class="text-center ">
                 <p class="mb-0">©
                     <script>document.write(new Date().getFullYear());</script>
-                    KiviCare All Rights Reserved.
+                    KiviCare, Tất cả quyền được bảo lưu.
                 </p>
             </div>
         </div>
@@ -1506,7 +1463,7 @@
          tabindex="-1">
         <div class="offcanvas-header gap-3 pb-2">
             <div class="d-flex align-items-center">
-                <h5 class="offcanvas-title" id="live-customizer-label">Language Mode</h5>
+                <h5 class="offcanvas-title" id="live-customizer-label">Chế độ ngôn ngữ</h5>
             </div>
             <div class="d-flex gap-1 align-items-center">
                 <button aria-label="Reset All Settings" class="btn btn-icon text-primary border-0"
@@ -1654,4 +1611,3 @@
 </script>
 </body>
 </html>
-

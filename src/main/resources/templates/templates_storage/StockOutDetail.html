@@ -341,7 +341,7 @@
                                             </td>
                                             <td th:text="${item.quantity}">0</td>
                                             <td th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</td>
-                                            <td th:text="${#numbers.formatDecimal(item.quantity * item.unitPrice, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</td>
+                                            <td th:text="${#numbers.formatDecimal(item.quantity * item.unitPrice, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}" class="totalMoney">0 VNĐ</td>
                                         </tr>
                                         
                                         <!-- Hiển thị thông báo khi không có dữ liệu -->
@@ -354,7 +354,7 @@
                                             <td colspan="4" class="text-end"><strong>Tổng tiền:</strong></td>
                                             <td>
                                                 <!-- Tính tổng từ các mặt hàng -->
-                                                <strong th:text="${#numbers.formatDecimal(supplierOut.totalAmount != null ? supplierOut.totalAmount : 0, 0, 'COMMA', 0, 'POINT') + ',000 VNĐ'}">0 VNĐ</strong>
+                                                <strong id="sumMoney"></strong>
                                             </td>
                                         </tr>
                                         </tfoot>
@@ -406,7 +406,7 @@
 <script>
     // Lấy dữ liệu đơn hàng từ controller
     let orderData = {};
-    
+    totalMoney();
     /*<![CDATA[*/
     // Get data from Thymeleaf
     orderData = {
@@ -494,6 +494,14 @@
 
         console.log('Trang chi tiết đơn hàng đã được tải');
     });
+    function totalMoney() {
+        let temp = 0;
+        const data = $('.totalMoney').each(function() {
+            const value = $(this).text().replace(/[^0-9]/g, '');
+            temp += parseInt(value);
+        });
+        $('#sumMoney').text(temp.toLocaleString('vi-VN') + ' VNĐ');
+    }
 </script>
 </body>
 </html>

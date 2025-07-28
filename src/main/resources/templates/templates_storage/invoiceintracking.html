@@ -70,12 +70,42 @@
         .status-completed { background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         .status-rejected { background-color: #f8d7da; color: #dc3545; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
         
+        /* Tracking styles */
+        .tracking-content {
+            padding: 20px 0;
+        }
+        
+        .tracking-details {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .tracking-details h6 {
+            color: #495057;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .tracking-details p {
+            margin-bottom: 8px;
+            color: #6c757d;
+        }
+        
+        .tracking-details strong {
+            color: #495057;
+            font-weight: 600;
+        }
+        
         /* Theo dõi quá trình */
         .progtrckr {
             display: flex;
             margin-bottom: 2rem;
             padding-left: 0;
             list-style-type: none;
+            justify-content: space-between;
+            position: relative;
         }
         .progtrckr li {
             flex: 1;
@@ -83,21 +113,113 @@
             position: relative;
             padding: 1rem 0.5rem;
         }
+        .progtrckr li:before {
+            content: '';
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            border: 3px solid #dee2e6;
+            display: block;
+            margin: 0 auto 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .progtrckr li:after {
+            content: '';
+            width: 100%;
+            height: 3px;
+            background-color: #dee2e6;
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            z-index: 1;
+        }
+        
+        .progtrckr li:last-child:after {
+            display: none;
+        }
+        
+        .progtrckr li.progtrckr-done:before {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        
+        .progtrckr li.progtrckr-done:after {
+            background-color: #28a745;
+        }
+        
         .progtrckr-todo h5 {
             color: #bbb;
         }
         .progtrckr-todo h6 {
             color: #bbb;
         }
-        .progtrckr-todo:before {
-            content: "\f111";
-            font-family: "Font Awesome 5 Free";
-            color: #bbb;
-            display: block;
-            margin: 0 auto 0.5rem auto;
-        }
         .progtrckr-done h5 {
             color: #0da487;
+        }
+        
+        .progtrckr li h5 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        
+        .progtrckr li h6 {
+            font-size: 12px;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        .tracker-table {
+            margin-top: 30px;
+        }
+        
+        .tracker-table .table {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .tracker-table .table-head {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .tracker-table .table-head th {
+            border: none;
+            padding: 15px;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .tracker-table tbody tr {
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .tracker-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        .tracker-table tbody td {
+            padding: 15px;
+            border: none;
+            vertical-align: middle;
+        }
+        
+        .tracker-table tbody h6 {
+            margin: 0;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .tracker-table tbody p {
+            margin: 0;
+            font-weight: 600;
+            color: #28a745;
         }
         .progtrckr-done h6 {
             color: #333;
@@ -139,22 +261,6 @@
                     </a>
                 </div>
             </div>
-
-            <form class="form-inline search-full" action="#" method="get">
-                <div class="form-group w-100">
-                    <div class="Typeahead Typeahead--twitterUsers">
-                        <div class="u-posRelative">
-                            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-                                   placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
-                            <i class="close-search" data-feather="x"></i>
-                            <div class="spinner-border Typeahead-spinner" role="status">
-                                <span class="sr-only">Đang tải...</span>
-                            </div>
-                        </div>
-                        <div class="Typeahead-menu"></div>
-                    </div>
-                </div>
-            </form>
 
             <!-- Tiêu đề mới -->
             <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
@@ -218,7 +324,6 @@
                                 <p class="mb-0 font-roboto"><span th:text="${currentUser?.roleName ?: 'Người dùng'}">Vai trò</span><i class="middle ri-arrow-down-s-line"></i></p>
                             </div>
                         </div>
-                        <
                     </li>
                 </ul>
             </div>
@@ -362,61 +467,83 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="title-header option-title">
-                                            <h5>Theo dõi hóa đơn nhập kho</h5>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12 overflow-hidden">
-                                                <div class="order-left-image">
-                                                    <div class="tracking-product-image">
-                                                        <img th:src="@{/templates_storage/assets/images/product/1.png}"
-                                                             class="img-fluid w-100 blur-up lazyload" alt="">
-                                                    </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between">
+                                    <h5 th:text="${pageTitle ?: 'Theo dõi đơn nhập kho'}">Theo dõi đơn nhập kho</h5>
+                                    <button class="btn btn-secondary" onclick="goBack()">
+                                        <i class="ri-arrow-left-line"></i> Quay lại
+                                    </button>
+                                </div>
+                            </div>
 
-                                                    <div class="order-image-contain">
-                                                        <h4 th:text="${'Đơn nhập kho từ ' + (supplierIn.supplierName ?: 'Nhà cung cấp')}">Đơn nhập kho từ nhà cung cấp ABC</h4>
-                                                        <div class="tracker-number">
-                                                            <p>Mã đơn nhập kho : <span th:text="${supplierIn.invoiceNumber ?: ('SI-' + supplierIn.id)}">SI-00123</span></p>
-                                                            <p>Nhà cung cấp : <span th:text="${supplierIn.supplierName ?: 'Không có thông tin'}">Công ty ABC</span></p>
-                                                            <p>Ngày tạo đơn : <span th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">20/05/2023</span></p>
-                                                            <p>Trạng thái : 
-                                                                <span th:if="${supplierIn.status != null}"
-                                                                      th:class="${'status-' + supplierIn.status.name().toLowerCase()}"
-                                                                      th:text="${supplierIn.status.displayName}">
-                                                                </span>
-                                                                <span th:if="${supplierIn.status == null}" class="status-waiting_for_delivery">
-                                                                   Chờ giao hàng
-                                                                </span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                            <div class="card-body">
+                                <div class="tracking-content">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+                                            <div class="tracking-details">
+                                                <h6 class="mb-3">Thông tin đơn hàng</h6>
+                                                <p class="mb-2">
+                                                    <strong>Mã đơn hàng:</strong>
+                                                    <span th:text="${supplierIn.invoiceNumber ?: ('SI-' + supplierIn.id)}">SI-001</span>
+                                                </p>
+                                                <p class="mb-2">
+                                                    <strong>Ngày tạo:</strong>
+                                                    <span th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy HH:mm')}">01/01/2023 08:00</span>
+                                                </p>
+                                                <p class="mb-2">
+                                                    <strong>Trạng thái hiện tại:</strong>
+                                                    <span th:if="${supplierIn.status != null}"
+                                                          th:class="${'badge status-' + supplierIn.status.name().toLowerCase()}"
+                                                          th:text="${supplierIn.status.displayName}">
+                                                    </span>
+                                                    <span th:if="${supplierIn.status == null}" class="badge status-pending">
+                                                       Chờ xử lý
+                                                    </span>
+                                                </p>
                                             </div>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <div class="tracking-details">
+                                                <h6 class="mb-3">Thông tin nhà cung cấp</h6>
+                                                <p class="mb-2">
+                                                    <strong>Nhà cung cấp:</strong>
+                                                    <span th:text="${supplierIn.supplierName}">Nhà cung cấp</span>
+                                                </p>
+                                                <p class="mb-2">
+                                                    <strong>Số điện thoại:</strong>
+                                                    <span th:text="${supplierIn.supplierContact ?: 'N/A'}">0123456789</span>
+                                                </p>
+                                                <p class="mb-2">
+                                                    <strong>Ghi chú:</strong>
+                                                    <span th:text="${supplierIn.notes ?: 'Không có'}">Không có</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="row mb-4">
+                                        <div class="col-12">
                                             <div class="order-image">
                                                 <img th:src="@{/templates_storage/assets/images/track-image.png}" class="img-fluid blur-up lazyload" alt="">
                                             </div>
 
                                             <ol class="progtrckr">
-                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
+                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'WAITING_FOR_DELIVERY' || supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED' || supplierIn.status.name() == 'COMPLETED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
                                                     <h5>Đơn đã tạo</h5>
                                                     <h6>Đơn hàng đã được tạo thành công</h6>
                                                 </li>
-                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
-                                                    <h5>Đã xác nhận</h5>
-                                                    <h6>Nhà cung cấp đã xác nhận</h6>
-                                                </li>
-                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'CHECKED' || supplierIn.status.name() == 'INSPECTED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
+                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED' || supplierIn.status.name() == 'COMPLETED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
                                                     <h5>Đã nhận hàng</h5>
                                                     <h6>Đã nhận hàng từ nhà cung cấp</h6>
                                                 </li>
-                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'COMPLETED' || supplierIn.status.name() == 'INSPECTED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
+                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'INSPECTED' || supplierIn.status.name() == 'COMPLETED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
                                                     <h5>Đã kiểm tra</h5>
-                                                    <h6>Hàng đã được kiểm tra</h6>
+                                                    <h6>Hàng đã được kiểm tra chất lượng</h6>
+                                                </li>
+                                                <li th:classappend="${supplierIn.status != null} ? (${supplierIn.status.name() == 'COMPLETED'} ? 'progtrckr-done' : 'progtrckr-todo') : 'progtrckr-todo'">
+                                                    <h5>Đã nhập kho</h5>
+                                                    <h6>Hàng đã được nhập vào kho</h6>
                                                 </li>
                                                 <li th:classappend="${supplierIn.status != null && supplierIn.status.name() == 'COMPLETED'} ? 'progtrckr-done' : 'progtrckr-todo'">
                                                     <h5>Hoàn thành</h5>
@@ -439,9 +566,27 @@
                                                             </thead>
 
                                                             <tbody>
-                                                            <tr th:if="${supplierIn.status != null && (supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED' || supplierIn.status.name() == 'COMPLETED')}">
+                                                            <tr th:if="${supplierIn.status != null && (supplierIn.status.name() == 'WAITING_FOR_DELIVERY' || supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED' || supplierIn.status.name() == 'COMPLETED')}">
                                                                 <td>
                                                                     <h6 th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">20/05/2023</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'HH:mm')}">08:20</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <p class="fw-bold">Chờ giao hàng</p>
+                                                                </td>
+                                                                <td>
+                                                                    <h6 th:text="${supplierIn.inventoryManagerName ?: 'Không xác định'}">Người tạo đơn</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <h6>Đơn hàng đang chờ nhà cung cấp giao hàng</h6>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            <tr th:if="${supplierIn.status != null && (supplierIn.status.name() == 'RECEIVED' || supplierIn.status.name() == 'INSPECTED' || supplierIn.status.name() == 'COMPLETED')}">
+                                                                <td>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">21/05/2023</h6>
                                                                 </td>
                                                                 <td>
                                                                     <h6 th:text="${#dates.format(supplierIn.transactionDate, 'HH:mm')}">10:45</h6>
@@ -459,7 +604,7 @@
                                                             
                                                             <tr th:if="${supplierIn.status != null && (supplierIn.status.name() == 'INSPECTED' || supplierIn.status.name() == 'COMPLETED')}">
                                                                 <td>
-                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">21/05/2023</h6>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">22/05/2023</h6>
                                                                 </td>
                                                                 <td>
                                                                     <h6 th:text="${#dates.format(supplierIn.transactionDate, 'HH:mm')}">11:30</h6>
@@ -471,13 +616,31 @@
                                                                     <h6 th:text="${supplierIn.inventoryManagerName ?: 'Không xác định'}">Người kiểm tra</h6>
                                                                 </td>
                                                                 <td>
-                                                                    <h6>Hàng hóa đã được kiểm tra và xác nhận</h6>
+                                                                    <h6>Hàng hóa đã được kiểm tra chất lượng và xác nhận</h6>
                                                                 </td>
                                                             </tr>
                                                             
                                                             <tr th:if="${supplierIn.status != null && supplierIn.status.name() == 'COMPLETED'}">
                                                                 <td>
-                                                                    <h6 th:text="${#dates.format(supplierIn.approvedDate != null ? supplierIn.approvedDate : supplierIn.transactionDate, 'dd/MM/yyyy')}">22/05/2023</h6>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">23/05/2023</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'HH:mm')}">14:15</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <p class="fw-bold">Đã nhập kho</p>
+                                                                </td>
+                                                                <td>
+                                                                    <h6 th:text="${supplierIn.inventoryManagerName ?: 'Không xác định'}">Người nhập kho</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <h6>Hàng hóa đã được nhập vào kho thành công</h6>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            <tr th:if="${supplierIn.status != null && supplierIn.status.name() == 'COMPLETED'}">
+                                                                <td>
+                                                                    <h6 th:text="${#dates.format(supplierIn.approvedDate != null ? supplierIn.approvedDate : supplierIn.transactionDate, 'dd/MM/yyyy')}">24/05/2023</h6>
                                                                 </td>
                                                                 <td>
                                                                     <h6 th:text="${#dates.format(supplierIn.approvedDate != null ? supplierIn.approvedDate : supplierIn.transactionDate, 'HH:mm')}">09:15</h6>
@@ -498,7 +661,7 @@
                                                                     <h6 th:text="${#dates.format(supplierIn.transactionDate, 'dd/MM/yyyy')}">20/05/2023</h6>
                                                                 </td>
                                                                 <td>
-                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'HH:mm')}">08:20</h6>
+                                                                    <h6 th:text="${#dates.format(supplierIn.transactionDate, 'HH:mm')}">08:00</h6>
                                                                 </td>
                                                                 <td>
                                                                     <p class="fw-bold">Đơn đã tạo</p>

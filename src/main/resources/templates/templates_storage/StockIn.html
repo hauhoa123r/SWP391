@@ -423,7 +423,7 @@
                                             <td th:text="${supplierIn?.transactionDate != null ? #dates.format(supplierIn.transactionDate, 'dd-MM-yyyy') : 'N/A'}">Ngày tạo</td>
                                                 <td class="text-end">
                                                 <span th:with="totalAmount=${supplierIn?.items != null ? #aggregates.sum(supplierIn.items.?[unitPrice != null && quantity != null].![unitPrice * quantity]) : 0}">
-                                                    <strong th:text="${#numbers.formatDecimal(totalAmount * 1000, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong>
+                                                    <strong th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">0 VNĐ</strong>
                                                 </span>
                                             </td>
                                             <td>
@@ -448,7 +448,7 @@
                                                     <a th:href="@{'/warehouse/stock-in/' + ${supplierIn?.id}}" class="btn btn-sm btn-primary" title="Xem chi tiết">
                                                         <i class="ri-eye-line text-white"></i>
                                                     </a>
-                                                    <a th:href="@{'/invoiceintracking?id=' + ${supplierIn?.id}}" class="btn btn-sm btn-info" title="Theo dõi">
+                                                    <a th:href="@{'/warehouse/invoice/in/tracking?id=' + ${supplierIn?.id}}" class="btn btn-sm btn-info" title="Theo dõi">
                                                         <i class="ri-route-line text-white"></i>
                                                     </a>
                                                       
@@ -1213,7 +1213,7 @@ function handleStatusChange(form, newStatus) {
             
             // Thiết lập form để submit vào iframe
             const originalAction = form.action;
-            form.action = `${window.location.origin}/api/warehouse/stock-in/${orderId}/status`;
+            form.action = `${window.location.origin}/warehouse/stock-in/api/${orderId}/status`;
             const originalTarget = form.target;
             form.target = targetIframe;
             
@@ -1269,7 +1269,7 @@ function handleStatusChange(form, newStatus) {
         
         // Tạo và thêm form vào body
         const formHTML = `
-            <form id="${formId}" action="${window.location.origin}/api/warehouse/stock-in/${orderId}/status" method="post" target="${targetIframe}" style="display:none;">
+            <form id="${formId}" action="${window.location.origin}/warehouse/stock-in/api/${orderId}/status" method="post" target="${targetIframe}" style="display:none;">
                 <input type="hidden" name="status" value="REJECTED">
                 <input type="hidden" name="reason" value="${reason}">
                 ${$('input[name="_csrf"]').val() ? `<input type="hidden" name="_csrf" value="${$('input[name="_csrf"]').val()}">` : ''}
