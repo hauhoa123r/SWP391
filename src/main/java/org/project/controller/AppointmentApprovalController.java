@@ -1,8 +1,10 @@
 package org.project.controller;
 
 import org.project.model.response.AppointmentApprovalResponse;
+import org.project.security.AccountDetails;
 import org.project.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +23,10 @@ public class AppointmentApprovalController {
         this.appointmentService = appointmentService;
     }
 
-    @GetMapping("staff/coordinator/showPending/{staffId}")
-    public String showPendingAppointmentsByHospitalId(@PathVariable Long staffId,
-                                                        Model model) {
+    @GetMapping("staff/coordinator/showPending")
+    public String showPendingAppointmentsByHospitalId(@AuthenticationPrincipal AccountDetails accountDetails,
+                                                      Model model) {
+        Long staffId = accountDetails.getUserEntity().getStaffEntity().getId();
         List<AppointmentApprovalResponse> pendingAppointments = appointmentService.getAppointmentsHaveStatusPendingByStaffId(staffId);
 
         model.addAttribute("staffId", staffId);

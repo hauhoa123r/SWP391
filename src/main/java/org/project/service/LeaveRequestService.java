@@ -16,11 +16,11 @@ public interface LeaveRequestService {
 
     List<LeaveRequestResponse> getLeaveRequestsByStaffId(Long staffId);
 
-    Page<LeaveRequestResponse> getLeaveRequestByManagerId(Long managerId, int index, int size);
+    Page<LeaveRequestResponse> getLeaveRequestByManagerId(Long managerId, int index, int size, String status, String staffName, String leaveType);
 
     LeaveRequestStatisticResponse getLeaveRequestStatisticByManagerId(Long managerId);
 
-    Page<LeaveRequestResponse> getLeaveRequestByStaffId(Long staffId, int index, int size);
+    Page<LeaveRequestResponse> getLeaveRequestByStaffId(Long staffId, int index, int size, String status, String leaveType);
 
     LeaveBalanceResponse getLeaveBalanceByStaffIdAndYear(Long staffId, Year year);
 

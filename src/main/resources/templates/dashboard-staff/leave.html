@@ -521,7 +521,7 @@
 
                 if(resp.ok) {
                     alert(text);
-                    window.location.href = `/leave-staff/${staffId}`;
+                    window.location.href = `/staff/leave-staff`;
                 } else if (resp.status === 400) {
                     alert(text || 'Không đủ ngày phép!');
                 } else if (resp.status === 404) {

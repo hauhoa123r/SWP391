@@ -66,19 +66,43 @@
                 <i class="fas fa-filter"></i>
                 <span>Bộ lọc đơn nghỉ phép</span>
             </div>
-            <!-- ...giữ nguyên phần filter... -->
             <div class="filters-grid">
-                <!-- ...existing filter controls... -->
+                <div class="filter-item">
+                    <label>Trạng thái</label>
+                    <select id="statusFilter">
+                        <option value="">Tất cả</option>
+                        <option value="PENDING" th:selected="${currentStatus == 'PENDING'}">Chờ duyệt</option>
+                        <option value="APPROVED" th:selected="${currentStatus == 'APPROVED'}">Đã duyệt</option>
+                        <option value="REJECTED" th:selected="${currentStatus == 'REJECTED'}">Từ chối</option>
+                        <option value="CANCELLED" th:selected="${currentStatus == 'CANCELLED'}">Đã Huỷ</option>
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label>Tên nhân viên</label>
+                    <input type="text" id="staffNameFilter" th:value="${currentStaffName ?: ''}">
+                </div>
+
+                <div class="filter-item">
+                    <label>Loại phép</label>
+                    <select id="leaveTypeFilter" name="leaveType">
+                        <option value="">Tất cả</option>
+                        <option value="ANNUAL_LEAVE" th:selected="${currentLeaveType == 'ANNUAL_LEAVE'}">Nghỉ phép năm</option>
+                        <option value="SICK_LEAVE" th:selected="${currentLeaveType == 'SICK_LEAVE'}">Nghỉ ốm</option>
+                        <option value="MATERNITY_LEAVE" th:selected="${currentLeaveType == 'MATERNITY_LEAVE'}">Nghỉ thai sản</option>
+                        <option value="PATERNITY_LEAVE" th:selected="${currentLeaveType == 'PATERNITY_LEAVE'}">Nghỉ phép cha</option>
+                        <option value="UNPAID_LEAVE" th:selected="${currentLeaveType == 'UNPAID_LEAVE'}">Nghỉ không lương</option>
+                        <option value="STUDY_LEAVE" th:selected="${currentLeaveType == 'STUDY_LEAVE'}">Nghỉ để đi học</option>
+                        <option value="EMERGENCY_LEAVE" th:selected="${currentLeaveType == 'EMERGENCY_LEAVE'}">Nghỉ phép khẩn cấp</option>
+                    </select>
+                </div>
             </div>
             <div class="actions">
                 <button class="btn btn-primary" id="applyFilters">
                     <i class="fas fa-filter"></i> Áp dụng bộ lọc
                 </button>
-                <button class="btn btn-outline">
+                <button class="btn btn-outline" id="resetFilters">
                     <i class="fas fa-sync-alt"></i> Làm mới
-                </button>
-                <button class="btn btn-outline">
-                    <i class="fas fa-file-export"></i> Xuất Excel
                 </button>
             </div>
         </div>
@@ -154,25 +178,43 @@
 
             <!-- Pagination @{${'/patient/showList/' + 1 + '?pageIndex=' + (pageIndex - 1)}} -->
             <div class="pagination-wrap">
-                <a class="pagination-btn prev" th:if="${pageIndex > 0}"
-                   th:classappend="${pageIndex == 0} ? 'disabled'"
-                   th:href="@{|staff/manager/leave-manager/${managerId}?pageIndex=${pageIndex - 1}|}">
-                    Previous&nbsp;&nbsp;+
+                <a class="pagination-btn prev"
+                   th:if="${pageIndex > 0}"
+                   th:href="@{/staff/manager/leave-manager(
+                           pageIndex=${pageIndex - 1},
+                           status=${currentStatus},
+                           staffName=${currentStaffName},
+                           leaveType=${currentLeaveType}
+                         )}">
+                    Previous
                 </a>
                 <span class="pagination-btn prev disabled" th:if="${pageIndex == 0}">Previous&nbsp;&nbsp;+</span>
 
                 <ul class="pagination">
                     <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                         th:classappend="${i == pageIndex} ? 'active'">
-                        <a class="page-link" th:href="@{|staff/manager/leave-manager/${managerId}?pageIndex=${i}|}"
-                           th:text="${i + 1}"></a>
+                        <a class="page-link"
+                           th:href="@{/staff/manager/leave-manager(
+                                   pageIndex=${i},
+                                   status=${currentStatus},
+                                   staffName=${currentStaffName},
+                                   leaveType=${currentLeaveType}
+                                 )}"
+                           th:text="${i + 1}">
+                        </a>
                     </li>
                 </ul>
 
-                <a class="pagination-btn next" th:if="${pageIndex < totalPages - 1}"
-                   th:classappend="${pageIndex == totalPages - 1} ? 'disabled'"
-                   th:href="@{|staff/manager/leave-manager/${managerId}?pageIndex=${pageIndex + 1}|}">
-                    Next&nbsp;&nbsp;+
+
+                <a class="pagination-btn next"
+                   th:if="${pageIndex < totalPages - 1}"
+                   th:href="@{/staff/manager/leave-manager(
+                           pageIndex=${pageIndex + 1},
+                           status=${currentStatus},
+                           staffName=${currentStaffName},
+                           leaveType=${currentLeaveType}
+                         )}">
+                    Next
                 </a>
                 <span class="pagination-btn next disabled"
                       th:if="${pageIndex == totalPages - 1}">Next&nbsp;&nbsp;+</span>
@@ -298,6 +340,25 @@
     var leaveRequests = /*[[${leaveRequests}]]*/ [];
     var currentRequestId;
 
+    document.getElementById('applyFilters').addEventListener('click', () => {
+        const status = document.getElementById('statusFilter').value;
+        const staffName = document.getElementById('staffNameFilter').value;
+        const leaveType = document.getElementById('leaveTypeFilter').value;
+
+        // Xây dựng URL với các tham số filter
+        let url = `/staff/manager/leave-manager?pageIndex=0`;
+
+        if (status) url += `&status=${status}`;
+        if (staffName) url += `&staffName=${encodeURIComponent(staffName)}`;
+        if (leaveType) url += `&leaveType=${encodeURIComponent(leaveType)}`;
+
+        window.location.href = url;
+    });
+
+    document.getElementById('resetFilters').addEventListener('click', () => {
+        window.location.href = '/staff/manager/leave-manager?pageIndex=0';
+    });
+
     function openModal() {
         document.getElementById('detailModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -369,11 +430,6 @@
                 openModal();
             }
         });
-    });
-
-    // Xử lý nút áp dụng bộ lọc
-    document.getElementById('applyFilters').addEventListener('click', () => {
-        alert('Bộ lọc đã được áp dụng. Trong thực tế, đây sẽ gọi API để lấy dữ liệu mới.');
     });
 
     // Xử lý nút duyệt đơn

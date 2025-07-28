@@ -8,8 +8,7 @@
     <header class="header">
         <div class="user-avatar" id="avatarDropdown">
             <div class="user-info">
-                <span class="user-name" th:text="${userName}">Nguyễn Văn A</span>
-                <img src="./assets/images/avatar-default.png" alt="Avatar" class="avatar-img">
+                <img th:src="${avatarUrl}" alt="Avatar" class="avatar-img">
             </div>
             <div class="dropdown-menu" id="dropdownMenu">
                 <button id="logoutBtn">

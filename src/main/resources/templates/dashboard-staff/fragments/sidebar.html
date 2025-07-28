@@ -1,24 +1,38 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <style>
+        /* style đơn giản để hiển thị disabled state */
+
+    </style>
 </head>
 <body>
 <div th:fragment="sidebar">
     <aside class="sidebar" id="sidebar">
         <div class="logo-container">
-            <img class="logo-normal img-fluid" th:src="@{/dashboard-staff/assets/images/logo.png}" height="30" alt="logo">
+            <img class="logo-normal img-fluid"
+                 th:src="@{/dashboard-staff/assets/images/logo.png}"
+                 height="30" alt="logo">
         </div>
 
         <nav class="nav-menu">
             <ul>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                <li class="nav-item"
+                    th:classappend="${activeMenu == 'leaveStaff'} ? ' active'">
+                    <a th:href="@{/staff/leave-staff}"
+                       class="nav-link">
                         <i class="fas fa-eye"></i>
-                        <span>Xem Yêu Cầu Nghỉ</span>
+                        <span>Yêu cầu nghỉ phép của bạn</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+
+                <!-- 2. Chỉ MANAGER mới click được vào Duyệt yêu cầu nghỉ -->
+                <li class="nav-item"
+                    th:classappend="${activeMenu == 'leaveManager'} ? ' active'">
+                    <a th:href="@{/staff/manager/leave-manager}"
+                       class="nav-link"
+                       th:classappend="${staffRole != 'MANAGER'} ? ' disabled'"
+                       th:disabled="${staffRole != 'MANAGER'}">
                         <i class="fas fa-check-circle"></i>
                         <span>Duyệt yêu cầu nghỉ</span>
                     </a>

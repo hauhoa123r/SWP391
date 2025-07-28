@@ -13,7 +13,7 @@ public class LeaveBalanceConverter {
 
     public LeaveBalanceResponse toResponse(List<LeaveBalanceEntity> leaveBalanceEntities) {
         LeaveBalanceResponse leaveBalanceResponse = new LeaveBalanceResponse();
-        if(leaveBalanceEntities == null) {
+        if(leaveBalanceEntities == null || leaveBalanceEntities.isEmpty()) {
             leaveBalanceResponse.setYear("N/A");
             leaveBalanceResponse.setTotalLeave("0");
             leaveBalanceResponse.setUsedLeave("0");
