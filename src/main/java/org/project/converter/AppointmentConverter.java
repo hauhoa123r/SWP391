@@ -7,6 +7,7 @@ import org.project.exception.mapping.ErrorMappingException;
 import org.project.model.dai.AppointmentDAI;
 import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.MakeAppointmentDTO;
+import org.project.model.response.AppointmentResponse;
 import org.project.repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,11 @@ public class AppointmentConverter {
     public AppointmentEntity toEntity(AppointmentDTO appointmentDTO) {
         Optional<AppointmentEntity> appointmentEntity = Optional.ofNullable(modelMapperConfig.mapper().map(appointmentDTO, AppointmentEntity.class));
         return appointmentEntity.orElseThrow(() -> new ErrorMappingException(AppointmentDTO.class, AppointmentEntity.class));
+    }
+
+    public AppointmentResponse toResponse(AppointmentEntity appointmentEntity) {
+        return Optional.ofNullable(modelMapperConfig.mapper().map(appointmentEntity, AppointmentResponse.class))
+                .orElseThrow(() -> new ErrorMappingException(AppointmentEntity.class, AppointmentResponse.class));
     }
 
     public MakeAppointmentDTO toConverterMakeAppointmentDTO(AppointmentDAI appointmentDAI) {

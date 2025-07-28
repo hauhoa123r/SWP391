@@ -9,16 +9,24 @@ import org.project.entity.DoctorEntity;
 import org.project.entity.StaffEntity;
 import org.project.entity.StaffScheduleEntity;
 import org.project.enums.AppointmentStatus;
+import org.project.enums.operation.ComparisonOperator;
 import org.project.exception.ErrorResponse;
 import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.ChangeAppointmentDTO;
 import org.project.model.response.AppointmentApprovalResponse;
 import org.project.model.response.AppointmentAvailableResponse;
+import org.project.model.response.AppointmentResponse;
 import org.project.repository.*;
 import org.project.service.AppointmentService;
 import org.project.service.StaffService;
+import org.project.utils.PageUtils;
 import org.project.utils.TimestampUtils;
+import org.project.utils.specification.SpecificationUtils;
+import org.project.utils.specification.search.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -39,6 +47,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     private TimestampUtils timestampUtils;
     private StaffService staffService;
     private AppointmentApprovalConverter appointmentApprovalConverter;
+    private SpecificationUtils<AppointmentEntity> specificationUtils;
+    private PageUtils<AppointmentEntity> pageUtils;
 
     @Autowired
     public void setAppointmentApprovalConverter(AppointmentApprovalConverter appointmentApprovalConverter) {
@@ -83,6 +93,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     public void setAppointmentConverter(AppointmentConverter appointmentConverter) {
         this.appointmentConverter = appointmentConverter;
+    }
+
+    @Autowired
+    public void setSpecificationUtils(SpecificationUtils<AppointmentEntity> specificationUtils) {
+        this.specificationUtils = specificationUtils;
+    }
+
+    @Autowired
+    public void setPageUtils(PageUtils<AppointmentEntity> pageUtils) {
+        this.pageUtils = pageUtils;
     }
 
     private boolean isDoctorExists(AppointmentDTO appointmentDTO) {
@@ -269,6 +289,29 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         // Save updated appointment
         return appointmentRepository.save(appointmentEntity).getId() != null;
+    }
+
+    @Override
+    public Page<AppointmentResponse> getAppointments(int pageIndex, int pageSize, AppointmentDTO appointmentDTO) {
+        Sort sort = Sort.unsorted();
+        if (appointmentDTO.getSortFieldName() != null && !appointmentDTO.getSortFieldName().isEmpty()) {
+            sort = Sort.by(Sort.Direction.fromString(appointmentDTO.getSortDirection()), appointmentDTO.getSortFieldName());
+        }
+        Pageable pageable = pageUtils.getPageable(pageIndex, pageSize, sort);
+        List<SearchCriteria> searchCriteria = List.of(
+                new SearchCriteria("patientEntity.fullName", ComparisonOperator.CONTAINS, appointmentDTO.getPatientEntityFullName(), null),
+                new SearchCriteria("patientEntity.email", ComparisonOperator.EQUALS, appointmentDTO.getPatientEntityEmail(), null),
+                new SearchCriteria("doctorEntity.staffEntity.fullName", ComparisonOperator.CONTAINS, appointmentDTO.getDoctorEntityStaffEntityFullName(), null),
+                new SearchCriteria("serviceEntity.productEntity.name", ComparisonOperator.CONTAINS, appointmentDTO.getServiceEntityProductEntityName(), null),
+                new SearchCriteria("appointmentStatus", ComparisonOperator.EQUALS, appointmentDTO.getAppointmentStatus(), null),
+                new SearchCriteria("schedulingCoordinatorEntity.staffEntity.fullName", ComparisonOperator.CONTAINS, appointmentDTO.getSchedulingCoordinatorEntityStaffEntityFullName(), null)
+        );
+        Page<AppointmentEntity> appointmentEntityPage = appointmentRepository.findAll(
+                specificationUtils.reset()
+                        .getSearchSpecifications(searchCriteria), pageable
+        );
+        pageUtils.validatePage(appointmentEntityPage, AppointmentEntity.class);
+        return appointmentEntityPage.map(appointmentConverter::toResponse);
     }
 
     private List<Timestamp> getAvailableTimes(Long staffId, Long patientId, Timestamp availableTimestamp, int maxDays) {

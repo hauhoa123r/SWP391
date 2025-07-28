@@ -5,6 +5,8 @@ import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.ChangeAppointmentDTO;
 import org.project.model.response.AppointmentApprovalResponse;
 import org.project.model.response.AppointmentAvailableResponse;
+import org.project.model.response.AppointmentResponse;
+import org.springframework.data.domain.Page;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -24,4 +26,6 @@ public interface AppointmentService {
     AppointmentAvailableResponse getAvailableAppointmentsByDoctorIdForSuggestion(Long staffId, Long patientId, Timestamp availableTimeStamp, int maxDays);
 
     Boolean changeAppointment(ChangeAppointmentDTO changeAppointmentDTO);
+
+    Page<AppointmentResponse> getAppointments(int pageIndex, int pageSize, AppointmentDTO appointmentDTO);
 }
