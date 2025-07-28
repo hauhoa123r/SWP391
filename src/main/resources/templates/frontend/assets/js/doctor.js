@@ -56,7 +56,7 @@ class RenderDoctor {
         if ("currentPage" in data && "totalPages" in data) {
             const paginationElement = $("#doctor-pagination");
             const pagination = new Pagination(data.currentPage, data.totalPages);
-            paginationElement.innerHTML = pagination.toHtml();
+            paginationElement.innerHTML = pagination.render();
             pagination.setEvent(this.renderDoctorList.bind(this));
         }
     }

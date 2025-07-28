@@ -567,7 +567,7 @@ class BookingManager {
 
     renderPagination(config, data) {
         const pagination = new Pagination(data.currentPage, data.totalPages);
-        const paginationHtml = pagination.toHtml();
+        const paginationHtml = pagination.render();
         const paginationElement = document.querySelector(
                 `#${config.prefix}-pagination`
         );
