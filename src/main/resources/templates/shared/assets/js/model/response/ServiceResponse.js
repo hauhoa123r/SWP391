@@ -2,6 +2,11 @@ import {BaseResponse} from "/templates/shared/assets/js/model/response/BaseRespo
 import {ProductResponse} from "/templates/shared/assets/js/model/response/ProductResponse.js";
 
 export class ServiceResponse extends BaseResponse {
+    /**
+     * Constructor for ServiceResponse
+     * @param id
+     * @param {ProductResponse} productEntity
+     */
     constructor(id, productEntity) {
         super();
         this.id = id;

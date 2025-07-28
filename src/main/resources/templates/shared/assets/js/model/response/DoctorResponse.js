@@ -2,6 +2,12 @@ import {BaseResponse} from "/templates/shared/assets/js/model/response/BaseRespo
 import {StaffResponse} from "/templates/shared/assets/js/model/response/StaffResponse.js";
 
 export class DoctorResponse extends BaseResponse {
+    /**
+     * Constructor for DoctorResponse
+     * @param id
+     * @param {StaffResponse} staffEntity
+     * @param doctorRank
+     */
     constructor(id, staffEntity, doctorRank) {
         super();
         this.id = id;
