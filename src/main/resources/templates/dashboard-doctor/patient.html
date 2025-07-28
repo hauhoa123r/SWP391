@@ -14,41 +14,41 @@
         <!-- Google Font Api KEY-->
         <meta name="google_font_api" content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
         <!-- Favicon -->
-        <link rel="shortcut icon" href="../dashboard-doctor/assets/images/favicon.ico" />
+        <link rel="shortcut icon" th:href="@{/dashboard-doctor/assets/images/favicon.ico}" />
         
         <!-- Library / Plugin Css Build -->
-        <link rel="stylesheet" href="../dashboard-doctor/assets/css/core/libs.min.css" />
+        <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/core/libs.min.css}" />
         
         <!-- flaticon css -->
-        <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/flaticon/css/flaticon.css" />
+        <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/flaticon/css/flaticon.css}" />
         
         <!-- font-awesome css -->
-        <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/font-awesome/css/all.min.css" />
+        <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/font-awesome/css/all.min.css}" />
         
         <!-- Flatpickr css -->
-        <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.css" />
+        <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.css}" />
         
-        <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/sheperd/dist/css/sheperd.css">
+        <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/sheperd/dist/css/sheperd.css}">
         
         
         
         <!-- Sweetlaert2 css -->
-        <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/sweetalert2/dist/sweetalert2.min.css"/>
+        <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/sweetalert2/dist/sweetalert2.min.css}"/>
         
         
         
         
         <!-- Kivicare Design System Css -->
-        <link rel="stylesheet" href="../dashboard-doctor/assets/css/kivicare.min.css?v=1.4.1" />
+        <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/kivicare.min.css?v=1.4.1}" />
         
         <!-- Custom Css -->
-        <link rel="stylesheet" href="../dashboard-doctor/assets/css/custom.min.css?v=1.4.1" />
+        <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/custom.min.css?v=1.4.1}" />
         
         <!-- RTL Css -->
-        <link rel="stylesheet" href="../dashboard-doctor/assets/css/rtl.min.css?v=1.4.1"/>
+        <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/rtl.min.css?v=1.4.1}"/>
         
         <!-- Customizer Css -->
-        <link rel="stylesheet" href="../dashboard-doctor/assets/css/customizer.min.css?v=1.4.1"/>
+        <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/customizer.min.css?v=1.4.1}"/>
         
         <!-- Google Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,22 +59,22 @@
         <div id="loading">
         <div class="loader simple-loader">
             <div class="loader-body">
-                <img src="../dashboard-doctor/assets/images/loader.gif" alt="loader" class="light-loader img-fluid " width="200">
+                <img th:src="@{/dashboard-doctor/assets/images/loader.gif}" alt="loader" class="light-loader img-fluid " width="200">
             </div>
         </div>        </div>
         <!-- loader END -->
             <aside class="sidebar sidebar-base " id="first-tour" data-toggle="main-sidebar" data-sidebar="responsive">
                 <div class="sidebar-header d-flex align-items-center justify-content-start position-relative">
-                    <a href="./index.html" class="navbar-brand">
+                    <a th:href="@{/index.html}" class="navbar-brand">
                         
                         <!--Logo start-->
                         <div class="logo-main">
-                            <img class="logo-normal img-fluid" src="../dashboard-doctor/assets/images/logo.png" height="30" alt="logo">
-                            <img class="logo-normal dark-normal img-fluid" src="../dashboard-doctor/assets/images/logo-dark.png" height="30" alt="logo">
-                            <img class="logo-normal white-normal img-fluid" src="../dashboard-doctor/assets/images/logo-white.png" height="30" alt="logo">
-                            <img class="logo-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini.png" height="30" alt="logo">
-                            <img class="logo-mini dark-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini-dark.png" height="30" alt="logo">
-                            <img class="logo-mini white-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini-white.png" height="30" alt="logo">
+                            <img class="logo-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo.png}" height="30" alt="logo">
+                            <img class="logo-normal dark-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-dark.png}" height="30" alt="logo">
+                            <img class="logo-normal white-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-white.png}" height="30" alt="logo">
+                            <img class="logo-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini.png}" height="30" alt="logo">
+                            <img class="logo-mini dark-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini-dark.png}" height="30" alt="logo">
+                            <img class="logo-mini white-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini-white.png}" height="30" alt="logo">
                         </div>
                         <!--logo End-->        </a>
                     <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
@@ -118,7 +118,7 @@
                                 <ul class="sub-nav collapse" id="dashboard" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link " aria-current="page"
-                                            href="./index.html">
+                                            th:href="@{/index.html}">
                                             <i class="icon" data-bs-toggle="tooltip" title="Dashboard" data-bs-placement="right">
                                                 <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -134,7 +134,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link " aria-current="page"
-                                            href="./patient-dashboard.html">
+                                            th:href="@{/patient-dashboard.html}">
                                             <i class="icon" data-bs-toggle="tooltip" title="Dashboard" data-bs-placement="right">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" fill="none">
                                                     <path opacity="0.4"
@@ -157,7 +157,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./appointment.html">
+                                    th:href="@{/appointment.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Appointment" data-bs-placement="right">
                                         <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -179,7 +179,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./report.html">
+                                    th:href="@{/report.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Report" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -210,7 +210,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./doctors.html">
+                                    th:href="@{/doctors.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Doctors" data-bs-placement="right">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g opacity="0.4">
@@ -229,7 +229,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page"
-                                    href="./patient.html">
+                                    th:href="@{/patient.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Patient" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -246,7 +246,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./category.html">
+                                    th:href="@{/templates/dashboard-doctor/result.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Category" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -263,7 +263,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./products.html">
+                                    th:href="@{/products.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Products" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -279,7 +279,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./payment.html">
+                                    th:href="@{/payment.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Payment" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -305,7 +305,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./helpsupport.html">
+                                    th:href="@{/helpsupport.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Help & Support" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -321,7 +321,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./setting.html">
+                                    th:href="@{/setting.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Setting" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -346,7 +346,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./component.html">
+                                    th:href="@{/component.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Components" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -365,7 +365,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " aria-current="page"
-                                    href="./ui-color.html">
+                                    th:href="@{/ui-color.html}">
                                     <i class="icon" data-bs-toggle="tooltip" title="Colors" data-bs-placement="right">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4"
@@ -402,7 +402,7 @@
                                 <ul class="sub-nav collapse" id="auth-skins" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/sign-in.html">
+                                            th:href="@{/auth/sign-in.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -418,7 +418,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/sign-up.html">
+                                            th:href="@{/auth/sign-up.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -434,7 +434,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/confirm-mail.html">
+                                            th:href="@{/auth/confirm-mail.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -450,7 +450,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/recoverpw.html">
+                                            th:href="@{/auth/recoverpw.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -466,7 +466,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./auth/lock-screen.html">
+                                            th:href="@{/auth/lock-screen.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -503,7 +503,7 @@
                                 </a>
                                 <ul class="sub-nav collapse" id="sidebar-user" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
-                                        <a class="nav-link " href="./app/user-profile.html">
+                                        <a class="nav-link " th:href="@{/app/user-profile.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -516,7 +516,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link " href="./app/user-add.html">
+                                        <a class="nav-link " th:href="@{/app/user-add.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -529,7 +529,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link " href="./app/user-list.html">
+                                        <a class="nav-link " th:href="@{/app/user-list.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <g>
@@ -567,7 +567,7 @@
                                 <ul class="sub-nav collapse" id="utilities-error" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./errors/maintenance.html">
+                                            th:href="@{/errors/maintenance.html}">
                                             <i class="icon" data-bs-toggle="tooltip" title="Maintenance" data-bs-placement="right">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -583,7 +583,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./errors/error404.html">
+                                            th:href="@{/errors/error404.html}">
                                             <i class="icon" data-bs-toggle="tooltip" title="Error 404" data-bs-placement="right">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -599,7 +599,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./errors/error500.html">
+                                            th:href="@{/errors/error500.html}">
                                             <i class="icon" data-bs-toggle="tooltip" title="Error 500" data-bs-placement="right">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -639,7 +639,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-widget" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./widget/widgetbasic.html">
+                                            th:href="@{/widget/widgetbasic.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -655,7 +655,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./widget/widgetchart.html">
+                                            th:href="@{/widget/widgetchart.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -671,7 +671,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./widget/widgetcard.html">
+                                            th:href="@{/widget/widgetcard.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -709,7 +709,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-maps" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./maps/google.html">
+                                            th:href="@{/maps/google.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -725,7 +725,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./maps/vector.html">
+                                            th:href="@{/maps/vector.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -765,7 +765,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-form" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./form/form-element.html">
+                                            th:href="@{/form/form-element.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -781,7 +781,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./form/form-validation.html">
+                                            th:href="@{/form/form-validation.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -820,7 +820,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-table" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./table/bootstrap-table.html">
+                                            th:href="@{/table/bootstrap-table.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -836,7 +836,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./table/table-data.html">
+                                            th:href="@{/table/table-data.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -852,7 +852,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./table/border-table.html">
+                                            th:href="@{/table/border-table.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -868,7 +868,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./table/fancy-table.html">
+                                            th:href="@{/table/fancy-table.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -884,7 +884,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./table/fixed-table.html">
+                                            th:href="@{/table/fixed-table.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -923,7 +923,7 @@
                                 <ul class="sub-nav collapse" id="sidebar-icons" data-bs-parent="#sidebar-menu">
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./icons/solid.html">
+                                            th:href="@{/icons/solid.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -939,7 +939,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./icons/outline.html">
+                                            th:href="@{/icons/outline.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -955,7 +955,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link "
-                                            href="./icons/dual-tone.html">
+                                            th:href="@{/icons/dual-tone.html}">
                                             <i class="icon">
                                                 <svg class="icon-10" width="10" viewBox="0 0 24 24" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -987,16 +987,16 @@
             <!--Nav Start-->
                     <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar">
                        <div class="container-fluid navbar-inner">
-                          <a href="./index.html" class="navbar-brand">
+                          <a th:href="@{/index.html}" class="navbar-brand">
                              
                              <!--Logo start-->
                              <div class="logo-main">
-                                 <img class="logo-normal img-fluid" src="../dashboard-doctor/assets/images/logo.png" height="30" alt="logo">
-                                 <img class="logo-normal dark-normal img-fluid" src="../dashboard-doctor/assets/images/logo-dark.png" height="30" alt="logo">
-                                 <img class="logo-normal white-normal img-fluid" src="../dashboard-doctor/assets/images/logo-white.png" height="30" alt="logo">
-                                 <img class="logo-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini.png" height="30" alt="logo">
-                                 <img class="logo-mini dark-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini-dark.png" height="30" alt="logo">
-                                 <img class="logo-mini white-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini-white.png" height="30" alt="logo">
+                                 <img class="logo-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo.png}" height="30" alt="logo">
+                                 <img class="logo-normal dark-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-dark.png}" height="30" alt="logo">
+                                 <img class="logo-normal white-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-white.png}" height="30" alt="logo">
+                                 <img class="logo-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini.png}" height="30" alt="logo">
+                                 <img class="logo-mini dark-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini-dark.png}" height="30" alt="logo">
+                                 <img class="logo-mini white-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini-white.png}" height="30" alt="logo">
                              </div>
                              <!--logo End-->      </a>
                           <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
@@ -1013,7 +1013,7 @@
                                    <ul class="iq-nav-menu list-unstyled">
                                       <li class="nav-item">
                                          <a class="nav-link menu-arrow justify-content-start "
-                                            href="./index.html">
+                                            th:href="@{/index.html}">
                                             <span class="nav-text">Home</span>
                                          </a>
                                       </li>
@@ -1024,10 +1024,10 @@
                                          </a>
                                          <ul class="iq-header-sub-menu list-unstyled collapse" id="allPagesData">
                                             <li class="nav-item">
-                                               <a class="nav-link" href="./component.html">Components</a>
+                                               <a class="nav-link" th:href="@{/component.html}">Components</a>
                                             </li>
                                             <li class="nav-item">
-                                               <a class="nav-link" href="./ui-color.html">UI Color</a>
+                                               <a class="nav-link" th:href="@{/ui-color.html}">UI Color</a>
                                             </li>
                                             <li class="nav-item">
                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse" href="#authSkins" role="button"
@@ -1045,18 +1045,18 @@
                                                   id="defaultAuth">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./auth/sign-in.html">Sign In</a></li>
+                                                        th:href="@{/auth/sign-in.html}">Sign In</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./auth/sign-up.html">Sign Up</a></li>
+                                                        th:href="@{/auth/sign-up.html}">Sign Up</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./auth/confirm-mail.html">Email Verified</a></li>
-                                                  <li class="nav-item"><a class="nav-link " href="./auth/recoverpw.html">Reset
+                                                        th:href="@{/auth/confirm-mail.html}">Email Verified</a></li>
+                                                  <li class="nav-item"><a class="nav-link " th:href="@{/auth/recoverpw.html}">Reset
                                                         Password</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./auth/lock-screen.html">Lock Screen</a></li>
+                                                        th:href="@{/auth/lock-screen.html}">Lock Screen</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1075,13 +1075,13 @@
                                                   id="userApps">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./app/user-profile.html">User Profile</a></li>
+                                                        th:href="@{/app/user-profile.html}">User Profile</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./app/user-add.html">User Add</a></li>
+                                                        th:href="@{/app/user-add.html}">User Add</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./app/user-list.html">User List</a></li>
+                                                        th:href="@{/app/user-list.html}">User List</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1100,13 +1100,13 @@
                                                   id="utilities">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./errors/maintenance.html">Maintenance</a></li>
+                                                        th:href="@{/errors/maintenance.html}">Maintenance</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./errors/error404.html">404</a></li>
+                                                        th:href="@{/errors/error404.html}">404</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./errors/error500.html">500</a></li>
+                                                        th:href="@{/errors/error500.html}">500</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1125,13 +1125,13 @@
                                                   id="widgetsPage">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./widget/widgetbasic.html">Widget Basic</a></li>
+                                                        th:href="@{/widget/widgetbasic.html}">Widget Basic</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./widget/widgetchart.html">Widget Chart</a></li>
+                                                        th:href="@{/widget/widgetchart.html}">Widget Chart</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./widget/widgetcard.html">Widget Card</a></li>
+                                                        th:href="@{/widget/widgetcard.html}">Widget Card</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1150,10 +1150,10 @@
                                                   id="mapPages">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./maps/google.html">Google</a></li>
+                                                        th:href="@{/maps/google.html}">Google</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./maps/vector.html">Vector</a></li>
+                                                        th:href="@{/maps/vector.html}">Vector</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1172,11 +1172,11 @@
                                                   id="formsPages">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./form/form-element.html">Element</a></li>
+                                                        th:href="@{/form/form-element.html}">Element</a></li>
                     
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./form/form-validation.html">Validation</a></li>
+                                                        th:href="@{/form/form-validation.html}">Validation</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1195,19 +1195,19 @@
                                                   id="tablesPages">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./table/bootstrap-table.html">Bootstrap Table</a></li>
+                                                        th:href="@{/table/bootstrap-table.html}">Bootstrap Table</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./table/table-data.html">Data Table</a></li>
+                                                        th:href="@{/table/table-data.html}">Data Table</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./table/border-table.html">Bordered Table</a></li>
+                                                        th:href="@{/table/border-table.html}">Bordered Table</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./table/fancy-table.html">Fancy Table</a></li>
+                                                        th:href="@{/table/fancy-table.html}">Fancy Table</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./table/fixed-table.html">Fixed Table</a></li>
+                                                        th:href="@{/table/fixed-table.html}">Fixed Table</a></li>
                                                </ul>
                                             </li>
                                             <li class="nav-item">
@@ -1226,20 +1226,20 @@
                                                   id="iconsPages">
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./icons/solid.html">Solid</a></li>
+                                                        th:href="@{/icons/solid.html}">Solid</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./icons/outline.html">Outlined</a></li>
+                                                        th:href="@{/icons/outline.html}">Outlined</a></li>
                                                   <li class="nav-item"><a
                                                         class="nav-link "
-                                                        href="./icons/dual-tone.html">Dual Tone</a></li>
+                                                        th:href="@{/icons/dual-tone.html}">Dual Tone</a></li>
                                                </ul>
                                             </li>
                                          </ul>
                                       </li>
                                       <li class="nav-item">
                                          <a class="nav-link menu-arrow justify-content-start "
-                                            href="./setting.html">
+                                            th:href="@{/setting.html}">
                                             <span class="nav-text">Setting </span>
                                          </a>
                                       </li>
@@ -1355,7 +1355,7 @@
                                             <a href="#" class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/01.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/01.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Emma Watson Bni</h6>
                                                      <p class="mb-0">95 MB</p>
@@ -1366,7 +1366,7 @@
                                             <a href="#" class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/02.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/02.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">New customer is join</h6>
                                                      <p class="mb-0">Cyst Bni</p>
@@ -1377,7 +1377,7 @@
                                             <a href="#" class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/03.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/03.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Two customer is left</h6>
                                                      <p class="mb-0">Cyst Bni</p>
@@ -1388,7 +1388,7 @@
                                             <a href="#" class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/04.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/04.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">New Mail from Fenny</h6>
                                                      <p class="mb-0">Cyst Bni</p>
@@ -1437,7 +1437,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/01.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/01.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Biker’s Jacket</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1459,7 +1459,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/02.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/02.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Casual Shoes</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1481,7 +1481,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/03.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/03.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Knitted Shrug</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1503,7 +1503,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/04.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/04.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Blue Handbag</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1525,7 +1525,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/01.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/01.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Biker’s Jacket</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1547,7 +1547,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/02.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/02.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Casual Shoes</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1569,7 +1569,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/03.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/03.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Knitted Shrug</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1591,7 +1591,7 @@
                                             <div class="iq-sub-card">
                                                <div class="d-flex align-items-center">
                                                   <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                     src="../dashboard-doctor/assets/images/shapes/04.png" loading="lazy" />
+                                                     th:src="@{/dashboard-doctor/assets/images/shapes/04.png}" loading="lazy" />
                                                   <div class="ms-3 flex-grow-1 text-start">
                                                      <h6 class="mb-0 ">Blue Handbag</h6>
                                                      <p class="mb-0">$56.00</p>
@@ -1654,7 +1654,7 @@
                                       data-bs-toggle="dropdown" aria-expanded="false">
                                       <div class="icon-40">
                                          <span class="btn-inner d-inline-block position-relative">
-                                            <img src="../dashboard-doctor/assets/images/avatars/14.png"
+                                            <img th:src="@{/dashboard-doctor/assets/images/avatars/14.png}"
                                                class="img-fluid rounded-circle object-fit-cover" alt="icon">
                                             <span
                                                class="bg-success p-1 rounded-circle position-absolute end-0 bottom-0 border border-3 border-white"></span>
@@ -1663,16 +1663,16 @@
                                    </a>
                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                       <li>
-                                         <a class="dropdown-item" href="./app/user-profile.html">Profile</a>
+                                         <a class="dropdown-item" th:href="@{/app/user-profile.html}">Profile</a>
                                       </li>
                                       <li>
-                                         <a class="dropdown-item" href="./app/user-privacy-setting.html">Privacy Setting</a>
+                                         <a class="dropdown-item" th:href="@{/app/user-privacy-setting.html}">Privacy Setting</a>
                                       </li>
                                       <li>
                                          <hr class="dropdown-divider">
                                       </li>
                                       <li>
-                                         <a class="dropdown-item" href="./auth/sign-in.html">Logout</a>
+                                         <a class="dropdown-item" th:href="@{/auth/sign-in.html}">Logout</a>
                                       </li>
                                    </ul>
                                 </li>
@@ -2280,8 +2280,8 @@
             <footer class="footer">
                 <div class="footer-body">
                     <ul class="left-panel list-inline mb-0 p-0">
-                        <li class="list-inline-item fw-500"><a class="footer-link" href="./extra/privacy-policy.html">Privacy Policy</a></li>
-                        <li class="list-inline-item fw-500"><a class="footer-link" href="./extra/terms-of-service.html">Terms of Use</a></li>
+                        <li class="list-inline-item fw-500"><a class="footer-link" th:href="@{/extra/privacy-policy.html}">Privacy Policy</a></li>
+                        <li class="list-inline-item fw-500"><a class="footer-link" th:href="@{/extra/terms-of-service.html}">Terms of Use</a></li>
                     </ul>
                     <h6 class="right-panel mb-0">
                         © <script>document.write(new Date().getFullYear())</script> <span data-setting="app_name">KiviCare</span> with
@@ -2400,9 +2400,9 @@
                                             <input type="radio" value="ltr" class="btn-check" name="theme_scheme_direction"
                                                 data-prop="dir" id="theme-scheme-direction-ltr" checked>
                                             <label class="btn btn-border d-block p-0" for="theme-scheme-direction-ltr">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/01.png" alt="ltr"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/01.png}" alt="ltr"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/01.png" alt="ltr"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/01.png}" alt="ltr"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class=" mt-2"> LTR </span>
@@ -2411,9 +2411,9 @@
                                             <input type="radio" value="rtl" class="btn-check" name="theme_scheme_direction"
                                                 data-prop="dir" id="theme-scheme-direction-rtl">
                                             <label class="btn btn-border d-block p-0" for="theme-scheme-direction-rtl">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/02.png" alt="ltr"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/02.png}" alt="ltr"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/02.png" alt="ltr"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/02.png}" alt="ltr"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class=" mt-2"> RTL </span>
@@ -2659,9 +2659,9 @@
                                             <input type="checkbox" value="sidebar-mini" class="btn-check" name="sidebar_type"
                                                 id="sidebar-mini">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-mini">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/03.png" alt="mini"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/03.png}" alt="mini"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/03.png" alt="mini"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/03.png}" alt="mini"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Mini</span>
@@ -2671,9 +2671,9 @@
                                                 data-extra="{target: '.sidebar', ClassListAdd: 'sidebar-mini'}"
                                                 class="btn-check" name="sidebar_type" id="sidebar-hover">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-hover">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/04.png" alt="hover"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/04.png}" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/04.png" alt="hover"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/04.png}" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Hover</span>
@@ -2682,9 +2682,9 @@
                                             <input type="checkbox" value="sidebar-boxed" class="btn-check" name="sidebar_type"
                                                 id="sidebar-boxed">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-boxed">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/05.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/05.png}" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/05.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/05.png}" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Boxed</span>
@@ -2693,9 +2693,9 @@
                                             <input type="checkbox" value="sidebar-soft" class="btn-check" name="sidebar_type"
                                                 id="sidebar-soft">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-soft">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/05.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/05.png}" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/05.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/05.png}" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Soft</span>
@@ -2716,9 +2716,9 @@
                                             <input type="radio" value="sidebar-default navs-rounded" class="btn-check" name="sidebar_menu_style"
                                                 id="navs-rounded">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-rounded">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/06.png" alt="mini"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/06.png}" alt="mini"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/06.png" alt="mini"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/06.png}" alt="mini"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Rounded One Side</span>
@@ -2727,9 +2727,9 @@
                                             <input type="radio" value="sidebar-default navs-rounded-all" class="btn-check"
                                                 name="sidebar_menu_style" id="navs-rounded-all">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-rounded-all">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/07.png" alt="hover"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/07.png}" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/07.png" alt="hover"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/07.png}" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Rounded All</span>
@@ -2738,9 +2738,9 @@
                                             <input type="radio" value="sidebar-default navs-pill" class="btn-check" name="sidebar_menu_style"
                                                 id="navs-pill">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-pill">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/08.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/08.png}" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/08.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/08.png}" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Pill One Side</span>
@@ -2749,9 +2749,9 @@
                                             <input type="radio" value="sidebar-default navs-pill-all" class="btn-check"
                                                 name="sidebar_menu_style" id="navs-pill-all">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-pill-all">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/09.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/09.png}" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/09.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/09.png}" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Pill All</span>
@@ -2760,9 +2760,9 @@
                                             <input type="radio" value="text-hover" class="btn-check"
                                                 name="sidebar_menu_style" id="text-hover" checked>
                                             <label class="btn btn-border position-relative p-0 d-block overflow-hidden" for="text-hover">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/14.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/14.png}" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/14.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/14.png}" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Text Color</span>
@@ -2771,9 +2771,9 @@
                                             <input type="radio" value="sidebar-default navs-full-width" class="btn-check"
                                                 name="sidebar_menu_style" id="navs-full-width">
                                             <label class="btn btn-border position-relative p-0 d-block overflow-hidden" for="navs-full-width">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/15.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/15.png}" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/15.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/15.png}" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Full Width</span>
@@ -2792,9 +2792,9 @@
                                             <input type="radio" value="nav-glass" class="btn-check" name="header_navbar"
                                                 id="nav-glass">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="nav-glass">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/10.png" alt="hover"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/10.png}" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/10.png" alt="hover"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/10.png}" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Glass</span>
@@ -2803,9 +2803,9 @@
                                             <input type="radio" value="navs-sticky" class="btn-check" name="header_navbar"
                                                 id="navs-sticky">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-sticky">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/04.png" alt="hover"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/04.png}" alt="hover"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/04.png" alt="hover"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/04.png}" alt="hover"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Sticky</span>
@@ -2814,9 +2814,9 @@
                                             <input type="radio" value="navs-transparent" class="btn-check" name="header_navbar"
                                                 id="navs-transparent">
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-transparent">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/12.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/12.png}" alt="boxed"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/12.png" alt="boxed"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/12.png}" alt="boxed"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Transparent</span>
@@ -2825,9 +2825,9 @@
                                             <input type="radio" value="navs-default" class="btn-check" name="header_navbar"
                                                 id="navs-default" checked>
                                             <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-default">
-                                                <img src="../dashboard-doctor/assets/images/settings/dark/01.png" alt="default"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/dark/01.png}" alt="default"
                                                     class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                                <img src="../dashboard-doctor/assets/images/settings/light/01.png" alt="default"
+                                                <img th:src="@{/dashboard-doctor/assets/images/settings/light/01.png}" alt="default"
                                                     class="mode light-img img-fluid" width="200" height="200" loading="lazy">
                                             </label>
                                             <span class="mt-2">Default</span>
@@ -3083,57 +3083,57 @@
 
 
         <!-- Library Bundle Script -->
-        <script src="../dashboard-doctor/assets/js/core/libs.min.js"></script>
+        <script th:src="@{/dashboard-doctor/assets/js/core/libs.min.js}"></script>
         <!-- Plugin Scripts -->
         <!-- Tour plugin Start -->
-        <script src="../dashboard-doctor/assets/vendor/sheperd/dist/js/sheperd.min.js"></script>
-        <script src="../dashboard-doctor/assets/js/plugins/tour.js" defer></script>
+        <script th:src="@{/dashboard-doctor/assets/vendor/sheperd/dist/js/sheperd.min.js}"></script>
+        <script th:src="@{/dashboard-doctor/assets/js/plugins/tour.js}" defer></script>
         
         <!-- Flatpickr Script -->
-        <script src="../dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
-        <script src="../dashboard-doctor/assets/js/plugins/flatpickr.js" defer></script>
+        <script th:src="@{/dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.js}"></script>
+        <script th:src="@{/dashboard-doctor/assets/js/plugins/flatpickr.js}" defer></script>
         
         
         
         <!-- Slider-tab Script -->
-        <script src="../dashboard-doctor/assets/js/plugins/slider-tabs.js"></script>
+        <script th:src="@{/dashboard-doctor/assets/js/plugins/slider-tabs.js}"></script>
         
         
         <!-- fslightbox Script -->
-        <script src="../dashboard-doctor/assets/js/plugins/fslightbox.js" defer></script>
+        <script th:src="@{/dashboard-doctor/assets/js/plugins/fslightbox.js}" defer></script>
         
         
         <!-- Sweet-alert Script -->
-        <script src="../dashboard-doctor/assets/vendor/sweetalert2/dist/sweetalert2.min.js" async></script>
-        <script src="../dashboard-doctor/assets/js/plugins/sweet-alert.js" defer></script>
+        <script th:src="@{/dashboard-doctor/assets/vendor/sweetalert2/dist/sweetalert2.min.js}" async></script>
+        <script th:src="@{/dashboard-doctor/assets/js/plugins/sweet-alert.js}" defer></script>
         
         
           <!-- Select2 Script -->
-          <script src="../dashboard-doctor/assets/js/plugins/select2.js" defer></script>
+          <script th:src="@{/dashboard-doctor/assets/js/plugins/select2.js}" defer></script>
         
         
         
         
         <!-- Lodash Utility -->
-        <script src="../dashboard-doctor/assets/vendor/lodash/lodash.min.js"></script>
+        <script th:src="@{/dashboard-doctor/assets/vendor/lodash/lodash.min.js}"></script>
         <!-- Utilities Functions -->
-        <script src="../dashboard-doctor/assets/js/iqonic-script/utility.min.js"></script>
+        <script th:src="@{/dashboard-doctor/assets/js/iqonic-script/utility.min.js}"></script>
         <!-- Settings Script -->
-        <script src="../dashboard-doctor/assets/js/iqonic-script/setting.min.js"></script>
+        <script th:src="@{/dashboard-doctor/assets/js/iqonic-script/setting.min.js}"></script>
         <!-- Settings Init Script -->
-        <script src="../dashboard-doctor/assets/js/setting-init.js"></script>
+        <script th:src="@{/dashboard-doctor/assets/js/setting-init.js}"></script>
         <!-- External Library Bundle Script -->
-        <script src="../dashboard-doctor/assets/js/core/external.min.js"></script>
+        <script th:src="@{/dashboard-doctor/assets/js/core/external.min.js}"></script>
         <!-- Widgetchart Script -->
-        <script src="../dashboard-doctor/assets/js/charts/widgetcharts.js?v=1.4.1" defer></script>
+        <script th:src="@{/dashboard-doctor/assets/js/charts/widgetcharts.js?v=1.4.1}" defer></script>
         <!-- Dashboard Script -->
-        <script src="../dashboard-doctor/assets/js/charts/dashboard.js?v=1.4.1" defer></script>
+        <script th:src="@{/dashboard-doctor/assets/js/charts/dashboard.js?v=1.4.1}" defer></script>
         <!-- Hopeui Script -->
-        <script src="../dashboard-doctor/assets/js/kivicare.js?v=1.4.1" defer></script>
-        <script src="../dashboard-doctor/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
-        <script src="../dashboard-doctor/assets/js/sidebar.js?v=1.4.1" defer></script>
+        <script th:src="@{/dashboard-doctor/assets/js/kivicare.js?v=1.4.1}" defer></script>
+        <script th:src="@{/dashboard-doctor/assets/js/kivicare-advance.js?v=1.4.1}" defer></script>
+        <script th:src="@{/dashboard-doctor/assets/js/sidebar.js?v=1.4.1}" defer></script>
         
         <!-- Icons -->
-        <script src="../dashboard-doctor/assets/js/solid-icon-search-filter.js?v=1.4.1" defer></script>
+        <script th:src="@{/dashboard-doctor/assets/js/solid-icon-search-filter.js?v=1.4.1}" defer></script>
     </body>
 </html>

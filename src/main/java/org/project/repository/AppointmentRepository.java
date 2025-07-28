@@ -19,9 +19,19 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
 
     boolean existsByDoctorEntityIdAndStartTimeEquals(Long doctorEntityId, Timestamp startTime);
 
-    @Query("select count(id) from AppointmentEntity \n" +
-            "where date(startTime) = now()")
-    int countTotalAppointmentsToday();
+    @Query("select count(a.id) from AppointmentEntity a \n" +
+            "where DATE(a.startTime) = CURRENT_DATE and a.doctorEntity.id = :doctorId")
+    int countTotalAppointmentsToday(@Param("doctorId") Long doctorId);
+
+    @Query(value = "SELECT * FROM appointments " +
+            "WHERE DATE(start_time) = CURRENT_DATE " +
+            "AND doctor_id = :doctorId " +
+            "AND appointment_status = 'CONFIRMED' " +
+            "ORDER BY start_time ASC " +
+            "LIMIT 3", nativeQuery = true)
+    List<AppointmentEntity> findThreeTopAppointmentNearest(
+            @Param("doctorId") Long id
+    );
 
     Collection<? extends AppointmentEntity> findByPatientEntityIdAndStartTimeBetween(Long patientEntityId, Timestamp startTimeAfter, Timestamp startTimeBefore);
 
