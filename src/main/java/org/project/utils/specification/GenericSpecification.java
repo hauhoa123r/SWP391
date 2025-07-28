@@ -360,7 +360,7 @@ public class GenericSpecification<T> implements Specification<T> {
             LogicalOperator logicalOperator = entry.getValue();
             if (criteria != null && logicalOperator != null) {
                 if (criteria instanceof SortCriteria sortCriteria) {
-                    if (sortCriteria.getFieldName() == null || sortCriteria.getSortDirection() == null || sortCriteria.getAggregationFunction() == null || sortCriteria.getJoinType() == null) {
+                    if (sortCriteria.getFieldName() == null || sortCriteria.getSortDirection() == null || sortCriteria.getAggregationFunction() == null) {
                         continue; // Skip if sort criteria is incomplete
                     }
                     Predicate sortPredicate = getPredicate(root, criteriaQuery, criteriaBuilder, sortCriteria, joinMap);
@@ -370,7 +370,7 @@ public class GenericSpecification<T> implements Specification<T> {
                                 : criteriaBuilder.or(predicate, sortPredicate);
                     }
                 } else if (criteria instanceof SearchCriteria searchCriteria) {
-                    if (searchCriteria.getFieldName() == null || searchCriteria.getComparisonOperator() == null || searchCriteria.getComparedValue() == null || searchCriteria.getJoinType() == null) {
+                    if (searchCriteria.getFieldName() == null || searchCriteria.getComparisonOperator() == null || searchCriteria.getComparedValue() == null) {
                         continue; // Skip if search criteria is incomplete
                     }
                     Predicate searchPredicate = getPredicate(root, criteriaQuery, criteriaBuilder, searchCriteria, joinMap);
