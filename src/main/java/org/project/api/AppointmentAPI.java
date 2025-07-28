@@ -1,13 +1,14 @@
 package org.project.api;
 
-import jakarta.servlet.http.HttpSession;
 import org.project.entity.UserEntity;
 import org.project.enums.AppointmentStatus;
 import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.ChangeAppointmentDTO;
+import org.project.security.AccountDetails;
 import org.project.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,9 +22,9 @@ public class AppointmentAPI {
     }
 
     @PostMapping("/api/patient/appointment")
-    public ResponseEntity<String> saveAppointment(HttpSession session, @RequestBody AppointmentDTO appointmentDTO) {
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        appointmentDTO.setPatientEntityUserEntityId(user.getId());
+    public ResponseEntity<String> saveAppointment(@AuthenticationPrincipal AccountDetails accountDetails, @RequestBody AppointmentDTO appointmentDTO) {
+        UserEntity userEntity = accountDetails.getUserEntity();
+        appointmentDTO.setPatientEntityUserEntityId(userEntity.getId());
         appointmentService.saveAppointment(appointmentDTO);
         return ResponseEntity.ok("Appointment created successfully");
     }

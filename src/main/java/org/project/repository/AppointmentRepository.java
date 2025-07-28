@@ -1,6 +1,7 @@
 package org.project.repository;
 
 import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.project.entity.AppointmentEntity;
 import org.project.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,11 +34,13 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             @Param("doctorId") Long id
     );
 
+
     Collection<? extends AppointmentEntity> findByPatientEntityIdAndStartTimeBetween(Long patientEntityId, Timestamp startTimeAfter, Timestamp startTimeBefore);
 
     Long countByAppointmentStatusAndServiceEntityDepartmentEntityId(AppointmentStatus appointmentStatus, Long serviceEntityDepartmentEntityId);
 
     Long countByAppointmentStatus(AppointmentStatus appointmentStatus);
+
 
     List<AppointmentEntity> findByDoctorEntity_StaffEntity_HospitalEntity_IdAndAppointmentStatus(Long hospitalId, AppointmentStatus appointmentStatus);
 

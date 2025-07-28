@@ -24,13 +24,13 @@ public class ResultTestConverter {
     public Page<ResultAppointmentResponse> filterResultSample(ResultTestDTO resultTestDTO) throws IllegalAccessException {
         Page<AppointmentEntity> appointmentEntities = resultTestRepository.filterAppointmentEntityCustom(resultTestDTO);
         return appointmentEntities.map(entity -> {
-                ResultAppointmentResponse resultAppointmentResponse = new ResultAppointmentResponse();
-                resultAppointmentResponse.setPatientName(entity.getPatientEntity().getFullName());
-                resultAppointmentResponse.setId(entity.getId());
-                resultAppointmentResponse.setDepartmentName(entity.getDoctorEntity().getStaffEntity().getDepartmentEntity().getName());
-                resultAppointmentResponse.setDoctorName(entity.getDoctorEntity().getStaffEntity().getFullName());
-                resultAppointmentResponse.setTestType(converterTestTypes(entity.getTestRequestEntities()).toString());
-                return resultAppointmentResponse;
+            ResultAppointmentResponse resultAppointmentResponse = new ResultAppointmentResponse();
+            resultAppointmentResponse.setPatientName(entity.getPatientEntity().getFullName());
+            resultAppointmentResponse.setId(entity.getId());
+            resultAppointmentResponse.setDepartmentName(entity.getDoctorEntity().getStaffEntity().getDepartmentEntity().getName());
+            resultAppointmentResponse.setDoctorName(entity.getDoctorEntity().getStaffEntity().getFullName());
+            resultAppointmentResponse.setTestType(converterTestTypes(entity.getTestRequestEntities()).toString());
+            return resultAppointmentResponse;
         });
     }
 

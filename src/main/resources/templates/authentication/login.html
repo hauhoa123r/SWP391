@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .auth-card {
+            max-width: 420px;
+            margin: 6% auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-label span {
+            color: red;
+        }
+
+        .logo-img img {
+            max-width: 120px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="auth-card">
+
+        <div class="logo-img text-center mb-4">
+            <a class="navbar-brand m-0" th:href="@{/}">
+                <img alt="logo" class="img-fluid" th:src="@{/frontend/assets/images/logo.png}"/>
+            </a>
+        </div>
+
+        <h4 class="text-center mb-4">Đăng nhập vào hệ thống</h4>
+
+        <form id="login-form">
+            <div class="mb-3">
+                <label class="form-label" for="email">Email <span>*</span></label>
+                <input class="form-control" id="email" name="email" placeholder="Nhập Email" required type="email">
+            </div>
+            <div class="mb-4">
+                <label class="form-label" for="password">Mật Khẩu <span>*</span></label>
+                <input class="form-control"
+                       id="password"
+                       name="password"
+                       placeholder="Nhập mật khẩu"
+                       required
+                       type="password">
+            </div>
+            <div class="mb-4 form-check">
+                <input class="form-check-input" id="remember-me" name="remember-me" type="checkbox">
+                <label class="form-check-label" for="remember-me">Ghi nhớ đăng nhập</label>
+            </div>
+            <div class="d-grid mb-3">
+                <button class="btn btn-primary" type="submit">Đăng nhập</button>
+            </div>
+        </form>
+
+        <!-- Nút đăng nhập Google -->
+        <div class="d-flex border justify-content-center my-3">
+            <a class="btn w-100" href="/oauth2/authorization/google">
+                <img src="https://developers.google.com/identity/images/g-logo.png"
+                     style="width:20px; margin-right:8px;vertical-align:middle;">
+                Đăng nhập với Google
+            </a>
+        </div>
+
+        <div class="text-center mt-3">
+            <a data-bs-target="#resetPasswordModal" data-bs-toggle="modal" href="#">Quên hoặc đổi mật khẩu?</a> |
+            <a th:href="@{/register}">Đăng ký tài khoản?</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal đặt lại mật khẩu -->
+<div aria-hidden="true" aria-labelledby="resetPasswordModalLabel" class="modal fade" id="resetPasswordModal"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" id="reset-password-form">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resetPasswordModalLabel">Đặt lại mật khẩu</h5>
+                <button aria-label="Đóng" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="reset-email">Nhập email tài khoản của bạn</label>
+                    <input class="form-control" id="reset-email" name="reset-email" placeholder="Email..." required
+                           type="email">
+                </div>
+                <div class="text-danger small" id="reset-password-result"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" type="submit">Gửi yêu cầu</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript" type="module">
+    import toast from "/templates/shared/assets/js/plugins/toast.js";
+    import {FetchingUtils} from "/templates/shared/assets/js/utils/fetching-utils.js";
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastType = /*[[${toastType}]]*/ null;
+        const toastMessage = /*[[${toastMessage}]]*/ null;
+        if (toastType && toastMessage) {
+            toast[toastType](toastMessage, {
+                duration: 3000,
+                icon: true,
+                progress: toastType === "success"
+            });
+        }
+    });
+
+    // Xử lý submit form đăng nhập bằng async fetch
+    document.getElementById("login-form").addEventListener("submit", async function (e) {
+        e.preventDefault(); // Ngăn submit mặc định
+
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        const rememberMe = form["remember-me"].checked;
+
+        // Chuẩn bị form data như submit truyền thống
+        const formData = new URLSearchParams();
+        formData.append("username", email);
+        formData.append("password", password);
+        if (rememberMe) formData.append("remember-me", "on");
+
+        const data = await FetchingUtils.fetch("/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: formData.toString()
+        }, "text");
+
+        if (data !== null) {
+            // Nếu đăng nhập thành công, chuyển hướng về trang chủ
+            window.location.href = "/home";
+        }
+    });
+
+    // Xử lý submit form đặt lại mật khẩu
+    document.getElementById("reset-password-form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const submitButton = e.target.querySelector("[type='submit']");
+        submitButton.disabled = true; // Vô hiệu hóa nút submit để tránh gửi nhiều lần
+        const email = document.getElementById("reset-email").value;
+        const resultDiv = document.getElementById("reset-password-result");
+        resultDiv.textContent = "";
+
+        const data = await FetchingUtils.fetch("/api/password/reset", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({email})
+        }, "text");
+
+        if (data !== null) {
+            toast.success("Yêu cầu đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra email của bạn.", {
+                duration: 3000,
+                icon: true,
+                progress: true
+            });
+        }
+        submitButton.disabled = false; // Kích hoạt lại nút submit
+    });
+</script>
+</body>
+</html>

@@ -500,6 +500,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <!-- Dòng mẫu status Pending -->
+                                        <tr>
+                                            <td>BN123-20240625-01-2</td>
+                                            <td>BN123456</td>
+                                            <td>Bùi Huy Hùng</td>
+                                            <td>Glucose</td>
+                                            <td>
+                                                25/6/2025 10:30
+                                            </td>
+                                            <td class="result-cell">
+                                                <span class="badge bg-info text-white">Do Progress</span>
+                                            </td>
+                                        </tr>
+                                        <!-- Dòng mẫu status Success -->
+                                        <tr>
+                                            <td>BN124-20240625-02-1</td>
+                                            <td>BN123457</td>
+                                            <td>Nguyễn Thị An</td>
+                                            <td>Cholesterol</td>
+                                            <td>25/6/2025 10:30</td>
+                                            <td>
+                                                <span class="badge bg-info text-white">Do Progress</span>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -1379,18 +1403,24 @@
     </div>
     <script>
         function updateActionColumnByStatus(row) {
+            // Status là cột thứ 5, Action là cột thứ 6 (bắt đầu từ 0)
+            // (Tùy table bạn, có thể điều chỉnh lại chỉ số cho chuẩn)
             const statusCell = row.children[4];
             const actionCell = row.children[6];
+            // Lấy text status
             const statusText = statusCell.textContent.trim().toLowerCase();
             if (statusText === 'success' || statusText === 'đã xét nghiệm') {
                 actionCell.innerHTML = '';
             }
         }
 
+        // Demo: Khi bấm nút "Thực hiện xét nghiệm", đổi status và ẩn action
         function markSuccess(btn) {
             const row = btn.closest('tr');
+            // Đổi status sang Success (box xanh)
             row.children[4].innerHTML =
                 '<span class="badge bg-success text-white px-3 py-2 fs-6" style="border-radius:1rem;">Success</span>';
+            // Đổi cột result thành nút "Xem kết quả" mẫu
             row.children[5].innerHTML =
                 `<button class="btn btn-sm btn-outline-info" title="Result" onclick="openResultModal(this)">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -1400,10 +1430,13 @@
         </svg>
         Xem kết quả
       </button>`;
+            // Lưu kết quả vào data-attribute (có thể lấy từ form nếu muốn)
             row.children[5].setAttribute('data-result', 'Glucose: 5.6 mmol/L');
+            // Ẩn action
             updateActionColumnByStatus(row);
         }
 
+        // Modal xem kết quả
         function openResultModal(btn) {
             const cell = btn.closest('.result-cell');
             const resultText = cell.getAttribute('data-result') || "Chưa có kết quả!";
@@ -1412,6 +1445,7 @@
             modal.show();
         }
 
+        // Khi load trang, kiểm tra các row có status success để ẩn action
         document.addEventListener('DOMContentLoaded', function () {
             const table = document.getElementById('input-datatable');
             const rows = table.querySelectorAll('tbody tr');

@@ -17,12 +17,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 
     @Override
-    public UserEntity findByEmail(String email) {
-        StringBuilder sql = new StringBuilder("SELECT u FROM UserEntity u WHERE u.email = :email");
-        return (UserEntity)entityManager.createQuery(sql.toString()).setParameter("email", email).getSingleResult();
-    }
-
-    @Override
     public UserEntity findByUsername(String username) {
         StringBuilder sql = new StringBuilder("SELECT u FROM UserEntity u WHERE u.username = :username");
         return (UserEntity)entityManager.createQuery(sql.toString()).setParameter("username", username).getSingleResult();

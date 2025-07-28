@@ -2,15 +2,15 @@
 <html layout:decorate="~{/frontend/layouts/main-layout}"
       th:with="
         navActive = ${6},
-        breadCrumbTitle = ${'Dịch vụ ' + service.productEntity.name},
-        breadCrumbTexts = ${{{'Dịch vụ ' + service.productEntity.name}}},
+        breadCrumbTitle = ${service.productEntity.name},
+        breadCrumbTexts = ${{{service.productEntity.name}}},
         breadCrumbLinks = ${{{''}}}
 "
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
 >
 <head>
-    <title th:text="${'Dịch vụ ' + service.productEntity.name}"></title>
+    <title th:text="${service.productEntity.name}"></title>
 </head>
 <body>
 <main>

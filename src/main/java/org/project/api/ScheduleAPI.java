@@ -42,7 +42,6 @@ public class ScheduleAPI {
     public ResponseEntity<Map<String, Object>> getAvailableTimesForSuggestion(@PathVariable Long staffId, @PathVariable Long patientId,
                                                                               @PathVariable String availableDate) {
         try {
-
             Timestamp timestamp = Timestamp.valueOf(availableDate.replace("T", " "));
             return ResponseEntity.ok(
                     Map.of(
