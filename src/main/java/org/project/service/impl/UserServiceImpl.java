@@ -26,10 +26,8 @@ import java.util.Optional;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     private EmailService emailService;

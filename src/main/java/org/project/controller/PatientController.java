@@ -2,9 +2,11 @@ package org.project.controller;
 
 import org.project.model.dto.PatientDTO;
 import org.project.model.response.PatientResponse;
+import org.project.security.AccountDetails;
 import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,7 +19,7 @@ import java.util.List;
 @Controller
 public class PatientController {
 
-    private final PatientService patientService;
+    private PatientService patientService;
 
     @Autowired
     public PatientController(PatientService patientService) {
@@ -29,16 +31,16 @@ public class PatientController {
         return "/frontend/patient-add-previous"; // This should return the name of the HTML template for adding a patient
     }
 
-    @GetMapping("/patient/showList/{userId}")
-    public String showPatientList(@PathVariable Long userId,
-                                  @RequestParam(defaultValue = "0") int pageIndex,
-                                  Model model) {
-
+    @GetMapping("/patient/showList")
+    public String showPatientList(@AuthenticationPrincipal AccountDetails accountDetails,
+                                  @RequestParam (defaultValue = "0") int pageIndex,
+                                  Model model ) {
+        Long userId = accountDetails.getUserEntity().getId();
         Page<PatientResponse> patientResponsePage = patientService.getPatientsByUser(userId, pageIndex, 6);
         List<PatientResponse> patients = patientResponsePage.getContent();
 
-        for (PatientResponse patientResponse : patients) {
-            if (patientResponse.getAvatarUrl() != null && !patientResponse.getAvatarUrl().isEmpty()) {
+        for( PatientResponse patientResponse : patients ) {
+            if(patientResponse.getAvatarUrl() != null && !patientResponse.getAvatarUrl().isEmpty()) {
                 String base64Image = patientService.toConvertFileToBase64(patientResponse.getAvatarUrl());
                 patientResponse.setAvatarUrl(base64Image);
             } else {

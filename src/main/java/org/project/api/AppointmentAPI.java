@@ -35,7 +35,8 @@ public class AppointmentAPI {
 
     @PatchMapping("/api/staff/appointment/confirm/{appointmentId}")
     public ResponseEntity<String> confirmAppointment(@PathVariable Long appointmentId
-            , @RequestParam Long scheduleCoordinatorId) {
+            , @AuthenticationPrincipal AccountDetails accountDetails) {
+        Long scheduleCoordinatorId = accountDetails.getUserEntity().getStaffEntity().getId();
         boolean isUpdated = appointmentService.changeStatus(appointmentId, AppointmentStatus.CONFIRMED, scheduleCoordinatorId);
         if (isUpdated) {
             return ResponseEntity.ok("Appointment confirmed successfully.");
@@ -45,7 +46,8 @@ public class AppointmentAPI {
 
     @PatchMapping("/api/staff/appointment/cancel/{appointmentId}")
     public ResponseEntity<String> cancelAppointment(@PathVariable Long appointmentId
-            , @RequestParam Long scheduleCoordinatorId) {
+            , @AuthenticationPrincipal AccountDetails accountDetails) {
+        Long scheduleCoordinatorId = accountDetails.getUserEntity().getStaffEntity().getId();
         boolean isUpdated = appointmentService.changeStatus(appointmentId, AppointmentStatus.CANCELLED, scheduleCoordinatorId);
         if (isUpdated) {
             return ResponseEntity.ok("Appointment canceled successfully.");

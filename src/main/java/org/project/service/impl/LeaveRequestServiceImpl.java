@@ -1,21 +1,26 @@
 package org.project.service.impl;
 
+import jakarta.persistence.criteria.JoinType;
 import org.project.converter.LeaveBalanceConverter;
 import org.project.converter.LeaveRequestConverter;
 import org.project.entity.LeaveBalanceEntity;
 import org.project.entity.LeaveRequestEntity;
 import org.project.enums.LeaveStatus;
 import org.project.enums.LeaveType;
+import org.project.enums.operation.ComparisonOperator;
 import org.project.exception.LeaveLeftNotEnoughException;
 import org.project.model.dto.LeaveRequestDTO;
 import org.project.model.response.LeaveBalanceResponse;
 import org.project.model.response.LeaveRequestResponse;
 import org.project.model.response.LeaveRequestStatisticResponse;
+import org.project.repository.AppointmentRepository;
 import org.project.repository.LeaveBalanceRepository;
 import org.project.repository.LeaveRequestRepository;
 import org.project.service.LeaveRequestService;
 import org.project.service.StaffService;
 import org.project.utils.PageUtils;
+import org.project.utils.specification.SpecificationUtils;
+import org.project.utils.specification.search.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,11 +34,14 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
 public class LeaveRequestServiceImpl implements LeaveRequestService {
+
 
     private LeaveRequestConverter leaveRequestConverter;
 
@@ -46,6 +54,20 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     private LeaveBalanceRepository leaveBalanceRepository;
 
     private LeaveBalanceConverter leaveBalanceConverter;
+
+    private AppointmentRepository appointmentRepository;
+
+    private SpecificationUtils<LeaveRequestEntity> specificationUtils;
+
+    @Autowired
+    public void setSpecificationUtils(SpecificationUtils<LeaveRequestEntity> specificationUtils) {
+        this.specificationUtils = specificationUtils;
+    }
+
+    @Autowired
+    public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+    }
 
     @Autowired
     public void setLeaveBalanceConverter(LeaveBalanceConverter leaveBalanceConverter) {
@@ -86,7 +108,11 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
 
                     leaveRequestEntity.setStaffEntity(staffService.getStaffByStaffId(leaveRequestDTO.getStaffId()));
 
-                    leaveRequestEntity.setApprovedBy(staffService.getManagerByStaffId(leaveRequestDTO.getStaffId()));
+                    if (leaveRequestEntity.getStaffEntity().getManager() != null) {
+                        leaveRequestEntity.setApprovedBy(staffService.getManagerByStaffId(leaveRequestDTO.getStaffId()));
+                    } else {
+                        leaveRequestEntity.setApprovedBy(staffService.getStaffByStaffId(leaveRequestDTO.getStaffId()));
+                    }
 
                     if (leaveRequestDTO.getSubstituteStaffId() != null) {
                         if (staffService.isStaffExist(leaveRequestDTO.getSubstituteStaffId())) {
@@ -99,11 +125,13 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
                     leaveRequestEntity.setCreatedAt(currentTimestamp);
 
                     if (leaveRequestRepository.save(leaveRequestEntity) != null) {
-                        updateLeaveBalance(leaveRequestDTO.getStaffId()
-                                , leaveRequestDTO.getStartDate()
-                                , leaveRequestDTO.getEndDate()
-                                , LeaveType.valueOf(leaveRequestDTO.getLeaveType())
-                                , "CREATE");
+                        if ("ANNUAL_LEAVE".equals(leaveRequestDTO.getLeaveType()) || "SICK_LEAVE".equals(leaveRequestDTO.getLeaveType()) || "STUDY_LEAVE".equals(leaveRequestDTO.getLeaveType())) {
+                            updateLeaveBalance(leaveRequestDTO.getStaffId()
+                                    , leaveRequestDTO.getStartDate()
+                                    , leaveRequestDTO.getEndDate()
+                                    , LeaveType.valueOf(leaveRequestDTO.getLeaveType())
+                                    , "CREATE");
+                        }
                         return true;
                     } else {
                         return false;
@@ -136,34 +164,52 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
 
     @Override
     public List<LeaveRequestResponse> getLeaveRequestsByStaffId(Long staffId) {
-        if (staffService.isStaffExist(staffId)) {
-            List<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findTop5ByStaffEntity_IdOrderByCreatedAtDesc(staffId);
-            List<LeaveRequestResponse> leaveRequestResponses = new ArrayList<>();
-            for (LeaveRequestEntity leaveRequestEntity : leaveRequestEntities) {
-                LeaveRequestResponse leaveRequestResponse = leaveRequestConverter.toResponse(leaveRequestEntity);
-
-                leaveRequestResponse = convertTotalDaysAndHalfDayType(leaveRequestEntity, leaveRequestResponse);
-
-                leaveRequestResponses.add(leaveRequestResponse);
-            }
-            return leaveRequestResponses;
-        } else {
-            throw new IllegalArgumentException("Staff with ID " + staffId + " does not exist.");
+        if(!staffService.isStaffExist(staffId)) {
+            return Collections.emptyList();
         }
+
+        List<LeaveRequestEntity> entities = leaveRequestRepository.findTop5ByStaffEntity_IdOrderByCreatedAtDesc(staffId);
+        return entities.stream()
+                .map(ent -> {
+                    LeaveRequestResponse resp = leaveRequestConverter.toResponse(ent);
+                    return convertTotalDaysAndHalfDayType(ent, resp);
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Page<LeaveRequestResponse> getLeaveRequestByManagerId(Long managerId, int index, int size) {
+    public Page<LeaveRequestResponse> getLeaveRequestByManagerId(Long managerId, int index, int size, String status, String staffName, String leaveType) {
         Pageable pageable = pageUtils.getPageable(index, size);
-        Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findFutureLeaveRequestByManager(managerId, pageable);
-        pageUtils.validatePage(leaveRequestEntities, LeaveRequestEntity.class);
 
-        Page<LeaveRequestResponse> leaveRequestResponses = leaveRequestEntities.map(entity -> {
+        List<SearchCriteria> criteriaList = new ArrayList<>();
+
+        criteriaList.add(new SearchCriteria(
+                "approvedBy.id"
+                , ComparisonOperator.EQUALS, managerId, JoinType.INNER ));
+
+        criteriaList.add(new SearchCriteria("startDate", ComparisonOperator.GREATER_THAN, new Timestamp(System.currentTimeMillis()), JoinType.INNER));
+
+        if (status != null && !status.isEmpty()) {
+            criteriaList.add(new SearchCriteria("status", ComparisonOperator.EQUALS, status, JoinType.INNER));
+        }
+
+        if (staffName != null && !staffName.isEmpty()) {
+            criteriaList.add(new SearchCriteria("staffEntity.fullName", ComparisonOperator.LIKE, "%" + staffName + "%", JoinType.INNER));
+        }
+
+        if (leaveType != null && !leaveType.isEmpty()) {
+            criteriaList.add(new SearchCriteria("leaveTypeEntity.name", ComparisonOperator.EQUALS, leaveType, JoinType.INNER));
+        }
+
+        Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findAll(
+                specificationUtils.reset().getSearchSpecifications(criteriaList),
+                pageable
+        );
+
+        return leaveRequestEntities.map(entity -> {
             LeaveRequestResponse response = leaveRequestConverter.toResponse(entity);
-            response = convertTotalDaysAndHalfDayType(entity, response);
-            return response;
+            return convertTotalDaysAndHalfDayType(entity, response);
         });
-        return leaveRequestResponses;
     }
 
     @Override
@@ -178,19 +224,30 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
-    public Page<LeaveRequestResponse> getLeaveRequestByStaffId(Long staffId, int index, int size) {
+    public Page<LeaveRequestResponse> getLeaveRequestByStaffId(Long staffId, int index, int size, String status, String leaveType) {
         Pageable pageable = pageUtils.getPageable(index, size);
 
-        Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findAllByStaffEntity_IdOrderByCreatedAtDesc(staffId, pageable);
-        pageUtils.validatePage(leaveRequestEntities, LeaveRequestEntity.class);
+        List<SearchCriteria> criteriaList = new ArrayList<>();
 
-        Page<LeaveRequestResponse> leaveRequestResponses = leaveRequestEntities.map(entity -> {
+        criteriaList.add(new SearchCriteria("staffEntity.id", ComparisonOperator.EQUALS, staffId, JoinType.INNER));
+
+        if (status != null && !status.isEmpty()) {
+            criteriaList.add(new SearchCriteria("status", ComparisonOperator.EQUALS, status, JoinType.INNER));
+        }
+
+        if (leaveType != null && !leaveType.isEmpty()) {
+            criteriaList.add(new SearchCriteria("leaveTypeEntity.name", ComparisonOperator.EQUALS, leaveType, JoinType.INNER));
+        }
+
+        Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findAll(
+                specificationUtils.reset().getSearchSpecifications(criteriaList),
+                pageable
+        );
+
+        return leaveRequestEntities.map(entity -> {
             LeaveRequestResponse response = leaveRequestConverter.toResponse(entity);
-            response = convertTotalDaysAndHalfDayType(entity, response);
-            return response;
+            return convertTotalDaysAndHalfDayType(entity, response);
         });
-
-        return leaveRequestResponses;
     }
 
     @Override
@@ -234,10 +291,12 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     public BigDecimal hasLeaveAvailable(LeaveRequestDTO dto) {
-        BigDecimal left = getLeaveDayLeft(dto);
-        BigDecimal req = calculateRequestedDays(dto);
-
-        return left.subtract(req).setScale(2, BigDecimal.ROUND_HALF_UP);
+        if ("ANNUAL_LEAVE".equals(dto.getLeaveType()) || "SICK_LEAVE".equals(dto.getLeaveType()) || "STUDY_LEAVE".equals(dto.getLeaveType())) {
+            BigDecimal left = getLeaveDayLeft(dto);
+            BigDecimal req = calculateRequestedDays(dto);
+            return left.subtract(req).setScale(2, BigDecimal.ROUND_HALF_UP);
+        }
+        return BigDecimal.ONE;
     }
 
     public BigDecimal calculateLeaveDays(Timestamp startDate, Timestamp endDate) {
@@ -248,18 +307,22 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         LocalDateTime start = startDate.toLocalDateTime();
         LocalDateTime end = endDate.toLocalDateTime();
 
-        long totalMinutes = ChronoUnit.MINUTES.between(start, end);
-        if (totalMinutes < 0) {
-            throw new IllegalArgumentException("End date must be after start date.");
+        if (start.toLocalDate().equals(end.toLocalDate())) {
+            boolean isFullDay = isFullDayLeave(start, end);
+            return isFullDay ? BigDecimal.ONE : new BigDecimal("0.5");
         }
 
-        BigDecimal WORKING_HOURS_PER_DAY = BigDecimal.valueOf(8L * 60L);
+        long fullDays = ChronoUnit.DAYS.between(start.toLocalDate(), end.toLocalDate());
+        return BigDecimal.valueOf(fullDays + 1);
+    }
 
-        BigDecimal leaveDays = BigDecimal
-                .valueOf(totalMinutes)
-                .divide(WORKING_HOURS_PER_DAY, 2, RoundingMode.HALF_UP);
+    private boolean isFullDayLeave(LocalDateTime start, LocalDateTime end) {
 
-        return leaveDays;
+        int MORNING_END_HOUR = 12;
+        int AFTERNOON_START_HOUR = 13;
+
+        return start.getHour() < MORNING_END_HOUR &&
+                end.getHour() >= AFTERNOON_START_HOUR;
     }
 
     public String halfDayOrFullDay(BigDecimal leaveDays) {
@@ -303,6 +366,36 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
             leaveRequestResponse.setHalfDayType("Toàn ngày");
         }
         return leaveRequestResponse;
+    }
+
+    @Override
+    public boolean changeStatus(Long id, LeaveStatus status, String reason) {
+        if ("APPROVED".equals(status)){
+            transferAppointments(id);
+        }
+        return leaveRequestRepository.updateLeaveRequestStatus(id, status, reason) > 0;
+    }
+
+    @Override
+    public void transferAppointments(Long leaveRequestId) {
+        LeaveRequestEntity leaveRequestEntity = leaveRequestRepository.getById(leaveRequestId);
+        String halfDayType = amOrPm(leaveRequestEntity.getStartDate(), leaveRequestEntity.getEndDate());
+        if (leaveRequestEntity.getStaffSubstitute() != null) {
+            if ("AM".equals(halfDayType)) {
+                appointmentRepository.transferMorningShiftAppointments(leaveRequestEntity.getStaffEntity().getId(),
+                        leaveRequestEntity.getStaffSubstitute().getId(),
+                        leaveRequestEntity.getStartDate());
+            } else if ("PM".equals(halfDayType)) {
+                appointmentRepository.transferAfternoonShiftAppointments(leaveRequestEntity.getStaffEntity().getId(),
+                        leaveRequestEntity.getStaffSubstitute().getId(),
+                        leaveRequestEntity.getStartDate());
+            } else {
+                appointmentRepository.transferFullDayAppointments(leaveRequestEntity.getStaffEntity().getId(),
+                        leaveRequestEntity.getStaffSubstitute().getId(),
+                        leaveRequestEntity.getStartDate(),
+                        leaveRequestEntity.getEndDate());
+            }
+        }
     }
 
 }
