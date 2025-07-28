@@ -1,0 +1,12 @@
+/* Custom header styles */
+
+/* Logo style */
+.warehouse-logo {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: #2e8b57; /* Màu xanh lá cây */
+    text-align: center;
+    margin: 0;
+    letter-spacing: 0.5px;
+} 
