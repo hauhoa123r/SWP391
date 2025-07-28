@@ -8,6 +8,7 @@ import org.project.entity.SupplierTransactionItemEntityId;
 import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
+import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierOutDTO;
 import org.project.model.dto.SupplierRequestItemDTO;
 import org.project.repository.InventoryManagerRepository;
@@ -93,7 +94,7 @@ public class SupplierOutServiceImpl extends AbstractBaseTransactionServiceImpl<S
         
         // Set basic information
         transaction.setTransactionType(SupplierTransactionType.STOCK_OUT);
-        transaction.setStatus(supplierOutDTO.getStatus() != null ? supplierOutDTO.getStatus() : SupplierTransactionStatus.PENDING);
+        transaction.setStatus(supplierOutDTO.getStatus() != null ? supplierOutDTO.getStatus() : SupplierTransactionStatus.PREPARING);
         transaction.setTransactionDate(supplierOutDTO.getTransactionDate() != null ? supplierOutDTO.getTransactionDate() : Timestamp.from(Instant.now()));
         transaction.setTotalAmount(supplierOutDTO.getTotalAmount());
         transaction.setNotes(supplierOutDTO.getNotes());
@@ -217,7 +218,12 @@ public class SupplierOutServiceImpl extends AbstractBaseTransactionServiceImpl<S
         
         transactionRepository.save(transaction);
     }
-    
+
+    @Override
+    public Page<SupplierInDTO> getFilteredSupplierInsForStockIn(int page, int size, String status, String search, String type, List<SupplierTransactionStatus> allowedStatuses) {
+        return null;
+    }
+
     @Override
     protected SupplierOutDTO convertToDTO(SupplierTransactionsEntity entity) {
         SupplierOutDTO dto = new SupplierOutDTO();

@@ -63,10 +63,16 @@ public class SupplierTransactionsEntity {
     @Column
     private Timestamp expectedDeliveryDate;
 
-    // Xóa hoặc đổi tên trường này vì nó không có trong database
-    // @ManyToOne
-    // @JoinColumn(name = "approved_by_id")
-    // private InventoryManagerEntity approvedBy;
+    // Removed from database mapping due to missing columns
+    private transient InventoryManagerEntity createdBy;
+
+    public void setCreatedBy(InventoryManagerEntity createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public InventoryManagerEntity getCreatedBy() {
+        return createdBy;
+    }
 
     @Column(nullable = false, unique = true)
     private String invoiceNumber;
@@ -91,6 +97,31 @@ public class SupplierTransactionsEntity {
     
     @Column(name = "stock_out_reason", columnDefinition = "TEXT")
     private String stockOutReason;
+
+    // Marked as transient due to missing column in database
+    // @Column(length = 500)
+    private transient String rejectionReason;
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
+    }
+
+    // Removed from database mapping due to missing columns
+    private transient InventoryManagerEntity approvedBy;
+
+    public void setApprovedBy(InventoryManagerEntity approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    private transient InventoryManagerEntity rejectedBy;
+
+    public void setRejectedBy(InventoryManagerEntity rejectedBy) {
+        this.rejectedBy = rejectedBy;
+    }
 
     @OneToMany(mappedBy = "supplierTransactionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();

@@ -16,12 +16,17 @@ import org.project.service.MedicalProductService;
 import org.project.service.SupplierInInvoiceService;
 import org.project.service.SupplierInService;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.web.csrf.CsrfToken;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -46,31 +51,170 @@ public class MedicalEquipmentController {
      * @return View name for medical equipment page
      */
     @GetMapping
-    public String getAllMedicalEquipment(Model model) {
-        log.info("Loading medical equipment page");
+    public String getAllMedicalEquipment(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String sortDirection,
+            @RequestParam(required = false) String sortField,
+            Model model,
+            HttpServletRequest request) {
+        log.info("Loading medical equipment page with pagination - page: {}, size: {}", page, size);
         
         try {
-            // Get all medical products
-            List<ProductEntity> equipments = productRepository.findByProductType("MEDICAL_PRODUCT");
-            model.addAttribute("equipments", equipments);
+            // Get medical products with pagination
+            Page<ProductEntity> equipmentPage = productRepository.findByProductType(ProductType.MEDICAL_PRODUCT, PageRequest.of(page, size));
+            List<ProductEntity> equipments = equipmentPage.getContent();
             
-            // Get stock in orders for medical equipment - use pageable version but retrieve all results
-            List<SupplierTransactionsEntity> stockInOrders = supplierTransactionRepository
-                .findByTransactionTypeAndStatus(SupplierTransactionType.STOCK_IN, SupplierTransactionStatus.INSPECTED, 
+            // Convert ProductEntity to DTO Map để tránh vòng lặp
+            List<Map<String, Object>> equipmentDTOs = equipments.stream().map(e -> {
+                Map<String, Object> dto = new HashMap<>();
+                dto.put("id", e.getId());
+                dto.put("name", e.getName());
+                dto.put("unit", e.getUnit());
+                dto.put("price", e.getPrice());
+                dto.put("stockQuantities", e.getStockQuantities());
+                dto.put("description", e.getDescription());
+                dto.put("productStatus", e.getProductStatus());
+                dto.put("label", e.getLabel());
+                dto.put("imageUrl", e.getImageUrl());
+                // Lấy category (nếu có)
+                if (e.getCategoryEntities() != null && !e.getCategoryEntities().isEmpty()) {
+                    dto.put("category", e.getCategoryEntities().iterator().next().getName());
+                } else {
+                    dto.put("category", null);
+                }
+                return dto;
+            }).collect(Collectors.toList());
+            model.addAttribute("equipments", equipmentDTOs);
+            
+            // Calculate pagination variables
+            int totalPages = equipmentPage.getTotalPages();
+            int startPage = Math.max(0, page - 2);
+            int endPage = Math.min(startPage + 4, totalPages - 1);
+            
+            log.info("Found {} medical equipment products on page {} of {}", equipments.size(), page + 1, totalPages);
+            equipments.forEach(equipment -> {
+                log.debug("Equipment: ID={}, Name={}, Category={}, Stock={}", 
+                    equipment.getId(), equipment.getName(), equipment.getProductType(), equipment.getStockQuantities());
+            });
+            
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("equipmentPage", equipmentPage);
+            
+            // Get stock in orders for medical equipment and convert to simple DTOs to avoid circular references
+            List<SupplierTransactionsEntity> stockInOrdersEntities = supplierTransactionRepository
+                .findByTransactionTypeAndStatusIn(SupplierTransactionType.STOCK_IN, 
+                    List.of(SupplierTransactionStatus.NEED_TO_ADD, SupplierTransactionStatus.WAITING_FOR_DELIVERY, SupplierTransactionStatus.RECEIVED),
                     PageRequest.of(0, 1000)).getContent();
+            
+            // Convert to simple DTOs to avoid circular references
+            List<Map<String, Object>> stockInOrders = stockInOrdersEntities.stream()
+                .map(entity -> {
+                    Map<String, Object> dto = new HashMap<>();
+                    dto.put("id", entity.getId());
+                    dto.put("invoiceNumber", entity.getInvoiceNumber());
+                    dto.put("transactionDate", entity.getTransactionDate());
+                    dto.put("status", entity.getStatus());
+                    dto.put("totalAmount", entity.getTotalAmount());
+                    dto.put("notes", entity.getNotes());
+                    dto.put("expectedDeliveryDate", entity.getExpectedDeliveryDate());
+                    dto.put("date", entity.getTransactionDate() != null ? entity.getTransactionDate().toString() : "");
+                    dto.put("total", entity.getTotalAmount() != null ? entity.getTotalAmount() : 0.0);
+                    
+                    // Add supplier info without circular reference
+                    if (entity.getSupplierEntity() != null) {
+                        dto.put("supplierName", entity.getSupplierEntity().getName());
+                        dto.put("supplierId", entity.getSupplierEntity().getId());
+                    }
+                    
+                    // Add products info
+                    if (entity.getSupplierTransactionItemEntities() != null) {
+                        List<Map<String, Object>> products = entity.getSupplierTransactionItemEntities().stream()
+                            .map(item -> {
+                                Map<String, Object> product = new HashMap<>();
+                                product.put("id", item.getProductEntity().getId());
+                                product.put("name", item.getProductEntity().getName());
+                                product.put("quantity", item.getQuantity());
+                                product.put("price", item.getUnitPrice());
+                                product.put("type", item.getProductEntity().getProductType());
+                                return product;
+                            })
+                            .collect(Collectors.toList());
+                        dto.put("products", products);
+                    }
+                    
+                    return dto;
+                })
+                .collect(Collectors.toList());
             model.addAttribute("stockInOrders", stockInOrders);
             
-            // Get stock out orders for medical equipment - use pageable version but retrieve all results
-            List<SupplierTransactionsEntity> stockOutOrders = supplierTransactionRepository
-                .findByTransactionTypeAndStatus(SupplierTransactionType.STOCK_OUT, SupplierTransactionStatus.RECEIVED,
+            // Get stock out orders for medical equipment and convert to simple DTOs
+            List<SupplierTransactionsEntity> stockOutOrdersEntities = supplierTransactionRepository
+                .findByTransactionTypeAndStatusIn(SupplierTransactionType.STOCK_OUT, 
+                    List.of(SupplierTransactionStatus.PREPARING, SupplierTransactionStatus.PREPARE_DELIVERY, SupplierTransactionStatus.DELIVERING),
                     PageRequest.of(0, 1000)).getContent();
+            
+            // Convert to simple DTOs to avoid circular references
+            List<Map<String, Object>> stockOutOrders = stockOutOrdersEntities.stream()
+                .map(entity -> {
+                    Map<String, Object> dto = new HashMap<>();
+                    dto.put("id", entity.getId());
+                    dto.put("invoiceNumber", entity.getInvoiceNumber());
+                    dto.put("transactionDate", entity.getTransactionDate());
+                    dto.put("status", entity.getStatus());
+                    dto.put("totalAmount", entity.getTotalAmount());
+                    dto.put("notes", entity.getNotes());
+                    dto.put("expectedDeliveryDate", entity.getExpectedDeliveryDate());
+                    dto.put("recipient", entity.getRecipient());
+                    dto.put("stockOutReason", entity.getStockOutReason());
+                    dto.put("date", entity.getTransactionDate() != null ? entity.getTransactionDate().toString() : "");
+                    dto.put("total", entity.getTotalAmount() != null ? entity.getTotalAmount() : 0.0);
+                    dto.put("customerName", entity.getRecipient() != null ? entity.getRecipient() : "Khách hàng");
+                    
+                    // Add supplier info without circular reference
+                    if (entity.getSupplierEntity() != null) {
+                        dto.put("supplierName", entity.getSupplierEntity().getName());
+                        dto.put("supplierId", entity.getSupplierEntity().getId());
+                    }
+                    
+                    // Add products info
+                    if (entity.getSupplierTransactionItemEntities() != null) {
+                        List<Map<String, Object>> products = entity.getSupplierTransactionItemEntities().stream()
+                            .map(item -> {
+                                Map<String, Object> product = new HashMap<>();
+                                product.put("id", item.getProductEntity().getId());
+                                product.put("name", item.getProductEntity().getName());
+                                product.put("quantity", item.getQuantity());
+                                product.put("price", item.getUnitPrice());
+                                product.put("type", item.getProductEntity().getProductType());
+                                return product;
+                            })
+                            .collect(Collectors.toList());
+                        dto.put("products", products);
+                    }
+                    
+                    return dto;
+                })
+                .collect(Collectors.toList());
             model.addAttribute("stockOutOrders", stockOutOrders);
+            
+            // Add default values for form inputs
+            model.addAttribute("supplierId", ""); // Default empty supplier ID
+            model.addAttribute("currentUser", getCurrentUser()); // Add current user for forms
             
             // Count statistics
             model.addAttribute("productCount", equipments.size());
             model.addAttribute("stockInCount", stockInOrders.size());
             model.addAttribute("stockOutCount", stockOutOrders.size());
             
+            // Thêm truyền _csrf vào model
+            CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+            model.addAttribute("_csrf", csrfToken);
+
             log.debug("Medical equipment page prepared with {} products", equipments.size());
         } catch (Exception e) {
             log.error("Error preparing medical equipment page data: {}", e.getMessage(), e);
@@ -241,5 +385,195 @@ public class MedicalEquipmentController {
         }
         
         return "redirect:/warehouse/medical-equipment";
+    }
+    
+    // API endpoint để xử lý đơn nhập kho (stock-in)
+    @PostMapping("/api/stock-in/{id}/process")
+    @ResponseBody
+    public Map<String, Object> processStockInOrder(@PathVariable Long id) {
+        log.info("Processing stock-in order for medical equipment with ID: {}", id);
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            SupplierTransactionsEntity order = supplierTransactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+            
+            if (order.getTransactionType() != SupplierTransactionType.STOCK_IN) {
+                response.put("success", false);
+                response.put("message", "Invalid order type");
+                return response;
+            }
+            
+            if (order.getStatus() != SupplierTransactionStatus.NEED_TO_ADD) {
+                response.put("success", false);
+                response.put("message", "Order is not in correct status for processing");
+                return response;
+            }
+            
+            // Chuyển trạng thái thành COMPLETED
+            System.out.println("Changing order status from " + order.getStatus() + " to COMPLETED");
+            order.setStatus(SupplierTransactionStatus.COMPLETED);
+            SupplierTransactionsEntity savedOrder = supplierTransactionRepository.save(order);
+            System.out.println("Order saved with new status: " + savedOrder.getStatus());
+            
+            response.put("success", true);
+            response.put("message", "Order processed successfully");
+            return response;
+            
+        } catch (Exception e) {
+            log.error("Error processing stock-in order: {}", e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Error processing order: " + e.getMessage());
+            return response;
+        }
+    }
+    
+    // API endpoint để từ chối đơn nhập kho (stock-in)
+    @PostMapping("/api/stock-in/{id}/reject")
+    @ResponseBody
+    public Map<String, Object> rejectStockInOrder(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+        log.info("Rejecting stock-in order for medical equipment with ID: {}", id);
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            SupplierTransactionsEntity order = supplierTransactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+            
+            if (order.getTransactionType() != SupplierTransactionType.STOCK_IN) {
+                response.put("success", false);
+                response.put("message", "Invalid order type");
+                return response;
+            }
+            
+            if (order.getStatus() != SupplierTransactionStatus.NEED_TO_ADD) {
+                response.put("success", false);
+                response.put("message", "Order is not in correct status for rejection");
+                return response;
+            }
+            
+            String reason = requestBody.get("reason");
+            if (reason == null || reason.trim().isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Rejection reason is required");
+                return response;
+            }
+            
+            // Chuyển trạng thái thành REJECTED và lưu lý do
+            order.setStatus(SupplierTransactionStatus.REJECTED);
+            order.setNotes("Lý do từ chối: " + reason);
+            supplierTransactionRepository.save(order);
+            
+            response.put("success", true);
+            response.put("message", "Order rejected successfully");
+            return response;
+            
+        } catch (Exception e) {
+            log.error("Error rejecting stock-in order: {}", e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Error rejecting order: " + e.getMessage());
+            return response;
+        }
+    }
+    
+    // API endpoint để chuẩn bị đơn xuất kho (stock-out)
+    @PostMapping("/api/stock-out/{id}/prepare")
+    @ResponseBody
+    public Map<String, Object> prepareStockOutOrder(@PathVariable Long id) {
+        log.info("Preparing stock-out order for medical equipment with ID: {}", id);
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            SupplierTransactionsEntity order = supplierTransactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+            
+            if (order.getTransactionType() != SupplierTransactionType.STOCK_OUT) {
+                response.put("success", false);
+                response.put("message", "Invalid order type");
+                return response;
+            }
+            
+            if (order.getStatus() != SupplierTransactionStatus.PREPARING) {
+                response.put("success", false);
+                response.put("message", "Order is not in correct status for preparation");
+                return response;
+            }
+            
+            // Chuyển trạng thái thành PREPARE_DELIVERY
+            System.out.println("Changing order status from " + order.getStatus() + " to PREPARE_DELIVERY");
+            order.setStatus(SupplierTransactionStatus.PREPARE_DELIVERY);
+            SupplierTransactionsEntity savedOrder = supplierTransactionRepository.save(order);
+            System.out.println("Order saved with new status: " + savedOrder.getStatus());
+            
+            response.put("success", true);
+            response.put("message", "Order prepared successfully");
+            return response;
+            
+        } catch (Exception e) {
+            log.error("Error preparing stock-out order: {}", e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Error preparing order: " + e.getMessage());
+            return response;
+        }
+    }
+    
+    // API endpoint để từ chối đơn xuất kho (stock-out)
+    @PostMapping("/api/stock-out/{id}/reject")
+    @ResponseBody
+    public Map<String, Object> rejectStockOutOrder(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+        log.info("Rejecting stock-out order for medical equipment with ID: {}", id);
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            SupplierTransactionsEntity order = supplierTransactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+            
+            if (order.getTransactionType() != SupplierTransactionType.STOCK_OUT) {
+                response.put("success", false);
+                response.put("message", "Invalid order type");
+                return response;
+            }
+            
+            if (order.getStatus() != SupplierTransactionStatus.PREPARING) {
+                response.put("success", false);
+                response.put("message", "Order is not in correct status for rejection");
+                return response;
+            }
+            
+            String reason = requestBody.get("reason");
+            if (reason == null || reason.trim().isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Rejection reason is required");
+                return response;
+            }
+            
+            // Chuyển trạng thái thành REJECTED và lưu lý do
+            order.setStatus(SupplierTransactionStatus.REJECTED);
+            order.setNotes("Lý do từ chối: " + reason);
+            supplierTransactionRepository.save(order);
+            
+            response.put("success", true);
+            response.put("message", "Order rejected successfully");
+            return response;
+            
+        } catch (Exception e) {
+            log.error("Error rejecting stock-out order: {}", e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Error rejecting order: " + e.getMessage());
+            return response;
+        }
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private java.util.Map<String, Object> getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple map with required properties
+        java.util.Map<String, Object> user = new java.util.HashMap<>();
+        user.put("id", 256L);
+        user.put("fullName", "Người dùng");
+        user.put("roleName", "STAFF");
+        return user;
     }
 }

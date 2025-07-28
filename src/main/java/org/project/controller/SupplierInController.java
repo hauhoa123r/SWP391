@@ -10,20 +10,18 @@ import org.project.enums.SupplierTransactionStatus;
 import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierInvoiceDTO;
 import org.project.model.dto.SupplierRequestItemDTO;
+import org.project.model.dto.SupplierTransactionDTO;
 import org.project.repository.ProductRepository;
 import org.project.repository.SupplierEntityRepository;
 import org.project.service.SupplierInInvoiceService;
 import org.project.service.SupplierInService;
 import org.project.service.SupplierOutInvoiceService;
 import org.project.utils.LogUtils;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -38,6 +36,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
+import java.util.Arrays;
 
 /**
  * Controller for handling supplier stock in operations
@@ -144,8 +143,8 @@ public class SupplierInController {
             // Get paginated supplier ins with filters
             log.debug("Calling supplierInService.getFilteredSupplierInsForStockIn");
             try {
-                Page<SupplierInDTO> supplierInsPage = supplierInService.getFilteredSupplierInsForStockIn(
-                    page, size, status, search, type, allowedStatuses);
+                Pageable pageable = PageRequest.of(page, size, sort);
+                Page<SupplierInDTO> supplierInsPage = supplierInService.getFilteredSupplierInsForStockIn(pageable, status, search, type, allowedStatuses);
                 
                 log.debug("Service call completed successfully");
                 
@@ -632,6 +631,10 @@ public class SupplierInController {
             log.debug("Adding isManager flag to model");
             mv.addObject("isManager", true);  // Placeholder - replace with actual authorization check
             
+            // Add current user for forms
+            log.debug("Adding currentUser to model");
+            mv.addObject("currentUser", getCurrentUser());
+            
             log.debug("populateModelAndView thực thi thành công");
         } catch (Exception e) {
             log.error("Error in populateModelAndView: {}", e.getMessage(), e);
@@ -720,8 +723,8 @@ public class SupplierInController {
             // Add allowed statuses
             log.debug("Adding allowed statuses to model");
             List<SupplierTransactionStatus> allowedStatuses = List.of(
-                SupplierTransactionStatus.PENDING,
-                SupplierTransactionStatus.RECEIVED,
+                SupplierTransactionStatus.PENDING, 
+                SupplierTransactionStatus.RECEIVED, 
                 SupplierTransactionStatus.WAITING_FOR_DELIVERY
             );
             mv.addObject("allowedStatuses", allowedStatuses);
@@ -776,188 +779,47 @@ public class SupplierInController {
     }
 
     /**
-     * Add pagination details to ModelAndView
-     * @param mv ModelAndView to add pagination to
-     * @param baseUrl Base URL for pagination links
-     * @param page Page object with pagination data
-     */
-    private void addPaginationToModelAndView(ModelAndView mv, String baseUrl, Page<?> page) {
-        log.debug("BEGIN addPaginationToModelAndView - baseUrl: {}, totalPages: {}", baseUrl, page.getTotalPages());
-        try {
-            int totalPages = page.getTotalPages();
-            if (totalPages > 0) {
-                int currentPage = page.getNumber();
-                int pageSize = page.getSize();
-                long totalItems = page.getTotalElements();
-                String sortBy = (String) mv.getModel().getOrDefault("currentSortBy", "transactionDate");
-                String sortDir = (String) mv.getModel().getOrDefault("currentSortDir", "desc");
-                
-                log.debug("Pagination info: currentPage={}, pageSize={}, totalItems={}, sortBy={}, sortDir={}", 
-                    currentPage, pageSize, totalItems, sortBy, sortDir);
-                
-                // Add basic pagination info
-                mv.addObject("currentPage", currentPage);
-                mv.addObject("totalPages", totalPages);
-                mv.addObject("pageSize", pageSize);
-                mv.addObject("totalItems", totalItems);
-                
-                // Calculate page numbers to show (show up to 5 pages, centered around current)
-                List<Integer> pageNumbers = new ArrayList<>();
-                int startPage = Math.max(0, currentPage - 2);
-                int endPage = Math.min(totalPages - 1, currentPage + 2);
-                
-                log.debug("Page range calculation: startPage={}, endPage={}", startPage, endPage);
-                
-                // Ensure we show at least 5 pages if available
-                if (endPage - startPage < 4) {
-                    if (startPage == 0) {
-                        endPage = Math.min(4, totalPages - 1);
-                    } else if (endPage == totalPages - 1) {
-                        startPage = Math.max(0, totalPages - 5);
-                    }
-                }
-                
-                log.debug("Adjusted page range: startPage={}, endPage={}", startPage, endPage);
-                
-                for (int i = startPage; i <= endPage; i++) {
-                    pageNumbers.add(i);
-                }
-                
-                log.debug("Page numbers generated: {}", pageNumbers);
-                
-                mv.addObject("pageNumbers", pageNumbers);
-                
-                // Add URL base and sort parameters for pagination links
-                mv.addObject("baseUrl", baseUrl);
-                mv.addObject("sortParam", "&sortBy=" + sortBy + "&sortDir=" + sortDir);
-                
-                log.debug("END addPaginationToModelAndView - SUCCESS");
-            } else {
-                log.debug("No pages available, skipping pagination");
-                // Nếu không có trang nào, thêm các giá trị mặc định
-                mv.addObject("currentPage", 0);
-                mv.addObject("totalPages", 0);
-                mv.addObject("pageSize", page.getSize());
-                mv.addObject("totalItems", 0);
-                mv.addObject("pageNumbers", new ArrayList<Integer>());
-                mv.addObject("baseUrl", baseUrl);
-                mv.addObject("sortParam", "");
-                log.debug("END addPaginationToModelAndView - SUCCESS (empty pagination)");
-            }
-        } catch (Exception e) {
-            log.error("Error in addPaginationToModelAndView: {}", e.getMessage(), e);
-            log.error("Exception type: {}", e.getClass().getName());
-            // Thêm các giá trị mặc định để tránh lỗi trên view
-            mv.addObject("currentPage", 0);
-            mv.addObject("totalPages", 0);
-            mv.addObject("pageSize", 10);
-            mv.addObject("totalItems", 0);
-            mv.addObject("pageNumbers", new ArrayList<Integer>());
-            mv.addObject("baseUrl", baseUrl);
-            mv.addObject("sortParam", "");
-            log.debug("END addPaginationToModelAndView - ERROR (using defaults)");
-        }
-    }
-
-    /**
      * API endpoint for StockOutInvoice.html
      * Get paginated stock invoices based on type and filters
      */
     @GetMapping("/inventory/api/stock-invoices")
     @ResponseBody
-    public ResponseEntity<?> getStockInvoices(
+    public ResponseEntity<Page<SupplierInvoiceDTO>> getStockInvoices(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "invoiceDate,desc") String sort,
-            @RequestParam(required = false) String type,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+            @RequestParam(required = false) String type) {
         
-        log.info("API: Getting stock invoices - type: {}, page: {}, size: {}, keyword: {}, status: {}", 
-                type, page, size, keyword, status);
+        log.info("API: Getting stock invoices - type: {}, page: {}, size: {}", 
+                type, page, size);
         
         try {
             // Validate pagination parameters
             if (page < 0) page = 0;
             if (size <= 0 || size > 100) size = 10; // Giới hạn kích thước trang tối đa là 100
             
-            // Parse sort parameter
-            String[] sortParams = sort.split(",");
-            String sortField = sortParams[0];
-            Sort.Direction direction = sortParams.length > 1 && sortParams[1].equalsIgnoreCase("asc") ? 
-                    Sort.Direction.ASC : Sort.Direction.DESC;
-            
-            Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortField));
+            Pageable pageable = PageRequest.of(page, size);
             Page<SupplierInvoiceDTO> invoices;
             
             // Use existing service methods
             if ("STOCK_OUT".equalsIgnoreCase(type)) {
                 // Get stock out invoices
-                invoices = supplierOutInvoiceService.getAllInvoices(page, size, keyword, status);
+                invoices = supplierOutInvoiceService.getAllInvoices(pageable);
             } else {
                 // Default to stock in invoices
-                invoices = supplierInInvoiceService.getAllInvoices(page, size, keyword, status);
+                invoices = supplierInInvoiceService.getAllInvoices(pageable);
             }
             
             return ResponseEntity.ok(invoices);
         } catch (Exception e) {
             log.error("Error retrieving stock invoices: {}", e.getMessage(), e);
-            Map<String, String> error = new HashMap<>();
-            error.put("error", "Failed to get invoices: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+            Pageable pageable = PageRequest.of(0, 10);
+            Page<SupplierInvoiceDTO> emptyPage = new PageImpl<>(new ArrayList<>(), pageable, 0);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(emptyPage);
         }
     }
     
-    /**
-     * API endpoint for invoice details
-     */
-    @GetMapping("/inventory/api/stock-invoices/{id}")
-    @ResponseBody
-    public ResponseEntity<?> getInvoiceById(
-            @PathVariable Long id,
-            @RequestParam(required = false) String type) {
-        
-        log.info("API: Getting invoice by ID: {}, type: {}", id, type);
-        
-        try {
-            SupplierInvoiceDTO invoice = null;
-            
-            if ("STOCK_OUT".equalsIgnoreCase(type)) {
-                // Try to get from stock out service
-                invoice = supplierOutInvoiceService.getInvoiceById(id);
-            } else {
-                // Default to stock in service
-                invoice = supplierInInvoiceService.getInvoiceById(id);
-            }
-            
-            if (invoice != null) {
-                return ResponseEntity.ok(invoice);
-            } else {
-                // If not found with the specified type, try the other type
-                if ("STOCK_OUT".equalsIgnoreCase(type)) {
-                    invoice = supplierInInvoiceService.getInvoiceById(id);
-                } else {
-                    invoice = supplierOutInvoiceService.getInvoiceById(id);
-                }
-                
-                if (invoice != null) {
-                    return ResponseEntity.ok(invoice);
-                } else {
-                    Map<String, String> error = new HashMap<>();
-                    error.put("error", "Invoice not found with ID: " + id);
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-                }
-            }
-        } catch (Exception e) {
-            log.error("Error getting invoice by ID {}: {}", id, e.getMessage(), e);
-            Map<String, String> error = new HashMap<>();
-            error.put("error", "Failed to get invoice: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-        }
-    }
-
     /**
      * API endpoint to load suppliers on demand
      * @return List of suppliers in JSON format
@@ -1095,5 +957,73 @@ public class SupplierInController {
             
             return statusNames.getOrDefault(status, status);
         }
+    }
+
+    @GetMapping("/filterSupplierIns")
+    public ResponseEntity<Page<SupplierInvoiceDTO>> filterSupplierIns(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<SupplierInvoiceDTO> supplierInsPage = supplierInInvoiceService.getFilteredInvoices(pageable, search, status, startDate, endDate);
+        return ResponseEntity.ok(supplierInsPage);
+    }
+    
+    private void addPaginationToModelAndView(ModelAndView mv, String baseUrl, Page<SupplierInDTO> page) {
+        mv.addObject("currentPage", page.getNumber());
+        mv.addObject("totalPages", page.getTotalPages());
+        mv.addObject("pageSize", page.getSize());
+        mv.addObject("totalItems", page.getTotalElements());
+        mv.addObject("baseUrl", baseUrl);
+    }
+    
+    @GetMapping("/api")
+    public ResponseEntity<Page<SupplierInvoiceDTO>> getAllSupplierInsApi(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "transactionDate"));
+        Page<SupplierInvoiceDTO> supplierInsPage = supplierInInvoiceService.getFilteredInvoices(pageable, search, status, startDate, endDate);
+        return ResponseEntity.ok(supplierInsPage);
+    }
+    
+    @GetMapping("/someEndpoint")
+    public ResponseEntity<Page<SupplierInvoiceDTO>> someMethodName(
+            @RequestParam(required = false) String param1) {
+        // Implementation to return ResponseEntity<Page<SupplierInvoiceDTO>>
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<SupplierInvoiceDTO> page = supplierInInvoiceService.getFilteredInvoices(pageable, null, null, null, null);
+        return ResponseEntity.ok(page);
+    }
+
+    @PostMapping("/reject/{id}")
+    public ResponseEntity<Page<SupplierInvoiceDTO>> rejectInvoice(@PathVariable("id") Long id, @RequestBody Map<String, String> requestBody) {
+        String rejectionReason = requestBody.get("rejectionReason");
+        supplierInInvoiceService.rejectInvoice(id, rejectionReason);
+        // Redirect to the stock-in page or return a success response
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<SupplierInvoiceDTO> page = supplierInInvoiceService.getFilteredInvoices(pageable, null, null, null, null);
+        return ResponseEntity.ok(page);
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 }

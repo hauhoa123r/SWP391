@@ -95,6 +95,9 @@ public class StockReportController {
                     .findTop10ByOrderByTransactionDateDesc();
             model.addAttribute("recentTransactions", recentTransactions);
             
+            // Add current user for forms
+            model.addAttribute("currentUser", getCurrentUser());
+            
             log.debug("Reports page prepared with {} low stock products and {} expiring products", 
                     lowStockReport.size(), expiringProducts.size());
         } catch (Exception e) {
@@ -370,5 +373,20 @@ public class StockReportController {
         }
         
         return sampleData;
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 } 

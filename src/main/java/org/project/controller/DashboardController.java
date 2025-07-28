@@ -9,7 +9,7 @@ import org.project.model.dto.ProductSummaryDTO;
 import org.project.model.dto.TransactionSummaryDTO;
 import org.project.repository.PatientRepository;
 import org.project.repository.ProductRepository;
-import org.project.repository.SupplierTransactionsRepository;
+import org.project.repository.SupplierTransactionRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class DashboardController {
 
     private final ProductRepository productRepository;
-    private final SupplierTransactionsRepository transactionRepository;
+    private final SupplierTransactionRepository transactionRepository;
     private final PatientRepository patientRepository;
     
     @GetMapping("/warehouse/dashboard/main")
@@ -100,6 +100,9 @@ public class DashboardController {
             model.addAttribute("error", "Có lỗi khi tải dữ liệu dashboard: " + e.getMessage());
             model.addAttribute("lastUpdated", LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
         }
+        
+        // Add current user for forms
+        model.addAttribute("currentUser", getCurrentUser());
         
         return "templates_storage/index";
     }
@@ -371,5 +374,20 @@ public class DashboardController {
         dashboardData.setTodoList(todoList);
         
         return dashboardData;
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 } 

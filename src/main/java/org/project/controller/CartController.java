@@ -1,130 +1,119 @@
-//package org.project.controller;
-//
-//import jakarta.servlet.http.HttpSession;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.project.model.response.CartItemResponse;
-//import org.project.service.CartService;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.*;
-//import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-//
-//import java.util.List;
-//
-//@Slf4j
-//@Controller
-//@RequiredArgsConstructor
-//public class CartController {
-//
-//    private final CartService cartService;
-//
-//    /**
-//     * Display the cart page with all items
-//     */
-//    @GetMapping("/cart")
-//    public String viewCart(Model model, HttpSession session) {
-//        Long userId = getCurrentUserId(session);
-//        List<CartItemResponse> cartItems = cartService.getCartItems(userId);
-//        double total = cartService.getCartTotal(userId);
-//
-//        model.addAttribute("cartItems", cartItems);
-//        model.addAttribute("cartTotal", total);
-//
-//        return "cart"; // renders templates/cart.html
+package org.project.controller;
+
+import java.sql.Date;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+
+import org.project.entity.CartItemEntity;
+import org.project.entity.CartItemEntityId;
+import org.project.entity.CouponEntity;
+import org.project.entity.StaffEntity;
+import org.project.service.CartService;
+import org.project.service.StaffService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequestMapping("/cart")
+@RequiredArgsConstructor
+public class CartController {
+
+    // private static final String SESSION_USER_ID = "userId";
+
+    private final CartService cartService;
+    //hard-code userId
+    Long userId = 2l;
+    // view all cart items of the user
+    // including the total amount of money and number of item in cart
+    @GetMapping
+    public String viewCart(Model model) {
+
+        List<CartItemEntity> cartItems = cartService.getCart(userId);
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("total", cartService.calculateTotal(userId));
+        model.addAttribute("size", cartItems.size());
+        return "frontend/cart";
+    }
+//    @PostMapping("/add")
+//    public String addToCart(@RequestParam Long userId, @RequestParam Long productId,
+//                            @RequestParam(defaultValue = "1") int quantity) {
+//        cartService.addItem(userId, productId, quantity);
+//        return "redirect:/shop";
 //    }
-//
-//    /**
-//     * Add a product to the cart
-//     */
-//    @PostMapping("/cart/add")
-//    public String addToCart(@RequestParam("productId") Long productId,
-//                            @RequestParam(value = "quantity", defaultValue = "1") Integer quantity,
-//                            @RequestHeader(value = "Referer", required = false) String referer,
-//                            RedirectAttributes redirectAttrs,
-//                            HttpSession session) {
-//        Long userId = getCurrentUserId(session);
-//        cartService.addToCart(userId, productId, quantity);
-//
-//        redirectAttrs.addFlashAttribute("cartMessage", "Đã thêm sản phẩm vào giỏ hàng!");
-//        return redirectBack(referer);
-//    }
-//
-//    /**
-//     * Remove a product from the cart
-//     */
-//    @PostMapping("/cart/remove")
-//    public String removeFromCart(@RequestParam("productId") Long productId,
-//                                @RequestHeader(value = "Referer", required = false) String referer,
-//                                RedirectAttributes redirectAttrs,
-//                                HttpSession session) {
-//        Long userId = getCurrentUserId(session);
-//        cartService.removeFromCart(userId, productId);
-//
-//        redirectAttrs.addFlashAttribute("cartMessage", "Đã xóa sản phẩm khỏi giỏ hàng!");
-//        return redirectBack(referer);
-//    }
-//
-//    /**
-//     * Update the quantity of a product in the cart
-//     */
-//    @PostMapping("/cart/update")
-//    public String updateQuantity(@RequestParam("productId") Long productId,
-//                                @RequestParam("quantity") Integer quantity,
-//                                @RequestHeader(value = "Referer", required = false) String referer,
-//                                RedirectAttributes redirectAttrs,
-//                                HttpSession session) {
-//        Long userId = getCurrentUserId(session);
-//        cartService.updateQuantity(userId, productId, quantity);
-//
-//        redirectAttrs.addFlashAttribute("cartMessage", "Đã cập nhật số lượng sản phẩm!");
-//        return redirectBack(referer);
-//    }
-//
-//    /**
-//     * Clear all items from the cart
-//     */
-//    @PostMapping("/cart/clear")
-//    public String clearCart(@RequestHeader(value = "Referer", required = false) String referer,
-//                           RedirectAttributes redirectAttrs,
-//                           HttpSession session) {
-//        Long userId = getCurrentUserId(session);
-//        cartService.clearCart(userId);
-//
-//        redirectAttrs.addFlashAttribute("cartMessage", "Đã xóa tất cả sản phẩm khỏi giỏ hàng!");
-//        return redirectBack(referer);
-//    }
-//
-//    /**
-//     * Get cart count for AJAX requests
-//     */
-//    @GetMapping("/cart/count")
-//    @ResponseBody
-//    public int getCartCount(HttpSession session) {
-//        Long userId = getCurrentUserId(session);
-//        return cartService.getCartItemCount(userId);
-//    }
-//
-//    /**
-//     * Get cart items for AJAX requests
-//     */
-//    @GetMapping("/cart/items")
-//    @ResponseBody
-//    public List<CartItemResponse> getCartItems(HttpSession session) {
-//        Long userId = getCurrentUserId(session);
-//        return cartService.getCartItems(userId);
-//    }
-//
-//    /** Redirect helper: fallback to /cart if no referer present */
-//    private String redirectBack(String referer) {
-//        if (referer != null && !referer.isBlank()) {
-//            return "redirect:" + referer;
-//        }
-//        return "redirect:/cart";
-//    }
-//
-//    private Long getCurrentUserId(HttpSession session) {
-//        Long userId = (Long) session.getAttribute("userId");
-//        return userId != null ? userId : 1L; // Default to user ID 1 if not logged in
-//    }
-//}
+
+    @PostMapping("/add")
+    public String addToCart(@RequestParam Long productId,
+                            @RequestParam(defaultValue = "1") int quantity) {
+        cartService.addItem(userId, productId, quantity);
+        return "redirect:/shop";
+    }
+    // hard delete from cart
+    @PostMapping("/delete")
+    public String deleteCartItem(@RequestParam Long productId) {
+        Long userId = 2l;
+        cartService.removeItem(userId, productId);
+
+        // Redirect back to cart
+        return "redirect:/cart";
+    }
+
+    // change item quantity by pressing + -
+    @PostMapping("/update")
+    public String updateCartItemQuantity(@RequestParam Long cartId, @RequestParam Long userId,
+                                         @RequestParam String action) {
+        userId = 2l;
+        CartItemEntityId id = new CartItemEntityId(cartId, userId);
+        CartItemEntity item = cartService.getItemById(id);
+        if (item == null) {
+            System.out.println("no cart item found"); // debugging
+            return "redirect:/cart";
+        }
+
+        int quantity = item.getQuantity();
+
+        if ("increment".equals(action)) {
+            item.setQuantity(quantity + 1);
+        } else if ("decrement".equals(action) && quantity > 1) {
+            item.setQuantity(quantity - 1);
+        }
+
+        cartService.updateItem(item);
+        return "redirect:/cart";
+    }
+
+    // change item quantity by directly entering value
+    @PostMapping("/update-quantity")
+    public String updateCartItemQuantity(@RequestParam Long cartId, @RequestParam Long userId,
+                                         @RequestParam int quantity) {
+
+        CartItemEntityId id = new CartItemEntityId(cartId, userId);
+        CartItemEntity item = cartService.getItemById(id);
+
+        if (item != null && quantity > 0) {
+            item.setQuantity(quantity);
+            cartService.updateItem(item);
+        }
+        return "redirect:/cart";
+    }
+
+
+    @GetMapping("/checkout")
+    public String checkout() {
+        return "/frontend/checkout";
+    }
+
+}

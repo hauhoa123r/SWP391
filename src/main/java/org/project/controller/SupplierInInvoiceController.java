@@ -72,6 +72,18 @@ public class SupplierInInvoiceController {
             // hoặc REJECTED
             Page<SupplierInDTO> transactionsPage = supplierInService.getFilteredTransactions(
                     page, size, keyword, filteredStatus, allowedStatuses, SupplierTransactionType.STOCK_IN);
+            
+            // Debug: Log all transactions to see what's being fetched
+            System.out.println("=== StockInInvoice Debug ===");
+            System.out.println("Total transactions found: " + transactionsPage.getTotalElements());
+            System.out.println("Transactions on current page: " + transactionsPage.getContent().size());
+            transactionsPage.getContent().forEach(transaction -> {
+                System.out.println("Transaction ID: " + transaction.getId() + 
+                                 ", Invoice: " + transaction.getInvoiceNumber() + 
+                                 ", Status: " + transaction.getStatus() + 
+                                 ", Date: " + transaction.getTransactionDate());
+            });
+            System.out.println("=== End Debug ===");
 
             // DEBUG: Log fetched transactions size and content
             log.info("Fetched {} transactions from service", transactionsPage.getContent().size());
@@ -89,6 +101,9 @@ public class SupplierInInvoiceController {
 
             // Add allowed statuses for dropdown
             model.addAttribute("availableStatuses", allowedStatuses);
+
+            // Add current user for forms
+            model.addAttribute("currentUser", getCurrentUser());
 
             log.debug("Supplier in invoices page prepared with {} transactions", transactionsPage.getContent().size());
         } catch (Exception e) {
@@ -206,5 +221,20 @@ public class SupplierInInvoiceController {
                     "Error deleting invoice: " + e.getMessage());
             return "redirect:/warehouse/invoices/in";
         }
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 }

@@ -1,5 +1,6 @@
 package org.project.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.entity.ProductEntity;
@@ -17,22 +18,31 @@ import org.project.service.SupplierOutService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.beans.PropertyEditorSupport;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -257,66 +267,38 @@ public class SupplierOutController {
     /**
      * Create supplier out form submission
      * @param supplierOutDTO Supplier out DTO from form
-     * @param redirectAttributes Redirect attributes for flash messages
+     * @param result Binding result
+     * @param model Model for view
      * @return Redirect to supplier outs page
      */
     @PostMapping
-    public ModelAndView createSupplierOut(@ModelAttribute SupplierOutDTO supplierOutDTO, 
-                                   RedirectAttributes redirectAttributes) {
-        log.info("Creating new supplier out");
-        
-        ModelAndView mv = new ModelAndView(REDIRECT_SUPPLIER_OUTS);
-        
+    public String createSupplierOut(@ModelAttribute("supplierOut") @Valid SupplierOutDTO supplierOutDTO, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("suppliers", supplierRepository.findAll());
+            model.addAttribute("products", productRepository.findAll());
+            return TEMPLATE_STOCK_OUT + "Create";
+        }
+
+        log.info("Creating new supplier out transaction");
         try {
-            // Set default values for new supplier out
-            if (supplierOutDTO.getStatus() == null) {
-                // Default status to PREPARING (Chuẩn bị đơn hàng)
-                supplierOutDTO.setStatus(SupplierTransactionStatus.PREPARING);
-            }
-            
-            // Xử lý ngày tháng, đặt mặc định nếu trống
-            // Format expected: yyyy-MM-dd HH:mm:ss
-            if (supplierOutDTO.getTransactionDate() == null) {
-                supplierOutDTO.setTransactionDate(Timestamp.valueOf(LocalDateTime.now()));
-            }
-            
-            if (supplierOutDTO.getDueDate() == null) {
-                // Set due date to 5 days from now
-                LocalDate dueLocalDate = LocalDate.now().plusDays(5);
-                supplierOutDTO.setDueDate(Timestamp.valueOf(dueLocalDate.atStartOfDay()));
-            }
-            
-            // Nếu trường expectedDeliveryDate là null hoặc rỗng, đặt mặc định là ngày mai
-            if (supplierOutDTO.getExpectedDeliveryDate() == null) {
-                LocalDate tomorrow = LocalDate.now().plusDays(1);
-                supplierOutDTO.setExpectedDeliveryDate(Timestamp.valueOf(tomorrow.atStartOfDay()));
-                log.debug("Setting default expectedDeliveryDate: tomorrow");
-            }
-            
-            // Set transaction type
+            // Set transaction type for stock out
             supplierOutDTO.setTransactionType(SupplierTransactionType.STOCK_OUT);
             
-            // Auto-generate invoice number with "SO" prefix
-            String invoiceNumber = "SO-" + System.currentTimeMillis();
-            supplierOutDTO.setInvoiceNumber(invoiceNumber);
+            // Save the supplier out transaction with items
+            SupplierOutDTO savedSupplierOut = supplierOutService.createTransaction(supplierOutDTO);
+            log.info("Successfully created supplier out transaction with ID: {}", savedSupplierOut.getId());
+
+            // Create an invoice from this supplier out
+            supplierOutInvoiceService.createInvoiceFromSupplierOut(savedSupplierOut);
             
-            log.debug("Creating supplier out with: status={}, transactionDate={}, dueDate={}, expectedDeliveryDate={}, invoiceNumber={}",
-                     supplierOutDTO.getStatus(),
-                     supplierOutDTO.getTransactionDate(),
-                     supplierOutDTO.getDueDate(),
-                     supplierOutDTO.getExpectedDeliveryDate(),
-                     supplierOutDTO.getInvoiceNumber());
-                     
-            SupplierOutDTO created = supplierOutService.createSupplierOut(supplierOutDTO);
-            log.debug("Created supplier out with ID: {}", created.getId());
-            
-            redirectAttributes.addFlashAttribute("successMessage", "Tạo đơn xuất kho thành công!");
+            return REDIRECT_SUPPLIER_OUTS;
         } catch (Exception e) {
-            log.error("Error creating supplier out: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi tạo đơn xuất kho: " + e.getMessage());
+            log.error("Error creating supplier out transaction: {}", e.getMessage(), e);
+            model.addAttribute("errorMessage", "Error creating supplier out transaction: " + e.getMessage());
+            model.addAttribute("suppliers", supplierRepository.findAll());
+            model.addAttribute("products", productRepository.findAll());
+            return TEMPLATE_STOCK_OUT + "Create";
         }
-        
-        return mv;
     }
 
     /**
@@ -554,7 +536,7 @@ public class SupplierOutController {
             SupplierOutDTO supplierOut = supplierOutService.getSupplierOutById(id);
             if (supplierOut != null) {
                 // Create supplier out invoice
-                supplierOutInvoiceService.saveInvoice(supplierOut);
+                supplierOutInvoiceService.createInvoiceFromSupplierOut(supplierOut);
                 log.debug("Created supplier out invoice from supplier out with ID: {}", id);
             }
         } catch (Exception e) {
@@ -630,10 +612,10 @@ public class SupplierOutController {
                 
                 // Handle null status
                 if (out.getStatus() == null) {
-                    out.setStatus(SupplierTransactionStatus.PREPARE_DELIVERY);
+                    out.setStatus(SupplierTransactionStatus.PREPARING);
                     needsUpdate = true;
-                    conversions.put("null->PREPARE_DELIVERY", 
-                                   conversions.getOrDefault("null->PREPARE_DELIVERY", 0) + 1);
+                    conversions.put("null->PREPARING", 
+                                   conversions.getOrDefault("null->PREPARING", 0) + 1);
                 }
                 // Convert old WAITING_FOR_DELIVERY to new PREPARE_DELIVERY 
                 else if (out.getStatus() == SupplierTransactionStatus.WAITING_FOR_DELIVERY) {
@@ -789,33 +771,36 @@ public class SupplierOutController {
     /**
      * Populate ModelAndView with supplier out data and pagination
      */
-    private void populateModelAndView(ModelAndView mv, Page<SupplierOutDTO> supplierOutsPage, int page, int size, 
+    private void populateModelAndView(ModelAndView mv, Page<SupplierOutDTO> supplierOutsPage, int page, int size,
                                       String status, String search, String type, String sortBy, String sortDir) {
         try {
             // Add supplier outs
             mv.addObject("supplierOuts", supplierOutsPage.getContent());
-            
+
             // Add pagination data
             mv.addObject("currentPage", page);
             mv.addObject("totalPages", supplierOutsPage.getTotalPages());
             mv.addObject("totalItems", supplierOutsPage.getTotalElements());
             mv.addObject("pageSize", size);
-            
+
             // Add current filters for preserving state
             mv.addObject("currentStatus", status);
             mv.addObject("currentSearch", search);
             mv.addObject("currentType", type);
             mv.addObject("currentSortBy", sortBy);
             mv.addObject("currentSortDir", sortDir);
-            
+
             // Không load toàn bộ danh sách suppliers và products nếu không cần thiết
             // Chỉ load khi hiển thị màn hình hoặc cần cho dropdown
-            
+
             // Thêm statusValues cho dropdown (không cần truy vấn cơ sở dữ liệu)
             mv.addObject("statusValues", SupplierTransactionStatus.values());
-            
+
             // Add user info (replace with actual user service as needed)
             mv.addObject("isManager", true);  // Placeholder - replace with actual authorization check
+
+            // Add current user for forms
+            mv.addObject("currentUser", getCurrentUser());
         } catch (Exception e) {
             log.error("Error in populateModelAndView: {}", e.getMessage(), e);
             throw e; // Re-throw to be handled by caller
@@ -965,5 +950,382 @@ public class SupplierOutController {
 
     private void addMvErrorMessage(ModelAndView mv, String message) {
         mv.addObject("errorMessage", message);
+    }
+    
+    /**
+     * Import stock out orders from Excel file
+     * @param file Excel file containing stock out data
+     * @param redirectAttributes Redirect attributes for messages
+     * @return Redirect to stock out page
+     */
+    @PostMapping("/import-excel")
+    public String importFromExcel(@RequestParam("file") org.springframework.web.multipart.MultipartFile file,
+                                  RedirectAttributes redirectAttributes) {
+        try {
+            if (file.isEmpty()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng chọn file Excel!");
+                return REDIRECT_SUPPLIER_OUTS;
+            }
+
+            // Validate file extension
+            String fileName = file.getOriginalFilename();
+            if (fileName == null || (!fileName.toLowerCase().endsWith(".xlsx") && !fileName.toLowerCase().endsWith(".xls"))) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Chỉ hỗ trợ file Excel (.xlsx, .xls)!");
+                return REDIRECT_SUPPLIER_OUTS;
+            }
+
+            // Process Excel file
+            log.info("Starting to parse Excel file: {}", file.getOriginalFilename());
+            List<Map<String, Object>> excelData = parseExcelFile(file);
+            log.info("Parsed {} rows from Excel file", excelData.size());
+            
+            if (excelData.isEmpty()) {
+                log.warn("Excel file contains no data");
+                redirectAttributes.addFlashAttribute("errorMessage", "File Excel không có dữ liệu hoặc định dạng không đúng!");
+                return REDIRECT_SUPPLIER_OUTS;
+            }
+
+            // Create stock out orders from Excel data
+            int successCount = 0;
+            int errorCount = 0;
+            StringBuilder errorMessages = new StringBuilder();
+
+            for (int i = 0; i < excelData.size(); i++) {
+                try {
+                    Map<String, Object> rowData = excelData.get(i);
+                    log.info("Processing Excel row {}: product={}, quantity={}, recipient={}", 
+                        i + 2, rowData.get("productName"), rowData.get("quantity"), rowData.get("recipient"));
+                    createStockOutFromExcelRow(rowData, i + 2); // +2 because Excel rows start from 1 and we skip header
+                    successCount++;
+                    log.info("Successfully processed row {}", i + 2);
+                } catch (Exception e) {
+                    errorCount++;
+                    errorMessages.append("Dòng ").append(i + 2).append(": ").append(e.getMessage()).append("; ");
+                    log.error("Error processing Excel row {}: {}", i + 2, e.getMessage(), e);
+                }
+            }
+
+            // Add result message
+            if (successCount > 0 && errorCount == 0) {
+                redirectAttributes.addFlashAttribute("successMessage", 
+                    String.format("Import thành công %d đơn xuất kho từ Excel!", successCount));
+            } else if (successCount > 0 && errorCount > 0) {
+                redirectAttributes.addFlashAttribute("warningMessage", 
+                    String.format("Import thành công %d đơn, %d đơn lỗi. Chi tiết lỗi: %s", 
+                        successCount, errorCount, errorMessages.toString()));
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", 
+                    String.format("Import thất bại! Chi tiết lỗi: %s", errorMessages.toString()));
+            }
+
+        } catch (Exception e) {
+            log.error("Error importing Excel file: {}", e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi xử lý file Excel: " + e.getMessage());
+        }
+
+        return REDIRECT_SUPPLIER_OUTS;
+    }
+
+    /**
+     * Parse Excel file and extract data
+     * @param file Excel file
+     * @return List of row data
+     * @throws Exception if file parsing fails
+     */
+    private List<Map<String, Object>> parseExcelFile(org.springframework.web.multipart.MultipartFile file) throws Exception {
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        try (java.io.InputStream inputStream = file.getInputStream()) {
+            // Use Apache POI to read Excel file
+            org.apache.poi.ss.usermodel.Workbook workbook;
+
+            if (file.getOriginalFilename().toLowerCase().endsWith(".xlsx")) {
+                workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook(inputStream);
+            } else {
+                workbook = new org.apache.poi.hssf.usermodel.HSSFWorkbook(inputStream);
+            }
+
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+
+            // Expected columns: Ngày xuất, Người nhận, Lý do xuất, Tên sản phẩm, Số lượng, Đơn giá, Ghi chú
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) { // Skip header row
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                Map<String, Object> rowData = new HashMap<>();
+
+                // Parse each column
+                rowData.put("transactionDate", getCellValueAsString(row.getCell(0)));
+                rowData.put("recipient", getCellValueAsString(row.getCell(1)));
+                rowData.put("reason", getCellValueAsString(row.getCell(2)));
+                rowData.put("productName", getCellValueAsString(row.getCell(3)));
+                rowData.put("quantity", getCellValueAsString(row.getCell(4)));
+                rowData.put("unitPrice", getCellValueAsString(row.getCell(5)));
+                rowData.put("notes", getCellValueAsString(row.getCell(6)));
+                rowData.put("invoiceNumber", getCellValueAsString(row.getCell(7)));
+                rowData.put("taxAmount", getCellValueAsString(row.getCell(8)));
+                rowData.put("shippingCost", getCellValueAsString(row.getCell(9)));
+                rowData.put("paymentMethod", getCellValueAsString(row.getCell(10)));
+                rowData.put("dueDate", getCellValueAsString(row.getCell(11)));
+                rowData.put("paymentDate", getCellValueAsString(row.getCell(12)));
+                rowData.put("expectedDeliveryDate", getCellValueAsString(row.getCell(13)));
+
+                // Skip empty rows
+                if (rowData.values().stream().allMatch(v -> v == null || v.toString().trim().isEmpty())) {
+                    continue;
+                }
+
+                result.add(rowData);
+            }
+
+            workbook.close();
+        }
+
+        return result;
+    }
+
+    /**
+     * Get cell value as string
+     * @param cell Excel cell
+     * @return String value
+     */
+    private String getCellValueAsString(org.apache.poi.ss.usermodel.Cell cell) {
+        if (cell == null) return null;
+
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue().trim();
+            case NUMERIC:
+                if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
+                    return cell.getDateCellValue().toString();
+                } else {
+                    return String.valueOf((long) cell.getNumericCellValue());
+                }
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            case FORMULA:
+                return cell.getCellFormula();
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Create stock out order from Excel row data
+     * @param rowData Row data from Excel
+     * @param rowNumber Row number for error reporting
+     * @throws Exception if creation fails
+     */
+    private void createStockOutFromExcelRow(Map<String, Object> rowData, int rowNumber) throws Exception {
+        // Validate required fields
+        String productName = (String) rowData.get("productName");
+        String quantityStr = (String) rowData.get("quantity");
+        String unitPriceStr = (String) rowData.get("unitPrice");
+        String recipient = (String) rowData.get("recipient");
+        String reason = (String) rowData.get("reason");
+        
+        if (productName == null || productName.trim().isEmpty()) {
+            throw new Exception("Tên sản phẩm không được để trống");
+        }
+        
+        if (quantityStr == null || quantityStr.trim().isEmpty()) {
+            throw new Exception("Số lượng không được để trống");
+        }
+        
+        if (recipient == null || recipient.trim().isEmpty()) {
+            throw new Exception("Người nhận không được để trống");
+        }
+        
+        // Parse numeric values
+        int quantity;
+        double unitPrice = 0;
+        
+        try {
+            quantity = Integer.parseInt(quantityStr.trim());
+            if (quantity <= 0) {
+                throw new Exception("Số lượng phải lớn hơn 0");
+            }
+        } catch (NumberFormatException e) {
+            throw new Exception("Số lượng không đúng định dạng: " + quantityStr);
+        }
+        
+        if (unitPriceStr != null && !unitPriceStr.trim().isEmpty()) {
+            try {
+                unitPrice = Double.parseDouble(unitPriceStr.trim());
+            } catch (NumberFormatException e) {
+                throw new Exception("Đơn giá không đúng định dạng: " + unitPriceStr);
+            }
+        }
+        
+        // Find product by name
+        log.info("Searching for product: '{}'", productName.trim());
+        List<ProductEntity> products = productRepository.findByProductStatusAndNameContainingIgnoreCase(
+            org.project.enums.ProductStatus.ACTIVE, productName.trim(), PageRequest.of(0, 10)).getContent();
+        log.info("Found {} products matching '{}'", products.size(), productName.trim());
+        
+        if (products.isEmpty()) {
+            // Try to find all active products to see what's available
+            List<ProductEntity> allActiveProducts = productRepository.findByProductStatus(org.project.enums.ProductStatus.ACTIVE, PageRequest.of(0, 100)).getContent();
+            log.warn("No products found for '{}'. Available active products: {}", 
+                productName.trim(), 
+                allActiveProducts.stream().map(p -> p.getName()).collect(Collectors.joining(", ")));
+            throw new Exception("Không tìm thấy sản phẩm: " + productName);
+        }
+
+        ProductEntity product = products.get(0); // Use first match
+        log.info("Selected product: {} (ID: {})", product.getName(), product.getId());
+
+        // Create SupplierOutDTO
+        log.info("Creating SupplierOutDTO with recipient: {}, reason: {}", recipient.trim(), reason);
+        SupplierOutDTO supplierOutDTO = new SupplierOutDTO();
+        supplierOutDTO.setRecipient(recipient.trim());
+        supplierOutDTO.setStockOutReason(reason != null ? reason.trim() : "OTHER");
+        supplierOutDTO.setNotes((String) rowData.get("notes"));
+        supplierOutDTO.setStatus(SupplierTransactionStatus.PREPARING);
+        supplierOutDTO.setTransactionType(SupplierTransactionType.STOCK_OUT);
+        supplierOutDTO.setInventoryManagerId(256L); // Default user ID
+        
+        // Set additional fields from Excel
+        String invoiceNumber = (String) rowData.get("invoiceNumber");
+        if (invoiceNumber != null && !invoiceNumber.trim().isEmpty()) {
+            supplierOutDTO.setInvoiceNumber(invoiceNumber.trim());
+        }
+        
+        // Parse tax amount
+        String taxAmountStr = (String) rowData.get("taxAmount");
+        if (taxAmountStr != null && !taxAmountStr.trim().isEmpty()) {
+            try {
+                supplierOutDTO.setTaxAmount(BigDecimal.valueOf(Double.parseDouble(taxAmountStr.trim())));
+            } catch (NumberFormatException e) {
+                log.warn("Invalid tax amount format: {}", taxAmountStr);
+            }
+        }
+        
+        // Parse shipping cost
+        String shippingCostStr = (String) rowData.get("shippingCost");
+        if (shippingCostStr != null && !shippingCostStr.trim().isEmpty()) {
+            try {
+                supplierOutDTO.setShippingCost(BigDecimal.valueOf(Double.parseDouble(shippingCostStr.trim())));
+            } catch (NumberFormatException e) {
+                log.warn("Invalid shipping cost format: {}", shippingCostStr);
+            }
+        }
+        
+        // Set payment method
+        String paymentMethod = (String) rowData.get("paymentMethod");
+        if (paymentMethod != null && !paymentMethod.trim().isEmpty()) {
+            supplierOutDTO.setPaymentMethod(paymentMethod.trim());
+        }
+        
+        // Parse due date
+        String dueDateStr = (String) rowData.get("dueDate");
+        if (dueDateStr != null && !dueDateStr.trim().isEmpty()) {
+            try {
+                LocalDate dueDate = LocalDate.parse(dueDateStr.trim());
+                supplierOutDTO.setDueDate(Timestamp.valueOf(dueDate.atStartOfDay()));
+            } catch (Exception e) {
+                log.warn("Invalid due date format: {}", dueDateStr);
+            }
+        }
+        
+        // Parse payment date
+        String paymentDateStr = (String) rowData.get("paymentDate");
+        if (paymentDateStr != null && !paymentDateStr.trim().isEmpty()) {
+            try {
+                LocalDate paymentDate = LocalDate.parse(paymentDateStr.trim());
+                supplierOutDTO.setPaymentDate(Timestamp.valueOf(paymentDate.atStartOfDay()));
+            } catch (Exception e) {
+                log.warn("Invalid payment date format: {}", paymentDateStr);
+            }
+        }
+        
+        // Parse expected delivery date
+        String expectedDeliveryDateStr = (String) rowData.get("expectedDeliveryDate");
+        if (expectedDeliveryDateStr != null && !expectedDeliveryDateStr.trim().isEmpty()) {
+            try {
+                LocalDate expectedDeliveryDate = LocalDate.parse(expectedDeliveryDateStr.trim());
+                supplierOutDTO.setExpectedDeliveryDate(Timestamp.valueOf(expectedDeliveryDate.atStartOfDay()));
+            } catch (Exception e) {
+                log.warn("Invalid expected delivery date format: {}", expectedDeliveryDateStr);
+            }
+        }
+        
+        // Set default supplier ID (you may need to adjust this based on your business logic)
+        // For now, we'll use the first available supplier
+        List<SupplierEntity> suppliers = supplierRepository.findAll(PageRequest.of(0, 1)).getContent();
+        log.info("Found {} suppliers in system", suppliers.size());
+        if (!suppliers.isEmpty()) {
+            supplierOutDTO.setSupplierId(suppliers.get(0).getId());
+            log.info("Using supplier ID: {}", suppliers.get(0).getId());
+        } else {
+            log.error("No suppliers found in system");
+            throw new Exception("Không tìm thấy supplier nào trong hệ thống");
+        }
+
+        // Set transaction date
+        String transactionDateStr = (String) rowData.get("transactionDate");
+        if (transactionDateStr != null && !transactionDateStr.trim().isEmpty()) {
+            try {
+                LocalDate date = LocalDate.parse(transactionDateStr.trim());
+                supplierOutDTO.setTransactionDate(Timestamp.valueOf(date.atStartOfDay()));
+            } catch (Exception e) {
+                // Use current date if parsing fails
+                supplierOutDTO.setTransactionDate(new Timestamp(System.currentTimeMillis()));
+            }
+        } else {
+            supplierOutDTO.setTransactionDate(new Timestamp(System.currentTimeMillis()));
+        }
+
+        // Create item
+        log.info("Creating item for product ID: {}, quantity: {}, unit price: {}", product.getId(), quantity, unitPrice);
+        List<SupplierRequestItemDTO> items = new ArrayList<>();
+        SupplierRequestItemDTO item = new SupplierRequestItemDTO();
+        item.setProductId(product.getId());
+        item.setQuantity(quantity);
+        
+        // Set unit price
+        BigDecimal unitPriceBD = unitPrice > 0 ? BigDecimal.valueOf(unitPrice) : product.getPrice();
+        item.setUnitPrice(unitPriceBD);
+        
+        // Calculate total price
+        BigDecimal totalPrice = unitPriceBD.multiply(BigDecimal.valueOf(quantity));
+        item.setTotalPrice(totalPrice);
+        items.add(item);
+
+        supplierOutDTO.setItems(items);
+        log.info("Created item with total price: {}", totalPrice);
+
+        // Calculate total amount
+        BigDecimal totalAmount = items.stream()
+            .map(SupplierRequestItemDTO::getTotalPrice)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        supplierOutDTO.setTotalAmount(totalAmount);
+        log.info("Set total amount: {}", totalAmount);
+
+        // Save to database
+        log.info("Attempting to create stock out order from Excel row {}: product={}, quantity={}, recipient={}",
+            rowNumber, productName, quantity, recipient);
+        try {
+            SupplierOutDTO createdOrder = supplierOutService.createTransaction(supplierOutDTO);
+            log.info("Successfully created stock out order with ID: {}", createdOrder.getId());
+        } catch (Exception e) {
+            log.error("Failed to create stock out order: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    /**
+     * Get current user for template usage
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 }

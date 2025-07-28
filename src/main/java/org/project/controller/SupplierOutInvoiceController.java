@@ -125,6 +125,9 @@ public class SupplierOutInvoiceController {
             // Add allowed statuses for dropdown
             mv.addObject("availableStatuses", allowedStatuses);
             
+            // Add current user for forms
+            mv.addObject("currentUser", getCurrentUser());
+            
             log.debug("Supplier out invoices page prepared with {} transactions", filteredPage.getContent().size());
         } catch (Exception e) {
             log.error("Error preparing supplier out invoices page data: {}", e.getMessage(), e);
@@ -269,5 +272,20 @@ public class SupplierOutInvoiceController {
     @GetMapping("/inventory/api/stock-invoices/{id}")
     public String redirectApiDetailToController(@PathVariable Long id) {
         return "redirect:/warehouse/invoices/out/" + id;
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 }

@@ -33,4 +33,37 @@ public class SupplierInvoiceDTO {
     private String recipient;
     private String stockOutReason;
     private Set<SupplierTransactionInvoiceMappingDTO> transactionInvoiceMappings;
+
+    private BigDecimal discountAmount;
+    private Timestamp transactionDate;
+
+    private String createdByName;
+
+    public BigDecimal getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(BigDecimal discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public String getCreatedByName() {
+        return createdByName;
+    }
+
+    public void setCreatedByName(String createdByName) {
+        this.createdByName = createdByName;
+    }
+
+    public Timestamp getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(Timestamp transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+    public void setStatus(SupplierTransactionStatus status) {
+        this.status = status;
+    }
 }
