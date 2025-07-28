@@ -4,21 +4,21 @@ import lombok.Getter;
 
 @Getter
 public enum FamilyRelationship {
-    SELF("Self"),
-    FATHER("Father"),
-    MOTHER("Mother"),
-    HUSBAND("Husband"),
-    BROTHER("Brother"),
-    SISTER("Sister"),
-    WIFE("Wife"),
-    SON("Son"),
-    DAUGHTER("Daughter"),
-    GRAND_FATHER("Grandfather"),
-    GRAND_MOTHER("Grandmother"),
-    COUSIN("Cousin"),
-    AUNT("Aunt"),
-    UNCLE("Uncle"),
-    OTHER("Other");
+    SELF("Bản thân"),
+    FATHER("Bố"),
+    MOTHER("Mẹ"),
+    HUSBAND("Chồng"),
+    BROTHER("Anh/Em trai"),
+    SISTER("Chị/Em gái"),
+    WIFE("Vợ"),
+    SON("Con trai"),
+    DAUGHTER("Con gái"),
+    GRAND_FATHER("Ông"),
+    GRAND_MOTHER("Bà"),
+    COUSIN("Anh/Chị/Em họ"),
+    AUNT("Cô/Dì/Bác gái"),
+    UNCLE("Chú/Bác trai"),
+    OTHER("Khác");
 
     private final String relationship;
 
