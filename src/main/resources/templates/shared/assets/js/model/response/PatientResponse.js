@@ -1,4 +1,4 @@
-import {BaseResponse} from "/templates/frontend/assets/js/model/response/BaseResponse.js";
+import {BaseResponse} from "/templates/shared/assets/js/model/response/BaseResponse.js";
 
 export class PatientResponse extends BaseResponse {
     constructor(id, phoneNumber, email, fullName, avatarUrl, address, birthdate, familyRelationship, gender, bloodType) {
@@ -68,7 +68,7 @@ export function renderPatientResponseForBooking(patientResponse) {
                                     <span class="h5 patient-name">${patientResponse.fullName}</span>
                                     <span class="text-body fst-italic">(${patientResponse.familyRelationship})</span>
                                 </div>
-                                <span class="bg-info px-3 py-2 d-inline-block rounded-pill text-white mb-2">${patientResponse.bloodType}</span>
+                                <span class="bg-info px-3 py-2 d-inline-block rounded-pill text-white mb-2">Nhóm máu: ${patientResponse.bloodType}</span>
                                 <span class="d-block text-body mb-2">${patientResponse.gender}</span>
                             </div>
                             <div class="col-md-8">

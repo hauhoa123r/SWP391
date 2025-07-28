@@ -1,5 +1,5 @@
-import {BaseResponse} from "/templates/frontend/assets/js/model/response/BaseResponse.js";
-import {StaffResponse} from "/templates/frontend/assets/js/model/response/StaffResponse.js";
+import {BaseResponse} from "/templates/shared/assets/js/model/response/BaseResponse.js";
+import {StaffResponse} from "/templates/shared/assets/js/model/response/StaffResponse.js";
 
 export class DoctorResponse extends BaseResponse {
     constructor(id, staffEntity, doctorRank) {

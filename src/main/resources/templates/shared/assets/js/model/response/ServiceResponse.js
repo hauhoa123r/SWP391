@@ -1,5 +1,5 @@
-import {BaseResponse} from "/templates/frontend/assets/js/model/response/BaseResponse.js";
-import {ProductResponse} from "/templates/frontend/assets/js/model/response/ProductResponse.js";
+import {BaseResponse} from "/templates/shared/assets/js/model/response/BaseResponse.js";
+import {ProductResponse} from "/templates/shared/assets/js/model/response/ProductResponse.js";
 
 export class ServiceResponse extends BaseResponse {
     constructor(id, productEntity) {

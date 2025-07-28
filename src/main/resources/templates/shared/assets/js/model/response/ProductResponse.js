@@ -1,7 +1,7 @@
-import {CategoryResponse} from "/templates/frontend/assets/js/model/response/CategoryResponse.js";
+import {CategoryResponse} from "/templates/shared/assets/js/model/response/CategoryResponse.js";
 import {
     ProductAdditionalInfoResponse
-} from "/templates/frontend/assets/js/model/response/ProductAdditionalInfoResponse.js";
+} from "/templates/shared/assets/js/model/response/ProductAdditionalInfoResponse.js";
 
 export class ProductResponse {
     constructor(id, name, description, imageUrl, price, categoryEntities, productAdditionalInfoEntities, reviewCount, averageRating) {

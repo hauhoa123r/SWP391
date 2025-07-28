@@ -1,9 +1,9 @@
-import {DepartmentResponse} from "/templates/frontend/assets/js/model/response/DepartmentResponse.js";
-import {StaffEducationResponse} from "/templates/frontend/assets/js/model/response/StaffEducationResponse.js";
-import {StaffExperienceResponse} from "/templates/frontend/assets/js/model/response/StaffExperienceResponse.js";
-import {StaffSkillResponse} from "/templates/frontend/assets/js/model/response/StaffSkillResponse.js";
-import {StaffQualificationResponse} from "/templates/frontend/assets/js/model/response/StaffQualificationResponse.js";
-import {StaffSpecialityResponse} from "/templates/frontend/assets/js/model/response/StaffSpecialityResponse.js";
+import {DepartmentResponse} from "/templates/shared/assets/js/model/response/DepartmentResponse.js";
+import {StaffEducationResponse} from "/templates/shared/assets/js/model/response/StaffEducationResponse.js";
+import {StaffExperienceResponse} from "/templates/shared/assets/js/model/response/StaffExperienceResponse.js";
+import {StaffQualificationResponse} from "/templates/shared/assets/js/model/response/StaffQualificationResponse.js";
+import {StaffSkillResponse} from "/templates/shared/assets/js/model/response/StaffSkillResponse.js";
+import {StaffSpecialityResponse} from "/templates/shared/assets/js/model/response/StaffSpecialityResponse.js";
 
 export class StaffResponse {
     constructor(id, fullName, avatarUrl, departmentEntity, userEntityEmail, staffEducationEntities, staffExperienceEntities, staffSkillEntities, staffQualificationEntities, staffSpecialityEntities, hospitalEntityName, reviewCount, averageRating) {
@@ -24,19 +24,19 @@ export class StaffResponse {
 
     static fromJson(json) {
         const staffResponse = new StaffResponse(
-            json.id,
-            json.fullName,
-            json.avatarUrl,
-            json.departmentEntity,
-            json.userEntityEmail,
-            json.staffEducationEntities,
-            json.staffExperienceEntities,
-            json.staffSkillEntities,
-            json.staffQualificationEntities,
-            json.staffSpecialityEntities,
-            json.hospitalEntityName,
-            json.reviewCount,
-            json.averageRating
+                json.id,
+                json.fullName,
+                json.avatarUrl,
+                json.departmentEntity,
+                json.userEntityEmail,
+                json.staffEducationEntities,
+                json.staffExperienceEntities,
+                json.staffSkillEntities,
+                json.staffQualificationEntities,
+                json.staffSpecialityEntities,
+                json.hospitalEntityName,
+                json.reviewCount,
+                json.averageRating
         );
 
         // Convert nested objects to their respective response classes

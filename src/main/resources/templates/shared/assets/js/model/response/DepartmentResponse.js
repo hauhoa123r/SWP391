@@ -1,4 +1,4 @@
-import {BaseResponse} from "/templates/frontend/assets/js/model/response/BaseResponse.js";
+import {BaseResponse} from "/templates/shared/assets/js/model/response/BaseResponse.js";
 
 export class DepartmentResponse extends BaseResponse {
     constructor(id, name, slogan, description, bannerUrl) {
