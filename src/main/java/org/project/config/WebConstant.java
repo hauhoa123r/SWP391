@@ -13,4 +13,6 @@ public class WebConstant {
     public static final HospitalStatus HOSPITAL_STATUS_INACTIVE = HospitalStatus.INACTIVE;
     public static final DepartmentStatus DEPARTMENT_STATUS_ACTIVE = DepartmentStatus.ACTIVE;
     public static final DepartmentStatus DEPARTMENT_STATUS_INACTIVE = DepartmentStatus.INACTIVE;
+
+    public static final String ENABLE_CHARACTERS_PASSWORD = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 }
