@@ -1,8 +1,10 @@
 package org.project.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.enums.DiscountType;
+import org.project.exception.CouponException;
 import org.project.model.dto.CouponDTO;
 import org.project.service.CouponService;
 import org.project.service.UserCouponService;
@@ -308,6 +310,35 @@ public class CouponController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+    @PostMapping("/apply")
+    public String applyCoupon(@RequestParam("code") String code,
+                              HttpSession session,
+                              RedirectAttributes redirectAttributes) {
+        try {
+//            // Get userId from session (update this based on your app's auth setup)
+//            Long userId = (Long) session.getAttribute("userId");
+//            if (userId == null) {
+//                redirectAttributes.addFlashAttribute("couponError", "User not logged in.");
+//                return "redirect:/login";
+//            }
+            Long userId=2l;
+
+            couponService.applyCoupon(code, userId, session);
+            redirectAttributes.addFlashAttribute("couponSuccess", "Coupon applied successfully!");
+        } catch (CouponException e) {
+            redirectAttributes.addFlashAttribute("couponError", e.getMessage());
+        }
+
+        return "redirect:/cart";
+    }
+    @GetMapping("/remove")
+    public String removeCoupon(HttpSession session, RedirectAttributes redirectAttributes) {
+        session.removeAttribute("appliedCoupon");
+        session.removeAttribute("discountedTotal");
+        redirectAttributes.addFlashAttribute("couponSuccess", "Coupon removed.");
+        return "redirect:/cart";
+    }
+
     
     /**
      * Get current user - placeholder method

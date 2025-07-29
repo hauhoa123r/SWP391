@@ -1,10 +1,14 @@
 package org.project.service.impl;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.entity.CouponEntity;
+import org.project.enums.DiscountType;
+import org.project.exception.CouponException;
 import org.project.model.dto.CouponDTO;
 import org.project.repository.CouponRepository;
+import org.project.service.CartService;
 import org.project.service.CouponService;
 import org.project.service.UserCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Optional;
 
@@ -25,6 +30,7 @@ public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;
     private final UserCouponService userCouponService;
+    private final CartService cartService;
 
     @Override
     public Page<CouponDTO> findAllCoupons(int page, int size, String sortBy, String sortDir) {
@@ -132,7 +138,56 @@ public class CouponServiceImpl implements CouponService {
         
         return couponPage.map(this::convertToDTO);
     }
-    
+
+
+    private BigDecimal calculateDiscountedTotal(BigDecimal cartTotal, CouponEntity coupon) {
+        BigDecimal discountedTotal;
+
+        if (coupon.getDiscountType() == DiscountType.FIXED) {
+            discountedTotal = cartTotal.subtract(coupon.getValue());
+        } else if (coupon.getDiscountType() == DiscountType.PERCENTAGE) {
+            BigDecimal percent = coupon.getValue().divide(BigDecimal.valueOf(100));
+            discountedTotal = cartTotal.subtract(cartTotal.multiply(percent));
+        } else {
+            discountedTotal = cartTotal;
+        }
+
+        if (discountedTotal.compareTo(BigDecimal.ZERO) < 0) {
+            discountedTotal = BigDecimal.ZERO;
+        }
+
+        return discountedTotal;
+    }
+
+    @Override
+    public BigDecimal applyCoupon(String code, Long userId, HttpSession session) throws CouponException {
+        Optional<CouponEntity> optionalCoupon = couponRepository.findByCode(code.trim());
+        if (optionalCoupon.isEmpty()) {
+            throw new CouponException("Coupon code not found. Existing coupon (if any) is still applied.");
+        }
+
+        CouponEntity coupon = optionalCoupon.get();
+
+        if (coupon.getExpirationDate().before(new Date())) {
+            throw new CouponException("Coupon has expired.");
+        }
+
+        BigDecimal cartTotal = cartService.calculateTotal(userId);
+
+        if (coupon.getMinimumOrderAmount() != null && cartTotal.compareTo(coupon.getMinimumOrderAmount()) < 0) {
+            throw new CouponException("Order total does not meet the minimum amount.");
+        }
+
+        BigDecimal discountedTotal= calculateDiscountedTotal(cartTotal,coupon);
+
+
+        session.setAttribute("appliedCoupon", coupon);
+        session.setAttribute("discountedTotal", discountedTotal);
+
+        return discountedTotal;
+    }
+
+
     /**
      * Tạo Sort object dựa trên các tham số
      */

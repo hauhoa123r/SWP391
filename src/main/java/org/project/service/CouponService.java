@@ -1,8 +1,11 @@
 package org.project.service;
 
+import jakarta.servlet.http.HttpSession;
+import org.project.exception.CouponException;
 import org.project.model.dto.CouponDTO;
 import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,4 +63,7 @@ public interface CouponService {
      * Lấy danh sách coupon hết hạn
      */
     Page<CouponDTO> findExpiredCoupons(int page, int size, String sortBy, String sortDir);
+
+    BigDecimal applyCoupon(String code, Long userId, HttpSession session) throws CouponException;
+
 } 
