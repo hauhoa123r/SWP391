@@ -375,7 +375,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public void createPatientAndUser(PatientDTO patientDTO) {
-        String password = RandomUtils.generateStringFromEnableCharacter("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 6);
+        String password = RandomUtils.generateStringFromEnableCharacter(WebConstant.ENABLE_CHARACTERS_PASSWORD, 6);
         UserRegisterDTO userRegisterDTO = userConverter.toRegisterDTO(patientDTO);
         userRegisterDTO.setPassword(password);
         userRegisterService.register(userRegisterDTO);
