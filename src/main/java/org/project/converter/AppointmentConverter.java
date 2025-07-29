@@ -8,10 +8,14 @@ import org.project.model.dai.AppointmentDAI;
 import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.MakeAppointmentDTO;
 import org.project.model.response.AppointmentResponse;
+import org.project.model.response.AppointmentDashboardCustomerResponse;
 import org.project.repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Component
@@ -56,4 +60,29 @@ public class AppointmentConverter {
         makeAppointmentDTO.setStartDate(appointmentDAI.getDate() + " " + appointmentDAI.getTime());
         return makeAppointmentDTO;
     }
+
+    public AppointmentDashboardCustomerResponse toConverterAppointmentDashboardCustomerResponse(AppointmentEntity appointmentEntity) {
+        AppointmentDashboardCustomerResponse appointmentDashboardCustomerResponse = new AppointmentDashboardCustomerResponse();
+
+        Timestamp startTime = appointmentEntity.getStartTime();
+
+        LocalDateTime startDateTime = startTime.toLocalDateTime();
+
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+
+        String date  = startDateTime.format(dateFormat);
+        String time = startDateTime.format(timeFormat);
+
+        appointmentDashboardCustomerResponse.setId(appointmentEntity.getId());
+        appointmentDashboardCustomerResponse.setPatientName(appointmentEntity.getPatientEntity().getFullName());
+        appointmentDashboardCustomerResponse.setDoctorName(appointmentEntity.getDoctorEntity().getStaffEntity().getFullName());
+        appointmentDashboardCustomerResponse.setStatus(appointmentEntity.getAppointmentStatus().toString());
+        appointmentDashboardCustomerResponse.setDate(date);
+        appointmentDashboardCustomerResponse.setTime(time);
+
+        return appointmentDashboardCustomerResponse;
+    }
+
+
 }

@@ -24,13 +24,11 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             "where date(startTime) = now()")
     int countTotalAppointmentsToday();
 
-
     Collection<? extends AppointmentEntity> findByPatientEntityIdAndStartTimeBetween(Long patientEntityId, Timestamp startTimeAfter, Timestamp startTimeBefore);
 
     Long countByAppointmentStatusAndServiceEntityDepartmentEntityId(AppointmentStatus appointmentStatus, Long serviceEntityDepartmentEntityId);
 
     Long countByAppointmentStatus(AppointmentStatus appointmentStatus);
-
 
     List<AppointmentEntity> findByDoctorEntity_StaffEntity_HospitalEntity_IdAndAppointmentStatus(Long hospitalId, AppointmentStatus appointmentStatus);
 
@@ -51,4 +49,41 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             @Param("startTime") Timestamp startTime,
             @Param("endTime") Timestamp endTime
     );
+
+    @Modifying
+    @Query("UPDATE AppointmentEntity a SET a.doctorEntity.id = :substituteId " +
+            "WHERE a.doctorEntity.id = :staffId " +
+            "AND DATE(a.startTime) BETWEEN DATE(:startDate) AND DATE(:endDate)")
+    void transferFullDayAppointments(
+            @Param("staffId") Long staffId,
+            @Param("substituteId") Long substituteId,
+            @Param("startDate") Timestamp startDate,
+            @Param("endDate") Timestamp endDate
+    );
+
+    @Modifying
+    @Query("UPDATE AppointmentEntity a SET a.doctorEntity.id = :substituteId " +
+            "WHERE a.doctorEntity.id = :staffId " +
+            "AND DATE(a.startTime) = DATE(:date) " +
+            "AND TIME(a.startTime) >= '08:00:00' " +
+            "AND TIME(a.startTime) < '12:00:00'")
+    void transferMorningShiftAppointments(
+            @Param("staffId") Long staffId,
+            @Param("substituteId") Long substituteId,
+            @Param("date") Timestamp date
+    );
+
+    @Modifying
+    @Query("UPDATE AppointmentEntity a SET a.doctorEntity.id = :substituteId " +
+            "WHERE a.doctorEntity.id = :staffId " +
+            "AND DATE(a.startTime) = DATE(:date) " +
+            "AND TIME(a.startTime) >= '13:00:00' " +
+            "AND TIME(a.startTime) < '17:00:00'")
+    void transferAfternoonShiftAppointments(
+            @Param("staffId") Long staffId,
+            @Param("substituteId") Long substituteId,
+            @Param("date") Timestamp date
+    );
+
+    List<AppointmentEntity> findTop5ByPatientEntity_UserEntity_IdOrderByIdDesc(Long userId);
 }

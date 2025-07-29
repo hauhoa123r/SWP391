@@ -16,6 +16,8 @@ import org.project.model.dto.ChangeAppointmentDTO;
 import org.project.model.response.AppointmentApprovalResponse;
 import org.project.model.response.AppointmentAvailableResponse;
 import org.project.model.response.AppointmentResponse;
+import org.project.model.response.AppointmentDashboardCustomerResponse;
+import org.project.model.response.AppointmentResponse;
 import org.project.repository.*;
 import org.project.service.AppointmentService;
 import org.project.service.StaffService;
@@ -289,6 +291,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         // Save updated appointment
         return appointmentRepository.save(appointmentEntity).getId() != null;
+    }
+
+    @Override
+    public List<AppointmentDashboardCustomerResponse> get5AppointmentsByUserId(Long userId) {
+        List<AppointmentEntity> appointmentEntities = appointmentRepository.findTop5ByPatientEntity_UserEntity_IdOrderByIdDesc(userId);
+        return appointmentEntities.stream().map(ent -> {
+            AppointmentDashboardCustomerResponse resp = appointmentConverter.toConverterAppointmentDashboardCustomerResponse(ent);
+            return resp;
+        }).collect(Collectors.toList());
     }
 
     @Override
