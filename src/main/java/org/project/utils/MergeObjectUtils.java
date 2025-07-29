@@ -33,7 +33,7 @@ public class MergeObjectUtils {
         PropertyDescriptor[] propertyDescriptors = srcWrapper.getPropertyDescriptors();
 
         // Các property đặc biệt cần bỏ qua
-        Set<String> skipProps = new HashSet<>(Arrays.asList("class", "empty", "first", "last"));
+        Set<String> skipProps = new HashSet<>(Arrays.asList("class", "empty", "first", "last", "size", "content", "sort", "pageable", "numberOfElements", "totalPages", "totalElements"));
 
         for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
             String propertyName = propertyDescriptor.getName();
