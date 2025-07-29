@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
+import org.project.enums.HospitalStatus;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -45,11 +46,15 @@ public class HospitalEntity {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Size(max = 255)
+    @Lob
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hospitalEntity", fetch = FetchType.LAZY)
     private Set<StaffEntity> staffEntities = new LinkedHashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "hospital_status")
+    private HospitalStatus hospitalStatus;
 
 }

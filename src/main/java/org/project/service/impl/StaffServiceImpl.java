@@ -1,5 +1,6 @@
 package org.project.service.impl;
 
+import org.project.config.WebConstant;
 import org.project.converter.StaffScheduleConverter;
 import org.project.entity.StaffEntity;
 import org.project.model.dto.AvailabilityRequestDTO;
@@ -65,5 +66,12 @@ public class StaffServiceImpl implements StaffService {
         StaffEntity staffEntity = staffRepository.findById(staffId)
                 .orElseThrow(() -> new IllegalArgumentException("Staff with ID " + staffId + " does not exist."));
         return staffEntity;
+    }
+
+    @Override
+    public void deleteStaff(Long staffId) {
+        StaffEntity staffEntity = getStaffByStaffId(staffId);
+        staffEntity.setStaffStatus(WebConstant.STAFF_STATUS_INACTIVE);
+        staffRepository.save(staffEntity);
     }
 }

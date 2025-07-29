@@ -12,4 +12,10 @@ public interface HospitalService {
     Page<HospitalResponse> getHospitals(int index, int size);
 
     Page<HospitalResponse> searchHospitalsByKeyword(int index, int size, String keyword);
+
+    void createHospital(HospitalDTO hospitalDTO);
+
+    void updateHospital(Long hospitalId, HospitalDTO hospitalDTO);
+
+    void deleteHospital(Long hospitalId);
 }
