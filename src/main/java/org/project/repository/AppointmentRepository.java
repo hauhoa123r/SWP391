@@ -83,4 +83,6 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
             @Param("substituteId") Long substituteId,
             @Param("date") Timestamp date
     );
+
+    List<AppointmentEntity> findTop5ByPatientEntity_UserEntity_IdOrderByIdDesc(Long userId);
 }
