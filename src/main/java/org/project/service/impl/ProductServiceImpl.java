@@ -5,23 +5,25 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.JoinType;
 import lombok.extern.slf4j.Slf4j;
+import org.project.config.WebConstant;
 import org.project.converter.ConverterPharmacyProduct;
 import org.project.entity.ProductEntity;
+import org.project.enums.Label;
 import org.project.enums.ProductSortType;
 import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
-import org.project.enums.Label;
 import org.project.enums.operation.ComparisonOperator;
 import org.project.enums.operation.LogicalOperator;
+import org.project.exception.ErrorResponse;
 import org.project.model.response.PharmacyResponse;
 import org.project.repository.ProductRepository;
 import org.project.service.ProductService;
 import org.project.utils.specification.SpecificationUtils;
-import org.springframework.beans.factory.ObjectProvider;
 import org.project.utils.specification.search.SearchCriteria;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,6 @@ import java.math.BigDecimal;
 import java.text.Normalizer;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.HashMap;
 
 /**
  * Modern, Specification-based implementation of ProductService interface
@@ -41,13 +42,13 @@ import java.util.HashMap;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private  ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Autowired
-    private  ConverterPharmacyProduct converter;
+    private ConverterPharmacyProduct converter;
 
     @Autowired
-    private  ObjectProvider<SpecificationUtils<ProductEntity>> specUtilsProvider;
+    private ObjectProvider<SpecificationUtils<ProductEntity>> specUtilsProvider;
 
 
     @PersistenceContext
@@ -75,21 +76,21 @@ public class ProductServiceImpl implements ProductService {
                                                  Pageable pageable) {
         try {
             log.info("Starting optimized product search");
-            
+
             // Build a single query with all filters
             String jpql = "SELECT p FROM ProductEntity p WHERE p.productStatus = :status " +
-                          "AND (p.productType = :medicineType OR p.productType = :medicalProductType)";
-            
+                    "AND (p.productType = :medicineType OR p.productType = :medicalProductType)";
+
             // Add search query filter if present
             if (searchQuery.isPresent() && !searchQuery.get().isEmpty()) {
                 jpql += " AND LOWER(p.name) LIKE :searchQuery";
             }
-            
+
             // Add category filter if present
             if (categoryId.isPresent()) {
                 jpql += " AND EXISTS (SELECT c FROM p.categoryEntities c WHERE c.id = :categoryId)";
             }
-            
+
             // Add price range filter if present
             if (minPrice.isPresent() || maxPrice.isPresent()) {
                 if (minPrice.isPresent()) {
@@ -99,45 +100,45 @@ public class ProductServiceImpl implements ProductService {
                     jpql += " AND p.price <= :maxPrice";
                 }
             }
-            
+
             // Add tag filter if present
             if (type.isPresent() && !type.get().isEmpty()) {
                 jpql += " AND EXISTS (SELECT t FROM p.productTagEntities t WHERE LOWER(t.id.name) = LOWER(:tagName))";
             }
-            
+
             // Add label filter if present
             if (label.isPresent() && !label.get().isEmpty()) {
                 jpql += " AND p.label = :label";
             }
-            
+
             // Create the query
             TypedQuery<ProductEntity> query = entityManager.createQuery(jpql, ProductEntity.class);
-            
+
             // Set parameters
             query.setParameter("status", ProductStatus.ACTIVE);
             query.setParameter("medicineType", ProductType.MEDICINE);
             query.setParameter("medicalProductType", ProductType.MEDICAL_PRODUCT);
-            
+
             if (searchQuery.isPresent() && !searchQuery.get().isEmpty()) {
                 query.setParameter("searchQuery", "%" + searchQuery.get().toLowerCase() + "%");
             }
-            
+
             if (categoryId.isPresent()) {
                 query.setParameter("categoryId", categoryId.get());
             }
-            
+
             if (minPrice.isPresent()) {
                 query.setParameter("minPrice", minPrice.get());
             }
-            
+
             if (maxPrice.isPresent()) {
                 query.setParameter("maxPrice", maxPrice.get());
             }
-            
+
             if (type.isPresent() && !type.get().isEmpty()) {
                 query.setParameter("tagName", type.get());
             }
-            
+
             if (label.isPresent() && !label.get().isEmpty()) {
                 try {
                     Label labelEnum = Label.valueOf(label.get().trim().toUpperCase());
@@ -146,36 +147,36 @@ public class ProductServiceImpl implements ProductService {
                     log.error("Invalid label value: {}", label.get(), e);
                 }
             }
-            
+
             // Count total results
             String countJpql = jpql.replace("SELECT p", "SELECT COUNT(p)");
             TypedQuery<Long> countQuery = entityManager.createQuery(countJpql, Long.class);
-            
+
             // Set the same parameters for count query
             countQuery.setParameter("status", ProductStatus.ACTIVE);
             countQuery.setParameter("medicineType", ProductType.MEDICINE);
             countQuery.setParameter("medicalProductType", ProductType.MEDICAL_PRODUCT);
-            
+
             if (searchQuery.isPresent() && !searchQuery.get().isEmpty()) {
                 countQuery.setParameter("searchQuery", "%" + searchQuery.get().toLowerCase() + "%");
             }
-            
+
             if (categoryId.isPresent()) {
                 countQuery.setParameter("categoryId", categoryId.get());
             }
-            
+
             if (minPrice.isPresent()) {
                 countQuery.setParameter("minPrice", minPrice.get());
             }
-            
+
             if (maxPrice.isPresent()) {
                 countQuery.setParameter("maxPrice", maxPrice.get());
             }
-            
+
             if (type.isPresent() && !type.get().isEmpty()) {
                 countQuery.setParameter("tagName", type.get());
             }
-            
+
             if (label.isPresent() && !label.get().isEmpty()) {
                 try {
                     Label labelEnum = Label.valueOf(label.get().trim().toUpperCase());
@@ -184,45 +185,45 @@ public class ProductServiceImpl implements ProductService {
                     log.error("Invalid label value for count query: {}", label.get(), e);
                 }
             }
-            
+
             Long totalCount = countQuery.getSingleResult();
-            
+
             // Apply sorting
             if (sortType == ProductSortType.PRICE_ASC) {
                 jpql += " ORDER BY p.price ASC";
             } else if (sortType == ProductSortType.PRICE_DESC) {
                 jpql += " ORDER BY p.price DESC";
             }
-            
+
             // Create the final query with sorting
             if (sortType == ProductSortType.PRICE_ASC || sortType == ProductSortType.PRICE_DESC) {
                 query = entityManager.createQuery(jpql, ProductEntity.class);
-                
+
                 // Set parameters again
                 query.setParameter("status", ProductStatus.ACTIVE);
                 query.setParameter("medicineType", ProductType.MEDICINE);
                 query.setParameter("medicalProductType", ProductType.MEDICAL_PRODUCT);
-                
+
                 if (searchQuery.isPresent() && !searchQuery.get().isEmpty()) {
                     query.setParameter("searchQuery", "%" + searchQuery.get().toLowerCase() + "%");
                 }
-                
+
                 if (categoryId.isPresent()) {
                     query.setParameter("categoryId", categoryId.get());
                 }
-                
+
                 if (minPrice.isPresent()) {
                     query.setParameter("minPrice", minPrice.get());
                 }
-                
+
                 if (maxPrice.isPresent()) {
                     query.setParameter("maxPrice", maxPrice.get());
                 }
-                
+
                 if (type.isPresent() && !type.get().isEmpty()) {
                     query.setParameter("tagName", type.get());
                 }
-                
+
                 if (label.isPresent() && !label.get().isEmpty()) {
                     try {
                         Label labelEnum = Label.valueOf(label.get().trim().toUpperCase());
@@ -232,15 +233,15 @@ public class ProductServiceImpl implements ProductService {
                     }
                 }
             }
-            
+
             // Apply pagination
             query.setFirstResult((int) pageable.getOffset());
             query.setMaxResults(pageable.getPageSize());
-            
+
             // Execute query
             List<ProductEntity> results = query.getResultList();
             log.info("Found {} products with optimized query", results.size());
-            
+
             // Special handling for rating sort
             if (sortType == ProductSortType.RATING) {
                 results.sort(Comparator.comparing(this::calculateRating).reversed());
@@ -290,21 +291,21 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductEntity> findAll() {
         try {
             log.debug("Finding all products");
-            
+
             // Trực tiếp lấy các sản phẩm với type là MEDICINE hoặc MEDICAL_PRODUCT
             List<ProductEntity> medicineProducts = productRepository.findAllByProductTypeAndProductStatus(
                     ProductType.MEDICINE, ProductStatus.ACTIVE);
             List<ProductEntity> medicalProducts = productRepository.findAllByProductTypeAndProductStatus(
                     ProductType.MEDICAL_PRODUCT, ProductStatus.ACTIVE);
-            
+
             // Gộp hai danh sách
             List<ProductEntity> allFilteredProducts = new ArrayList<>();
             allFilteredProducts.addAll(medicineProducts);
             allFilteredProducts.addAll(medicalProducts);
-            
-            log.info("Found {} MEDICINE products and {} MEDICAL_PRODUCT products for findAll", 
+
+            log.info("Found {} MEDICINE products and {} MEDICAL_PRODUCT products for findAll",
                     medicineProducts.size(), medicalProducts.size());
-                    
+
             return allFilteredProducts;
         } catch (Exception e) {
             log.error("Error finding all products: {}", e.getMessage(), e);
@@ -331,18 +332,18 @@ public class ProductServiceImpl implements ProductService {
     public List<PharmacyResponse> findTop10Products() {
         try {
             log.debug("Finding top 10 products");
-            
+
             // Trực tiếp lấy các sản phẩm với type là MEDICINE hoặc MEDICAL_PRODUCT
             List<ProductEntity> medicineProducts = productRepository.findAllByProductTypeAndProductStatus(
                     ProductType.MEDICINE, ProductStatus.ACTIVE);
             List<ProductEntity> medicalProducts = productRepository.findAllByProductTypeAndProductStatus(
                     ProductType.MEDICAL_PRODUCT, ProductStatus.ACTIVE);
-            
+
             // Gộp hai danh sách
             List<ProductEntity> allFilteredProducts = new ArrayList<>();
             allFilteredProducts.addAll(medicineProducts);
             allFilteredProducts.addAll(medicalProducts);
-            
+
             return allFilteredProducts.stream()
                     .sorted(Comparator.comparingDouble(this::calculateRating).reversed())
                     .limit(10)
@@ -360,9 +361,9 @@ public class ProductServiceImpl implements ProductService {
         try {
             log.debug("Finding product DTO by ID: {}", id);
             ProductEntity product = productRepository.findByProductStatusAndId(ProductStatus.ACTIVE, id).orElse(null);
-            
-            if (product != null && (product.getProductType() == ProductType.MEDICINE || 
-                                   product.getProductType() == ProductType.MEDICAL_PRODUCT)) {
+
+            if (product != null && (product.getProductType() == ProductType.MEDICINE ||
+                    product.getProductType() == ProductType.MEDICAL_PRODUCT)) {
                 return convertToDto(product);
             }
             return null;
@@ -392,7 +393,7 @@ public class ProductServiceImpl implements ProductService {
 
             Long categoryId = base.getCategoryEntities().iterator().next().getId();
             log.info("Finding products in category ID: {}", categoryId);
-            
+
             // Lấy tất cả sản phẩm trong cùng category với status ACTIVE
             List<ProductEntity> categoryProducts = productRepository
                     .findByProductStatusAndCategoryEntities_Id(ProductStatus.ACTIVE, categoryId,
@@ -404,7 +405,7 @@ public class ProductServiceImpl implements ProductService {
             List<ProductEntity> related = categoryProducts.stream()
                     .filter(p -> !p.getId().equals(productId))  // Không hiển thị sản phẩm hiện tại
                     .collect(Collectors.toList());
-                    
+
             log.info("After filtering: {} related products remain", related.size());
 
             // Nếu không tìm thấy sản phẩm liên quan, thử tìm theo type
@@ -432,17 +433,17 @@ public class ProductServiceImpl implements ProductService {
             log.warn("Cannot find products by type: product type is null");
             return List.of();
         }
-        
+
         log.info("Finding products by type: {}", type);
         List<ProductEntity> typeProducts = productRepository
                 .findByProductStatusAndProductType(ProductStatus.ACTIVE, type)
                 .stream()
                 .filter(p -> !p.getId().equals(currentProductId))
-                .limit(limit * 2)
+                .limit(limit * 2L)
                 .collect(Collectors.toList());
-                
+
         log.info("Found {} products with type {}", typeProducts.size(), type);
-        
+
         return typeProducts.stream()
                 .sorted(Comparator.comparingDouble(this::calculateRating).reversed())
                 .limit(limit)
@@ -497,11 +498,21 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public void deleteProduct(Long id) {
+        ProductEntity productEntity = productRepository.findByIdAndProductStatus(id, WebConstant.PRODUCT_STATUS_ACTIVE);
+        if (productEntity == null) {
+            throw new ErrorResponse("Sản phẩm không tồn tại hoặc đã bị xóa");
+        }
+        productEntity.setProductStatus(WebConstant.PRODUCT_STATUS_INACTIVE);
+        productRepository.save(productEntity);
+    }
+
     // ==================== Internal Helper Methods ====================
 
     private boolean belongsToType(ProductEntity entity) {
         // Trả về false để không lọc bỏ bất kỳ sản phẩm nào
-            return false;
+        return false;
     }
 
     private boolean isAllowedType(ProductEntity entity) {
@@ -510,16 +521,16 @@ public class ProductServiceImpl implements ProductService {
             log.warn("Entity is null when checking allowed type");
             return false;
         }
-        
+
         ProductType type = entity.getProductType();
         log.info("Checking product type for entity ID {}: {}", entity.getId(), type);
-        
+
         if (type == null) {
             log.warn("Product type is null for product ID: {}", entity.getId());
             // Allow products with null type for now for debugging
             return true;
         }
-        
+
         // Temporarily allow all products for debugging
         return true;
     }

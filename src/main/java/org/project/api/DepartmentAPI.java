@@ -6,10 +6,7 @@ import org.project.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -66,5 +63,31 @@ public class DepartmentAPI {
                 "totalPages", departmentResponsePage.getTotalPages(),
                 "currentPage", departmentResponsePage.getNumber()
         );
+    }
+
+    @GetMapping("/api/admin/department/page/{pageIndex}")
+    public Map<String, Object> getAllDepartmentsForAdmin(@PathVariable int pageIndex,
+                                                         @ModelAttribute DepartmentDTO departmentDTO) {
+        Page<DepartmentResponse> departmentResponsePage = departmentService.getDepartments(pageIndex, PAGE_SIZE, departmentDTO);
+        return Map.of(
+                "items", departmentResponsePage.getContent(),
+                "totalPages", departmentResponsePage.getTotalPages(),
+                "currentPage", departmentResponsePage.getNumber()
+        );
+    }
+
+    @PostMapping("/api/admin/department")
+    public void createDepartment(@RequestBody DepartmentDTO departmentDTO) {
+        departmentService.createDepartment(departmentDTO);
+    }
+
+    @PutMapping("/api/admin/department/{id}")
+    public void updateDepartment(@PathVariable Long id, @RequestBody DepartmentDTO departmentDTO) {
+        departmentService.updateDepartment(id, departmentDTO);
+    }
+
+    @DeleteMapping("/api/admin/department/{id}")
+    public void deleteDepartment(@PathVariable Long id) {
+        departmentService.deleteDepartment(id);
     }
 }

@@ -95,7 +95,8 @@ public class ServiceServiceImpl implements ServiceService {
                                 ServiceEntity.Fields.productEntity,
                                 ProductEntity.Fields.reviewEntities,
                                 ReviewEntity.Fields.rating
-                        ), ComparisonOperator.AVG_GREATER_THAN_OR_EQUAL_TO, serviceDTO.getMinStarRating(), JoinType.LEFT)
+                        ), ComparisonOperator.AVG_GREATER_THAN_OR_EQUAL_TO, serviceDTO.getMinStarRating(), JoinType.LEFT),
+                new SearchCriteria("productEntity.productEntity.productStatus", ComparisonOperator.EQUALS, WebConstant.PRODUCT_STATUS_ACTIVE, JoinType.LEFT)
         );
         List<SortCriteria> sortCriterias = new ArrayList<>();
         Map<String, SortCriteria> sortCriteriaMap = Map.of(
@@ -165,6 +166,9 @@ public class ServiceServiceImpl implements ServiceService {
                                 HospitalEntity.Fields.id
                         ),
                         ComparisonOperator.EQUALS, hospitalId, JoinType.LEFT
+                ),
+                new SearchCriteria(
+                        "productEntity.productStatus", ComparisonOperator.EQUALS, WebConstant.PRODUCT_STATUS_ACTIVE, JoinType.LEFT
                 )
         );
         List<SortCriteria> sortCriterias = List.of(
@@ -227,25 +231,32 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public List<ServiceResponse> getTopServices(int top) {
         Pageable pageable = pageUtils.getPageable(0, top);
+        List<SearchCriteria> searchCriterias = List.of(
+                new SearchCriteria("productEntity.productStatus", ComparisonOperator.EQUALS, WebConstant.PRODUCT_STATUS_ACTIVE, JoinType.LEFT)
+        );
+        List<SortCriteria> sortCriterias = List.of(
+                new SortCriteria(
+                        FieldNameUtils.joinFields(
+                                ServiceEntity.Fields.productEntity,
+                                ProductEntity.Fields.reviewEntities,
+                                ReviewEntity.Fields.id
+                        ), AggregationFunction.COUNT,
+                        SortDirection.DESC, JoinType.LEFT
+                ),
+                new SortCriteria(
+                        FieldNameUtils.joinFields(
+                                ServiceEntity.Fields.productEntity,
+                                ProductEntity.Fields.reviewEntities,
+                                ReviewEntity.Fields.rating
+                        ), AggregationFunction.AVG,
+                        SortDirection.DESC, JoinType.LEFT
+                )
+        );
         Page<ServiceEntity> serviceEntityPage = pageSpecificationUtils.getPage(
                 specificationUtils.reset()
-                        .getSortSpecifications(
-                                new SortCriteria(
-                                        FieldNameUtils.joinFields(
-                                                ServiceEntity.Fields.productEntity,
-                                                ProductEntity.Fields.reviewEntities,
-                                                ReviewEntity.Fields.id
-                                        ), AggregationFunction.COUNT,
-                                        SortDirection.DESC, JoinType.LEFT
-                                ),
-                                new SortCriteria(
-                                        FieldNameUtils.joinFields(
-                                                ServiceEntity.Fields.productEntity,
-                                                ProductEntity.Fields.reviewEntities,
-                                                ReviewEntity.Fields.rating
-                                        ), AggregationFunction.AVG,
-                                        SortDirection.DESC, JoinType.LEFT
-                                )), pageable, ServiceEntity.class, true);
+                        .getSpecifications(
+                                searchCriterias,
+                                sortCriterias), pageable, ServiceEntity.class, true);
         return serviceEntityPage.stream().map(serviceConverter::toResponse).toList();
     }
 }
