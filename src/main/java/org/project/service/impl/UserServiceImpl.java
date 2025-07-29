@@ -59,4 +59,35 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userEntity);
         emailService.sendResetPasswordEmail(email, newPassword);
     }
+
+    @Override
+    public boolean isExistPhoneNumber(String phoneNumber) {
+        return userRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public boolean isExistEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public void updatePhoneNumber(Long userId, String phoneNumber) {
+        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        userEntity.setPhoneNumber(phoneNumber);
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void updateEmail(Long userId, String email) {
+        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        userEntity.setEmail(email);
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void updatePassword(Long userId, String password) {
+        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        userEntity.setPasswordHash(passwordEncoder.encode(password));
+        userRepository.save(userEntity);
+    }
 }
