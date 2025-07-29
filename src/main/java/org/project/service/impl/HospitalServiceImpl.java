@@ -27,6 +27,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class HospitalServiceImpl implements HospitalService {
@@ -149,5 +151,13 @@ public class HospitalServiceImpl implements HospitalService {
         });
         hospitalEntity.setHospitalStatus(WebConstant.HOSPITAL_STATUS_INACTIVE);
         hospitalRepository.save(hospitalEntity);
+    }
+
+    @Override
+    public List<HospitalResponse> getHospitals() {
+        return hospitalRepository.findAllByHospitalStatus(WebConstant.HOSPITAL_STATUS_ACTIVE)
+                .stream()
+                .map(hospitalConverter::toResponse)
+                .toList();
     }
 }

@@ -34,6 +34,7 @@ public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCusto
                     select de from DepartmentEntity de
                     join de.staffEntities se
                     where se.staffRole = :staffEntitiesStaffRole
+                    and de.departmentStatus = 'ACTIVE'
                     group by de.id
                 """;
         TypedQuery<DepartmentEntity> getEntitiesTypedQuery = entityManager.createQuery(getEntitiesJpql, DepartmentEntity.class);
@@ -46,7 +47,7 @@ public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCusto
         String getEntitiesJpql = """
                     select de from DepartmentEntity de
                     join de.staffEntities se
-                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId
+                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId and de.departmentStatus = 'ACTIVE'
                     group by de.id
                 """;
         TypedQuery<DepartmentEntity> getEntitiesTypedQuery = entityManager.createQuery(getEntitiesJpql, DepartmentEntity.class);
@@ -56,7 +57,7 @@ public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCusto
         String countJpql = """
                     select count(distinct de.id) from DepartmentEntity de
                     join de.staffEntities se
-                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId
+                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId and de.departmentStatus = 'ACTIVE'
                 """;
         TypedQuery<Long> countTypedQuery = entityManager.createQuery(countJpql, Long.class);
         countTypedQuery.setParameter("staffEntitiesStaffRole", staffEntitiesStaffRole);
@@ -70,7 +71,7 @@ public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCusto
         String getEntitiesJpql = """
                     select de from DepartmentEntity de
                     join de.staffEntities se
-                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId and de.name like :name
+                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId and de.name like :name and de.departmentStatus = 'ACTIVE'
                     group by de.id
                 """;
         TypedQuery<DepartmentEntity> getEntitiesTypedQuery = entityManager.createQuery(getEntitiesJpql, DepartmentEntity.class);
@@ -81,7 +82,7 @@ public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCusto
         String countJpql = """
                     select count(distinct de.id) from DepartmentEntity de
                     join de.staffEntities se
-                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId and de.name like :name
+                    where se.staffRole = :staffEntitiesStaffRole and se.hospitalEntity.id = :hospitalEntityId and de.name like :name and de.departmentStatus = 'ACTIVE'
                 """;
         TypedQuery<Long> countTypedQuery = entityManager.createQuery(countJpql, Long.class);
         countTypedQuery.setParameter("staffEntitiesStaffRole", staffEntitiesStaffRole);

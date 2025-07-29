@@ -4,6 +4,7 @@ import org.project.enums.*;
 
 public class WebConstant {
     public static final UserStatus USER_STATUS_ACTIVE = UserStatus.ACTIVE;
+    public static final UserStatus USER_STATUS_INACTIVE = UserStatus.INACTIVE;
     public static final ProductStatus PRODUCT_STATUS_ACTIVE = ProductStatus.ACTIVE;
     public static final ProductStatus PRODUCT_STATUS_INACTIVE = ProductStatus.INACTIVE;
     public static final PatientStatus PATIENT_STATUS_ACTIVE = PatientStatus.ACTIVE;

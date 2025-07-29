@@ -3,8 +3,11 @@ package org.project.converter;
 import org.modelmapper.ModelMapper;
 import org.project.entity.UserEntity;
 import org.project.enums.Gender;
+import org.project.enums.UserRole;
+import org.project.enums.UserStatus;
 import org.project.exception.mapping.ErrorMappingException;
 import org.project.model.dto.PatientDTO;
+import org.project.model.dto.StaffDTO;
 import org.project.model.dto.UserRegisterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,5 +37,15 @@ public class UserConverter {
         userRegisterDTO.setPatientEntityBirthdate(Date.valueOf(patientDTO.getDateOfBirth()));
         userRegisterDTO.setPatientEntityFullName(patientDTO.getFullName());
         return userRegisterDTO;
+    }
+
+    public UserEntity toEntity(StaffDTO staffDTO) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(staffDTO.getUserEntityId());
+        userEntity.setEmail(staffDTO.getEmail());
+        userEntity.setPhoneNumber(staffDTO.getPhoneNumber());
+        userEntity.setUserRole(UserRole.STAFF);
+        userEntity.setUserStatus(UserStatus.ACTIVE);
+        return userEntity;
     }
 }

@@ -4,6 +4,8 @@ import org.project.model.dto.HospitalDTO;
 import org.project.model.response.HospitalResponse;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface HospitalService {
     HospitalResponse getHospital(Long id);
 
@@ -18,4 +20,6 @@ public interface HospitalService {
     void updateHospital(Long hospitalId, HospitalDTO hospitalDTO);
 
     void deleteHospital(Long hospitalId);
+
+    List<HospitalResponse> getHospitals();
 }

@@ -1,5 +1,6 @@
 package org.project.service.impl;
 
+import org.project.config.WebConstant;
 import org.project.entity.UserEntity;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
             throw new ErrorResponse("Không tìm thấy người dùng với email: " + email);
         }
 
-        String newPassword = RandomUtils.generateStringFromEnableCharacter("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 6);
+        String newPassword = RandomUtils.generateStringFromEnableCharacter(WebConstant.ENABLE_CHARACTERS_PASSWORD, 6);
         userEntity.setPasswordHash(passwordEncoder.encode(newPassword));
         userRepository.save(userEntity);
         emailService.sendResetPasswordEmail(email, newPassword);
@@ -198,9 +199,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity createUser(UserEntity user) {
-        if (user == null) throw new IllegalArgumentException("User cannot be null");
-        if (user.getEmail() != null && userRepository.existsByEmail(user.getEmail())) {
-            throw new org.project.exception.DuplicateResourceException("email", "Email already exists");
+        if (user == null) {
+            throw new ErrorResponse("Người dùng không được null");
+        }
+        if (user.getEmail() != null && userRepository.existsByEmailAndUserStatus(user.getEmail(), UserStatus.ACTIVE)) {
+            throw new ErrorResponse("Email đã tồn tại");
+        }
+        if (user.getPhoneNumber() != null && userRepository.existsByPhoneNumberAndUserStatus(user.getPhoneNumber(), UserStatus.ACTIVE)) {
+            throw new ErrorResponse("Số điện thoại đã tồn tại");
         }
         if (user.getPasswordHash() != null) {
             user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
