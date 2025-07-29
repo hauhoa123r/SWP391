@@ -1,0 +1,278 @@
+<!doctype html>
+<html class="theme-fs-sm" data-bs-theme="light" data-bs-theme-color="default" dir="ltr" lang="vi"
+      layout:decorate="~{/dashboard/layouts/main-layout}"
+      th:with="breadCrumbTitle = ${'Danh sách bệnh viện'}, navItem= ${'hospital'}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Danh sách bệnh viện</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="card">
+        <div class="card-header">
+            <form id="filter" th:object="${hospitalDTO}">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label" for="name">Tên bệnh viện</label>
+                        <input class="form-control" id="name" placeholder="Nhập tên bệnh viện"
+                               th:field="*{name}" type="text">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="address">Địa chỉ</label>
+                        <input class="form-control" id="address" placeholder="Nhập địa chỉ"
+                               th:field="*{address}" type="text">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="phoneNumber">Số điện thoại</label>
+                        <input class="form-control" id="phoneNumber" placeholder="Nhập số điện thoại"
+                               th:field="*{phoneNumber}" type="text">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label class="form-label" for="email">Email</label>
+                        <input class="form-control" id="email" placeholder="Nhập email"
+                               th:field="*{email}" type="email">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label" for="sortField">Sắp xếp theo</label>
+                        <select class="form-select" id="sortField" th:field="*{sortFieldName}">
+                            <option value="">-- Chọn trường --</option>
+                            <option value="name">Tên bệnh viện</option>
+                            <option value="address">Địa chỉ</option>
+                            <option value="phoneNumber">Số điện thoại</option>
+                            <option value="email">Email</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label" for="sortDirection">Thứ tự</label>
+                        <select class="form-select" id="sortDirection" th:field="*{sortDirection}">
+                            <option value="ASC">Tăng dần</option>
+                            <option value="DESC">Giảm dần</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end justify-content-center text-end">
+                        <button class="btn btn-outline-secondary me-2" type="reset">
+                            <i class="fas fa-undo me-1"></i> Đặt lại
+                        </button>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search me-1"></i> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <button aria-controls="addForm" class="btn btn-primary "
+                    data-bs-target="#addForm"
+                    data-bs-toggle="offcanvas" type="button">
+     <span class="btn-inner">
+        <span class="text d-inline-block align-middle">Thêm bệnh viện</span>
+        <span class="icon d-inline-block align-middle ms-1 ps-2">
+           <svg fill="none" height="8" viewBox="0 0 8 8" width="8" xmlns="http://www.w3.org/2000/svg">
+              <path
+                      d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                      fill="currentColor"/>
+           </svg>
+        </span>
+     </span>
+            </button>
+        </div>
+        <div class="card-body pt-0">
+            <div class="table-responsive">
+                <table class="table border-end border-start align-middle mb-0 rounded">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Avatar</th>
+                        <th>Tên bệnh viện</th>
+                        <th>Địa chỉ</th>
+                        <th>Số điện thoại</th>
+                        <th>Email</th>
+                        <th>Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody id="list"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="pagination"></div>
+    </div>
+
+    <form aria-labelledby="editFormLabel" class="offcanvas offcanvas-end" enctype="multipart/form-data" id="editForm"
+          method="post" tabindex="-1" th:object="${hospitalDTO}">
+        <div class="offcanvas-header border-bottom">
+            <h3 class="offcanvas-title" id="editFormLabel">Sửa bệnh viện</h3>
+            <button aria-label="Close" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    type="button"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Ảnh đại diện preview ở đầu -->
+            <div class="form-group text-center mb-4">
+                <label class="form-label d-block">Ảnh đại diện (avatar)</label>
+                <img alt="Avatar Preview"
+                     class="d-none avatar-preview" data-name="avatarUrl"
+                     style="width:120px; height:120px; object-fit:cover; border-radius:50%; border:1px solid #dee2e6; margin-bottom:10px;"
+                     th:src="${hospitalDTO.avatarUrl != null && !#strings.isEmpty(hospitalDTO.avatarUrl) ? hospitalDTO.avatarUrl : ''}">
+                <input accept="image/*" class="form-control mt-2" id="edit_hospitalAvatar"
+                       onchange="previewAvatar(event)"
+                       th:field="*{avatarUrl}"
+                       type="file">
+            </div>
+            <input name="id" type="hidden"/>
+            <div class="form-group">
+                <label class="form-label" for="edit_hospitalName">Tên bệnh viện <span
+                        class="text-danger">*</span></label>
+                <input class="form-control" id="edit_hospitalName" placeholder="Nhập tên bệnh viện" required
+                       th:field="*{name}" type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="edit_hospitalAddress">Địa chỉ <span class="text-danger">*</span></label>
+                <input class="form-control" id="edit_hospitalAddress" placeholder="Nhập địa chỉ" required
+                       th:field="*{address}" type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="edit_hospitalPhoneNumber">Số điện thoại <span
+                        class="text-danger">*</span></label>
+                <input class="form-control" id="edit_hospitalPhoneNumber" placeholder="Nhập số điện thoại" required
+                       th:field="*{phoneNumber}" type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="edit_hospitalEmail">Email <span class="text-danger">*</span></label>
+                <input class="form-control" id="edit_hospitalEmail" placeholder="Nhập email" required
+                       th:field="*{email}" type="email">
+            </div>
+        </div>
+        <div class="offcanvas-footer border-top">
+            <div class="d-grid d-md-flex gap-3 p-3">
+                <button class="btn btn-primary d-block" type="submit">
+                <span class="btn-inner">
+                    <span class="text d-inline-block align-middle">Cập nhật</span>
+                    <span class="icon d-inline-block align-middle ms-1 ps-2">
+                        <svg fill="none" height="8" viewBox="0 0 8 8" width="8" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                  fill="currentColor"/>
+                        </svg>
+                    </span>
+                </span>
+                </button>
+                <button class="btn btn-secondary d-block" data-bs-dismiss="offcanvas" type="button">
+                <span class="btn-inner">
+                    <span class="text d-inline-block align-middle">Đóng</span>
+                    <span class="icon d-inline-block align-middle ms-1 ps-2">
+                        <svg fill="none" height="8" viewBox="0 0 8 8" width="8" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                  fill="currentColor"/>
+                        </svg>
+                    </span>
+                </span>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <form aria-labelledby="addFormLabel" class="offcanvas offcanvas-end" enctype="multipart/form-data" id="addForm"
+          method="post" tabindex="-1" th:object="${hospitalDTO}">
+        <div class="offcanvas-header border-bottom">
+            <h3 class="offcanvas-title" id="addFormLabel">Thêm bệnh viện</h3>
+            <button aria-label="Close" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    type="button"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Ảnh đại diện preview ở đầu -->
+            <div class="form-group text-center mb-4">
+                <label class="form-label d-block">Ảnh đại diện (avatar)</label>
+                <img alt="Avatar Preview" class="avatar-preview d-none" data-name="avatarUrl"
+                     style="width:120px; height:120px; object-fit:cover; border-radius:50%; border:1px solid #dee2e6; margin-bottom:10px;">
+                <input accept="image/*" class="form-control mt-2" id="add_hospitalAvatar"
+                       onchange="previewAvatar(event)"
+                       th:field="*{avatarUrl}"
+                       type="file">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="add_hospitalName">Tên bệnh viện <span
+                        class="text-danger">*</span></label>
+                <input class="form-control" id="add_hospitalName" placeholder="Nhập tên bệnh viện" required
+                       th:field="*{name}" type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="add_hospitalAddress">Địa chỉ <span class="text-danger">*</span></label>
+                <input class="form-control" id="add_hospitalAddress" placeholder="Nhập địa chỉ" required
+                       th:field="*{address}" type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="add_hospitalPhoneNumber">Số điện thoại <span class="text-danger">*</span></label>
+                <input class="form-control" id="add_hospitalPhoneNumber" placeholder="Nhập số điện thoại" required
+                       th:field="*{phoneNumber}" type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="add_hospitalEmail">Email <span class="text-danger">*</span></label>
+                <input class="form-control" id="add_hospitalEmail" placeholder="Nhập email" required th:field="*{email}"
+                       type="email">
+            </div>
+            <!-- Không cho sửa/truyền id ở form thêm mới -->
+        </div>
+        <div class="offcanvas-footer border-top">
+            <div class="d-grid d-md-flex gap-3 p-3">
+                <button class="btn btn-primary d-block" type="submit">
+                <span class="btn-inner">
+                    <span class="text d-inline-block align-middle">Tạo</span>
+                    <span class="icon d-inline-block align-middle ms-1 ps-2">
+                        <svg fill="none" height="8" viewBox="0 0 8 8" width="8" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                  fill="currentColor"/>
+                        </svg>
+                    </span>
+                </span>
+                </button>
+                <button class="btn btn-secondary d-block" data-bs-dismiss="offcanvas" type="button">
+                <span class="btn-inner">
+                    <span class="text d-inline-block align-middle">Đóng</span>
+                    <span class="icon d-inline-block align-middle ms-1 ps-2">
+                        <svg fill="none" height="8" viewBox="0 0 8 8" width="8" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                  fill="currentColor"/>
+                        </svg>
+                    </span>
+                </span>
+                </button>
+            </div>
+        </div>
+    </form>
+</th:block>
+<th:block layout:fragment="custom-js">
+    <script type="module">
+        import {
+            HospitalResponse, renderHospitalResponseForAdmin
+        } from "/templates/shared/assets/js/model/response/HospitalResponse.js";
+        import {CrudUtils} from "/templates/shared/assets/js/utils/crud-utils.js";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const crudUtils = new CrudUtils({
+                apiUrl: "/api/admin/hospital",
+                responseClass: HospitalResponse,
+                renderStrategy: renderHospitalResponseForAdmin
+            });
+            crudUtils.init();
+        });
+    </script>
+    <script>
+        function previewAvatar(event) {
+            const input = event.target;
+            const preview = input.closest("div").querySelector(".avatar-preview");
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+                preview.classList.remove("d-none");
+            } else {
+                preview.classList.add("d-none");
+            }
+        }
+    </script>
+</th:block>
+</body>
+</html>
