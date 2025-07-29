@@ -19,6 +19,10 @@ export class CrudUtils {
      * @param addFormSelector
      * @param editFormSelector
      * @param deleteFormSelector
+     * @param customButtonSelector
+     * @param customButtonEvent
+     * @param customFormSelector
+     * @param customFormEvent
      */
     constructor({
                     apiUrl,
@@ -31,7 +35,11 @@ export class CrudUtils {
                     editButtonSelector = ".edit-button",
                     addFormSelector = "#addForm",
                     editFormSelector = "#editForm",
-                    deleteFormSelector = "#deleteForm"
+                    deleteFormSelector = "#deleteForm",
+                    customButtonSelector = null,
+                    customButtonEvent = null,
+                    customFormSelector = null,
+                    customFormEvent = null
                 }) {
         this.apiUrl = apiUrl;
         this.responseClass = responseClass;
@@ -45,6 +53,10 @@ export class CrudUtils {
         this.editFormSelector = editFormSelector;
         this.deleteFormSelector = deleteFormSelector;
         this.dtoInstance = null;
+        this.customButtonSelector = customButtonSelector;
+        this.customButtonEvent = customButtonEvent;
+        this.customFormSelector = customFormSelector;
+        this.customFormEvent = customFormEvent;
     }
 
     async readData(pageIndex = 0) {
@@ -54,6 +66,7 @@ export class CrudUtils {
         this.renderPagination(data);
         this.setupUpdateButtons();
         this.setupDeleteButtons();
+        this.setupCustomButtons();
     }
 
     async createData(dtoInstance = null) {
@@ -189,6 +202,10 @@ export class CrudUtils {
                         } else {
                             image.classList.add("d-none"); // Hide the image if value is empty
                         }
+                        const input = updateForm.querySelector(`input[name="${name}"]`);
+                        if (input) {
+                            input.value = "";
+                        }
                         return;
                     }
 
@@ -248,6 +265,20 @@ export class CrudUtils {
                         submitButton.disabled = false; // Re-enable the button after submission
                     }
                 });
+            });
+        });
+    }
+
+    setupCustomButtons() {
+        if (!this.customButtonSelector || !this.customButtonEvent) return;
+        const customButtons = document.querySelectorAll(this.customButtonSelector);
+        customButtons.forEach(button => {
+            button.addEventListener("click", async (event) => {
+                event.preventDefault();
+                const itemElement = button.closest(".item");
+                if (!itemElement) return;
+                await this.customButtonEvent(itemElement);
+                await this.readData(); // Refresh the data after custom action
             });
         });
     }
@@ -321,10 +352,30 @@ export class CrudUtils {
         });
     }
 
+    setupCustomFormEvents() {
+        if (!this.customFormSelector || !this.customFormEvent) return;
+        const customForm = document.querySelector(this.customFormSelector);
+        if (!customForm) return;
+        customForm.addEventListener("submit", async (event) => {
+            const submitButton = customForm.querySelector("[type='submit']");
+            if (submitButton) {
+                submitButton.disabled = true; // Disable the button to prevent multiple submissions
+            }
+            event.preventDefault();
+            const formData = new FormData(customForm);
+            const dtoInstance = FormDataUtils.getObjectFromFormData(null, formData);
+            await this.customFormEvent(dtoInstance);
+            if (submitButton) {
+                submitButton.disabled = false; // Re-enable the button after submission
+            }
+        });
+    }
+
     setupFormEvents() {
         this.setupAddFormEvents();
         this.setupEditFormEvents();
         this.setupFilterFormEvents();
+        this.setupCustomFormEvents();
     }
 
     async init() {
