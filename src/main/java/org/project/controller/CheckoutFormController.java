@@ -1,14 +1,17 @@
 package org.project.controller;
 
+import java.util.Optional;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.project.entity.CartItemEntity;
 import org.project.entity.CouponEntity;
 import org.project.entity.UserEntity;
 import org.project.enums.UserRole;
+import org.project.enums.PaymentMethod;
 import org.project.model.dto.CartItemDTO;
 import org.project.model.dto.CheckoutFormDTO;
-import org.project.model.dto.PatientDTO;
+
 import org.project.model.response.PatientResponse;
 import org.project.repository.CouponRepository;
 import org.project.service.*;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -57,7 +61,7 @@ public class CheckoutFormController {
 
         // Lấy danh sách cart items từ session hoặc service
         List<CartItemEntity> cartItems = cartService.getCart(user.getId());
-        List<CartItemDTO> cartItemDTOS = cartItems.stream().map(cartService::convertToCartItemDTO).collect(Collectors.toList())
+        List<CartItemDTO> cartItemDTOS = cartItems.stream().map(cartService::convertToCartItemDTO).collect(Collectors.toList());
         checkoutForm.setItems(cartItemDTOS);
 
         BigDecimal total = cartItemDTOS.stream()
@@ -67,6 +71,9 @@ public class CheckoutFormController {
         checkoutForm.setTotalAmount(total);
         checkoutForm.setShippingFee(new BigDecimal("20000"));
         checkoutForm.setRealAmount(total.add(checkoutForm.getShippingFee()));
+        
+        // Set default payment method
+        checkoutForm.setPaymentMethod(PaymentMethod.CASH);
 
         model.addAttribute("checkoutForm", checkoutForm);
         return "checkout";
@@ -75,18 +82,33 @@ public class CheckoutFormController {
     @PostMapping
     public String submitCheckout(@Valid @ModelAttribute CheckoutFormDTO checkoutForm,
                                  BindingResult result,
-                                 Model model) {
+                                 Model model,
+                                 @RequestParam(required = false) String paymentMethod,
+                                 java.security.Principal principal) {
         if (result.hasErrors()) {
             return "checkout";
         }
 
+        // Set payment method from form
+        if (paymentMethod != null && !paymentMethod.isEmpty()) {
+            try {
+                checkoutForm.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
+            } catch (IllegalArgumentException e) {
+                // Default to CASH if invalid payment method
+                checkoutForm.setPaymentMethod(PaymentMethod.CASH);
+            }
+        } else {
+            checkoutForm.setPaymentMethod(PaymentMethod.CASH);
+        }
+
         // Validate coupon nếu có
         if (checkoutForm.getCouponCode() != null && !checkoutForm.getCouponCode().isBlank()) {
-            CouponEntity coupon = couponRepository.existsByCode((checkoutForm.getCouponCode());
-            if (coupon != null) {
+            Optional<CouponEntity> optionalCoupon = couponRepository.findByCode(checkoutForm.getCouponCode());
+            if (optionalCoupon.isPresent()) {
+                CouponEntity coupon = optionalCoupon.get();
                 checkoutForm.setCouponId(coupon.getId());
                 // Recalculate amount
-                BigDecimal discounted = checkoutForm.getTotalAmount().subtract(coupon.get);
+                BigDecimal discounted = checkoutForm.getTotalAmount().subtract(coupon.getValue());
                 checkoutForm.setRealAmount(discounted.add(checkoutForm.getShippingFee()));
             } else {
                 model.addAttribute("invalidCoupon", true);

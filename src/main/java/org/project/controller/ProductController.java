@@ -16,12 +16,6 @@ public class ProductController {
     @Autowired
     private PharmacyService pharmacyServiceImpl;
 
-    @GetMapping("/product-standard/")
-    public ModelAndView product() {
-        ModelAndView mv = new ModelAndView("product-standard");
-        return mv;
-    }
-
 
     @GetMapping("/product-standard/{id}")
     public String getProductDetail(@PathVariable("id") Long productId, Model model) {
@@ -57,7 +51,7 @@ public class ProductController {
         model.addAttribute("relatedProducts",
                 pharmacyServiceImpl.findRandomProductsByType(detailDTO.getProduct().getType().toString()));
         // Return the view name
-        return "frontend/product-standard";
+        return "product-standard";
     }
 
     @GetMapping("/product-home")
@@ -67,12 +61,4 @@ public class ProductController {
         mv.addObject("products", pharmacyServiceImpl.findTop10Products());
         return mv;
     }
-
-    @GetMapping("/cart")
-    public ModelAndView cart() {
-        ModelAndView mv = new ModelAndView("frontend/cart");
-        return mv;
-    }
-
-
 }

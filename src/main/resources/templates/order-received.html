@@ -1136,29 +1136,31 @@
             <table class="edit-address w-100 border-0 bg-white">
                <tbody>
                   <tr>
-                     <td class="label-name p-2">Order number</td>
+                     <td class="label-name p-2">Order ID</td>
                      <td class="seprator p-2"><span>:</span></td>
-                     <td class="p-2">38653</td>
+                     <td class="p-2" th:text="${orderId}">#12345</td>
                   </tr>
                   <tr>
-                     <td class="label-name p-2">DATE</td>
+                     <td class="label-name p-2">Total Amount</td>
                      <td class="seprator p-2"><span>:</span></td>
-                     <td class="p-2">July 24, 2023</td>
+                     <td class="p-2" th:text="'$' + ${totalAmount}">$100.00</td>
                   </tr>
                   <tr>
-                     <td class="label-name p-2">EMAIL</td>
+                     <td class="label-name p-2">Payment Method</td>
                      <td class="seprator p-2"><span>:</span></td>
-                     <td class="p-2">jondoe@gmail.com</td>
+                     <td class="p-2" th:text="${paymentMethod == 'CASH' ? 'Tiền mặt' : (paymentMethod == 'CARD' ? 'Thẻ tín dụng/ghi nợ' : (paymentMethod == 'MOMO' ? 'MoMo' : paymentMethod))}">Tiền mặt</td>
                   </tr>
                   <tr>
-                     <td class="label-name p-2">TOTAL</td>
+                     <td class="label-name p-2">Payment Status</td>
                      <td class="seprator p-2"><span>:</span></td>
-                     <td class="p-2">$64.00</td>
+                     <td class="p-2">
+                        <span th:class="${statusClass}" th:text="${paymentStatus}">Chờ thanh toán</span>
+                     </td>
                   </tr>
-                  <tr>
-                     <td class="label-name p-2">PAYMENT METHOD</td>
+                  <tr th:if="${payment != null}">
+                     <td class="label-name p-2">Payment Time</td>
                      <td class="seprator p-2"><span>:</span></td>
-                     <td class="p-2">Cash on delivery</td>
+                     <td class="p-2" th:text="${#dates.format(payment.paymentTime, 'dd/MM/yyyy HH:mm')}">24/12/2023 14:30</td>
                   </tr>
                </tbody>
             </table>

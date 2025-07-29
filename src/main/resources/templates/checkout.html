@@ -1235,29 +1235,60 @@
                   </tfoot>
                </table>
                <div class="checkout-payment my-4 py-3">
-                  <label>Cash on delivery</label>
-                  <div
-                     class="payment-box my-3 p-3 bg-primary-subtle text-body position-relative">
-                     <p class="mb-0">Pay with cash upon delivery.</p>
+                  <h4 class="mb-3">Phương thức thanh toán</h4>
+                  
+                  <!-- Cash on Delivery -->
+                  <div class="payment-method-item mb-3">
+                     <input type="radio" id="cash" name="paymentMethod" value="CASH" checked class="form-check-input">
+                     <label for="cash" class="form-check-label ms-2">
+                        <strong>Thanh toán khi nhận hàng</strong>
+                     </label>
+                     <div class="payment-box my-2 p-3 bg-primary-subtle text-body position-relative">
+                        <p class="mb-0">Thanh toán bằng tiền mặt khi nhận hàng.</p>
+                     </div>
                   </div>
+                  
+                  <!-- Credit Card -->
+                  <div class="payment-method-item mb-3">
+                     <input type="radio" id="card" name="paymentMethod" value="CARD" class="form-check-input">
+                     <label for="card" class="form-check-label ms-2">
+                        <strong>Thẻ tín dụng/Ghi nợ</strong>
+                     </label>
+                     <div class="payment-box my-2 p-3 bg-light text-body position-relative">
+                        <p class="mb-0">Thanh toán an toàn bằng thẻ tín dụng hoặc thẻ ghi nợ.</p>
+                     </div>
+                  </div>
+                  
+                  <!-- MoMo -->
+                  <div class="payment-method-item mb-3">
+                     <input type="radio" id="momo" name="paymentMethod" value="MOMO" class="form-check-input">
+                     <label for="momo" class="form-check-label ms-2">
+                        <strong>MoMo</strong>
+                     </label>
+                     <div class="payment-box my-2 p-3 bg-light text-body position-relative">
+                        <p class="mb-0">Thanh toán bằng ví điện tử MoMo.</p>
+                     </div>
+                  </div>
+                  
                   <hr class="my-5">
                   <p class="my-3">
-                     Your personal data will be used to process your order,
-                     support your experience
-                     throughout this website, and for other purposes described
-                     in our
+                     Dữ liệu cá nhân của bạn sẽ được sử dụng để xử lý đơn hàng,
+                     hỗ trợ trải nghiệm của bạn
+                     trên toàn bộ trang web này và cho các mục đích khác được mô tả
+                     trong chính sách của chúng tôi
                   </p>
                   <div class="button-primary">
                      <div class="iq-btn-container">
-                        <a class="iq-button text-capitalize" href="./order-received.html">
-                           <span class="iq-btn-text-holder position-relative">Place Order</span>
+                        <button type="submit" class="iq-button text-capitalize">
+                           <span class="iq-btn-text-holder position-relative">Đặt hàng</span>
                            <span class="iq-btn-icon-holder">
                               <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 8 8" fill="none">
                                  <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z" fill="currentColor"></path>
                               </svg>
                            </span>
-                        </a>
-                     </div>                  </div>
+                        </button>
+                     </div>
+                  </div>
                </div>
             </div>
          </div>

@@ -183,19 +183,6 @@ public class ShopController {
     }
 
 
-    // ==================== Other page mappings ====================
-
-    /**
-     * Checkout page
-     * @return ModelAndView for checkout page
-     */
-    @GetMapping("/checkout")
-    public ModelAndView checkout() {
-        log.debug("Accessing checkout page");
-        return new ModelAndView("frontend/checkout");
-    }
-
-
     // ==================== Helper methods ====================
     
     /**

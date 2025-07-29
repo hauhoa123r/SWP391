@@ -198,6 +198,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Long getUserIdByUsername(String username) {
+        UserEntity user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new ResourceNotFoundException("User not found with username: " + username);
+        }
+        return user.getId();
+    }
+
+    @Override
     public Page<UserEntity> searchByRole(String role, int page, int size) {
         try {
             return userRepository.findByUserRole(UserRole.valueOf(role.toUpperCase()), PageRequest.of(page, size));

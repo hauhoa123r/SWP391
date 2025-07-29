@@ -13,7 +13,9 @@ import java.util.Optional;
  * Service interface cho quản lý coupon
  */
 public interface CouponService {
-    
+
+    BigDecimal applyCouponToCart(String code, Long userId, HttpSession session) throws CouponException;
+
     /**
      * Tìm tất cả coupon có phân trang
      */
@@ -64,6 +66,5 @@ public interface CouponService {
      */
     Page<CouponDTO> findExpiredCoupons(int page, int size, String sortBy, String sortDir);
 
-    BigDecimal applyCoupon(String code, Long userId, HttpSession session) throws CouponException;
 
 } 

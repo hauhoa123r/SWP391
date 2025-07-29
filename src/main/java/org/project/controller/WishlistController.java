@@ -19,6 +19,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.Enumeration;
+
 /**
  * Controller to handle wishlist related interactions (view, add, remove products).
  * <p>
@@ -38,68 +40,28 @@ public class WishlistController {
      */
     @GetMapping("/wishlist")
     public String viewWishlist(
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false, defaultValue = "date_desc") String sort,
-            @RequestParam(required = false, defaultValue = "0") Integer page,
-            Model model, 
+            @RequestParam(value = "searchQuery", required = false) String searchQuery,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "name_asc") String sortBy,
+            @RequestParam(value = "filterStock", required = false, defaultValue = "all") String filterStock,
+            Model model,
             HttpSession session) {
         
-        // Lấy tất cả items từ wishlist
-        List<PharmacyResponse> allItems = wishlistService.getWishlistItems(getCurrentUserId(session));
-        
-        // Lọc theo tìm kiếm nếu có
-        List<PharmacyResponse> filteredItems = allItems;
-        if (search != null && !search.trim().isEmpty()) {
-            String searchLower = search.toLowerCase();
-            filteredItems = allItems.stream()
-                    .filter(item -> item.getName().toLowerCase().contains(searchLower) || 
-                                    (item.getDescription() != null && 
-                                     item.getDescription().toLowerCase().contains(searchLower)))
-                    .collect(Collectors.toList());
-        }
-        
-        // Sắp xếp dữ liệu
-        switch (sort) {
-            case "name_asc":
-                filteredItems.sort(Comparator.comparing(PharmacyResponse::getName));
-                break;
-            case "name_desc":
-                filteredItems.sort(Comparator.comparing(PharmacyResponse::getName).reversed());
-                break;
-            case "price_asc":
-                filteredItems.sort(Comparator.comparing(PharmacyResponse::getPrice));
-                break;
-            case "price_desc":
-                filteredItems.sort(Comparator.comparing(PharmacyResponse::getPrice).reversed());
-                break;
-            case "date_asc":
-                // Giả định rằng ID sẽ tăng theo thời gian tạo
-                filteredItems.sort(Comparator.comparing(PharmacyResponse::getId));
-                break;
-            case "date_desc":
-            default:
-                // Giả định rằng ID sẽ tăng theo thời gian tạo
-                filteredItems.sort(Comparator.comparing(PharmacyResponse::getId).reversed());
-                break;
-        }
+        // Lấy tất cả items từ wishlist với các tham số lọc
+        List<PharmacyResponse> allItems = wishlistService.getWishlistItems(getCurrentUserId(session), searchQuery, sortBy, filterStock);
         
         // Tính toán thông tin phân trang
-        int totalItems = filteredItems.size();
+        int totalItems = allItems.size();
         int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
         
         // Đảm bảo page trong phạm vi hợp lệ
-        if (page < 0) {
-            page = 0;
-        } else if (page >= totalPages && totalPages > 0) {
-            page = totalPages - 1;
-        }
+        int page = 0; // Default page
         
         // Lấy dữ liệu trang hiện tại
         List<PharmacyResponse> pagedItems;
-        if (!filteredItems.isEmpty()) {
+        if (!allItems.isEmpty()) {
             int start = page * PAGE_SIZE;
             int end = Math.min(start + PAGE_SIZE, totalItems);
-            pagedItems = filteredItems.subList(start, end);
+            pagedItems = allItems.subList(start, end);
         } else {
             pagedItems = new ArrayList<>();
         }
@@ -131,12 +93,19 @@ public class WishlistController {
      */
     @PostMapping("/wishlist/remove")
     public String removeFromWishlist(@RequestParam("productId") Long productId,
-                                     @RequestHeader(value = "Referer", required = false) String referer,
                                      RedirectAttributes redirectAttrs,
                                      HttpSession session) {
-        wishlistService.removeProduct(getCurrentUserId(session), productId);
-        redirectAttrs.addFlashAttribute("wishlistMessage", "Đã xoá sản phẩm khỏi wishlist!");
-        return redirectBack(referer);
+        log.info("Received request to remove productId: {} from wishlist", productId);
+        log.info("Product ID nhận được: {}", productId); // Thêm log để kiểm tra productId
+        Long userId = getCurrentUserId(session);
+        log.info("User ID from session: {}", userId);
+        boolean removed = wishlistService.removeProduct(userId, productId);
+        if (removed) {
+            redirectAttrs.addFlashAttribute("wishlistMessage", "Đã xoá sản phẩm khỏi wishlist!");
+        } else {
+            redirectAttrs.addFlashAttribute("wishlistMessage", "Không thể xoá sản phẩm khỏi wishlist. Vui lòng thử lại.");
+        }
+        return redirectToReferer();
     }
     
     /**
@@ -153,15 +122,68 @@ public class WishlistController {
         return redirectBack(referer);
     }
 
+    /**
+     * Remove selected products from the wishlist then redirect back.
+     */
+    @PostMapping("/wishlist/remove-selected")
+    public String removeSelectedFromWishlist(@RequestParam(value = "selectedItems", required = false) List<Long> selectedItems,
+                                             RedirectAttributes redirectAttrs,
+                                             HttpSession session) {
+        if (selectedItems == null || selectedItems.isEmpty()) {
+            redirectAttrs.addFlashAttribute("wishlistMessage", "Không có sản phẩm nào được chọn để xóa.");
+            return redirectToReferer();
+        }
+
+        Long userId = getCurrentUserId(session);
+        int removedCount = 0;
+        for (Long productId : selectedItems) {
+            boolean removed = wishlistService.removeProduct(userId, productId);
+            if (removed) {
+                removedCount++;
+            }
+        }
+
+        if (removedCount > 0) {
+            redirectAttrs.addFlashAttribute("wishlistMessage", "Đã xóa " + removedCount + " sản phẩm khỏi wishlist!");
+        } else {
+            redirectAttrs.addFlashAttribute("wishlistMessage", "Không thể xóa các sản phẩm đã chọn khỏi wishlist. Vui lòng thử lại.");
+        }
+        return redirectToReferer();
+    }
+
     /** Redirect helper: fallback to /wishlist if no referer present */
     private String redirectBack(String referer) {
         return referer != null ? "redirect:" + referer : "redirect:/wishlist";
     }
 
+    private String redirectToReferer() {
+        return "redirect:/wishlist";
+    }       
+
     /** Get current authenticated user ID from session */
     private Long getCurrentUserId(HttpSession session) {
+        log.info("Getting current user ID from session, session id: {}", session.getId());
+        // Log tất cả các attribute trong session để debug
+        Enumeration<String> attributeNames = session.getAttributeNames();
+        log.info("Session attributes:");
+        while (attributeNames.hasMoreElements()) {
+            String attrName = attributeNames.nextElement();
+            try {
+                Object attrValue = session.getAttribute(attrName);
+                log.info("  {} = {}", attrName, attrValue != null ? attrValue.toString() : "null");
+            } catch (Exception e) {
+                log.warn("  {} = [unable to display value due to exception: {}]", attrName, e.getMessage());
+            }
+        }
         // TODO: Replace with authenticated user ID once security is integrated
-        Object userId = session.getAttribute("userId");
-        return userId != null ? (Long) userId : 1L; // Default to user ID 1 if not found
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            log.warn("No userId found in session, using default value and setting it");
+            userId = 1L; // Default for demo, replace with proper authentication
+            session.setAttribute("userId", userId);
+            // TODO: Ensure this matches a valid user ID in your database
+        }
+        log.info("Returning userId: {}", userId);
+        return userId;
     }
 }

@@ -53,4 +53,6 @@ public interface UserService {
     UserLoginResponse isLogin(UserLoginDTO userLoginDTO);
 
     void resetPassword(String email);
+
+    Long getUserIdByUsername(String username);
 }

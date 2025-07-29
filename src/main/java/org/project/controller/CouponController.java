@@ -323,7 +323,7 @@ public class CouponController {
 //            }
             Long userId=2l;
 
-            couponService.applyCoupon(code, userId, session);
+            couponService.applyCouponToCart(code, userId, session);
             redirectAttributes.addFlashAttribute("couponSuccess", "Coupon applied successfully!");
         } catch (CouponException e) {
             redirectAttributes.addFlashAttribute("couponError", e.getMessage());

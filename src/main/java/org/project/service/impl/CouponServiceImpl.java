@@ -11,7 +11,6 @@ import org.project.repository.CouponRepository;
 import org.project.service.CartService;
 import org.project.service.CouponService;
 import org.project.service.UserCouponService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +30,68 @@ public class CouponServiceImpl implements CouponService {
     private final CouponRepository couponRepository;
     private final UserCouponService userCouponService;
     private final CartService cartService;
+
+    private BigDecimal calculateDiscountedTotal(BigDecimal cartTotal, CouponEntity coupon) {
+        BigDecimal discountedTotal;
+
+        if (coupon.getDiscountType() == DiscountType.FIXED) {
+            discountedTotal = cartTotal.subtract(coupon.getValue());
+        } else if (coupon.getDiscountType() == DiscountType.PERCENTAGE) {
+            BigDecimal percent = coupon.getValue().divide(BigDecimal.valueOf(100));
+            discountedTotal = cartTotal.subtract(cartTotal.multiply(percent));
+        } else {
+            discountedTotal = cartTotal;
+        }
+
+        if (discountedTotal.compareTo(BigDecimal.ZERO) < 0) {
+            discountedTotal = BigDecimal.ZERO;
+        }
+
+        return discountedTotal;
+    }
+
+    @Override
+    public BigDecimal applyCouponToCart(String code, Long userId, HttpSession session) throws CouponException {
+        Optional<CouponEntity> optionalCoupon = couponRepository.findByCode(code.trim());
+        if (optionalCoupon.isEmpty()) {
+            throw new CouponException("Coupon code not found. Existing coupon (if any) is still applied.");
+        }
+
+        CouponEntity coupon = optionalCoupon.get();
+
+        // Check if coupon is expired
+        java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+        if (coupon.getExpirationDate() != null && coupon.getExpirationDate().before(currentDate)) {
+            throw new CouponException("Coupon code has expired. Existing coupon (if any) is still applied.");
+        }
+
+        BigDecimal cartTotal = cartService.calculateTotal(userId);
+
+        if (coupon.getMinimumOrderAmount() != null && cartTotal.compareTo(coupon.getMinimumOrderAmount()) < 0) {
+            throw new CouponException("Order total does not meet the minimum amount.");
+        }
+
+        // Check if coupon is active - tạm thởi bỏ kiểm tra này
+        // if (coupon.isEnabled() == null || !coupon.isEnabled()) {
+        //     throw new CouponException("Coupon code is not active. Existing coupon (if any) is still applied.");
+        // }
+
+        // Check if user has already used this coupon - tạm thởi bỏ kiểm tra này
+        // if (coupon.getMaxUsesPerUser() != null && coupon.getMaxUsesPerUser() == 1) {
+        //     boolean hasUsed = userCouponService.hasUserUsedCoupon(userId, coupon.getId());
+        //     if (hasUsed) {
+        //         throw new CouponException("You have already used this coupon. Existing coupon (if any) is still applied.");
+        //     }
+        // }
+
+        BigDecimal discountedTotal= calculateDiscountedTotal(cartTotal,coupon);
+
+
+        session.setAttribute("appliedCoupon", coupon);
+        session.setAttribute("discountedTotal", discountedTotal);
+
+        return discountedTotal;
+    }
 
     @Override
     public Page<CouponDTO> findAllCoupons(int page, int size, String sortBy, String sortDir) {
@@ -138,55 +199,6 @@ public class CouponServiceImpl implements CouponService {
         
         return couponPage.map(this::convertToDTO);
     }
-
-
-    private BigDecimal calculateDiscountedTotal(BigDecimal cartTotal, CouponEntity coupon) {
-        BigDecimal discountedTotal;
-
-        if (coupon.getDiscountType() == DiscountType.FIXED) {
-            discountedTotal = cartTotal.subtract(coupon.getValue());
-        } else if (coupon.getDiscountType() == DiscountType.PERCENTAGE) {
-            BigDecimal percent = coupon.getValue().divide(BigDecimal.valueOf(100));
-            discountedTotal = cartTotal.subtract(cartTotal.multiply(percent));
-        } else {
-            discountedTotal = cartTotal;
-        }
-
-        if (discountedTotal.compareTo(BigDecimal.ZERO) < 0) {
-            discountedTotal = BigDecimal.ZERO;
-        }
-
-        return discountedTotal;
-    }
-
-    @Override
-    public BigDecimal applyCoupon(String code, Long userId, HttpSession session) throws CouponException {
-        Optional<CouponEntity> optionalCoupon = couponRepository.findByCode(code.trim());
-        if (optionalCoupon.isEmpty()) {
-            throw new CouponException("Coupon code not found. Existing coupon (if any) is still applied.");
-        }
-
-        CouponEntity coupon = optionalCoupon.get();
-
-        if (coupon.getExpirationDate().before(new Date())) {
-            throw new CouponException("Coupon has expired.");
-        }
-
-        BigDecimal cartTotal = cartService.calculateTotal(userId);
-
-        if (coupon.getMinimumOrderAmount() != null && cartTotal.compareTo(coupon.getMinimumOrderAmount()) < 0) {
-            throw new CouponException("Order total does not meet the minimum amount.");
-        }
-
-        BigDecimal discountedTotal= calculateDiscountedTotal(cartTotal,coupon);
-
-
-        session.setAttribute("appliedCoupon", coupon);
-        session.setAttribute("discountedTotal", discountedTotal);
-
-        return discountedTotal;
-    }
-
 
     /**
      * Tạo Sort object dựa trên các tham số

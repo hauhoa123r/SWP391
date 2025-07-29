@@ -30,6 +30,17 @@
                 <span th:text="${wishlistMessage}"></span>
                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
             </div>
+            
+            <!-- Add cart notification -->
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" th:if="${success}">
+                <span th:text="${success}"></span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+            
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert" th:if="${error}">
+                <span th:text="${error}"></span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
             <div class="row">
                 <div class="col-xl-3">
                     <div class="widget bg-primary-subtle p-3 p-md-4 mb-5">
@@ -438,12 +449,13 @@
                                                                                    value="1"/>
                                                                             <button class="iq-button text-capitalize"
                                                                                     type="submit">
-                                                                                <span class="iq-btn-text-holder position-relative">add to cart</span>
+                                                                                <span class="iq-btn-text-holder position-relative">Thêm vào giỏ hàng</span>
                                                                                 <span class="iq-btn-icon-holder">
                                     <svg fill="none" height="11" viewBox="0 0 10 11" width="10"
                                          xmlns="http://www.w3.org/2000/svg">
-                                                               <path d="M5 0.5C5.34518 0.5 5.625 0.779822 5.625 1.125V4.875H9.375C9.72018 4.875 10 5.15482 10 5.5C10 5.84518 9.72018 6.125 9.375 6.125H5.625V9.875C5.625 10.2202 5.34518 10.5 5 10.5C4.65482 10.5 4.375 10.2202 4.375 9.875V6.125H0.625C0.279822 6.125 0 5.84518 0 5.5C0 5.15482 0.279822 4.875 0.625 4.875H4.375V1.125C4.375 0.779822 4.65482 0.5 5 0.5Z"
-                                                                     fill="currentColor"/>
+                                       <path
+                                               d="M5 0.5C5.34518 0.5 5.625 0.779822 5.625 1.125V4.875H9.375C9.72018 4.875 10 5.15482 10 5.5C10 5.84518 9.72018 6.125 9.375 6.125H5.625V9.875C5.625 10.2202 5.34518 10.5 5 10.5C4.65482 10.5 4.375 10.2202 4.375 9.875V6.125H0.625C0.279822 6.125 0 5.84518 0 5.5C0 5.15482 0.279822 4.875 0.625 4.875H4.375V1.125C4.375 0.779822 4.65482 0.5 5 0.5Z"
+                                               fill="currentColor"></path>
                                     </svg>
                                  </span>
                                                                             </button>
