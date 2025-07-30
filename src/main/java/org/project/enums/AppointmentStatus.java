@@ -12,6 +12,5 @@ public enum AppointmentStatus {
     IN_PROGRESS("In Progress"),
     COMPLETED("Completed"),
     CONFLICTED("Conflicted");
-
     private final String status;
 }

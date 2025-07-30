@@ -3,7 +3,9 @@ package org.project.repository;
 import jakarta.transaction.Transactional;
 import org.project.entity.AppointmentEntity;
 import org.project.enums.AppointmentStatus;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +14,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
-public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
+public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> , JpaSpecificationExecutor<AppointmentEntity> {
     List<AppointmentEntity> findByDoctorEntityStaffEntityIdAndStartTimeBetween(Long doctorEntityStaffEntityId, Timestamp startTimeAfter, Timestamp startTimeBefore);
 
     boolean existsByPatientEntityIdAndStartTimeEquals(Long patientEntityId, Timestamp startTime);
@@ -85,4 +87,5 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     );
 
     List<AppointmentEntity> findTop5ByPatientEntity_UserEntity_IdOrderByIdDesc(Long userId);
+
 }

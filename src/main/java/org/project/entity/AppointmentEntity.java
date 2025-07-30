@@ -48,6 +48,9 @@ public class AppointmentEntity {
     @Column(name = "duration_minutes")
     private Integer durationMinutes;
 
+    @Column(name = "result_url")
+    private String resultUrl;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "scheduling_coordinator_id", nullable = false)
     private SchedulingCoordinatorEntity schedulingCoordinatorEntity;

@@ -32,11 +32,11 @@
                     <h1>Kivicare xin chào</h1>
                     <p>Chúc bạn một ngày hạnh phúc và tràn đầy năng lượng!</p>
                     <div class="btn-group">
-                        <a href="#" class="btn btn-primary">
+                        <a th:href="@{/patient/showList}" class="btn btn-primary">
                             <span>Xem danh sách bệnh nhân</span>
                             <i class="fas fa-plus"></i>
                         </a>
-                        <a href="appointment.html" class="btn btn-secondary">
+                        <a th:href="@{/patient/appointment}" class="btn btn-secondary">
                             <span>Lịch hẹn</span>
                             <i class="fas fa-plus"></i>
                         </a>
@@ -141,10 +141,6 @@
         <div class="doctors-card">
             <div class="doctors-header">
                 <h3>Bác sĩ có sẵn</h3>
-                <a href="#" class="view-all">
-                    Xem tất cả
-                    <i class="fas fa-chevron-right"></i>
-                </a>
             </div>
             <div class="doctor-list">
                 <div class="doctor-item" th:each="dr, stat : ${doctorResponses}">
