@@ -22,7 +22,6 @@ public class ProductAdditionalInfoEntity {
     @Column(name = "product_additional_info_id", nullable = false)
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity productEntity;
