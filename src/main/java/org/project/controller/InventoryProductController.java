@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/inventory/products")
+@RequestMapping("/warehouse/inventory/products")
 public class InventoryProductController {
 
     private final ProductRepository productRepository;

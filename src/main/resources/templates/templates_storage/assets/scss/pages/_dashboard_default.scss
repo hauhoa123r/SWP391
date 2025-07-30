@@ -3657,14 +3657,14 @@ footer {
 
 .main-tiles {
     &.card {
-        padding: 35px 25px;
+        padding: 35px 15px;
 
         @media (max-width: 1600px) {
-            padding: 25px 25px;
+            padding: 25px 15px;
         }
 
         @media (max-width: 768px) {
-            padding: 15px 25px;
+            padding: 15px 15px;
         }
 
         .media {

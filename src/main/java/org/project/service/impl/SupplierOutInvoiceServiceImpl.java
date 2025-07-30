@@ -1,344 +1,93 @@
 package org.project.service.impl;
 
 import org.project.entity.InventoryManagerEntity;
-import org.project.entity.SupplierInvoiceEntity;
-import org.project.entity.SupplierTransactionInvoiceMappingEntity;
-import org.project.entity.SupplierTransactionInvoiceMappingEntityId;
 import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
-import org.project.model.dto.SupplierOutDTO;
 import org.project.model.dto.SupplierInvoiceDTO;
+import org.project.model.dto.SupplierOutDTO;
 import org.project.repository.InventoryManagerRepository;
-import org.project.repository.SupplierInvoiceRepository;
-import org.project.repository.SupplierTransactionInvoiceMappingRepository;
 import org.project.repository.SupplierTransactionRepository;
 import org.project.service.SupplierOutInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service("supplierOutInvoiceService")
 public class SupplierOutInvoiceServiceImpl implements SupplierOutInvoiceService {
 
     @Autowired
-    private SupplierInvoiceRepository supplierInvoiceRepository;
-    
-    @Autowired
     private SupplierTransactionRepository supplierTransactionRepository;
-    
-    @Autowired
-    private SupplierTransactionInvoiceMappingRepository mappingRepository;
-    
+
     @Autowired
     private InventoryManagerRepository inventoryManagerRepository;
 
     @Override
-    public List<SupplierInvoiceDTO> getAllInvoices() {
-        List<SupplierInvoiceEntity> invoices = supplierInvoiceRepository.findByTransactionType(SupplierTransactionType.STOCK_OUT);
-        return invoices.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Page<SupplierInvoiceDTO> getAllInvoices(int page, int size, String keyword, String status) {
-        Pageable pageable = PageRequest.of(page, size);
-        
-        Page<SupplierInvoiceEntity> invoicesPage;
-        
-        if (keyword != null && !keyword.isEmpty() && status != null && !status.isEmpty()) {
-            // Tìm kiếm theo cả keyword và status
-            SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status);
-            invoicesPage = supplierInvoiceRepository.findByTransactionTypeAndStatusAndInvoiceNumberContaining(
-                    SupplierTransactionType.STOCK_OUT, statusEnum, keyword, pageable);
-        } else if (keyword != null && !keyword.isEmpty()) {
-            // Chỉ tìm kiếm theo keyword
-            invoicesPage = supplierInvoiceRepository.findByTransactionTypeAndInvoiceNumberContaining(
-                    SupplierTransactionType.STOCK_OUT, keyword, pageable);
-        } else if (status != null && !status.isEmpty()) {
-            // Chỉ tìm kiếm theo status
-            SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status);
-            invoicesPage = supplierInvoiceRepository.findByTransactionTypeAndStatus(
-                    SupplierTransactionType.STOCK_OUT, statusEnum, pageable);
-        } else {
-            // Không có điều kiện tìm kiếm
-            invoicesPage = supplierInvoiceRepository.findByTransactionType(
-                    SupplierTransactionType.STOCK_OUT, pageable);
-        }
-        
-        List<SupplierInvoiceDTO> dtoList = invoicesPage.getContent().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-        
-        return new PageImpl<>(dtoList, pageable, invoicesPage.getTotalElements());
-    }
-
-    @Override
-    public SupplierInvoiceDTO getInvoiceById(Long id) {
-        Optional<SupplierInvoiceEntity> invoiceOpt = supplierInvoiceRepository.findById(id);
-        return invoiceOpt.filter(i -> i.getTransactionType() == SupplierTransactionType.STOCK_OUT)
-                .map(this::convertToDTO)
-                .orElse(null);
-    }
-
-    @Override
-    @Transactional
     public SupplierInvoiceDTO saveInvoice(SupplierOutDTO supplierOutDTO) {
-        // Lấy transaction từ database
-        SupplierTransactionsEntity transaction = supplierTransactionRepository.findById(supplierOutDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Transaction not found with id: " + supplierOutDTO.getId()));
-        
-        // Tạo invoice mới
-        SupplierInvoiceEntity invoice = new SupplierInvoiceEntity();
+        SupplierTransactionsEntity invoice = new SupplierTransactionsEntity();
         invoice.setInvoiceNumber(supplierOutDTO.getInvoiceNumber());
-        invoice.setTransactionType(SupplierTransactionType.STOCK_OUT);
-        invoice.setInvoiceDate(Timestamp.from(Instant.now()));
+        invoice.setTransactionDate(supplierOutDTO.getTransactionDate());
         invoice.setTotalAmount(supplierOutDTO.getTotalAmount());
-        invoice.setTaxAmount(supplierOutDTO.getTaxAmount());
-        invoice.setShippingCost(supplierOutDTO.getShippingCost());
-        
-        // Tính tổng giá trị
-        BigDecimal grandTotal = supplierOutDTO.getTotalAmount();
-        if (supplierOutDTO.getTaxAmount() != null) {
-            grandTotal = grandTotal.add(supplierOutDTO.getTaxAmount());
+        invoice.setStatus(supplierOutDTO.getStatus());
+        invoice.setTransactionType(SupplierTransactionType.STOCK_OUT);
+        // Set createdBy from inventory manager if available
+        if (supplierOutDTO.getInventoryManagerId() != null) {
+            inventoryManagerRepository.findById(supplierOutDTO.getInventoryManagerId())
+                    .ifPresent(invoice::setCreatedBy);
         }
-        if (supplierOutDTO.getShippingCost() != null) {
-            grandTotal = grandTotal.add(supplierOutDTO.getShippingCost());
-        }
-        invoice.setGrandTotal(grandTotal);
-        
-        invoice.setStatus(SupplierTransactionStatus.COMPLETED);
-        
-        // Set người tạo hóa đơn
-        InventoryManagerEntity createdBy = inventoryManagerRepository.findById(supplierOutDTO.getInventoryManagerId())
-                .orElseThrow(() -> new RuntimeException("Inventory Manager not found with id: " + supplierOutDTO.getInventoryManagerId()));
-        invoice.setCreatedBy(createdBy);
-        
-        invoice.setNotes(supplierOutDTO.getNotes());
-        invoice.setPaymentMethod(supplierOutDTO.getPaymentMethod());
-        invoice.setDueDate(supplierOutDTO.getDueDate());
-        invoice.setPaymentDate(supplierOutDTO.getPaymentDate());
-        
-        // Lưu invoice
-        SupplierInvoiceEntity savedInvoice = supplierInvoiceRepository.save(invoice);
-        
-        // Tạo mapping giữa transaction và invoice
-        SupplierTransactionInvoiceMappingEntity mapping = new SupplierTransactionInvoiceMappingEntity();
-        
-        // Tạo composite key
-        SupplierTransactionInvoiceMappingEntityId mappingId = new SupplierTransactionInvoiceMappingEntityId();
-        mappingId.setSupplierTransactionId(transaction.getId());
-        mappingId.setSupplierInvoiceId(savedInvoice.getId());
-        mapping.setId(mappingId);
-        
-        // Set references
-        mapping.setSupplierTransactionEntity(transaction);
-        mapping.setSupplierInvoiceEntity(savedInvoice);
-        
-        // Set allocated amount (full amount)
-        mapping.setAllocatedAmount(transaction.getTotalAmount());
-        
-        // Lưu mapping
-        mappingRepository.save(mapping);
-        
-        // Cập nhật trạng thái transaction
-        transaction.setStatus(SupplierTransactionStatus.COMPLETED);
-        supplierTransactionRepository.save(transaction);
-        
-        return convertToDTO(savedInvoice);
+        SupplierTransactionsEntity savedInvoice = supplierTransactionRepository.save(invoice);
+        return convertToInvoiceDTO(savedInvoice);
     }
 
     @Override
-    @Transactional
-    public SupplierInvoiceDTO updateInvoice(Long id, SupplierInvoiceDTO invoiceDTO) {
-        Optional<SupplierInvoiceEntity> invoiceOpt = supplierInvoiceRepository.findById(id);
-        if (invoiceOpt.isEmpty() || invoiceOpt.get().getTransactionType() != SupplierTransactionType.STOCK_OUT) {
-            return null;
+    public void createInvoiceFromSupplierOut(SupplierOutDTO supplierOut) {
+        if (supplierOut == null) {
+            throw new IllegalArgumentException("SupplierOutDTO cannot be null");
         }
-        
-        SupplierInvoiceEntity invoice = invoiceOpt.get();
-        
-        // Update fields
-        invoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
-        invoice.setInvoiceDate(invoiceDTO.getInvoiceDate());
-        invoice.setTotalAmount(invoiceDTO.getTotalAmount());
-        invoice.setTaxAmount(invoiceDTO.getTaxAmount());
-        invoice.setShippingCost(invoiceDTO.getShippingCost());
-        invoice.setGrandTotal(invoiceDTO.getGrandTotal());
-        invoice.setStatus(invoiceDTO.getStatus());
-        invoice.setNotes(invoiceDTO.getNotes());
-        invoice.setPaymentMethod(invoiceDTO.getPaymentMethod());
-        invoice.setDueDate(invoiceDTO.getDueDate());
-        invoice.setPaymentDate(invoiceDTO.getPaymentDate());
-        
-        // Save updated invoice
-        SupplierInvoiceEntity updatedInvoice = supplierInvoiceRepository.save(invoice);
-        
-        return convertToDTO(updatedInvoice);
+
+        SupplierTransactionsEntity invoice = new SupplierTransactionsEntity();
+        invoice.setInvoiceNumber(supplierOut.getInvoiceNumber());
+        invoice.setTransactionDate(supplierOut.getTransactionDate() != null ? supplierOut.getTransactionDate() : Timestamp.from(Instant.now()));
+        invoice.setTotalAmount(supplierOut.getTotalAmount());
+        invoice.setTaxAmount(supplierOut.getTaxAmount());
+        invoice.setShippingCost(supplierOut.getShippingCost());
+        invoice.setStatus(supplierOut.getStatus() != null ? supplierOut.getStatus() : SupplierTransactionStatus.PREPARING);
+        invoice.setTransactionType(SupplierTransactionType.STOCK_OUT);
+        invoice.setPaymentMethod(supplierOut.getPaymentMethod());
+        invoice.setPaymentDate(supplierOut.getPaymentDate());
+
+        // Set createdBy from inventory manager if available
+        if (supplierOut.getInventoryManagerId() != null) {
+            inventoryManagerRepository.findById(supplierOut.getInventoryManagerId())
+                    .ifPresent(invoice::setCreatedBy);
+        }
+
+        supplierTransactionRepository.save(invoice);
     }
 
     @Override
-    @Transactional
-    public void deleteInvoice(Long id) {
-        Optional<SupplierInvoiceEntity> invoiceOpt = supplierInvoiceRepository.findById(id);
-        if (invoiceOpt.isPresent() && invoiceOpt.get().getTransactionType() == SupplierTransactionType.STOCK_OUT) {
-            supplierInvoiceRepository.deleteById(id);
-        }
+    public Page<SupplierInvoiceDTO> getAllInvoices(Pageable pageable) {
+        Page<SupplierTransactionsEntity> invoicePage = supplierTransactionRepository.findByTransactionType(SupplierTransactionType.STOCK_OUT, pageable);
+        return invoicePage.map(this::convertToInvoiceDTO);
     }
-    
-    @Override
-    @Transactional
-    public SupplierInvoiceDTO updateInvoiceStatus(Long id, SupplierTransactionStatus status) {
-        Optional<SupplierInvoiceEntity> invoiceOpt = supplierInvoiceRepository.findById(id);
-        if (invoiceOpt.isEmpty() || invoiceOpt.get().getTransactionType() != SupplierTransactionType.STOCK_OUT) {
-            return null;
-        }
-        
-        SupplierInvoiceEntity invoice = invoiceOpt.get();
-        invoice.setStatus(status);
-        
-        // Update related transactions if needed
-        for (SupplierTransactionInvoiceMappingEntity mapping : invoice.getTransactionInvoiceMappings()) {
-            SupplierTransactionsEntity transaction = mapping.getSupplierTransactionEntity();
-            transaction.setStatus(status);
-            supplierTransactionRepository.save(transaction);
-        }
-        
-        // Save updated invoice
-        SupplierInvoiceEntity updatedInvoice = supplierInvoiceRepository.save(invoice);
-        
-        return convertToDTO(updatedInvoice);
-    }
-    
-    private SupplierInvoiceDTO convertToDTO(SupplierInvoiceEntity entity) {
+
+    private SupplierInvoiceDTO convertToInvoiceDTO(SupplierTransactionsEntity entity) {
         SupplierInvoiceDTO dto = new SupplierInvoiceDTO();
-        
         dto.setId(entity.getId());
         dto.setInvoiceNumber(entity.getInvoiceNumber());
-        dto.setTransactionType(entity.getTransactionType());
-        dto.setInvoiceDate(entity.getInvoiceDate());
+        dto.setTransactionDate(entity.getTransactionDate());
         dto.setTotalAmount(entity.getTotalAmount());
-        dto.setTaxAmount(entity.getTaxAmount());
-        dto.setShippingCost(entity.getShippingCost());
-        dto.setGrandTotal(entity.getGrandTotal());
         dto.setStatus(entity.getStatus());
-        
-        if (entity.getCreatedBy() != null) {
-            dto.setCreatedById(entity.getCreatedBy().getId());
-        }
-        
-        dto.setNotes(entity.getNotes());
-        dto.setPaymentMethod(entity.getPaymentMethod());
-        dto.setDueDate(entity.getDueDate());
-        dto.setPaymentDate(entity.getPaymentDate());
-        
-        // Map additional fields for StockOut
-        // Lấy thông tin recipient và stockOutReason từ transaction
-        Set<SupplierTransactionInvoiceMappingEntity> mappings = entity.getTransactionInvoiceMappings();
-        if (mappings != null && !mappings.isEmpty()) {
-            // Thường một invoice chỉ liên kết với một transaction, lấy transaction đầu tiên
-            SupplierTransactionsEntity transaction = mappings.iterator().next().getSupplierTransactionEntity();
-            if (transaction != null) {
-                // Lấy recipient và stockOutReason từ transaction
-                dto.setRecipient(transaction.getRecipient());
-                dto.setStockOutReason(transaction.getStockOutReason());
-            }
-        }
-        
+        dto.setTransactionType(entity.getTransactionType());
         return dto;
     }
-
-    @Override
-    public Page<SupplierInvoiceDTO> getAllInvoicesWithDateRange(Pageable pageable, String keyword, String status,
-            Timestamp startDate, Timestamp endDate) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllInvoicesWithDateRange'");
-    }
-
-    @Override
-    public Page<SupplierInvoiceDTO> getFilteredInvoices(int page, int size, String keyword, String status, 
-                                        List<SupplierTransactionStatus> allowedStatuses) {
-        Pageable pageable = PageRequest.of(page, size);
-        
-        // Xử lý status parameter - Chỉ chấp nhận COMPLETED hoặc REJECTED
-        final SupplierTransactionStatus statusFilter;
-        if (status != null && !status.isEmpty()) {
-            if ("COMPLETED".equals(status)) {
-                statusFilter = SupplierTransactionStatus.COMPLETED;
-            } else if ("REJECTED".equals(status)) {
-                statusFilter = SupplierTransactionStatus.REJECTED;
-            } else {
-                statusFilter = null;
-            }
-        } else {
-            statusFilter = null;
-        }
-        
-        try {
-            // Lấy các đơn có trạng thái COMPLETED hoặc REJECTED bằng JPQL để tránh lỗi
-            List<SupplierInvoiceEntity> allInvoices = supplierInvoiceRepository
-                    .findCompletedOrRejectedInvoicesByType(SupplierTransactionType.STOCK_OUT);
-            
-            // Log tổng số hóa đơn
-            System.out.println("Tổng số hóa đơn xuất kho (COMPLETED+REJECTED): " + allInvoices.size());
-            
-            // Lọc theo status được chọn nếu có
-            List<SupplierInvoiceEntity> filteredInvoices = allInvoices;
-            
-            // Nếu có status cụ thể, lọc theo status đó
-            if (statusFilter != null) {
-                filteredInvoices = allInvoices.stream()
-                        .filter(invoice -> statusFilter.equals(invoice.getStatus()))
-                        .collect(Collectors.toList());
-                System.out.println("Số hóa đơn xuất kho sau khi lọc theo status " + statusFilter + ": " + filteredInvoices.size());
-            }
-            
-            // Nếu có từ khóa tìm kiếm, tiếp tục lọc theo keyword
-            if (keyword != null && !keyword.isEmpty()) {
-                final String lowerCaseKeyword = keyword.toLowerCase();
-                filteredInvoices = filteredInvoices.stream()
-                        .filter(invoice -> invoice.getInvoiceNumber() != null && 
-                                invoice.getInvoiceNumber().toLowerCase().contains(lowerCaseKeyword))
-                        .collect(Collectors.toList());
-                System.out.println("Số hóa đơn xuất kho sau khi lọc theo từ khóa: " + filteredInvoices.size());
-            }
-            
-            // Tạo trang kết quả
-            int start = (int) pageable.getOffset();
-            int end = Math.min((start + pageable.getPageSize()), filteredInvoices.size());
-            
-            // Phân trang
-            List<SupplierInvoiceEntity> pageContent = start < end ? 
-                    filteredInvoices.subList(start, end) : List.of();
-            
-            // Chuyển đổi sang DTOs
-            List<SupplierInvoiceDTO> dtoList = pageContent.stream()
-                    .map(this::convertToDTO)
-                    .collect(Collectors.toList());
-            
-            return new PageImpl<>(dtoList, pageable, filteredInvoices.size());
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Lỗi khi lọc hóa đơn xuất kho: " + e.getMessage());
-            return new PageImpl<>(List.of(), pageable, 0);
-        }
-    }
-
-    @Override
-    public void saveTestInvoices(List<SupplierInvoiceEntity> invoices) {
-        supplierInvoiceRepository.saveAll(invoices);
-    }
-} 
+}

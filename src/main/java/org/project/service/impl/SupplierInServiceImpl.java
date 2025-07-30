@@ -8,7 +8,6 @@ import org.project.entity.SupplierTransactionItemEntityId;
 import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
-import org.project.enums.ProductType;
 import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierRequestItemDTO;
 import org.project.repository.InventoryManagerRepository;
@@ -19,72 +18,55 @@ import org.project.repository.SupplierTransactionRepository;
 import org.project.service.SupplierInService;
 import org.project.service.base.AbstractBaseTransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.Predicate;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Root;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.stream.Collectors; 
 
 @Service
-public class SupplierInServiceImpl implements SupplierInService {
-
-    @Autowired
-    private SupplierTransactionRepository supplierTransactionRepository;
-
-    @Autowired
-    private SupplierTransactionRepository transactionRepository;
-
-    private SupplierEntityRepository supplierRepository;
-    private InventoryManagerRepository inventoryManagerRepository;
-    private ProductRepository productRepository;
-    private SupplierTransactionItemRepository itemRepository;
+public class SupplierInServiceImpl extends AbstractBaseTransactionServiceImpl<SupplierInDTO> implements SupplierInService {
 
     @Autowired
     public SupplierInServiceImpl(
-        SupplierTransactionRepository supplierTransactionRepository,
-        SupplierEntityRepository supplierRepository,
+        SupplierTransactionRepository transactionRepository,
+        SupplierEntityRepository supplierEntityRepository,
         InventoryManagerRepository inventoryManagerRepository,
         ProductRepository productRepository,
         SupplierTransactionItemRepository supplierTransactionItemRepository) {
-        this.supplierTransactionRepository = supplierTransactionRepository;
-        this.supplierRepository = supplierRepository;
-        this.inventoryManagerRepository = inventoryManagerRepository;
-        this.productRepository = productRepository;
-        this.itemRepository = supplierTransactionItemRepository;
+        super(transactionRepository, supplierEntityRepository, inventoryManagerRepository,
+              productRepository, supplierTransactionItemRepository, SupplierTransactionType.STOCK_IN);
     }
 
     @Override
     public Page<SupplierInDTO> getFilteredSupplierInsForStockIn(int page, int size, String status, String search,
-                                                            String type, List<SupplierTransactionStatus> allowedStatuses) {
+                                                                String type, List<SupplierTransactionStatus> allowedStatuses) {
         return getFilteredTransactions(page, size, search, status, allowedStatuses, SupplierTransactionType.STOCK_IN);
     }
-
-    @Override
-    public List<SupplierInDTO> getAllTransactions() {
-        return List.of();
-    }
-
-    @Override
-    public Page<SupplierInDTO> getAllTransactions(int page, int size, String keyword, String status) {
-        return null;
-    }
-
+    
     @Override
     @Transactional(readOnly = true)
     public Page<SupplierInDTO> getFilteredTransactions(int page, int size, String status, String search, String type) {
         PageRequest pageRequest = PageRequest.of(page, size);
-
+        
         Page<SupplierTransactionsEntity> transactions;
-
+        
         // Apply filters
                 if (search != null && !search.isEmpty()) {
             if (status != null && !status.isEmpty()) {
@@ -111,34 +93,87 @@ public class SupplierInServiceImpl implements SupplierInService {
         } else {
             transactions = transactionRepository.findByTransactionType(SupplierTransactionType.STOCK_IN, pageRequest);
         }
-
+        
         List<SupplierInDTO> dtos = transactions.getContent().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
-
+        
         return new PageImpl<>(dtos, pageRequest, transactions.getTotalElements());
     }
 
     @Override
-    public Page<SupplierInDTO> getFilteredTransactionsForView(int page, int size, String status, String search, String type, List<SupplierTransactionStatus> allowedStatuses) {
-        return null;
+    public Page<SupplierInDTO> getFilteredSupplierInsForStockIn(Pageable pageable, String status, 
+            String search, String type, List<SupplierTransactionStatus> allowedStatuses) {
+        
+        Specification<SupplierTransactionsEntity> spec = buildStockInFilterSpec(status, search, type, allowedStatuses);
+        Page<SupplierTransactionsEntity> entityPage = transactionRepository.findAll(spec, pageable);
+        return entityPage.map(this::convertToDTO);
     }
-
-    @Override
-    public Page<SupplierInDTO> getFilteredTransactions(int page, int size, String keyword, String status, List<SupplierTransactionStatus> allowedStatuses, SupplierTransactionType transactionType) {
-        return null;
+    
+    private Specification<SupplierTransactionsEntity> buildStockInFilterSpec(String status, String search, 
+            String type, List<SupplierTransactionStatus> allowedStatuses) {
+        
+        return (root, query, cb) -> {
+            List<jakarta.persistence.criteria.Predicate> predicates = new ArrayList<>();
+            
+            // Always filter by STOCK_IN transaction type
+            predicates.add(cb.equal(root.get("transactionType"), SupplierTransactionType.STOCK_IN));
+            
+            // Add status filter
+            addStatusFilter(predicates, root, cb, status, allowedStatuses);
+            
+            // Add search filter
+            addSearchFilter(predicates, root, cb, search);
+            
+            // Add type filter if needed
+            addTypeFilter(predicates, root, cb, type);
+            
+            return cb.and(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
+        };
     }
-
-    @Override
-    public SupplierInDTO getTransactionById(Long id) {
-        return null;
+    
+    private void addStatusFilter(List<jakarta.persistence.criteria.Predicate> predicates, 
+            Root<SupplierTransactionsEntity> root, CriteriaBuilder cb, 
+            String status, List<SupplierTransactionStatus> allowedStatuses) {
+        
+        if (status != null && !status.isEmpty()) {
+            try {
+                SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status);
+                predicates.add(cb.equal(root.get("status"), statusEnum));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid status value: " + status + ", ignoring filter");
+            }
+        } else if (allowedStatuses != null && !allowedStatuses.isEmpty()) {
+            predicates.add(root.get("status").in(allowedStatuses));
+        }
+    }
+    
+    private void addSearchFilter(List<jakarta.persistence.criteria.Predicate> predicates, 
+            Root<SupplierTransactionsEntity> root, CriteriaBuilder cb, String search) {
+        
+        if (search != null && !search.isEmpty()) {
+            String searchPattern = "%" + search.toLowerCase() + "%";
+            predicates.add(cb.or(
+                cb.like(cb.lower(root.get("invoiceNumber")), searchPattern),
+                cb.like(cb.lower(root.get("supplierEntity").get("name")), searchPattern)
+            ));
+        }
+    }
+    
+    private void addTypeFilter(List<jakarta.persistence.criteria.Predicate> predicates, 
+            Root<SupplierTransactionsEntity> root, CriteriaBuilder cb, String type) {
+        
+        if (type != null && !type.isEmpty()) {
+            // TODO: Implement type filter logic when requirements are clarified
+            System.out.println("Type filter '" + type + "' not implemented yet");
+        }
     }
 
     @Override
     @Transactional
     public SupplierInDTO createTransaction(SupplierInDTO supplierInDTO) {
         SupplierTransactionsEntity transaction = new SupplierTransactionsEntity();
-
+        
         // Set basic information
         transaction.setTransactionType(SupplierTransactionType.STOCK_IN);
         transaction.setStatus(supplierInDTO.getStatus() != null ? supplierInDTO.getStatus() : SupplierTransactionStatus.PENDING);
@@ -152,51 +187,51 @@ public class SupplierInServiceImpl implements SupplierInService {
         transaction.setPaymentMethod(supplierInDTO.getPaymentMethod());
         transaction.setDueDate(supplierInDTO.getDueDate());
         transaction.setPaymentDate(supplierInDTO.getPaymentDate());
-
+        
         // Set supplier
         if (supplierInDTO.getSupplierId() != null) {
             SupplierEntity supplier = supplierRepository.findById(supplierInDTO.getSupplierId())
                     .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + supplierInDTO.getSupplierId()));
             transaction.setSupplierEntity(supplier);
         }
-
+        
         // Set inventory manager
         if (supplierInDTO.getInventoryManagerId() != null) {
             InventoryManagerEntity inventoryManager = inventoryManagerRepository.findById(supplierInDTO.getInventoryManagerId())
                     .orElseThrow(() -> new RuntimeException("Inventory manager not found with id: " + supplierInDTO.getInventoryManagerId()));
             transaction.setInventoryManagerEntity(inventoryManager);
         }
-
+        
         // Save transaction to get ID
         SupplierTransactionsEntity savedTransaction = transactionRepository.save(transaction);
-
+        
         // Add transaction items if provided
         if (supplierInDTO.getItems() != null && !supplierInDTO.getItems().isEmpty()) {
             for (SupplierRequestItemDTO itemDTO : supplierInDTO.getItems()) {
                 SupplierTransactionItemEntity item = new SupplierTransactionItemEntity();
-
+                
                 // Create composite key
                 SupplierTransactionItemEntityId id = new SupplierTransactionItemEntityId();
                 id.setSupplierTransactionId(savedTransaction.getId());
                 id.setProductId(itemDTO.getProductId());
                 item.setId(id);
-
+                
                 // Set other fields
                 item.setQuantity(itemDTO.getQuantity());
                 item.setUnitPrice(itemDTO.getUnitPrice());
-
+                
                 // Set references
                 item.setSupplierTransactionEntity(savedTransaction);
-
+                
                 ProductEntity product = productRepository.findById(itemDTO.getProductId())
                         .orElseThrow(() -> new RuntimeException("Product not found with id: " + itemDTO.getProductId()));
                 item.setProductEntity(product);
-
+                
                 // Save item
                 itemRepository.save(item);
             }
         }
-
+        
         return getTransactionById(savedTransaction.getId());
     }
 
@@ -207,9 +242,9 @@ public class SupplierInServiceImpl implements SupplierInService {
         if (transactionOpt.isEmpty() || transactionOpt.get().getTransactionType() != SupplierTransactionType.STOCK_IN) {
             return null;
         }
-
+        
         SupplierTransactionsEntity transaction = transactionOpt.get();
-
+        
         // Update basic information
         transaction.setStatus(supplierInDTO.getStatus());
         transaction.setTotalAmount(supplierInDTO.getTotalAmount());
@@ -221,24 +256,19 @@ public class SupplierInServiceImpl implements SupplierInService {
         transaction.setPaymentMethod(supplierInDTO.getPaymentMethod());
         transaction.setDueDate(supplierInDTO.getDueDate());
         transaction.setPaymentDate(supplierInDTO.getPaymentDate());
-
+        
         // Update supplier if provided
         if (supplierInDTO.getSupplierId() != null) {
             SupplierEntity supplier = supplierRepository.findById(supplierInDTO.getSupplierId())
                     .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + supplierInDTO.getSupplierId()));
             transaction.setSupplierEntity(supplier);
         }
-
+        
         // Save updated transaction
         transactionRepository.save(transaction);
-
+        
         // Return the updated DTO
         return getTransactionById(id);
-    }
-
-    @Override
-    public SupplierInDTO updateTransactionStatus(Long id, String status) {
-        return null;
     }
 
     @Override
@@ -249,7 +279,7 @@ public class SupplierInServiceImpl implements SupplierInService {
             transactionRepository.deleteById(id);
         }
     }
-
+    
     @Override
     @Transactional
     public void addRejectionReason(Long id, String reason) {
@@ -257,31 +287,31 @@ public class SupplierInServiceImpl implements SupplierInService {
         if (transactionOpt.isEmpty() || transactionOpt.get().getTransactionType() != SupplierTransactionType.STOCK_IN) {
             return;
         }
-
+        
         SupplierTransactionsEntity transaction = transactionOpt.get();
         transaction.setNotes("Rejected: " + reason + "\n\n" + (transaction.getNotes() != null ? transaction.getNotes() : ""));
         transaction.setStatus(SupplierTransactionStatus.REJECTED);
-
+        
         transactionRepository.save(transaction);
     }
 
     @Override
-    public SupplierInDTO convertToDTO(SupplierTransactionsEntity entity) {
+    protected SupplierInDTO convertToDTO(SupplierTransactionsEntity entity) {
         SupplierInDTO dto = new SupplierInDTO();
-
+        
         dto.setId(entity.getId());
-
+        
         // Safely set supplier details
         if (entity.getSupplierEntity() != null) {
             dto.setSupplierId(entity.getSupplierEntity().getId());
             dto.setSupplierName(entity.getSupplierEntity().getName());
             dto.setSupplierContact(entity.getSupplierEntity().getPhoneNumber());
         }
-
+        
         // Safely set inventory manager details
         if (entity.getInventoryManagerEntity() != null) {
             dto.setInventoryManagerId(entity.getInventoryManagerEntity().getId());
-
+            
             // Safely get staff name from inventory manager
             try {
                 dto.setInventoryManagerName(entity.getInventoryManagerEntity().getStaffEntity().getFullName());
@@ -289,7 +319,7 @@ public class SupplierInServiceImpl implements SupplierInService {
                 dto.setInventoryManagerName("Unknown Manager");
             }
         }
-
+        
         // Set transaction details
         dto.setTotalAmount(entity.getTotalAmount());
         dto.setTransactionDate(entity.getTransactionDate());
@@ -306,46 +336,44 @@ public class SupplierInServiceImpl implements SupplierInService {
 
         // Set transaction type (always STOCK_IN for this service)
         dto.setTransactionType(SupplierTransactionType.STOCK_IN);
-
+        
         // Set items if available
         if (entity.getSupplierTransactionItemEntities() != null && !entity.getSupplierTransactionItemEntities().isEmpty()) {
             List<SupplierRequestItemDTO> items = new ArrayList<>();
-
+            
             for (SupplierTransactionItemEntity itemEntity : entity.getSupplierTransactionItemEntities()) {
                 SupplierRequestItemDTO itemDTO = new SupplierRequestItemDTO();
-
+                
                 if (itemEntity.getId() != null) {
                     itemDTO.setProductId(itemEntity.getId().getProductId());
                 }
-
+                
                 itemDTO.setQuantity(itemEntity.getQuantity());
                 itemDTO.setUnitPrice(itemEntity.getUnitPrice());
-
+                
                 // Set product details if available
                 if (itemEntity.getProductEntity() != null) {
                     itemDTO.setProductName(itemEntity.getProductEntity().getName());
                     itemDTO.setProductType(itemEntity.getProductEntity().getProductType());
                     itemDTO.setProductUnit(itemEntity.getProductEntity().getUnit());
                 }
-
+                
                 items.add(itemDTO);
             }
-
+            
             dto.setItems(items);
         }
-
+        
         // Set type based on first product (if available)
-        if (entity.getSupplierTransactionItemEntities() != null && !entity.getSupplierTransactionItemEntities().isEmpty()) {
-            try {
-                SupplierTransactionItemEntity firstItem = entity.getSupplierTransactionItemEntities().iterator().next();
-                if (firstItem != null && firstItem.getProductEntity() != null && firstItem.getProductEntity().getProductType() != null) {
-                    dto.setType(firstItem.getProductEntity().getProductType().name());
-                }
-            } catch (Exception e) {
-                dto.setType(null);
-            }
-        }
+        Optional<String> typeOptional = entity.getSupplierTransactionItemEntities().stream()
+                .filter(item -> item != null
+                        && item.getProductEntity() != null
+                        && item.getProductEntity().getProductType() != null)
+                .map(item -> item.getProductEntity().getProductType().name())
+                .findFirst();
 
+        dto.setType(typeOptional.orElse(null));
+        
         return dto;
     }
-}
+} 

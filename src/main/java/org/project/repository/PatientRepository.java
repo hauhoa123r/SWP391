@@ -21,6 +21,7 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
     Page<PatientEntity> findAllByUserEntity_Id(Long userId, Pageable pageable);
 
     Long findFirstByUserEntity_IdOrderByIdDesc(Long userId);
+    
 
     Page<PatientEntity> findAllByUserEntityIdAndFullNameContainingIgnoreCase(Long userEntityId, String fullName, Pageable pageable);
 

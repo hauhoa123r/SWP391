@@ -27,9 +27,10 @@ public enum SupplierTransactionStatus {
     PAID("Đã thanh toán"),                   // Payment received
     
     // Order processing statuses
-    PREPARING("Chuẩn bị đơn hàng"),         // Order is being prepared
-    ADDED("Đã thêm"),                        // Items added to order
-    PREPARED("Đã chuẩn bị hàng");           // Order is prepared and ready
+    PREPARING("Đang chuẩn bị hàng"),         // Order is being prepared
+    NEED_TO_ADD("Cần thêm vào kho "),     // Items added to order
+
+    APPROVED("Đã duyệt");                 // Order approved by admin;
 
     private final String displayName;
 }

@@ -44,6 +44,9 @@ public class ReviewController {
         model.addAttribute("totalPages", reviewPage.getTotalPages());
         model.addAttribute("totalItems", reviewPage.getTotalElements());
         
+        // Add current user for forms
+        model.addAttribute("currentUser", getCurrentUser());
+        
         return "templates_storage/product-review";
     }
     
@@ -134,5 +137,20 @@ public class ReviewController {
         }
         
         return "redirect:/review-detail/" + id;
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 }

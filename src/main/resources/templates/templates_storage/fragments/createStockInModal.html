@@ -1,0 +1,184 @@
+<!-- Stock In Order Creation Fragment -->
+<!--
+  This fragment provides a reusable modal (#createStockInModal) and supporting
+  JavaScript to create a Stock-In order from any page (medicine / medical-equipment).
+  Include it with:  <div th:replace="templates_storage/fragments/createStockInModal :: createStockInModal"></div>
+-->
+
+<div th:fragment="createStockInModal">
+    <!-- Notification container (if host page lacks one) -->
+    <div id="stockin-notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 1081;"></div>
+
+    <!-- Create Stock-In Order Modal -->
+    <div class="modal fade" id="createStockInModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tạo đơn nhập kho</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createStockInForm">
+                        <input type="hidden" name="status" value="WAITING_FOR_DELIVERY">
+                        <input type="hidden" name="transactionType" value="STOCK_IN">
+                        <input type="hidden" name="totalAmount" id="si-totalAmount" value="0">
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nhà cung cấp <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="si-supplier" name="supplierName" required placeholder="Tên nhà cung cấp">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Ngày giao dự kiến <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="si-expectedDate" name="expectedDeliveryDate" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Loại đơn hàng <span class="text-danger">*</span></label>
+                                <select class="form-select" id="si-orderType" name="orderType" required>
+                                    <option value="">Chọn loại đơn</option>
+                                    <option value="MEDICINE">Thuốc</option>
+                                    <option value="MEDICAL_PRODUCT">Thiết bị y tế</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Ghi chú</label>
+                                <input type="text" class="form-control" id="si-notes" name="notes">
+                            </div>
+                        </div>
+
+                        <div class="table-responsive mb-3">
+                            <table class="table table-bordered" id="si-productTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Đơn giá</th>
+                                        <th>Thành tiền</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="si-productBody"></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <button type="button" class="btn btn-sm btn-primary" id="si-addProductBtn">
+                                                <i class="ri-add-line"></i> Thêm sản phẩm
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div class="text-end mb-2">
+                            <strong>Tổng cộng: <span id="si-totalDisplay">0 VNĐ</span></strong>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-success" id="si-submitBtn">Tạo đơn nhập</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VERY lightweight product picker (name + qty) -->
+    <div class="modal fade" id="si-productModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm sản phẩm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="si-prodName" placeholder="Nhập tên...">
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="form-label">Số lượng</label>
+                            <input type="number" class="form-control" id="si-prodQty" min="1" value="1">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Đơn giá</label>
+                            <input type="number" class="form-control" id="si-prodPrice" min="0" step="100" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="si-addProdConfirm">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+    // ========== Helpers ==========
+    const siCurrency = v => new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND'}).format(v||0);
+    const siNotify = (msg,type='success')=>{
+        const c=document.getElementById('stockin-notification-container');
+        if(!c) return; const div=document.createElement('div');
+        div.className=`alert alert-${type} alert-dismissible fade show`; div.innerHTML=`${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+        c.appendChild(div); setTimeout(()=>{div.classList.remove('show'); setTimeout(()=>c.removeChild(div),300)},4000);
+    };
+
+    // ========== Product Table management ==========
+    const siProducts=[];
+    function siRecalc(){
+        let total=0; siProducts.forEach(p=>{total+=p.qty*p.price});
+        document.getElementById('si-totalDisplay').textContent=siCurrency(total);
+        document.getElementById('si-totalAmount').value=total;
+    }
+
+    function siRenderTable(){
+        const body=document.getElementById('si-productBody'); body.innerHTML='';
+        siProducts.forEach((p,idx)=>{
+          const row=document.createElement('tr');
+          row.innerHTML=`<td>${p.name}</td><td><input type='number' class='form-control form-control-sm' min='1' value='${p.qty}' onchange='siUpdateQty(${idx},this.value)'/></td><td><input type='number' class='form-control form-control-sm' min='0' step='100' value='${p.price}' onchange='siUpdatePrice(${idx},this.value)'/></td><td>${siCurrency(p.qty*p.price)}</td><td><button class='btn btn-sm btn-link text-danger' onclick='siRemoveProd(${idx})'><i class="ri-delete-bin-line"></i></button></td>`;
+          body.appendChild(row);
+        });
+        siRecalc();
+    }
+    function siUpdateQty(i,v){siProducts[i].qty=parseInt(v||1); siRenderTable();}
+    function siUpdatePrice(i,v){siProducts[i].price=parseFloat(v||0); siRenderTable();}
+    function siRemoveProd(i){siProducts.splice(i,1); siRenderTable();}
+
+    function siAddProduct(p){siProducts.push(p); siRenderTable();}
+
+    // ========== Basic product modal ==========
+    document.addEventListener('DOMContentLoaded',()=>{
+        document.getElementById('si-addProductBtn').addEventListener('click',()=>{
+            document.getElementById('si-prodName').value='';
+            document.getElementById('si-prodQty').value=1;
+            document.getElementById('si-prodPrice').value=0;
+            new bootstrap.Modal(document.getElementById('si-productModal')).show();
+        });
+        document.getElementById('si-addProdConfirm').addEventListener('click',()=>{
+            const n=document.getElementById('si-prodName').value.trim(); if(!n){siNotify('Nhập tên sản phẩm','warning');return;}
+            const q=parseInt(document.getElementById('si-prodQty').value)||1;
+            const pr=parseFloat(document.getElementById('si-prodPrice').value)||0;
+            siAddProduct({name:n,qty:q,price:pr});
+            bootstrap.Modal.getInstance(document.getElementById('si-productModal')).hide();
+        });
+
+        // default expected date = tomorrow
+        const d=new Date(); d.setDate(d.getDate()+1); document.getElementById('si-expectedDate').value=d.toISOString().split('T')[0];
+
+        // submit
+        document.getElementById('si-submitBtn').addEventListener('click',()=>{
+            if(siProducts.length===0){siNotify('Chưa có sản phẩm','warning');return;}
+            const form=document.getElementById('createStockInForm');
+            const fd=new FormData(form); fd.append('products',JSON.stringify(siProducts));
+            fetch('/warehouse/stock-in',{method:'POST',body:fd}).then(r=>{
+                if(r.ok){siNotify('Đã tạo đơn nhập thành công'); bootstrap.Modal.getInstance(document.getElementById('createStockInModal')).hide(); if(window.loadStockInOrders) setTimeout(loadStockInOrders,500);}else{r.text().then(t=>siNotify(t||'Lỗi tạo đơn','danger'));}
+            }).catch(e=>siNotify(e.message,'danger'));
+        });
+    });
+    </script>
+</div>

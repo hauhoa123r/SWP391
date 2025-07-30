@@ -1070,71 +1070,42 @@
       <div class="row">
          <div class="col-lg-12">
             <div class="main-cart mb-3 mb-md-5 pb-0 pb-md-5">
-               <ul
-                  class="cart-page-items d-flex justify-content-center list-inline align-items-center gap-3 gap-md-5 flex-wrap">
+               <ul class="cart-page-items d-flex justify-content-center list-inline align-items-center gap-3 gap-md-5 flex-wrap">
                   <li class="cart-page-item">
-                     <span
-                        class=" cart-pre-number bg-light border-radius rounded-circle me-1">
-                        1 </span>
-                     <span class="cart-page-link ">
-                        Shopping Cart </span>
+                     <span class="cart-pre-number bg-light border-radius rounded-circle me-1">1</span>
+                     <span class="cart-page-link">Shopping Cart</span>
                   </li>
                   <li class="cart-page-item">
-                     <svg width="25" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                           d="M12 21.2498C17.108 21.2498 21.25 17.1088 21.25 11.9998C21.25 6.89176 17.108 2.74976 12 2.74976C6.892 2.74976 2.75 6.89176 2.75 11.9998C2.75 17.1088 6.892 21.2498 12 21.2498Z"
-                           stroke="currentColor" stroke-width="1.5"
-                           stroke-linecap="round"
-                           stroke-linejoin="round">
-                        </path>
-                        <path
-                           d="M10.5576 15.4709L14.0436 11.9999L10.5576 8.52895"
-                           stroke="currentColor"
-                           stroke-width="1.5" stroke-linecap="round"
-                           stroke-linejoin="round"></path>
+                     <svg width="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21.2498C17.108 21.2498 21.25 17.1088 21.25 11.9998C21.25 6.89176 17.108 2.74976 12 2.74976C6.892 2.74976 2.75 6.89176 2.75 11.9998C2.75 17.1088 6.892 21.2498 12 21.2498Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M10.5576 15.4709L14.0436 11.9999L10.5576 8.52895" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                      </svg>
                   </li>
-                  <li class="cart-page-item ">
-                     <span
-                        class=" cart-pre-number bg-light border-radius rounded-circle me-1">
-                        2 </span>
-                     <span class="cart-page-link ">
-                        Checkout </span>
+                  <li class="cart-page-item">
+                     <span class="cart-pre-number bg-light border-radius rounded-circle me-1">2</span>
+                     <span class="cart-page-link">Checkout</span>
                   </li>
                   <li class="cart-page-item">
-                     <svg width="25" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                           d="M12 21.2498C17.108 21.2498 21.25 17.1088 21.25 11.9998C21.25 6.89176 17.108 2.74976 12 2.74976C6.892 2.74976 2.75 6.89176 2.75 11.9998C2.75 17.1088 6.892 21.2498 12 21.2498Z"
-                           stroke="currentColor" stroke-width="1.5"
-                           stroke-linecap="round"
-                           stroke-linejoin="round">
-                        </path>
-                        <path
-                           d="M10.5576 15.4709L14.0436 11.9999L10.5576 8.52895"
-                           stroke="currentColor"
-                           stroke-width="1.5" stroke-linecap="round"
-                           stroke-linejoin="round"></path>
+                     <svg width="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21.2498C17.108 21.2498 21.25 17.1088 21.25 11.9998C21.25 6.89176 17.108 2.74976 12 2.74976C6.892 2.74976 2.75 6.89176 2.75 11.9998C2.75 17.1088 6.892 21.2498 12 21.2498Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M10.5576 15.4709L14.0436 11.9999L10.5576 8.52895" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                      </svg>
                   </li>
-                  <li class="cart-page-item  active">
-                     <span
-                        class="cart-pre-heading badge cart-pre-number bg-primary border-radius rounded-circle me-1">
-                        3 </span>
-                     <span class="cart-page-link ">
-                        Order Summary </span>
+                  <li class="cart-page-item active">
+                     <span class="cart-pre-heading badge cart-pre-number bg-primary border-radius rounded-circle me-1">3</span>
+                     <span class="cart-page-link">Order Summary</span>
                   </li>
                </ul>
             </div>
          </div>
       </div>
-      <div class="order-wrapper p-4 bg-white mb-5">
-         <h5 class="text-center mb-4">Thank you. Your order has been
-            received.</h5> 
-         <div class="table-responsive">
-            <table class="edit-address w-100 border-0 bg-white">
-               <tbody>
+
+      <form th:action="@{/checkout}" th:object="${checkoutFormDTO}" method="post">
+         <div class="order-wrapper p-4 bg-white mb-5">
+            <h5 class="text-center mb-4">Thank you. Your order has been received.</h5>
+            <div class="table-responsive">
+               <table class="edit-address w-100 border-0 bg-white">
+                  <tbody>
                   <tr>
                      <td class="label-name p-2">Order number</td>
                      <td class="seprator p-2"><span>:</span></td>
@@ -1143,113 +1114,146 @@
                   <tr>
                      <td class="label-name p-2">DATE</td>
                      <td class="seprator p-2"><span>:</span></td>
-                     <td class="p-2">July 24, 2023</td>
+                     <td class="p-2" th:text="${#dates.format(#dates.createNow(), 'MMMM dd, yyyy')}">July 30, 2025</td>
                   </tr>
                   <tr>
                      <td class="label-name p-2">EMAIL</td>
                      <td class="seprator p-2"><span>:</span></td>
-                     <td class="p-2">jondoe@gmail.com</td>
+                     <td class="p-2" th:text="*{email}">jondoe@gmail.com</td>
                   </tr>
                   <tr>
                      <td class="label-name p-2">TOTAL</td>
                      <td class="seprator p-2"><span>:</span></td>
-                     <td class="p-2">$64.00</td>
+                     <td class="p-2" th:text="'$' + (${session.appliedCoupon != null} ? ${#numbers.formatDecimal(session.discountedTotal, 1, 'COMMA', 2, 'POINT')} : ${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')})">$64.00</td>
                   </tr>
                   <tr>
                      <td class="label-name p-2">PAYMENT METHOD</td>
                      <td class="seprator p-2"><span>:</span></td>
                      <td class="p-2">Cash on delivery</td>
                   </tr>
-               </tbody>
-            </table>
+                  </tbody>
+               </table>
+            </div>
          </div>
-      </div>
-      <h4 class="mb-3">Order Details</h4>
-      <div class="checkout-review-order">
-         <div class="table-responsive">
-            <table class="w-100">
-               <thead>
+
+         <h4 class="mb-3">Order Details</h4>
+         <div class="checkout-review-order">
+            <div class="table-responsive">
+               <table class="w-100">
+                  <thead>
                   <tr class="border-bottom">
                      <th class="ps-0 p-3 text-primary">Product</th>
                      <th class="pe-0 p-3 text-primary text-end">Total</th>
                   </tr>
-               </thead>
-               <tbody>
-                  <tr class="border-bottom">
-                     <td class="ps-0 p-3"><span class="text-primary">Electric
-                           Toothbrush</span> × 1</td>
-                     <td class="pe-0 p-3 text-end">$123.00</td>
-                  </tr>
-                  <tr class="border-bottom">
-                     <td class="ps-0 p-3"><span class="text-primary">Medical
-                           Box</span> × 1</td>
-                     <td class="pe-0 p-3 text-end">$92.00</td>
-                  </tr>
-               </tbody>
-               <tfoot>
+                  </thead>
+                  <tbody>
+                  <!-- Loop through cartItems to display products -->
+                  <div th:unless="${#lists.isEmpty(cartItems)}">
+                     <tr th:each="cartItem : ${cartItems}" class="border-bottom">
+                        <td class="ps-0 p-3">
+                           <span th:text="${cartItem.productEntity.name}"></span>
+                           × <span th:text="${cartItem.quantity}"></span>
+                        </td>
+                        <td class="pe-0 p-3 text-end">
+                           $<span th:text="${cartItem.quantity * cartItem.productEntity.price}"></span>.00
+                        </td>
+                     </tr>
+                  </div>
+                  <!-- If cart is empty -->
+                  <div th:if="${#lists.isEmpty(cartItems)}" class="text-center py-3 text-muted">
+                     <p class="text-muted py-3 fw-semibold">No item in cart</p>
+                  </div>
+                  </tbody>
+                  <tfoot>
                   <tr class="border-bottom">
                      <td class="ps-0 p-3 fw-bold text-primary">Subtotal</td>
-                     <td
-                        class="pe-0 p-3 fw-bold text-end text-dark">$215.00</td>
+                     <td class="pe-0 p-3 fw-bold text-end">
+                        <h5 class="text-primary mb-0">
+                           $<span th:text="${total}"></span>.00
+                        </h5>
+                     </td>
                   </tr>
-                  <tr class="border-bottom">
-                     <td class="ps-0 p-3 fw-bold text-primary">Payment
-                        Method:</td>
-                     <td class="pe-0 p-3 fw-bold text-end text-dark">Cash On
-                        Delivery</td>
+                  <!-- Coupon discount -->
+                  <tr class="coupon-discount" th:if="${session.appliedCoupon != null}">
+                     <th class="border-0">
+                                <span class="text-success fw-normal">
+                                    Coupon (<span th:text="${session.appliedCoupon.code}">CODE</span>)
+                                </span>
+                     </th>
+                     <td class="border-0">
+                                <span class="fs-6 text-success">
+                                    - $<span th:text="${#numbers.formatDecimal(total - session.discountedTotal, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                                </span>
+                     </td>
                   </tr>
-                  <tr class="border-bottom">
-                     <td class="ps-0 p-3 fw-bold text-primary">Total:</td>
-                     <td
-                        class="pe-0 p-3 fw-bold text-end text-dark">$215.00</td>
+                  <tr class="order-total">
+                     <th class="border-0">
+                        <strong><span class="fs-5 text-dark">Total</span></strong>
+                     </th>
+                     <td class="pe-0 p-3 fw-bold text-end">
+                        <h5 class="text-primary mb-0">
+                           $<span th:text="'$' + (${session.appliedCoupon != null} ? ${#numbers.formatDecimal(session.discountedTotal, 1, 'COMMA', 2, 'POINT')} : ${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')})">0.00</span>
+                        </h5>
+                     </td>
                   </tr>
-                  <tr class="border-bottom">
-                     <td class="ps-0 p-3 fw-bold text-primary">Note:</td>
-                     <td class="pe-0 p-3 fw-bold text-end text-dark"></td>
-                  </tr>
-               </tfoot>
-            </table>
+                  </tfoot>
+               </table>
+            </div>
          </div>
-      </div>
-      <h4 class="my-4">Billing Address</h4>
-      <div class="order-wrapper p-4 bg-white mb-5">
-      <div class="table-responsive">
-         <table class="edit-address w-100 border-0 bg-white">
-            <tbody>
-               <tr>
-                  <td class="label-name p-2">Name</td>
-                  <td class="seprator p-2"><span>:</span></td>
-                  <td class="p-2">john deo</td>
-               </tr>
-               <tr>
-                  <td class="label-name p-2">Company</td>
-                  <td class="seprator p-2"><span>:</span></td>
-                  <td class="p-2">Iqonic Design</td>
-               </tr>
-               <tr>
-                  <td class="label-name p-2">Country</td>
-                  <td class="seprator p-2"><span>:</span></td>
-                  <td class="p-2">India</td>
-               </tr>
-               <tr>
-                  <td class="label-name p-2">Address</td>
-                  <td class="seprator p-2"><span>:</span></td>
-                  <td class="p-2">4517, Washington Ave, Manchester.</td>
-               </tr>
-               <tr>
-                  <td class="label-name p-2">E-mail</td>
-                  <td class="seprator p-2"><span>:</span></td>
-                  <td class="p-2">johndeo@gmail.com</td>
-               </tr>
-               <tr>
-                  <td class="label-name p-2">Phone</td>
-                  <td class="seprator p-2"><span>:</span></td>
-                  <td class="p-2">1234567890</td>
-               </tr>
-            </tbody>
-         </table>
-      </div>
-      </div>
+
+         <h4 class="my-4">Billing Address</h4>
+         <div class="order-wrapper p-4 bg-white mb-5">
+            <div class="table-responsive">
+               <table class="edit-address w-100 border-0 bg-white">
+                  <tbody>
+                  <tr>
+                     <td class="label-name p-2">Name</td>
+                     <td class="seprator p-2"><span>:</span></td>
+                     <td class="p-2" th:text="*{firstName} + ' ' + *{lastName}">john deo</td>
+                  </tr>
+                  <tr>
+                     <td class="label-name p-2">Company</td>
+                     <td class="seprator p-2"><span>:</span></td>
+                     <td class="p-2">Iqonic Design</td>
+                  </tr>
+                  <tr>
+                     <td class="label-name p-2">Country</td>
+                     <td class="seprator p-2"><span>:</span></td>
+                     <td class="p-2">India</td>
+                  </tr>
+                  <tr>
+                     <td class="label-name p-2">Address</td>
+                     <td class="seprator p-2"><span>:</span></td>
+                     <td class="p-2" th:text="*{address}">4517, Washington Ave, Manchester.</td>
+                  </tr>
+                  <tr>
+                     <td class="label-name p-2">E-mail</td>
+                     <td class="seprator p-2"><span>:</span></td>
+                     <td class="p-2" th:text="*{email}">johndeo@gmail.com</td>
+                  </tr>
+                  <tr>
+                     <td class="label-name p-2">Phone</td>
+                     <td class="seprator p-2"><span>:</span></td>
+                     <td class="p-2" th:text="*{phoneNumber}">1234567890</td>
+                  </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <div class="button-primary">
+            <div class="iq-btn-container">
+               <button type="submit" class="iq-button text-capitalize">
+                  <span class="iq-btn-text-holder position-relative">Place Order</span>
+                  <span class="iq-btn-icon-holder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 8 8" fill="none">
+                            <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z" fill="currentColor"></path>
+                        </svg>
+                    </span>
+               </button>
+            </div>
+         </div>
+      </form>
    </div>
 </div>
 

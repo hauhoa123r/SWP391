@@ -3,6 +3,7 @@ package org.project.service.base;
 import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
+import org.project.model.dto.SupplierInDTO;
 import org.project.repository.InventoryManagerRepository;
 import org.project.repository.ProductRepository;
 import org.project.repository.SupplierEntityRepository;
@@ -148,7 +149,10 @@ public abstract class AbstractBaseTransactionServiceImpl<T> extends BaseTransact
         SupplierTransactionsEntity updatedTransaction = transactionRepository.save(transaction);
         return convertToDTO(updatedTransaction);
     }
-    
+
+    public abstract Page<SupplierInDTO> getFilteredSupplierInsForStockIn(int page, int size, String status, String search,
+                                                                         String type, List<SupplierTransactionStatus> allowedStatuses);
+
     /**
      * Chuyển đổi từ Entity sang DTO
      * @param entity Entity cần chuyển đổi

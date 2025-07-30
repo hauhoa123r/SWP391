@@ -29,7 +29,7 @@ import org.project.enums.SupplierTransactionType;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/supplier-out-invoices")
+@RequestMapping("/warehouse/invoices/out")
 public class SupplierOutInvoiceController {
 
     private final SupplierOutService supplierOutService;
@@ -125,6 +125,9 @@ public class SupplierOutInvoiceController {
             // Add allowed statuses for dropdown
             mv.addObject("availableStatuses", allowedStatuses);
             
+            // Add current user for forms
+            mv.addObject("currentUser", getCurrentUser());
+            
             log.debug("Supplier out invoices page prepared with {} transactions", filteredPage.getContent().size());
         } catch (Exception e) {
             log.error("Error preparing supplier out invoices page data: {}", e.getMessage(), e);
@@ -164,12 +167,12 @@ public class SupplierOutInvoiceController {
             } else {
                 log.warn("Supplier out invoice with ID {} not found or not in completed/rejected status", id);
                 mv.addObject("errorMessage", "Invoice not found or not in appropriate status");
-                mv.setViewName("redirect:/supplier-out-invoices");
+                mv.setViewName("redirect:/warehouse/invoices/out");
             }
         } catch (Exception e) {
             log.error("Error loading supplier out invoice details for ID {}: {}", id, e.getMessage(), e);
             mv.addObject("errorMessage", "Error loading invoice: " + e.getMessage());
-            mv.setViewName("redirect:/supplier-out-invoices");
+            mv.setViewName("redirect:/warehouse/invoices/out");
         }
 
         return mv;
@@ -194,18 +197,18 @@ public class SupplierOutInvoiceController {
             if (updatedTransaction != null) {
                 redirectAttributes.addFlashAttribute("successMessage", 
                         "Invoice status updated to " + status.getDisplayName());
-                return "redirect:/supplier-out-invoices/" + id;
+                return "redirect:/warehouse/invoices/out/" + id;
             } else {
                 log.warn("Failed to update supplier out invoice status: ID={}, newStatus={}", id, status);
                 redirectAttributes.addFlashAttribute("errorMessage", "Failed to update invoice status");
-                return "redirect:/supplier-out-invoices";
+                return "redirect:/warehouse/invoices/out";
             }
         } catch (Exception e) {
             log.error("Error updating supplier out invoice status: ID={}, newStatus={}, error={}", 
                     id, status, e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", 
                     "Error updating invoice status: " + e.getMessage());
-            return "redirect:/supplier-out-invoices";
+            return "redirect:/warehouse/invoices/out";
         }
     }
 
@@ -229,18 +232,18 @@ public class SupplierOutInvoiceController {
                 
                 supplierOutService.deleteSupplierOut(id);
                 redirectAttributes.addFlashAttribute("successMessage", "Invoice deleted successfully");
-                return "redirect:/supplier-out-invoices";
+                return "redirect:/warehouse/invoices/out";
             } else {
                 log.warn("Cannot delete supplier out invoice: ID={} not found or not in COMPLETED/REJECTED status", id);
                 redirectAttributes.addFlashAttribute("errorMessage", 
                         "Invoice not found or cannot be deleted due to its status");
-                return "redirect:/supplier-out-invoices";
+                return "redirect:/warehouse/invoices/out";
             }
         } catch (Exception e) {
             log.error("Error deleting supplier out invoice with ID {}: {}", id, e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", 
                     "Error deleting invoice: " + e.getMessage());
-            return "redirect:/supplier-out-invoices";
+            return "redirect:/warehouse/invoices/out";
         }
     }
     
@@ -250,7 +253,7 @@ public class SupplierOutInvoiceController {
     @GetMapping("/inventory/api/stock-invoices")
     public String redirectApiToController(
             @RequestParam(required = false) Map<String, String> allParams) {
-        StringBuilder redirectUrl = new StringBuilder("redirect:/supplier-out-invoices");
+        StringBuilder redirectUrl = new StringBuilder("redirect:/warehouse/invoices/out");
         
         // Forward any query parameters
         if (!allParams.isEmpty()) {
@@ -268,6 +271,21 @@ public class SupplierOutInvoiceController {
      */
     @GetMapping("/inventory/api/stock-invoices/{id}")
     public String redirectApiDetailToController(@PathVariable Long id) {
-        return "redirect:/supplier-out-invoices/" + id;
+        return "redirect:/warehouse/invoices/out/" + id;
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 }

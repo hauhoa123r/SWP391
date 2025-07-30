@@ -2,10 +2,10 @@ package org.project.service;
 
 import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
-import org.project.enums.SupplierTransactionType;
 import org.project.model.dto.SupplierInDTO;
 import org.project.service.base.BaseSupplierTransactionService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -46,16 +46,14 @@ public interface SupplierInService extends BaseSupplierTransactionService<Suppli
     
     /**
      * Get paginated supplier ins filtered by specific statuses
-     * @param page Page number (0-based)
-     * @param size Page size
+     * @param pageable Pageable object
      * @param status Optional specific status filter
      * @param search Optional search term
      * @param type Optional type filter
      * @param allowedStatuses List of allowed statuses to include
      * @return Paginated supplier ins
      */
-    Page<SupplierInDTO> getFilteredSupplierInsForStockIn(int page, int size, String status, String search, 
-                                                      String type, List<SupplierTransactionStatus> allowedStatuses);
+    Page<SupplierInDTO> getFilteredSupplierInsForStockIn(Pageable pageable, String status, String search, String type, List<SupplierTransactionStatus> allowedStatuses);
     
     /**
      * Add rejection reason to a supplier in transaction

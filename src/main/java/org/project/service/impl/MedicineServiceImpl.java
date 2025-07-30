@@ -1,11 +1,9 @@
 package org.project.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.project.entity.CategoryEntity;
 import org.project.entity.MedicineEntity;
 import org.project.entity.ProductEntity;
 import org.project.enums.ProductType;
-import org.project.model.dto.InventoryItemDTO;
 import org.project.model.dto.MedicineDTO;
 import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierRequestItemDTO;
@@ -37,7 +35,6 @@ public class MedicineServiceImpl implements MedicineService {
     
     @Autowired
     private ProductRepository productRepository;
-
 
     public MedicineServiceImpl(MedicineRepository medicineRepository) {
         this.medicineRepository = medicineRepository;
@@ -215,7 +212,7 @@ public class MedicineServiceImpl implements MedicineService {
     
     private MedicineDTO convertToDTO(MedicineEntity entity) {
         MedicineDTO dto = new MedicineDTO();
-
+        
         if (entity.getProductEntity() != null) {
             ProductEntity product = entity.getProductEntity();
             dto.setId(product.getId());
@@ -228,13 +225,6 @@ public class MedicineServiceImpl implements MedicineService {
             dto.setProductType(product.getProductType());
             dto.setProductStatus(product.getProductStatus());
             dto.setLabel(product.getLabel());
-            dto.setAverageRating(product.getAverageRating());
-            dto.setReviewCount(product.getReviewCount());
-            //string of categories
-            String categories = entity.getProductEntity().getCategoryEntities().stream()
-                    .map(CategoryEntity::getName).collect(Collectors.joining(", "));
-            dto.setCategory(categories);
-            //set batches
         }
         
         return dto;

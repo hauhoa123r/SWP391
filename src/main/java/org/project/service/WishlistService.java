@@ -6,12 +6,14 @@ import java.util.List;
 
 public interface WishlistService {
     List<PharmacyResponse> getWishlistItems(Long userId);
+    
+    List<PharmacyResponse> getWishlistItems(Long userId, String searchQuery, String sortBy, String filterStock);
 
     void addProduct(Long userId, Long productId);
     
     void addProduct(Long userId, Long productId, Integer quantity);
 
-    void removeProduct(Long userId, Long productId);
+    boolean removeProduct(Long userId, Long productId);
     
     void updateQuantity(Long userId, Long productId, Integer quantity);
 }

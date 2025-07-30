@@ -1,10 +1,10 @@
 package org.project.controller;
 
-
-import org.project.exception.CouponException;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.enums.DiscountType;
+import org.project.exception.CouponException;
 import org.project.model.dto.CouponDTO;
 import org.project.service.CouponService;
 import org.project.service.UserCouponService;
@@ -33,8 +33,10 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequiredArgsConstructor
 public class CouponController {
+
     private final CouponService couponService;
     private final UserCouponService userCouponService;
+    
     /**
      * Hiển thị danh sách coupon
      */
@@ -66,9 +68,12 @@ public class CouponController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
+        // Add current user for forms
+        model.addAttribute("currentUser", getCurrentUser());
+
         return "templates_storage/coupon-list";
     }
-
+    
     /**
      * Hiển thị form tạo mới coupon
      */
@@ -76,81 +81,81 @@ public class CouponController {
     public String showCreateForm(Model model) {
         model.addAttribute("coupon", new CouponDTO());
         model.addAttribute("discountTypes", Arrays.asList(DiscountType.values()));
-
+        
         return "templates_storage/create-coupon";
     }
-
+    
     /**
      * Xử lý tạo mới coupon
      */
     @PostMapping("/create-coupon")
     public String createCoupon(@ModelAttribute CouponDTO coupon, RedirectAttributes redirectAttributes) {
         log.info("Creating new coupon: {}", coupon.getCode());
-
+        
         try {
             // Nếu discountType không được thiết lập, sử dụng giá trị mặc định
             if (coupon.getDiscountType() == null) {
                 coupon.setDiscountType(DiscountType.PERCENTAGE);
             }
-
+            
             CouponDTO createdCoupon = couponService.createCoupon(coupon);
             redirectAttributes.addFlashAttribute("successMessage", "Coupon created successfully");
-
+            
             return "redirect:/coupon-list";
         } catch (Exception e) {
             log.error("Error creating coupon: {}", e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", "Error creating coupon: " + e.getMessage());
             redirectAttributes.addFlashAttribute("coupon", coupon);
-
+            
             return "redirect:/create-coupon";
         }
     }
-
+    
     /**
      * Hiển thị form chỉnh sửa coupon
      */
     @GetMapping("/edit-coupon/{id}")
     public String showEditForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         log.info("Showing edit form for coupon with ID: {}", id);
-
+        
         try {
             CouponDTO coupon = couponService.findCouponById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid coupon ID: " + id));
-
+                    
             model.addAttribute("coupon", coupon);
             model.addAttribute("discountTypes", Arrays.asList(DiscountType.values()));
-
+            
             return "templates_storage/edit-coupon";
         } catch (Exception e) {
             log.error("Error showing edit form for coupon with ID {}: {}", id, e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", "Error loading coupon: " + e.getMessage());
-
+            
             return "redirect:/coupon-list";
         }
     }
-
+    
     /**
      * Xử lý cập nhật coupon
      */
     @PostMapping("/edit-coupon/{id}")
     public String updateCoupon(@PathVariable Long id, @ModelAttribute CouponDTO coupon,
-                               RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
         log.info("Updating coupon with ID: {}", id);
-
+        
         try {
             CouponDTO updatedCoupon = couponService.updateCoupon(id, coupon);
             redirectAttributes.addFlashAttribute("successMessage", "Coupon updated successfully");
-
+            
             return "redirect:/coupon-list";
         } catch (Exception e) {
             log.error("Error updating coupon with ID {}: {}", id, e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", "Error updating coupon: " + e.getMessage());
             redirectAttributes.addFlashAttribute("coupon", coupon);
-
+            
             return "redirect:/edit-coupon/" + id;
         }
     }
-
+    
     /**
      * Xóa coupon
      */
@@ -268,26 +273,26 @@ public class CouponController {
     @PostMapping("/api/apply-coupon")
     @ResponseBody
     public ResponseEntity<?> applyCoupon(
-            @RequestParam String code,
+            @RequestParam String code, 
             @RequestParam(required = false) BigDecimal orderTotal,
             @RequestParam(required = false) Long userId) {
-        log.info("Attempting to apply coupon with code: {} to order with total: {}, userId: {}",
+        log.info("Attempting to apply coupon with code: {} to order with total: {}, userId: {}", 
                 code, orderTotal, userId);
-
+        
         Map<String, Object> response = new HashMap<>();
-
+        
         try {
             Optional<CouponDTO> couponOpt = couponService.findCouponByCode(code);
-
+            
             if (!couponOpt.isPresent()) {
                 log.warn("Coupon with code {} not found", code);
                 response.put("success", false);
                 response.put("message", "Invalid coupon code. Please try again.");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
             }
-
+            
             CouponDTO coupon = couponOpt.get();
-
+            
             // Check if coupon is expired
             if (coupon.isExpired()) {
                 log.warn("Coupon with code {} has expired", code);
@@ -295,7 +300,7 @@ public class CouponController {
                 response.put("message", "This coupon has expired.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
-
+            
             // Check if user has already used this coupon
             if (userId != null && userCouponService.hasUserUsedCoupon(userId, coupon.getId())) {
                 log.warn("User {} has already used coupon {}", userId, code);
@@ -303,7 +308,7 @@ public class CouponController {
                 response.put("message", "You have already used this coupon.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
-
+            
             // Check minimum order amount if set
             if (orderTotal != null && coupon.getMinimumOrderAmount() != null &&
                     orderTotal.compareTo(coupon.getMinimumOrderAmount()) < 0) {
@@ -314,7 +319,7 @@ public class CouponController {
                         coupon.getMinimumOrderAmount() + ".");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
-
+            
             // Calculate discount amount
             BigDecimal discountAmount;
             if (orderTotal != null) {
@@ -348,4 +353,16 @@ public class CouponController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-}
+
+
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
+    }
+} 

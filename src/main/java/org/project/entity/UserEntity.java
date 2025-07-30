@@ -7,14 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.project.enums.StaffRole;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +19,7 @@ import java.util.*;
 @Setter
 @Entity
 @Table(name = "users", schema = "swp391")
-public class UserEntity implements UserDetails {
+public class UserEntity {
     @Id
     @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,57 +31,35 @@ public class UserEntity implements UserDetails {
 
     @Transient
     private boolean isPasswordSet = false;
-
-    public boolean isPasswordSet() {
-        return isPasswordSet;
-    }
-
-    public void setPasswordSet(boolean passwordSet) {
-        this.isPasswordSet = passwordSet;
-    }
-
     @Size(max = 255)
     @Column(name = "email", unique = true)
     private String email;
-
     @Size(max = 255)
     @Column(name = "phone_number")
     private String phoneNumber;
-
     @Size(max = 255)
     @Column(name = "verification_token")
     private String verificationToken;
-
     @Column(name = "is_verified")
     private Boolean isVerified;
-
     @Column(name = "two_factor_enabled")
     private Boolean twoFactorEnabled;
-
     @OneToOne(mappedBy = "userEntity")
     private StaffEntity staffEntity;
-
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ForgotPassword forgotPassword;
-
     @OneToMany(mappedBy = "userEntity")
     private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "userEntity")
     private Set<NotificationEntity> notificationEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PatientEntity> patientEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "userEntity")
     private Set<ShippingAddressEntity> shippingAddressEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "userEntity")
     private Set<UserCouponEntity> userCouponEntities = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "userEntity")
     private Set<WalletEntity> walletEntities = new LinkedHashSet<>();
-
     @ManyToMany
     @JoinTable(name = "wishlist_products",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -100,49 +75,29 @@ public class UserEntity implements UserDetails {
     @ColumnDefault("'PATIENT'")
     @Column(name = "user_role", nullable = false)
     private UserRole userRole;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
     private UserStatus userStatus;
 
+    public boolean isPasswordSet() {
+        return isPasswordSet;
+    }
+
+    public void setPasswordSet(boolean passwordSet) {
+        this.isPasswordSet = passwordSet;
+    }
+
+    public String getRole() {
+        if (staffEntity != null && staffEntity.getStaffRole() != null) {
+            return userRole.name() + "_" + staffEntity.getStaffRole().name();
+        } else {
+            return userRole.name();
+        }
+    }
 
     public void addPatientEntity(PatientEntity patientEntity) {
         this.patientEntities.add(patientEntity);
         patientEntity.setUserEntity(this);
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.name()));
-
-        if (userRole == UserRole.STAFF && staffEntity != null && staffEntity.getStaffRole() != null) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_STAFF_" + staffEntity.getStaffRole().name()));
-        }
-
-        return authorities;
-    }
-    @Override
-    public boolean isAccountNonExpired() { return true; }
-
-    @Override
-    public boolean isAccountNonLocked() { return true; }
-
-    @Override
-    public boolean isCredentialsNonExpired() {  return true; }
-
-    @Override
-    public boolean isEnabled() { return true; }
-
-
-    @Override
-    public String getPassword() {
-        return passwordHash;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
     }
 
 }

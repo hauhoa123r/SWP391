@@ -1,8 +1,6 @@
 package org.project.controller;
 
-import org.project.entity.CartItemEntity;
 import org.project.model.dto.ProductDetailDTO;
-import org.project.service.CartService;
 import org.project.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

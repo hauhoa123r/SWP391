@@ -113,7 +113,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private boolean isStartTimeBetweenStaffSchedule(AppointmentDTO appointmentDTO) {
         Long doctorId = appointmentDTO.getDoctorEntityId();
         Timestamp startTime = appointmentDTO.getStartTime();
-        List<StaffScheduleEntity> staffScheduleEntity = staffScheduleRepository.findByStaffEntityIdAndAvailableDate(doctorId, new Date(startTime.getTime()));
+        List<StaffScheduleEntity> staffScheduleEntity = staffScheduleRepository.findByStaffEntityIdAndAvailableDate(doctorId, new Date(timestampUtils.getStartOfDay(startTime).getTime()));
         return staffScheduleEntity.stream().anyMatch(schedule -> {
             if (schedule.getStartTime() == null || schedule.getEndTime() == null) {
                 return false; // Invalid schedule
@@ -156,36 +156,39 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public void saveAppointment(AppointmentDTO appointmentDTO) {
+        // Kiểm tra bác sĩ có tồn tại không
         if (!isDoctorExists(appointmentDTO)) {
-            throw new ErrorResponse("Doctor not found");
+            throw new ErrorResponse("Không tìm thấy bác sĩ");
         }
+        // Kiểm tra bác sĩ có hỗ trợ dịch vụ này không
         if (!isDoctorSupportService(appointmentDTO)) {
-            throw new ErrorResponse("Doctor does not support this service");
+            throw new ErrorResponse("Bác sĩ không hỗ trợ dịch vụ này");
         }
-        // Validate appointment time
+        // Kiểm tra thời gian đặt lịch hợp lệ không
         if (!isStartTimeValid(appointmentDTO)) {
-            throw new ErrorResponse("Invalid appointment time");
+            throw new ErrorResponse("Thời gian đặt lịch không hợp lệ");
         }
-        // Check appointment time between staff schedule
+        // Kiểm tra thời gian đặt lịch có nằm trong lịch làm việc của nhân viên không
         if (!isStartTimeBetweenStaffSchedule(appointmentDTO)) {
-            throw new ErrorResponse("Appointment time is not within staff schedule");
+            throw new ErrorResponse("Thời gian đặt lịch không nằm trong lịch làm việc của nhân viên");
         }
-        // Check patient have same appointment time (same patient)
+        // Kiểm tra bệnh nhân đã đặt lịch cùng thời gian này chưa (cùng bệnh nhân)
         if (isPatientHasAppointmentAtSameTime(appointmentDTO)) {
-            throw new ErrorResponse("You already have an appointment at this time");
+            throw new ErrorResponse("Bạn đã có một cuộc hẹn vào thời gian này");
         }
-        // Check appointment time duplicate with other appointment (other patient)
+        // Kiểm tra bác sĩ đã bị bệnh nhân khác đặt lịch thời gian này chưa
         if (isDoctorBookedByOtherPatient(appointmentDTO)) {
-            throw new ErrorResponse("Doctor is already booked at this time");
+            throw new ErrorResponse("Bác sĩ đã có lịch hẹn vào thời gian này");
         }
-        // Check if the user exists and is active
+        // Kiểm tra tài khoản người dùng có tồn tại và đang hoạt động không
         if (!isUserExistsAndActive(appointmentDTO)) {
-            throw new ErrorResponse("User does not exist or is not active");
+            throw new ErrorResponse("Người dùng không tồn tại hoặc đang bị khóa");
         }
-        // Check if the patient does not belong to the user
+        // Kiểm tra bệnh nhân có thuộc quyền sở hữu của người dùng không
         if (!isPatientBelongsToUser(appointmentDTO)) {
-            throw new ErrorResponse("Patient does not belong to the user");
+            throw new ErrorResponse("Bệnh nhân không thuộc quyền quản lý của người dùng");
         }
+
         AppointmentEntity appointmentEntity = appointmentConverter.toEntity(appointmentDTO);
         appointmentEntity.setAppointmentStatus(AppointmentStatus.PENDING);
         appointmentRepository.save(appointmentEntity);
@@ -193,8 +196,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Long countCompletedAppointmentsByDepartment(Long departmentId) {
-        return appointmentRepository.countByAppointmentStatusAndServiceEntityDepartmentEntityId(
-                AppointmentStatus.COMPLETED, departmentId);
+        return appointmentRepository.countByAppointmentStatusAndServiceEntityDepartmentEntityId(AppointmentStatus.COMPLETED, departmentId);
     }
 
     @Override
@@ -216,12 +218,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         Map<AppointmentKey, List<Long>> appointmentLookupMap = createAppointmentLookupMap(appointmentEntities);
 
-        return appointmentEntities.stream()
-                .map(appointmentEntity -> {
-                    List<Long> conflictIds = getConflictAppointmentIds(appointmentEntity, appointmentLookupMap);
-                    return appointmentApprovalConverter.convertToResponse(appointmentEntity, conflictIds);
-                })
-                .collect(Collectors.toList());
+        return appointmentEntities.stream().map(appointmentEntity -> {
+            List<Long> conflictIds = getConflictAppointmentIds(appointmentEntity, appointmentLookupMap);
+            return appointmentApprovalConverter.convertToResponse(appointmentEntity, conflictIds);
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -263,8 +263,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (changeAppointmentDTO == null || changeAppointmentDTO.getAppointmentId() == null) {
             return false; // Invalid input
         }
-        AppointmentEntity appointmentEntity = appointmentRepository.findById(changeAppointmentDTO.getAppointmentId())
-                .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + changeAppointmentDTO.getAppointmentId()));
+        AppointmentEntity appointmentEntity = appointmentRepository.findById(changeAppointmentDTO.getAppointmentId()).orElseThrow(() -> new RuntimeException("Appointment not found with id: " + changeAppointmentDTO.getAppointmentId()));
 
         appointmentEntity = appointmentApprovalConverter.convertToEntity(appointmentEntity, changeAppointmentDTO);
 
@@ -287,9 +286,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             boolean isToday = timestampUtils.isSameDay(startOfDay, now);
             Timestamp filterStart = isToday ? now : startOfDay;
 
-            List<StaffScheduleEntity> scheduleEntities = staffScheduleRepository.findByStaffEntityIdAndAvailableDate(
-                    staffId, new Date(currentDay.getTime())
-            );
+            List<StaffScheduleEntity> scheduleEntities = staffScheduleRepository.findByStaffEntityIdAndAvailableDate(staffId, new Date(currentDay.getTime()));
 
             if (scheduleEntities.isEmpty()) {
                 currentDay = timestampUtils.plusDays(currentDay, 1);
@@ -298,14 +295,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             Set<Timestamp> busySlots = new HashSet<>();
 
-            List<AppointmentEntity> conflictingAppointments = appointmentRepository.findConflictingAppointments(
-                    staffId, patientId, startOfDay, endOfDay);
+            List<AppointmentEntity> conflictingAppointments = appointmentRepository.findConflictingAppointments(staffId, patientId, startOfDay, endOfDay);
 
             for (AppointmentEntity appointmentEntity : conflictingAppointments) {
                 Timestamp appointmentStart = appointmentEntity.getStartTime();
-                Timestamp appointmentEnd = timestampUtils.plusMinutes(
-                        appointmentStart,
-                        appointmentEntity.getDurationMinutes() // Dùng duration thực
+                Timestamp appointmentEnd = timestampUtils.plusMinutes(appointmentStart, appointmentEntity.getDurationMinutes() // Dùng duration thực
                 );
 
                 Timestamp slot = appointmentStart;
@@ -355,8 +349,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             AppointmentKey key = new AppointmentKey(appointmentEntity.getDoctorEntity().getId(), appointmentEntity.getStartTime());
 
-            appointmentLookupMap.computeIfAbsent(key, k -> new ArrayList<>())
-                    .add(appointmentEntity.getId());
+            appointmentLookupMap.computeIfAbsent(key, k -> new ArrayList<>()).add(appointmentEntity.getId());
         }
         return appointmentLookupMap;
     }
@@ -367,11 +360,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         AppointmentKey key = new AppointmentKey(appointmentEntity.getDoctorEntity().getId(), appointmentEntity.getStartTime());
-        return Optional.ofNullable(appointmentLookupMap.get(key))
-                .map(ids -> ids.stream()
-                        .filter(id -> !id.equals(appointmentEntity.getId()))
-                        .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+        return Optional.ofNullable(appointmentLookupMap.get(key)).map(ids -> ids.stream().filter(id -> !id.equals(appointmentEntity.getId())).collect(Collectors.toList())).orElse(Collections.emptyList());
+    }
+
+    @Autowired
+    public void setTimestampUtils(TimestampUtils timestampUtils) {
+        this.timestampUtils = timestampUtils;
     }
 
     private static class AppointmentKey {
@@ -386,20 +380,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof AppointmentKey)) return false;
-            AppointmentKey that = (AppointmentKey) o;
-            return Objects.equals(doctorEntityId, that.doctorEntityId) &&
-                    Objects.equals(startTime, that.startTime);
+            if (!(o instanceof AppointmentKey that)) return false;
+            return Objects.equals(doctorEntityId, that.doctorEntityId) && Objects.equals(startTime, that.startTime);
         }
 
         @Override
         public int hashCode() {
             return Objects.hash(doctorEntityId, startTime);
         }
-    }
-
-    @Autowired
-    public void setTimestampUtils(TimestampUtils timestampUtils) {
-        this.timestampUtils = timestampUtils;
     }
 }

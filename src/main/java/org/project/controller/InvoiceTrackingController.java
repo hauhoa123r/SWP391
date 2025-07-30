@@ -29,7 +29,7 @@ public class InvoiceTrackingController {
      * @param id Transaction ID
      * @return View name
      */
-    @GetMapping("/invoiceintracking.html")
+    @GetMapping("/warehouse/invoice/in/tracking")
     public String getSupplierInTracking(@RequestParam Long id, Model model) {
         log.info("Loading supplier in tracking page for ID: {}", id);
         
@@ -40,16 +40,20 @@ public class InvoiceTrackingController {
             if (supplierIn != null) {
                 model.addAttribute("supplierIn", supplierIn);
                 model.addAttribute("pageTitle", "Theo dõi đơn nhập kho");
+                
+                // Add current user for forms
+                model.addAttribute("currentUser", getCurrentUser());
+                
                 return "templates_storage/invoiceintracking";
             }
             
             // Not found
             model.addAttribute("errorMessage", "Không tìm thấy đơn nhập kho có ID: " + id);
-            return "redirect:/supplier-ins";
+            return "redirect:/warehouse/stock-in";
         } catch (Exception e) {
             log.error("Error loading supplier in tracking for ID {}: {}", id, e.getMessage(), e);
             model.addAttribute("errorMessage", "Lỗi khi tải dữ liệu theo dõi đơn nhập kho: " + e.getMessage());
-            return "redirect:/supplier-ins";
+            return "redirect:/warehouse/stock-in";
         }
     }
 
@@ -58,7 +62,7 @@ public class InvoiceTrackingController {
      * @param id Transaction ID
      * @return View name
      */
-    @GetMapping("/invoiceouttracking.html")
+    @GetMapping("/warehouse/invoice/out/tracking")
     public String getSupplierOutTracking(@RequestParam Long id, Model model) {
         log.info("Loading supplier out tracking page for ID: {}", id);
         
@@ -69,16 +73,35 @@ public class InvoiceTrackingController {
             if (supplierOut != null) {
                 model.addAttribute("supplierOut", supplierOut);
                 model.addAttribute("pageTitle", "Theo dõi đơn xuất kho");
+                
+                // Add current user for forms
+                model.addAttribute("currentUser", getCurrentUser());
+                
                 return "templates_storage/invoiceouttracking";
             }
             
             // Not found
             model.addAttribute("errorMessage", "Không tìm thấy đơn xuất kho có ID: " + id);
-            return "redirect:/supplier-outs";
+            return "redirect:/warehouse/stock-out";
         } catch (Exception e) {
             log.error("Error loading supplier out tracking for ID {}: {}", id, e.getMessage(), e);
             model.addAttribute("errorMessage", "Lỗi khi tải dữ liệu theo dõi đơn xuất kho: " + e.getMessage());
-            return "redirect:/supplier-outs";
+            return "redirect:/warehouse/stock-out";
         }
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 } 

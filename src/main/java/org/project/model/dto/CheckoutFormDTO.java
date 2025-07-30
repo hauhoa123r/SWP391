@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.project.enums.OrderType;
+import org.project.enums.PaymentMethod;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -56,6 +57,10 @@ public class CheckoutFormDTO {
     // ---------- COUPON ----------
     private String couponCode;
     private Long couponId; // Set ở Controller sau khi kiểm tra code
+
+    // ---------- PAYMENT ----------
+    @NotNull
+    private PaymentMethod paymentMethod; // CASH, CARD, MOMO
 
     // ---------- ORDER META ----------
     @NotBlank

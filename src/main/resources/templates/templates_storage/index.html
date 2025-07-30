@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-          content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+          content="Kivicare admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords"
-          content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+          content="admin template, Kivicare admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
     <link rel="icon" th:href="@{/templates_storage/assets/images/favicon.png}" type="image/x-icon">
     <link rel="shortcut icon" th:href="@{/templates_storage/assets/images/favicon.png}" type="image/x-icon">
-    <title>Fastkart - Dashboard</title>
+    <title>Kivicare - Dashboard</title>
 
     <!-- Google font-->
     <link rel="stylesheet"
@@ -44,6 +44,10 @@
             text-align: center;
             margin: 0;
             letter-spacing: 0.5px;
+        }
+
+        .sizebox {
+            padding: 35px 15px;
         }
     </style>
 
@@ -81,14 +85,14 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
@@ -171,7 +175,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
+                    <a th:href="@{/warehouse/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -182,7 +186,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -198,7 +202,7 @@
                             <li class="back-btn"></li>
 
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/warehouse/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -211,11 +215,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/supplier-ins}">Nhập kho</a>
+                                        <a th:href="@{/warehouse/stock-in}">Nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/supplier-outs}">Xuất kho</a>
+                                        <a th:href="@{/warehouse/stock-out}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -227,11 +231,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/supplier-in-invoices}">Hóa đơn nhập kho</a>
+                                        <a th:href="@{/warehouse/invoices/in}">Hóa đơn nhập kho</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/supplier-out-invoices}">Hóa đơn xuất kho</a>
+                                        <a th:href="@{/warehouse/invoices/out}">Hóa đơn xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -243,11 +247,11 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/medical-equipment}">Thiết bị y tế</a>
+                                        <a th:href="@{/warehouse/medical-equipment}">Thiết bị y tế</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/medicine}">Thuốc</a>
+                                        <a th:href="@{/warehouse/medicines}">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>
@@ -309,7 +313,7 @@
                 <div class="row">
                     <!-- chart caard section start -->
                     <div class="col-sm-6 col-xxl-3 col-lg-6">
-                        <div class="main-tiles border-5 border-0  card-hover card o-hidden">
+                        <div class="main-tiles border-5 border-0  card-hover card o-hidden sizebox">
                             <div class="custome-1-bg b-r-4 card-body">
                                 <div class="media align-items-center static-top-widget">
                                     <div class="media-body p-0">
@@ -355,7 +359,7 @@
                                     <div class="media-body p-0">
                                         <span class="m-0">Tổng sản phẩm</span>
                                         <h4 class="mb-0 counter" th:text="${dashboard.totalProducts}">893
-                                            <a th:href="@{/StockIn.html}" class="badge badge-light-secondary grow">
+                                            <a th:href="@{/warehouse/stock-in}" class="badge badge-light-secondary grow">
                                                 Nhập kho</a>
                                         </h4>
                                     </div>
@@ -858,7 +862,7 @@
                 <footer class="footer">
                     <div class="row">
                         <div class="col-md-12 footer-copyright text-center">
-                            <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                            <p class="mb-0">Copyright 2022 © Kivicare theme by pixelstrap</p>
                         </div>
                     </div>
                 </footer>

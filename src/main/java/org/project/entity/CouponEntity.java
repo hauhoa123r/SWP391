@@ -60,4 +60,5 @@ public class CouponEntity {
 
     @OneToMany
     private Set<UserCouponEntity> userCouponEntities = new LinkedHashSet<>();
+    
 }
