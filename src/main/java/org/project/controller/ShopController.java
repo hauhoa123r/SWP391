@@ -3,10 +3,12 @@ package org.project.controller;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.project.entity.CartItemEntity;
 import org.project.enums.ProductSortType;
 import org.project.model.dto.ProductDetailDTO;
 import org.project.model.response.CategoryListResponse;
 import org.project.model.response.PharmacyResponse;
+import org.project.service.CartService;
 import org.project.service.CategoryService;
 import org.project.service.ProductService;
 import org.project.service.WishlistService;
@@ -40,8 +42,10 @@ public class ShopController {
     private final CategoryService categoryService;
     private final ProductTagRepository productTagRepository;
     private final WishlistService wishlistService;
-
+    private final CartService  cartService;
     private static final String PREVIOUS_SEARCH_KEY = "previousSearch";
+    //hard code id
+    private final Long userId = 4l;
 
     /**
      * Main shop page with filtering and searching capabilities
@@ -116,6 +120,11 @@ public class ShopController {
         mv.addObject("maxPrice", maxPrice);
         mv.addObject("selectedTag", tagProcessed);
         mv.addObject("selectedLabel", label);
+
+        List<CartItemEntity> cartItems = cartService.getCart(userId);
+        mv.addObject("cartItems", cartItems);
+        mv.addObject("total", cartService.calculateTotal(userId));
+        mv.addObject("size", cartItems.size());
         
         log.debug("Shop page prepared with {} products", productPage.getNumberOfElements());
         return mv;

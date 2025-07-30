@@ -36,7 +36,7 @@ public class CartController {
 
     private final CartService cartService;
     //hard-code userId
-    Long userId = 2l;
+    Long userId = 4l;
     // view all cart items of the user
     // including the total amount of money and number of item in cart
     @GetMapping
@@ -64,7 +64,7 @@ public class CartController {
     // hard delete from cart
     @PostMapping("/delete")
     public String deleteCartItem(@RequestParam Long productId) {
-        Long userId = 2l;
+        Long userId = 4l;
         cartService.removeItem(userId, productId);
 
         // Redirect back to cart
@@ -75,7 +75,7 @@ public class CartController {
     @PostMapping("/update")
     public String updateCartItemQuantity(@RequestParam Long cartId, @RequestParam Long userId,
                                          @RequestParam String action) {
-        userId = 2l;
+        userId = 4l;
         CartItemEntityId id = new CartItemEntityId(cartId, userId);
         CartItemEntity item = cartService.getItemById(id);
         if (item == null) {

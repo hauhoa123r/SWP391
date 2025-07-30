@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.project.enums.ReviewStatus;
 import org.project.model.dto.ReviewDTO;
 import org.project.model.dto.ReviewReplyDTO;
+import org.project.model.response.ReviewResponse;
 import org.project.service.ReviewService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class ReviewController {
         log.info("Fetching reviews with page={}, size={}, search={}, rating={}, status={}, sort={}, direction={}", 
                 page, size, search, rating, status, sort, direction);
         
-        Page<ReviewDTO> reviewPage = reviewService.findReviews(page, size, search, rating, status, sort, direction);
+        Page<ReviewResponse> reviewPage = reviewService.findReviews(page, size, search, rating, status, sort, direction);
         
         model.addAttribute("reviews", reviewPage.getContent());
         model.addAttribute("currentPage", page);

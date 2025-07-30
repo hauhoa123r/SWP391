@@ -1,6 +1,8 @@
 package org.project.controller;
 
+import org.project.entity.CartItemEntity;
 import org.project.model.dto.ProductDetailDTO;
+import org.project.service.CartService;
 import org.project.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,12 +11,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 public class ProductController {
 
     //inject pharmacyService
     @Autowired
     private PharmacyService pharmacyServiceImpl;
+
+    @Autowired
+    private CartService cartService;
+
+    //hard code id
+    long userId = 4l;
 
     @GetMapping("/product-standard/")
     public ModelAndView product() {
@@ -56,6 +66,11 @@ public class ProductController {
         // add related product
         model.addAttribute("relatedProducts",
                 pharmacyServiceImpl.findRandomProductsByType(detailDTO.getProduct().getType().toString()));
+
+        List<CartItemEntity> cartItems = cartService.getCart(userId);
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("total", cartService.calculateTotal(userId));
+        model.addAttribute("size", cartItems.size());
         // Return the view name
         return "/frontend/product-standard";
     }

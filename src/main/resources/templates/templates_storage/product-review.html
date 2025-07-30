@@ -400,7 +400,7 @@
                                                             <img th:src="${review.productImage != null ? review.productImage : '/templates_storage/assets/images/product/1.png'}" 
                                                                  class="img-fluid product-review-img" alt="product">
                                                             <div class="ms-2">
-                                                                <span th:text="${review.productName}">Paracetamol 500mg</span>
+                                                                <span th:text="${review.}">Paracetamol 500mg</span>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -415,7 +415,7 @@
                                                     <td>
                                                         <p class="truncate-text" th:text="${review.content}">Sản phẩm rất tốt, giao hàng nhanh...</p>
                                                     </td>
-                                                    <td th:text="${#dates.format(review.createdDate, 'dd-MM-yyyy')}">10-07-2023</td>
+                                                    <td th:text="${#dates.format(review.c, 'dd-MM-yyyy')}">10-07-2023</td>
                                                     <td>
                                                         <div class="status-badge" th:classappend="${review.status == 'APPROVED' ? 'status-approved' : (review.status == 'PENDING' ? 'status-pending' : 'status-hidden')}">
                                                             <span th:text="${review.status == 'APPROVED' ? 'Đã duyệt' : (review.status == 'PENDING' ? 'Chờ duyệt' : 'Đã ẩn')}">Chờ duyệt</span>

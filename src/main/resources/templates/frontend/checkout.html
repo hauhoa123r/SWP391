@@ -1155,48 +1155,27 @@
             </div>
          </form>
       </div>
-      <form action="order-received.html">
+      <form th:action="@{/checkout}" th:object="${checkoutForm}" method="post">
          <h3 class="mb-3">Billing details</h3>
-         <input name="first-name" type="text" required="required"
-            placeholder="First Name" class="form-control rounded-0 mb-3">
-         <input name="last-name" type="text" required="required"
-            placeholder="Last Name" class="form-control rounded-0 mb-3">
-         <input name="billing-company" type="text" required="required"
-            placeholder="Company" class="form-control rounded-0 mb-3">
-         <div class="mb-3">
-            <select class="select2-basic-single js-states"
-               aria-label="Default select example">
-               <option selected>India</option>
-               <option value="1">United Kingdom</option>
-               <option value="2">United States</option>
-               <option value="3">Australia</option>
-               <option value="4">North Corea</option>
-            </select>
-         </div>
-         <input name="billing-address" type="text" required="required"
-            placeholder="House number and street name"
-            class="form-control rounded-0 mb-3">
-         <input name="billing-address2" type="text" required="required"
-            placeholder="Apartment, suite, unit, etc. (optional)"
-            class="form-control rounded-0 mb-3">
-         <input name="city" type="text" required="required"
-            placeholder="Town / City" class="form-control rounded-0 mb-3">
-         <div class="mb-3">
-            <select class="select2-basic-single js-states"
-               aria-label="Default select example">
-               <option selected>Colorado</option>
-               <option value="2">Alaska</option>
-               <option value="1">Hawai</option>
-               <option value="3">Texas</option>
-               <option value="1">Washington</option>
-            </select>
-         </div>
-         <input name="postcode" type="text" required="required"
-            placeholder="ZIP Code" class="form-control rounded-0 mb-3">
-         <input name="phone" type="tel" required="required"
-            placeholder="Phone Number" class="form-control rounded-0 mb-3">
-         <input name="billing-company" type="email" required="required"
-            placeholder="E-mail Address" class="form-control rounded-0 mb-5">
+         <label>
+            <input th:field="*{firstName}" name="firstName" type="text" placeholder="First Name" class="form-control rounded-0 mb-3" />
+         </label>
+         <label>
+            <input th:field="*{lastName}" name="lastName" type="text" placeholder="Last Name" class="form-control rounded-0 mb-3" />
+         </label>
+         <label>
+            <input th:field="*{phoneNumber}" name="phoneNumber" type="tel" placeholder="Phone Number" class="form-control rounded-0 mb-3" />
+         </label>
+         <label>
+            <input th:field="*{email}" type="email" name="email" placeholder="Email Address" class="form-control rounded-0 mb-5" />
+         </label>
+         <label>
+            <input th:field="*{address}" type="text" name="address" placeholder="Address" class="form-control rounded-0 mb-3" />
+         </label>
+         <label>
+            <input th:field="*{birthdate}" name="birthdate" type="date" placeholder="Birthdate" class="form-control rounded-0 mb-3" />
+         </label>
+
          <h3 class="mb-3">Additional Information</h3>
          <label>Order notes (optional)</label>
          <div class="mb-5">

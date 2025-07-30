@@ -27,7 +27,13 @@ public class CheckoutFormDTO {
     private String email;
 
     @NotBlank
-    private String phone;
+    private String phoneNumber;
+
+    @NotBlank
+    private String address;
+
+    @NotBlank
+    private String birthdate;
 
     // ---------- SHIPPING ADDRESS ----------
     @NotNull

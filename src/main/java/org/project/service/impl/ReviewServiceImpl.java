@@ -7,13 +7,16 @@ import org.project.enums.ReviewStatus;
 import org.project.model.dto.ReviewDTO;
 import org.project.model.dto.ReviewReplyDTO;
 import org.project.model.response.ReviewResponse;
+import org.project.model.response.ReviewSpecification;
 import org.project.repository.ReviewRepository;
 import org.project.service.ReviewService;
 import org.project.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,8 +59,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Page<ReviewDTO> findReviews(int page, int size, String search, Integer rating, ReviewStatus status, String sort, String direction) {
-        return null;
+    public Page<ReviewResponse> findReviews(int page, int size, String search, Integer rating, ReviewStatus status, String sort, String direction) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort));
+        Specification<ReviewEntity> spec = ReviewSpecification.filter(search, rating, status);
+        Page<ReviewEntity> reviewPage = reviewRepository.findAll(spec, pageable);
+        return reviewPage.map(reviewConverter::toResponse);
     }
 
     @Override
