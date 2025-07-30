@@ -157,245 +157,6 @@
                             </svg>
                         </i>
                     </div>
-                    <div class="d-flex align-items-center justify-content-between product-offcanvas">
-                        <div class="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabindex="-1"
-                            id="offcanvasBottomNav">
-                            <div class="offcanvas-body">
-                                <ul class="iq-nav-menu list-unstyled">
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start " th:href="@{/dashboard-doctor/index.html}">
-                                            <span class="nav-text">Home</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
-                                            href="#allPagesData" role="button" aria-expanded="false"
-                                            aria-controls="allPagesData">
-                                            <span class="nav-text">Pages</span>
-                                        </a>
-                                        <ul class="iq-header-sub-menu list-unstyled collapse" id="allPagesData">
-                                            <li class="nav-item">
-                                                <a class="nav-link" th:href="@{/dashboard-doctor/component.html}">Components</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" th:href="@{/dashboard-doctor/ui-color.html}">UI Color</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#authSkins" role="button" aria-expanded="false">
-                                                    Auth skins
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="defaultAuth">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/auth/sign-in.html}">Sign In</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/auth/sign-up.html}">Sign Up</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/auth/confirm-mail.html}">Email Verified</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/auth/recoverpw.html}">Reset
-                                                            Password</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/auth/lock-screen.html}">Lock Screen</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#userApps" role="button" aria-expanded="false"
-                                                    aria-controls="userApps">
-                                                    User
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="userApps">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/app/user-profile.html}">User Profile</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/app/user-add.html}">User Add</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/app/user-list.html}">User List</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#utilities" role="button" aria-expanded="false"
-                                                    aria-controls="utilities">
-                                                    Utilities
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="utilities">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/errors/maintenance.html}">Maintenance</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/errors/error404.html}">404</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/errors/error500.html}">500</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#widgetsPage" role="button" aria-expanded="false"
-                                                    aria-controls="widgetsPage">
-                                                    Widgets
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="widgetsPage">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/widget/widgetbasic.html}">Widget Basic</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/widget/widgetchart.html}">Widget Chart</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/widget/widgetcard.html}">Widget Card</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#mapPages" role="button" aria-expanded="false"
-                                                    aria-controls="mapPages">
-                                                    Map
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="mapPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/maps/google.html}">Google</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/maps/vector.html}">Vector</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#formsPages" role="button" aria-expanded="false"
-                                                    aria-controls="formsPages">
-                                                    Form
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="formsPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/form/form-element.html}">Element</a></li>
-
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/form/form-validation.html}">Validation</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#tablesPages" role="button" aria-expanded="false"
-                                                    aria-controls="tablesPages">
-                                                    Table
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="tablesPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/table/bootstrap-table.html}">Bootstrap Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/table/table-data.html}">Data Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/table/border-table.html}">Bordered Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/table/fancy-table.html}">Fancy Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/table/fixed-table.html}">Fixed Table</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#iconsPages" role="button" aria-expanded="false"
-                                                    aria-controls="iconsPages">
-                                                    Icons
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="iconsPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/icons/solid.html}">Solid</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/icons/outline.html}">Outlined</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            th:href="@{/dashboard-doctor/icons/dual-tone.html}">Dual Tone</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start " th:href="@{/dashboard-doctor/setting.html}">
-                                            <span class="nav-text">Setting </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                     <div class="d-flex align-items-center">
                         <button id="navbar-toggle" class="navbar-toggler px-0" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -875,110 +636,42 @@
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div>
-                        <h4>All Patient</h4>
-                        <span>More Than 400+ Result Test</span>
+                        <h4>Kết quả xét nghiệm</h4>
                     </div>
                 </div>
                 <div class="card-body pt-0">
                     <div class="table-responsive">
-                        <table class="table border-end border-start align-middle mb-0 rounded">
+                        <table id="doctor-list-table" class="table border-end border-start align-middle mb-0 rounded">
                             <thead class="table-dark">
-                                <tr>
-                                    <th>Patient Name</th>
-                                    <th>Age</th>
-                                    <th>Phone Number</th>
-                                    <th>Date & Time</th>
-                                    <th>Gender</th>
-                                    <th>Action</th>
-                                </tr>
+                            <tr>
+                                <th>Tên bệnh nhân</th>
+                                <th>Số điện thoại</th>
+                                <th>Ngày</th>
+                                <th>Giới tính</th>
+                                <th>Hành động</th>
+                            </tr>
                             </thead>
-                            <tbody>
-                                <tr data-item="list">
-                                    <td>
-                                        <h6 class="mb-0 text-body fw-normal">Isabella Brown</h6>
-                                    </td>
-                                    <td>23</td>
-                                    <td>+1 345 675 345</td>
-                                    <td>24 May - 10:00 AM</td>
-                                    <td>Female</td>
-                                    <td>
-                                        <a data-bs-toggle="offcanvas" href="#offcanvasPatientEdit"
-                                            aria-controls="offcanvasPatientEdit" class="d-inline-block pe-2">
-                                            <span class="text-success">
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M9.31055 14.3321H14.75" stroke="currentColor"
-                                                        stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
-                                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path d="M7.26562 3.50073L11.3548 6.64108" stroke="currentColor"
-                                                        stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </a>
-                                        <a href="#" class="d-inline-block ps-2 delete-btn">
-                                            <span class="text-danger">
-                                                <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M12.4938 6.10107C12.4938 6.10107 12.0866 11.1523 11.8503 13.2801C11.7378 14.2963 11.1101 14.8918 10.0818 14.9106C8.12509 14.9458 6.16609 14.9481 4.21009 14.9068C3.22084 14.8866 2.60359 14.2836 2.49334 13.2853C2.25559 11.1388 1.85059 6.10107 1.85059 6.10107"
-                                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path d="M13.5312 3.67969H0.812744" stroke="currentColor"
-                                                        stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M11.0804 3.67974C10.4917 3.67974 9.98468 3.26349 9.86918 2.68674L9.68693 1.77474C9.57443 1.35399 9.19343 1.06299 8.75918 1.06299H5.58443C5.15018 1.06299 4.76918 1.35399 4.65668 1.77474L4.47443 2.68674C4.35893 3.26349 3.85193 3.67974 3.26318 3.67974"
-                                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody></tbody>
+                            <tfoot>
+                            <tr>
+                                <th>
+                                    Tìm kiếm bệnh nhân
+                                    <input type="text" id="patientName" name="patientName" class="form-control form-control-sm" />
+                                </th>
+                                <th></th>
+                                <th></th>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tfoot>
                         </table>
-                    </div>
-                </div>
-                <div class="card-footer pt-0">
-                    <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-                        <ul class="page-number m-0 p-0 list-unstyled d-flex gap-2">
-                            <li class="text-center bg-primary text-white rounded">1</li>
-                            <li class="text-center bg-primary-subtle text-primary rounded ">2</li>
-                            <li class="text-center text-primary rounded fs-1">...</li>
-                            <li class="text-center bg-primary-subtle text-primary rounded">6</li>
-                        </ul>
-                        <div>
-                            <button class="btn btn-secondary text-white me-3" type="button">
-                                <span class="btn-inner">
-                                    <span class="text d-inline-block align-middle">Previous</span>
-                                    <span class="icon d-inline-block align-middle ms-1 ps-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8"
-                                            fill="none">
-                                            <path
-                                                d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                </span>
-                            </button>
-                            <button class="btn btn-primary me-3" type="button">
-                                <span class="btn-inner">
-                                    <span class="text d-inline-block align-middle">Next</span>
-                                    <span class="icon d-inline-block align-middle ms-1 ps-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8"
-                                            fill="none">
-                                            <path
-                                                d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                </span>
-                            </button>
+                        <div class="mt-4 d-flex justify-content-between align-items-center">
+                            <div>
+                                <span id="total-items"></span>
+                            </div>
+                            <nav>
+                                <ul class="pagination mb-0" id="pagination-container"></ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -1870,5 +1563,152 @@
     <!-- Icons -->
     <script th:src="@{/dashboard-doctor/assets/js/solid-icon-search-filter.js?v=1.4.1}" defer></script>
 </body>
+<script>
+    let currentPage = 1;
+    let totalPages = 1;
+    let searchName = '';
 
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    $(document).ready(function () {
+        // Gọi API lần đầu khi trang tải
+        fetchDoctors();
+
+        // Xử lý tìm kiếm theo tên bệnh nhân
+        $('#patientName').on('input', debounce(function () {
+            searchName = $('#patientName').val().trim();
+            currentPage = 1;
+            fetchDoctors();
+        }, 300));
+
+        // Xử lý sự kiện click phân trang
+        $(document).on('click', '#pagination-container .page-link', function (e) {
+            e.preventDefault();
+            const page = $(this).data('page');
+            if (page >= 0 && page < totalPages) {
+                currentPage = page + 1;
+                fetchDoctors();
+            }
+        });
+    });
+
+    function fetchDoctors() {
+        const tbody = $('#doctor-list-table tbody');
+        tbody.html('<tr><td colspan="5" class="text-center">Đang tải...</td></tr>');
+
+        $.ajax({
+            url: '/api/doctor/appointment/complete/filter',
+            type: 'GET',
+            data: {
+                page: currentPage - 1,
+                size: 10,
+                name: searchName
+            },
+            success: function (res) {
+                console.log('API response:', res);
+                if (res && res.content && typeof res.totalPages === 'number') {
+                    renderDoctorList(res.content);
+                    totalPages = res.totalPages || 1;
+                    renderPagination({
+                        number: res.number,
+                        totalPages: res.totalPages,
+                        totalElements: res.totalElements
+                    });
+                } else {
+                    console.error('Dữ liệu API không hợp lệ:', res);
+                    tbody.html('<tr><td colspan="5" class="text-center">Dữ liệu API không hợp lệ.</td></tr>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi tải dữ liệu:', status, error);
+                tbody.html('<tr><td colspan="5" class="text-center">Lỗi khi tải dữ liệu: ' + error + '</td></tr>');
+            }
+        });
+    }
+
+    function renderDoctorList(doctors) {
+        const tbody = $('#doctor-list-table tbody');
+        tbody.empty();
+
+        if (!doctors || doctors.length === 0) {
+            tbody.append('<tr><td colspan="5" class="text-center">Không có dữ liệu.</td></tr>');
+            return;
+        }
+
+        doctors.forEach(d => {
+            const html = `
+        <tr>
+            <td>${d.patientName || 'N/A'}</td>
+            <td>${d.phone || 'N/A'}</td>
+            <td>${d.date || 'N/A'}</td>
+            <td>${d.gender || 'N/A'}</td>
+            <td>
+                <button class="btn btn-success btn-sm"
+                        onclick="window.location.href='${d.resultURL || '#'}'"
+                        ${!d.resultURL ? 'disabled' : ''}>
+                    Xem kết quả
+                </button>
+            </td>
+        </tr>`;
+            tbody.append(html);
+        });
+    }
+
+    $(document).ready(function () {
+        renderDoctorList(yourDoctorListArray);
+    });
+
+    function renderPagination(pageData) {
+        const currentPageIndex = pageData.number;
+        totalPages = pageData.totalPages;
+        const totalItems = pageData.totalElements;
+
+        $('#total-items').text('Tổng số bản ghi: ' + totalItems);
+
+        if (totalPages <= 1) {
+            $('#pagination-container').html('');
+            return;
+        }
+
+        let html = '<ul class="pagination justify-content-center">';
+
+        // Nút "Trước"
+        html += `<li class="page-item ${currentPageIndex === 0 ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${currentPageIndex - 1}">Trước</a>
+            </li>`;
+
+        // Hiển thị trang đầu
+        if (currentPageIndex > 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+            if (currentPageIndex > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+
+        // Hiển thị các trang gần trang hiện tại
+        for (let i = Math.max(0, currentPageIndex - 1); i <= Math.min(totalPages - 1, currentPageIndex + 1); i++) {
+            html += `<li class="page-item ${i === currentPageIndex ? 'active' : ''}">
+                    <a class="page-link" href="#" data-page="${i}">${i + 1}</a>
+                </li>`;
+        }
+
+        // Hiển thị trang cuối
+        if (currentPageIndex < totalPages - 3) {
+            html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
+        }
+
+        // Nút "Sau"
+        html += `<li class="page-item ${currentPageIndex + 1 === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${currentPageIndex + 1}">Sau</a>
+            </li>`;
+
+        html += '</ul>';
+        $('#pagination-container').html(html);
+    }
+</script>
 </html>

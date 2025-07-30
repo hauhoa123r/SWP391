@@ -348,80 +348,27 @@
                         <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
                             <div>
                                 <h4>Tất cả lịch khám hôm nay</h4>
-                                <span>More Than 25+ New Doctors</span>
                             </div>
                             <div class="w-25 w-md-auto">
-                                <input type="text" class="form-control custom-search-input" id="searchDoctor"
-                                    placeholder="Tìm kiếm bệnh nhân...">
+                                <input type="text" class="form-control custom-search-input" id="searchDoctor" placeholder="Tìm kiếm bệnh nhân...">
                             </div>
                         </div>
                         <div class="card-body pt-0">
-                            <div class="row row-cols-xl-3 row-cols-md-2 row-cols-sm-2 row-cols-1">
-                                <div class="col">
-                                    <div class="bg-light-subtle p-4 mb-5 rounded">
-                                        <div class="row align-items-center">
-                                            <div class="col-md-8">
-                                                <div class="d-flex align-items-center gap-3 flex-column flex-md-row">
-                                                    <div>
-                                                        <h5 class="mb-1">Dr.Amine Louis</h5>
-                                                        <span class="text-body">Skin Specialist</span>
-                                                        <h6 class="mb-0 pt-1">
-                                                            <span class="text-body fw-normal">Availability:</span>
-                                                            Monday - Friday
-                                                        </h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                                                <button class="btn btn-success">Khám</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="row row-cols-xl-3 row-cols-md-2 row-cols-sm-2 row-cols-1" id="doctor-list">
                             </div>
                         </div>
                         <div class="card-footer pt-0">
                             <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-                                <ul class="page-number m-0 p-0 list-unstyled d-flex gap-2">
-                                    <li class="text-center bg-primary text-white rounded">1</li>
-                                    <li class="text-center bg-primary-subtle text-primary rounded ">2</li>
-                                    <li class="text-center text-primary rounded fs-1">...</li>
-                                    <li class="text-center bg-primary-subtle text-primary rounded">6</li>
-                                </ul>
                                 <div>
-                                    <button class="btn btn-secondary text-white me-3" type="button">
-                                        <span class="btn-inner">
-                                            <span class="text d-inline-block align-middle">Sau</span>
-                                            <span class="icon d-inline-block align-middle ms-1 ps-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-                                                    viewBox="0 0 8 8" fill="none">
-                                                    <path
-                                                        d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                        fill="currentColor" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </button>
-                                    <button class="btn btn-primary me-3" type="button">
-                                        <span class="btn-inner">
-                                            <span class="text d-inline-block align-middle">Trước</span>
-                                            <span class="icon d-inline-block align-middle ms-1 ps-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-                                                    viewBox="0 0 8 8" fill="none">
-                                                    <path
-                                                        d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                        fill="currentColor" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </button>
+                                    <span id="total-items" class="text-muted">Tổng số bản ghi: 0</span>
                                 </div>
+                                <ul id="pagination-container" class="pagination m-0 p-0 list-unstyled d-flex gap-2">
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAppointmentEdit"
                 aria-labelledby="offcanvasAppointmentEditLabel">
                 <div class="offcanvas-header border-bottom">
@@ -1449,5 +1396,160 @@
     <!-- Icons -->
     <script th:src="@{/dashboard-doctor/assets/js/solid-icon-search-filter.js?v=1.4.1}" defer></script>
 </body>
+<script>
+    let currentPage = 1;
+    let searchKeyword = "";
+    let totalPages = 1;
+
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    $(document).ready(function () {
+        fetchDoctors();
+
+        $('#searchDoctor').on('input', debounce(function () {
+            searchKeyword = $(this).val();
+            currentPage = 1;
+            fetchDoctors();
+        }, 300));
+
+        $(document).on('click', '#pagination-container .page-link', function (e) {
+            e.preventDefault();
+            const page = $(this).data('page');
+            console.log('Chuyển đến trang:', page);
+            if (page >= 0 && page < totalPages) {
+                currentPage = page + 1;
+                fetchDoctors();
+            }
+        });
+    });
+
+    function fetchDoctors() {
+        const container = $('#doctor-list');
+        container.html('<p>Đang tải...</p>');
+        $.ajax({
+            url: '/api/doctor/appointment/filter',
+            type: 'GET',
+            data: {
+                page: currentPage - 1,
+                size: 6,
+                name: searchKeyword
+            },
+            success: function (res) {
+                console.log('API response:', res); // Debug
+                if (res && res.content && typeof res.totalPages === 'number') {
+                    renderDoctorList(res.content);
+                    totalPages = res.totalPages || 1;
+                    renderPagination({
+                        number: res.number,
+                        totalPages: res.totalPages,
+                        totalElements: res.totalElements
+                    });
+                } else {
+                    console.error('Dữ liệu API không hợp lệ:', res);
+                    container.html('<p>Dữ liệu API không hợp lệ.</p>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi tải dữ liệu:', status, error);
+                container.html('<p>Lỗi khi tải dữ liệu.</p>');
+            }
+        });
+    }
+
+    function renderDoctorList(doctors) {
+        const container = $('#doctor-list');
+        container.empty();
+
+        if (!doctors || doctors.length === 0) {
+            container.append('<p>Không có dữ liệu.</p>');
+            return;
+        }
+
+        doctors.forEach(d => {
+            let formattedTime = 'N/A';
+            if (d.timeAppointment) {
+                const date = new Date(d.timeAppointment);
+                if (!isNaN(date)) {
+                    const hours = date.getHours().toString().padStart(2, '0');
+                    const minutes = date.getMinutes().toString().padStart(2, '0');
+                    formattedTime = `${hours}:${minutes}`;
+                }
+            }
+            const html = `
+                    <div class="col">
+                        <div class="bg-light-subtle p-4 mb-5 rounded">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <div class="d-flex align-items-center gap-3 flex-column flex-md-row">
+                                        <div>
+                                            <h5 class="mb-1">${d.patientName}</h5>
+                                            <span class="text-body">Khoa: ${d.departmentName}</span>
+                                            <h6 class="mb-0 pt-1">
+                                                <span class="text-body fw-normal">Giờ khám:</span>
+                                                ${formattedTime}
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                    <button class="btn btn-success" onclick="window.location.href='/doctor/appointment/${d.appointmentId}'">Khám</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            container.append(html);
+        });
+    }
+
+    function renderPagination(pageData) {
+        const currentPage = pageData.number;
+        const totalPages = pageData.totalPages;
+        const totalItems = pageData.totalElements;
+
+        $('#total-items').text('Tổng số bản ghi: ' + totalItems);
+
+        if (totalPages <= 1) {
+            $('#pagination-container').html('');
+            return;
+        }
+
+        let html = '';
+
+        html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${currentPage - 1}">Trước</a>
+            </li>`;
+
+        if (currentPage > 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>`;
+            if (currentPage > 3) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+
+        for (let i = Math.max(0, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" data-page="${i}">${i + 1}</a>
+                </li>`;
+        }
+
+        if (currentPage < totalPages - 3) {
+            html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+        if (currentPage < totalPages - 2) {
+            html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages - 1}">${totalPages}</a></li>`;
+        }
+
+        html += `<li class="page-item ${currentPage + 1 === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${currentPage + 1}">Sau</a>
+            </li>`;
+
+        $('#pagination-container').html(html);
+    }
+</script>
 
 </html>

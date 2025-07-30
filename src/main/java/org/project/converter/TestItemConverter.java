@@ -1,12 +1,14 @@
 package org.project.converter;
 
 import org.project.entity.*;
+import org.project.model.dto.SearchTestTypeDTO;
 import org.project.model.response.SetResultResponse;
-import org.project.repository.AssignmentRepository;
-import org.project.repository.PatientRepository;
-import org.project.repository.SampleScheduleRepository;
-import org.project.repository.TestItemRepository;
+import org.project.model.response.TestRequestResponse;
+import org.project.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -26,6 +28,9 @@ public class TestItemConverter {
 
     @Autowired
     private SampleScheduleRepository sampleScheduleRepositoryImpl;
+
+    @Autowired
+    private TestTypeRepository testTypeRepositoryImpl;
 
     public SetResultResponse toConverterSetResultResponse(Long id){
         Optional<SampleEntity> sampleEntity = sampleScheduleRepositoryImpl.findById(id);
@@ -54,5 +59,19 @@ public class TestItemConverter {
         result.setTestTypeId(testRequestEntity.getTestTypeEntity().getId());
         result.setImagePatient(patientEntity.getAvatarUrl() != null ? patientEntity.getAvatarUrl() : "");
         return result;
+    }
+
+
+    public Page<TestRequestResponse> toFilterTestRequestResponse(SearchTestTypeDTO searchTestTypeDTO) {
+        Page<TestTypeEntity> testTypeEntities = testTypeRepositoryImpl.toFilterTestRequestResponse(searchTestTypeDTO);
+
+        Page<TestRequestResponse> testRequestResponses = testTypeEntities.map(entity -> {
+            TestRequestResponse testRequestResponse = new TestRequestResponse();
+            testRequestResponse.setTestType(entity.getTestTypeName());
+            testRequestResponse.setTestTypeId(String.valueOf(entity.getId()));
+            return testRequestResponse;
+        });
+
+        return testRequestResponses;
     }
 }

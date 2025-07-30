@@ -1,24 +1,19 @@
 package org.project.service.impl;
 
-import org.project.converter.TestTypeConverter;
 import org.project.entity.ReferenceRangeEntity;
 import org.project.entity.TestItemEntity;
 import org.project.entity.TestTypeEntity;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.request.SampleRequestDTO;
-import org.project.model.response.TestTypeListResponse;
 import org.project.repository.ReferenceRangeRepository;
 import org.project.repository.TestItemRepository;
 import org.project.repository.TestTypeRepository;
 import org.project.service.TestTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,24 +24,10 @@ public class TestTypeServiceImpl implements TestTypeService {
     private TestTypeRepository testTypeRepository;
 
     @Autowired
-    private TestTypeConverter testTypeConverter;
-
-    @Autowired
     private TestItemRepository testItemRepository;
 
     @Autowired
     private ReferenceRangeRepository referenceRangeRepository;
-    @Override
-    public Page<TestTypeListResponse> searchTestTypes(String keyword, Pageable pageable) {
-        Page<TestTypeEntity> typeEntities = testTypeRepository.findByTestTypeNameContainingIgnoreCase(keyword, pageable);
-
-        return typeEntities.map(testTypeEntity -> testTypeConverter.toTestTypeListResponse(testTypeEntity));
-    }
-    @Override
-    public Page<TestTypeListResponse> getAllTestTypes(Pageable pageable) {
-        Page<TestTypeEntity> typeEntities = testTypeRepository.findAll(pageable);
-        return typeEntities.map(testTypeEntity -> testTypeConverter.toTestTypeListResponse(testTypeEntity));
-    }
 
     @Override
     public Boolean isCreateTestType(SampleRequestDTO sampleRequestDTO) {

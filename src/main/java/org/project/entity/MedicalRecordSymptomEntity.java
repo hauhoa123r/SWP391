@@ -19,7 +19,7 @@ public class MedicalRecordSymptomEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne (fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "medical_record_id")
     private MedicalRecordEntity medicalRecord;
