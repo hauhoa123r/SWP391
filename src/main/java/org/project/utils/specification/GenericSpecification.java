@@ -16,6 +16,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -29,6 +31,7 @@ public class GenericSpecification<T> implements Specification<T> {
     private Map<SortCriteria, LogicalOperator> sortCriteriaLogicalOperatorMap = new HashMap<>();
     private Map<SearchCriteria, LogicalOperator> searchCriteriaLogicalOperatorMap = new HashMap<>();
     private EntityManager entityManager;
+    private List<HavingCondition> havingConditions = new LinkedList<>();
 
     @Autowired
     public void setEntityManager(EntityManager entityManager) {
@@ -86,211 +89,201 @@ public class GenericSpecification<T> implements Specification<T> {
             }
             case BETWEEN -> {
                 Object[] values = (Object[]) searchCriteria.getComparedValue();
-                return criteriaBuilder.between(
-                        PathUtils.getPath(realPath, javaType),
-                        (Comparable) values[0],
-                        (Comparable) values[1]
-                );
+                return criteriaBuilder.between(PathUtils.getPath(realPath, javaType), (Comparable) values[0], (Comparable) values[1]);
             }
             case NOT_BETWEEN -> {
                 Object[] values = (Object[]) searchCriteria.getComparedValue();
-                return criteriaBuilder.not(
-                        criteriaBuilder.between(
-                                PathUtils.getPath(realPath, javaType),
-                                (Comparable) values[0],
-                                (Comparable) values[1]
-                        )
-                );
+                return criteriaBuilder.not(criteriaBuilder.between(PathUtils.getPath(realPath, javaType), (Comparable) values[0], (Comparable) values[1]));
             }
 
             // Các phép toán AVG
             case AVG_EQUALS -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.equal(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.equal(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case AVG_NOT_EQUALS -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.notEqual(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.notEqual(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case AVG_GREATER_THAN -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.greaterThan(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.greaterThan(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case AVG_LESS_THAN -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.lessThan(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.lessThan(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case AVG_GREATER_THAN_OR_EQUAL_TO -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case AVG_LESS_THAN_OR_EQUAL_TO -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
 
-            // Các phép toán COUNT
+// Các phép toán COUNT
             case COUNT_EQUALS -> {
                 criteriaQuery.groupBy(root);
                 Long value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Long.class);
-                criteriaQuery.having(criteriaBuilder.equal(criteriaBuilder.count(realPath), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.equal(criteriaBuilder.count(realPath), value)).build());
+                return null;
             }
             case COUNT_NOT_EQUALS -> {
                 criteriaQuery.groupBy(root);
                 Long value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Long.class);
-                criteriaQuery.having(criteriaBuilder.notEqual(criteriaBuilder.count(realPath), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.notEqual(criteriaBuilder.count(realPath), value)).build());
+                return null;
             }
             case COUNT_GREATER_THAN -> {
                 criteriaQuery.groupBy(root);
                 Long value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Long.class);
-                criteriaQuery.having(criteriaBuilder.greaterThan(criteriaBuilder.count(realPath), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.greaterThan(criteriaBuilder.count(realPath), value)).build());
+                return null;
             }
             case COUNT_LESS_THAN -> {
                 criteriaQuery.groupBy(root);
                 Long value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Long.class);
-                criteriaQuery.having(criteriaBuilder.lessThan(criteriaBuilder.count(realPath), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.lessThan(criteriaBuilder.count(realPath), value)).build());
+                return null;
             }
             case COUNT_GREATER_THAN_OR_EQUAL_TO -> {
                 criteriaQuery.groupBy(root);
                 Long value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Long.class);
-                criteriaQuery.having(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.count(realPath), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.count(realPath), value)).build());
+                return null;
             }
             case COUNT_LESS_THAN_OR_EQUAL_TO -> {
                 criteriaQuery.groupBy(root);
                 Long value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Long.class);
-                criteriaQuery.having(criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.count(realPath), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.count(realPath), value)).build());
+                return null;
             }
 
-            // Các phép toán SUM
+// Các phép toán SUM
             case SUM_EQUALS -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.equal(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.equal(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case SUM_NOT_EQUALS -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.notEqual(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.notEqual(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case SUM_GREATER_THAN -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.greaterThan(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.greaterThan(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case SUM_LESS_THAN -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.lessThan(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.lessThan(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case SUM_GREATER_THAN_OR_EQUAL_TO -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case SUM_LESS_THAN_OR_EQUAL_TO -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
 
-            // Các phép toán MAX
+// Các phép toán MAX
             case MAX_EQUALS -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.equal(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.equal(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case MAX_NOT_EQUALS -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.notEqual(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.notEqual(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case MAX_GREATER_THAN -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.greaterThan(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.greaterThan(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case MAX_LESS_THAN -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.lessThan(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.lessThan(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case MAX_GREATER_THAN_OR_EQUAL_TO -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case MAX_LESS_THAN_OR_EQUAL_TO -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
 
-            // Các phép toán MIN
+// Các phép toán MIN
             case MIN_EQUALS -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.equal(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.equal(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case MIN_NOT_EQUALS -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.notEqual(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.notEqual(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case MIN_GREATER_THAN -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.greaterThan(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.greaterThan(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case MIN_LESS_THAN -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.lessThan(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.lessThan(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case MIN_GREATER_THAN_OR_EQUAL_TO -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             case MIN_LESS_THAN_OR_EQUAL_TO -> {
                 criteriaQuery.groupBy(root);
                 Double value = NumberTypeUtils.convertNumberValue(searchCriteria.getComparedValue(), Double.class);
-                criteriaQuery.having(criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value));
-                return criteriaBuilder.conjunction();
+                havingConditions.add(HavingCondition.builder().predicate(criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)), value)).build());
+                return null;
             }
             default -> throw new ResourceUnsupportedException("Unsupported search criteria: " + searchCriteria);
         }
@@ -303,51 +296,27 @@ public class GenericSpecification<T> implements Specification<T> {
 
         switch (sortCriteria.getAggregationFunction()) {
             case NONE -> {
-                query.orderBy(
-                        sortCriteria.getSortDirection().equals(SortDirection.ASC)
-                                ? criteriaBuilder.asc(realPath)
-                                : criteriaBuilder.desc(realPath)
-                );
+                query.orderBy(sortCriteria.getSortDirection().equals(SortDirection.ASC) ? criteriaBuilder.asc(realPath) : criteriaBuilder.desc(realPath));
             }
             case COUNT -> {
                 query.groupBy(root);
-                query.orderBy(
-                        sortCriteria.getSortDirection().equals(SortDirection.ASC)
-                                ? criteriaBuilder.asc(criteriaBuilder.count(realPath))
-                                : criteriaBuilder.desc(criteriaBuilder.count(realPath))
-                );
+                query.orderBy(sortCriteria.getSortDirection().equals(SortDirection.ASC) ? criteriaBuilder.asc(criteriaBuilder.count(realPath)) : criteriaBuilder.desc(criteriaBuilder.count(realPath)));
             }
             case SUM -> {
                 query.groupBy(root);
-                query.orderBy(
-                        sortCriteria.getSortDirection().equals(SortDirection.ASC)
-                                ? criteriaBuilder.asc(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)))
-                                : criteriaBuilder.desc(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType)))
-                );
+                query.orderBy(sortCriteria.getSortDirection().equals(SortDirection.ASC) ? criteriaBuilder.asc(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType))) : criteriaBuilder.desc(criteriaBuilder.sum(PathUtils.getPath(realPath, javaType))));
             }
             case AVG -> {
                 query.groupBy(root);
-                query.orderBy(
-                        sortCriteria.getSortDirection().equals(SortDirection.ASC)
-                                ? criteriaBuilder.asc(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)))
-                                : criteriaBuilder.desc(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType)))
-                );
+                query.orderBy(sortCriteria.getSortDirection().equals(SortDirection.ASC) ? criteriaBuilder.asc(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType))) : criteriaBuilder.desc(criteriaBuilder.avg(PathUtils.getPath(realPath, javaType))));
             }
             case MAX -> {
                 query.groupBy(root);
-                query.orderBy(
-                        sortCriteria.getSortDirection().equals(SortDirection.ASC)
-                                ? criteriaBuilder.asc(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)))
-                                : criteriaBuilder.desc(criteriaBuilder.max(PathUtils.getPath(realPath, javaType)))
-                );
+                query.orderBy(sortCriteria.getSortDirection().equals(SortDirection.ASC) ? criteriaBuilder.asc(criteriaBuilder.max(PathUtils.getPath(realPath, javaType))) : criteriaBuilder.desc(criteriaBuilder.max(PathUtils.getPath(realPath, javaType))));
             }
             case MIN -> {
                 query.groupBy(root);
-                query.orderBy(
-                        sortCriteria.getSortDirection().equals(SortDirection.ASC)
-                                ? criteriaBuilder.asc(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)))
-                                : criteriaBuilder.desc(criteriaBuilder.min(PathUtils.getPath(realPath, javaType)))
-                );
+                query.orderBy(sortCriteria.getSortDirection().equals(SortDirection.ASC) ? criteriaBuilder.asc(criteriaBuilder.min(PathUtils.getPath(realPath, javaType))) : criteriaBuilder.desc(criteriaBuilder.min(PathUtils.getPath(realPath, javaType))));
             }
         }
         return criteriaBuilder.conjunction();
@@ -365,19 +334,22 @@ public class GenericSpecification<T> implements Specification<T> {
                     }
                     Predicate sortPredicate = getPredicate(root, criteriaQuery, criteriaBuilder, sortCriteria, joinMap);
                     if (sortPredicate != null) {
-                        predicate = logicalOperator.equals(LogicalOperator.AND)
-                                ? criteriaBuilder.and(predicate, sortPredicate)
-                                : criteriaBuilder.or(predicate, sortPredicate);
+                        predicate = logicalOperator.equals(LogicalOperator.AND) ? criteriaBuilder.and(predicate, sortPredicate) : criteriaBuilder.or(predicate, sortPredicate);
                     }
                 } else if (criteria instanceof SearchCriteria searchCriteria) {
                     if (searchCriteria.getFieldName() == null || searchCriteria.getComparisonOperator() == null || searchCriteria.getComparedValue() == null) {
                         continue; // Skip if search criteria is incomplete
                     }
+                    int havingPredicateCount = havingConditions.size();
                     Predicate searchPredicate = getPredicate(root, criteriaQuery, criteriaBuilder, searchCriteria, joinMap);
                     if (searchPredicate != null) {
-                        predicate = logicalOperator.equals(LogicalOperator.AND)
-                                ? criteriaBuilder.and(predicate, searchPredicate)
-                                : criteriaBuilder.or(predicate, searchPredicate);
+                        predicate = logicalOperator.equals(LogicalOperator.AND) ? criteriaBuilder.and(predicate, searchPredicate) : criteriaBuilder.or(predicate, searchPredicate);
+                    } else {
+                        if (havingConditions.size() != havingPredicateCount) {
+                            HavingCondition havingCondition = havingConditions.get(havingConditions.size() - 1);
+                            havingCondition.logicalOperator = logicalOperator;
+                            havingConditions.set(havingConditions.size() - 1, havingCondition);
+                        }
                     }
                 }
             }
@@ -385,12 +357,44 @@ public class GenericSpecification<T> implements Specification<T> {
         return predicate;
     }
 
+    private Predicate buildHavingPredicate() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        Predicate havingPredicate = criteriaBuilder.conjunction();
+        for (HavingCondition condition : havingConditions) {
+            if (condition.getPredicate() != null) {
+                if (condition.getLogicalOperator() == LogicalOperator.AND) {
+                    havingPredicate = criteriaBuilder.and(havingPredicate, condition.getPredicate());
+                } else if (condition.getLogicalOperator() == LogicalOperator.OR) {
+                    havingPredicate = criteriaBuilder.or(havingPredicate, condition.getPredicate());
+                } else {
+                    throw new ResourceUnsupportedException("Unsupported logical operator in having condition: " + condition.getLogicalOperator());
+                }
+            }
+        }
+        return havingPredicate;
+    }
+
     @Override
     public Predicate toPredicate(@NonNull Root<T> root, CriteriaQuery<?> query, @NonNull CriteriaBuilder criteriaBuilder) {
         Map<String, Join<?, ?>> joinMap = new HashMap<>();
+        havingConditions = new LinkedList<>();
         Predicate searchPredicate = mapToPredicate(root, query, criteriaBuilder, joinMap, searchCriteriaLogicalOperatorMap);
         Predicate sortPredicate = mapToPredicate(root, query, criteriaBuilder, joinMap, sortCriteriaLogicalOperatorMap);
+        Predicate havingPredicate = buildHavingPredicate();
+        if (havingPredicate != null) {
+            query.having(havingPredicate);
+        }
         return criteriaBuilder.and(searchPredicate, sortPredicate);
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    private static class HavingCondition {
+        private Predicate predicate;
+        private LogicalOperator logicalOperator;
     }
 }
 
