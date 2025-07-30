@@ -19,6 +19,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Collections;
 import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/cart")
@@ -31,12 +33,7 @@ public class CartController {
     //hard-code userId
     Long userId = 2l;
     
-    @ModelAttribute("headerCartItems")
-    public List<CartItemEntity> getHeaderCartItems() {
-        List<CartItemEntity> cartItems = cartService.getCart(userId);
-        Collections.reverse(cartItems); // Đảo ngược để mới nhất lên đầu
-        return cartItems.stream().limit(4).collect(Collectors.toList());
-    }
+
 
     // view all cart items of the user
     // including the total amount of money and number of item in cart
@@ -130,6 +127,61 @@ public class CartController {
         }
         
         return "redirect:/cart";
+    }
+
+    @PostMapping("/delete-ajax")
+    @ResponseBody
+    public Map<String, Object> deleteCartItemAjax(@RequestParam Long productId) {
+        log.info("Deleting product {} from cart for user {} via AJAX", productId, userId);
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            cartService.removeItem(userId, productId);
+            log.info("Successfully deleted product from cart via AJAX");
+            
+            // Calculate new totals
+            BigDecimal newTotal = cartService.calculateTotal(userId);
+            List<CartItemEntity> cartItems = cartService.getCart(userId);
+            
+            response.put("success", true);
+            response.put("message", "Product removed from cart successfully");
+            response.put("newTotal", newTotal);
+            response.put("cartItemCount", cartItems.size());
+            
+        } catch (Exception e) {
+            log.error("Error deleting product from cart via AJAX", e);
+            response.put("success", false);
+            response.put("message", "Error removing product from cart: " + e.getMessage());
+        }
+        
+        return response;
+    }
+
+    @GetMapping("/total-ajax")
+    @ResponseBody
+    public Map<String, Object> getCartTotalAjax() {
+        log.info("Getting cart total for user {} via AJAX", userId);
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            BigDecimal total = cartService.calculateTotal(userId);
+            List<CartItemEntity> cartItems = cartService.getCart(userId);
+            
+            response.put("success", true);
+            response.put("total", total);
+            response.put("itemCount", cartItems.size());
+            
+            log.info("Cart total for user {}: {}", userId, total);
+            
+        } catch (Exception e) {
+            log.error("Error getting cart total via AJAX", e);
+            response.put("success", false);
+            response.put("message", "Error getting cart total: " + e.getMessage());
+        }
+        
+        return response;
     }
 
     @PostMapping("/update-quantity")

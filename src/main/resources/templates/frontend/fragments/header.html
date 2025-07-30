@@ -214,7 +214,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="text-primary">
-                                                        <i class="far fa-times-circle delete-btn"></i>
+                                                        <form th:action="@{/cart/delete-ajax}" method="post" class="d-inline delete-cart-form" 
+                                                              th:data-product-id="${cartItem.productEntity.id}">
+                                                            <input type="hidden" name="productId" th:value="${cartItem.productEntity.id}" />
+                                                            <button type="button" class="btn btn-link p-0 border-0 bg-transparent delete-btn" 
+                                                                    th:data-product-id="${cartItem.productEntity.id}">
+                                                                <i class="far fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
@@ -222,7 +229,7 @@
                                         <div class="card-footer pt-3 px-0 pb-0 text-center">
                                             <div class="d-flex align-items-center justify-content-between ">
                                                 <strong>Subtotal:</strong>
-                                                <span>$64.00</span>
+                                                <span id="header-cart-total" th:text="${#numbers.formatDecimal(cartTotal, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between my-3 pt-3 border-top">
                                                 <div class="cart-menu">
@@ -236,11 +243,6 @@
                                                     <div class="iq-btn-container">
                                                         <a class="iq-button text-capitalize" th:href="@{/checkout}">
                                                             <span class="iq-btn-text-holder position-relative">Thanh toán</span>
-                                                            <span class="iq-btn-icon-holder">
-                                                                <svg fill="none" height="10" viewBox="0 0 8 8" width="10" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z" fill="currentColor"></path>
-                                                            </svg>
-                                                        </span>
                                                     </a>
                                                 </div>
                                             </div>
