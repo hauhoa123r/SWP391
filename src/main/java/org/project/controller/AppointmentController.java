@@ -13,7 +13,7 @@ public class AppointmentController {
         return "/frontend/appointment";
     }
 
-    @GetMapping("/admin/appointment")
+    @GetMapping(value = {"/admin/appointment", "/admin"})
     public String getAppointmentAdminPage(ModelMap modelMap) {
         modelMap.addAttribute("appointmentDTO", new AppointmentDTO());
         return "/dashboard/appointment";
