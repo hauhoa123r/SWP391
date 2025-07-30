@@ -7,7 +7,7 @@ export class ProductResponse {
     constructor(id, name, description, imageUrl, price, categoryEntities, productAdditionalInfoEntities, reviewCount, averageRating) {
         this.id = id;
         this.name = name;
-        this.description = description;
+        this.description = description || "";
         this.imageUrl = imageUrl;
         this.price = price;
         this.categoryEntities = categoryEntities;

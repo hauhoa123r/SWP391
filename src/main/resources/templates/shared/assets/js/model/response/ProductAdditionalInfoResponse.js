@@ -1,15 +1,15 @@
 export class ProductAdditionalInfoResponse {
-    constructor(id, key, value) {
+    constructor(id, name, value) {
         this.id = id;
-        this.key = key;
+        this.name = name;
         this.value = value;
     }
 
     static fromJson(json) {
         return new ProductAdditionalInfoResponse(
-            json.id,
-            json.key,
-            json.value
+                json.id,
+                json.name,
+                json.value
         );
     }
 
