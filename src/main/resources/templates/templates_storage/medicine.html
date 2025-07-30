@@ -1208,18 +1208,22 @@
         // Count total medicines in database (not filtered)
         $('#medicineCount').text(medicines ? medicines.length : 0);
         
-        // Count stock in orders with WAITING_FOR_DELIVERY and RECEIVED statuses only
-        const stockInCount = stockInOrders ? stockInOrders.filter(order => 
-            order && order.status && 
-            (order.status === 'WAITING_FOR_DELIVERY' || order.status === 'RECEIVED')
-        ).length : 0;
+        // Count stock in orders with NEED_TO_ADD status to match loadStockInOrders filter
+        const stockInCount = stockInOrders ? stockInOrders.filter(order => {
+            if (!order || !order.status) return false;
+            const statusMatch = order.status === 'NEED_TO_ADD';
+            const typeMatch = !order.transaction_type || order.transaction_type === 'STOCK_IN';
+            return statusMatch && typeMatch;
+        }).length : 0;
         $('#stockInCount').text(stockInCount);
         
-        // Count stock out orders with PREPARE_DELIVERY and DELIVERING statuses only
-        const stockOutCount = stockOutOrders ? stockOutOrders.filter(order => 
-            order && order.status && 
-            (order.status === 'PREPARE_DELIVERY' || order.status === 'DELIVERING')
-        ).length : 0;
+        // Count stock out orders with PREPARING status to match loadStockOutOrders filter
+        const stockOutCount = stockOutOrders ? stockOutOrders.filter(order => {
+            if (!order || !order.status) return false;
+            const statusMatch = order.status === 'PREPARING';
+            const typeMatch = !order.transaction_type || order.transaction_type === 'STOCK_OUT';
+            return statusMatch && typeMatch;
+        }).length : 0;
         $('#stockOutCount').text(stockOutCount);
         
         // Count problematic medicines (expired or low stock)

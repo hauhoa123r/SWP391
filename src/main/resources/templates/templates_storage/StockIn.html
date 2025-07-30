@@ -136,27 +136,39 @@
                     <li class="onhover-dropdown">
                         <div class="notification-box">
                             <i class="ri-notification-line"></i>
-                            <span class="badge rounded-pill badge-theme" th:text="${notificationCount ?: 0}">0</span>
+                            <span class="badge rounded-pill badge-theme">4</span>
                         </div>
                         <ul class="notification-dropdown onhover-show-div">
                             <li>
                                 <i class="ri-notification-line"></i>
                                 <h6 class="f-18 mb-0">Thông báo</h6>
                             </li>
-                            <!-- Dữ liệu thông báo từ controller -->
-                            <li th:each="notification : ${notifications}">
+                            <li>
                                 <p>
-                                    <i th:class="'fa fa-circle me-2 ' + ${notification.typeClass ?: 'font-primary'}"></i>
-                                    <span th:text="${notification.content}">Thông báo</span>
-                                    <span class="pull-right" th:text="${notification.time}">thời gian</span>
+                                    <i class="fa fa-circle me-2 font-primary"></i>Đang xử lý giao hàng <span
+                                        class="pull-right">10 phút</span>
                                 </p>
                             </li>
-                            <!-- Thông báo mặc định khi không có dữ liệu -->
-                            <li th:if="${#lists.isEmpty(notifications)}">
-                                <p>Không có thông báo mới</p>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-success"></i>Hoàn thành đơn hàng <span
+                                        class="pull-right">1 giờ</span>
+                                </p>
                             </li>
                             <li>
-                                <a class="btn btn-primary" href="#" onclick="return false;">Kiểm tra tất cả thông báo</a>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-info"></i>Tạo vé hỗ trợ <span
+                                        class="pull-right">3 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <i class="fa fa-circle me-2 font-danger"></i>Hoàn thành giao hàng <span
+                                        class="pull-right">6 giờ</span>
+                                </p>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary" href="#">Kiểm tra tất cả thông báo</a>
                             </li>
                         </ul>
                     </li>
