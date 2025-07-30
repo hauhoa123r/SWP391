@@ -9,6 +9,8 @@ import org.project.model.response.AppointmentResponse;
 import org.springframework.data.domain.Page;
 import org.project.model.response.AppointmentDashboardCustomerResponse;
 import org.project.model.response.AppointmentResponse;
+import org.project.model.response.*;
+import org.springframework.data.domain.Page;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -31,4 +33,6 @@ public interface AppointmentService {
 
     Page<AppointmentResponse> getAppointments(int pageIndex, int pageSize, AppointmentDTO appointmentDTO);
     List<AppointmentDashboardCustomerResponse> get5AppointmentsByUserId(Long userId);
+
+    Page<AppointmentCustomerResponse> getAppointmentByUserId(Long userId, int index, int size, String status);
 }

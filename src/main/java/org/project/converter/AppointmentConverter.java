@@ -8,6 +8,7 @@ import org.project.model.dai.AppointmentDAI;
 import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.MakeAppointmentDTO;
 import org.project.model.response.AppointmentResponse;
+import org.project.model.response.AppointmentCustomerResponse;
 import org.project.model.response.AppointmentDashboardCustomerResponse;
 import org.project.repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +85,25 @@ public class AppointmentConverter {
         return appointmentDashboardCustomerResponse;
     }
 
+    public AppointmentCustomerResponse toConverterAppointmentCustomerResponse(AppointmentEntity appointmentEntity) {
+        Timestamp startTime = appointmentEntity.getStartTime();
+
+        LocalDateTime startDateTime = startTime.toLocalDateTime();
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        String dateTime = startDateTime.format(dateTimeFormatter);
+
+        AppointmentCustomerResponse appointmentCustomerResponse = new AppointmentCustomerResponse();
+        appointmentCustomerResponse.setId(appointmentEntity.getId());
+        appointmentCustomerResponse.setPatientName(appointmentEntity.getPatientEntity().getFullName());
+        appointmentCustomerResponse.setRelationship(appointmentEntity.getPatientEntity().getFamilyRelationship().getRelationship());
+        appointmentCustomerResponse.setDoctorName(appointmentEntity.getDoctorEntity().getStaffEntity().getFullName());
+        appointmentCustomerResponse.setServiceName(appointmentEntity.getServiceEntity().getProductEntity().getName());
+        appointmentCustomerResponse.setStatus(appointmentEntity.getAppointmentStatus().toString());
+        appointmentCustomerResponse.setResultUrl(appointmentEntity.getResultUrl());
+        appointmentCustomerResponse.setStartTime(dateTime);
+        return appointmentCustomerResponse;
+    }
 
 }

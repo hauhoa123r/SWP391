@@ -1,18 +1,17 @@
 package org.project.service.impl;
 
+import jakarta.persistence.criteria.JoinType;
 import jakarta.transaction.Transactional;
 import org.project.config.WebConstant;
 import org.project.converter.AppointmentApprovalConverter;
 import org.project.converter.AppointmentConverter;
-import org.project.entity.AppointmentEntity;
-import org.project.entity.DoctorEntity;
-import org.project.entity.StaffEntity;
-import org.project.entity.StaffScheduleEntity;
+import org.project.entity.*;
 import org.project.enums.AppointmentStatus;
 import org.project.enums.operation.ComparisonOperator;
 import org.project.exception.ErrorResponse;
 import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.ChangeAppointmentDTO;
+import org.project.model.response.*;
 import org.project.model.response.AppointmentApprovalResponse;
 import org.project.model.response.AppointmentAvailableResponse;
 import org.project.model.response.AppointmentResponse;
@@ -26,6 +25,8 @@ import org.project.utils.TimestampUtils;
 import org.project.utils.specification.SpecificationUtils;
 import org.project.utils.specification.search.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -323,6 +324,31 @@ public class AppointmentServiceImpl implements AppointmentService {
         );
         pageUtils.validatePage(appointmentEntityPage, AppointmentEntity.class);
         return appointmentEntityPage.map(appointmentConverter::toResponse);
+    }
+
+    @Override
+    public Page<AppointmentCustomerResponse> getAppointmentByUserId(Long userId, int index, int size, String status) {
+        Pageable pageable = pageUtils.getPageable(index, size);
+
+        List<SearchCriteria> criteriaList = new ArrayList<>();
+
+        criteriaList.add(new SearchCriteria(
+                "patientEntity.userEntity.id",
+                ComparisonOperator.EQUALS, userId, JoinType.INNER
+        ));
+
+        if (status != null && !status.isEmpty()) {
+            criteriaList.add(new SearchCriteria("appointmentStatus", ComparisonOperator.EQUALS, status, JoinType.INNER));
+        }
+
+        Page<AppointmentEntity> appointmentEntities = appointmentRepository.findAll(
+                specificationUtils.reset().getSearchSpecifications(criteriaList), pageable
+        );
+
+        return appointmentEntities.map(ent -> {
+            AppointmentCustomerResponse resp = appointmentConverter.toConverterAppointmentCustomerResponse(ent);
+            return resp;
+        });
     }
 
     private List<Timestamp> getAvailableTimes(Long staffId, Long patientId, Timestamp availableTimestamp, int maxDays) {

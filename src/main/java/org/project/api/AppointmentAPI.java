@@ -55,6 +55,17 @@ public class AppointmentAPI {
         return ResponseEntity.badRequest().body("Failed to cancel appointment.");
     }
 
+    @PatchMapping("/api/patient/cancel-appointment/{appointmentId}")
+    public ResponseEntity<String> cancelAppointmentByPatient(@PathVariable Long appointmentId,
+                                                             @AuthenticationPrincipal AccountDetails accountDetails) {
+        boolean isUpdated = appointmentService.changeStatus(appointmentId, AppointmentStatus.CANCELLED, null);
+        if (isUpdated) {
+            return ResponseEntity.ok("Appointment canceled successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to cancel appointment.");
+        }
+    }
+
     @PatchMapping("change")
     public ResponseEntity<String> changeAppointmentAndApproval(@RequestBody ChangeAppointmentDTO changeAppointmentDTO) {
         boolean isChanged = appointmentService.changeAppointment(changeAppointmentDTO);
