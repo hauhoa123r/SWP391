@@ -1612,42 +1612,80 @@
             return;
         }
         
-            // Filter equipments based on search query
-            const filteredEquipments = equipments.filter(equipment => 
-                equipment.name.toLowerCase().includes(query.toLowerCase()) ||
-                equipment.id.toString().includes(query)
-            );
-            
-            productSearchResults.innerHTML = '';
-            
-            if (filteredEquipments.length === 0) {
-                const item = document.createElement('a');
-                item.className = 'dropdown-item';
-                item.textContent = 'Không tìm thấy thiết bị';
-                productSearchResults.appendChild(item);
-            } else {
-                filteredEquipments.forEach(equipment => {
-                    const item = document.createElement('a');
-                    item.className = 'dropdown-item';
-                    item.href = '#';
-                    item.textContent = `${equipment.name} (ID: ${equipment.id})`;
-                    item.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        productSearch.value = equipment.name;
-                        selectedProductId.value = equipment.id;
-                        
-                        // Show product details
-                        document.getElementById('productNameIn').textContent = equipment.name;
-                        document.getElementById('productStockIn').textContent = (equipment.stockQuantities || 0) + ' ' + (equipment.unit || 'cái');
-                        document.getElementById('productPriceIn').textContent = formatCurrency(equipment.price);
-                        productDetails.style.display = 'block';
-                        
-                        productSearchResults.classList.remove('show');
-                    });
-                    productSearchResults.appendChild(item);
+            // Call API to search products
+            fetch(`/warehouse/stock-in/api/products?query=${encodeURIComponent(query)}&productType=MEDICAL_PRODUCT`)
+                .then(response => response.json())
+                .then(data => {
+                    productSearchResults.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        const item = document.createElement('div');
+                        item.className = 'dropdown-item';
+                        item.textContent = 'Không tìm thấy sản phẩm';
+                        productSearchResults.appendChild(item);
+                    } else {
+                        data.forEach(equipment => {
+                            const item = document.createElement('div');
+                            item.className = 'dropdown-item';
+                            item.href = '#';
+                            item.textContent = `${equipment.name} (ID: ${equipment.id})`;
+                            item.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                productSearch.value = equipment.name;
+                                selectedProductId.value = equipment.id;
+                                
+                                // Show product details
+                                document.getElementById('productNameIn').textContent = equipment.name;
+                                document.getElementById('productStockIn').textContent = (equipment.stockQuantities || 0) + ' ' + (equipment.unit || 'cái');
+                                document.getElementById('productPriceIn').textContent = formatCurrency(equipment.price);
+                                productDetails.style.display = 'block';
+                                
+                                productSearchResults.classList.remove('show');
+                            });
+                            productSearchResults.appendChild(item);
+                        });
+                    }
+                    productSearchResults.classList.add('show');
+                })
+                .catch(error => {
+                    console.error('Error searching products:', error);
+                    // Fallback to local search if API fails
+                    const filteredEquipments = equipments.filter(equipment => 
+                        equipment.name.toLowerCase().includes(query.toLowerCase()) ||
+                        equipment.id.toString().toLowerCase().includes(query)
+                    );
+                    
+                    productSearchResults.innerHTML = '';
+                    
+                    if (filteredEquipments.length === 0) {
+                        const item = document.createElement('div');
+                        item.className = 'dropdown-item';
+                        item.textContent = 'Không tìm thấy sản phẩm';
+                        productSearchResults.appendChild(item);
+                    } else {
+                        filteredEquipments.forEach(equipment => {
+                            const item = document.createElement('div');
+                            item.className = 'dropdown-item';
+                            item.href = '#';
+                            item.textContent = `${equipment.name} (ID: ${equipment.id})`;
+                            item.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                productSearch.value = equipment.name;
+                                selectedProductId.value = equipment.id;
+                                
+                                // Show product details
+                                document.getElementById('productNameIn').textContent = equipment.name;
+                                document.getElementById('productStockIn').textContent = (equipment.stockQuantities || 0) + ' ' + (equipment.unit || 'cái');
+                                document.getElementById('productPriceIn').textContent = formatCurrency(equipment.price);
+                                productDetails.style.display = 'block';
+                                
+                                productSearchResults.classList.remove('show');
+                            });
+                            productSearchResults.appendChild(item);
+                        });
+                    }
+                    productSearchResults.classList.add('show');
                 });
-            }
-            productSearchResults.classList.add('show');
         }, 300));
         
         // Hide results when clicking outside
@@ -1883,11 +1921,11 @@
                 
                 item.innerHTML = `
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">${product.name || 'Không có tên'}</h5>
+                        <h5 class="mb-1">${product.name}</h5>
                         <small>${formatCurrency(priceValue)}</small>
                     </div>
-                    <p class="mb-1">ID: ${product.id || 'N/A'}</p>
-                    <small>Tồn kho: ${product.stockQuantities || 0}</small>
+                    <p class="mb-1">ID: ${product.id}</p>
+                    <small>Tồn kho: ${product.stockQuantities}</small>
                 `;
                 
                 item.addEventListener('click', function() {
@@ -1925,9 +1963,10 @@
             const query = supplierSearch.value.trim();
             if (query.length < 2) {
                 supplierSearchResults.classList.remove('show');
-                return;
-            }
-            
+            return;
+        }
+        
+            // Call API to search suppliers
             fetch(`/warehouse/stock-out/api/suppliers?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
@@ -1996,14 +2035,14 @@
         };
         return categories[category] || category || 'N/A';
     }
-    
+
     // Get stock status function
     function getStockStatus(stock, minStock) {
         if (stock <= 0) return { status: 'out', class: 'stock-low' };
         if (stock <= (minStock || 10)) return { status: 'low', class: 'stock-low' };
         return { status: 'normal', class: 'stock-normal' };
     }
-    
+
     // Get order status text function
     function getOrderStatusText(status) {
         const statusTexts = {
@@ -2062,8 +2101,8 @@
 <div th:replace="templates_storage/fragments/createStockInModal :: createStockInModal"></div>
 
 <script>
-  var stockInOrders = [];
-  var stockOutOrders = [];
+  let stockInOrders = [];
+  let stockOutOrders = [];
   
   // Khởi tạo dữ liệu từ server
   function initializeData() {
@@ -2107,7 +2146,7 @@
       var badgeText = order.status === 'PENDING' ? 'Đang chờ xử lý' : 'Hoàn thành';
       var listItem = `
         <li class="list-group-item d-flex justify-content-between align-items-center" onclick="viewStockInOrderDetails(${order.id})" style="cursor: pointer;">
-          Đơn nhập #${order.id} - ${formatDate(order.createdDate)}
+          Đơn nhập #${order.id} - ${formatDateOnly(order.transactionDate || order.createdDate || order.date)}
           <span class="badge ${badgeClass} badge-pill">${badgeText}</span>
         </li>
       `;
@@ -2119,7 +2158,7 @@
       var badgeText = order.status === 'PENDING' ? 'Đang chờ xử lý' : 'Hoàn thành';
       var listItem = `
         <li class="list-group-item d-flex justify-content-between align-items-center" onclick="viewStockInOrderDetails(${order.id})" style="cursor: pointer;">
-          Đơn nhập #${order.id} - ${formatDate(order.createdDate)}
+          Đơn nhập #${order.id} - ${formatDateOnly(order.transactionDate || order.createdDate || order.date)}
           <span class="badge ${badgeClass} badge-pill">${badgeText}</span>
         </li>
       `;
@@ -2158,7 +2197,7 @@
       var badgeText = order.status === 'PREPARING' ? 'Đang chuẩn bị' : 'Hoàn thành';
       var listItem = `
         <li class="list-group-item d-flex justify-content-between align-items-center" onclick="viewStockOutOrderDetails(${order.id})" style="cursor: pointer;">
-          Đơn xuất #${order.id} - ${formatDate(order.createdDate)}
+          Đơn xuất #${order.id} - ${formatDateOnly(order.transactionDate || order.createdDate || order.date)}
           <span class="badge ${badgeClass} badge-pill">${badgeText}</span>
         </li>
       `;
@@ -2170,7 +2209,7 @@
       var badgeText = order.status === 'PREPARING' ? 'Đang chuẩn bị' : 'Hoàn thành';
       var listItem = `
         <li class="list-group-item d-flex justify-content-between align-items-center" onclick="viewStockOutOrderDetails(${order.id})" style="cursor: pointer;">
-          Đơn xuất #${order.id} - ${formatDate(order.createdDate)}
+          Đơn xuất #${order.id} - ${formatDateOnly(order.transactionDate || order.createdDate || order.date)}
           <span class="badge ${badgeClass} badge-pill">${badgeText}</span>
         </li>
       `;
@@ -2262,7 +2301,6 @@
                 const orderId = order.id || order.invoiceNumber || 'N/A';
                 const supplierName = order.supplierName || order.supplier || 'N/A';
                 const transactionDate = order.transactionDate || order.createdDate || order.date || 'N/A';
-                const totalAmount = order.totalAmount || 0;
                 
                 // Calculate total amount and product count from products array
                 let calculatedTotal = 0;
@@ -2280,8 +2318,8 @@
                             <div class="col-md-8">
                                 <h6>Đơn nhập: ${orderId}</h6>
                                 <p><strong>Nhà cung cấp:</strong> ${supplierName}</p>
-                                <p><strong>Ngày tạo:</strong> ${transactionDate}</p>
-                                <p><strong>Tổng tiền:</strong> ${formatCurrency(totalAmount || calculatedTotal)}</p>
+                                <p><strong>Ngày tạo:</strong> ${formatDateOnly(transactionDate)}</p>
+                                <p><strong>Tổng tiền:</strong> ${formatCurrency(calculatedTotal)}</p>
                                 <p><strong>Số lượng sản phẩm:</strong> ${calculatedProductCount}</p>
                                 <p><strong>Trạng thái:</strong> <span class="badge bg-info">${getOrderStatusText(order.status)}</span></p>
                             </div>
@@ -2318,8 +2356,14 @@
         
         $('#stockInOrderId').text(order.id);
         $('#stockInOrderSupplier').text(order.supplierName);
-        $('#stockInOrderDate').text(order.date);
-        $('#stockInOrderTotal').text(formatCurrency(order.total));
+        $('#stockInOrderDate').text(formatDateOnly(order.date));
+        let calculatedTotal = 0;
+        if (order.items && Array.isArray(order.items) && order.items.length > 0) {
+            calculatedTotal = order.items.reduce((sum, item) => {
+                return sum + ((item.quantity || 0) * (item.price || 0));
+            }, 0);
+        }
+        $('#stockInOrderTotal').text(formatCurrency(calculatedTotal));
         
         $('#stockInOrderItems').empty();
         order.items.forEach(item => {
@@ -2484,14 +2528,13 @@
                 const orderId = order.id || order.invoiceNumber || 'N/A';
                 const recipient = order.recipient || order.departmentName || order.department || order.customerName || 'N/A';
                 const transactionDate = order.transactionDate || order.createdDate || order.date || 'N/A';
-                const totalAmount = order.totalAmount || 0;
                 
                 // Calculate total amount and product count from products array
-                let calculatedTotal = 0;
-                let calculatedProductCount = 0;
+                let calculatedTotalOut = 0;
+                let calculatedProductCountOut = 0;
                 if (order.products && Array.isArray(order.products) && order.products.length > 0) {
-                    calculatedProductCount = order.products.reduce((sum, item) => sum + (item.quantity || 0), 0);
-                    calculatedTotal = order.products.reduce((sum, item) => {
+                    calculatedProductCountOut = order.products.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                    calculatedTotalOut = order.products.reduce((sum, item) => {
                         return sum + ((item.quantity || 0) * (item.price || 0));
                     }, 0);
                 }
@@ -2502,9 +2545,9 @@
                             <div class="col-md-8">
                                 <h6>Đơn xuất: ${orderId}</h6>
                                 <p><strong>Người nhận:</strong> ${recipient}</p>
-                                <p><strong>Ngày tạo:</strong> ${transactionDate}</p>
-                                <p><strong>Tổng tiền:</strong> ${formatCurrency(totalAmount || calculatedTotal)}</p>
-                                <p><strong>Số lượng sản phẩm:</strong> ${calculatedProductCount}</p>
+                                <p><strong>Ngày tạo:</strong> ${formatDateOnly(transactionDate)}</p>
+                                <p><strong>Tổng tiền:</strong> ${formatCurrency(calculatedTotalOut)}</p>
+                                <p><strong>Số lượng sản phẩm:</strong> ${calculatedProductCountOut}</p>
                                 <p><strong>Trạng thái:</strong> <span class="badge bg-info">${getOrderStatusText(order.status)}</span></p>
                             </div>
                             <div class="col-md-4 text-end">
@@ -2540,8 +2583,14 @@
         
         $('#stockOutOrderId').text(order.id);
         $('#stockOutOrderCustomer').text(order.customerName);
-        $('#stockOutOrderDate').text(order.date);
-        $('#stockOutOrderTotal').text(formatCurrency(order.total));
+        $('#stockOutOrderDate').text(formatDateOnly(order.date));
+        let calculatedTotalOut = 0;
+        if (order.items && Array.isArray(order.items) && order.items.length > 0) {
+            calculatedTotalOut = order.items.reduce((sum, item) => {
+                return sum + ((item.quantity || 0) * (item.price || 0));
+            }, 0);
+        }
+        $('#stockOutOrderTotal').text(formatCurrency(calculatedTotalOut));
         
         $('#stockOutOrderItems').empty();
         order.items.forEach(item => {
@@ -2733,6 +2782,18 @@
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         return tomorrow.toISOString().split('T')[0];
+    }
+    
+    // Format date to show only date part
+    function formatDateOnly(dateStr) {
+        if (!dateStr) return 'N/A';
+        try {
+            const date = new Date(dateStr);
+            if (isNaN(date.getTime())) return 'N/A';
+            return date.toLocaleDateString('vi-VN');
+        } catch (e) {
+            return 'N/A';
+        }
     }
     
     // View equipment details (for button click)

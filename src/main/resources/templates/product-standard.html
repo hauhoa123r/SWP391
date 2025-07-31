@@ -38,7 +38,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="position-relative">
-                        <a data-fslightbox="product" th:href="${product.imageUrl}" th:if="${product != null}">
+                        <a data-fslightbox="product" th:href="${product != null && product.imageUrl != null ? product.imageUrl : '#'}" th:if="${product != null}">
                             <img alt="product-image"
                                  class="img-fluid" loading="lazy"
                                  th:src="${product != null ? product.imageUrl : '/images/placeholder.png'}">
@@ -66,7 +66,7 @@
                             </th:block>
                         </div>
                     </div>
-                    <h4 class="price mt-3 mb-0" th:text="${#numbers.formatCurrency(product.price)}">$0.00</h4>
+                    <h4 class="price mt-3 mb-0" th:text="${product != null && product.price != null ? #numbers.formatCurrency(product.price) : '$0.00'}">$0.00</h4>
                     <p class="mt-4 mb-0"
                        th:text="${product != null && product.description != null ? product.description : 'Không có mô tả'}">
                         Không có mô tả
@@ -101,7 +101,7 @@
                             </li>
                             <li class="wish-list">
                                 <a class="d-inline-block p-3 bg-primary-subtle wishlist-btn" href="#"
-                                   th:attr="data-id=${product.id}">
+                                   th:attr="data-id=${product != null ? product.id : 0}">
                         <span class="btn-inner">
                            <svg fill="none" height="20" viewBox="0 0 22 20" width="22"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -154,23 +154,14 @@
                             <li class="mb-2">
                                 <span>Categories :</span>
                                 <h6 class="d-inline"
-                                    th:text="${product != null && product.category != null ? product.category : 'Không xác định'}">
+                                    th:text="${categoriesString != null ? categoriesString : 'Không xác định'}">
                                     Không xác định
                                 </h6>
                             </li>
                             <li>
                                 <span>Tag :</span>
                                 <h6 class="d-inline">
-                                    <th:block
-                                            th:if="${product != null and product.tags != null and !product.tags.isEmpty()}">
-                                        <th:block th:each="tag, iter : ${product.tags}">
-                                            <span th:text="${tag}"></span><span th:if="${!iter.last}">, </span>
-                                        </th:block>
-                                    </th:block>
-                                    <th:block
-                                            th:unless="${product != null and product.tags != null and !product.tags.isEmpty()}">
-                                        Không có tag
-                                    </th:block>
+                                    <span th:text="${tagsString != null ? tagsString : 'Không có tag'}"></span>
                                 </h6>
                             </li>
                         </ul>
@@ -199,24 +190,24 @@
                     <div class="tab-content pb-5 border-bottom" id="product-tab-content">
                         <div class="tab-pane fade show active" id="additional-information" role="tabpanel">
                             <div class="table-responsive">
-                                <table class="table table-bordered mb-0" th:if="${!#lists.isEmpty(additionalInfos)}">
+                                <table class="table table-bordered mb-0" th:if="${additionalInfo != null && !#maps.isEmpty(additionalInfo)}">
                                     <tbody>
-                                    <tr class="text-body" th:each="info : ${additionalInfos}">
-                                        <th class="text-dark" th:text="${info.name}">Name</th>
+                                    <tr class="text-body" th:each="info : ${additionalInfo}">
+                                        <th class="text-dark" th:text="${info.key}">Name</th>
                                         <td th:text="${info.value}">Value</td>
                                     </tr>
                                     <!-- Static fallback rows kept for old data -->
-                                    <tr class="text-body" th:if="${#lists.isEmpty(additionalInfos)}">
+                                    <tr class="text-body" th:if="${additionalInfo == null || #maps.isEmpty(additionalInfo)}">
                                         <th class="text-dark">Color</th>
                                         <td>Blue, Green, Red</td>
                                     </tr>
                                     <!-- Static fallback rows kept for old data -->
-                                    <tr class="text-body" th:if="${#lists.isEmpty(additionalInfos)}">
+                                    <tr class="text-body" th:if="${additionalInfo == null || #maps.isEmpty(additionalInfo)}">
                                         <th class="text-dark">Size</th>
                                         <td>L, M, S</td>
                                     </tr>
                                     <!-- Static fallback rows kept for old data -->
-                                    <tr class="text-body" th:if="${#lists.isEmpty(additionalInfos)}">
+                                    <tr class="text-body" th:if="${additionalInfo == null || #maps.isEmpty(additionalInfo)}">
                                         <th class="text-dark">Weight</th>
                                         <td>50gm, 100gm</td>
                                     </tr>
@@ -226,27 +217,26 @@
                         </div>
                         <div class="tab-pane fade" id="reviews" role="tabpanel">
                             <h4 class="mb-4"
-                                th:text="${#lists.isEmpty(reviews) ? 'No Reviews Yet' : 'Customer Reviews (' + reviews.size() + ')'}">
+                                th:text="${reviews != null && !#lists.isEmpty(reviews) ? 'Customer Reviews (' + reviews.size() + ')' : 'No Reviews Yet'}">
                                 Reviews</h4>
-                            <div class="product-review-list" th:if="${!#lists.isEmpty(reviews)}">
+                            <div class="product-review-list" th:if="${reviews != null && !#lists.isEmpty(reviews)}">
                                 <ul class="list-inline m-0 p-0">
                                     <li class="pb-5 mb-5 border-bottom" th:each="rev : ${reviews}">
                                         <div class="d-flex flex-sm-row flex-column align-items-sm-center align-items-start gap-5">
                                             <div class="user-image flex-shrink-0">
                                                 <img alt="user-image"
-                                                     class="img-fluid" src="frontend/assets/images/general/avatar.png">
+                                                     class="img-fluid" th:src="${rev.patientImageUrl} ?: 'frontend/assets/images/general/avatar.png'">
                                             </div>
                                             <div class="about-user">
                                                 <div class="d-flex align-items-center flex-wrap gap-2">
-                                                    <h5 class="mb-0" th:text="${rev.reviewerName}">Reviewer</h5>
+                                                    <h5 class="mb-0" th:text="${rev.patientFullName} ?: 'Anonymous'">Reviewer</h5>
                                                     <span class="text-uppercase letter-spacing-3 small fst-italic">
-                                    <i class="fas fa-minus fa-xs"></i> <span
-                                                            th:text="${#dates.format(rev.reviewDate,'dd MMM yyyy')}">date</span>,
-                                    2022</span>
+                                     <i class="fas fa-minus fa-xs"></i> <span>Review</span>
+                                     </span>
                                                     <div class="lh-1"
-                                                         th:utext="${@ratingUtil.generateStars(rev.rating)}"></div>
+                                                         th:utext="${rev.rating != null ? @ratingUtil.generateStars(rev.rating) : 'No rating'}"></div>
                                                 </div>
-                                                <p class="mt-2 mb-0" th:text="${rev.comment}">
+                                                <p class="mt-2 mb-0" th:text="${rev.content} ?: 'No comment'">
                                                     There are many variations of passages of Lorem Ipsum
                                                     available, but the majority have suffered alteration in
                                                     some form.
@@ -353,30 +343,30 @@
                         <div class="iq-product-box position-relative animate:hover-media">
                             <div class="iq-inner-box">
 
-                                <a class="stretched-link" th:href="@{/product-standard(id=${rel.id})}"></a>
+                                <a class="stretched-link" th:href="@{/product-standard/{id}(id=${rel.id != null ? rel.id : 0})}"></a>
 
                                 <div class="iq-product-image position-relative">
                                     <div class="animate:hover-media-wrap">
                                         <img class="img-fluid hover-media"
-                                             loading="lazy" th:src="${rel.imageUrl}"/>
+                                             loading="lazy" th:src="${rel.imageUrl != null ? rel.imageUrl : '/images/placeholder.png'}"/>
                                     </div>
                                 </div>
 
                                 <div class="product-caption text-center mt-3">
-                                    <span class="iq-category" th:text="${rel.category}">Category</span>
+                                    <span class="iq-category" th:text="${rel.category != null ? rel.category : 'No category'}">Category</span>
 
                                     <h5 class="product-title mt-1 mb-2">
-                                        <a th:href="@{/product-standard(id=${rel.id})}"
-                                           th:text="${rel.name}">Product name</a>
+                                        <a th:href="@{/product-standard/{id}(id=${rel.id != null ? rel.id : 0})}"
+                                           th:text="${rel.name != null ? rel.name : 'Unknown product'}">Product name</a>
                                     </h5>
 
                                     <h6 class="price-value fw-semibold mb-2"
-                                        th:text="${#numbers.formatDecimal(rel.price,1,'COMMA',2,'POINT')}">
+                                        th:text="${rel.price != null ? #numbers.formatDecimal(rel.price,1,'COMMA',2,'POINT') : '$0.00'}">
                                         $0.00
                                     </h6>
 
                                     <!-- show rating as stars if you have it -->
-                                    <div class="ratting" th:utext="${@ratingUtil.generateStars(rel.rating)}"></div>
+                                    <div class="ratting" th:utext="${rel.rating != null ? @ratingUtil.generateStars(rel.rating) : 'No rating'}"></div>
                                 </div>
                             </div>
                         </div>

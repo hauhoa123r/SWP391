@@ -481,10 +481,10 @@
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <span class="fw-bold" th:text="${medicine.price != null ? #numbers.formatDecimal(medicine.price, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}">15,000 VNĐ</span>
                                                             <div class="btn-group">
-                                                                <button class="btn btn-sm btn-outline-primary" onclick="viewMedicineDetails(this)" th:data-id="${medicine.id}">
+                                                                <button class="btn btn-sm btn-outline-info" onclick="viewMedicineDetails(this)" th:data-id="${medicine.id}">
                                                                     <i class="ri-eye-line"></i>
                                                                 </button>
-                                                                <button class="btn btn-sm btn-outline-success" onclick="editMedicine(this)" th:data-id="${medicine.id}">
+                                                                <button class="btn btn-sm btn-outline-primary" onclick="editMedicine(this)" th:data-id="${medicine.id}">
                                                                     <i class="ri-edit-line"></i>
                                                                 </button>
                                                             </div>
@@ -602,7 +602,7 @@
                                             </ul>
                                         </div>
                                         <h6>Đơn xuất từ StockOut cần chuẩn bị</h6>
-                                        <div id="stockOutOrders">
+                                        <div id="stockOutOrdersContainer">
                                             <!-- Stock out orders will be loaded here -->
                                         </div>
                                     </div>
@@ -624,7 +624,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Thêm thuốc</h5>
+                <h5>Thêm thuốc</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -1121,6 +1121,24 @@
     stockOutOrders = /*[[${stockOutOrders}]]*/ [];
     /*]]>*/
     
+    // Initialize order data from server
+    function initializeOrderData() {
+        try {
+            var stockInData = '[[${stockInOrders}]]';
+            var stockOutData = '[[${stockOutOrders}]]';
+            console.log('Raw Stock In Data:', stockInData);
+            console.log('Raw Stock Out Data:', stockOutData);
+            stockInOrders = stockInData && stockInData !== '' && stockInData !== '[[${stockInOrders}]]' ? JSON.parse(stockInData) : [];
+            stockOutOrders = stockOutData && stockOutData !== '' && stockOutData !== '[[${stockOutOrders}]]' ? JSON.parse(stockOutData) : [];
+            console.log('Initialized Stock In Orders:', stockInOrders);
+            console.log('Initialized Stock Out Orders:', stockOutOrders);
+        } catch (e) {
+            console.error('Error parsing order data:', e);
+            stockInOrders = [];
+            stockOutOrders = [];
+        }
+    }
+    
     // Ensure data is properly loaded and handle null/undefined values
     if (!stockInOrders || stockInOrders.length === 0) {
         console.log('Stock In Orders is empty or null, checking Thymeleaf data...');
@@ -1132,6 +1150,45 @@
         stockOutOrders = [];
     }
     
+    // Hàm định dạng ngày - chỉ hiển thị ngày
+    function formatDateOnly(dateString) {
+        if (!dateString) return 'N/A';
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return dateString;
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            return date.toLocaleDateString('vi-VN', options);
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return dateString;
+        }
+    }
+    
+    // Hàm định dạng tiền tệ
+    function formatCurrency(amount) {
+        if (typeof amount !== 'number' || isNaN(amount)) {
+            return '0 VNĐ';
+        }
+        return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    }
+    
+    // Hàm lấy text trạng thái đơn hàng
+    function getOrderStatusText(status) {
+        switch(status) {
+            case 'PENDING': return 'Đang chờ';
+            case 'APPROVED': return 'Đã duyệt';
+            case 'REJECTED': return 'Đã từ chối';
+            case 'COMPLETED': return 'Hoàn thành';
+            case 'NEED_TO_ADD': return 'Cần xử lý';
+            case 'WAITING_FOR_DELIVERY': return 'Chờ giao hàng';
+            case 'RECEIVED': return 'Đã nhận';
+            case 'PREPARING': return 'Đang chuẩn bị';
+            case 'PREPARE_DELIVERY': return 'Chuẩn bị giao hàng';
+            case 'DELIVERING': return 'Đang giao hàng';
+            default: return status || 'Không xác định';
+        }
+    }
+
     // Ensure arrays are properly initialized
     stockInOrders = Array.isArray(stockInOrders) ? stockInOrders : [];
     stockOutOrders = Array.isArray(stockOutOrders) ? stockOutOrders : [];
@@ -1537,7 +1594,7 @@
             const statusMatch = order.status === 'NEED_TO_ADD';
             const typeMatch = !order.transaction_type || order.transaction_type === 'STOCK_IN';
             // Tạm thởi bỏ qua lọc sản phẩm để debug
-            const productMatch = true; // !order.products || (Array.isArray(order.products) && order.products.length === 0) || 
+            const productMatch = true; // !order.products || Array.isArray(order.products) && order.products.length === 0 || 
                 // (order.products && Array.isArray(order.products) && order.products.some(p => p.type === 'MEDICINE'));
             console.log(`StockIn Order ${order.id}: status=${order.status}, statusMatch=${statusMatch}, typeMatch=${typeMatch}, productMatch=${productMatch}`);
             console.log(`StockIn Order ${order.id}: products=`, order.products);
@@ -1582,8 +1639,8 @@
                             <div class="col-md-8">
                                 <h6>Đơn nhập: ${orderId}</h6>
                                 <p><strong>Nhà cung cấp:</strong> ${supplierName}</p>
-                                <p><strong>Ngày tạo:</strong> ${transactionDate}</p>
-                                <p><strong>Tổng tiền:</strong> ${formatCurrency(totalAmount || calculatedTotal)}</p>
+                                <p><strong>Ngày tạo:</strong> ${formatDateOnly(transactionDate)}</p>
+                                <p><strong>Tổng tiền:</strong> ${formatCurrency(calculatedTotal)}</p>
                                 <p><strong>Số lượng sản phẩm:</strong> ${calculatedProductCount}</p>
                             <p><strong>Trạng thái:</strong> <span class="badge bg-info">${getOrderStatusText(order.status)}</span></p>
                             </div>
@@ -1614,7 +1671,7 @@
     // Load stock out orders with specific status filtering
     function loadStockOutOrders() {
         console.log('Loading stock out orders...');
-        const container = $('#stockOutOrders');
+        const container = $('#stockOutOrdersContainer');
         console.log('Container found:', container.length > 0);
         container.empty();
 
@@ -1641,15 +1698,6 @@
             });
         }
         
-        // Check if any order has products data
-        if (Array.isArray(stockOutOrders)) {
-            const ordersWithProducts = stockOutOrders.filter(order => order.products && Array.isArray(order.products) && order.products.length > 0);
-            console.log('Orders with products data:', ordersWithProducts.length);
-            if (ordersWithProducts.length === 0) {
-                console.warn('No orders have products data. The backend might not be sending product information for stock out orders.');
-            }
-        }
-        
         // Ensure stockOutOrders is an array and filter orders
         const validOrders = Array.isArray(stockOutOrders) ? stockOutOrders : [];
         const filteredOrders = validOrders.filter(order => {
@@ -1671,69 +1719,59 @@
         console.log('Filtered stock out orders length:', filteredOrders.length);
 
         if (filteredOrders.length === 0) {
-            container.html(`
-                <div class="text-center py-5">
-                    <i class="ri-inbox-line fs-1 text-muted"></i>
-                    <p class="mt-3">Không có đơn xuất kho nào. Kiểm tra console để debug.</p>
-                </div>
-            `);
-            return;
-        }
+            container.append('<p class="text-muted">Không có đơn xuất nào đang chờ xử lý.</p>');
+        } else {
+            filteredOrders.forEach(order => {
+                try {
+                    // Safely get order properties with fallbacks
+                    const orderId = order.id || order.invoiceNumber || 'N/A';
+                    const recipient = order.recipient || order.departmentName || order.department || order.customerName || 'N/A';
+                    const transactionDate = order.transactionDate || order.createdDate || order.date || 'N/A';
+                    
+                    // Calculate total amount and product count from products array
+                    let calculatedTotal = 0;
+                    let calculatedProductCount = 0;
+                    if (order.products && Array.isArray(order.products) && order.products.length > 0) {
+                        calculatedProductCount = order.products.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                        calculatedTotal = order.products.reduce((sum, item) => {
+                            return sum + ((item.quantity || 0) * (item.price || 0));
+                        }, 0);
+                    }
 
-        filteredOrders.forEach(order => {
-            try {
-                // Safely get order properties with fallbacks
-                const orderId = order.id || order.invoiceNumber || 'N/A';
-                const recipient = order.recipient || order.departmentName || order.department || 'N/A';
-                const transactionDate = order.transactionDate || order.createdDate || order.date || 'N/A';
-                const totalAmount = order.totalAmount || 0;
-                
-                // Calculate total amount and product count from products array
-                let calculatedTotal = 0;
-                let calculatedProductCount = 0;
-                if (order.products && Array.isArray(order.products) && order.products.length > 0) {
-                    calculatedProductCount = order.products.reduce((sum, item) => sum + (item.quantity || 0), 0);
-                    calculatedTotal = order.products.reduce((sum, item) => {
-                        return sum + ((item.quantity || 0) * (item.price || 0));
-                    }, 0);
-                }
-
-                const orderDiv = `
-                    <div class="order-item order-${order.status.toLowerCase()}">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h6>Đơn xuất: ${orderId}</h6>
-                                <p><strong>Khoa/Phòng:</strong> ${recipient}</p>
-                                <p><strong>Ngày tạo:</strong> ${transactionDate}</p>
-                                <p><strong>Tổng tiền:</strong> ${formatCurrency(totalAmount || calculatedTotal)}</p>
-                                <p><strong>Số lượng sản phẩm:</strong> ${calculatedProductCount}</p>
-                            </div>
-                            <div class="col-md-4 text-end">
-                                <div class="btn-group-vertical">
-                                    <a class="btn btn-primary btn-sm mb-1" href="/warehouse/stock-out/${orderId}">
-                                        <i class="ri-eye-line"></i> Xem chi tiết
-                                    </a>
-                                    ${order.status === 'PREPARING' ? `
-                                    <button class="btn btn-warning btn-sm mb-1" onclick="prepareStockOutOrder('${orderId}')">
-                                        <i class="ri-package-line"></i> Chuẩn bị
-                                    </button>
-                                    <button class="btn btn-danger btn-sm" onclick="rejectStockOutOrder('${orderId}')">
-                                        <i class="ri-close-line"></i> Từ chối
-                                    </button>
-                                    ` : `
-                                        <span class="badge bg-info">${getOrderStatusText(order.status)}</span>
-                                    `}
+                    const orderDiv = `
+                        <div class="order-item order-${order.status.toLowerCase()}">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h6>Đơn xuất: ${orderId}</h6>
+                                    <p><strong>Người nhận:</strong> ${recipient}</p>
+                                    <p><strong>Ngày tạo:</strong> ${formatDateOnly(transactionDate)}</p>
+                                    <p><strong>Tổng tiền:</strong> ${formatCurrency(calculatedTotal)}</p>
+                                    <p><strong>Số lượng sản phẩm:</strong> ${calculatedProductCount}</p>
+                                    <p><strong>Trạng thái:</strong> <span class="badge bg-info">${getOrderStatusText(order.status)}</span></p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <div class="btn-group-vertical">
+                                        <a class="btn btn-primary btn-sm mb-1" href="/warehouse/stock-out/${orderId}">
+                                            <i class="ri-eye-line"></i> Xem chi tiết
+                                        </a>
+                                        <button class="btn btn-success btn-sm mb-1" onclick="processStockOutOrder('${orderId}')">
+                                            <i class="ri-check-line"></i> Xử lý
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="rejectStockOutOrder('${orderId}')">
+                                            <i class="ri-close-line"></i> Từ chối
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                container.append(orderDiv);
-            } catch (error) {
-                console.error('Error processing stock out order:', error, order);
-            }
-        });
-        console.log('Stock out orders loaded:', filteredOrders.length, 'orders');
+                    `;
+                    container.append(orderDiv);
+                } catch (error) {
+                    console.error('Error processing stock out order:', error, order);
+                }
+            });
+            console.log('Stock out orders loaded:', filteredOrders.length, 'orders');
+        }
     }
 
     // Fixed edit medicine function
@@ -1927,7 +1965,6 @@
         const statusMap = {
             'REPARING': 'Chuẩn bị đơn hàng',
             'ADDED': 'Đã thêm',
-            'PREPARED': 'Đã chuẩn bị hàng',
             'PREPARING': 'Đang chuẩn bị hàng',
             'NEED_TO_ADD': 'Cần thêm vào kho',
             'NEED_TO_ADDED': 'Cần thêm vào kho',
@@ -2078,7 +2115,7 @@
                                 <div class="col-md-6">
                                     <p><strong>Mã đơn hàng:</strong> ${order.id || order.invoiceNumber || 'N/A'}</p>
                                     <p><strong>Nhà cung cấp:</strong> ${order.supplierName || order.supplier || 'N/A'}</p>
-                                    <p><strong>Ngày tạo:</strong> ${order.transactionDate || order.createdDate || order.date || 'N/A'}</p>
+                                    <p><strong>Ngày tạo:</strong> ${formatDateOnly(order.transactionDate || order.createdDate || order.date || 'N/A')}</p>
                                     <p><strong>Tổng tiền:</strong> ${formatCurrency(order.totalAmount || calculatedTotal)}</p>
                                 </div>
                                 <div class="col-md-6">
@@ -2161,12 +2198,12 @@
                                 <div class="col-md-6">
                                     <p><strong>Mã đơn hàng:</strong> ${order.id || order.invoiceNumber || 'N/A'}</p>
                                     <p><strong>Khoa/Phòng:</strong> ${order.recipient || order.departmentName || order.department || 'N/A'}</p>
-                                    <p><strong>Ngày tạo:</strong> ${order.transactionDate || order.createdDate || order.date || 'N/A'}</p>
+                                    <p><strong>Ngày tạo:</strong> ${formatDateOnly(order.transactionDate || order.createdDate || order.date || 'N/A')}</p>
                                     <p><strong>Tổng tiền:</strong> ${formatCurrency(order.totalAmount || calculatedTotal)}</p>
-                                    </div>
+                                    <p><strong>Số lượng sản phẩm:</strong> ${order.productCount || calculatedProductCount}</p>
+                                </div>
                                 <div class="col-md-6">
                                     <p><strong>Trạng thái:</strong> <span class="badge bg-warning">${getOrderStatusText(order.status)}</span></p>
-                                    <p><strong>Số lượng sản phẩm:</strong> ${order.productCount || calculatedProductCount}</p>
                                     <p><strong>Ghi chú:</strong> ${order.notes || 'Không có'}</p>
                                 </div>
                             </div>
@@ -2204,7 +2241,8 @@
                             </div>
                         </div>
                     </div>
-                `;
+                </div>
+            `;
 
         $('body').append(modalContent);
         $('#viewStockOutOrderModal').modal('show');
@@ -3027,7 +3065,7 @@
                 return;
             }
             
-            fetch(`/warehouse/stock-out/api/suppliers?query=${encodeURIComponent(query)}`)
+            fetch(`/warehouse/stock-in/api/suppliers?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     supplierSearchResults.innerHTML = '';
@@ -3086,7 +3124,7 @@
             
             supplierLoading.style.display = 'block';
             
-            fetch(`/warehouse/stock-out/api/suppliers?query=${encodeURIComponent(query)}`)
+            fetch(`/warehouse/stock-in/api/suppliers?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     supplierModalResults.innerHTML = '';
@@ -3169,49 +3207,96 @@
                 return;
             }
             
-            // Search in existing medicines data first
-            const filteredMedicines = medicines.filter(medicine => {
-                const medicineName = medicine.name || '';
-                const medicineId = medicine.id || '';
-                return medicineName.toLowerCase().includes(query.toLowerCase()) ||
-                       medicineId.toString().toLowerCase().includes(query.toLowerCase());
-            });
-            
-            productSearchResultsIn.innerHTML = '';
-            
-            if (filteredMedicines.length === 0) {
-                const item = document.createElement('a');
-                item.className = 'dropdown-item';
-                item.textContent = 'Không tìm thấy thuốc';
-                productSearchResultsIn.appendChild(item);
-            } else {
-                filteredMedicines.slice(0, 10).forEach(product => {
-                    const item = document.createElement('a');
-                    item.className = 'dropdown-item';
-                    item.href = '#';
-                    item.innerHTML = `
-                        <div class="d-flex justify-content-between">
-                            <span>${product.name}</span>
-                            <small class="text-muted">Tồn: ${product.stockQuantities || 0}</small>
-                        </div>
-                    `;
-                    item.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        // Set selected product
-                        productSearchIn.value = product.name;
-                        selectedProductIdIn.value = product.id;
-                        
-                        // Show product details
-                        if (productNameIn) productNameIn.textContent = product.name;
-                        if (productStockIn) productStockIn.textContent = product.stockQuantities || 0;
-                        if (productPriceIn) productPriceIn.textContent = formatCurrency(product.price || 0);
-                        productDetailsIn.style.display = 'block';
-                        
-                        productSearchResultsIn.classList.remove('show');
+            // Call API to search products
+            fetch(`/warehouse/stock-in/api/products?query=${encodeURIComponent(query)}&productType=MEDICINE`)
+                .then(response => response.json())
+                .then(data => {
+                    productSearchResultsIn.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        const item = document.createElement('a');
+                        item.className = 'dropdown-item';
+                        item.textContent = 'Không tìm thấy thuốc';
+                        productSearchResultsIn.appendChild(item);
+                    } else {
+                        data.slice(0, 10).forEach(product => {
+                            const item = document.createElement('a');
+                            item.className = 'dropdown-item';
+                            item.href = '#';
+                            item.innerHTML = `
+                                <div class="d-flex justify-content-between">
+                                    <span>${product.name}</span>
+                                    <small class="text-muted">Tồn: ${product.stockQuantities || 0}</small>
+                                </div>
+                            `;
+                            item.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                // Set selected product
+                                productSearchIn.value = product.name;
+                                selectedProductIdIn.value = product.id;
+                                
+                                // Show product details
+                                if (productNameIn) productNameIn.textContent = product.name;
+                                if (productStockIn) productStockIn.textContent = product.stockQuantities || 0;
+                                if (productPriceIn) productPriceIn.textContent = formatCurrency(product.price || 0);
+                                productDetailsIn.style.display = 'block';
+                                
+                                productSearchResultsIn.classList.remove('show');
+                            });
+                            productSearchResultsIn.appendChild(item);
+                        });
+                    }
+                    
+                    productSearchResultsIn.classList.add('show');
+                })
+                .catch(error => {
+                    console.error('Error searching products:', error);
+                    // Fallback to local search if API fails
+                    const filteredMedicines = medicines.filter(medicine => {
+                        const medicineName = medicine.name || '';
+                        const medicineId = medicine.id || '';
+                        return medicineName.toLowerCase().includes(query.toLowerCase()) ||
+                               medicineId.toString().toLowerCase().includes(query.toLowerCase());
                     });
-                    productSearchResultsIn.appendChild(item);
+                    
+                    productSearchResultsIn.innerHTML = '';
+                    
+                    if (filteredMedicines.length === 0) {
+                        const item = document.createElement('a');
+                        item.className = 'dropdown-item';
+                        item.textContent = 'Không tìm thấy thuốc';
+                        productSearchResultsIn.appendChild(item);
+                    } else {
+                        filteredMedicines.slice(0, 10).forEach(product => {
+                            const item = document.createElement('a');
+                            item.className = 'dropdown-item';
+                            item.href = '#';
+                            item.innerHTML = `
+                                <div class="d-flex justify-content-between">
+                                    <span>${product.name}</span>
+                                    <small class="text-muted">Tồn: ${product.stockQuantities || 0}</small>
+                                </div>
+                            `;
+                            item.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                // Set selected product
+                                productSearchIn.value = product.name;
+                                selectedProductIdIn.value = product.id;
+                                
+                                // Show product details
+                                if (productNameIn) productNameIn.textContent = product.name;
+                                if (productStockIn) productStockIn.textContent = product.stockQuantities || 0;
+                                if (productPriceIn) productPriceIn.textContent = formatCurrency(product.price || 0);
+                                productDetailsIn.style.display = 'block';
+                                
+                                productSearchResultsIn.classList.remove('show');
+                            });
+                            productSearchResultsIn.appendChild(item);
+                        });
+                    }
+                    
+                    productSearchResultsIn.classList.add('show');
                 });
-            }
             
             productSearchResultsIn.classList.add('show');
         }, 500));
@@ -3238,3 +3323,44 @@
         initProductSearchIn();
     });
 </script>
+
+<!-- Medicine Detail Modal -->
+<div class="modal fade" id="medicineDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết thuốc</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5 text-center">
+                        <img id="detailImage" style="max-height: 300px; width: auto; max-width: 100%;" />
+                        <div id="noImageMessage">
+                            <i class="ri-image-line" style="font-size: 48px; color: #6c757d;"></i>
+                            <p class="text-muted">Không có hình ảnh</p>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <h4 id="detailMedicineName"></h4>
+                        <p><strong>Mã thuốc:</strong> <span id="detailMedicineCode"></span></p>
+                        <p><strong>Danh mục:</strong> <span id="detailCategory"></span></p>
+                        <p><strong>Số lượng tồn:</strong> <span id="detailStock"></span></p>
+                        <p><strong>Đơn giá:</strong> <span id="detailPrice"></span></p>
+                        <p><strong>Đơn vị:</strong> <span id="detailUnit"></span></p>
+                        <p><strong>Hạn sử dụng:</strong> <span id="detailExpiry"></span></p>
+                        <p><strong>Nhà sản xuất:</strong> <span id="detailManufacturer"></span></p>
+                        <p><strong>Nhãn:</strong> <span id="detailLabel"></span></p>
+                        <p><strong>Mô tả:</strong> <span id="detailDescription"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
