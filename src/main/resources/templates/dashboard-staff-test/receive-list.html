@@ -1579,7 +1579,7 @@
                 url: '/api/receive/' + id,
                 type: 'GET',
                 success: function () {
-                    fetchFilteredData(page = 0)
+                    fetchFilteredData(0);
                     const $alert = $('#custom-alert');
                     $alert.addClass('show');
                     $alert.css('right', '20px');

@@ -1,5 +1,6 @@
 package org.project.ai.intent.service.appointment;
 
+import org.project.entity.PatientEntity;
 import org.project.model.dai.AppointmentDAI;
 
 public interface AppointmentValidationHandler {

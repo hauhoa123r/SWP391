@@ -26,8 +26,6 @@ public class AppointmentFilterResponseConverter {
     @Autowired
     private UserRepository userRepository;
     public Page<AppointmentFilterResponse> toConverterAppointmentFilterResponse(AppointmentFilterDTO dto) {
-        UserEntity userEntity = userRepository.findById(dto.getDoctorId()).orElseThrow(() -> new ResourceNotFoundException("Not found doctor"));
-        dto.setDoctorId(userEntity.getStaffEntity().getId());
         dto.setStatus("CONFIRMED");
         Page<AppointmentEntity> appointmentEntities = appointmentRepository.toFilterAppointmentByDoctorIdAndPatientName(dto);
 
@@ -46,8 +44,6 @@ public class AppointmentFilterResponseConverter {
     }
 
     public Page<AppointmentFilterResponse> toConverterAppointmentComplete(AppointmentFilterDTO dto) {
-        UserEntity userEntity = userRepository.findById(dto.getDoctorId()).orElseThrow(() -> new ResourceNotFoundException("Not found doctor"));
-        dto.setDoctorId(userEntity.getStaffEntity().getId());
         dto.setStatus("IN_PROGRESS");
         Page<AppointmentEntity> appointmentEntities = appointmentRepository.toFilterAppointmentByDoctorIdAndPatientName(dto);
 
