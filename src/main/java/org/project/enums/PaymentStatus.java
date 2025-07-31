@@ -1,8 +1,8 @@
 package org.project.enums;
 
 public enum PaymentStatus {
-    SUCCESS("success"),
-    FAILED("failed");
+    SUCCESS("Thành công"),
+    FAILED("Thất bại");
 
     private final String value;
 

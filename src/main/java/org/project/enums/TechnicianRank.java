@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum TechnicianRank {
-    JUNIOR_TECHNICIAN("JUNIOR_TECHNICIAN"),
-    TECHNICIAN("TECHNICIAN"),
-    SENIOR_TECHNICIAN("SENIOR_TECHNICIAN"),
-    LEAD_TECHNICIAN("LEAD_TECHNICIAN"),
-    TECHNICAL_SUPERVISOR("TECHNICAL_SUPERVISOR");
+    JUNIOR_TECHNICIAN("Kỹ thuật viên cơ bản"),
+    TECHNICIAN("Kỹ thuật viên"),
+    SENIOR_TECHNICIAN("Kỹ thuật viên cao cấp"),
+    LEAD_TECHNICIAN("Kỹ thuật viên trưởng"),
+    TECHNICAL_SUPERVISOR("Giám sát kỹ thuật");
 
     private final String rank;
 }
