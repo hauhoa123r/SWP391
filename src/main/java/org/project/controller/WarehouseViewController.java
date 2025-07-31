@@ -2,17 +2,11 @@ package org.project.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.project.enums.SupplierTransactionStatus;
-import org.project.model.dto.SupplierInDTO;
-import org.project.model.dto.SupplierOutDTO;
 import org.project.service.SupplierInService;
 import org.project.service.SupplierOutService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Controller for handling direct template navigation requests

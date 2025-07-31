@@ -1,15 +1,9 @@
 package org.project.controller;
 
-import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-
-import org.project.config.ModelMapperConfig;
+import jakarta.validation.Valid;
 import org.project.entity.ProductEntity;
 import org.project.entity.UserEntity;
-import org.project.enums.Label;
-import org.project.enums.ProductStatus;
-import org.project.enums.ProductType;
+import org.project.enums.*;
 import org.project.model.dto.ProductCreateDTO;
 import org.project.model.dto.ProductUpdateDTO;
 import org.project.model.dto.ProductViewDTO;
@@ -17,53 +11,35 @@ import org.project.model.response.ProductAdditionalInfoResponse;
 import org.project.repository.CategoryRepository;
 import org.project.repository.ProductTagRepository;
 import org.project.repository.impl.PharmacyRepositoryImpl;
-import org.project.repository.impl.custom.PharmacyRepositoryCustom;
+import org.project.security.AccountDetails;
 import org.project.service.PharmacyService;
+import org.project.service.UserService;
 import org.project.service.impl.PharmacyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.project.enums.UserRole;
-import org.project.enums.UserStatus;
-import org.project.service.UserService;
-import org.springframework.web.bind.annotation.*;
-import lombok.Getter;
-import org.project.security.AccountDetails;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-
-
-import org.springframework.data.domain.Page;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.validation.Valid;
+import java.util.List;
 
 @Controller
 public class UserController {
-
-    @Autowired
-    private PharmacyServiceImpl pharmacyServiceImpl;
-
-    @Autowired
-    private UserService userService;
-
-
-    @Autowired
-    private PharmacyRepositoryImpl pharmacyRepositoryCustom;
 
     //constructor-based injection of pharmacyService and categoryRepo
     private final PharmacyService pharmacyService;
     private final CategoryRepository categoryRepo;
     private final ProductTagRepository productTagRepository;
+    @Autowired
+    private PharmacyServiceImpl pharmacyServiceImpl;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private PharmacyRepositoryImpl pharmacyRepositoryCustom;
 
     public UserController(PharmacyService pharmacyService, CategoryRepository categoryRepo, ProductTagRepository productTagRepository) {
         this.pharmacyService = pharmacyService;
@@ -71,13 +47,8 @@ public class UserController {
         this.productTagRepository = productTagRepository;
     }
 
-//	@GetMapping("")
-//	public String hello(Model model) {
-//		return "redirect:/product-home";
-//	}
-
     // Root endpoint to handle GET requests to /users
-    @GetMapping("")
+    @GetMapping("/users")
     public String viewUsers() {
         return "redirect:/users/view";
     }
@@ -94,14 +65,14 @@ public class UserController {
     }
 
     // ================== Create User ==================
-    @GetMapping("/create")
+    @GetMapping("/users/create")
     public String showCreateForm(Model model) {
         model.addAttribute("user", new UserEntity());
         model.addAttribute("formAction", "/users/create");
         return "dashboard/user-form";
     }
 
-    @PostMapping("/create") // Xử lý dữ liệu khi form tạo user được submit (POST đến /users/create)
+    @PostMapping("/users/create") // Xử lý dữ liệu khi form tạo user được submit (POST đến /users/create)
     public String createUser(@ModelAttribute("user") UserEntity user) { // Nhận dữ liệu từ form và gán vào đối tượng UserEntity
         userService.createUser(user); // Gọi service để lưu user mới vào cơ sở dữ liệu
         return "redirect:/users/view"; // Sau khi tạo xong, chuyển hướng đến trang danh sách user
@@ -109,14 +80,14 @@ public class UserController {
 
 
     // mapping for admin's dashboard
-    @GetMapping("/admin/dashboard")
+    @GetMapping("/users/admin/dashboard")
     public ModelAndView adminDashboard() {
         ModelAndView mv = new ModelAndView("dashboard/index");
         return mv;
     }
 
     // ================== Edit User ==================
-    @GetMapping("/edit/{id}")
+    @GetMapping("/users/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         UserEntity user = userService.getUserById(id);
         if (user == null) {
@@ -128,13 +99,13 @@ public class UserController {
     }
 
     // mapping for patient's dashboard
-    @GetMapping("/patient/dashboard")
+    @GetMapping("/users/patient/dashboard")
     public ModelAndView patientDashboard() {
         ModelAndView mv = new ModelAndView("dashboard/patient-dashboard");
         return mv;
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/users/update/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserEntity user, Model model) {
         try {
             userService.updateUser(id, user);
@@ -147,7 +118,7 @@ public class UserController {
     }
 
     // mapping for admin's view of products
-    @GetMapping("/admin/products")
+    @GetMapping("/users/admin/products")
     public ModelAndView adminProduct(@RequestParam(defaultValue = "1") Integer page) {
         ModelAndView mv = new ModelAndView("dashboard/products");
         int pageSize = 7; // Number of products per page
@@ -186,7 +157,7 @@ public class UserController {
 
 
     //get mapping to the update form
-    @GetMapping("admin/product/edit/{id}")
+    @GetMapping("/usersadmin/product/edit/{id}")
     public ModelAndView editProduct(@PathVariable Long id) {
         ModelAndView mv = new ModelAndView("dashboard/product-edit");
         //find detail by id
@@ -217,7 +188,7 @@ public class UserController {
     }
 
     // ================== View User Details ==================
-    @PostMapping("/delete/{id}")
+    @PostMapping("/users/delete/{id}")
     public String deactivateUser(@PathVariable Long id, Model model) {
         try {
             UserEntity user = userService.getUserById(id);
@@ -239,7 +210,7 @@ public class UserController {
     }
 
     // ================== View User Details ==================
-    @GetMapping("/detail/{id}")
+    @GetMapping("/users/detail/{id}")
     public String viewUserDetails(@PathVariable Long id, Model model) {
         try {
             if (!userService.existsById(id)) {
@@ -261,7 +232,7 @@ public class UserController {
     }
 
     //post-mapping for admin's product delete
-    @PostMapping("/admin/products/delete/{id}")
+    @PostMapping("/users/admin/products/delete/{id}")
     public String deleteProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         pharmacyServiceImpl.softDeleteById(id);
         redirectAttributes.addFlashAttribute("success", "Product deleted successfully.");
@@ -269,7 +240,7 @@ public class UserController {
     }
 
     //post-mapping for admin's addding product
-    @PostMapping("/admin/products/create")
+    @PostMapping("/users/admin/products/create")
     public String createProduct(@Valid @ModelAttribute("productDTO") ProductCreateDTO dto,
                                 BindingResult result, Model model) {
         //check if result has errors
@@ -311,7 +282,7 @@ public class UserController {
 
 
     //post-mapping for admin's addding product
-    @PostMapping("/admin/products/save")
+    @PostMapping("/users/admin/products/save")
     public String saveProduct(@Valid @ModelAttribute("productUpdateDTO") ProductUpdateDTO dto,
                               BindingResult result, Model model) {
         //check if result has errors
@@ -350,21 +321,21 @@ public class UserController {
 
 
     // mapping for admin's appointments
-    @GetMapping("/admin/appointment")
+    @GetMapping("/users/admin/appointment")
     public ModelAndView adminAppointment() {
         ModelAndView mv = new ModelAndView("dashboard/appointment");
         return mv;
     }
 
     // mapping for admin's report
-    @GetMapping("/admin/report")
+    @GetMapping("/users/admin/report")
     public ModelAndView adminPharmacy() {
         ModelAndView mv = new ModelAndView("dashboard/report");
         return mv;
     }
 
     // Hiển thị tất cả người dùng
-    @GetMapping("/view")
+    @GetMapping("/users/view")
     public String viewUsers(@RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "10") int size,
                             @RequestParam(required = false) String type,
@@ -410,7 +381,7 @@ public class UserController {
     }
 
     // Tìm kiếm chung theo type và keyword (ví dụ: /users/search?type=email&keyword=abc)
-    @GetMapping("/search")
+    @GetMapping("/users/search")
     public String searchUsers(@RequestParam String type,
                               @RequestParam String keyword,
                               @RequestParam(defaultValue = "0") int page,
@@ -452,7 +423,7 @@ public class UserController {
         model.addAttribute("keyword", keyword);
     }
 
-    @PostMapping("/soft-delete/{id}")
+    @PostMapping("/users/soft-delete/{id}")
     public String softDeleteUser(@PathVariable Long id, RedirectAttributes redirect) {
         try {
             userService.deactivateUser(id);
@@ -463,7 +434,7 @@ public class UserController {
         return "redirect:/users/deleted";
     }
 
-    @GetMapping("/deleted")
+    @GetMapping("/users/deleted")
     public String viewDeletedUsers(@RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "10") int size,
                                    Model model) {
@@ -475,14 +446,14 @@ public class UserController {
         return "dashboard/user-deleted-list";
     }
 
-    @PostMapping("/restore/{id}")
+    @PostMapping("/users/restore/{id}")
     public String restoreUser(@PathVariable Long id, RedirectAttributes redirect) {
         userService.restoreUser(id);
         redirect.addFlashAttribute("success", "Người dùng đã được khôi phục.");
         return "redirect:/users/deleted";
     }
 
-    @PostMapping("/delete-permanent/{id}")
+    @PostMapping("/users/delete-permanent/{id}")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirect) {
         userService.deleteUser(id);
         redirect.addFlashAttribute("success", "Người dùng đã bị xóa vĩnh viễn.");
@@ -490,28 +461,28 @@ public class UserController {
     }
 
     // mapping for admin's doctors
-    @GetMapping("/admin/doctor")
+    @GetMapping("/users/admin/doctor")
     public ModelAndView adminReview() {
         ModelAndView mv = new ModelAndView("dashboard/doctors");
         return mv;
     }
 
     //mapping for admin's patients view
-    @GetMapping("/admin/patient")
+    @GetMapping("/users/admin/patient")
     public ModelAndView adminPatient() {
         ModelAndView mv = new ModelAndView("dashboard/patient");
         return mv;
     }
 
     //mapping for admin's categories view
-    @GetMapping("/admin/category")
+    @GetMapping("/users/admin/category")
     public ModelAndView adminCategory() {
         ModelAndView mv = new ModelAndView("dashboard/category");
         return mv;
     }
 
     //mapping for admin's payments
-    @GetMapping("/admin/payment")
+    @GetMapping("/users/admin/payment")
     public ModelAndView adminPayment() {
         ModelAndView mv = new ModelAndView("dashboard/payment");
         return mv;

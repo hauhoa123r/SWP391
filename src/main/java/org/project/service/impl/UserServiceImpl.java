@@ -12,7 +12,6 @@ import org.project.repository.UserRepository;
 import org.project.service.EmailService;
 import org.project.service.UserService;
 import org.project.utils.RandomUtils;
-import org.project.utils.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -1,6 +1,9 @@
 package org.project.converter;
 
-import org.project.entity.*;
+import org.project.entity.PatientEntity;
+import org.project.entity.SampleEntity;
+import org.project.entity.TestItemEntity;
+import org.project.entity.TestRequestEntity;
 import org.project.model.response.SetResultResponse;
 import org.project.repository.AssignmentRepository;
 import org.project.repository.PatientRepository;

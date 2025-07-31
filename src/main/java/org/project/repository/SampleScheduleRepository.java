@@ -1,7 +1,6 @@
 package org.project.repository;
 
 import org.project.entity.SampleEntity;
-import org.project.entity.TestRequestEntity;
 import org.project.repository.impl.SampleScheduleCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

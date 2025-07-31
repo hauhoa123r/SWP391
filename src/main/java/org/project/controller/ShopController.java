@@ -4,27 +4,21 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.enums.ProductSortType;
-import org.project.model.dto.ProductDetailDTO;
 import org.project.model.response.CategoryListResponse;
 import org.project.model.response.PharmacyResponse;
+import org.project.repository.ProductTagRepository;
 import org.project.service.CategoryService;
 import org.project.service.ProductService;
 import org.project.service.WishlistService;
-import org.project.repository.ProductTagRepository;
-
-import java.math.BigDecimal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
-
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 

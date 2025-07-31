@@ -11,7 +11,6 @@ import org.project.repository.PatientRepository;
 import org.project.repository.ProductRepository;
 import org.project.repository.SupplierTransactionsRepository;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

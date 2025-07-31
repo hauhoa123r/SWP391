@@ -1,6 +1,5 @@
 package org.project.service;
 
-import org.project.entity.CategoryEntity;
 import org.project.model.response.CategoryListResponse;
 
 import java.util.List;

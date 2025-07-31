@@ -10,6 +10,7 @@ import org.project.repository.*;
 import org.project.service.DoctorStaffService;
 import org.project.validation.DoctorStaffValidator;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,7 +24,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor

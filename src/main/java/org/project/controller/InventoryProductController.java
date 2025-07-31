@@ -11,7 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,34 +25,34 @@ import java.util.stream.Collectors;
 public class InventoryProductController {
 
     private final ProductRepository productRepository;
-    
+
     // Medical Equipment page
     @GetMapping("/medical-equipment")
     public String medicalEquipmentPage(Model model) {
         return "frontend/medical-equipment";
     }
-    
+
     // Medicine page
     @GetMapping("/medicine")
     public String medicinePage(Model model) {
         return "frontend/medicine";
     }
-    
+
     // Test Supplies page
     @GetMapping("/test-supplies")
     public String testSuppliesPage(Model model) {
         return "frontend/test-supplies";
     }
-    
+
     // API endpoints for AJAX calls
-    
+
     // Get all medical equipment products
     @GetMapping("/api/medical-equipment")
     @ResponseBody
     public Page<ProductResponse> getMedicalEquipmentProducts(
             @RequestParam(required = false) String name,
             @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        
+
         Page<ProductEntity> products;
         if (name != null && !name.isEmpty()) {
             products = productRepository.findByProductTypeAndNameContainingIgnoreCase(
@@ -57,17 +60,17 @@ public class InventoryProductController {
         } else {
             products = productRepository.findByProductType(ProductType.MEDICAL_PRODUCT, pageable);
         }
-        
+
         return products.map(this::convertToProductResponse);
     }
-    
+
     // Get all medicine products
     @GetMapping("/api/medicine")
     @ResponseBody
     public Page<ProductResponse> getMedicineProducts(
             @RequestParam(required = false) String name,
             @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        
+
         Page<ProductEntity> products;
         if (name != null && !name.isEmpty()) {
             products = productRepository.findByProductTypeAndNameContainingIgnoreCase(
@@ -75,17 +78,17 @@ public class InventoryProductController {
         } else {
             products = productRepository.findByProductType(ProductType.MEDICINE, pageable);
         }
-        
+
         return products.map(this::convertToProductResponse);
     }
-    
+
     // Get all test supplies products
     @GetMapping("/api/test-supplies")
     @ResponseBody
     public Page<ProductResponse> getTestSuppliesProducts(
             @RequestParam(required = false) String name,
             @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        
+
         Page<ProductEntity> products;
         if (name != null && !name.isEmpty()) {
             products = productRepository.findByProductTypeAndNameContainingIgnoreCase(
@@ -93,10 +96,10 @@ public class InventoryProductController {
         } else {
             products = productRepository.findByProductType(ProductType.TEST, pageable);
         }
-        
+
         return products.map(this::convertToProductResponse);
     }
-    
+
     // Get low stock products
     @GetMapping("/api/low-stock")
     @ResponseBody
@@ -106,7 +109,7 @@ public class InventoryProductController {
                 .map(this::convertToProductResponse)
                 .collect(Collectors.toList());
     }
-    
+
     // Helper method to convert entity to response
     private ProductResponse convertToProductResponse(ProductEntity entity) {
         ProductResponse response = new ProductResponse();

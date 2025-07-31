@@ -3,17 +3,12 @@ package org.project.service.base;
 import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
-import org.project.repository.InventoryManagerRepository;
-import org.project.repository.ProductRepository;
-import org.project.repository.SupplierEntityRepository;
-import org.project.repository.SupplierTransactionItemRepository;
-import org.project.repository.SupplierTransactionRepository;
+import org.project.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;

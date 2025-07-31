@@ -1,6 +1,8 @@
 package org.project.utils;
 
-import org.project.enums.*;
+import org.project.enums.StaffRole;
+import org.project.enums.StaffType;
+import org.project.enums.UserStatus;
 import org.project.exception.BadRequestException;
 import org.project.repository.DepartmentRepository;
 import org.project.repository.HospitalRepository;
