@@ -8,6 +8,7 @@ import org.project.entity.UserEntity;
 import org.project.exception.mapping.ErrorMappingException;
 import org.project.model.dto.MakeAppointmentDTO;
 import org.project.model.dto.StaffDTO;
+import org.project.model.response.DepartmentResponse;
 import org.project.model.response.StaffResponse;
 import org.project.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,19 @@ public class StaffConverter {
     @Autowired
     public void setModelMapperConfig(ModelMapperConfig modelMapperConfig) {
         this.modelMapperConfig = modelMapperConfig;
+        this.modelMapperConfig.mapper().typeMap(StaffEntity.class, StaffResponse.class)
+                .setPostConverter(mappingContext -> {
+                    StaffEntity source = mappingContext.getSource();
+                    StaffResponse destination = mappingContext.getDestination();
+
+                    // Map complex fields
+                    if (source.getDepartmentEntity() != null) {
+                        if (destination.getDepartmentEntity() == null) {
+                            destination.setDepartmentEntity(this.modelMapperConfig.mapper().map(source.getDepartmentEntity(), DepartmentResponse.class));
+                        }
+                    }
+                    return destination;
+                });
     }
 
     public StaffResponse toResponse(StaffEntity staffEntity) {

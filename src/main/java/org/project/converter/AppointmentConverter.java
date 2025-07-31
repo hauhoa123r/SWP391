@@ -10,6 +10,7 @@ import org.project.model.dto.MakeAppointmentDTO;
 import org.project.model.response.AppointmentCustomerResponse;
 import org.project.model.response.AppointmentDashboardCustomerResponse;
 import org.project.model.response.AppointmentResponse;
+import org.project.model.response.StaffResponse;
 import org.project.repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,17 @@ public class AppointmentConverter {
     @Autowired
     public void setModelMapperConfig(ModelMapperConfig modelMapperConfig) {
         this.modelMapperConfig = modelMapperConfig;
+        this.modelMapperConfig.mapper().typeMap(AppointmentEntity.class, AppointmentResponse.class)
+                .setPostConverter(mappingContext -> {
+                    AppointmentEntity source = mappingContext.getSource();
+                    AppointmentResponse destination = mappingContext.getDestination();
+
+                    // Map complex fields
+                    if (source.getDoctorEntity() != null && source.getDoctorEntity().getStaffEntity() != null) {
+                        destination.getDoctorEntity().setStaffEntity(modelMapperConfig.mapper().map(source.getDoctorEntity().getStaffEntity(), StaffResponse.class));
+                    }
+                    return destination;
+                });
     }
 
     @Autowired
@@ -72,7 +84,7 @@ public class AppointmentConverter {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 
-        String date  = startDateTime.format(dateFormat);
+        String date = startDateTime.format(dateFormat);
         String time = startDateTime.format(timeFormat);
 
         appointmentDashboardCustomerResponse.setId(appointmentEntity.getId());
