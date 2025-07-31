@@ -126,20 +126,6 @@ public class UserServiceImpl implements UserService {
             throw new ErrorResponse("Không tìm thấy người dùng với email: " + email);
         }
 
-        String newPassword = generateNewPassword();
-        userEntity.setPasswordHash(passwordEncoder.encode(newPassword));
-        userRepository.save(userEntity);
-        emailService.sendResetPasswordEmail(email, newPassword);
-    }
-
-    @Override
-    public void resetPassword(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email);
-
-        if (userEntity == null) {
-            throw new ErrorResponse("Không tìm thấy người dùng với email: " + email);
-        }
-
         String newPassword = RandomUtils.generateStringFromEnableCharacter(WebConstant.ENABLE_CHARACTERS_PASSWORD, 6);
         userEntity.setPasswordHash(passwordEncoder.encode(newPassword));
         userRepository.save(userEntity);

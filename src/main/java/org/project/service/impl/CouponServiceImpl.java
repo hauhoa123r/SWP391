@@ -14,6 +14,7 @@ import org.project.repository.CouponRepository;
 import org.project.service.CartService;
 import org.project.service.CouponService;
 import org.project.service.UserCouponService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

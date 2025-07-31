@@ -48,7 +48,7 @@ public class OrderController {
         CheckoutFormDTO checkoutFormDTO = new CheckoutFormDTO();
 
         // Nếu có user đăng nhập:
-        Long userId = 4L; // hard-code tạm thời
+        Long userId = 10L; // hard-code tạm thời
         PatientEntity patient = patientRepository.findByUserEntity_Id(userId);
 
         String fullName = patient.getFullName();

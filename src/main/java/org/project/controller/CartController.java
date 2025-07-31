@@ -38,7 +38,7 @@ public class CartController {
     private final CartService cartService;
     private final ProductRepository productRepository;
     //hard-code userId
-    Long userId = 2l;
+    Long userId = 10L;
     
 
 
@@ -46,7 +46,7 @@ public class CartController {
     // including the total amount of money and number of item in cart
     @GetMapping
     public String viewCart(Model model, HttpSession session) {
-        Long userId = 2L;
+        Long userId = 10L;
         List<CartItemEntity> cartItems = cartService.getCart(userId);
         BigDecimal totalBigDecimal = cartItems.stream()
             .map(item -> item.getProductEntity().getPrice().multiply(new BigDecimal(item.getQuantity())))
@@ -86,7 +86,7 @@ public class CartController {
                             @RequestParam(value = "quantity", defaultValue = "1") int quantity,
                             HttpSession session,
                             RedirectAttributes redirectAttributes) {
-        Long userId = 2L;
+        Long userId = 10L;
         logger.info("Adding product {} with quantity {} to cart for user {}", productId, quantity, userId);
         try {
             cartService.addItem(userId, productId, quantity);
@@ -104,7 +104,7 @@ public class CartController {
                              @RequestParam("quantity") int quantity,
                              HttpSession session,
                              RedirectAttributes redirectAttributes) {
-        Long userId = 2L;
+        Long userId = 10L;
         logger.info("Updating product {} quantity to {} in cart for user {}", productId, quantity, userId);
         try {
             CartItemEntityId id = new CartItemEntityId(productId, userId);
@@ -126,7 +126,7 @@ public class CartController {
     public String removeFromCart(@RequestParam("productId") Long productId,
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes) {
-        Long userId = 2L;
+        Long userId = 10L;
         logger.info("Removing product {} from cart for user {}", productId, userId);
         try {
             cartService.removeItem(userId, productId);
@@ -199,7 +199,7 @@ public class CartController {
                                  @RequestParam("quantity") int quantity,
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes) {
-        Long userId = 2L;
+        Long userId = 10L;
         logger.info("Updating product {} quantity to {} in cart for user {}", productId, quantity, userId);
         try {
             CartItemEntityId id = new CartItemEntityId(productId, userId);
