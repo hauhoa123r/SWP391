@@ -1,10 +1,8 @@
 package org.project.service;
 
-import org.project.entity.UserCouponEntity;
 import org.project.model.dto.UserCouponDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service interface for managing user-coupon relationships

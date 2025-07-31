@@ -2,10 +2,10 @@ package org.project.converter;
 
 import org.project.config.ModelMapperConfig;
 import org.project.entity.ProductEntity;
-import org.project.entity.ProductTagEntityId;
 import org.project.model.response.PharmacyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

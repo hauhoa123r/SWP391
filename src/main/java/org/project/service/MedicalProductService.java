@@ -1,6 +1,7 @@
 package org.project.service;
 
 import org.project.entity.MedicalProductEntity;
+
 import java.util.List;
 
 public interface MedicalProductService {

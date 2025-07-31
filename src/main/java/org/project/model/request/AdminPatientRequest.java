@@ -1,13 +1,8 @@
 package org.project.model.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.project.enums.BloodType;
 import org.project.enums.Gender;
-import org.project.enums.PatientStatus;
 
 import java.time.LocalDate;
 

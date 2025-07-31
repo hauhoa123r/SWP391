@@ -1,0 +1,562 @@
+<!doctype html>
+<html class="theme-fs-sm" data-bs-theme="light" data-bs-theme-color="default" dir="ltr" lang="vi"
+      layout:decorate="~{/dashboard/layouts/main-layout}"
+      th:with="breadCrumbTitle = ${'Danh sách dịch vụ'}, navItem= ${'service'}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Danh sách dịch vụ</title>
+    <th:block layout:fragment="custom-css">
+        <style>
+            .truncate {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 200px;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="card">
+        <div class="card-header">
+            <form id="filter" th:object="${serviceDTO}">
+                <div class="row mb-3">
+                    <!-- Tên dịch vụ -->
+                    <div class="col-md-3">
+                        <label class="form-label" for="name">Tên dịch vụ</label>
+                        <input class="form-control" id="name" placeholder="Nhập tên dịch vụ"
+                               th:field="*{productEntityName}" type="text">
+                    </div>
+                    <!-- Mô tả -->
+                    <div class="col-md-3">
+                        <label class="form-label" for="description">Mô tả</label>
+                        <input class="form-control" id="description" placeholder="Nhập mô tả"
+                               th:field="*{productEntityDescription}" type="text">
+                    </div>
+                    <!-- Phòng ban -->
+                    <div class="col-md-4">
+                        <label class="form-label" for="departmentEntityId">Phòng ban</label>
+                        <select class="form-select" id="departmentEntityId" th:field="*{departmentEntityId}">
+                            <option value="">-- Tất cả --</option>
+                            <option th:each="dept : ${departments}" th:text="${dept.name}"
+                                    th:value="${dept.id}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <!-- Khoảng giá -->
+                    <div class="col-md-4">
+                        <label class="form-label">Khoảng giá</label>
+                        <div class="input-group">
+                            <input class="form-control" min="0" placeholder="Giá từ" th:field="*{minPrice}"
+                                   type="number">
+                            <span class="input-group-text">-</span>
+                            <input class="form-control" min="0" placeholder="Đến" th:field="*{maxPrice}" type="number">
+                        </div>
+                    </div>
+                    <!-- Đánh giá tối thiểu -->
+                    <div class="col-md-4">
+                        <label class="form-label" for="minStarRating">Đánh giá tối thiểu</label>
+                        <select class="form-select" id="minStarRating" th:field="*{minStarRating}">
+                            <option value="">Tất cả đánh giá</option>
+                            <option value="5">5 sao</option>
+                            <option value="4">4 sao trở lên</option>
+                            <option value="3">3 sao trở lên</option>
+                            <option value="2">2 sao trở lên</option>
+                            <option value="1">1 sao trở lên</option>
+                        </select>
+                    </div>
+                    <!-- Số lượt đánh giá tối thiểu -->
+                    <div class="col-md-4">
+                        <label class="form-label" for="minReviewCount">Số lượt đánh giá tối thiểu</label>
+                        <input class="form-control" id="minReviewCount" min="0"
+                               placeholder="Nhập số lượt" th:field="*{minReviewCount}" type="number">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <!-- Sắp xếp theo -->
+                    <div class="col-md-4">
+                        <label class="form-label" for="sortField">Sắp xếp theo</label>
+                        <select class="form-select" id="sortField" th:field="*{sortFieldName}">
+                            <option value="">-- Chọn trường --</option>
+                            <option value="productEntity.name">Tên dịch vụ</option>
+                            <option value="productEntity.description">Mô tả</option>
+                            <option value="productEntity.price">Giá</option>
+                            <option value="departmentEntity.name">Phòng ban</option>
+                            <option value="productEntity.reviewEntities.rating">Đánh giá</option>
+                            <option value="productEntity.reviewEntities.id">Số lượt</option>
+                        </select>
+                    </div>
+                    <!-- Thứ tự -->
+                    <div class="col-md-4">
+                        <label class="form-label" for="sortDirection">Thứ tự</label>
+                        <select class="form-select" id="sortDirection" th:field="*{sortDirection}">
+                            <option value="ASC">Tăng dần</option>
+                            <option value="DESC">Giảm dần</option>
+                        </select>
+                    </div>
+                    <!-- Nút -->
+                    <div class="col-md-4 d-flex align-items-end justify-content-end">
+                        <button class="btn btn-outline-secondary me-2" type="reset">
+                            <i class="fas fa-undo me-1"></i> Đặt lại
+                        </button>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search me-1"></i> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <button aria-controls="addForm" class="btn btn-primary "
+                    data-bs-target="#addForm"
+                    data-bs-toggle="offcanvas" type="button">
+                <span class="btn-inner">
+                    <span class="text d-inline-block align-middle">Thêm mới</span>
+                    <span class="icon d-inline-block align-middle ms-1 ps-2">
+                       <svg fill="none" height="8" viewBox="0 0 8 8" width="8" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                                  d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                  fill="currentColor"/>
+                       </svg>
+                    </span>
+                </span>
+            </button>
+        </div>
+        <div class="card-body pt-0">
+            <div class="table-responsive">
+                <table class="table border-end border-start align-middle mb-0 rounded">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Hình ảnh</th>
+                        <th>Tên dịch vụ</th>
+                        <th>Mô tả</th>
+                        <th>Giá</th>
+                        <th>Phòng ban</th>
+                        <th>Đánh giá</th>
+                        <th>Số lượt</th>
+                        <th>Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody id="list"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="pagination"></div>
+    </div>
+
+    <!-- FORM SỬA DỊCH VỤ -->
+    <form aria-labelledby="editFormLabel" class="offcanvas offcanvas-end" enctype="multipart/form-data" id="editForm"
+          method="post" tabindex="-1" th:object="${serviceDTO}">
+        <div class="offcanvas-header border-bottom">
+            <h3 class="offcanvas-title" id="editFormLabel">Sửa dịch vụ</h3>
+            <button aria-label="Close" class="btn-close text-reset" data-bs-dismiss="offcanvas" type="button"></button>
+        </div>
+        <div class="offcanvas-body">
+            <input th:field="*{id}" type="hidden"/>
+            <div class="form-group">
+                <label class="form-label" for="edit_entityName">Tên <span class="text-danger">*</span></label>
+                <input class="form-control" id="edit_entityName" placeholder="Nhập tên" required
+                       th:field="*{productEntityName}" type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="edit_entityPrice">Giá <span class="text-danger">*</span></label>
+                <input class="form-control" id="edit_entityPrice" min="0" placeholder="Nhập giá"
+                       required step="0.01" th:field="*{productEntityPrice}" type="number">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="edit_entityDepartment">Phòng ban <span
+                        class="text-danger">*</span></label>
+                <select class="form-select" id="edit_entityDepartment" required th:field="*{departmentEntityId}">
+                    <option value="">-- Chọn phòng ban --</option>
+                    <option th:each="dept : ${departments}" th:text="${dept.name}" th:value="${dept.id}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="edit_entityDescription">Mô tả</label>
+                <textarea class="form-control" id="edit_entityDescription" placeholder="Nhập mô tả"
+                          th:field="*{productEntityDescription}"></textarea>
+            </div>
+            <div class="form-group text-center mb-4">
+                <label class="form-label d-block">Hình ảnh</label>
+                <img alt="Image Preview" class="image-preview d-none"
+                     data-name="productEntityImageUrl"
+                     style="width:200px; height:200px; object-fit:cover; border-radius:6px; border:1px solid #dee2e6; margin-bottom:10px;"
+                     th:src="${serviceDTO.productEntityImageUrl != null && !#strings.isEmpty(serviceDTO.productEntityImageUrl) ? serviceDTO.productEntityImageUrl : ''}">
+                <input accept="image/*" class="form-control mt-2" id="edit_entityImage"
+                       onchange="previewImage(event)"
+                       th:field="*{productEntityImageUrl}" type="file">
+            </div>
+            <!-- Thông tin bổ sung -->
+            <div class="form-group">
+                <label class="form-label">Thông tin bổ sung</label>
+                <div id="edit_additionalInfos">
+                    <div class="row mb-2 align-items-center"
+                         th:each="info, iterStat : *{productEntityProductAdditionalInfoEntities}">
+                        <div class="col-5">
+                            <input class="form-control"
+                                   placeholder="Tên thông tin"
+                                   th:field="*{productEntityProductAdditionalInfoEntities[__${iterStat.index}__].name}"/>
+                        </div>
+                        <div class="col-5">
+                            <input class="form-control"
+                                   placeholder="Giá trị"
+                                   th:field="*{productEntityProductAdditionalInfoEntities[__${iterStat.index}__].value}"/>
+                        </div>
+                        <div class="col-2 text-end">
+                            <button class="btn btn-danger" onclick="removeAdditionalInfoRow(this)"
+                                    type="button">
+                                -
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-success mt-2" onclick="addAdditionalInfoRow('edit_additionalInfos')"
+                        type="button">+
+                </button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Tính năng dịch vụ</label>
+                <div id="edit_serviceFeatureEntities">
+                    <div class="row mb-2 align-items-center"
+                         th:each="feature, iterStat : *{serviceFeatureEntities}">
+                        <div class="col-5">
+                            <input class="form-control"
+                                   placeholder="Tên tính năng"
+                                   th:field="*{serviceFeatureEntities[__${iterStat.index}__].name}"/>
+                        </div>
+                        <div class="col-5">
+                            <input class="form-control"
+                                   placeholder="Mô tả"
+                                   th:field="*{serviceFeatureEntities[__${iterStat.index}__].description}"/>
+                        </div>
+                        <div class="col-2 text-end">
+                            <button class="btn btn-danger" onclick="removeServiceFeatureRow(this)"
+                                    type="button">-
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-success mt-2" onclick="addServiceFeatureRow('edit_serviceFeatureEntities')"
+                        type="button">+
+                </button>
+            </div>
+        </div>
+        <div class="offcanvas-footer border-top">
+            <div class="d-grid d-md-flex gap-3 p-3">
+                <button class="btn btn-primary d-block" type="submit">Cập nhật</button>
+                <button class="btn btn-secondary d-block" data-bs-dismiss="offcanvas" type="button">Đóng</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- FORM THÊM MỚI DỊCH VỤ -->
+    <form aria-labelledby="addFormLabel" class="offcanvas offcanvas-end" enctype="multipart/form-data" id="addForm"
+          method="post" tabindex="-1" th:object="${serviceDTO}">
+        <div class="offcanvas-header border-bottom">
+            <h3 class="offcanvas-title" id="addFormLabel">Thêm dịch vụ</h3>
+            <button aria-label="Close" class="btn-close text-reset" data-bs-dismiss="offcanvas" type="button"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group">
+                <label class="form-label" for="add_entityName">Tên <span class="text-danger">*</span></label>
+                <input class="form-control" id="add_entityName" placeholder="Nhập tên" required
+                       th:field="*{productEntityName}" type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="add_entityPrice">Giá <span class="text-danger">*</span></label>
+                <input class="form-control" id="add_entityPrice" min="0" placeholder="Nhập giá"
+                       required step="0.01" th:field="*{productEntityPrice}" type="number">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="add_entityDepartment">Phòng ban <span
+                        class="text-danger">*</span></label>
+                <select class="form-select" id="add_entityDepartment" required th:field="*{departmentEntityId}">
+                    <option value="">-- Chọn phòng ban --</option>
+                    <option th:each="dept : ${departments}" th:text="${dept.name}" th:value="${dept.id}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="add_entityDescription">Mô tả</label>
+                <textarea class="form-control" id="add_entityDescription" placeholder="Nhập mô tả"
+                          th:field="*{productEntityDescription}"></textarea>
+            </div>
+            <div class="form-group text-center mb-4">
+                <label class="form-label d-block">Hình ảnh</label>
+                <img alt="Image Preview" class="image-preview d-none" data-name="productEntityImageUrl"
+                     style="width:200px; height:200px; object-fit:cover; border-radius:6px; border:1px solid #dee2e6; margin-bottom:10px;">
+                <input accept="image/*" class="form-control mt-2" id="add_entityImage"
+                       onchange="previewImage(event)"
+                       th:field="*{productEntityImageUrl}" type="file">
+            </div>
+            <!-- Thông tin bổ sung -->
+            <div class="form-group">
+                <label class="form-label">Thông tin bổ sung</label>
+                <div id="add_additionalInfos">
+                    <div class="row mb-2 align-items-center"
+                         th:each="info, iterStat : *{productEntityProductAdditionalInfoEntities}">
+                        <div class="col-5">
+                            <input class="form-control"
+                                   placeholder="Tên thông tin"
+                                   th:field="*{productEntityProductAdditionalInfoEntities[__${iterStat.index}__].name}"/>
+                        </div>
+                        <div class="col-5">
+                            <input class="form-control"
+                                   placeholder="Giá trị"
+                                   th:field="*{productEntityProductAdditionalInfoEntities[__${iterStat.index}__].value}"/>
+                        </div>
+                        <div class="col-2 text-end">
+                            <button class="btn btn-danger" onclick="removeAdditionalInfoRow(this)"
+                                    type="button">
+                                -
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-success mt-2" onclick="addAdditionalInfoRow('add_additionalInfos')"
+                        type="button">+
+                </button>
+            </div>
+            <!-- Tính năng dịch vụ -->
+            <div class="form-group">
+                <label class="form-label">Tính năng dịch vụ</label>
+                <div id="add_serviceFeatureEntities">
+                    <div class="row mb-2 align-items-center"
+                         th:each="feature, iterStat : *{serviceFeatureEntities}">
+                        <div class="col-5">
+                            <input class="form-control"
+                                   placeholder="Tên tính năng"
+                                   th:field="*{serviceFeatureEntities[__${iterStat.index}__].name}"/>
+                        </div>
+                        <div class="col-5">
+                            <input class="form-control"
+                                   placeholder="Mô tả"
+                                   th:field="*{serviceFeatureEntities[__${iterStat.index}__].description}"/>
+                        </div>
+                        <div class="col-2 text-end">
+                            <button class="btn btn-danger" onclick="removeServiceFeatureRow(this)"
+                                    type="button">-
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-success mt-2" onclick="addServiceFeatureRow('add_serviceFeatureEntities')"
+                        type="button">+
+                </button>
+            </div>
+        </div>
+        <div class="offcanvas-footer border-top">
+            <div class="d-grid d-md-flex gap-3 p-3">
+                <button class="btn btn-primary d-block" type="submit">Tạo</button>
+                <button class="btn btn-secondary d-block" data-bs-dismiss="offcanvas" type="button">Đóng</button>
+            </div>
+        </div>
+    </form>
+</th:block>
+<th:block layout:fragment="custom-js">
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const preview = input.closest("div").querySelector(".image-preview");
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+                preview.classList.remove("d-none");
+            } else {
+                preview.classList.add("d-none");
+            }
+        }
+
+        // Xóa dòng thông tin bổ sung
+        function removeAdditionalInfoRow(btn) {
+            const row = btn.closest(".row");
+            row.parentNode.removeChild(row);
+            // Sau khi xóa, cập nhật lại index của các input
+            updateAdditionalInfoInputNames(row.parentNode);
+        }
+
+        // Cập nhật lại name cho đúng index
+        function updateAdditionalInfoInputNames(container) {
+            if (!container) return;
+            const rows = container.querySelectorAll(".row");
+            if (rows.length === 0) return;
+            rows.forEach(function (row, idx) {
+                const inputs = row.querySelectorAll("input");
+                if (inputs.length === 2) {
+                    inputs[0].setAttribute("name", `productEntityProductAdditionalInfoEntities[${idx}].name`);
+                    inputs[1].setAttribute("name", `productEntityProductAdditionalInfoEntities[${idx}].value`);
+                }
+            });
+        }
+
+        // Xóa dòng tính năng dịch vụ
+        function removeServiceFeatureRow(btn) {
+            const row = btn.closest(".row");
+            const parent = row.parentNode;
+            if (!parent) return;
+            parent.removeChild(row);
+            updateServiceFeatureInputNames(parent);
+        }
+
+        // Cập nhật lại name cho đúng index
+        function updateServiceFeatureInputNames(container) {
+            if (!container) return;
+            const rows = container.querySelectorAll(".row");
+            if (rows.length === 0) return;
+            rows.forEach(function (row, idx) {
+                const inputs = row.querySelectorAll("input");
+                if (inputs.length === 2) {
+                    inputs[0].setAttribute("name", `serviceFeatureEntities[${idx}].name`);
+                    inputs[1].setAttribute("name", `serviceFeatureEntities[${idx}].description`);
+                }
+            });
+        }
+    </script>
+    <script type="module">
+        import toast from "/templates/shared/assets/js/plugins/toast.js";
+
+        // Thêm dòng thông tin bổ sung
+        function addAdditionalInfoRow(containerId, initName = "", initValue = "", initId = "") {
+            const container = document.getElementById(containerId);
+            const rows = container.querySelectorAll(".row");
+            // Kiểm tra các trường hiện tại đã nhập đủ chưa
+            for (let row of rows) {
+                const inputs = row.querySelectorAll("input");
+                if (inputs.length >= 2) {
+                    if (inputs[1].value.trim() === "" || inputs[2].value.trim() === "") {
+                        toast.warning("Vui lòng nhập đầy đủ Tên thông tin và Giá trị trước khi thêm dòng mới!", {
+                            icon: true,
+                            duration: 3000,
+                            progress: true
+                        });
+                        return;
+                    }
+                }
+            }
+            const newIndex = rows.length;
+            const row = document.createElement("div");
+            row.className = "row mb-2 align-items-center";
+            row.innerHTML = `
+                <input type="hidden" name="productEntityProductAdditionalInfoEntities[${newIndex}].id" value="${initId}">
+                <div class="col-5">
+                    <input class="form-control" name="productEntityProductAdditionalInfoEntities[${newIndex}].name" placeholder="Tên thông tin" value="${initName}"/>
+                </div>
+                <div class="col-5">
+                    <input class="form-control" name="productEntityProductAdditionalInfoEntities[${newIndex}].value" placeholder="Giá trị" value="${initValue}"/>
+                </div>
+                <div class="col-2 text-end">
+                    <button class="btn btn-danger" type="button" onclick="removeAdditionalInfoRow(this)">-</button>
+                </div>
+            `;
+            container.appendChild(row);
+        }
+
+        // Thêm dòng tính năng dịch vụ mới
+        function addServiceFeatureRow(containerId, initName = "", initDesc = "", initId = "") {
+            const container = document.getElementById(containerId);
+            const rows = container.querySelectorAll(".row");
+            for (let row of rows) {
+                const inputs = row.querySelectorAll("input");
+                if (inputs.length >= 2) {
+                    if (inputs[1].value.trim() === "" || inputs[2].value.trim() === "") {
+                        toast.warning("Vui lòng nhập đầy đủ tên và mô tả tính năng trước khi thêm dòng mới!", {
+                            icon: true,
+                            duration: 3000,
+                            progress: true
+                        });
+                        return;
+                    }
+                }
+            }
+            const newIndex = rows.length;
+            const row = document.createElement("div");
+            row.className = "row mb-2 align-items-center";
+            row.innerHTML = `
+                <input type="hidden" name="serviceFeatureEntities[${newIndex}].id" value="${initId}">
+                <div class="col-5">
+                    <input class="form-control" name="serviceFeatureEntities[${newIndex}].name" placeholder="Tên tính năng" value="${initName}" />
+                </div>
+                <div class="col-5">
+                    <input class="form-control" name="serviceFeatureEntities[${newIndex}].description" placeholder="Mô tả" value="${initDesc}" />
+                </div>
+                <div class="col-2 text-end">
+                    <button class="btn btn-danger" type="button" onclick="removeServiceFeatureRow(this)">-</button>
+                </div>
+            `;
+            container.appendChild(row);
+        }
+
+        // Đưa ra global
+        window.addAdditionalInfoRow = addAdditionalInfoRow;
+        window.addServiceFeatureRow = addServiceFeatureRow;
+    </script>
+    <script type="module">
+        import {CrudUtils} from "/templates/shared/assets/js/utils/crud-utils.js";
+        import {
+            ServiceResponse, renderServiceResponseForAdmin
+        } from "/templates/shared/assets/js/model/response/ServiceResponse.js";
+
+        // Hàm custom cho nút edit
+        function handleEditButtonClick(itemElement) {
+            // Lấy thông tin bổ sung từ cột td
+            const element = itemElement.querySelector("[data-name='productEntityProductAdditionalInfoEntities']");
+            let value = [];
+            if (element && element.getAttribute("data-value")) {
+                try {
+                    value = JSON.parse(element.getAttribute("data-value"));
+                } catch (e) {
+                    value = [];
+                }
+            }
+            // Render lại dòng thông tin bổ sung trong form edit
+            const container = document.getElementById("edit_additionalInfos");
+            if (container) {
+                container.innerHTML = "";
+                (value || []).forEach((info, idx) => {
+                    // Gọi lại hàm add nhưng truyền luôn tên và giá trị
+                    window.addAdditionalInfoRow("edit_additionalInfos", info.name || "", info.value || "", info.id || "");
+                });
+            }
+
+            // --- TÍNH NĂNG DỊCH VỤ ---
+            const featureElement = itemElement.querySelector("[data-name='serviceFeatureEntities']");
+            let featureValue = [];
+            if (featureElement && featureElement.getAttribute("data-value")) {
+                try {
+                    featureValue = JSON.parse(featureElement.getAttribute("data-value"));
+                } catch (e) {
+                    featureValue = [];
+                }
+            }
+            const featureContainer = document.getElementById("edit_serviceFeatureEntities");
+            if (featureContainer) {
+                featureContainer.innerHTML = "";
+                (featureValue || []).forEach((feature) => {
+                    window.addServiceFeatureRow("edit_serviceFeatureEntities", feature.name || "", feature.description || "", feature.id || "");
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const editFormSelector = "#editForm";
+            const crudUtils = new CrudUtils({
+                apiUrl: "/api/admin/service",
+                responseClass: ServiceResponse,
+                renderStrategy: renderServiceResponseForAdmin,
+                editFormSelector: editFormSelector,
+                customButtonSelector: ".edit-button", // phải có dấu .
+                customButtonEvent: handleEditButtonClick
+            });
+            crudUtils.init();
+        });
+    </script>
+</th:block>
+</body>
+</html>

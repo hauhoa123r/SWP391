@@ -1,10 +1,10 @@
 package org.project.model.dto;
 
-import java.math.BigDecimal;
-
 import org.project.enums.Label;
 import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
+
+import java.math.BigDecimal;
 
 public class ProductViewDTO {
 	private Long id; 

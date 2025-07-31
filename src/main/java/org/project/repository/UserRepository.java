@@ -43,6 +43,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Page<UserEntity> findByUserStatusNot(UserStatus status, Pageable pageable);
 
+    @Query(
+            """
+                    SELECT u FROM UserEntity u
+                    WHERE u.email = ?1
+                    AND u.userStatus = 'ACTIVE'
+                    """)
     UserEntity findByEmail(String email);
 
     @Modifying
@@ -51,4 +57,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     void updatePassword(String email, String password);
 
 
+    boolean existsByEmailAndUserStatus(String email, UserStatus userStatus);
+
+    boolean existsByPhoneNumberAndUserStatus(String phoneNumber, UserStatus userStatus);
 }

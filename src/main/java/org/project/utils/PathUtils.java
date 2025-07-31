@@ -29,7 +29,6 @@ public class PathUtils {
         return (Path<Y>) path;
     }
 
-
     public static Path<Object> getRealPath(Root<?> root, String fieldName, Map<String, Join<?, ?>> joinMap) {
         if (!fieldName.contains(".")) {
             return root.get(fieldName);
@@ -42,6 +41,9 @@ public class PathUtils {
     public static void join(Root<?> root, String fieldName, JoinType joinType, Map<String, Join<?, ?>> joinMap) {
         if (!fieldName.contains(".")) {
             return;
+        }
+        if (joinType == null) {
+            joinType = JoinType.INNER; // Default to INNER join if not specified
         }
         String[] fieldParts = fieldName.split("\\.");
         Join<?, ?> join;

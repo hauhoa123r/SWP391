@@ -1,5 +1,6 @@
 package org.project.service.impl;
 
+import org.project.config.WebConstant;
 import org.project.entity.UserEntity;
 import org.project.enums.UserRole;
 import org.project.enums.UserStatus;
@@ -10,6 +11,7 @@ import org.project.model.response.UserLoginResponse;
 import org.project.repository.UserRepository;
 import org.project.service.EmailService;
 import org.project.service.UserService;
+import org.project.utils.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,10 +25,8 @@ import java.util.Optional;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     private EmailService emailService;
@@ -107,17 +107,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    private String generateNewPassword() {
-        // Password contains only alphanumeric characters
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder newPassword = new StringBuilder();
-        for (int i = 0; i < 6; i++) { // Length
-            int index = (int) (Math.random() * characters.length());
-            newPassword.append(characters.charAt(index));
-        }
-        return newPassword.toString();
-    }
-
     @Override
     public void resetPassword(String email) {
         UserEntity userEntity = userRepository.findByEmail(email);
@@ -126,7 +115,7 @@ public class UserServiceImpl implements UserService {
             throw new ErrorResponse("Không tìm thấy người dùng với email: " + email);
         }
 
-        String newPassword = generateNewPassword();
+        String newPassword = RandomUtils.generateStringFromEnableCharacter(WebConstant.ENABLE_CHARACTERS_PASSWORD, 6);
         userEntity.setPasswordHash(passwordEncoder.encode(newPassword));
         userRepository.save(userEntity);
         emailService.sendResetPasswordEmail(email, newPassword);
@@ -217,13 +206,49 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity createUser(UserEntity user) {
-        if (user == null) throw new IllegalArgumentException("User cannot be null");
-        if (user.getEmail() != null && userRepository.existsByEmail(user.getEmail())) {
-            throw new org.project.exception.DuplicateResourceException("email", "Email already exists");
+        if (user == null) {
+            throw new ErrorResponse("Người dùng không được null");
+        }
+        if (user.getEmail() != null && userRepository.existsByEmailAndUserStatus(user.getEmail(), UserStatus.ACTIVE)) {
+            throw new ErrorResponse("Email đã tồn tại");
+        }
+        if (user.getPhoneNumber() != null && userRepository.existsByPhoneNumberAndUserStatus(user.getPhoneNumber(), UserStatus.ACTIVE)) {
+            throw new ErrorResponse("Số điện thoại đã tồn tại");
         }
         if (user.getPasswordHash() != null) {
             user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         }
         return userRepository.save(user);
+    }
+
+    @Override
+    public boolean isExistPhoneNumber(String phoneNumber) {
+        return userRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public boolean isExistEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public void updatePhoneNumber(Long userId, String phoneNumber) {
+        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        userEntity.setPhoneNumber(phoneNumber);
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void updateEmail(Long userId, String email) {
+        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        userEntity.setEmail(email);
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void updatePassword(Long userId, String password) {
+        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        userEntity.setPasswordHash(passwordEncoder.encode(password));
+        userRepository.save(userEntity);
     }
 }

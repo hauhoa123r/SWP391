@@ -1,6 +1,8 @@
 package org.project.service.impl;
 
 import org.project.entity.SupplierEntity;
+import org.project.enums.operation.ComparisonOperator;
+import org.project.enums.operation.SortDirection;
 import org.project.model.dto.SupplierEntityDTO;
 import org.project.repository.SupplierEntityRepository;
 import org.project.service.SupplierEntityService;
@@ -9,14 +11,12 @@ import org.project.utils.specification.PageSpecificationUtils;
 import org.project.utils.specification.SpecificationUtils;
 import org.project.utils.specification.search.SearchCriteria;
 import org.project.utils.specification.sort.SortCriteria;
-import org.project.enums.operation.ComparisonOperator;
-import org.project.enums.operation.SortDirection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;

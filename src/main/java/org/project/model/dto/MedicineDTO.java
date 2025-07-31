@@ -9,7 +9,6 @@ import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
 @Getter

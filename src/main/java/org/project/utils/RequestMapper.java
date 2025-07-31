@@ -2,7 +2,6 @@ package org.project.utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.project.exception.mapping.ErrorMappingException;
-import org.project.model.dai.AppointmentDAI;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;

@@ -102,8 +102,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script th:inline="javascript" type="module">
-    import toast from "/templates/frontend/assets/js/plugins/toast.js";
-    import {FetchingUtils} from "/templates/frontend/assets/js/utils/fetching-utils.js";
+    import toast from "/templates/shared/assets/js/plugins/toast.js";
+    import {FetchingUtils} from "/templates/shared/assets/js/utils/fetching-utils.js";
 
     document.addEventListener("DOMContentLoaded", () => {
         const toastType = /*[[${toastType}]]*/ null;

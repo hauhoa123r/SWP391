@@ -2,8 +2,6 @@ package org.project.converter;
 
 import org.project.entity.AppointmentEntity;
 import org.project.entity.TestRequestEntity;
-import org.project.exception.ResourceNotFoundException;
-import org.project.model.dto.ApproveResultDTO;
 import org.project.model.dto.ResultTestDTO;
 import org.project.model.response.ResultAppointmentResponse;
 import org.project.repository.ResultTestRepository;

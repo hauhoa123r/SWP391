@@ -1,25 +1,33 @@
 package org.project.service.impl;
 
-import org.modelmapper.ModelMapper;
 import org.project.config.WebConstant;
 import org.project.converter.PatientConverter;
+import org.project.converter.UserConverter;
 import org.project.entity.PatientEntity;
 import org.project.entity.UserEntity;
 import org.project.enums.BloodType;
 import org.project.enums.FamilyRelationship;
 import org.project.enums.Gender;
 import org.project.enums.PatientStatus;
+import org.project.enums.operation.ComparisonOperator;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.dto.PatientDTO;
+import org.project.model.dto.UserRegisterDTO;
 import org.project.model.response.PatientResponse;
 import org.project.repository.PatientRepository;
 import org.project.repository.UserRepository;
+import org.project.service.EmailService;
 import org.project.service.PatientService;
+import org.project.service.UserRegisterService;
 import org.project.utils.PageUtils;
+import org.project.utils.RandomUtils;
+import org.project.utils.specification.SpecificationUtils;
+import org.project.utils.specification.search.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
@@ -43,17 +51,21 @@ import java.util.stream.Collectors;
 @Transactional
 public class PatientServiceImpl implements PatientService {
 
-    private static final String AVATAR_DIR_RELATIVE =
-            Paths.get("src", "main", "resources",
-                            "templates", "frontend", "assets",
-                            "images", "patientAvatar")
-                    .toString();
+    private static final String AVATAR_DIR_RELATIVE = Paths.get("src", "main", "resources", "templates", "frontend", "assets", "images", "patientAvatar").toString();
     //    private final ModelMapper modelMapper;
-    private ModelMapper modelMapper;
     private UserRepository userRepository;
     private PatientRepository patientRepository;
     private PatientConverter patientConverter;
+    private UserRegisterService userRegisterService;
+    private UserConverter userConverter;
     private PageUtils<PatientEntity> pageUtils;
+    private SpecificationUtils<PatientEntity> specificationUtils;
+    private EmailService emailService;
+
+    @Autowired
+    public void setUserRegisterService(UserRegisterService userRegisterService) {
+        this.userRegisterService = userRegisterService;
+    }
 
     @Autowired
     public void setPatientRepository(PatientRepository patientRepository) {
@@ -66,18 +78,28 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Autowired
-    public void setModelMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
-
-    @Autowired
     public void setPatientConverter(PatientConverter patientConverter) {
         this.patientConverter = patientConverter;
     }
 
     @Autowired
+    public void setUserConverter(UserConverter userConverter) {
+        this.userConverter = userConverter;
+    }
+
+    @Autowired
     public void setPageUtils(PageUtils<PatientEntity> pageUtils) {
         this.pageUtils = pageUtils;
+    }
+
+    @Autowired
+    public void setSpecificationUtils(SpecificationUtils<PatientEntity> specificationUtils) {
+        this.specificationUtils = specificationUtils;
+    }
+
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
     }
 
     @Override
@@ -99,8 +121,7 @@ public class PatientServiceImpl implements PatientService {
     @Transactional
     @Override
     public Long createPatient(PatientDTO patientDTO) {
-        PatientEntity patientEntity = patientConverter.toConvertEntity(patientDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid patient DTO"));
+        PatientEntity patientEntity = patientConverter.toConvertEntity(patientDTO).orElseThrow(() -> new IllegalArgumentException("Invalid patient DTO"));
 
         patientEntity.setBirthdate(Date.valueOf(patientDTO.getDateOfBirth()));
         patientEntity.setFamilyRelationship(FamilyRelationship.valueOf(patientDTO.getFamilyRelationship().toUpperCase()));
@@ -112,8 +133,7 @@ public class PatientServiceImpl implements PatientService {
             patientEntity.setAvatarUrl(toConvertAvatarUrl(patientDTO.getAvatarBase64()));
         }
 
-        UserEntity userEntity = userRepository.findById(patientDTO.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        UserEntity userEntity = userRepository.findById(patientDTO.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         patientEntity.setUserEntity(userEntity);
 
@@ -131,9 +151,7 @@ public class PatientServiceImpl implements PatientService {
             throw new ResourceNotFoundException("No patients found");
         }
 
-        List<PatientResponse> patientResponses = patientEntities.stream()
-                .map(patientConverter::toConvertResponse)
-                .collect(Collectors.toList());
+        List<PatientResponse> patientResponses = patientEntities.stream().map(patientConverter::toConvertResponse).collect(Collectors.toList());
 
         for (PatientResponse patientResponse : patientResponses) {
             if (patientResponse.getAvatarUrl() != null) {
@@ -153,30 +171,27 @@ public class PatientServiceImpl implements PatientService {
             throw new ResourceNotFoundException("No patients found for user with ID: " + userId);
         }
 
-        return patientEntities.stream()
-                .map(entity -> {
-                    PatientResponse response = patientConverter.toConvertResponse(entity);
+        return patientEntities.stream().map(entity -> {
+            PatientResponse response = patientConverter.toConvertResponse(entity);
 
-                    if (entity.getBirthdate() != null) {
-                        response.setBirthdate(entity.getBirthdate().toString());
-                    } else {
-                        response.setBirthdate("N/A");
-                    }
-                    if (entity.getAvatarUrl() != null) {
-                        response.setAvatarUrl(toConvertFileToBase64(entity.getAvatarUrl()));
-                    } else {
-                        response.setAvatarUrl(null);
-                    }
-                    return response;
-                })
-                .collect(Collectors.toList());
+            if (entity.getBirthdate() != null) {
+                response.setBirthdate(entity.getBirthdate().toString());
+            } else {
+                response.setBirthdate("N/A");
+            }
+            if (entity.getAvatarUrl() != null) {
+                response.setAvatarUrl(toConvertFileToBase64(entity.getAvatarUrl()));
+            } else {
+                response.setAvatarUrl(null);
+            }
+            return response;
+        }).collect(Collectors.toList());
     }
 
     @Transactional
     @Override
     public PatientResponse getPatientById(Long patientId) {
-        PatientEntity patientEntity = patientRepository.findById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
+        PatientEntity patientEntity = patientRepository.findById(patientId).orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
 
         PatientResponse response = patientConverter.toConvertResponse(patientEntity);
 
@@ -197,8 +212,7 @@ public class PatientServiceImpl implements PatientService {
     @Transactional
     @Override
     public PatientResponse updatePatient(Long patientId, PatientDTO patientDTO) {
-        PatientEntity patientEntity = patientRepository.findById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with ID: " + patientId));
+        PatientEntity patientEntity = patientRepository.findById(patientId).orElseThrow(() -> new ResourceNotFoundException("Patient not found with ID: " + patientId));
 
         Method[] methods = PatientDTO.class.getMethods();
 
@@ -247,28 +261,16 @@ public class PatientServiceImpl implements PatientService {
         }
 
         if (patientDTO.getFamilyRelationship() != null) {
-            patientEntity.setFamilyRelationship(
-                    FamilyRelationship.valueOf(patientDTO.getFamilyRelationship().toUpperCase())
-            );
+            patientEntity.setFamilyRelationship(FamilyRelationship.valueOf(patientDTO.getFamilyRelationship().toUpperCase()));
         }
 
         if (patientDTO.getGender() != null) {
-            patientEntity.setGender(
-                    Gender.valueOf(patientDTO.getGender().toUpperCase())
-            );
+            patientEntity.setGender(Gender.valueOf(patientDTO.getGender().toUpperCase()));
         }
 
         if (patientDTO.getBloodType() != null) {
-            patientEntity.setBloodType(
-                    BloodType.valueOf(patientDTO.getBloodType().toUpperCase())
-            );
+            patientEntity.setBloodType(BloodType.valueOf(patientDTO.getBloodType().toUpperCase()));
         }
-
-        userRepository.findById(patientDTO.getUserId())
-                .ifPresentOrElse(patientEntity::setUserEntity,
-                        () -> {
-                            throw new ResourceNotFoundException("User not found with ID: " + patientDTO.getUserId());
-                        });
 
         patientRepository.save(patientEntity);
 
@@ -289,10 +291,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<String> getAllRelationships(Long userId) {
-        List<String> relationships = patientRepository.getAllRelationships(userId)
-                .stream()
-                .map(FamilyRelationship::name)
-                .collect(Collectors.toList());
+        List<String> relationships = patientRepository.getAllRelationships(userId).stream().map(FamilyRelationship::name).collect(Collectors.toList());
         if (relationships.isEmpty()) {
             throw new ResourceNotFoundException("No relationships found for user with ID: " + userId);
         } else {
@@ -333,7 +332,7 @@ public class PatientServiceImpl implements PatientService {
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 fos.write(imageBytes);
             }
-            return "templates/frontend/assets/images/patientAvatar/" + fileName;
+            return "/templates/frontend/assets/images/patientAvatar/" + fileName;
         } catch (IOException | IllegalArgumentException e) {
             return null;
         }
@@ -359,5 +358,27 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public UserEntity getUserHasPatient() {
         return patientRepository.getRandom().getUserEntity();
+    }
+
+    @Override
+    public Page<PatientResponse> getPatients(int index, int size, PatientDTO patientDTO) {
+        Sort sort = Sort.unsorted();
+        if (patientDTO.getSortFieldName() != null && patientDTO.getSortDirection() != null) {
+            sort = Sort.by(Sort.Direction.fromString(patientDTO.getSortDirection()), patientDTO.getSortFieldName());
+        }
+        List<SearchCriteria> searchCriteria = List.of(new SearchCriteria("fullName", ComparisonOperator.CONTAINS, patientDTO.getFullName()), new SearchCriteria("email", ComparisonOperator.CONTAINS, patientDTO.getEmail()), new SearchCriteria("phoneNumber", ComparisonOperator.CONTAINS, patientDTO.getPhoneNumber()), new SearchCriteria("address", ComparisonOperator.CONTAINS, patientDTO.getAddress()), new SearchCriteria("dateOfBirth", ComparisonOperator.EQUALS, patientDTO.getDateOfBirth()), new SearchCriteria("gender", ComparisonOperator.EQUALS, patientDTO.getGender()), new SearchCriteria("patientStatus", ComparisonOperator.EQUALS, WebConstant.PATIENT_STATUS_ACTIVE));
+        Pageable pageable = pageUtils.getPageable(index, size, sort);
+        Page<PatientEntity> patientEntityPage = patientRepository.findAll(specificationUtils.getSearchSpecifications(searchCriteria), pageable);
+        pageUtils.validatePage(patientEntityPage, PatientEntity.class);
+        return patientEntityPage.map(patientConverter::toResponse);
+    }
+
+    @Override
+    public void createPatientAndUser(PatientDTO patientDTO) {
+        String password = RandomUtils.generateStringFromEnableCharacter(WebConstant.ENABLE_CHARACTERS_PASSWORD, 6);
+        UserRegisterDTO userRegisterDTO = userConverter.toRegisterDTO(patientDTO);
+        userRegisterDTO.setPassword(password);
+        userRegisterService.register(userRegisterDTO);
+        emailService.sendAccountCreatedEmail(userRegisterDTO.getEmail(), password);
     }
 }

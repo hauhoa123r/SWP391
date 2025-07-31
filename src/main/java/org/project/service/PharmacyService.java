@@ -8,8 +8,6 @@ import org.project.model.dto.ProductDetailDTO;
 import org.project.model.dto.ProductUpdateDTO;
 import org.project.model.response.PharmacyListResponse;
 import org.project.projection.ProductViewProjection;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;

@@ -77,7 +77,7 @@ public class HomeController {
 
         // TODO: Sửa redirect cho các role USER
         Map<UserRole, String> roleToRedirect = Map.of(
-                UserRole.ADMIN, "redirect:/admin",
+                UserRole.ADMIN, "redirect:/admin/appointment",
                 UserRole.PATIENT, "redirect:/patient/showList"
         );
         if (roleToRedirect.containsKey(userEntity.getUserRole())) {

@@ -42,7 +42,7 @@ public class StaffEntity {
     private StaffEntity manager;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     private DepartmentEntity departmentEntity;
 
@@ -132,7 +132,19 @@ public class StaffEntity {
                 .orElse(0.0);
     }
 
+    public void setAverageRating(Double averageRating) {
+        // This method is not needed as the average rating is calculated dynamically
+        // from the reviewEntities. However, if you want to set it manually, you can
+        // implement logic here.
+    }
+
     public Integer getReviewCount() {
         return reviewEntities.size();
+    }
+
+    public void setReviewCount(Integer reviewCount) {
+        // This method is not needed as the review count is calculated dynamically
+        // from the reviewEntities. However, if you want to set it manually, you can
+        // implement logic here.
     }
 }

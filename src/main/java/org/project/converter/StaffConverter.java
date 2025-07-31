@@ -1,9 +1,13 @@
 package org.project.converter;
 
 import org.project.config.ModelMapperConfig;
+import org.project.entity.DepartmentEntity;
+import org.project.entity.HospitalEntity;
 import org.project.entity.StaffEntity;
+import org.project.entity.UserEntity;
 import org.project.exception.mapping.ErrorMappingException;
 import org.project.model.dto.MakeAppointmentDTO;
+import org.project.model.dto.StaffDTO;
 import org.project.model.response.StaffResponse;
 import org.project.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +23,8 @@ import java.util.stream.Collectors;
 @Component
 public class StaffConverter {
 
-    private ModelMapperConfig modelMapperConfig;
-
     private final StaffRepository staffRepository;
+    private ModelMapperConfig modelMapperConfig;
 
     public StaffConverter(StaffRepository staffRepository) {
         this.staffRepository = staffRepository;
@@ -62,6 +65,7 @@ public class StaffConverter {
         }
         return results;
     }
+
     public String toMakeAppointmentDTOString() {
         List<MakeAppointmentDTO> appointmentDTOs = toMakeAppointmentDTO();
         StringBuilder result = new StringBuilder();
@@ -91,5 +95,32 @@ public class StaffConverter {
                 .forEach(appointment -> result.append("  - ").append(appointment).append("\n"));
 
         return result.toString();
+    }
+
+    public StaffEntity toEntity(StaffDTO staffDTO) {
+        StaffEntity staffEntity = new StaffEntity();
+        staffEntity.setId(staffDTO.getId());
+        staffEntity.setFullName(staffDTO.getFullName());
+        staffEntity.setStaffRole(staffDTO.getStaffRole());
+        staffEntity.setStaffType(staffDTO.getStaffType());
+        staffEntity.setHireDate(staffDTO.getHireDate());
+
+        // Map phức tạp
+        if (staffDTO.getDepartmentEntityId() != null) {
+            DepartmentEntity departmentEntity = new DepartmentEntity();
+            departmentEntity.setId(staffDTO.getDepartmentEntityId());
+            staffEntity.setDepartmentEntity(departmentEntity);
+        }
+        if (staffDTO.getHospitalEntityId() != null) {
+            HospitalEntity hospitalEntity = new HospitalEntity();
+            hospitalEntity.setId(staffDTO.getHospitalEntityId());
+            staffEntity.setHospitalEntity(hospitalEntity);
+        }
+        if (staffDTO.getUserEntityId() != null) {
+            UserEntity userEntity = new UserEntity();
+            userEntity.setId(staffDTO.getUserEntityId());
+            staffEntity.setUserEntity(userEntity);
+        }
+        return staffEntity;
     }
 }

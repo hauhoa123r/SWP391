@@ -1,7 +1,7 @@
 package org.project.service;
 
-import org.project.model.dto.SupplierEntityDTO;
 import org.project.enums.operation.SortDirection;
+import org.project.model.dto.SupplierEntityDTO;
 import org.springframework.data.domain.Page;
 
 public interface SupplierEntityService {

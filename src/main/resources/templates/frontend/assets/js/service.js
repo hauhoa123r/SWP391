@@ -1,11 +1,11 @@
-import {ServiceDTO} from "/templates/frontend/assets/js/model/dto/ServiceDTO.js";
+import {ServiceDTO} from "/templates/shared/assets/js/model/dto/ServiceDTO.js";
 import {
     renderServiceResponseForList, ServiceResponse
-} from "/templates/frontend/assets/js/model/response/ServiceResponse.js";
-import {FetchingUtils} from "/templates/frontend/assets/js/utils/fetching-utils.js";
-import {FormDataUtils} from "/templates/frontend/assets/js/utils/form-data.js";
-import {Pagination} from "/templates/frontend/assets/js/utils/pagination.js";
-import {SearchParamsUtils} from "/templates/frontend/assets/js/utils/search-params-utils.js";
+} from "/templates/shared/assets/js/model/response/ServiceResponse.js";
+import {FetchingUtils} from "/templates/shared/assets/js/utils/fetching-utils.js";
+import {FormDataUtils} from "/templates/shared/assets/js/utils/form-data.js";
+import {Pagination} from "/templates/shared/assets/js/utils/pagination.js";
+import {SearchParamsUtils} from "/templates/shared/assets/js/utils/search-params-utils.js";
 
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
@@ -41,7 +41,7 @@ class RenderService {
         if ("currentPage" in data && "totalPages" in data) {
             const paginationElement = $("#service-pagination");
             const pagination = new Pagination(data.currentPage, data.totalPages);
-            paginationElement.innerHTML = pagination.toHtml();
+            paginationElement.innerHTML = pagination.render();
             pagination.setEvent(this.renderServiceList.bind(this));
         }
     }

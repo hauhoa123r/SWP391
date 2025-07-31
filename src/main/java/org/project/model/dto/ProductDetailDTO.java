@@ -1,14 +1,11 @@
 package org.project.model.dto;
 
 
+import lombok.Data;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.project.model.response.CategoryResponse;
-import org.project.model.response.ProductAdditionalInfoResponse;
-
-import lombok.Data;
 
 @Data
 public class ProductDetailDTO {

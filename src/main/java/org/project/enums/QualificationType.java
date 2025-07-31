@@ -1,6 +1,5 @@
 package org.project.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter

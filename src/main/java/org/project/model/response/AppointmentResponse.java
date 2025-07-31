@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.project.enums.AppointmentStatus;
 
 import java.sql.Timestamp;
 
@@ -19,6 +18,6 @@ public class AppointmentResponse {
     private ServiceResponse serviceEntity;
     private Timestamp startTime;
     private Integer durationMinutes;
-    //    private SchedulingCo schedulingCoordinatorEntity;
-    private AppointmentStatus appointmentStatus;
+    private SchedulingCoordinatorResponse schedulingCoordinatorEntity;
+    private String appointmentStatus;
 }

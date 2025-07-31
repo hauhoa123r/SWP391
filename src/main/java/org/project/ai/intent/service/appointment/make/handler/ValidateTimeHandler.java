@@ -1,7 +1,5 @@
 package org.project.ai.intent.service.appointment.make.handler;
 
-import org.project.ai.chat.AIService;
-import org.project.entity.AppointmentEntity;
 import org.project.model.dai.AppointmentDAI;
 import org.project.repository.AppointmentRepository;
 import org.springframework.stereotype.Component;
