@@ -93,6 +93,11 @@ if (offcanvas !== null && toggleelem1 !== null) {
             Popup Action
 -----------------------------------------------------------------------*/
 $(".delete-btn").on("click", function () {
+  // Skip if this is a cart header delete button (handled by cart-header.js)
+  if ($(this).closest('.delete-cart-form').length > 0) {
+    return;
+  }
+  
   const __this = $(this)
   Swal.fire({
     title: 'Are you sure?',

@@ -102,6 +102,49 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    public BigDecimal applyCouponToCart(String code, Long userId, HttpSession session) throws CouponException {
+        Optional<CouponEntity> optionalCoupon = couponRepository.findByCode(code.trim());
+        if (optionalCoupon.isEmpty()) {
+            throw new CouponException("Coupon code not found. Existing coupon (if any) is still applied.");
+        }
+
+        CouponEntity coupon = optionalCoupon.get();
+
+        // Check if coupon is expired
+        java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+        if (coupon.getExpirationDate() != null && coupon.getExpirationDate().before(currentDate)) {
+            throw new CouponException("Coupon code has expired. Existing coupon (if any) is still applied.");
+        }
+
+        BigDecimal cartTotal = cartService.calculateTotal(userId);
+
+        if (coupon.getMinimumOrderAmount() != null && cartTotal.compareTo(coupon.getMinimumOrderAmount()) < 0) {
+            throw new CouponException("Order total does not meet the minimum amount.");
+        }
+
+        // Check if coupon is active - tạm thởi bỏ kiểm tra này
+        // if (coupon.isEnabled() == null || !coupon.isEnabled()) {
+        //     throw new CouponException("Coupon code is not active. Existing coupon (if any) is still applied.");
+        // }
+
+        // Check if user has already used this coupon - tạm thởi bỏ kiểm tra này
+        // if (coupon.getMaxUsesPerUser() != null && coupon.getMaxUsesPerUser() == 1) {
+        //     boolean hasUsed = userCouponService.hasUserUsedCoupon(userId, coupon.getId());
+        //     if (hasUsed) {
+        //         throw new CouponException("You have already used this coupon. Existing coupon (if any) is still applied.");
+        //     }
+        // }
+
+        BigDecimal discountedTotal= calculateDiscountedTotal(cartTotal,coupon);
+
+
+        session.setAttribute("appliedCoupon", coupon);
+        session.setAttribute("discountedTotal", discountedTotal);
+
+        return discountedTotal;
+    }
+
+    @Override
     public Page<CouponDTO> findExpiredCoupons(int page, int size, String sortBy, String sortDir) {
         Sort sort = createSort(sortBy, sortDir);
         Pageable pageable = PageRequest.of(page, size, sort);

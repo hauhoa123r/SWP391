@@ -1,95 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <meta charset="UTF-8">
 </head>
 <body>
 <header th:fragment="header">
-    <div class="top-header bg-soft-light d-none d-md-block">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-7">
-                    <ul
-                            class="top-header-left list-inline d-flex align-items-center gap-3 m-0">
-                        <li class="text-body">
-                            <a class="text-body d-flex align-items-center"
-                               href="tel:480-555-0103">
-                                <svg class="icon-18 text-dark me-1" fill="none"
-                                     viewBox="0 0 24 24" width="32"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path clip-rule="evenodd"
-                                          d="M11.5317 12.4724C15.5208 16.4604 16.4258 11.8467 18.9656 14.3848C21.4143 16.8328 22.8216 17.3232 19.7192 20.4247C19.3306 20.737 16.8616 24.4943 8.1846 15.8197C-0.493478 7.144 3.26158 4.67244 3.57397 4.28395C6.68387 1.17385 7.16586 2.58938 9.61449 5.03733C12.1544 7.5765 7.54266 8.48441 11.5317 12.4724Z"
-                                          fill-rule="evenodd"
-                                          stroke="currentColor" stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                          stroke-width="1.5"></path>
-                                </svg>
-                                <span>+ (480) 555-0103</span>
-                            </a>
-                        </li>
-                        <li class="text-body d-flex align-items-center">
-                            <svg class="icon-18 text-dark me-1" fill="none"
-                                 viewBox="0 0 24 24" width="32"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path clip-rule="evenodd"
-                                      d="M14.5 10.5005C14.5 9.11924 13.3808 8 12.0005 8C10.6192 8 9.5 9.11924 9.5 10.5005C9.5 11.8808 10.6192 13 12.0005 13C13.3808 13 14.5 11.8808 14.5 10.5005Z"
-                                      fill-rule="evenodd"
-                                      stroke="currentColor" stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="1.5"></path>
-                                <path clip-rule="evenodd"
-                                      d="M11.9995 21C10.801 21 4.5 15.8984 4.5 10.5633C4.5 6.38664 7.8571 3 11.9995 3C16.1419 3 19.5 6.38664 19.5 10.5633C19.5 15.8984 13.198 21 11.9995 21Z"
-                                      fill-rule="evenodd"
-                                      stroke="currentColor" stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="1.5"></path>
-                            </svg>
-                            <span>1234 North Avenue Luke Lane</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-6 col-md-5 text-md-end">
-                    <ul
-                            class="iq-social list-inline d-flex align-items-center justify-content-end gap-3 m-0">
-                        <li class="label text-body fw-500">Follow us :</li>
-                        <li>
-                            <a href="https://facebook.com/">
-                                <svg class="base-circle animated" height="38" viewBox="0 0 50 50"
-                                     width="38">
-                                    <circle class="c1" cx="25" cy="25" fill="none"
-                                            r="23" stroke="#6e7990"
-                                            stroke-width="1"></circle>
-                                </svg>
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://x.com/">
-                                <svg class="base-circle animated" height="38" viewBox="0 0 50 50"
-                                     width="38">
-                                    <circle class="c1" cx="25" cy="25" fill="none"
-                                            r="23" stroke="#6e7990"
-                                            stroke-width="1"></circle>
-                                </svg>
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.google.com/">
-                                <svg class="base-circle animated" height="38" viewBox="0 0 50 50"
-                                     width="38">
-                                    <circle class="c1" cx="25" cy="25" fill="none"
-                                            r="23" stroke="#6e7990"
-                                            stroke-width="1"></circle>
-                                </svg>
-                                <i class="fab fa-google"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
     <nav
             class="nav navbar navbar-expand-xl navbar-light iq-navbar header-hover-menu py-xl-0">
         <div class="container-fluid navbar-inner">
@@ -167,136 +85,14 @@
                                         <span class="item-name">Dịch vụ</span>
                                     </a>
                                 </li>
-                                <!-- Phần Shop giữ nguyên như cũ -->
                                 <li class="nav-item">
-                                    <a aria-controls="shopPage" aria-expanded="false" class="nav-link"
-                                       data-bs-toggle="collapse" href="#shopPage" role="button">
-                                        <span class="item-name">Shop</span>
-                                        <span class="menu-icon">
-                <svg fill="none" height="10" viewBox="0 0 8 8" width="10"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 0.5C4.27614 0.5 4.5 0.723858 4.5 1V4H7.5C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5H4.5V8C4.5 8.27614 4.27614 8.5 4 8.5C3.72386 8.5 3.5 8.27614 3.5 8V5H0.5C0.223858 5 0 4.77614 0 4.5C0 4.22386 0.223858 4 0.5 4H3.5V1C3.5 0.723858 3.72386 0.5 4 0.5Z"
-                          fill="currentColor"/>
-                </svg>
-            </span>
+                                    <a class="nav-link" th:classappend="${navActive} == 7 ? 'active' : ''"
+                                       th:href="@{/shop}">
+                                        <span class="item-name">Cửa hàng</span>
                                     </a>
-                                    <ul class="sub-nav collapse list-unstyled" id="shopPage">
-                                        <li class="nav-item">
-                                            <a class="nav-link" th:href="@{/frontend/shop.html}">Shop</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a aria-controls="productSidebar" aria-expanded="false" class="nav-link"
-                                               data-bs-toggle="collapse" href="#productSidebar"
-                                               role="button">
-                                                <span class="item-name">Product Sidebar</span>
-                                                <span class="menu-icon">
-                        <svg class="icon-32" fill="none" viewBox="0 0 24 24" width="32"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                  stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="1.5"></path>
-                        </svg>
-                    </span>
-                                            </a>
-                                            <ul class="sub-nav collapse list-unstyled" id="productSidebar">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/shop-left-sidebar.html}">
-                                                        shop left sidebar
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/shop-right-sidebar.html}">
-                                                        shop right sidebar
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/shop-no-sidebar.html}">
-                                                        shop no sidebar
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a aria-controls="sPages" aria-expanded="false" class="nav-link"
-                                               data-bs-toggle="collapse" href="#sPages" role="button">
-                                                <span class="item-name">Shop Pages</span>
-                                                <span class="menu-icon">
-                        <svg class="icon-32" fill="none" viewBox="0 0 24 24" width="32"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                  stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="1.5"></path>
-                        </svg>
-                    </span>
-                                            </a>
-                                            <ul class="sub-nav collapse list-unstyled" id="sPages">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/cart.html}">
-                                                        cart
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/checkout.html}">
-                                                        checkout
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/wishlist.html}">
-                                                        wishlist
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/my-account.html}">
-                                                        my account
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/track-order.html}">
-                                                        track order
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a aria-controls="proType" aria-expanded="false" class="nav-link"
-                                               data-bs-toggle="collapse" href="#proType" role="button">
-                                                <span class="item-name">Product Type</span>
-                                                <span class="menu-icon">
-                        <svg class="icon-32" fill="none" viewBox="0 0 24 24" width="32"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                  stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="1.5"></path>
-                        </svg>
-                    </span>
-                                            </a>
-                                            <ul class="sub-nav collapse list-unstyled" id="proType">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/product-standard.html}">
-                                                        product standard
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/product-new.html}">
-                                                        product new
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/frontend/product-sale.html}">
-                                                        product sale
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
                                 </li>
                             </ul>
                         </div>
-                        <div th:if="${logoutSuccess}" class="alert alert-success text-center">
-                            <p th:text="${logoutSuccess}"></p>
-                        </div>
-
-                        <!-- container-fluid.// -->
                     </nav>
                     <!-- Sidebar Menu End -->            </div>
                 <div class="right-panel">
@@ -402,123 +198,52 @@
                                 <div class="p-3 sub-drop dropdown-menu dropdown-menu-end">
                                     <div class="m-0 shadow-none card">
                                         <div class="card-body p-0 max-17 scroll-thin">
-                                            <div class="iq-sub-card" data-item="list">
+                                            <div class="iq-sub-card" data-item="list" th:each="cartItem : ${headerCartItems}">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex align-items-center">
-                                                        <img alt=""
-                                                             class="avatar-40 rounded"
-                                                             loading="lazy"
-                                                             th:src="@{/frontend/assets/images/shop/product-1.webp}"/>
+                                                        <img alt="" class="avatar-40 rounded" loading="lazy"
+                                                             th:src="${cartItem.productEntity.imageUrl}" />
                                                         <div class="ms-3 flex-grow-1">
-                                                            <h6 class="mb-0 ">Electric Toothbrush</h6>
+                                                            <h6 class="mb-0" th:text="${cartItem.productEntity.name}"></h6>
                                                             <div class="d-flex justify-content-between align-items-center">
-                                                                <p class="mb-0"><span>1</span> *
-                                                                    <span>$123.00</span></p>
+                                                                <p class="mb-0">
+                                                                    <span th:text="${cartItem.quantity}"></span> *
+                                                                    <span th:text="${#numbers.formatDecimal(cartItem.productEntity.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span>
+                                                                </p>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="text-primary"><i
-                                                            class="far fa-times-circle delete-btn"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="iq-sub-card" data-item="list">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex align-items-center">
-                                                        <img alt=""
-                                                             class="avatar-40 rounded"
-                                                             loading="lazy"
-                                                             th:src="@{/frontend/assets/images/shop/product-2.webp}"/>
-                                                        <div class="ms-3 flex-grow-1">
-                                                            <h6 class="mb-0 ">Medical Box</h6>
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <p class="mb-0"><span>1</span> *
-                                                                    <span>$92.00</span></p>
-                                                            </div>
-                                                        </div>
+                                                    <div class="text-primary">
+                                                        <form th:action="@{/cart/delete-ajax}" method="post" class="d-inline delete-cart-form" 
+                                                              th:data-product-id="${cartItem.productEntity.id}">
+                                                            <input type="hidden" name="productId" th:value="${cartItem.productEntity.id}" />
+                                                            <button type="button" class="btn btn-link p-0 border-0 bg-transparent delete-btn" 
+                                                                    th:data-product-id="${cartItem.productEntity.id}">
+                                                                <i class="far fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
                                                     </div>
-                                                    <div class="text-primary"><i
-                                                            class="far fa-times-circle delete-btn"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="iq-sub-card" data-item="list">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex align-items-center">
-                                                        <img alt=""
-                                                             class="avatar-40 rounded"
-                                                             loading="lazy"
-                                                             th:src="@{/frontend/assets/images/shop/product-3.webp}"/>
-                                                        <div class="ms-3 flex-grow-1">
-                                                            <h6 class="mb-0 ">Hand Sanitizer Bottle</h6>
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <p class="mb-0"><span>1</span> *
-                                                                    <span>$90.00</span></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-primary"><i
-                                                            class="far fa-times-circle delete-btn"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="iq-sub-card" data-item="list">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex align-items-center">
-                                                        <img alt=""
-                                                             class="avatar-40 rounded"
-                                                             loading="lazy"
-                                                             th:src="@{/frontend/assets/images/shop/product-4.webp}"/>
-                                                        <div class="ms-3 flex-grow-1">
-                                                            <h6 class="mb-0 ">Wheel Chair</h6>
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <p class="mb-0"><span>1</span> *
-                                                                    <span>$89.00</span></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-primary"><i
-                                                            class="far fa-times-circle delete-btn"></i></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="card-footer pt-3 px-0 pb-0 text-center">
                                             <div class="d-flex align-items-center justify-content-between ">
                                                 <strong>Subtotal:</strong>
-                                                <span>$64.00</span>
+                                                <span id="header-cart-total" th:text="${#numbers.formatDecimal(cartTotal, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between my-3 pt-3 border-top">
                                                 <div class="cart-menu">
                                                     <div class="iq-btn-container">
-                                                        <a class="iq-button text-capitalize"
-                                                           th:href="@{/frontend/cart.html}">
-                                                              <span class="iq-btn-text-holder position-relative">View
-                                                                  Cart</span>
-                                                            <span class="iq-btn-icon-holder">
-                                                                  <svg fill="none" height="10"
-                                                                       viewBox="0 0 8 8" width="10"
-                                                                       xmlns="http://www.w3.org/2000/svg">
-                                                                      <path
-                                                                              d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                                              fill="currentColor"></path>
-                                                                  </svg>
-                                                              </span>
+                                                        <a class="iq-button text-capitalize" th:href="@{/cart}">
+                                                            <span class="iq-btn-text-holder position-relative">Xem giỏ hàng</span>
                                                         </a>
                                                     </div>
                                                 </div>
                                                 <div class="button-primary">
                                                     <div class="iq-btn-container">
-                                                        <a class="iq-button text-capitalize"
-                                                           th:href="@{/frontend/checkout.html}">
-                                                            <span class="iq-btn-text-holder position-relative">Checkout</span>
-                                                            <span class="iq-btn-icon-holder">
-                                                                  <svg fill="none" height="10"
-                                                                       viewBox="0 0 8 8" width="10"
-                                                                       xmlns="http://www.w3.org/2000/svg">
-                                                                      <path
-                                                                              d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                                              fill="currentColor"></path>
-                                                                  </svg>
-                                                              </span>
-                                                        </a>
-                                                    </div>
+                                                        <a class="iq-button text-capitalize" th:href="@{/checkout}">
+                                                            <span class="iq-btn-text-holder position-relative">Thanh toán</span>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -568,48 +293,33 @@
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-user">
-                                    <li><a class="dropdown-item border-bottom" th:href="@{/auth-view/login}">Đăng nhập</a></li>
-                                    <li><a class="dropdown-item border-bottom" th:href="@{/auth-view/register}">Đăng ký</a></li>
-                                    <li><a class="dropdown-item text-danger" th:href="@{/auth-view/logout}">Đăng xuất</a></li>
+                                    <th:block sec:authorize="isAnonymous()">
+                                        <li><a class="dropdown-item border-bottom" th:href="@{/login}">Đăng
+                                            nhập</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/register}">Đăng
+                                            ký</a></li>
+                                    </th:block>
+                                    <th:block sec:authorize="isAuthenticated()">
+                                        <li><a class="dropdown-item border-bottom"
+                                               th:href="@{/home}">Trang quản lý</a></li>
+                                        <li><a class="dropdown-item"
+                                               th:href="@{/logout}">Đăng
+                                            xuất</a></li>
+                                    </th:block>
                                 </ul>
                             </li>
                             <li>
                                 <div class="iq-btn-container">
-
-                                    <a th:if="${isLoggedIn}" class="iq-button text-capitalize" th:href="@{/patient/appointment}">
+                                    <a class="iq-button text-capitalize" th:href="@{/patient/appointment}">
                                         <span class="iq-btn-text-holder position-relative">Đặt lịch</span>
-                                        <span class="iq-btn-icon-holder"><svg fill="none" height="10" viewBox="0 0 8 8" width="10" xmlns="http://www.w3.org/2000/svg">
+                                        <span class="iq-btn-icon-holder"><svg fill="none" height="10" viewBox="0 0 8 8"
+                                                                              width="10"
+                                                                              xmlns="http://www.w3.org/2000/svg">
                                             <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                    fill="currentColor"></path>
+                                                  fill="currentColor"></path>
                                         </svg>
                                          </span>
                                     </a>
-
-
-                                    <a th:if="${!isLoggedIn}" class="iq-button text-capitalize"
-                                       th:href="@{'/auth-view/login?(redirectTo=/patient/appointment)'}">
-                                        <span class="iq-btn-text-holder position-relative">Đặt lịch</span>
-                                        <span class="iq-btn-icon-holder">
-                                            <svg fill="none" height="10" viewBox="0 0 8 8" width="10" xmlns="http://www.w3.org/2000/svg">
-                                                 <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
-                                                 fill="currentColor"></path>
-                                             </svg>
-                                        </span>
-                                    </a>
-
-                                </div>
-                            </li>
-                            <li class="ms-3">
-                                <div aria-controls="right-panel-toggle" class="cursor-pointer"
-                                     data-bs-target="#right-panel-toggle"
-                                     data-bs-toggle="offcanvas">
-                                    <svg fill="none" height="22"
-                                         viewBox="0 0 28 22" width="28"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0 0H24V2H0V0Z" fill="#171C26"/>
-                                        <path d="M4 10H28V12H4V10Z" fill="#171C26"/>
-                                        <path d="M0 20H24V22H0V20Z" fill="#171C26"/>
-                                    </svg>
                                 </div>
                             </li>
                         </ul>

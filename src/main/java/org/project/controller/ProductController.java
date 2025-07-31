@@ -1,6 +1,8 @@
 package org.project.controller;
 
+import org.project.entity.CartItemEntity;
 import org.project.model.dto.ProductDetailDTO;
+import org.project.service.CartService;
 import org.project.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,6 +51,8 @@ public class ProductController {
         }
         // add product attribute
         model.addAttribute("product", detailDTO.getProduct());
+        // add average rating
+        model.addAttribute("averageRating",  detailDTO.getAverageRating());
         // add additional info
         model.addAttribute("additionalInfo", detailDTO.getAdditionalInfos());
         // add categories

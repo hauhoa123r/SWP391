@@ -57,7 +57,7 @@ public class CheckoutFormController {
         checkoutForm.setFirstName(patientResponse.getFullName().split(" ")[0]);
         checkoutForm.setLastName(patientResponse.getFullName().split(" ")[1]);
         checkoutForm.setEmail(patientResponse.getEmail());
-        checkoutForm.setPhone(patientResponse.getPhoneNumber());
+        checkoutForm.setPhoneNumber(patientResponse.getPhoneNumber());
 
         // Lấy danh sách cart items từ session hoặc service
         List<CartItemEntity> cartItems = cartService.getCart(user.getId());

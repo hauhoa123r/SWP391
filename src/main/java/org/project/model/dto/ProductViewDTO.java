@@ -19,7 +19,7 @@ public class ProductViewDTO {
 	private Label label; 
 	private String categoryNames; 
 	private String tagNames;
-	private String additionalInfos; 
+	private String additionalInfos;
 	
 	public ProductViewDTO() {
 	} 

@@ -9,4 +9,5 @@ import org.project.model.dto.OrderSummaryDTO;
 public interface OrderService {
     OrderEntity createOrder(CheckoutFormDTO checkoutFormDTO, Long userId);
     OrderSummaryDTO mapToSummaryDTO(OrderEntity order, Long userId);
+    Long placeOrder(CheckoutFormDTO checkoutFormDTO, String username);
 }

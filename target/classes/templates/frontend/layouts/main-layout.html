@@ -35,6 +35,8 @@
     <!-- Flatpickr css -->
     <link
             rel="stylesheet" th:href="@{/frontend/assets/vendor/flatpickr/dist/flatpickr.min.css}"/>
+    <link rel="stylesheet" th:href="@{/frontend/assets/vendor/sweetalert2/dist/sweetalert2.min.css}"/>
+    <link rel="stylesheet" th:href="@{/frontend/assets/vendor/noUiSilder/style/nouislider.min.css}">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
@@ -117,6 +119,8 @@
 <script defer th:src="@{/frontend/assets/js/kivicare.js?v=1.4.1}"></script>
 <script defer
         th:src="@{/frontend/assets/js/kivicare-advance.js?v=1.4.1}"></script>
+<!-- Cart Header Script -->
+<script defer th:src="@{/frontend/assets/js/cart-header.js?v=1.4.1}"></script>
 <!-- Kivicare Pages Script -->
 <script defer th:src="@{/frontend/assets/js/slider.js}"></script>
 <script defer th:src="@{/frontend/assets/js/scroll-text.js}"></script>
@@ -124,7 +128,25 @@
 <script
         th:src="@{/frontend/assets/vendor/flatpickr/dist/flatpickr.min.js}"></script>
 <script defer th:src="@{/frontend/assets/js/plugins/flatpickr.js}"></script>
+<script async th:src="@{/frontend/assets/vendor/sweetalert2/dist/sweetalert2.min.js}"></script>
+<script defer th:src="@{/frontend/assets/js/plugins/sweet-alert.js}"></script>
+<script defer th:src="@{/frontend/assets/vendor/noUiSilder/script/nouislider.min.js}"></script>
+<script defer th:src="@{/frontend/assets/js/plugins/select2.js}"></script>
+<script th:inline="javascript" type="module">
+    import toast from "/templates/frontend/assets/js/plugins/toast.js";
 
+    document.addEventListener("DOMContentLoaded", () => {
+        const toastType = /*[[${toastType}]]*/ null;
+        const toastMessage = /*[[${toastMessage}]]*/ null;
+        if (toastType && toastMessage) {
+            toast[toastType](toastMessage, {
+                duration: 3000,
+                icon: true,
+                progress: toastType === "success"
+            });
+        }
+    });
+</script>
 <th:block layout:fragment="custom-js"></th:block>
 </body>
 </html>
