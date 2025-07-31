@@ -3,10 +3,12 @@ package org.project.controller;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.project.entity.CartItemEntity;
 import org.project.enums.ProductSortType;
 import org.project.model.dto.ProductDetailDTO;
 import org.project.model.response.CategoryListResponse;
 import org.project.model.response.PharmacyResponse;
+import org.project.service.CartService;
 import org.project.service.CategoryService;
 import org.project.service.ProductService;
 import org.project.service.WishlistService;
@@ -40,8 +42,10 @@ public class ShopController {
     private final CategoryService categoryService;
     private final ProductTagRepository productTagRepository;
     private final WishlistService wishlistService;
-
+    private final CartService  cartService;
     private static final String PREVIOUS_SEARCH_KEY = "previousSearch";
+    //hard code id
+    private final Long userId = 4l;
 
     /**
      * Main shop page with filtering and searching capabilities
@@ -61,7 +65,7 @@ public class ShopController {
             @RequestParam(value = "search", required = false) String searchQuery,
             @RequestParam(value = "sort", required = false) ProductSortType sortType,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "40") int size,
+            @RequestParam(defaultValue = "18") int size,
             @RequestParam(value = "categoryId", required = false) Long categoryId,
             @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
             @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
@@ -116,7 +120,12 @@ public class ShopController {
         mv.addObject("maxPrice", maxPrice);
         mv.addObject("selectedTag", tagProcessed);
         mv.addObject("selectedLabel", label);
-        
+
+        List<CartItemEntity> cartItems = cartService.getCart(userId);
+        mv.addObject("cartItems", cartItems);
+        mv.addObject("total", cartService.calculateTotal(userId));
+        mv.addObject("size", cartItems.size());
+
         log.debug("Shop page prepared with {} products", productPage.getNumberOfElements());
         return mv;
     }
@@ -188,123 +197,6 @@ public class ShopController {
         return redirectUrl.toString();
     }
 
-    /**
-     * Product home page displaying top products
-     * @return ModelAndView for product home page
-     */
-//    @GetMapping("/product-home")
-//    public ModelAndView productHome() {
-//        log.info("Loading product home page");
-//
-//        ModelAndView mv = new ModelAndView("product-home");
-//
-//        try {
-//            // Fetch top 10 products for the home page
-//            List<PharmacyResponse> products = productService.findTop10Products();
-//
-//            // Validate returned list
-//            if (products == null) {
-//                log.warn("findTop10Products returned null, using empty list");
-//                products = Collections.emptyList();
-//            } else if (products.isEmpty()) {
-//                log.debug("No products found, returning empty list");
-//            } else {
-//                log.debug("Loaded {} products for home page", products.size());
-//            }
-//
-//            // Add products to model
-//            mv.addObject("products", products);
-//
-//        } catch (Exception e) {
-//            log.error("Error fetching top 10 products: {}", e.getMessage(), e);
-//            // Return empty list on error to avoid rendering issues
-//            mv.addObject("products", Collections.emptyList());
-//        }
-//
-//        return mv;
-//    }
-
-    // ==================== Other page mappings ====================
-
-    /**
-     * Checkout page
-     * @return ModelAndView for checkout page
-     */
-    @GetMapping("/checkout")
-    public ModelAndView checkout() {
-        log.debug("Accessing checkout page");
-        return new ModelAndView("checkout");
-    }
-
-    /**
-     * User account page
-     * @return ModelAndView for account page
-     */
-    @GetMapping("/my-account")
-    public ModelAndView myAccount() {
-        log.debug("Accessing my account page");
-        return new ModelAndView("my-account");
-    }
-
-    /**
-     * Order tracking page
-     * @return ModelAndView for order tracking page
-     */
-    @GetMapping("/track-order")
-    public ModelAndView trackOrder() {
-        log.debug("Accessing track order page");
-        return new ModelAndView("track-order");
-    }
-
-    /**
-     * New products page
-     * @return ModelAndView for new products page
-     */
-    @GetMapping("/product-new")
-    public ModelAndView productNew() {
-        log.debug("Accessing new products page");
-        return new ModelAndView("product-new");
-    }
-
-    /**
-     * Product sale page
-     * @return ModelAndView for product sale page
-     */
-    @GetMapping("/product-sale")
-    public ModelAndView productSale() {
-        log.debug("Accessing product sale page");
-        return new ModelAndView("product-sale");
-    }
-
-    /**
-     * Shop page with left sidebar layout
-     * @return ModelAndView for shop page with left sidebar
-     */
-    @GetMapping("/shop-left-sidebar")
-    public ModelAndView shopLeftSidebar() {
-        log.debug("Accessing shop with left sidebar");
-        return new ModelAndView("shop-left-sidebar");
-    }
-
-    /**
-     * Shop page with right sidebar layout
-     * @return ModelAndView for shop page with right sidebar
-     */
-    @GetMapping("/shop-right-sidebar")
-    public ModelAndView shopRightSidebar() {
-        log.debug("Accessing shop with right sidebar");
-        return new ModelAndView("shop-right-sidebar");
-    }
-
-    /**
-     * Shop page without sidebar layout
-     * @return ModelAndView for shop page without sidebar
-     */
-    @GetMapping("/shop-no-sidebar")
-    public ModelAndView shopNoSidebar() {
-        log.debug("Accessing shop with no sidebar");
-        return new ModelAndView("shop-no-sidebar");
-    }
 
     // ==================== Helper methods ====================
     

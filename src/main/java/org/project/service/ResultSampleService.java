@@ -1,7 +1,6 @@
 package org.project.service;
 
 import org.project.entity.ResultEntity;
-import org.project.model.dto.ApproveResultDTO;
 import org.project.model.dto.ResultTestDTO;
 import org.project.model.response.ResultAppointmentResponse;
 import org.springframework.data.domain.Page;

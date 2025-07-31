@@ -1,6 +1,7 @@
 package org.project.api;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.project.entity.UserEntity;
 import org.project.model.dto.PatientDTO;
 import org.project.model.response.PatientResponse;
@@ -77,5 +78,30 @@ public class PatientAPI {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Internal server error: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/api/admin/patient/page/{pageIndex}")
+    public Map<String, Object> getAllPatientsForAdmin(@PathVariable int pageIndex, @ModelAttribute PatientDTO patientDTO) {
+        Page<PatientResponse> patientResponsePage = patientService.getPatients(pageIndex, 6, patientDTO);
+        return Map.of(
+                "items", patientResponsePage.getContent(),
+                "currentPage", patientResponsePage.getNumber(),
+                "totalPages", patientResponsePage.getTotalPages()
+        );
+    }
+
+    @PostMapping("/api/admin/patient")
+    public void addPatientForAdmin(@RequestBody @Valid PatientDTO patientDTO) {
+        patientService.createPatientAndUser(patientDTO);
+    }
+
+    @PutMapping("/api/admin/patient/{patientId}")
+    public void updatePatientForAdmin(@PathVariable Long patientId, @RequestBody @Valid PatientDTO patientDTO) {
+        patientService.updatePatient(patientId, patientDTO);
+    }
+
+    @DeleteMapping("/api/admin/patient/{patientId}")
+    public void deletePatientForAdmin(@PathVariable Long patientId) {
+        patientService.deletePatient(patientId);
     }
 }

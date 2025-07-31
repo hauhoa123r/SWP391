@@ -5,11 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.project.enums.ReviewStatus;
 import org.project.model.dto.ReviewDTO;
 import org.project.model.dto.ReviewReplyDTO;
+import org.project.model.response.ReviewResponse;
 import org.project.service.ReviewService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
@@ -36,12 +40,15 @@ public class ReviewController {
         log.info("Fetching reviews with page={}, size={}, search={}, rating={}, status={}, sort={}, direction={}", 
                 page, size, search, rating, status, sort, direction);
         
-        Page<ReviewDTO> reviewPage = reviewService.findReviews(page, size, search, rating, status, sort, direction);
+        Page<ReviewResponse> reviewPage = reviewService.findReviews(page, size, search, rating, status, sort, direction);
         
         model.addAttribute("reviews", reviewPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", reviewPage.getTotalPages());
         model.addAttribute("totalItems", reviewPage.getTotalElements());
+        
+        // Add current user for forms
+        model.addAttribute("currentUser", getCurrentUser());
         
         return "templates_storage/product-review";
     }
@@ -133,5 +140,20 @@ public class ReviewController {
         }
         
         return "redirect:/review-detail/" + id;
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 }

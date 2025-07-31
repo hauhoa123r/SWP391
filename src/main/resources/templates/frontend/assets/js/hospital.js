@@ -41,7 +41,7 @@ class RenderHospital {
         paginationElement.innerHTML = ""; // Clear previous content
         if (!data || !("currentPage" in data) || !("totalPages" in data)) return;
         const pagination = new Pagination(data.currentPage, data.totalPages);
-        paginationElement.innerHTML = pagination.toHtml();
+        paginationElement.innerHTML = pagination.render();
         pagination.setEvent(this.fetchHospitals.bind(this));
     }
 

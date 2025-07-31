@@ -41,7 +41,7 @@ class RenderService {
         if ("currentPage" in data && "totalPages" in data) {
             const paginationElement = $("#service-pagination");
             const pagination = new Pagination(data.currentPage, data.totalPages);
-            paginationElement.innerHTML = pagination.toHtml();
+            paginationElement.innerHTML = pagination.render();
             pagination.setEvent(this.renderServiceList.bind(this));
         }
     }

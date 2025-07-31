@@ -1,20 +1,19 @@
 package org.project.model.dto;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Set;
-
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import org.project.enums.Label;
 import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
 import org.project.model.response.ProductAdditionalInfoResponse;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 @Data
 public class ProductUpdateDTO {

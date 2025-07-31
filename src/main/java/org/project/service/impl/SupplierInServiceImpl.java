@@ -8,7 +8,6 @@ import org.project.entity.SupplierTransactionItemEntityId;
 import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
-import org.project.enums.ProductType;
 import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierRequestItemDTO;
 import org.project.repository.InventoryManagerRepository;
@@ -19,38 +18,45 @@ import org.project.repository.SupplierTransactionRepository;
 import org.project.service.SupplierInService;
 import org.project.service.base.AbstractBaseTransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.Predicate;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Root;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.stream.Collectors; 
 
 @Service
 public class SupplierInServiceImpl extends AbstractBaseTransactionServiceImpl<SupplierInDTO> implements SupplierInService {
 
     @Autowired
     public SupplierInServiceImpl(
-        SupplierTransactionRepository supplierTransactionRepository,
+        SupplierTransactionRepository transactionRepository,
         SupplierEntityRepository supplierEntityRepository,
         InventoryManagerRepository inventoryManagerRepository,
         ProductRepository productRepository,
         SupplierTransactionItemRepository supplierTransactionItemRepository) {
-        super(supplierTransactionRepository, supplierEntityRepository, inventoryManagerRepository,
+        super(transactionRepository, supplierEntityRepository, inventoryManagerRepository,
               productRepository, supplierTransactionItemRepository, SupplierTransactionType.STOCK_IN);
     }
 
     @Override
-    public Page<SupplierInDTO> getFilteredSupplierInsForStockIn(int page, int size, String status, String search, 
-                                                            String type, List<SupplierTransactionStatus> allowedStatuses) {
+    public Page<SupplierInDTO> getFilteredSupplierInsForStockIn(int page, int size, String status, String search,
+                                                                String type, List<SupplierTransactionStatus> allowedStatuses) {
         return getFilteredTransactions(page, size, search, status, allowedStatuses, SupplierTransactionType.STOCK_IN);
     }
     
@@ -93,6 +99,74 @@ public class SupplierInServiceImpl extends AbstractBaseTransactionServiceImpl<Su
                 .collect(Collectors.toList());
         
         return new PageImpl<>(dtos, pageRequest, transactions.getTotalElements());
+    }
+
+    @Override
+    public Page<SupplierInDTO> getFilteredSupplierInsForStockIn(Pageable pageable, String status, 
+            String search, String type, List<SupplierTransactionStatus> allowedStatuses) {
+        
+        Specification<SupplierTransactionsEntity> spec = buildStockInFilterSpec(status, search, type, allowedStatuses);
+        Page<SupplierTransactionsEntity> entityPage = transactionRepository.findAll(spec, pageable);
+        return entityPage.map(this::convertToDTO);
+    }
+    
+    private Specification<SupplierTransactionsEntity> buildStockInFilterSpec(String status, String search, 
+            String type, List<SupplierTransactionStatus> allowedStatuses) {
+        
+        return (root, query, cb) -> {
+            List<jakarta.persistence.criteria.Predicate> predicates = new ArrayList<>();
+            
+            // Always filter by STOCK_IN transaction type
+            predicates.add(cb.equal(root.get("transactionType"), SupplierTransactionType.STOCK_IN));
+            
+            // Add status filter
+            addStatusFilter(predicates, root, cb, status, allowedStatuses);
+            
+            // Add search filter
+            addSearchFilter(predicates, root, cb, search);
+            
+            // Add type filter if needed
+            addTypeFilter(predicates, root, cb, type);
+            
+            return cb.and(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
+        };
+    }
+    
+    private void addStatusFilter(List<jakarta.persistence.criteria.Predicate> predicates, 
+            Root<SupplierTransactionsEntity> root, CriteriaBuilder cb, 
+            String status, List<SupplierTransactionStatus> allowedStatuses) {
+        
+        if (status != null && !status.isEmpty()) {
+            try {
+                SupplierTransactionStatus statusEnum = SupplierTransactionStatus.valueOf(status);
+                predicates.add(cb.equal(root.get("status"), statusEnum));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid status value: " + status + ", ignoring filter");
+            }
+        } else if (allowedStatuses != null && !allowedStatuses.isEmpty()) {
+            predicates.add(root.get("status").in(allowedStatuses));
+        }
+    }
+    
+    private void addSearchFilter(List<jakarta.persistence.criteria.Predicate> predicates, 
+            Root<SupplierTransactionsEntity> root, CriteriaBuilder cb, String search) {
+        
+        if (search != null && !search.isEmpty()) {
+            String searchPattern = "%" + search.toLowerCase() + "%";
+            predicates.add(cb.or(
+                cb.like(cb.lower(root.get("invoiceNumber")), searchPattern),
+                cb.like(cb.lower(root.get("supplierEntity").get("name")), searchPattern)
+            ));
+        }
+    }
+    
+    private void addTypeFilter(List<jakarta.persistence.criteria.Predicate> predicates, 
+            Root<SupplierTransactionsEntity> root, CriteriaBuilder cb, String type) {
+        
+        if (type != null && !type.isEmpty()) {
+            // TODO: Implement type filter logic when requirements are clarified
+            System.out.println("Type filter '" + type + "' not implemented yet");
+        }
     }
 
     @Override
@@ -222,7 +296,7 @@ public class SupplierInServiceImpl extends AbstractBaseTransactionServiceImpl<Su
     }
 
     @Override
-    protected SupplierInDTO convertToDTO(SupplierTransactionsEntity entity) {
+    public SupplierInDTO convertToDTO(SupplierTransactionsEntity entity) {
         SupplierInDTO dto = new SupplierInDTO();
         
         dto.setId(entity.getId());
@@ -259,7 +333,7 @@ public class SupplierInServiceImpl extends AbstractBaseTransactionServiceImpl<Su
         dto.setPaymentMethod(entity.getPaymentMethod());
         dto.setDueDate(entity.getDueDate());
         dto.setPaymentDate(entity.getPaymentDate());
-        
+
         // Set transaction type (always STOCK_IN for this service)
         dto.setTransactionType(SupplierTransactionType.STOCK_IN);
         
@@ -291,16 +365,14 @@ public class SupplierInServiceImpl extends AbstractBaseTransactionServiceImpl<Su
         }
         
         // Set type based on first product (if available)
-        if (entity.getSupplierTransactionItemEntities() != null && !entity.getSupplierTransactionItemEntities().isEmpty()) {
-            try {
-                SupplierTransactionItemEntity firstItem = entity.getSupplierTransactionItemEntities().iterator().next();
-                if (firstItem != null && firstItem.getProductEntity() != null && firstItem.getProductEntity().getProductType() != null) {
-                    dto.setType(firstItem.getProductEntity().getProductType().name());
-                }
-            } catch (Exception e) {
-                dto.setType(null);
-            }
-        }
+        Optional<String> typeOptional = entity.getSupplierTransactionItemEntities().stream()
+                .filter(item -> item != null
+                        && item.getProductEntity() != null
+                        && item.getProductEntity().getProductType() != null)
+                .map(item -> item.getProductEntity().getProductType().name())
+                .findFirst();
+
+        dto.setType(typeOptional.orElse(null));
         
         return dto;
     }

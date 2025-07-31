@@ -1,5 +1,6 @@
 package org.project.service;
 
+import org.project.enums.LeaveStatus;
 import org.project.model.dto.LeaveRequestDTO;
 import org.project.model.response.LeaveBalanceResponse;
 import org.project.model.response.LeaveRequestResponse;
@@ -15,11 +16,11 @@ public interface LeaveRequestService {
 
     List<LeaveRequestResponse> getLeaveRequestsByStaffId(Long staffId);
 
-    Page<LeaveRequestResponse> getLeaveRequestByManagerId(Long managerId, int index, int size);
+    Page<LeaveRequestResponse> getLeaveRequestByManagerId(Long managerId, int index, int size, String status, String staffName, String leaveType);
 
     LeaveRequestStatisticResponse getLeaveRequestStatisticByManagerId(Long managerId);
 
-    Page<LeaveRequestResponse> getLeaveRequestByStaffId(Long staffId, int index, int size);
+    Page<LeaveRequestResponse> getLeaveRequestByStaffId(Long staffId, int index, int size, String status, String leaveType);
 
     LeaveBalanceResponse getLeaveBalanceByStaffIdAndYear(Long staffId, Year year);
 
@@ -28,4 +29,8 @@ public interface LeaveRequestService {
     BigDecimal getLeaveDayLeft(LeaveRequestDTO leaveRequestDTO);
 
     LeaveRequestResponse getLeaveRequestById(Long leaveRequestId);
+
+    boolean changeStatus(Long id, LeaveStatus status, String reason);
+
+    void transferAppointments(Long leaveRequestId);
 }

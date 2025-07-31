@@ -1,8 +1,5 @@
 package org.project.converter;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.project.entity.CategoryEntity;
 import org.project.entity.ProductEntity;
 import org.project.model.dto.ProductCreateDTO;
@@ -11,6 +8,9 @@ import org.project.repository.ProductTagRepository;
 import org.project.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductCreateConverter {

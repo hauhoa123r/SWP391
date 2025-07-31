@@ -2,6 +2,7 @@ package org.project.service.impl;
 
 import jakarta.persistence.criteria.JoinType;
 import jakarta.transaction.Transactional;
+import org.project.config.WebConstant;
 import org.project.converter.DepartmentConverter;
 import org.project.entity.DepartmentEntity;
 import org.project.enums.StaffRole;
@@ -13,6 +14,9 @@ import org.project.model.response.DepartmentResponse;
 import org.project.repository.DepartmentRepository;
 import org.project.repository.impl.custom.DepartmentRepositoryCustom;
 import org.project.service.DepartmentService;
+import org.project.service.ProductService;
+import org.project.service.StaffService;
+import org.project.utils.MergeObjectUtils;
 import org.project.utils.PageUtils;
 import org.project.utils.specification.SpecificationUtils;
 import org.project.utils.specification.search.SearchCriteria;
@@ -22,7 +26,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,11 +34,23 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final StaffRole DOCTOR_ROLE = StaffRole.DOCTOR;
 
+    private StaffService staffService;
+    private ProductService productService;
     private DepartmentRepository departmentRepository;
     private DepartmentRepositoryCustom departmentRepositoryCustom;
     private DepartmentConverter departmentConverter;
     private PageUtils<DepartmentEntity> pageUtils;
     private SpecificationUtils<DepartmentEntity> specificationUtils;
+
+    @Autowired
+    public void setStaffService(StaffService staffService) {
+        this.staffService = staffService;
+    }
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
 
     @Autowired
     public void setDepartmentRepository(DepartmentRepository departmentRepository) {
@@ -64,14 +79,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentResponse getDepartment(Long id) {
-        DepartmentEntity departmentEntity = departmentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(DepartmentEntity.class, id));
+        DepartmentEntity departmentEntity = departmentRepository.findByIdAndDepartmentStatus(id, WebConstant.DEPARTMENT_STATUS_ACTIVE);
+        if (departmentEntity == null) {
+            throw new EntityNotFoundException(DepartmentEntity.class, id);
+        }
         return departmentConverter.toResponse(departmentEntity);
     }
 
     @Override
     public List<DepartmentResponse> getDepartments() {
-        List<DepartmentEntity> departmentEntities = departmentRepository.findAll();
+        List<DepartmentEntity> departmentEntities = departmentRepository.findAllByDepartmentStatus(WebConstant.DEPARTMENT_STATUS_ACTIVE);
         return departmentEntities.stream().map(departmentConverter::toResponse).toList();
     }
 
@@ -83,7 +100,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         Pageable pageable = pageUtils.getPageable(pageIndex, pageSize, sort);
         Page<DepartmentEntity> departmentEntityPage = departmentRepository.findAll(specificationUtils.reset()
-                .getSearchSpecification(new SearchCriteria(DepartmentEntity.Fields.name, ComparisonOperator.CONTAINS, departmentDTO.getName(), JoinType.INNER)), pageable);
+                .getSearchSpecifications(
+                        new SearchCriteria(DepartmentEntity.Fields.name, ComparisonOperator.CONTAINS, departmentDTO.getName(), JoinType.INNER),
+                        new SearchCriteria("slogan", ComparisonOperator.CONTAINS, departmentDTO.getSlogan(), JoinType.INNER),
+                        new SearchCriteria("departmentStatus", ComparisonOperator.EQUALS, WebConstant.DEPARTMENT_STATUS_ACTIVE)), pageable);
         pageUtils.validatePage(departmentEntityPage, DepartmentEntity.class);
         return departmentEntityPage.map(departmentConverter::toResponse);
     }
@@ -112,12 +132,45 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public boolean isDepartmentNameExist(String departmentName) {
-        return departmentRepository.existsByName(departmentName);
+        return departmentRepository.existsByNameAndDepartmentStatus(departmentName, WebConstant.DEPARTMENT_STATUS_ACTIVE);
     }
 
     @Override
     public List<DepartmentResponse> getAll() {
-        List<DepartmentEntity> departmentEntities = departmentRepository.findAll();
+        List<DepartmentEntity> departmentEntities = departmentRepository.findAllByDepartmentStatus(WebConstant.DEPARTMENT_STATUS_ACTIVE);
         return departmentEntities.stream().map(departmentConverter::toResponse).toList();
+    }
+
+    @Override
+    public void createDepartment(DepartmentDTO departmentDTO) {
+        DepartmentEntity departmentEntity = departmentConverter.toEntity(departmentDTO);
+        departmentEntity.setDepartmentStatus(WebConstant.DEPARTMENT_STATUS_ACTIVE);
+        departmentRepository.save(departmentEntity);
+    }
+
+    @Override
+    public void updateDepartment(Long id, DepartmentDTO departmentDTO) {
+        DepartmentEntity target = departmentRepository.findByIdAndDepartmentStatus(id, WebConstant.DEPARTMENT_STATUS_ACTIVE);
+        if (target == null) {
+            throw new EntityNotFoundException(DepartmentEntity.class, id);
+        }
+        DepartmentEntity source = departmentConverter.toEntity(departmentDTO);
+        MergeObjectUtils.mergeNonNullFields(source, target);
+        departmentRepository.save(target);
+    }
+
+    @Override
+    public void deleteDepartment(Long id) {
+        DepartmentEntity departmentEntity = departmentRepository.findByIdAndDepartmentStatus(id, WebConstant.DEPARTMENT_STATUS_ACTIVE);
+        if (departmentEntity == null) {
+            throw new EntityNotFoundException(DepartmentEntity.class, id);
+        }
+        departmentEntity.getServiceEntities().forEach(serviceEntity -> {
+            productService.deleteProduct(serviceEntity.getProductEntity().getId());
+        });
+        departmentEntity.getStaffEntities().forEach(staffEntity -> {
+            staffService.deleteStaff(staffEntity.getId());
+        });
+        departmentEntity.setDepartmentStatus(WebConstant.DEPARTMENT_STATUS_INACTIVE);
     }
 }

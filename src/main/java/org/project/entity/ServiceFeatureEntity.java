@@ -22,7 +22,6 @@ public class ServiceFeatureEntity {
     @Column(name = "service_feature_id", nullable = false)
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "service_id", nullable = false)
     private ServiceEntity serviceEntity;

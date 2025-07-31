@@ -6,7 +6,6 @@ import org.project.ai.intent.service.appointment.make.handler.AppointmentValidat
 import org.project.ai.prompt.PromptAnswer;
 import org.project.model.dai.AppointmentDAI;
 import org.project.model.dai.PatientBasicInfo;
-import org.project.model.dto.PatientDTO;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 

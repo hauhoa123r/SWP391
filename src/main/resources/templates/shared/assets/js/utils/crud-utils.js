@@ -1,4 +1,5 @@
 import toast from "/templates/shared/assets/js/plugins/toast.js";
+import {Base64Utils} from "/templates/shared/assets/js/utils/base64-utils.js";
 import {FetchingUtils} from "/templates/shared/assets/js/utils/fetching-utils.js";
 import {FormDataUtils} from "/templates/shared/assets/js/utils/form-data.js";
 import {Pagination} from "/templates/shared/assets/js/utils/pagination.js";
@@ -18,6 +19,10 @@ export class CrudUtils {
      * @param addFormSelector
      * @param editFormSelector
      * @param deleteFormSelector
+     * @param customButtonSelector
+     * @param customButtonEvent
+     * @param customFormSelector
+     * @param customFormEvent
      */
     constructor({
                     apiUrl,
@@ -30,7 +35,11 @@ export class CrudUtils {
                     editButtonSelector = ".edit-button",
                     addFormSelector = "#addForm",
                     editFormSelector = "#editForm",
-                    deleteFormSelector = "#deleteForm"
+                    deleteFormSelector = "#deleteForm",
+                    customButtonSelector = null,
+                    customButtonEvent = null,
+                    customFormSelector = null,
+                    customFormEvent = null
                 }) {
         this.apiUrl = apiUrl;
         this.responseClass = responseClass;
@@ -44,60 +53,95 @@ export class CrudUtils {
         this.editFormSelector = editFormSelector;
         this.deleteFormSelector = deleteFormSelector;
         this.dtoInstance = null;
+        this.customButtonSelector = customButtonSelector;
+        this.customButtonEvent = customButtonEvent;
+        this.customFormSelector = customFormSelector;
+        this.customFormEvent = customFormEvent;
     }
 
     async readData(pageIndex = 0) {
-        const params = new SearchParamsUtils(this.dtoInstance);
+        const params = SearchParamsUtils.toSearchParams(this.dtoInstance);
         const data = await FetchingUtils.fetch(`${this.apiUrl}/page/${pageIndex}?${params}`);
         this.renderList(data);
         this.renderPagination(data);
         this.setupUpdateButtons();
         this.setupDeleteButtons();
+        this.setupCustomButtons();
     }
 
     async createData(dtoInstance = null) {
+        for (const key of Object.keys(dtoInstance)) {
+            const value = dtoInstance[key];
+            if (!value) continue;
+            if (value instanceof File) {
+                dtoInstance[key] = await Base64Utils.getBase64(value);
+            }
+        }
+
         const data = await FetchingUtils.fetch(`${this.apiUrl}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(dtoInstance)
-        });
+        }, "text");
         if (data !== null) {
             toast.success("Thêm thành công!", {
-                position: "top-right",
+                icon: true,
                 duration: 3000,
                 progress: true
             });
             await this.readData();
+            const addForm = document.querySelector(this.addFormSelector);
+            addForm.reset();
+            if (!addForm) return;
+            const closeButton = addForm.querySelector("[data-bs-dismiss]");
+            if (closeButton) {
+                closeButton.click(); // Close the modal if it exists
+            }
         }
     }
 
     async updateData(dtoInstance = null) {
-        const data = await FetchingUtils.fetch(`${this.apiUrl}`, {
+        for (const key of Object.keys(dtoInstance)) {
+            const value = dtoInstance[key];
+            if (!value) continue;
+            if (value instanceof File) {
+                dtoInstance[key] = await Base64Utils.getBase64(value);
+            }
+        }
+
+        const data = await FetchingUtils.fetch(`${this.apiUrl}/${dtoInstance.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(dtoInstance)
-        });
+        }, "text");
         if (data !== null) {
             toast.success("Cập nhật thành công!", {
-                position: "top-right",
+                icon: true,
                 duration: 3000,
                 progress: true
             });
             await this.readData();
+            const editForm = document.querySelector(this.editFormSelector);
+            if (!editForm) return;
+            editForm.reset(); // Reset the form after submission
+            const closeButton = editForm.querySelector("[data-bs-dismiss]");
+            if (closeButton) {
+                closeButton.click(); // Close the modal if it exists
+            }
         }
     }
 
     async deleteData(id = null) {
         const data = await FetchingUtils.fetch(`${this.apiUrl}/${id}`, {
             method: "DELETE"
-        });
+        }, "text");
         if (data !== null) {
             toast.success("Xóa thành công!", {
-                position: "top-right",
+                icon: true,
                 duration: 3000,
                 progress: true
             });
@@ -111,7 +155,14 @@ export class CrudUtils {
         listElement.innerHTML = ""; // Clear previous content
         if (!data || !("items" in data) || !Array.isArray(data.items) || data.items.length === 0) return;
         listElement.innerHTML = this.responseClass.fromJsonArray(data.items)
-                .map(item => item.render())
+                .map(item => {
+                    item.setRenderStrategy(this.renderStrategy);
+                    if (typeof item.toHtml === "function") {
+                        return item.toHtml();
+                    } else if (typeof item.render === "function") {
+                        return item.render();
+                    }
+                })
                 .join("");
     }
 
@@ -138,10 +189,49 @@ export class CrudUtils {
                 if (!updateForm) return;
                 dataElements.forEach(element => {
                     const name = element.getAttribute("data-name");
-                    const value = element.textContent.trim();
-                    const input = updateForm.querySelector(`[name="${name}"]`);
+                    let value = element.getAttribute("data-value") || element.textContent.trim();
+                    if (value === "null" || value === "undefined") {
+                        value = ""; // Normalize null/undefined values to empty string
+                    }
+
+                    const image = updateForm.querySelector(`img[data-name="${name}"]`);
+                    if (image) {
+                        image.src = value; // Assuming value is a URL for the image
+                        if (value) {
+                            image.classList.remove("d-none"); // Show the image if it was hidden
+                        } else {
+                            image.classList.add("d-none"); // Hide the image if value is empty
+                        }
+                        const input = updateForm.querySelector(`input[name="${name}"]`);
+                        if (input) {
+                            input.value = "";
+                        }
+                        return;
+                    }
+
+                    const input = updateForm.querySelector(`input[name="${name}"]`);
                     if (input) {
                         input.value = value;
+                        return;
+                    }
+
+                    const textarea = updateForm.querySelector(`textarea[name="${name}"]`);
+                    if (textarea) {
+                        textarea.value = value;
+                        return;
+                    }
+
+                    const select = updateForm.querySelector(`select[name="${name}"]`);
+                    if (select) {
+                        let option = Array.from(select.options).find(opt => opt.value === value);
+                        if (option) {
+                            select.value = option.value;
+                        } else {
+                            option = Array.from(select.options).find(opt => opt.textContent.trim() === value);
+                            if (option) {
+                                select.value = option.value;
+                            }
+                        }
                     }
                 });
             });
@@ -151,27 +241,44 @@ export class CrudUtils {
     setupDeleteButtons() {
         const deleteButtons = document.querySelectorAll(this.deleteButtonSelector);
         deleteButtons.forEach(async (button) => {
-            const itemElement = button.closest(".item");
-            if (!itemElement) return;
-            const id = itemElement.querySelector("[name='id']").value;
-            if (!id) return;
-            const deleteForm = document.querySelector(this.deleteFormSelector);
-            if (!deleteForm) {
-                if (confirm("Bạn có chắc chắn muốn xóa không?")) {
+            button.addEventListener("click", async (event) => {
+                event.stopImmediatePropagation();
+                const itemElement = button.closest(".item");
+                if (!itemElement) return;
+                const id = itemElement.querySelector("[name='id']").value;
+                if (!id) return;
+                const deleteForm = document.querySelector(this.deleteFormSelector);
+                if (!deleteForm) {
+                    if (confirm("Bạn có chắc chắn muốn xóa không?")) {
+                        await this.deleteData(id);
+                    }
+                    return; // If delete form is not found, delete directly
+                }
+                deleteForm.addEventListener("submit", async (event) => {
+                    const submitButton = deleteForm.querySelector("[type='submit']");
+                    if (submitButton) {
+                        submitButton.disabled = true; // Disable the button to prevent multiple submissions
+                    }
+                    event.preventDefault();
                     await this.deleteData(id);
-                }
-                return; // If delete form is not found, delete directly
-            }
-            deleteForm.addEventListener("submit", async (event) => {
-                const submitButton = deleteForm.querySelector("[type='submit']");
-                if (submitButton) {
-                    submitButton.disabled = true; // Disable the button to prevent multiple submissions
-                }
+                    if (submitButton) {
+                        submitButton.disabled = false; // Re-enable the button after submission
+                    }
+                });
+            });
+        });
+    }
+
+    setupCustomButtons() {
+        if (!this.customButtonSelector || !this.customButtonEvent) return;
+        const customButtons = document.querySelectorAll(this.customButtonSelector);
+        customButtons.forEach(button => {
+            button.addEventListener("click", async (event) => {
                 event.preventDefault();
-                await this.deleteData(id);
-                if (submitButton) {
-                    submitButton.disabled = false; // Re-enable the button after submission
-                }
+                const itemElement = button.closest(".item");
+                if (!itemElement) return;
+                await this.customButtonEvent(itemElement);
+                await this.readData(); // Refresh the data after custom action
             });
         });
     }
@@ -198,7 +305,6 @@ export class CrudUtils {
                 if (submitButton) {
                     submitButton.disabled = true; // Disable the button to prevent multiple submissions
                 }
-                event.preventDefault();
                 this.dtoInstance = null; // Reset the DTO instance
                 await this.readData(0); // Reset to the first page on reset
                 if (submitButton) {
@@ -218,11 +324,12 @@ export class CrudUtils {
             }
             event.preventDefault();
             const formData = new FormData(addForm);
-            this.dtoInstance = FormDataUtils.getObjectFromFormData(null, formData);
-            await this.createData();
+            const dtoInstance = FormDataUtils.getObjectFromFormData(null, formData);
+            await this.createData(dtoInstance);
             if (submitButton) {
                 submitButton.disabled = false; // Re-enable the button after submission
             }
+
         });
     }
 
@@ -236,8 +343,28 @@ export class CrudUtils {
             }
             event.preventDefault();
             const formData = new FormData(editForm);
-            this.dtoInstance = FormDataUtils.getObjectFromFormData(null, formData);
-            await this.updateData();
+            const dtoInstance = FormDataUtils.getObjectFromFormData(null, formData);
+            await this.updateData(dtoInstance);
+            if (submitButton) {
+                submitButton.disabled = false; // Re-enable the button after submission
+            }
+
+        });
+    }
+
+    setupCustomFormEvents() {
+        if (!this.customFormSelector || !this.customFormEvent) return;
+        const customForm = document.querySelector(this.customFormSelector);
+        if (!customForm) return;
+        customForm.addEventListener("submit", async (event) => {
+            const submitButton = customForm.querySelector("[type='submit']");
+            if (submitButton) {
+                submitButton.disabled = true; // Disable the button to prevent multiple submissions
+            }
+            event.preventDefault();
+            const formData = new FormData(customForm);
+            const dtoInstance = FormDataUtils.getObjectFromFormData(null, formData);
+            await this.customFormEvent(dtoInstance);
             if (submitButton) {
                 submitButton.disabled = false; // Re-enable the button after submission
             }
@@ -248,6 +375,7 @@ export class CrudUtils {
         this.setupAddFormEvents();
         this.setupEditFormEvents();
         this.setupFilterFormEvents();
+        this.setupCustomFormEvents();
     }
 
     async init() {

@@ -1,11 +1,13 @@
 package org.project.controller;
 
+import org.project.model.dto.DepartmentDTO;
 import org.project.service.AppointmentService;
 import org.project.service.DepartmentService;
 import org.project.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -43,5 +45,11 @@ public class DepartmentController {
                 appointmentService.countCompletedAppointmentsByDepartment(departmentId));
         modelMap.addAttribute("doctors", doctorService.getTop6DoctorsByDepartment(departmentId));
         return "/frontend/department-detail";
+    }
+
+    @GetMapping("/admin/department")
+    public String getAllDepartmentsForAdmin(ModelMap modelMap) {
+        modelMap.put("departmentDTO", new DepartmentDTO());
+        return "/dashboard/department";
     }
 }

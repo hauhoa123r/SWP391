@@ -1,4 +1,4 @@
-import toast from "/templates/shared/assets/js/utils/toast.js";
+import toast from "/templates/shared/assets/js/plugins/toast.js";
 
 export class FetchingUtils {
     static async fetch(url, options = {

@@ -53,4 +53,16 @@ public interface UserService {
     UserLoginResponse isLogin(UserLoginDTO userLoginDTO);
 
     void resetPassword(String email);
+
+    Long getUserIdByUsername(String username);
+
+    boolean isExistPhoneNumber(String phoneNumber);
+
+    boolean isExistEmail(String email);
+
+    void updatePhoneNumber(Long userId, String phoneNumber);
+
+    void updateEmail(Long userId, String email);
+
+    void updatePassword(Long userId, String password);
 }

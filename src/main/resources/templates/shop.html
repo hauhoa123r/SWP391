@@ -1,7 +1,7 @@
 <!doctype html>
 <html layout:decorate="~{/frontend/layouts/main-layout}"
       th:with="
-        navActive = ${7},
+        navActive = ${'shop'},
         breadCrumbTitle = ${'Danh sách sản phẩm'},
         breadCrumbTexts = ${{{'Danh sách sản phẩm'}}},
         breadCrumbLinks = ${{{''}}}
@@ -28,6 +28,17 @@
             <!-- Add wishlist notification -->
             <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" th:if="${wishlistMessage}">
                 <span th:text="${wishlistMessage}"></span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+            
+            <!-- Add cart notification -->
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" th:if="${success}">
+                <span th:text="${success}"></span>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            </div>
+            
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert" th:if="${error}">
+                <span th:text="${error}"></span>
                 <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
             </div>
             <div class="row">
@@ -163,7 +174,7 @@
                                     <label class="me-2" for="size">Items per page:</label>
                                     <select class="form-select d-inline-block w-auto" id="size" name="size"
                                             onchange="this.form.submit()">
-                                        <option th:selected="${productPage.getSize() == 12}" value="12">12</option>
+                                        <option th:selected="${productPage.getSize() == 18}" value="18"18</option>
                                         <option th:selected="${productPage.getSize() == 24}" value="24">24</option>
                                         <option th:selected="${productPage.getSize() == 40}" value="40">40</option>
                                     </select>
@@ -340,6 +351,19 @@
                                         </select>
                                     </form>
                                 </div>
+                                <a href="/wishlist" class="btn btn-outline-primary ms-2 d-flex align-items-center" style="white-space:nowrap;">
+                                    <svg width="20" height="20" fill="none" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" style="margin-right:6px;">
+                                        <path clip-rule="evenodd"
+                                              d="M1.87187 9.59832C0.798865 6.24832 2.05287 2.41932 5.56986 1.28632C7.41986 0.689322 9.46186 1.04132 10.9999 2.19832C12.4549 1.07332 14.5719 0.693322 16.4199 1.28632C19.9369 2.41932 21.1989 6.24832 20.1269 9.59832C18.4569 14.9083 10.9999 18.9983 10.9999 18.9983C10.9999 18.9983 3.59787 14.9703 1.87187 9.59832Z"
+                                              fill-rule="evenodd"
+                                              stroke="currentColor" stroke-linecap="round"
+                                              stroke-linejoin="round" stroke-width="1.5"/>
+                                        <path d="M15 4.70001C16.07 5.04601 16.826 6.00101 16.917 7.12201"
+                                              stroke="currentColor" stroke-linecap="round"
+                                              stroke-linejoin="round" stroke-width="1.5"/>
+                                    </svg>
+                                    Wishlist
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -425,12 +449,13 @@
                                                                                    value="1"/>
                                                                             <button class="iq-button text-capitalize"
                                                                                     type="submit">
-                                                                                <span class="iq-btn-text-holder position-relative">add to cart</span>
+                                                                                <span class="iq-btn-text-holder position-relative">Thêm vào giỏ hàng</span>
                                                                                 <span class="iq-btn-icon-holder">
                                     <svg fill="none" height="11" viewBox="0 0 10 11" width="10"
                                          xmlns="http://www.w3.org/2000/svg">
-                                                               <path d="M5 0.5C5.34518 0.5 5.625 0.779822 5.625 1.125V4.875H9.375C9.72018 4.875 10 5.15482 10 5.5C10 5.84518 9.72018 6.125 9.375 6.125H5.625V9.875C5.625 10.2202 5.34518 10.5 5 10.5C4.65482 10.5 4.375 10.2202 4.375 9.875V6.125H0.625C0.279822 6.125 0 5.84518 0 5.5C0 5.15482 0.279822 4.875 0.625 4.875H4.375V1.125C4.375 0.779822 4.65482 0.5 5 0.5Z"
-                                                                     fill="currentColor"/>
+                                       <path
+                                               d="M5 0.5C5.34518 0.5 5.625 0.779822 5.625 1.125V4.875H9.375C9.72018 4.875 10 5.15482 10 5.5C10 5.84518 9.72018 6.125 9.375 6.125H5.625V9.875C5.625 10.2202 5.34518 10.5 5 10.5C4.65482 10.5 4.375 10.2202 4.375 9.875V6.125H0.625C0.279822 6.125 0 5.84518 0 5.5C0 5.15482 0.279822 4.875 0.625 4.875H4.375V1.125C4.375 0.779822 4.65482 0.5 5 0.5Z"
+                                               fill="currentColor"></path>
                                     </svg>
                                  </span>
                                                                             </button>

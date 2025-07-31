@@ -57,4 +57,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     void updatePassword(String email, String password);
 
 
+    boolean existsByEmailAndUserStatus(String email, UserStatus userStatus);
+
+    boolean existsByPhoneNumberAndUserStatus(String phoneNumber, UserStatus userStatus);
 }

@@ -3,33 +3,28 @@ package org.project.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.entity.ProductEntity;
-import org.project.entity.StockRequestEntity;
 import org.project.entity.StockRequestItemEntity;
 import org.project.entity.SupplierTransactionsEntity;
-import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
 import org.project.model.response.ProductStockReportResponse;
 import org.project.repository.ProductRepository;
 import org.project.repository.StockRequestItemRepository;
-import org.project.repository.StockRequestRepository;
 import org.project.repository.SupplierTransactionRepository;
 import org.project.utils.StockReportUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,7 +37,6 @@ import java.util.stream.Collectors;
 public class StockReportController {
 
     private final ProductRepository productRepository;
-    private final StockRequestRepository stockRequestRepository;
     private final StockRequestItemRepository stockRequestItemRepository;
     private final SupplierTransactionRepository supplierTransactionRepository;
     
@@ -98,6 +92,9 @@ public class StockReportController {
             List<SupplierTransactionsEntity> recentTransactions = supplierTransactionRepository
                     .findTop10ByOrderByTransactionDateDesc();
             model.addAttribute("recentTransactions", recentTransactions);
+            
+            // Add current user for forms
+            model.addAttribute("currentUser", getCurrentUser());
             
             log.debug("Reports page prepared with {} low stock products and {} expiring products", 
                     lowStockReport.size(), expiringProducts.size());
@@ -374,5 +371,20 @@ public class StockReportController {
         }
         
         return sampleData;
+    }
+    
+    /**
+     * Get current user - placeholder method
+     * @return Current user object or null
+     */
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 } 

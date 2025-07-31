@@ -1,7 +1,5 @@
 package org.project.service;
 
-import org.project.enums.SupplierTransactionStatus;
-import org.project.enums.SupplierTransactionType;
 import org.project.model.dto.SupplierOutDTO;
 import org.project.service.base.BaseSupplierTransactionService;
 import org.springframework.data.domain.Page;

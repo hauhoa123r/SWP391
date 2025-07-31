@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="vi" dir="ltr">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-          content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+          content="Kivicare admin là một template quản trị siêu linh hoạt, mạnh mẽ, sạch sẽ và hiện đại, có khả năng tùy biến không giới hạn.">
     <meta name="keywords"
-          content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+          content="template quản trị, Kivicare admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
     <link rel="icon" th:href="@{/templates_storage/assets/images/favicon.png}" type="image/x-icon">
     <link rel="shortcut icon" th:href="@{/templates_storage/assets/images/favicon.png}" type="image/x-icon">
-    <title>Fastkart - Create Coupon</title>
+    <title>Kivicare - Tạo Mã Giảm Giá</title>
 
     <!-- Google font-->
     <link
@@ -58,6 +58,18 @@
     </style>
 
     <!-- App css-->
+    <style>
+        .page-wrapper.compact-wrapper .page-body-wrapper {
+            padding-right: 0 !important;
+        }
+        .page-body {
+            margin-right: 0 !important;
+            padding-right: 0 !important;
+        }
+        .container-fluid {
+            padding-right: 0 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -74,37 +86,25 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
             </div>
 
-            <form class="form-inline search-full" action="#" method="get">
-                <div class="form-group w-100">
-                    <div class="Typeahead Typeahead--twitterUsers">
-                        <div class="u-posRelative">
-                            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-                                   placeholder="Tìm kiếm Fastkart ..." name="q" title="" autofocus>
-                            <i class="close-search" data-feather="x"></i>
-                            <div class="spinner-border Typeahead-spinner" role="status">
-                                <span class="sr-only">Đang tải...</span>
-                            </div>
-                        </div>
-                        <div class="Typeahead-menu"></div>
-                    </div>
-                </div>
-            </form>
+           
 
             <!-- Tiêu đề mới -->
-            <h1 class="warehouse-logo text-center mb-0">Kho Quản Lý</h1>
+            <div style="flex: 1; display: flex; justify-content: center;">
+                <h1 class="warehouse-logo mb-0">Kho Quản Lý</h1>
+            </div>
             <div class="nav-right col-6 pull-right right-header p-0">
                 <ul class="nav-menus">
                     <li>
@@ -180,7 +180,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
+                    <a th:href="@{/warehouse/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -191,7 +191,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -206,7 +206,7 @@
                         <ul class="sidebar-links" id="simple-bar">
                             <li class="back-btn"></li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/warehouse/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -218,10 +218,10 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockIn.html}">Nhập kho</a>
+                                        <a th:href="@{/warehouse/stock-in}">Nhập kho</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/StockOut.html}">Xuất kho</a>
+                                        <a th:href="@{/warehouse/stock-out}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -233,27 +233,14 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                        <a th:href="@{/warehouse/medical-equipment}">Thiết bị y tế</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/medicine.html}">Thuốc</a>
+                                        <a th:href="@{/warehouse/medicines}">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>
-                            <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <i class="ri-archive-line"></i>
-                                    <span>Theo dõi</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    <li>
-                                        <a th:href="@{/invoiceintracking.html}">Theo dõi nhập kho</a>
-                                    </li>
-                                    <li>
-                                        <a th:href="@{/invoiceouttracking.html}">Theo dõi xuất kho</a>
-                                    </li>
-                                </ul>
-                            </li>
+                        
                             <li class="sidebar-list">
                                 <a class="linear-icon-link sidebar-link sidebar-title" href="#">
                                     <i class="ri-price-tag-3-line"></i>
@@ -300,133 +287,87 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="title-header option-title">
-                                            <h5>Create Coupon</h5>
+                                            <h5>Tạo Mã Giảm Giá</h5>
                                         </div>
                                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link active" id="pills-home-tab"
-                                                    data-bs-toggle="pill" data-bs-target="#pills-home"
-                                                    type="button">General</button>
+                                                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button">Thông Tin Chung</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link" id="pills-profile-tab"
-                                                    data-bs-toggle="pill" data-bs-target="#pills-profile"
-                                                    type="button">Restriction</button>
+                                                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button">Hạn Chế</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link" id="pills-usage-tab" data-bs-toggle="pill"
-                                                    data-bs-target="#pills-usage" type="button">Usage</button>
+                                                <button class="nav-link" id="pills-usage-tab" data-bs-toggle="pill" data-bs-target="#pills-usage" type="button">Sử Dụng</button>
                                             </li>
                                         </ul>
 
                                         <div class="tab-content" id="pills-tabContent">
                                             <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
                                                 <form id="couponForm" class="theme-form theme-form-2 mega-form" th:action="@{/create-coupon}" method="post">
-                                            <div class="card-header-1">
-                                                        <h5>General</h5>
-                                            </div>
+                                                    <div class="card-header-1">
+                                                        <h5>Thông Tin Chung</h5>
+                                                    </div>
 
-                                            <div class="row">
-                                                <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="form-label-title col-lg-2 col-md-3 mb-0">Coupon
-                                                                Title</label>
+                                                    <div class="row">
+                                                        <div class="mb-4 row align-items-center">
+                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Tiêu Đề Mã Giảm Giá</label>
                                                             <div class="col-md-9 col-lg-10">
                                                                 <input class="form-control" type="text" name="description" required placeholder="Tiêu đề mã giảm giá">
                                                             </div>
                                                         </div>
 
                                                         <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="col-lg-2 col-md-3 col-form-label form-label-title">Coupon
-                                                                Code</label>
-                                                    <div class="col-md-9 col-lg-10">
-                                                        <input class="form-control" type="text" name="code" required placeholder="Nhập mã coupon (VD: SAVE10)">
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="col-lg-2 col-md-3 col-form-label form-label-title">Start
-                                                                Date</label>
-                                                    <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="date" name="startDate" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="col-lg-2 col-md-3 col-form-label form-label-title">End
-                                                                Date</label>
-                                                    <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="date" name="expirationDate" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="form-label-title col-lg-2 col-md-3 mb-0">Free
-                                                                Shipping</label>
-                                                            <div class="col-md-9">
-                                                                <div class="form-check user-checkbox ps-0">
-                                                                    <input class="checkbox_animated check-it"
-                                                                        type="checkbox" value=""
-                                                                        id="flexCheckDefault">
-                                                                    <label
-                                                                        class="form-label-title col-md-2 mb-0">Allow
-                                                                        Free Shipping</label>
-                                                                </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="col-lg-2 col-md-3 col-form-label form-label-title">Quantity</label>
-                                                    <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number" name="quantity">
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="col-sm-2 col-form-label form-label-title">Discount
-                                                                Type</label>
-                                                    <div class="col-sm-10">
-                                                                <select class="js-example-basic-single form-select" name="discountType">
-                                                                    <option value="PERCENTAGE">Phần trăm</option>
-                                                                    <option value="FIXED_AMOUNT">Số tiền cố định</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                        <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="col-lg-2 col-md-3 col-form-label form-label-title">Value</label>
+                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Mã Giảm Giá</label>
                                                             <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number" step="0.01" name="value" required placeholder="Giá trị của coupon">
+                                                                <input class="form-control" type="text" name="code" required placeholder="Nhập mã coupon (VD: SAVE10)">
                                                             </div>
                                                         </div>
-                                                        
-                                                        <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="col-lg-2 col-md-3 col-form-label form-label-title">Minimum
-                                                                Spend</label>
-                                                            <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number" step="0.01" name="minimumOrderAmount" placeholder="Giá trị đơn hàng tối thiểu để áp dụng coupon">
-                                                    </div>
-                                                </div>
 
-                                                <div class="row align-items-center">
-                                                            <label
-                                                                class="form-label-title col-lg-2 col-md-3 mb-0">Status</label>
+                                                        <div class="mb-4 row align-items-center">
+                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Ngày Bắt Đầu</label>
+                                                            <div class="col-md-9 col-lg-10">
+                                                                <input class="form-control" type="date" name="startDate" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-4 row align-items-center">
+                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Ngày Kết Thúc</label>
+                                                            <div class="col-md-9 col-lg-10">
+                                                                <input class="form-control" type="date" name="expirationDate" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-4 row align-items-center">
+                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Miễn Phí Vận Chuyển</label>
                                                             <div class="col-md-9">
                                                                 <div class="form-check user-checkbox ps-0">
-                                                                    <input class="checkbox_animated check-it"
-                                                                        type="checkbox" value=""
-                                                                        id="flexCheckDefault1" checked>
-                                                                    <label class="form-label-title col-md-2 mb-0">
-                                                                        Enable the Coupon</label>
+                                                                    <input class="checkbox_animated check-it" type="checkbox" name="freeShipping" value="true" id="flexCheckDefault">
+                                                                    <label class="form-label-title col-md-2 mb-0">Cho Phép Miễn Phí Vận Chuyển</label>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-4 row align-items-center">
+                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Số Lượng</label>
+                                                            <div class="col-md-9 col-lg-10">
+                                                                <input class="form-control" type="number" name="quantity" required placeholder="Số lượng mã giảm giá">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-4 row align-items-center">
+                                                            <label class="col-sm-2 col-form-label form-label-title">Loại Giảm Giá</label>
+                                                            <div class="col-sm-10">
+                                                                <select class="js-example-basic-single form-select" name="discountType" required>
+                                                                    <option value="PERCENTAGE">Phần Trăm</option>
+                                                                    <option value="FIXED_AMOUNT">Số Tiền Cố Định</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-4 row align-items-center">
+                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Giá Trị Giảm Giá</label>
+                                                            <div class="col-md-9 col-lg-10">
+                                                                <input class="form-control" type="number" name="discountValue" required placeholder="Giá trị giảm giá">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -436,37 +377,32 @@
                                             <div class="tab-pane fade" id="pills-profile" role="tabpanel">
                                                 <div class="theme-form theme-form-2 mega-form">
                                                     <div class="card-header-1">
-                                                        <h5>Restriction</h5>
+                                                        <h5>Hạn Chế Sử Dụng</h5>
                                                     </div>
 
                                                     <div class="row">
                                                         <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="form-label-title col-lg-2 col-md-3 mb-0">Products</label>
+                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Sản Phẩm</label>
                                                             <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" placeholder="Chọn sản phẩm áp dụng mã giảm giá">
                                                             </div>
                                                         </div>
 
                                                         <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="col-sm-2 col-form-label form-label-title">Category</label>
+                                                            <label class="col-sm-2 col-form-label form-label-title">Danh Mục</label>
                                                             <div class="col-sm-10">
-                                                                <select class="js-example-basic-single"
-                                                                    name="state">
-                                                                    <option disabled>--Select--</option>
+                                                                <select class="js-example-basic-single" name="state">
+                                                                    <option disabled>--Chọn--</option>
                                                                     <option>Thuốc</option>
-                                                                    <option>Thiết bị y tế</option>
+                                                                    <option>Thiết Bị Y Tế</option>
                                                                 </select>
                                                             </div>
                                                         </div>
 
                                                         <div class="row align-items-center">
-                                                            <label
-                                                                class="col-lg-2 col-md-3 col-form-label form-label-title">Maximum
-                                                                Spend</label>
+                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Chi Tiêu Tối Đa</label>
                                                             <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number">
+                                                                <input class="form-control" type="number" placeholder="Giá trị chi tiêu tối đa để áp dụng mã giảm giá">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -476,25 +412,21 @@
                                             <div class="tab-pane fade" id="pills-usage" role="tabpanel">
                                                 <div class="theme-form theme-form-2 mega-form">
                                                     <div class="card-header-1">
-                                                        <h5>Usage Limits</h5>
+                                                        <h5>Giới Hạn Sử Dụng</h5>
                                                     </div>
 
                                                     <div class="row">
                                                         <div class="mb-4 row align-items-center">
-                                                            <label
-                                                                class="form-label-title col-lg-2 col-md-3 mb-0">Per
-                                                                Limited</label>
+                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Giới Hạn Mỗi Mã</label>
                                                             <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number">
+                                                                <input class="form-control" type="number" placeholder="Số lần tối đa mã này được sử dụng">
                                                             </div>
                                                         </div>
 
                                                         <div class="row align-items-center">
-                                                            <label
-                                                                class="form-label-title col-lg-2 col-md-3 mb-0">Per
-                                                                Customer</label>
+                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Giới Hạn Mỗi Khách Hàng</label>
                                                             <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number">
+                                                                <input class="form-control" type="number" placeholder="Số lần tối đa mỗi khách hàng có thể sử dụng mã này">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -504,8 +436,8 @@
                                         
                                         <div class="mt-4 row">
                                             <div class="col-md-9 offset-md-3">
-                                                <button type="submit" class="btn btn-primary" form="couponForm"><i class="ri-save-line"></i> Lưu mã giảm giá</button>
-                                                <a th:href="@{/coupon-list}" class="btn btn-secondary"><i class="ri-arrow-go-back-line"></i> Hủy</a>
+                                                <button type="submit" class="btn btn-primary" form="couponForm"><i class="ri-save-line"></i> Lưu Mã Giảm Giá</button>
+                                                <a th:href="@{/coupon-list}" class="btn btn-secondary"><i class="ri-arrow-left-line"></i> Quay Lại Danh Sách</a>
                                             </div>
                                         </div>
                                     </div>
@@ -523,7 +455,7 @@
             <footer class="footer">
                 <div class="row">
                     <div class="col-md-12 footer-copyright text-center">
-                        <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                        <p class="mb-0">Bản quyền 2022 Kivicare theme by pixelstrap</p>
                     </div>
                 </div>
             </footer>
@@ -538,13 +470,12 @@
     <div class="modal-dialog  modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
-                <h5 class="modal-title" id="staticBackdropLabel">Logging Out</h5>
-                <p>Are you sure you want to log out?</p>
+                <h5 class="modal-title" id="staticBackdropLabel">Đăng xuất</h5>
+                <p>Bạn có chắc chắn muốn đăng xuất?</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 <div class="button-box">
-                    <button type="button" class="btn btn--no" data-bs-dismiss="modal">No</button>
-                    <button type="button" onclick="location.href = 'login.html';"
-                            class="btn  btn--yes btn-primary">Yes</button>
+                    <button type="button" class="btn btn--no" data-bs-dismiss="modal">Không</button>
+                    <button type="button" onclick="location.href = 'login.html';" class="btn  btn--yes btn-primary">Có</button>
                 </div>
             </div>
         </div>
@@ -590,8 +521,31 @@
 
 <!-- Theme js -->
 <script th:src="@{/templates_storage/assets/js/script.js}"></script>
+
+<!-- JavaScript để xử lý submit form -->
+<script>
+    $(document).ready(function() {
+        $('#couponForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        alert('Tạo mã giảm giá thành công!');
+                        window.location.href = '/coupon-list';
+                    } else {
+                        alert('Có lỗi xảy ra: ' + response.message);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Lỗi khi tạo mã giảm giá.');
+                }
+            });
+        });
+    });
+</script>
 </body>
 
 </html>
-
-

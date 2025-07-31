@@ -1,0 +1,330 @@
+<!doctype html>
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        navActive = ${7},
+        breadCrumbTitle = ${'Đơn đặt hàng'},
+        breadCrumbTexts = ${{{'Đơn đặt hàng'}}},
+        breadCrumbLinks = ${{{''}}}
+"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+   <title>Đơn đặt hàng</title>
+   <th:block layout:fragment="custom-css">
+      <style>
+         /* highlight chosen category */
+         .active-cat > a,
+         .active-cat .archiveCount {
+            color: #f10a38 !important;
+         }
+      </style>
+   </th:block>
+</head>
+  <body class=" body-bg landing-pages">
+    <span class="screen-darken"></span>
+    <!-- loader Start -->
+    <div id="loading">
+      <div class="loader simple-loader">
+          <div class="loader-body">
+              <img src="/frontend/assets/images/loader.gif" alt="loader" class="light-loader img-fluid " width="200">
+          </div>
+      </div>    </div>
+    <!-- loader END -->
+    <main class="main-content" layout:fragment="content">
+       <div th:fragment="content">
+           <div class="checkout-page  section-padding">
+               <div class="container">
+                   <div class="row">
+                       <div class="col-lg-12">
+                           <div class="main-cart mb-3 mb-md-5 pb-0 pb-md-5">
+                               <ul class="cart-page-items d-flex justify-content-center list-inline align-items-center gap-3 gap-md-5 flex-wrap">
+                                   <li class="cart-page-item">
+                                       <span class="cart-pre-number bg-light border-radius rounded-circle me-1">1</span>
+                                       <span class="cart-page-link">Giỏ hàng</span>
+                                   </li>
+                                   <li class="cart-page-item">
+                                       <svg width="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                           <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21.2498C17.108 21.2498 21.25 17.1088 21.25 11.9998C21.25 6.89176 17.108 2.74976 12 2.74976C6.892 2.74976 2.75 6.89176 2.75 11.9998C2.75 17.1088 6.892 21.2498 12 21.2498Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                           <path d="M10.5576 15.4709L14.0436 11.9999L10.5576 8.52895" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                       </svg>
+                                   </li>
+                                   <li class="cart-page-item">
+                                       <span class="cart-pre-number bg-light border-radius rounded-circle me-1">2</span>
+                                       <span class="cart-page-link">Xác nhận đơn hàng</span>
+                                   </li>
+                                   <li class="cart-page-item">
+                                       <svg width="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                           <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21.2498C17.108 21.2498 21.25 17.1088 21.25 11.9998C21.25 6.89176 17.108 2.74976 12 2.74976C6.892 2.74976 2.75 6.89176 2.75 11.9998C2.75 17.1088 6.892 21.2498 12 21.2498Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                           <path d="M10.5576 15.4709L14.0436 11.9999L10.5576 8.52895" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                       </svg>
+                                   </li>
+                                   <li class="cart-page-item active">
+                                       <span class="cart-pre-heading badge cart-pre-number bg-primary border-radius rounded-circle me-1">3</span>
+                                       <span class="cart-page-link">Chi tiết đơn hàngy</span>
+                                   </li>
+                               </ul>
+                           </div>
+                       </div>
+                   </div>
+
+                   <form th:action="@{/shop}" th:object="${checkoutFormDTO}" method="get">
+                       <div class="order-wrapper p-4 bg-white mb-5">
+                           <h5 class="text-center mb-4">Đơn hàng của bạn đã được ghi nhận</h5>
+                           <div class="table-responsive">
+                               <table class="edit-address w-100 border-0 bg-white">
+                                   <tbody>
+                                   <tr>
+                                       <td class="label-name p-2">Mã đơn hàng</td>
+                                       <td class="seprator p-2"><span>:</span></td>
+                                       <td class="p-2">38653</td>
+                                   </tr>
+                                   <tr>
+                                       <td class="label-name p-2">Ngày tạo đơn hàng: </td>
+                                       <td class="seprator p-2"><span>:</span></td>
+                                       <td class="p-2" th:text="${#dates.format(#dates.createNow(), 'MMMM dd, yyyy')}">July 30, 2025</td>
+                                   </tr>
+                                   <tr>
+                                       <td class="label-name p-2">Email</td>
+                                       <td class="seprator p-2"><span>:</span></td>
+                                       <td class="p-2" th:text="*{email}">jondoe@gmail.com</td>
+                                   </tr>
+                                   <tr>
+                                       <td class="label-name p-2">Tổng tiền</td>
+                                       <td class="seprator p-2"><span>:</span></td>
+                                       <td class="p-2" th:text="(${session.appliedCoupon != null} ? ${#numbers.formatDecimal(session.discountedTotal, 1, 'COMMA', 2, 'POINT')} : ${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')})+'₫'"></td>
+                                   </tr>
+                                   <tr>
+                                       <td class="label-name p-2">Phương thức thanh toán</td>
+                                       <td class="seprator p-2"><span>:</span></td>
+                                       <td class="p-2">Thanh toán bằng tiền mặt</td>
+                                   </tr>
+                                   </tbody>
+                               </table>
+                           </div>
+                       </div>
+
+                       <h4 class="mb-3">Chi tiết đơn hàng</h4>
+                       <div class="checkout-review-order">
+                           <div class="table-responsive">
+                               <table class="w-100">
+                                   <thead>
+                                   <tr class="border-bottom">
+                                       <th class="ps-0 p-3 text-primary">Sản phẩm</th>
+                                       <th class="pe-0 p-3 text-primary text-end">Tổng</th>
+                                   </tr>
+                                   </thead>
+                                   <tbody>
+                                   <!-- Loop through cartItems to display products -->
+                                   <div th:unless="${#lists.isEmpty(cartItems)}">
+                                       <tr th:each="cartItem : ${cartItems}" class="border-bottom">
+                                           <td class="ps-0 p-3">
+                                               <span th:text="${cartItem.productEntity.name}"></span>
+                                               × <span th:text="${cartItem.quantity}"></span>
+                                           </td>
+                                           <td class="pe-0 p-3 text-end">
+                                               <span th:text="${cartItem.quantity * cartItem.productEntity.price}+'₫'"></span>
+                                           </td>
+                                       </tr>
+                                   </div>
+                                   <!-- If cart is empty -->
+                                   <div th:if="${#lists.isEmpty(cartItems)}" class="text-center py-3 text-muted">
+                                       <p class="text-muted py-3 fw-semibold">Không có sản phẩm được đặt</p>
+                                   </div>
+                                   </tbody>
+                                   <tfoot>
+                                   <tr class="border-bottom">
+                                       <td class="ps-0 p-3 fw-bold text-primary">Tổng tiền</td>
+                                       <td class="pe-0 p-3 fw-bold text-end">
+                                           <h5 class="text-primary mb-0">
+                                               <span th:text="${total}+'₫'"></span>
+                                           </h5>
+                                       </td>
+                                   </tr>
+                                   <!-- Coupon discount -->
+                                   <tr class="coupon-discount" th:if="${session.appliedCoupon != null}">
+                                       <th class="border-0">
+                                <span class="text-success fw-normal">
+                                    Coupon (<span th:text="${session.appliedCoupon.code}">Mã giảm giá</span>)
+                                </span>
+                                       </th>
+                                       <td class="border-0">
+                                <span class="fs-6 text-success">
+                                    - <span th:text="${#numbers.formatDecimal(total - session.discountedTotal, 1, 'COMMA', 2, 'POINT')}+'₫'"></span>
+                                </span>
+                                       </td>
+                                   </tr>
+                                   <tr class="order-total">
+                                       <th class="border-0">
+                                           <strong><span class="fs-5 text-dark">Tổng tiền</span></strong>
+                                       </th>
+                                       <td class="pe-0 p-3 fw-bold text-end">
+                                           <h5 class="text-primary mb-0">
+                                               <span th:text="(${session.appliedCoupon != null} ? ${#numbers.formatDecimal(session.discountedTotal, 1, 'COMMA', 2, 'POINT')} : ${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')})+'₫'"></span>
+                                           </h5>
+                                       </td>
+                                   </tr>
+                                   </tfoot>
+                               </table>
+                           </div>
+                       </div>
+
+                       <h4 class="my-4">Thông tin khách hàng</h4>
+                       <div class="order-wrapper p-4 bg-white mb-5">
+                           <div class="table-responsive">
+                               <table class="edit-address w-100 border-0 bg-white">
+                                   <tbody>
+                                   <tr>
+                                       <td class="label-name p-2">Họ và Tên</td>
+                                       <td class="seprator p-2"><span>:</span></td>
+                                       <td class="p-2" th:text="*{firstName} + ' ' + *{lastName}">john deo</td>
+                                   </tr>
+                                   <tr>
+                                       <td class="label-name p-2">Công ty</td>
+                                       <td class="seprator p-2"><span>:</span></td>
+                                       <td class="p-2">Iqonic Design</td>
+                                   </tr>
+                                   <tr>
+                                       <td class="label-name p-2">Địa chỉ</td>
+                                       <td class="seprator p-2"><span>:</span></td>
+                                       <td class="p-2" th:text="*{address}"></td>
+                                   </tr>
+                                   <tr>
+                                       <td class="label-name p-2">E-mail</td>
+                                       <td class="seprator p-2"><span>:</span></td>
+                                       <td class="p-2" th:text="*{email}">johndeo@gmail.com</td>
+                                   </tr>
+                                   <tr>
+                                       <td class="label-name p-2">Số điện thoại</td>
+                                       <td class="seprator p-2"><span>:</span></td>
+                                       <td class="p-2" th:text="*{phoneNumber}">1234567890</td>
+                                   </tr>
+                                   </tbody>
+                               </table>
+                           </div>
+                       </div>
+
+                       <div class="button-primary">
+                           <div class="iq-btn-container">
+                               <button type="submit" class="iq-button text-capitalize">
+                                   <span class="iq-btn-text-holder position-relative">Quay lại cửa hàng</span>
+                                   <span class="iq-btn-icon-holder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 8 8" fill="none">
+                            <path d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z" fill="currentColor"></path>
+                        </svg>
+                    </span>
+                               </button>
+                           </div>
+                       </div>
+                   </form>
+               </div>
+           </div>
+       </div>
+    </main>
+    <!-- Wrapper End -->
+    <!-- Footer start -->
+
+
+    <!-- setting -->
+    <div class="rtl-box">
+        <a class="btn btn-icon btn-setting bg-primary" id="settingbutton" data-bs-toggle="offcanvas"
+            data-bs-target="#live-customizer" role="button" aria-controls="live-customizer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1.875em" height="1.875em" viewBox="0 0 20 20" fill="white">
+                <path fill-rule="evenodd"
+                    d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                    clip-rule="evenodd" />
+            </svg>
+        </a>
+        <div class="offcanvas offcanvas-end live-customizer on-rtl end" tabindex="-1" id="live-customizer"
+            data-bs-scroll="true" data-bs-backdrop="false" aria-labelledby="live-customizer-label" aria-modal="true"
+            role="dialog">
+            <div class="offcanvas-header gap-3 pb-2">
+                <div class="d-flex align-items-center">
+                    <h5 class="offcanvas-title" id="live-customizer-label">Language Mode</h5>
+                </div>
+                <div class="d-flex gap-1 align-items-center">
+                    <button class="btn btn-icon text-primary border-0" data-reset="settings" data-bs-toggle="tooltip"
+                        data-bs-placement="left" aria-label="Reset All Settings"
+                        data-bs-original-title="Reset All Settings">
+                        <span class="btn-inner">
+                            <i class="fas fa-sync-alt"></i>
+                        </span>
+                    </button>
+                    <button type="button" class="btn btn-icon btn-close px-0 shadow-none" data-bs-dismiss="offcanvas"
+                        aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="offcanvas-body pt-0">
+                <div class="modes row row-cols-2 gx-2">
+                    <div class="col">
+                        <div data-setting="attribute" class="text-center w-100">
+                            <input type="radio" value="ltr" class="btn-check" name="theme_scheme_direction" data-prop="dir"
+                                id="theme-scheme-direction-ltr" checked>
+                            <label class="btn dir-btn cutomizer-button w-100" for="theme-scheme-direction-ltr">
+                                LTR
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div data-setting="attribute" class="text-center w-100">
+                            <input type="radio" value="rtl" class="btn-check" name="theme_scheme_direction" data-prop="dir"
+                                id="theme-scheme-direction-rtl">
+                            <label class="btn dir-btn cutomizer-button w-100" for="theme-scheme-direction-rtl">
+                                RTL
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    <!-- setting -->
+
+    <!-- Back To Top -->
+      <div id="back-to-top" style="display: none;">
+         <a class="p-0 btn btn-sm position-fixed top border-0 text-white" id="top" href="#top">
+            <svg width="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M5 15.5L12 8.5L19 15.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+            </svg>
+         </a>
+      </div>
+    <!-- Back To Top -->
+    
+    <!-- Library Bundle Script -->
+    <script src="/frontend/assets/js/core/libs.min.js"></script>
+    <!-- Plugin Scripts -->
+    
+    <!-- Slider-tab Script -->
+    <script src="/frontend/assets/js/plugins/slider-tabs.js"></script>
+    
+    <!-- fslightbox Script -->
+    <script src="/frontend/assets/js/plugins/fslightbox.js" defer></script>
+    
+    <!-- Sweet-alert Script -->
+    <script src="/frontend/assets/vendor/sweetalert2/dist/sweetalert2.min.js" async></script>
+    <script src="/frontend/assets/js/plugins/sweet-alert.js" defer></script>
+    
+    
+      <!-- Select2 Script -->
+      <script src="/frontend/assets/js/plugins/select2.js" defer></script>
+    
+    
+    <!-- Lodash Utility -->
+    <script src="/frontend/assets/vendor/lodash/lodash.min.js"></script>
+    <!-- Utilities Functions -->
+    <script src="/frontend/assets/js/iqonic-script/utility.min.js"></script>
+    <!-- Settings Script -->
+    <script src="/frontend/assets/js/iqonic-script/setting.min.js"></script>
+    <!-- Settings Init Script -->
+    <script src="/frontend/assets/js/iqonic-script/setting-init.js"></script>
+    <!-- External Library Bundle Script -->
+    <script src="/frontend/assets/js/core/external.min.js"></script>
+    <!-- Kivicare Script -->
+    <script src="/frontend/assets/js/kivicare.js?v=1.4.1" defer></script>
+    <script src="/frontend/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
+    <!-- Kivicare Pages Script -->
+    <script src="/frontend/assets/js/slider.js" defer></script>
+    <script src="/frontend/assets/js/scroll-text.js" defer></script>  </body>
+</html>

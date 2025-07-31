@@ -6,13 +6,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum LeaveType {
-    ANNUAL_LEAVE("Annual Leave"),
-    SICK_LEAVE("Sick Leave"),
-    MATERNITY_LEAVE("Maternity Leave"),
-    PATERNITY_LEAVE("Paternity Leave"),
-    UNPAID_LEAVE("Unpaid Leave"),
-    STUDY_LEAVE("Study Leave"),
-    EMERGENCY_LEAVE("Emergency Leave");
+    ANNUAL_LEAVE("Nghỉ phép năm"),
+    SICK_LEAVE("Nghỉ ốm"),
+    MATERNITY_LEAVE("Nghỉ thai sản"),
+    PATERNITY_LEAVE("Nghỉ phép cha"),
+    UNPAID_LEAVE("Nghĩ không lương"),
+    STUDY_LEAVE("Nghỉ để đi học"),
+    EMERGENCY_LEAVE("Nghỉ phép khẩn cấp");
 
     private final String type;
 }

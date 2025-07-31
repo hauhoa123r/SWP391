@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fastkart - Chi tiết nhập kho</title>
+    <title>Kivicare - Chi tiết nhập kho</title>
 
     <!-- CSS Files -->
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -69,14 +69,14 @@
         <div class="header-wrapper m-0">
             <div class="header-logo-wrapper p-0">
                 <div class="logo-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                         <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                     </a>
                 </div>
                 <div class="toggle-sidebar">
                     <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                     </a>
                 </div>
@@ -159,7 +159,7 @@
             <div id="sidebarEffect"></div>
             <div>
                 <div class="logo-wrapper logo-wrapper-center">
-                    <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
+                    <a th:href="@{/warehouse/dashboard/main}" data-bs-original-title="" title="">
                         <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                     </a>
                     <div class="back-btn">
@@ -170,7 +170,7 @@
                     </div>
                 </div>
                 <div class="logo-icon-wrapper">
-                    <a th:href="@{/dashboard/main}">
+                    <a th:href="@{/warehouse/dashboard/main}">
                         <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                              alt="logo">
@@ -185,7 +185,7 @@
                         <ul class="sidebar-links" id="simple-bar">
                             <li class="back-btn"></li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/warehouse/dashboard/main}">
                                     <i class="ri-home-line"></i>
                                     <span>Bảng điều khiển</span>
                                 </a>
@@ -197,10 +197,10 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockIn.html}">Nhập kho</a>
+                                        <a th:href="@{/warehouse/stock-in}">Nhập kho</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/StockOut.html}">Xuất kho</a>
+                                        <a th:href="@{/warehouse/stock-out}">Xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -211,10 +211,10 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/StockInInvoice.html}">Hóa đơn nhập kho</a>
+                                        <a th:href="@{/warehouse/invoices/in}">Hóa đơn nhập kho</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
+                                        <a th:href="@{/warehouse/invoices/out}">Hóa đơn xuất kho</a>
                                     </li>
                                 </ul>
                             </li>
@@ -225,10 +225,10 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                        <a th:href="@{/warehouse/medical-equipment}">Thiết bị y tế</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/medicine.html}">Thuốc</a>
+                                        <a th:href="@{/warehouse/medicines}">Thuốc</a>
                                     </li>
                                 </ul>
                             </li>
@@ -239,21 +239,21 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     <li>
-                                        <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
+                                        <a th:href="@{/coupon-list}">Danh sách mã giảm giá</a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
+                                        <a th:href="@{/create-coupon}">Tạo mã giảm giá</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review}">
                                     <i class="ri-star-line"></i>
                                     <span>Đánh giá sản phẩm</span>
                                 </a>
                             </li>
                             <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
+                                <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports}">
                                     <i class="ri-file-chart-line"></i>
                                     <span>Báo cáo</span>
                                 </a>
@@ -279,10 +279,12 @@
                                         <div class="d-flex justify-content-between">
                                             <h5>Chi tiết đơn nhập kho</h5>
                                             <div>
-                                                <a th:href="@{/supplier-ins}" class="btn btn-secondary">
+                                                <!-- Cập nhật URL trong nút quay lại -->
+                                                <a th:href="@{/warehouse/stock-in}" class="btn btn-secondary">
                                                     <i class="ri-arrow-left-line"></i> Quay lại
                                                 </a>
-                                                <a th:if="${supplierIn.status.name() == 'COMPLETED'}" th:href="@{'/supplier-ins/' + ${supplierIn.id} + '/print'}" class="btn btn-primary" target="_blank">
+                                                <!-- Cập nhật URL trong nút in -->
+                                                <a th:if="${supplierIn.status.name() == 'COMPLETED'}" th:href="@{'/warehouse/stock-in/' + ${supplierIn.id} + '/print'}" class="btn btn-primary" target="_blank">
                                                     <i class="ri-printer-line"></i> In hóa đơn
                                                 </a>
                                             </div>
@@ -364,21 +366,22 @@
                                         <div class="mt-4">
                                             <div class="d-flex justify-content-between">
                                                 <div class="d-flex flex-wrap gap-2">
-                                                    <form th:if="${supplierIn.status.name() == 'PENDING'}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
+                                                    <!-- Cập nhật URL trong các form cập nhật trạng thái -->
+                                                    <form th:if="${supplierIn.status.name() == 'PENDING'}" th:action="@{'/warehouse/stock-in/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
                                                         <input type="hidden" name="status" value="RECEIVED">
                                                         <button type="submit" class="btn btn-success">
                                                             <i class="ri-truck-line"></i> Đánh dấu đã nhận hàng
                                                         </button>
                                                     </form>
 
-                                                    <form th:if="${supplierIn.status.name() == 'RECEIVED'}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
+                                                    <form th:if="${supplierIn.status.name() == 'RECEIVED'}" th:action="@{'/warehouse/stock-in/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
                                                         <input type="hidden" name="status" value="CHECKED">
                                                         <button type="submit" class="btn btn-warning">
                                                             <i class="ri-checkbox-line"></i> Đánh dấu đã kiểm tra
                                                         </button>
                                                     </form>
 
-                                                    <form th:if="${supplierIn.status.name() == 'CHECKED'}" th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
+                                                    <form th:if="${supplierIn.status.name() == 'CHECKED'}" th:action="@{'/warehouse/stock-in/' + ${supplierIn.id} + '/status'}" method="post" style="display:inline;">
                                                         <input type="hidden" name="status" value="COMPLETED">
                                                         <button type="submit" class="btn btn-success">
                                                             <i class="ri-check-line"></i> Hoàn thành
@@ -386,7 +389,8 @@
                                                     </form>
                                                 </div>
 
-                                                <form th:action="@{'/supplier-ins/' + ${supplierIn.id} + '/delete'}" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa đơn nhập kho này?')">
+                                                <!-- Cập nhật URL trong form xóa -->
+                                                <form th:action="@{'/warehouse/stock-in/' + ${supplierIn.id} + '/delete'}" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa đơn nhập kho này?')">
                                                     <button type="submit" class="btn btn-danger">
                                                         <i class="ri-delete-bin-line"></i> Xóa
                                                     </button>

@@ -1,25 +1,32 @@
 package org.project.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.enums.DiscountType;
+import org.project.exception.CouponException;
 import org.project.model.dto.CouponDTO;
 import org.project.service.CouponService;
 import org.project.service.UserCouponService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import jakarta.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
@@ -40,10 +47,10 @@ public class CouponController {
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false, defaultValue = "desc") String sortDir,
             Model model) {
-            
-        log.info("Fetching coupons with page={}, size={}, keyword={}, sortBy={}, sortDir={}", 
-                 page, size, keyword, sortBy, sortDir);
-                 
+
+        log.info("Fetching coupons with page={}, size={}, keyword={}, sortBy={}, sortDir={}",
+                page, size, keyword, sortBy, sortDir);
+
         Page<CouponDTO> couponPage;
         if (keyword != null && !keyword.isEmpty()) {
             couponPage = couponService.searchCoupons(keyword, page, size, sortBy, sortDir);
@@ -51,7 +58,7 @@ public class CouponController {
         } else {
             couponPage = couponService.findAllCoupons(page, size, sortBy, sortDir);
         }
-        
+
         model.addAttribute("coupons", couponPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", couponPage.getTotalPages());
@@ -59,7 +66,10 @@ public class CouponController {
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-        
+
+        // Add current user for forms
+        model.addAttribute("currentUser", getCurrentUser());
+
         return "templates_storage/coupon-list";
     }
     
@@ -149,20 +159,57 @@ public class CouponController {
      * Xóa coupon
      */
     @PostMapping("/delete-coupon/{id}")
-    public String deleteCoupon(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        log.info("Deleting coupon with ID: {}", id);
-        
+    public String deleteCoupon(@PathVariable Long id, RedirectAttributes redirectAttributes,
+                               @RequestParam("code") String code,
+                               HttpSession session) {
+         log.info("Deleting coupon with ID: {}", id);
+
         try {
-            couponService.deleteCoupon(id);
-            redirectAttributes.addFlashAttribute("successMessage", "Coupon deleted successfully");
-        } catch (Exception e) {
-            log.error("Error deleting coupon with ID {}: {}", id, e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("errorMessage", "Error deleting coupon: " + e.getMessage());
+//            // Get userId from session (update this based on your app's auth setup)
+//            Long userId = (Long) session.getAttribute("userId");
+//            if (userId == null) {
+//                redirectAttributes.addFlashAttribute("couponError", "User not logged in.");
+//                return "redirect:/login";
+//            }
+            Long userId=2l;
+            couponService.applyCoupon(code, userId, session);
+            redirectAttributes.addFlashAttribute("couponSuccess", "Coupon applied successfully!");
+        } catch (CouponException e) {
+            redirectAttributes.addFlashAttribute("couponError", e.getMessage());
         }
-        
-        return "redirect:/coupon-list";
+
+        return "redirect:/cart";
     }
-    
+    @GetMapping("/coupon/remove")
+    public String removeCoupon(HttpSession session, RedirectAttributes redirectAttributes) {
+        session.removeAttribute("appliedCoupon");
+        session.removeAttribute("discountedTotal");
+        redirectAttributes.addFlashAttribute("couponSuccess", "Coupon removed.");
+        return "redirect:/cart";
+    }
+
+    @PostMapping("/coupon/apply")
+    public String applyCoupon(@RequestParam("code") String code,
+                              HttpSession session,
+                              RedirectAttributes redirectAttributes) {
+        try {
+//            // Get userId from session (update this based on your app's auth setup)
+//            Long userId = (Long) session.getAttribute("userId");
+//            if (userId == null) {
+//                redirectAttributes.addFlashAttribute("couponError", "User not logged in.");
+//                return "redirect:/login";
+//            }
+            Long userId=2l;
+
+            couponService.applyCoupon(code, userId, session);
+            redirectAttributes.addFlashAttribute("couponSuccess", "Coupon applied successfully!");
+        } catch (CouponException e) {
+            redirectAttributes.addFlashAttribute("couponError", e.getMessage());
+        }
+
+        return "redirect:/cart";
+    }
+
     /**
      * Hiển thị danh sách coupon còn hạn
      */
@@ -173,12 +220,12 @@ public class CouponController {
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false, defaultValue = "desc") String sortDir,
             Model model) {
-            
-        log.info("Fetching valid coupons with page={}, size={}, sortBy={}, sortDir={}", 
-                 page, size, sortBy, sortDir);
-                 
+
+        log.info("Fetching valid coupons with page={}, size={}, sortBy={}, sortDir={}",
+                page, size, sortBy, sortDir);
+
         Page<CouponDTO> couponPage = couponService.findValidCoupons(page, size, sortBy, sortDir);
-        
+
         model.addAttribute("coupons", couponPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", couponPage.getTotalPages());
@@ -187,10 +234,10 @@ public class CouponController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         model.addAttribute("validFilter", true);
-        
+
         return "templates_storage/coupon-list";
     }
-    
+
     /**
      * Hiển thị danh sách coupon hết hạn
      */
@@ -201,12 +248,12 @@ public class CouponController {
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false, defaultValue = "desc") String sortDir,
             Model model) {
-            
-        log.info("Fetching expired coupons with page={}, size={}, sortBy={}, sortDir={}", 
-                 page, size, sortBy, sortDir);
-                 
+
+        log.info("Fetching expired coupons with page={}, size={}, sortBy={}, sortDir={}",
+                page, size, sortBy, sortDir);
+
         Page<CouponDTO> couponPage = couponService.findExpiredCoupons(page, size, sortBy, sortDir);
-        
+
         model.addAttribute("coupons", couponPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", couponPage.getTotalPages());
@@ -215,7 +262,7 @@ public class CouponController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         model.addAttribute("expiredFilter", true);
-        
+
         return "templates_storage/coupon-list";
     }
 
@@ -262,13 +309,13 @@ public class CouponController {
             }
             
             // Check minimum order amount if set
-            if (orderTotal != null && coupon.getMinimumOrderAmount() != null && 
-                orderTotal.compareTo(coupon.getMinimumOrderAmount()) < 0) {
-                log.warn("Order total {} does not meet minimum amount {} for coupon {}", 
-                         orderTotal, coupon.getMinimumOrderAmount(), code);
+            if (orderTotal != null && coupon.getMinimumOrderAmount() != null &&
+                    orderTotal.compareTo(coupon.getMinimumOrderAmount()) < 0) {
+                log.warn("Order total {} does not meet minimum amount {} for coupon {}",
+                        orderTotal, coupon.getMinimumOrderAmount(), code);
                 response.put("success", false);
-                response.put("message", "This coupon requires a minimum order of " + 
-                            coupon.getMinimumOrderAmount() + ".");
+                response.put("message", "This coupon requires a minimum order of " +
+                        coupon.getMinimumOrderAmount() + ".");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
             
@@ -290,19 +337,31 @@ public class CouponController {
                 // If no order total provided, just return the coupon details
                 discountAmount = coupon.getValue();
             }
-            
+
             response.put("success", true);
             response.put("message", "Coupon applied successfully!");
             response.put("coupon", coupon);
             response.put("discountAmount", discountAmount);
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
             log.error("Error applying coupon: {}", e.getMessage(), e);
             response.put("success", false);
             response.put("message", "An error occurred while applying the coupon. Please try again.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+
+    private Object getCurrentUser() {
+        // TODO: Implement proper user authentication
+        // For now, return a simple object with required properties
+        return new Object() {
+            public Long getId() { return 256L; }
+            public String getFullName() { return "Người dùng"; }
+            public String getRoleName() { return "STAFF"; }
+            public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }
+        };
     }
 } 

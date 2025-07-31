@@ -3,6 +3,7 @@ package org.project.converter;
 import org.project.config.ModelMapperConfig;
 import org.project.entity.HospitalEntity;
 import org.project.exception.mapping.ErrorMappingException;
+import org.project.model.dto.HospitalDTO;
 import org.project.model.response.HospitalResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,5 +22,10 @@ public class HospitalConverter {
     public HospitalResponse toResponse(HospitalEntity hospitalEntity) {
         Optional<HospitalResponse> hospitalResponseOptional = Optional.of(modelMapperConfig.mapper().map(hospitalEntity, HospitalResponse.class));
         return hospitalResponseOptional.orElseThrow(() -> new ErrorMappingException(HospitalEntity.class, HospitalResponse.class));
+    }
+
+    public HospitalEntity toEntity(HospitalDTO hospitalDTO) {
+        Optional<HospitalEntity> hospitalEntityOptional = Optional.of(modelMapperConfig.mapper().map(hospitalDTO, HospitalEntity.class));
+        return hospitalEntityOptional.orElseThrow(() -> new ErrorMappingException(HospitalDTO.class, HospitalEntity.class));
     }
 }

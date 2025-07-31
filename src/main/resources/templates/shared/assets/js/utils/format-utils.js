@@ -1,4 +1,10 @@
 export class FormatUtils {
+    static formatNumber(number, decimalPlaces = 2) {
+        if (number === null || number === undefined) return "";
+        if (isNaN(number)) return number.toString();
+        return parseFloat(number).toFixed(decimalPlaces);
+    }
+
     /**
      * Format a date string to Vietnamese date format
      * @param {string} dateString

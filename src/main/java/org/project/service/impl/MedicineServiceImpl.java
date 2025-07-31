@@ -1,18 +1,16 @@
 package org.project.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.project.entity.CategoryEntity;
 import org.project.entity.MedicineEntity;
 import org.project.entity.ProductEntity;
 import org.project.enums.ProductType;
+import org.project.enums.operation.SortDirection;
 import org.project.model.dto.MedicineDTO;
 import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierRequestItemDTO;
 import org.project.repository.MedicineRepository;
 import org.project.repository.ProductRepository;
-import org.project.service.BatchesService;
 import org.project.service.MedicineService;
-import org.project.enums.operation.SortDirection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,10 +35,6 @@ public class MedicineServiceImpl implements MedicineService {
     
     @Autowired
     private ProductRepository productRepository;
-
-    //inject BatchService
-    @Autowired
-    private BatchesService  batchesService;
 
     public MedicineServiceImpl(MedicineRepository medicineRepository) {
         this.medicineRepository = medicineRepository;
@@ -231,13 +225,6 @@ public class MedicineServiceImpl implements MedicineService {
             dto.setProductType(product.getProductType());
             dto.setProductStatus(product.getProductStatus());
             dto.setLabel(product.getLabel());
-            dto.setAverageRating(product.getAverageRating());
-            dto.setReviewCount(product.getReviewCount());
-            //string of categories
-            String categories = entity.getProductEntity().getCategoryEntities().stream()
-                    .map(CategoryEntity::getName).collect(Collectors.joining(", "));
-            dto.setCategory(categories);
-            //set batches
         }
         
         return dto;

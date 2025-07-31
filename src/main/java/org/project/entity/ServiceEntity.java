@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,9 +33,9 @@ public class ServiceEntity {
     private DepartmentEntity departmentEntity;
 
     @OneToMany(mappedBy = "serviceEntity")
-    private final Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
+    private List<AppointmentEntity> appointmentEntities;
 
-    @OneToMany(mappedBy = "serviceEntity")
-    private final Set<ServiceFeatureEntity> serviceFeatureEntities = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "serviceEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ServiceFeatureEntity> serviceFeatureEntities;
 
 }

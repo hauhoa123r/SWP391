@@ -16,7 +16,7 @@ public interface ReviewService {
     /**
      * Tìm danh sách đánh giá với nhiều điều kiện lọc
      */
-    Page<ReviewDTO> findReviews(int page, int size, String search, Integer rating, 
+    Page<ReviewResponse> findReviews(int page, int size, String search, Integer rating,
                                ReviewStatus status, String sort, String direction);
     
     /**

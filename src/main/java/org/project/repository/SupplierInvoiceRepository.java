@@ -1,6 +1,7 @@
 package org.project.repository;
 
 import org.project.entity.SupplierInvoiceEntity;
+import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
 import org.springframework.data.domain.Page;
@@ -39,4 +40,8 @@ public interface SupplierInvoiceRepository extends JpaRepository<SupplierInvoice
     // Thêm phương thức truy vấn JPQL lấy các đơn có trạng thái COMPLETED hoặc REJECTED
     @Query("SELECT s FROM SupplierInvoiceEntity s WHERE s.transactionType = :type AND (s.status = org.project.enums.SupplierTransactionStatus.COMPLETED OR s.status = org.project.enums.SupplierTransactionStatus.REJECTED)")
     List<SupplierInvoiceEntity> findCompletedOrRejectedInvoicesByType(@Param("type") org.project.enums.SupplierTransactionType type);
+
+    // In SupplierTransactionRepository
+    @Query("SELECT t FROM SupplierTransactionsEntity t LEFT JOIN FETCH t.supplierTransactionItemEntities items LEFT JOIN FETCH items.productEntity p WHERE t.id = :id")
+    Optional<SupplierTransactionsEntity> findWithItemsAndProductsById(@Param("id") Long id);
 }

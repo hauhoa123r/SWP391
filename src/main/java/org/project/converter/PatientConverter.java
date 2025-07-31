@@ -21,16 +21,11 @@ public class PatientConverter {
     @Autowired
     public void setModelMapperConfig(ModelMapperConfig modelMapperConfig) {
         this.modelMapperConfig = modelMapperConfig;
-        this.modelMapperConfig.mapper().typeMap(UserRegisterDTO.class, PatientEntity.class).setPostConverter(
-                mappingContext -> {
-                    UserRegisterDTO source = mappingContext.getSource();
-                    PatientEntity destination = mappingContext.getDestination();
-                    destination.setEmail(source.getEmail());
-                    destination.setPhoneNumber(source.getPhoneNumber());
-                    destination.setFamilyRelationship(FamilyRelationship.SELF);
-                    return destination;
-                }
-        );
+        this.modelMapperConfig.mapper().typeMap(UserRegisterDTO.class, PatientEntity.class).setPostConverter(mappingContext -> {
+            PatientEntity destination = mappingContext.getDestination();
+            destination.setFamilyRelationship(FamilyRelationship.SELF);
+            return destination;
+        });
     }
 
     public Optional<PatientEntity> toConvertEntity(PatientDTO patientDTO) {
@@ -65,8 +60,7 @@ public class PatientConverter {
     }
 
     public PatientEntity toEntity(UserRegisterDTO userRegisterDTO) {
-        return Optional.ofNullable(modelMapperConfig.mapper().map(userRegisterDTO, PatientEntity.class))
-                .orElseThrow(() -> new ErrorMappingException(UserRegisterDTO.class, PatientEntity.class));
+        return Optional.ofNullable(modelMapperConfig.mapper().map(userRegisterDTO, PatientEntity.class)).orElseThrow(() -> new ErrorMappingException(UserRegisterDTO.class, PatientEntity.class));
     }
 }
 

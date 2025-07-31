@@ -33,4 +33,8 @@ public interface PatientService {
     String toConvertFileToBase64(String avatarUrl);
 
     UserEntity getUserHasPatient();
+
+    Page<PatientResponse> getPatients(int index, int size, PatientDTO patientDTO);
+
+    void createPatientAndUser(PatientDTO patientDTO);
 }

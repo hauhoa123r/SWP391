@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Fastkart admin là mẫu giao diện quản trị Bootstrap 5 linh hoạt, mạnh mẽ, hiện đại và responsive với vô số khả năng tùy chỉnh.">
+        content="Kivicare admin là mẫu giao diện quản trị Bootstrap 5 linh hoạt, mạnh mẽ, hiện đại và responsive với vô số khả năng tùy chỉnh.">
     <meta name="keywords"
-        content="mẫu giao diện quản trị, Fastkart admin, giao diện dashboard, giao diện quản trị phẳng, giao diện quản trị responsive, ứng dụng web">
+        content="mẫu giao diện quản trị, Kivicare admin, giao diện dashboard, giao diện quản trị phẳng, giao diện quản trị responsive, ứng dụng web">
     <meta name="author" content="pixelstrap">
     <link rel="icon" th:href="@{/frontend/assets/images/favicon.png}" type="image/x-icon">
     <link rel="shortcut icon" th:href="@{/frontend/assets/images/favicon.png}" type="image/x-icon">
-    <title>Fastkart - Báo Cáo</title>
+    <title>Kivicare - Báo Cáo</title>
 
     <!-- Google font-->
     <link
@@ -94,14 +94,14 @@
             <div class="header-wrapper m-0">
                 <div class="header-logo-wrapper p-0">
                     <div class="logo-wrapper">
-                        <a th:href="@{/dashboard/main}">
+                        <a th:href="@{/warehouse/dashboard/main}">
                             <img class="img-fluid main-logo" th:src="@{/templates_storage/assets/images/logo/1.png}" alt="logo">
                             <img class="img-fluid white-logo" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                         </a>
                     </div>
                     <div class="toggle-sidebar">
                         <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
-                        <a th:href="@{/dashboard/main}">
+                        <a th:href="@{/warehouse/dashboard/main}">
                             <img th:src="@{/templates_storage/assets/images/logo/1.png}" class="img-fluid" alt="">
                         </a>
                     </div>
@@ -183,7 +183,7 @@
                 <div id="sidebarEffect"></div>
                 <div>
                     <div class="logo-wrapper logo-wrapper-center">
-                        <a th:href="@{/dashboard/main}" data-bs-original-title="" title="">
+                        <a th:href="@{/warehouse/dashboard/main}" data-bs-original-title="" title="">
                             <img class="img-fluid for-white" th:src="@{/templates_storage/assets/images/logo/full-white.png}" alt="logo">
                         </a>
                         <div class="back-btn">
@@ -194,7 +194,7 @@
                         </div>
                     </div>
                     <div class="logo-icon-wrapper">
-                        <a th:href="@{/dashboard/main}">
+                        <a th:href="@{/warehouse/dashboard/main}">
                             <img class="img-fluid main-logo main-white" th:src="@{/templates_storage/assets/images/logo/1-white.png}" alt="logo">
                             <img class="img-fluid main-logo main-dark" th:src="@{/templates_storage/assets/images/logo/logo-white.png}"
                                  alt="logo">
@@ -209,7 +209,7 @@
                             <ul class="sidebar-links" id="simple-bar">
                                 <li class="back-btn"></li>
                                 <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/dashboard/main}">
+                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/warehouse/dashboard/main}">
                                         <i class="ri-home-line"></i>
                                         <span>Bảng điều khiển</span>
                                     </a>
@@ -221,10 +221,10 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a th:href="@{/StockIn.html}">Nhập kho</a>
+                                            <a th:href="@{/warehouse/stock-in}">Nhập kho</a>
                                         </li>
                                         <li>
-                                            <a th:href="@{/StockOut.html}">Xuất kho</a>
+                                            <a th:href="@{/warehouse/stock-out}">Xuất kho</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -235,10 +235,10 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a th:href="@{/StockInInvoice.html}">Hóa đơn nhập kho</a>
+                                            <a th:href="@{/warehouse/invoices/in}">Hóa đơn nhập kho</a>
                                         </li>
                                         <li>
-                                            <a th:href="@{/StockOutInvoice.html}">Hóa đơn xuất kho</a>
+                                            <a th:href="@{/warehouse/invoices/out}">Hóa đơn xuất kho</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -249,10 +249,10 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a th:href="@{/medical-equipment.html}">Thiết bị y tế</a>
+                                            <a th:href="@{/warehouse/medical-equipment}">Thiết bị y tế</a>
                                         </li>
                                         <li>
-                                            <a th:href="@{/medicine.html}">Thuốc</a>
+                                            <a th:href="@{/warehouse/medicines}">Thuốc</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -264,21 +264,21 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a th:href="@{/coupon-list.html}">Danh sách mã giảm giá</a>
+                                            <a th:href="@{/coupon-list}">Danh sách mã giảm giá</a>
                                         </li>
                                         <li>
-                                            <a th:href="@{/create-coupon.html}">Tạo mã giảm giá</a>
+                                            <a th:href="@{/create-coupon}">Tạo mã giảm giá</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review.html}">
+                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/product-review}">
                                         <i class="ri-star-line"></i>
                                         <span>Đánh giá sản phẩm</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports.html}">
+                                    <a class="sidebar-link sidebar-title link-nav" th:href="@{/reports}">
                                         <i class="ri-file-chart-line"></i>
                                         <span>Báo cáo</span>
                                     </a>
@@ -497,15 +497,6 @@
                 <!-- Container-fluid kết thúc -->
 
                 <!-- Bắt đầu chân trang -->
-                <div class="container-fluid">
-                    <footer class="footer">
-                        <div class="row">
-                            <div class="col-md-12 footer-copyright text-center">
-                                <p class="mb-0">Bản quyền 2022 © Chủ đề Fastkart bởi pixelstrap</p>
-                            </div>
-                        </div>
-                    </footer>
-                </div>
             </div>
             <!-- Kết thúc phần báo cáo -->
         </div>
@@ -523,7 +514,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <div class="button-box">
                         <button type="button" class="btn btn--no" data-bs-dismiss="modal">Không</button>
-                        <button type="button" onclick="location.href = 'login.html';"
+                        <button type="button" onclick="location.href = '/login';"
                             class="btn btn--yes btn-primary">Có</button>
                     </div>
                 </div>

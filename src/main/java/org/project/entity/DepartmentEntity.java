@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
+import org.project.enums.DepartmentStatus;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -43,7 +44,7 @@ public class DepartmentEntity {
     @Column(name = "video_url")
     private String videoUrl;
 
-    @Size(max = 255)
+    @Lob
     @Column(name = "banner_url")
     private String bannerUrl;
 
@@ -53,4 +54,9 @@ public class DepartmentEntity {
 
     @OneToMany(mappedBy = "departmentEntity")
     private Set<ServiceEntity> serviceEntities = new LinkedHashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "department_status")
+    private DepartmentStatus departmentStatus;
+
 }

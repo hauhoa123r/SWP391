@@ -34,4 +34,11 @@ public class SupplierTransactionDTO {
     private Timestamp paymentDate;
     private Set<SupplierTransactionItemDTO> supplierTransactionItemEntities;
     private Set<SupplierTransactionInvoiceMappingDTO> transactionInvoiceMappings;
+    private Timestamp invoiceDate;
+    private BigDecimal grandTotal;
+    private Long createdById;
+    private String recipient;
+    private String stockOutReason;
+    private BigDecimal discountAmount;
+    private String createdByName;
 }

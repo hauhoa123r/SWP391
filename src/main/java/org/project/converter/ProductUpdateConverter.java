@@ -1,10 +1,5 @@
 package org.project.converter;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.project.entity.ProductAdditionalInfoEntity;
 import org.project.entity.ProductEntity;
 import org.project.entity.ProductTagEntity;
@@ -15,9 +10,12 @@ import org.project.repository.CategoryRepository;
 import org.project.repository.ProductAdditionalInfoRepository;
 import org.project.repository.ProductTagRepository;
 import org.project.service.FileStorageService;
-import org.project.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 

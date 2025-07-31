@@ -8,26 +8,25 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface UserCouponRepository extends JpaRepository<UserCouponEntity, UserCouponEntityId> {
-    
+
     /**
      * Tìm tất cả các coupon mà người dùng đã sử dụng
      */
     List<UserCouponEntity> findByUserEntityId(Long userId);
-    
+
     /**
      * Tìm tất cả người dùng đã sử dụng coupon
      */
     List<UserCouponEntity> findByCouponEntityId(Long couponId);
-    
+
     /**
      * Kiểm tra người dùng đã sử dụng coupon chưa
      */
     boolean existsByUserEntityIdAndCouponEntityId(Long userId, Long couponId);
-    
+
     /**
      * Đếm số lần coupon đã được sử dụng
      */

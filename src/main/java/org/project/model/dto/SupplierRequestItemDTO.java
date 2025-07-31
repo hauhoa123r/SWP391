@@ -32,6 +32,9 @@ public class SupplierRequestItemDTO {
     private Integer quantity;
 
     private BigDecimal unitPrice;
+    
+    // Thêm field totalPrice để tính toán tổng tiền
+    private BigDecimal totalPrice;
 
     private Date manufactureDate;
 

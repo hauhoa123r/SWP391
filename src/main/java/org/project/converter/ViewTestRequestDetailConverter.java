@@ -7,7 +7,6 @@ import org.project.entity.TestRequestEntity;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.response.ViewResultDetailResponse;
 import org.project.model.response.ViewResultResponse;
-import org.project.model.response.ViewTestRequestDetailResponse;
 import org.project.repository.AppointmentRepository;
 import org.project.repository.AssignmentRepository;
 import org.project.repository.TestRequestRepository;

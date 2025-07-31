@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+<div th:fragment="header">
+    <header class="header">
+        <div class="user-avatar" id="avatarDropdown">
+            <div class="user-info">
+                <img th:src="${avatarUrl}" alt="Avatar" class="avatar-img">
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <button id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+            </div>
+        </div>
+    </header>
+</div>
+</body>
+</html>
