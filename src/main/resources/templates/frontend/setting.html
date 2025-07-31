@@ -1,129 +1,143 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{/frontend/layouts/main-layout}"
+      th:with="
+        navActive = ${'setting'},
+        breadCrumbTitle = ${'Cài đặt tài khoản'},
+        breadCrumbTexts = ${{{'Cài đặt tài khoản'}}},
+        breadCrumbLinks = ${{{''}}}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cài đặt tài khoản</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<div class="settings-container">
-    <!-- Header -->
-    <div class="settings-header">
-        <h1>Cài Đặt Tài Khoản</h1>
-        <p>Quản lý thông tin cá nhân, bảo mật và các tùy chọn tài khoản của bạn</p>
+<div class="section-padding" layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10 col-12">
+                <div class="settings-content">
+                    <!-- Cập nhật số điện thoại -->
+                    <div class="iq-team-block settings-section p-4 mb-5 bg-white shadow-sm rounded-4">
+                        <div class="section-header mb-4 d-flex align-items-center">
+                            <i class="fas fa-phone-alt me-2 text-primary"></i>
+                            <h2 class="mb-0 fs-5 fw-500">Số điện thoại</h2>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="phone">Số điện thoại hiện tại</label>
+                            <input class="form-control" id="phone" readonly th:value="${currentPhoneNumber}" type="tel">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="new-phone">Số điện thoại mới</label>
+                            <input class="form-control" id="new-phone" placeholder="Nhập số điện thoại mới" type="tel">
+                            <div class="error-message" id="phone-error"></div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="phone-password">Mật khẩu hiện tại</label>
+                            <div class="password-container position-relative">
+                                <input class="form-control" id="phone-password" placeholder="Nhập mật khẩu hiện tại"
+                                       type="password">
+                                <span class="toggle-password position-absolute top-50 end-0 translate-middle-y px-3"
+                                      onclick="togglePassword('phone-password')">
+                  <i class="fas fa-eye"></i>
+                </span>
+                            </div>
+                            <div class="error-message" id="phone-password-error"></div>
+                        </div>
+                        <button class="btn btn-primary w-100 mb-2" id="btn-change-phone">
+                            Cập nhật số điện thoại
+                            <span class="loading-indicator" id="phone-loading"></span>
+                        </button>
+                        <div class="success-message" id="phone-success"></div>
+                    </div>
+
+                    <!-- Cập nhật email -->
+                    <div class="iq-team-block settings-section p-4 mb-5 bg-white shadow-sm rounded-4">
+                        <div class="section-header mb-4 d-flex align-items-center">
+                            <i class="fas fa-envelope me-2 text-primary"></i>
+                            <h2 class="mb-0 fs-5 fw-500">Địa chỉ email</h2>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="email">Email hiện tại</label>
+                            <input class="form-control" id="email" readonly th:value="${currentEmail}" type="email">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="new-email">Email mới</label>
+                            <input class="form-control" id="new-email" placeholder="Nhập email mới" type="email">
+                            <div class="error-message" id="email-error"></div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="email-password">Mật khẩu hiện tại</label>
+                            <div class="password-container position-relative">
+                                <input class="form-control" id="email-password" placeholder="Nhập mật khẩu hiện tại"
+                                       type="password">
+                                <span class="toggle-password position-absolute top-50 end-0 translate-middle-y px-3"
+                                      onclick="togglePassword('email-password')">
+                  <i class="fas fa-eye"></i>
+                </span>
+                            </div>
+                            <div class="error-message" id="email-password-error"></div>
+                        </div>
+                        <button class="btn btn-primary w-100 mb-2" id="btn-change-email">
+                            Cập nhật địa chỉ email
+                            <span class="loading-indicator" id="email-loading"></span>
+                        </button>
+                        <div class="success-message" id="email-success"></div>
+                    </div>
+
+                    <!-- Đổi mật khẩu -->
+                    <div class="iq-team-block settings-section p-4 mb-5 bg-white shadow-sm rounded-4">
+                        <div class="section-header mb-4 d-flex align-items-center">
+                            <i class="fas fa-lock me-2 text-primary"></i>
+                            <h2 class="mb-0 fs-5 fw-500">Đổi mật khẩu</h2>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="current-password">Mật khẩu hiện tại</label>
+                            <div class="password-container position-relative">
+                                <input class="form-control" id="current-password" placeholder="Nhập mật khẩu hiện tại"
+                                       type="password">
+                                <span class="toggle-password position-absolute top-50 end-0 translate-middle-y px-3"
+                                      onclick="togglePassword('current-password')">
+                  <i class="fas fa-eye"></i>
+                </span>
+                            </div>
+                            <div class="error-message" id="current-password-error"></div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="new-password">Mật khẩu mới</label>
+                            <div class="password-container position-relative">
+                                <input class="form-control" id="new-password" placeholder="Nhập mật khẩu mới"
+                                       type="password">
+                                <span class="toggle-password position-absolute top-50 end-0 translate-middle-y px-3"
+                                      onclick="togglePassword('new-password')">
+                  <i class="fas fa-eye"></i>
+                </span>
+                            </div>
+                            <div class="error-message" id="new-password-error"></div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="confirm-password">Xác nhận mật khẩu mới</label>
+                            <div class="password-container position-relative">
+                                <input class="form-control" id="confirm-password" placeholder="Xác nhận mật khẩu mới"
+                                       type="password">
+                                <span class="toggle-password position-absolute top-50 end-0 translate-middle-y px-3"
+                                      onclick="togglePassword('confirm-password')">
+                  <i class="fas fa-eye"></i>
+                </span>
+                            </div>
+                            <div class="error-message" id="confirm-password-error"></div>
+                        </div>
+                        <button class="btn btn-primary w-100 mb-2" id="btn-change-password">
+                            Đổi mật khẩu
+                            <span class="loading-indicator" id="password-loading"></span>
+                        </button>
+                        <div class="success-message" id="password-success"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Main Content -->
-    <div class="settings-content">
-        <!-- Cập nhật số điện thoại -->
-        <div class="settings-section">
-            <div class="section-header">
-                <i class="fas fa-phone-alt"></i>
-                <h2>Số điện thoại</h2>
-            </div>
-            <div class="form-group">
-                <label for="phone">Số điện thoại hiện tại</label>
-                <input type="tel" class="form-control" id="phone" th:value="${currentPhoneNumber}" readonly>
-            </div>
-            <div class="form-group">
-                <label for="new-phone">Số điện thoại mới</label>
-                <input type="tel" class="form-control" id="new-phone" placeholder="Nhập số điện thoại mới">
-                <div class="error-message" id="phone-error"></div>
-            </div>
-            <div class="form-group">
-                <label for="phone-password">Mật khẩu hiện tại</label>
-                <div class="password-container">
-                    <input type="password" class="form-control" id="phone-password" placeholder="Nhập mật khẩu hiện tại">
-                    <span class="toggle-password" onclick="togglePassword('phone-password')">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-                <div class="error-message" id="phone-password-error"></div>
-            </div>
-            <button class="btn" id="btn-change-phone">
-                Cập nhật số điện thoại
-                <span class="loading-indicator" id="phone-loading"></span>
-            </button>
-            <div class="success-message" id="phone-success"></div>
-        </div>
-
-        <div class="settings-section">
-            <div class="section-header">
-                <i class="fas fa-envelope"></i>
-                <h2>Địa chỉ email</h2>
-            </div>
-            <div class="form-group">
-                <label for="email">Email hiện tại</label>
-                <input type="email" class="form-control" id="email" th:value="${currentEmail}" readonly>
-            </div>
-            <div class="form-group">
-                <label for="new-email">Email mới</label>
-                <input type="email" class="form-control" id="new-email" placeholder="Nhập email mới">
-                <div class="error-message" id="email-error"></div>
-            </div>
-            <div class="form-group">
-                <label for="email-password">Mật khẩu hiện tại</label>
-                <div class="password-container">
-                    <input type="password" class="form-control" id="email-password" placeholder="Nhập mật khẩu hiện tại">
-                    <span class="toggle-password" onclick="togglePassword('email-password')">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-                <div class="error-message" id="email-password-error"></div>
-            </div>
-            <button class="btn" id="btn-change-email">
-                Cập nhật địa chỉ email
-                <span class="loading-indicator" id="email-loading"></span>
-            </button>
-            <div class="success-message" id="email-success"></div>
-        </div>
-
-        <!-- Đổi mật khẩu -->
-        <div class="settings-section">
-            <div class="section-header">
-                <i class="fas fa-lock"></i>
-                <h2>Đổi mật khẩu</h2>
-            </div>
-            <div class="form-group">
-                <label for="current-password">Mật khẩu hiện tại</label>
-                <div class="password-container">
-                    <input type="password" class="form-control" id="current-password" placeholder="Nhập mật khẩu hiện tại">
-                    <span class="toggle-password" onclick="togglePassword('current-password')">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-                <div class="error-message" id="current-password-error"></div>
-            </div>
-            <div class="form-group">
-                <label for="new-password">Mật khẩu mới</label>
-                <div class="password-container">
-                    <input type="password" class="form-control" id="new-password" placeholder="Nhập mật khẩu mới">
-                    <span class="toggle-password" onclick="togglePassword('new-password')">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-                <div class="error-message" id="new-password-error"></div>
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">Xác nhận mật khẩu mới</label>
-                <div class="password-container">
-                    <input type="password" class="form-control" id="confirm-password" placeholder="Xác nhận mật khẩu mới">
-                    <span class="toggle-password" onclick="togglePassword('confirm-password')">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-                <div class="error-message" id="confirm-password-error"></div>
-            </div>
-            <button class="btn" id="btn-change-password">
-                Đổi mật khẩu
-                <span class="loading-indicator" id="password-loading"></span>
-            </button>
-            <div class="success-message" id="password-success"></div>
-        </div>
-    </div>
-
+</div>
 </body>
+<th:block layout:fragment="custom-js">
     <script>
         function togglePassword(fieldId) {
             const passwordField = document.getElementById(fieldId);
@@ -144,39 +158,39 @@
         function showError(elementId, message) {
             const errorElement = document.getElementById(elementId);
             errorElement.textContent = message;
-            errorElement.style.display = 'block';
-            document.getElementById(elementId.replace('-error', '')).classList.add('error');
+            errorElement.style.display = "block";
+            document.getElementById(elementId.replace("-error", "")).classList.add("error");
         }
 
         // Ẩn thông báo lỗi
         function hideError(elementId) {
             const errorElement = document.getElementById(elementId);
-            errorElement.style.display = 'none';
-            document.getElementById(elementId.replace('-error', '')).classList.remove('error');
+            errorElement.style.display = "none";
+            document.getElementById(elementId.replace("-error", "")).classList.remove("error");
         }
 
         // Hiển thị thông báo thành công
         function showSuccess(elementId, message) {
             const successElement = document.getElementById(elementId);
             successElement.textContent = message;
-            successElement.style.display = 'block';
+            successElement.style.display = "block";
 
             // Ẩn thông báo sau 3 giây
             setTimeout(() => {
-                successElement.style.display = 'none';
+                successElement.style.display = "none";
             }, 3000);
         }
 
         // Hiển thị loading
         function showLoading(buttonId, loadingId) {
             document.getElementById(buttonId).disabled = true;
-            document.getElementById(loadingId).style.display = 'inline-block';
+            document.getElementById(loadingId).style.display = "inline-block";
         }
 
         // Ẩn loading
         function hideLoading(buttonId, loadingId) {
             document.getElementById(buttonId).disabled = false;
-            document.getElementById(loadingId).style.display = 'none';
+            document.getElementById(loadingId).style.display = "none";
         }
 
         // Validate số điện thoại Việt Nam
@@ -203,43 +217,43 @@
                 const response = await fetch(url, {
                     method: method,
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
                     },
                     body: JSON.stringify(data)
                 });
 
                 return response;
             } catch (error) {
-                console.error('Fetch error:', error);
-                throw new Error('Có lỗi xảy ra khi kết nối đến server');
+                console.error("Fetch error:", error);
+                throw new Error("Có lỗi xảy ra khi kết nối đến server");
             }
         }
 
         // Xử lý đổi số điện thoại
         async function handleChangePhone() {
             // Reset lỗi
-            hideError('phone-error');
-            hideError('phone-password-error');
-            document.getElementById('phone-success').style.display = 'none';
+            hideError("phone-error");
+            hideError("phone-password-error");
+            document.getElementById("phone-success").style.display = "none";
 
             // Lấy giá trị từ form
-            const newPhone = document.getElementById('new-phone').value.trim();
-            const password = document.getElementById('phone-password').value.trim();
+            const newPhone = document.getElementById("new-phone").value.trim();
+            const password = document.getElementById("phone-password").value.trim();
 
             // Validate
             let isValid = true;
 
             if (!newPhone) {
-                showError('phone-error', 'Số điện thoại không được để trống');
+                showError("phone-error", "Số điện thoại không được để trống");
                 isValid = false;
             } else if (!validateVietnamesePhone(newPhone)) {
-                showError('phone-error', 'Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số');
+                showError("phone-error", "Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số");
                 isValid = false;
             }
 
             if (!password) {
-                showError('phone-password-error', 'Mật khẩu không được để trống');
+                showError("phone-password-error", "Mật khẩu không được để trống");
                 isValid = false;
             }
 
@@ -247,10 +261,10 @@
 
             try {
                 // Hiển thị loading
-                showLoading('btn-change-phone', 'phone-loading');
+                showLoading("btn-change-phone", "phone-loading");
 
                 // Gửi request
-                const response = await sendRequest('/api/change-phone', 'PATCH', {
+                const response = await sendRequest("/api/change-phone", "PATCH", {
                     phoneNumber: newPhone,
                     password: password
                 });
@@ -258,52 +272,52 @@
                 // Xử lý response
                 if (response.ok) {
                     // Cập nhật UI
-                    document.getElementById('phone').value = newPhone;
-                    document.getElementById('new-phone').value = '';
-                    document.getElementById('phone-password').value = '';
-                    showSuccess('phone-success', 'Cập nhật số điện thoại thành công!');
+                    document.getElementById("phone").value = newPhone;
+                    document.getElementById("new-phone").value = "";
+                    document.getElementById("phone-password").value = "";
+                    showSuccess("phone-success", "Cập nhật số điện thoại thành công!");
                 } else {
                     const errorData = await response.json();
                     if (response.status === 401) {
-                        showError('phone-password-error', 'Mật khẩu cũ không đúng');
+                        showError("phone-password-error", "Mật khẩu cũ không đúng");
                     } else if (response.status === 402) {
-                        showError('phone-error', 'Số điện thoại đã được sử dụng');
+                        showError("phone-error", "Số điện thoại đã được sử dụng");
                     } else {
-                        showError('phone-error', errorData.error || 'Có lỗi xảy ra');
+                        showError("phone-error", errorData.error || "Có lỗi xảy ra");
                     }
                 }
             } catch (error) {
-                showError('phone-error', error.message);
+                showError("phone-error", error.message);
             } finally {
                 // Ẩn loading
-                hideLoading('btn-change-phone', 'phone-loading');
+                hideLoading("btn-change-phone", "phone-loading");
             }
         }
 
         // Xử lý đổi email
         async function handleChangeEmail() {
             // Reset lỗi
-            hideError('email-error');
-            hideError('email-password-error');
-            document.getElementById('email-success').style.display = 'none';
+            hideError("email-error");
+            hideError("email-password-error");
+            document.getElementById("email-success").style.display = "none";
 
             // Lấy giá trị từ form
-            const newEmail = document.getElementById('new-email').value.trim();
-            const password = document.getElementById('email-password').value.trim();
+            const newEmail = document.getElementById("new-email").value.trim();
+            const password = document.getElementById("email-password").value.trim();
 
             // Validate
             let isValid = true;
 
             if (!newEmail) {
-                showError('email-error', 'Email không được để trống');
+                showError("email-error", "Email không được để trống");
                 isValid = false;
             } else if (!validateEmail(newEmail)) {
-                showError('email-error', 'Email không hợp lệ');
+                showError("email-error", "Email không hợp lệ");
                 isValid = false;
             }
 
             if (!password) {
-                showError('email-password-error', 'Mật khẩu không được để trống');
+                showError("email-password-error", "Mật khẩu không được để trống");
                 isValid = false;
             }
 
@@ -311,10 +325,10 @@
 
             try {
                 // Hiển thị loading
-                showLoading('btn-change-email', 'email-loading');
+                showLoading("btn-change-email", "email-loading");
 
                 // Gửi request
-                const response = await sendRequest('/api/change-email', 'PATCH', {
+                const response = await sendRequest("/api/change-email", "PATCH", {
                     email: newEmail,
                     password: password
                 });
@@ -322,62 +336,62 @@
                 // Xử lý response
                 if (response.ok) {
                     // Cập nhật UI
-                    document.getElementById('email').value = newEmail;
-                    document.getElementById('new-email').value = '';
-                    document.getElementById('email-password').value = '';
-                    showSuccess('email-success', 'Cập nhật email thành công!');
+                    document.getElementById("email").value = newEmail;
+                    document.getElementById("new-email").value = "";
+                    document.getElementById("email-password").value = "";
+                    showSuccess("email-success", "Cập nhật email thành công!");
                 } else {
                     const errorData = await response.json();
                     if (response.status === 401) {
-                        showError('email-password-error', 'Mật khẩu cũ không đúng');
+                        showError("email-password-error", "Mật khẩu cũ không đúng");
                     } else if (response.status === 409) {
-                        showError('email-error', 'Email đã được sử dụng');
+                        showError("email-error", "Email đã được sử dụng");
                     } else {
-                        showError('email-error', errorData.error || 'Có lỗi xảy ra');
+                        showError("email-error", errorData.error || "Có lỗi xảy ra");
                     }
                 }
             } catch (error) {
-                showError('email-error', error.message);
+                showError("email-error", error.message);
             } finally {
                 // Ẩn loading
-                hideLoading('btn-change-email', 'email-loading');
+                hideLoading("btn-change-email", "email-loading");
             }
         }
 
         // Xử lý đổi mật khẩu
         async function handleChangePassword() {
             // Reset lỗi
-            hideError('current-password-error');
-            hideError('new-password-error');
-            hideError('confirm-password-error');
-            document.getElementById('password-success').style.display = 'none';
+            hideError("current-password-error");
+            hideError("new-password-error");
+            hideError("confirm-password-error");
+            document.getElementById("password-success").style.display = "none";
 
             // Lấy giá trị từ form
-            const oldPassword = document.getElementById('current-password').value.trim();
-            const newPassword = document.getElementById('new-password').value.trim();
-            const confirmPassword = document.getElementById('confirm-password').value.trim();
+            const oldPassword = document.getElementById("current-password").value.trim();
+            const newPassword = document.getElementById("new-password").value.trim();
+            const confirmPassword = document.getElementById("confirm-password").value.trim();
 
             // Validate
             let isValid = true;
 
             if (!oldPassword) {
-                showError('current-password-error', 'Mật khẩu cũ không được để trống');
+                showError("current-password-error", "Mật khẩu cũ không được để trống");
                 isValid = false;
             }
 
             if (!newPassword) {
-                showError('new-password-error', 'Mật khẩu mới không được để trống');
+                showError("new-password-error", "Mật khẩu mới không được để trống");
                 isValid = false;
             } else if (!validatePassword(newPassword)) {
-                showError('new-password-error', 'Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường và 1 chữ số');
+                showError("new-password-error", "Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường và 1 chữ số");
                 isValid = false;
             }
 
             if (!confirmPassword) {
-                showError('confirm-password-error', 'Xác nhận mật khẩu không được để trống');
+                showError("confirm-password-error", "Xác nhận mật khẩu không được để trống");
                 isValid = false;
             } else if (newPassword !== confirmPassword) {
-                showError('confirm-password-error', 'Mật khẩu xác nhận không khớp');
+                showError("confirm-password-error", "Mật khẩu xác nhận không khớp");
                 isValid = false;
             }
 
@@ -385,10 +399,10 @@
 
             try {
                 // Hiển thị loading
-                showLoading('btn-change-password', 'password-loading');
+                showLoading("btn-change-password", "password-loading");
 
                 // Gửi request
-                const response = await sendRequest('/api/change-password', 'PATCH', {
+                const response = await sendRequest("/api/change-password", "PATCH", {
                     oldPassword: oldPassword,
                     newPassword: newPassword,
                     confirmPassword: confirmPassword
@@ -397,39 +411,39 @@
                 // Xử lý response
                 if (response.ok) {
                     // Reset form
-                    document.getElementById('current-password').value = '';
-                    document.getElementById('new-password').value = '';
-                    document.getElementById('confirm-password').value = '';
-                    showSuccess('password-success', 'Đổi mật khẩu thành công!');
+                    document.getElementById("current-password").value = "";
+                    document.getElementById("new-password").value = "";
+                    document.getElementById("confirm-password").value = "";
+                    showSuccess("password-success", "Đổi mật khẩu thành công!");
                 } else {
                     const errorData = await response.json();
                     if (response.status === 401) {
-                        showError('current-password-error', 'Mật khẩu cũ không đúng');
+                        showError("current-password-error", "Mật khẩu cũ không đúng");
                     } else if (response.status === 400) {
-                        showError('confirm-password-error', 'Mật khẩu xác nhận không khớp');
+                        showError("confirm-password-error", "Mật khẩu xác nhận không khớp");
                     } else {
-                        showError('new-password-error', errorData.error || 'Có lỗi xảy ra');
+                        showError("new-password-error", errorData.error || "Có lỗi xảy ra");
                     }
                 }
             } catch (error) {
-                showError('new-password-error', error.message);
+                showError("new-password-error", error.message);
             } finally {
                 // Ẩn loading
-                hideLoading('btn-change-password', 'password-loading');
+                hideLoading("btn-change-password", "password-loading");
             }
         }
 
         // Gắn sự kiện khi DOM tải xong
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Gắn sự kiện cho các nút
-            document.getElementById('btn-change-phone').addEventListener('click', handleChangePhone);
-            document.getElementById('btn-change-email').addEventListener('click', handleChangeEmail);
-            document.getElementById('btn-change-password').addEventListener('click', handleChangePassword);
+            document.getElementById("btn-change-phone").addEventListener("click", handleChangePhone);
+            document.getElementById("btn-change-email").addEventListener("click", handleChangeEmail);
+            document.getElementById("btn-change-password").addEventListener("click", handleChangePassword);
 
             // Gắn sự kiện reset lỗi khi người dùng nhập
-            document.querySelectorAll('.form-control').forEach(input => {
-                input.addEventListener('input', function() {
-                    const errorId = this.id + '-error';
+            document.querySelectorAll(".form-control").forEach(input => {
+                input.addEventListener("input", function () {
+                    const errorId = this.id + "-error";
                     if (document.getElementById(errorId)) {
                         hideError(errorId);
                     }
@@ -437,5 +451,6 @@
             });
         });
     </script>
+</th:block>
 
 </html>
