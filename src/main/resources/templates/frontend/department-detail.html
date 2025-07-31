@@ -1,7 +1,7 @@
 <!doctype html>
 <html layout:decorate="~{/frontend/layouts/main-layout}"
       th:with="
-        navActive = ${4},
+        navActive = ${'department'},
         breadCrumbTitle = ${'Phòng ban ' + department.getName()},
         breadCrumbTexts = ${{{'Phòng ban ' + department.getName()}}},
         breadCrumbLinks = ${{{''}}}"

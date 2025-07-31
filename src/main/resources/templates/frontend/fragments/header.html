@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
+<!--/*@thymesVar id="navActive" type="java.lang.String"*/-->
 <header th:fragment="header">
     <nav
             class="nav navbar navbar-expand-xl navbar-light iq-navbar header-hover-menu py-xl-0">
@@ -47,46 +48,45 @@
                                 </div>
                                 <button class="btn-close float-end px-3"></button>
                             </div>
-                            <!--/*@thymesVar id="navActive" type="java.lang.Integer"*/-->
                             <ul class="navbar-nav iq-nav-menu list-unstyled" id="header-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" th:classappend="${navActive} == 1 ? 'active' : ''"
+                                    <a class="nav-link" th:classappend="${navActive} == 'home' ? 'active' : ''"
                                        th:href="@{/}">
                                         <span class="item-name">Trang chủ</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:classappend="${navActive} == 2 ? 'active' : ''"
+                                    <a class="nav-link" th:classappend="${navActive} == 'about-us' ? 'active' : ''"
                                        th:href="@{/about-us}">
                                         <span class="item-name">Giới thiệu</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:classappend="${navActive} == 3 ? 'active' : ''"
+                                    <a class="nav-link" th:classappend="${navActive} == 'hospital' ? 'active' : ''"
                                        th:href="@{/hospital}">
                                         <span class="item-name">Bệnh viện</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:classappend="${navActive} == 4 ? 'active' : ''"
+                                    <a class="nav-link" th:classappend="${navActive} == 'department' ? 'active' : ''"
                                        th:href="@{/department}">
                                         <span class="item-name">Phòng ban</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:classappend="${navActive} == 5 ? 'active' : ''"
+                                    <a class="nav-link" th:classappend="${navActive} == 'doctor' ? 'active' : ''"
                                        th:href="@{/doctor}">
                                         <span class="item-name">Bác sĩ</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:classappend="${navActive} == 6 ? 'active' : ''"
+                                    <a class="nav-link" th:classappend="${navActive} == 'service' ? 'active' : ''"
                                        th:href="@{/service}">
                                         <span class="item-name">Dịch vụ</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:classappend="${navActive} == 7 ? 'active' : ''"
+                                    <a class="nav-link" th:classappend="${navActive} == 'shop' ? 'active' : ''"
                                        th:href="@{/shop}">
                                         <span class="item-name">Cửa hàng</span>
                                     </a>
@@ -374,6 +374,7 @@
                                         <li><a class="dropdown-item border-bottom"
                                                th:href="@{/home}">Trang quản lý</a></li>
                                         <li><a class="dropdown-item"
+                                               th:classappend="${navActive == 'setting' ? 'active' : ''"
                                                th:href="@{/setting}">Cài đặt</a></li>
                                         <li><a class="dropdown-item"
                                                th:href="@{/logout}">Đăng
