@@ -54,7 +54,7 @@ public class ResultSampleConverter {
         SampleEntity sampleEntity = sampleScheduleRepository.findById(sampleId).get();
 
         TestTypeEntity testTypeEntity = testTypeRepository.findById(testTypeId).get();
-        sampleEntity.setSampleStatus("collected");
+        sampleEntity.setSampleStatus("completed");
 
         List<TestItemEntity> testItemEntities = testItemRepository.findByTestTypeEntity_Id(testTypeId);
 

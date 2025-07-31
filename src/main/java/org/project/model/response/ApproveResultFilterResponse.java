@@ -13,5 +13,5 @@ public class ApproveResultFilterResponse extends SampleServiceResponse{
     private String tester;
     private String requestAt;
     private String status;
-    private String resultId;
+    private Long resultId;
 }

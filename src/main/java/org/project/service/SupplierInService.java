@@ -1,5 +1,6 @@
 package org.project.service;
 
+import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.model.dto.SupplierInDTO;
 import org.project.service.base.BaseSupplierTransactionService;
@@ -96,7 +97,7 @@ public interface SupplierInService extends BaseSupplierTransactionService<Suppli
     }
     
     /**
-     * @deprecated Sử dụng {@link #createTransaction(SupplierInDTO)} thay thế
+     * @deprecated Sử dụng {@link #createTransaction(Object)} (SupplierInDTO)} thay thế
      */
     @Deprecated
     default SupplierInDTO createSupplierIn(SupplierInDTO supplierInDTO) {
@@ -104,7 +105,7 @@ public interface SupplierInService extends BaseSupplierTransactionService<Suppli
     }
     
     /**
-     * @deprecated Sử dụng {@link #updateTransaction(Long, SupplierInDTO)} thay thế
+     * @deprecated Sử dụng {@link #updateTransaction(Long, Object)} (Long, SupplierInDTO)} thay thế
      */
     @Deprecated
     default SupplierInDTO updateSupplierIn(Long id, SupplierInDTO supplierInDTO) {
@@ -126,4 +127,7 @@ public interface SupplierInService extends BaseSupplierTransactionService<Suppli
     default void deleteSupplierIn(Long id) {
         deleteTransaction(id);
     }
+
+    //convert to dto
+    SupplierInDTO convertToDTO(SupplierTransactionsEntity entity);
 } 

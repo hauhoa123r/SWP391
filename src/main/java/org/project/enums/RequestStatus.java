@@ -6,8 +6,8 @@ public enum RequestStatus {
     received("received"),
     processing("processing"),
     completed("completed"),
-    rejected("rejected");
-
+    rejected("rejected"),
+    collected("collected");
     private final String value;
 
     RequestStatus(String value) {

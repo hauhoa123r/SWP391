@@ -1,5 +1,6 @@
 package org.project.controller;
 
+import org.project.model.dto.HospitalDTO;
 import org.project.service.DoctorService;
 import org.project.service.HospitalService;
 import org.project.service.ServiceService;
@@ -41,5 +42,11 @@ public class HospitalController {
         modelMap.put("services", serviceService.getTop3ServicesByHospital(hospitalId));
         modelMap.put("doctors", doctorService.getTop6DoctorsByHospital(hospitalId));
         return "/frontend/hospital-detail";
+    }
+
+    @GetMapping("/admin/hospital")
+    public String getAllHospitalsForAdmin(ModelMap modelMap) {
+        modelMap.put("hospitalDTO", new HospitalDTO());
+        return "/dashboard/hospital";
     }
 }

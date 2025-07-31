@@ -1,13 +1,15 @@
 package org.project.converter;
 
 import org.project.entity.AppointmentEntity;
+import org.project.entity.ResultDetailEntity;
+import org.project.entity.ResultEntity;
 import org.project.entity.TestRequestEntity;
 import org.project.exception.ResourceNotFoundException;
 import org.project.model.response.ViewResultDetailResponse;
 import org.project.model.response.ViewResultResponse;
-import org.project.model.response.ViewTestRequestDetailResponse;
 import org.project.repository.AppointmentRepository;
 import org.project.repository.AssignmentRepository;
+import org.project.repository.TestRequestRepository;
 import org.project.repository.TestTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,11 +28,14 @@ public class ViewTestRequestDetailConverter {
     @Autowired
     private TestTypeRepository testTypeRepository;
 
+    @Autowired
+    private TestRequestRepository testRequestRepository;
 
     @Autowired
     private AppointmentRepository appointmentRepositoryImpl;
 
     public ViewResultResponse viewTestRequestDetailConverter(Long id){
+
         Optional<AppointmentEntity> appointmentEntity = appointmentRepositoryImpl.findById(id);
 
         if(!appointmentEntity.isPresent()){
@@ -51,19 +56,22 @@ public class ViewTestRequestDetailConverter {
             viewResultDetailResponse.setStatus(testRequestEntity.getRequestStatus().getValue());
             viewResultDetailResponses.add(viewResultDetailResponse);
         });
-        StringBuilder noteResult = new StringBuilder();
 
+        Set<TestRequestEntity> testRequestEntities = testRequestRepository.findByAppointmentEntity_Id(appointmentEntity.get().getId());
+
+        StringBuilder noteResult = new StringBuilder();
+        if(isCompleted(appointmentEntity.get().getTestRequestEntities())){
+            noteResult.append(converterResult(appointmentEntity.get().getTestRequestEntities()) + "\n");
+        }
         if(isReject(appointmentEntity.get().getTestRequestEntities())){
             noteResult.append(converterReasonReject(appointmentEntity.get().getTestRequestEntities()));
-        }
-        if(isCompleted(appointmentEntity.get().getTestRequestEntities())){
-            noteResult.append(converterResult(appointmentEntity.get().getTestRequestEntities()));
         }
         viewResultResponse.setDateRequest(String.valueOf(appointmentEntity.get().getStartTime()));
         viewResultResponse.setNote(noteResult.toString() != null ? noteResult.toString() : "");
         viewResultResponse.setViewResultDetailResponses(viewResultDetailResponses);
         return viewResultResponse;
     }
+
     private String converterReasonReject(Set<TestRequestEntity> testRequestEntities){
         StringBuilder reason = new StringBuilder("Lý do không lấy được mẫu ");
         for(TestRequestEntity testRequestEntity: testRequestEntities){
@@ -74,12 +82,22 @@ public class ViewTestRequestDetailConverter {
         }
         return reason.toString();
     }
+    private String converterDataUnit(ResultEntity resultEntity){
+        StringBuilder dataUnit = new StringBuilder();
+        List<ResultDetailEntity> resultDetailEntity = resultEntity.getResultDetailEntities();
+        for(ResultDetailEntity resultDetail: resultDetailEntity){
+            dataUnit.append("Chỉ số " + resultDetail.getTestItemEntity().getName() + ": " + resultDetail.getValue().longValue() + "\n" );
+
+        }
+        return dataUnit.toString();
+    }
 
     private String converterResult(Set<TestRequestEntity> testRequestEntities){
-        StringBuilder results = new StringBuilder("Kết quả:");
+        StringBuilder results = new StringBuilder("Kết quả:\n");
         for(TestRequestEntity testRequestEntity: testRequestEntities){
             if(testRequestEntity.getRequestStatus().getValue().equals("completed")){
-                results.append(testRequestEntity.getSamples().getResults().getDataunit()+"\n");
+                results.append(converterDataUnit(testRequestEntity.getSamples().getResults()));
+                results.append(testRequestEntity.getSamples().getResults().getDataunit()+ "\n");
             }
         }
         return results.toString();

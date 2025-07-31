@@ -7,4 +7,6 @@ public interface EmailService {
     void sendEmailHtml(String to, String subject, String body);
 
     void sendResetPasswordEmail(String to, String newPassword);
+
+    void sendAccountCreatedEmail(String to, String password);
 }

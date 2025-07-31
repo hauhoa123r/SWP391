@@ -1,29 +1,18 @@
 package org.project.service.impl;
 
-import org.project.entity.InventoryManagerEntity;
-import org.project.entity.ProductEntity;
-import org.project.entity.SupplierEntity;
-import org.project.entity.SupplierTransactionItemEntity;
-import org.project.entity.SupplierTransactionItemEntityId;
-import org.project.entity.SupplierTransactionsEntity;
+import org.project.entity.*;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.enums.SupplierTransactionType;
 import org.project.model.dto.SupplierInDTO;
 import org.project.model.dto.SupplierOutDTO;
 import org.project.model.dto.SupplierRequestItemDTO;
-import org.project.repository.InventoryManagerRepository;
-import org.project.repository.ProductRepository;
-import org.project.repository.SupplierEntityRepository;
-import org.project.repository.SupplierTransactionItemRepository;
-import org.project.repository.SupplierTransactionRepository;
+import org.project.repository.*;
 import org.project.service.SupplierOutService;
 import org.project.service.base.AbstractBaseTransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

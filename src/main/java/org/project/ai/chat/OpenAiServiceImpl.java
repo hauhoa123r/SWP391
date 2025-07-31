@@ -1,7 +1,6 @@
 package org.project.ai.chat;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +63,6 @@ public class OpenAiServiceImpl implements AIService {
     public String fulfillPrompt(String fullInstructionPrompt) {
         return chatClient4
                 .prompt()
-                .system(SYSTEM_PROMPT_FULL_AI)
                 .user(fullInstructionPrompt)
                 .call()
                 .content()

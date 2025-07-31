@@ -3,6 +3,7 @@ package org.project.converter;
 import org.project.config.ModelMapperConfig;
 import org.project.entity.DepartmentEntity;
 import org.project.exception.mapping.ErrorMappingException;
+import org.project.model.dto.DepartmentDTO;
 import org.project.model.response.DepartmentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,5 +23,10 @@ public class DepartmentConverter {
     public DepartmentResponse toResponse(DepartmentEntity departmentEntity) {
         Optional<DepartmentResponse> departmentResponseOptional = Optional.ofNullable(modelMapperConfig.mapper().map(departmentEntity, DepartmentResponse.class));
         return departmentResponseOptional.orElseThrow(() -> new ErrorMappingException(DepartmentEntity.class, DepartmentResponse.class));
+    }
+
+    public DepartmentEntity toEntity(DepartmentDTO departmentDTO) {
+        Optional<DepartmentEntity> departmentEntityOptional = Optional.ofNullable(modelMapperConfig.mapper().map(departmentDTO, DepartmentEntity.class));
+        return departmentEntityOptional.orElseThrow(() -> new ErrorMappingException(DepartmentDTO.class, DepartmentEntity.class));
     }
 }

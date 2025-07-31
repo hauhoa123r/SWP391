@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="position-relative " th:fragment="header">
+    <!--Nav Start-->
+    <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar">
+        <div class="container-fluid navbar-inner">
+            <a class="navbar-brand" th:href="@{/dashboard/index.html}">
+
+                <!--Logo start-->
+                <div class="logo-main">
+                    <img alt="logo" class="logo-normal img-fluid" height="30"
+                         th:src="@{/dashboard/assets/images/logo.png}">
+                    <img alt="logo" class="logo-normal dark-normal img-fluid"
+                         height="30" th:src="@{/dashboard/assets/images/logo-dark.png}">
+                    <img alt="logo" class="logo-normal white-normal img-fluid"
+                         height="30" th:src="@{/dashboard/assets/images/logo-white.png}">
+                    <img alt="logo" class="logo-mini img-fluid" height="30"
+                         th:src="@{/dashboard/assets/images/logo-mini.png}">
+                    <img alt="logo" class="logo-mini dark-mini img-fluid"
+                         height="30" th:src="@{/dashboard/assets/images/logo-mini-dark.png}">
+                    <img alt="logo" class="logo-mini white-mini img-fluid"
+                         height="30" th:src="@{/dashboard/assets/images/logo-mini-white.png}">
+                </div>
+                <!--logo End-->      </a>
+            <div class="sidebar-toggle" data-active="true" data-toggle="sidebar">
+                <i class="icon d-flex">
+                    <svg class="icon-20" viewBox="0 0 24 24" width="20">
+                        <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"
+                              fill="currentColor"/>
+                    </svg>
+                </i>
+            </div>
+            <div class="d-flex align-items-center">
+                <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                        class="navbar-toggler px-0"
+                        data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse"
+                        id="navbar-toggle"
+                        type="button">
+                                <span class="navbar-toggler-btn">
+                                   <span class="navbar-toggler-icon"></span>
+                                </span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
+                    <li class="nav-item dropdown me-0 me-xl-3">
+                        <div aria-label="First group" class="d-flex align-items-center mr-2 iq-font-style"
+                             data-setting="radio"
+                             role="group">
+                            <input class="btn-check" id="font-size-sm" name="theme_font_size" type="radio"
+                                   value="theme-fs-sm">
+                            <label class="btn btn-border border-0 btn-icon btn-sm" data-bs-placement="bottom"
+                                   data-bs-toggle="tooltip"
+                                   for="font-size-sm" title="Font size 14px">
+                                <span class="mb-0 h6" style="color: inherit !important;">A</span>
+                            </label>
+                            <input class="btn-check" id="font-size-md" name="theme_font_size" type="radio"
+                                   value="theme-fs-md">
+                            <label class="btn btn-border border-0 btn-icon" data-bs-placement="bottom"
+                                   data-bs-toggle="tooltip"
+                                   for="font-size-md" title="Font size 16px">
+                                <span class="mb-0 h4" style="color: inherit !important;">A</span>
+                            </label>
+                            <input class="btn-check" id="font-size-lg" name="theme_font_size" type="radio"
+                                   value="theme-fs-lg">
+                            <label class="btn btn-border border-0 btn-icon" data-bs-placement="bottom"
+                                   data-bs-toggle="tooltip"
+                                   for="font-size-lg" title="Font size 18px">
+                                <span class="mb-0 h1" style="color: inherit !important;">A</span>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="nav-item iq-full-screen d-none d-xl-block" id="fullscreen-item">
+                        <a class="nav-link" data-bs-toggle="dropdown" href="" id="btnFullscreen">
+                            <div class="icon nav-list-icon">
+                                         <span class="btn-inner">
+                                            <svg class="normal-screen icon-20" fill="none" height="24"
+                                                 viewBox="0 0 24 24" width="24"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                               <path d="M18.5528 5.99656L13.8595 10.8961" stroke="currentColor"
+                                                     stroke-linecap="round"
+                                                     stroke-linejoin="round" stroke-width="1.5"></path>
+                                               <path d="M14.8016 5.97618L18.5524 5.99629L18.5176 9.96906"
+                                                     stroke="currentColor"
+                                                     stroke-linecap="round" stroke-linejoin="round"
+                                                     stroke-width="1.5"></path>
+                                               <path d="M5.8574 18.896L10.5507 13.9964" stroke="currentColor"
+                                                     stroke-linecap="round"
+                                                     stroke-linejoin="round" stroke-width="1.5"></path>
+                                               <path d="M9.60852 18.9164L5.85775 18.8963L5.89258 14.9235"
+                                                     stroke="currentColor"
+                                                     stroke-linecap="round" stroke-linejoin="round"
+                                                     stroke-width="1.5"></path>
+                                            </svg>
+                                            <svg class="full-normal-screen d-none icon-20" fill="none" height="24"
+                                                 viewBox="0 0 24 24"
+                                                 width="24" xmlns="http://www.w3.org/2000/svg">
+                                               <path d="M13.7542 10.1932L18.1867 5.79319" stroke="currentColor"
+                                                     stroke-linecap="round"
+                                                     stroke-linejoin="round" stroke-width="1.5"></path>
+                                               <path d="M17.2976 10.212L13.7547 10.1934L13.7871 6.62518"
+                                                     stroke="currentColor"
+                                                     stroke-linecap="round" stroke-linejoin="round"
+                                                     stroke-width="1.5"></path>
+                                               <path d="M10.4224 13.5726L5.82149 18.1398" stroke="currentColor"
+                                                     stroke-linecap="round"
+                                                     stroke-linejoin="round" stroke-width="1.5"></path>
+                                               <path d="M6.74391 13.5535L10.4209 13.5723L10.3867 17.2755"
+                                                     stroke="currentColor"
+                                                     stroke-linecap="round" stroke-linejoin="round"
+                                                     stroke-width="1.5"></path>
+                                            </svg>
+                                         </span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>            <!--Nav End-->
+</div>
+</body>
+</html>

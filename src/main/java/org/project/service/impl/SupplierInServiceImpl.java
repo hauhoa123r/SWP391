@@ -296,7 +296,7 @@ public class SupplierInServiceImpl extends AbstractBaseTransactionServiceImpl<Su
     }
 
     @Override
-    protected SupplierInDTO convertToDTO(SupplierTransactionsEntity entity) {
+    public SupplierInDTO convertToDTO(SupplierTransactionsEntity entity) {
         SupplierInDTO dto = new SupplierInDTO();
         
         dto.setId(entity.getId());

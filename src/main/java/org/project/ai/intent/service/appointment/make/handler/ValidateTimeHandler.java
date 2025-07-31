@@ -1,7 +1,5 @@
 package org.project.ai.intent.service.appointment.make.handler;
 
-import org.project.ai.chat.AIService;
-import org.project.entity.AppointmentEntity;
 import org.project.model.dai.AppointmentDAI;
 import org.project.repository.AppointmentRepository;
 import org.springframework.stereotype.Component;
@@ -17,8 +15,8 @@ public class ValidateTimeHandler extends BaseValidationHandler{
 
     @Override
     protected boolean isValid(AppointmentDAI data) {
-//        if(data.getDate() == null || data.getDate().isBlank()) return false;
-//        AppointmentEntity appointmententity = appointmentRepository.searchAppointmentExist(data);
+        if(data.getDate() == null || data.getDate().isBlank()) return false;
+//        AppointmentEntity appointmententity = appointmentRepository.searchAppointmentExist(data.getTime());
 //        if(appointmententity != null) return false;
         return true;
     }

@@ -9,6 +9,7 @@ import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -30,5 +31,5 @@ public class MedicineDTO {
     private Long reviewCount;
     private String category;
     private final Integer minStock = 100;
-    private Set<BatchDTO> batches;
+    private List<SupplierInDTO> batches;
 } 

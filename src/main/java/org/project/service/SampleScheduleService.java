@@ -1,11 +1,13 @@
 package org.project.service;
 
+import org.project.model.dto.FilterSampleNameDTO;
 import org.project.model.dto.RejectCollectDTO;
 import org.project.model.dto.RejectSampleScheduleDTO;
 import org.project.model.dto.SampleFilterDTO;
 import org.project.model.request.CreateSamplePatientRequest;
 import org.project.model.response.ResultSampleResponse;
 import org.project.model.response.SampleConfirmResponse;
+import org.project.model.response.SampleFilterResponse;
 import org.project.model.response.SampleScheduleResponse;
 import org.springframework.data.domain.Page;
 
@@ -18,4 +20,7 @@ public interface SampleScheduleService {
     Boolean rejectCollect(RejectCollectDTO rejectCollectDTO);
     Boolean rejectSampleComfirm(RejectSampleScheduleDTO rejectSampleScheduleDTO);
     Page<ResultSampleResponse> getAllResultSample(SampleFilterDTO sampleFilterDTO) throws IllegalAccessException;
+
+    Page<SampleFilterResponse> searchSampleSchedule(FilterSampleNameDTO filterSampleNameDTO) throws IllegalAccessException;
+    Page<SampleFilterResponse> searchSampleInactive(FilterSampleNameDTO filterSampleNameDTO) throws IllegalAccessException;
 }

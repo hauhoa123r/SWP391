@@ -14,39 +14,39 @@
     <meta content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k"
           name="google_font_api">
     <!-- Favicon -->
-    <link href="/frontend_assets/assets/images/favicon.ico" rel="shortcut icon"/>
+    <link rel="shortcut icon" th:href="@{/frontend/assets/images/favicon.ico}"/>
 
     <!-- Library / Plugin Css Build -->
-    <link href="/frontend_assets/assets/css/core/libs.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/frontend/assets/css/core/libs.min.css}"/>
 
     <!-- flaticon css -->
-    <link href="/frontend_assets/assets/vendor/flaticon/css/flaticon.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/frontend/assets/vendor/flaticon/css/flaticon.css}"/>
 
     <!-- font-awesome css -->
-    <link href="/frontend_assets/assets/vendor/font-awesome/css/all.min.css"
-          rel="stylesheet"/>
+    <link rel="stylesheet"
+          th:href="@{/frontend/assets/vendor/font-awesome/css/all.min.css}"/>
 
 
     <!-- Sweetlaert2 css -->
-    <link href="/frontend_assets/assets/vendor/sweetalert2/dist/sweetalert2.min.css"
-          rel="stylesheet"/>
+    <link rel="stylesheet"
+          th:href="@{/frontend/assets/vendor/sweetalert2/dist/sweetalert2.min.css}"/>
 
 
     <!-- SwiperSlider css -->
-    <link href="/frontend_assets/assets/vendor/swiperSlider/swiper-bundle.min.css"
-          rel="stylesheet">
+    <link rel="stylesheet"
+          th:href="@{/frontend/assets/vendor/swiperSlider/swiper-bundle.min.css}">
 
     <!-- Kivicare Design System Css -->
-    <link href="/frontend_assets/assets/css/kivicare.min.css?v=1.4.1" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/frontend/assets/css/kivicare.min.css?v=1.4.1}"/>
 
     <!-- Custom Css -->
-    <link href="/frontend_assets/assets/css/custom.min.css?v=1.4.1" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/frontend/assets/css/custom.min.css?v=1.4.1}"/>
 
     <!-- Rtl Css -->
-    <link href="/frontend_assets/assets/css/rtl.min.css?v=1.4.1" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/frontend/assets/css/rtl.min.css?v=1.4.1}"/>
 
     <!-- Customizer Css -->
-    <link href="/frontend_assets/assets/css/customizer.min.css?v=1.4.1" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/frontend/assets/css/customizer.min.css?v=1.4.1}"/>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -65,7 +65,7 @@
     <div class="loader simple-loader">
         <div class="loader-body">
             <img alt="loader" class="light-loader img-fluid "
-                 src="/frontend_assets/assets/images/loader.gif" width="200">
+                 th:src="@{/frontend/assets/images/loader.gif}" width="200">
         </div>
     </div>
 </div>
@@ -103,7 +103,7 @@
                             <a class="navbar-brand m-0" th:href="@{/}"> <span
                                     class="logo-normal"> <img
                                     alt="logo" class="img-fluid"
-                                    loading="lazy" src="/frontend_assets/assets/images/logo/logo.png">
+                                    loading="lazy" th:src="@{/frontend/assets/images/logo/logo.png}">
 								</span>
                             </a>
                         </div>
@@ -115,7 +115,7 @@
                                     <a class="navbar-brand m-0" th:href="@{/}"> <span
                                             class="logo-normal"> <img
                                             alt="logo" class="img-fluid"
-                                            loading="lazy" src="/frontend_assets/assets/images/logo/logo.png">
+                                            loading="lazy" th:src="@{/frontend/assets/images/logo/logo.png}">
 										</span>
                                     </a>
                                     <button class="btn-close float-end px-3"></button>
@@ -268,7 +268,7 @@
                                                                 <img alt=""
                                                                      class="avatar-40 rounded"
                                                                      loading="lazy"
-                                                                     src="/frontend_assets/assets/images/shop/product-1.webp"/>
+                                                                     th:src="@{/frontend/assets/images/shop/product-1.webp}"/>
                                                                 <div class="ms-3 flex-grow-1">
                                                                     <h6 class="mb-0 ">Electric Toothbrush</h6>
                                                                     <div
@@ -290,7 +290,7 @@
                                                                 <img alt=""
                                                                      class="avatar-40 rounded"
                                                                      loading="lazy"
-                                                                     src="/frontend_assets/assets/images/shop/product-2.webp"/>
+                                                                     th:src="@{/frontend/assets/images/shop/product-2.webp}"/>
                                                                 <div class="ms-3 flex-grow-1">
                                                                     <h6 class="mb-0 ">Medical Box</h6>
                                                                     <div
@@ -312,7 +312,7 @@
                                                                 <img alt=""
                                                                      class="avatar-40 rounded"
                                                                      loading="lazy"
-                                                                     src="/frontend_assets/assets/images/shop/product-3.webp"/>
+                                                                     th:src="@{/frontend/assets/images/shop/product-3.webp}"/>
                                                                 <div class="ms-3 flex-grow-1">
                                                                     <h6 class="mb-0 ">Hand Sanitizer Bottle</h6>
                                                                     <div
@@ -334,7 +334,7 @@
                                                                 <img alt=""
                                                                      class="avatar-40 rounded"
                                                                      loading="lazy"
-                                                                     src="/frontend_assets/assets/images/shop/product-4.webp"/>
+                                                                     th:src="@{/frontend/assets/images/shop/product-4.webp}"/>
                                                                 <div class="ms-3 flex-grow-1">
                                                                     <h6 class="mb-0 ">Wheel Chair</h6>
                                                                     <div
@@ -354,7 +354,7 @@
                                                 <div class="card-footer pt-3 px-0 pb-0 text-center">
                                                     <div
                                                             class="d-flex align-items-center justify-content-between ">
-                                                        <strong>Subtotal:</strong> <span th:text="${#numbers.formatDecimal(cartTotal, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span>
+                                                        <strong>Subtotal:</strong> <span>$64.00</span>
                                                     </div>
                                                     <div
                                                             class="d-flex align-items-center justify-content-between my-3 pt-3 border-top">
@@ -482,7 +482,7 @@
                 <a class="navbar-brand m-0" th:href="@{/}"> <span
                         class="logo-normal"> <img
                         alt="logo" class="img-fluid" loading="lazy"
-                        src="/frontend_assets/assets/images/logo/logo.png">
+                        th:src="@{/frontend/assets/images/logo/logo.png}">
 					</span>
                 </a>
                 <button aria-label="Close" class="btn-close text-reset"
@@ -495,50 +495,50 @@
                     <div class="row row-cols-xl-3 row-cols-md-2 row-cols-2 gx-3 gy-3">
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
-                               href="/frontend_assets/assets/images/gallery/blog-1.jpg"> <img
+                               th:href="@{/frontend/assets/images/gallery/blog-1.jpg}"> <img
                                     alt="profile-image"
                                     class="img-fluid w-100" loading="lazy"
-                                    src="/frontend_assets/assets/images/gallery/blog-1.jpg">
+                                    th:src="@{/frontend/assets/images/gallery/blog-1.jpg}">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
-                               href="/frontend_assets/assets/images/gallery/blog-2.jpg"> <img
+                               th:href="@{/frontend/assets/images/gallery/blog-2.jpg}"> <img
                                     alt="profile-image"
                                     class="img-fluid w-100" loading="lazy"
-                                    src="/frontend_assets/assets/images/gallery/blog-2.jpg">
+                                    th:src="@{/frontend/assets/images/gallery/blog-2.jpg}">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
-                               href="/frontend_assets/assets/images/gallery/blog-3.jpg"> <img
+                               th:href="@{/frontend/assets/images/gallery/blog-3.jpg}"> <img
                                     alt="profile-image"
                                     class="img-fluid w-100" loading="lazy"
-                                    src="/frontend_assets/assets/images/gallery/blog-3.jpg">
+                                    th:src="@{/frontend/assets/images/gallery/blog-3.jpg}">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
-                               href="/frontend_assets/assets/images/gallery/blog-4.jpg"> <img
+                               th:href="@{/frontend/assets/images/gallery/blog-4.jpg}"> <img
                                     alt="profile-image"
                                     class="img-fluid w-100" loading="lazy"
-                                    src="/frontend_assets/assets/images/gallery/blog-4.jpg">
+                                    th:src="@{/frontend/assets/images/gallery/blog-4.jpg}">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
-                               href="/frontend_assets/assets/images/gallery/blog-5.jpg"> <img
+                               th:href="@{/frontend/assets/images/gallery/blog-5.jpg}"> <img
                                     alt="profile-image"
                                     class="img-fluid w-100" loading="lazy"
-                                    src="/frontend_assets/assets/images/gallery/blog-5.jpg">
+                                    th:src="@{/frontend/assets/images/gallery/blog-5.jpg}">
                             </a>
                         </div>
                         <div class="col">
                             <a data-fslightbox="sidebar-gallery"
-                               href="/frontend_assets/assets/images/gallery/blog-6.jpg"> <img
+                               th:href="@{/frontend/assets/images/gallery/blog-6.jpg}"> <img
                                     alt="profile-image"
                                     class="img-fluid w-100" loading="lazy"
-                                    src="/frontend_assets/assets/images/gallery/blog-6.jpg">
+                                    th:src="@{/frontend/assets/images/gallery/blog-6.jpg}">
                             </a>
                         </div>
                     </div>
@@ -666,7 +666,7 @@
                                     <a href="shop-detail.html"></a>
                                     <div class="iq-product-image position-relative">
                                         <div class="animate:hover-media-wrap">
-                                            <img src="/frontend_assets/assets/images//shop/product-1.webp" alt="icon"
+                                            <img th:src="@{/frontend/assets/images//shop/product-1.webp}" alt="icon"
                                                 class="img-fluid hover-media" loading="lazy">
                                         </div>
                                         <div class="iq-button-holder d-inline-block">
@@ -793,7 +793,6 @@
                                         <div class="animate:hover-media-wrap">
                                             <img alt="icon" class="img-fluid hover-media"
                                                  loading="lazy"
-                                                 src="/frontend_assets/assets/images//shop/product-1.webp"
                                                  th:src="@{${product.imageUrl}}">
                                         </div>
                                         <div class="iq-button-holder d-inline-block">
@@ -1081,7 +1080,7 @@
                                     <a href="shop-detail.html"></a>
                                     <div class="iq-product-image position-relative">
                                         <div class="animate:hover-media-wrap">
-                                            <img src="/frontend_assets/assets/images//shop/product-4.webp" alt="icon"
+                                            <img th:src="@{/frontend/assets/images//shop/product-4.webp}" alt="icon"
                                                 class="img-fluid hover-media" loading="lazy">
                                         </div>
                                         <div class="iq-button-holder d-inline-block">
@@ -1208,7 +1207,6 @@
                                         <div class="animate:hover-media-wrap">
                                             <img alt="icon" class="img-fluid hover-media"
                                                  loading="lazy"
-                                                 src="/frontend_assets/assets/images//shop/product-4.webp"
                                                  th:src="@{${product.imageUrl}}">
                                         </div>
                                         <div class="iq-button-holder d-inline-block">
@@ -1344,7 +1342,7 @@
                                     <a href="shop-detail.html"></a>
                                     <div class="iq-product-image position-relative">
                                         <div class="animate:hover-media-wrap">
-                                            <img src="/frontend_assets/assets/images//shop/product-9.webp" alt="icon"
+                                            <img th:src="@{/frontend/assets/images//shop/product-9.webp}" alt="icon"
                                                 class="img-fluid hover-media" loading="lazy">
                                         </div>
                                         <div class="iq-button-holder d-inline-block">
@@ -1469,7 +1467,7 @@
                                     <a href="shop-detail.html"></a>
                                     <div class="iq-product-image position-relative">
                                         <div class="animate:hover-media-wrap">
-                                            <img src="/frontend_assets/assets/images//shop/product-3.webp" alt="icon"
+                                            <img th:src="@{/frontend/assets/images//shop/product-3.webp}" alt="icon"
                                                 class="img-fluid hover-media" loading="lazy">
                                         </div>
                                         <div class="iq-button-holder d-inline-block">
@@ -1592,7 +1590,7 @@
                                     <a href="shop-detail.html"></a>
                                     <div class="iq-product-image position-relative">
                                         <div class="animate:hover-media-wrap">
-                                            <img src="/frontend_assets/assets/images//shop/product-1.webp" alt="icon"
+                                            <img th:src="@{/frontend/assets/images//shop/product-1.webp}" alt="icon"
                                                 class="img-fluid hover-media" loading="lazy">
                                         </div>
                                         <div class="iq-button-holder d-inline-block">
@@ -1777,7 +1775,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-1.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-1.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -1824,7 +1822,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-2.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-2.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -1871,7 +1869,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-3.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-3.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -1918,7 +1916,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-4.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-4.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -1965,7 +1963,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-5.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-5.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2012,7 +2010,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-6.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-6.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2059,7 +2057,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-7.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-7.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2106,7 +2104,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-8.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-8.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2153,7 +2151,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-9.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-9.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2200,7 +2198,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-10.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-10.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2247,7 +2245,7 @@
                                     <a class="blog-image d-block overflow-hidden"
                                        href="./blog-details.html"> <img
                                             alt="blog-image" class="img-fluid w-100"
-                                            loading="lazy" src="/frontend_assets/assets/images/blog/blog-11.webp">
+                                            loading="lazy" th:src="@{/frontend/assets/images/blog/blog-11.webp}">
                                     </a>
                                     <div
                                             class="iq-blog-meta d-flex justify-content-between flex-wrap mt-5 mb-2">
@@ -2335,7 +2333,7 @@
                                                         class="iq-testimonial-avtar me-lg-5 pe-lg-5 mb-lg-0 mb-5 flex-shrink-0">
                                                     <img alt="user"
                                                          class="img-fluid" loading="lazy"
-                                                         src="/frontend_assets/assets/images/testimonial/user-1.webp">
+                                                         th:src="@{/frontend/assets/images/testimonial/user-1.webp}">
                                                 </div>
                                                 <div class="iq-testimonial-content-inner">
                                                     <p
@@ -2410,7 +2408,7 @@
                                                         class="iq-testimonial-avtar me-lg-5 pe-lg-5 mb-lg-0 mb-5 flex-shrink-0">
                                                     <img alt="user"
                                                          class="img-fluid" loading="lazy"
-                                                         src="/frontend_assets/assets/images/testimonial/user-2.webp">
+                                                         th:src="@{/frontend/assets/images/testimonial/user-2.webp}">
                                                 </div>
                                                 <div class="iq-testimonial-content-inner">
                                                     <p
@@ -2487,7 +2485,7 @@
                                                         class="iq-testimonial-avtar me-lg-5 pe-lg-5 mb-lg-0 mb-5 flex-shrink-0">
                                                     <img alt="user"
                                                          class="img-fluid" loading="lazy"
-                                                         src="/frontend_assets/assets/images/testimonial/user-3.webp">
+                                                         th:src="@{/frontend/assets/images/testimonial/user-3.webp}">
                                                 </div>
                                                 <div class="iq-testimonial-content-inner">
                                                     <p
@@ -2577,7 +2575,7 @@
                     <div class="iq-icon-box column d-flex align-items-center gap-2">
                         <div class="icon-box-img">
                             <img alt="icon" class="img-fluid"
-                                 loading="lazy" src="/frontend_assets/assets/images/product-home/Traced.png">
+                                 loading="lazy" th:src="@{/frontend/assets/images/product-home/Traced.png}">
                         </div>
                         <div class="icon-box-content">
                             <h5 class="icon-box-title">Free Shipping Worldwide</h5>
@@ -2589,7 +2587,7 @@
                     <div class="iq-icon-box column d-flex align-items-center gap-2">
                         <div class="icon-box-img">
                             <img alt="icon" class="img-fluid"
-                                 loading="lazy" src="/frontend_assets/assets/images/product-home/back.png">
+                                 loading="lazy" th:src="@{/frontend/assets/images/product-home/back.png}">
                         </div>
                         <div class="icon-box-content">
                             <h5 class="icon-box-title">Easy Return Avaliable</h5>
@@ -2601,7 +2599,7 @@
                     <div class="iq-icon-box column d-flex align-items-center gap-2">
                         <div class="icon-box-img">
                             <img alt="icon" class="img-fluid"
-                                 loading="lazy" src="/frontend_assets/assets/images/product-home/doller.png">
+                                 loading="lazy" th:src="@{/frontend/assets/images/product-home/doller.png}">
                         </div>
                         <div class="icon-box-content">
                             <h5 class="icon-box-title">Secure Payment</h5>
@@ -2613,7 +2611,7 @@
                     <div class="iq-icon-box column d-flex align-items-center gap-2">
                         <div class="icon-box-img">
                             <img alt="icon" class="img-fluid"
-                                 loading="lazy" src="/frontend_assets/assets/images/product-home/Traced.png">
+                                 loading="lazy" th:src="@{/frontend/assets/images/product-home/Traced.png}">
                         </div>
                         <div class="icon-box-content">
                             <h5 class="icon-box-title">Customer Support</h5>
@@ -2662,7 +2660,7 @@
                         <a class="navbar-brand m-0" th:href="@{/}"> <span
                                 class="logo-normal"> <img
                                 alt="logo" class="img-fluid"
-                                loading="lazy" src="/frontend_assets/assets/images/logo/logo.png">
+                                loading="lazy" th:src="@{/frontend/assets/images/logo/logo.png}">
 							</span>
                         </a>
                         <p class="mt-3 mb-0">It is a long established fact that a
@@ -2700,7 +2698,7 @@
                                 <li class="d-flex align-items-center gap-3 border-0 mb-4">
                                     <div class="img-holder">
                                         <img alt="product" class="img-fluid "
-                                             src="/frontend_assets/assets/images/shop/product-9.webp">
+                                             th:src="@{/frontend/assets/images/shop/product-9.webp}">
                                     </div>
                                     <div class="post-blog">
                                         <a class="new-link" href="./product-standard.html"
@@ -2756,7 +2754,7 @@
                                 <li class="d-flex align-items-center gap-3 border-0 mb-4">
                                     <div class="img-holder">
                                         <img alt="product" class="img-fluid "
-                                             src="/frontend_assets/assets/images/shop/product-12.webp">
+                                             th:src="@{/frontend/assets/images/shop/product-12.webp}">
                                     </div>
                                     <div class="post-blog">
                                         <a class="new-link" href="./product-standard.html"
@@ -2836,22 +2834,22 @@
                         <li><a href="https://www.visa.co.in/" rel="noopener noreferrer"
                                target="_blank"> <img
                                 alt="VisaLogo"
-                                class="img-fluid" src="/frontend_assets/assets/images/product-home/visa-logo.png">
+                                class="img-fluid" th:src="@{/frontend/assets/images/product-home/visa-logo.png}">
                         </a></li>
                         <li><a href="https://www.mastercard.co.in/en-in.html"
                                rel="noopener noreferrer" target="_blank"> <img
                                 alt="Mastercard"
-                                class="img-fluid" src="/frontend_assets/assets/images/product-home/Mastercard.png">
+                                class="img-fluid" th:src="@{/frontend/assets/images/product-home/Mastercard.png}">
                         </a></li>
                         <li><a href="https://www.paypal.com/in/home" rel="noopener noreferrer"
                                target="_blank"> <img
                                 alt="PayPal" class="img-fluid"
-                                src="/frontend_assets/assets/images/product-home/PayPal.png">
+                                th:src="@{/frontend/assets/images/product-home/PayPal.png}">
                         </a></li>
                         <li><a href="https://www.mastercard.co.in/en-in.html"
                                rel="noopener noreferrer" target="_blank"> <img
                                 alt="Mastercard"
-                                class="img-fluid" src="/frontend_assets/assets/images/product-home/Mastercard.png">
+                                class="img-fluid" th:src="@{/frontend/assets/images/product-home/Mastercard.png}">
                         </a></li>
 
                     </ul>
@@ -2954,38 +2952,38 @@
 <!-- Back To Top -->
 
 <!-- Library Bundle Script -->
-<script src="/frontend_assets/assets/js/core/libs.min.js"></script>
+<script th:src="@{/frontend/assets/js/core/libs.min.js}"></script>
 <!-- Plugin Scripts -->
 
 <!-- Slider-tab Script -->
-<script src="/frontend_assets/assets/js/plugins/slider-tabs.js"></script>
+<script th:src="@{/frontend/assets/js/plugins/slider-tabs.js}"></script>
 
 <!-- fslightbox Script -->
-<script defer src="/frontend_assets/assets/js/plugins/fslightbox.js"></script>
+<script defer th:src="@{/frontend/assets/js/plugins/fslightbox.js}"></script>
 
 <!-- Sweet-alert Script -->
-<script async src="/frontend_assets/assets/vendor/sweetalert2/dist/sweetalert2.min.js"></script>
-<script defer src="/frontend_assets/assets/js/plugins/sweet-alert.js"></script>
+<script async th:src="@{/frontend/assets/vendor/sweetalert2/dist/sweetalert2.min.js}"></script>
+<script defer th:src="@{/frontend/assets/js/plugins/sweet-alert.js}"></script>
 
 
 <!-- SwiperSlider Script -->
-<script src="/frontend_assets/assets/vendor/swiperSlider/swiper-bundle.min.js"></script>
+<script th:src="@{/frontend/assets/vendor/swiperSlider/swiper-bundle.min.js}"></script>
 <!-- Lodash Utility -->
-<script src="/frontend_assets/assets/vendor/lodash/lodash.min.js"></script>
+<script th:src="@{/frontend/assets/vendor/lodash/lodash.min.js}"></script>
 <!-- Utilities Functions -->
-<script src="/frontend_assets/assets/js/iqonic-script/utility.min.js"></script>
+<script th:src="@{/frontend/assets/js/iqonic-script/utility.min.js}"></script>
 <!-- Settings Script -->
-<script src="/frontend_assets/assets/js/iqonic-script/setting.min.js"></script>
+<script th:src="@{/frontend/assets/js/iqonic-script/setting.min.js}"></script>
 <!-- Settings Init Script -->
-<script src="/frontend_assets/assets/js/iqonic-script/setting-init.js"></script>
+<script th:src="@{/frontend/assets/js/iqonic-script/setting-init.js}"></script>
 <!-- External Library Bundle Script -->
-<script src="/frontend_assets/assets/js/core/external.min.js"></script>
+<script th:src="@{/frontend/assets/js/core/external.min.js}"></script>
 <!-- Kivicare Script -->
-<script defer src="/frontend_assets/assets/js/kivicare.js?v=1.4.1"></script>
-<script defer src="/frontend_assets/assets/js/kivicare-advance.js?v=1.4.1"></script>
+<script defer th:src="@{/frontend/assets/js/kivicare.js?v=1.4.1}"></script>
+<script defer th:src="@{/frontend/assets/js/kivicare-advance.js?v=1.4.1}"></script>
 <!-- Kivicare Pages Script -->
-<script defer src="/frontend_assets/assets/js/slider.js"></script>
-<script defer src="/frontend_assets/assets/js/scroll-text.js"></script>
-<script src="/frontend_assets/assets/js/plugins/countdown.js"></script>
+<script defer th:src="@{/frontend/assets/js/slider.js}"></script>
+<script defer th:src="@{/frontend/assets/js/scroll-text.js}"></script>
+<script th:src="@{/frontend/assets/js/plugins/countdown.js}"></script>
 </body>
 </html>

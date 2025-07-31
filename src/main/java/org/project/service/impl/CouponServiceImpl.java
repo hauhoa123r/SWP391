@@ -1,6 +1,9 @@
 package org.project.service.impl;
 
-import jakarta.servlet.http.HttpSession;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.entity.CouponEntity;
@@ -11,6 +14,7 @@ import org.project.repository.CouponRepository;
 import org.project.service.CartService;
 import org.project.service.CouponService;
 import org.project.service.UserCouponService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,22 +22,41 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.Optional;
+import jakarta.servlet.http.HttpSession;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CouponServiceImpl implements CouponService {
-
-    private final CouponRepository couponRepository;
+    @Autowired
+    private CouponRepository couponRepository;
     private final UserCouponService userCouponService;
-    private final CartService cartService;
+
+    @Override
+    public Page<CouponDTO> findAllCoupons(int page, int size, String sortBy, String sortDir) {
+        Sort sort = createSort(sortBy, sortDir);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<CouponEntity> couponPage = couponRepository.findAll(pageable);
+        return couponPage.map(this::convertToDTO);
+    }
+
+    @Override
+    public Optional<CouponDTO> findCouponById(Long id) {
+        return couponRepository.findById(id).map(this::convertToDTO);
+    }
+    @Autowired
+    private CartService cartService;
+
+    @Override
+    public Optional<CouponDTO> findCouponByCode(String code) {
+        return couponRepository.findByCode(code).map(this::convertToDTO);
+    }
 
     private BigDecimal calculateDiscountedTotal(BigDecimal cartTotal, CouponEntity coupon) {
         BigDecimal discountedTotal;
-
         if (coupon.getDiscountType() == DiscountType.FIXED) {
             discountedTotal = cartTotal.subtract(coupon.getValue());
         } else if (coupon.getDiscountType() == DiscountType.PERCENTAGE) {
@@ -46,6 +69,34 @@ public class CouponServiceImpl implements CouponService {
         if (discountedTotal.compareTo(BigDecimal.ZERO) < 0) {
             discountedTotal = BigDecimal.ZERO;
         }
+
+        return discountedTotal;
+    }
+
+    @Override
+    public BigDecimal applyCoupon(String code, Long userId, HttpSession session) throws CouponException {
+        Optional<CouponEntity> optionalCoupon = couponRepository.findByCode(code.trim());
+        if (optionalCoupon.isEmpty()) {
+            throw new CouponException("Coupon code not found. Existing coupon (if any) is still applied.");
+        }
+
+        CouponEntity coupon = optionalCoupon.get();
+
+        if (coupon.getExpirationDate().before(new java.util.Date())) {
+            throw new CouponException("Coupon has expired.");
+        }
+
+        BigDecimal cartTotal = cartService.calculateTotal(userId);
+
+        if (coupon.getMinimumOrderAmount() != null && cartTotal.compareTo(coupon.getMinimumOrderAmount()) < 0) {
+            throw new CouponException("Order total does not meet the minimum amount.");
+        }
+
+        BigDecimal discountedTotal= calculateDiscountedTotal(cartTotal,coupon);
+
+
+        session.setAttribute("appliedCoupon", coupon);
+        session.setAttribute("discountedTotal", discountedTotal);
 
         return discountedTotal;
     }
@@ -94,109 +145,13 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public Page<CouponDTO> findAllCoupons(int page, int size, String sortBy, String sortDir) {
-        Sort sort = createSort(sortBy, sortDir);
-        Pageable pageable = PageRequest.of(page, size, sort);
-        
-        Page<CouponEntity> couponPage = couponRepository.findAll(pageable);
-        return couponPage.map(this::convertToDTO);
-    }
-
-    @Override
-    public Optional<CouponDTO> findCouponById(Long id) {
-        return couponRepository.findById(id).map(this::convertToDTO);
-    }
-
-    @Override
-    public Optional<CouponDTO> findCouponByCode(String code) {
-        return couponRepository.findByCode(code).map(this::convertToDTO);
-    }
-
-    @Override
-    public Page<CouponDTO> searchCoupons(String keyword, int page, int size, String sortBy, String sortDir) {
-        Sort sort = createSort(sortBy, sortDir);
-        Pageable pageable = PageRequest.of(page, size, sort);
-        
-        Page<CouponEntity> couponPage;
-        if (keyword != null && !keyword.isEmpty()) {
-            couponPage = couponRepository.findByKeyword(keyword.toLowerCase(), pageable);
-        } else {
-            couponPage = couponRepository.findAll(pageable);
-        }
-        
-        return couponPage.map(this::convertToDTO);
-    }
-
-    @Override
-    @Transactional
-    public CouponDTO createCoupon(CouponDTO couponDTO) {
-        if (isCouponCodeExists(couponDTO.getCode())) {
-            throw new IllegalArgumentException("Coupon code already exists: " + couponDTO.getCode());
-        }
-        
-        CouponEntity entity = convertToEntity(couponDTO);
-        CouponEntity savedEntity = couponRepository.save(entity);
-        return convertToDTO(savedEntity);
-    }
-
-    @Override
-    @Transactional
-    public CouponDTO updateCoupon(Long id, CouponDTO couponDTO) {
-        CouponEntity existingCoupon = couponRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Coupon not found with ID: " + id));
-        
-        // Kiểm tra nếu code thay đổi và code mới đã tồn tại
-        if (!existingCoupon.getCode().equals(couponDTO.getCode()) && 
-            couponRepository.existsByCode(couponDTO.getCode())) {
-            throw new IllegalArgumentException("Coupon code already exists: " + couponDTO.getCode());
-        }
-        
-        // Cập nhật thông tin
-        existingCoupon.setCode(couponDTO.getCode());
-        existingCoupon.setDescription(couponDTO.getDescription());
-        existingCoupon.setValue(couponDTO.getValue());
-        existingCoupon.setMinimumOrderAmount(couponDTO.getMinimumOrderAmount());
-        existingCoupon.setExpirationDate(couponDTO.getExpirationDate());
-        existingCoupon.setDiscountType(couponDTO.getDiscountType());
-        
-        CouponEntity updatedEntity = couponRepository.save(existingCoupon);
-        return convertToDTO(updatedEntity);
-    }
-
-    @Override
-    @Transactional
-    public void deleteCoupon(Long id) {
-        if (!couponRepository.existsById(id)) {
-            throw new IllegalArgumentException("Coupon not found with ID: " + id);
-        }
-        
-        couponRepository.deleteById(id);
-    }
-
-    @Override
-    public boolean isCouponCodeExists(String code) {
-        return couponRepository.existsByCode(code);
-    }
-
-    @Override
-    public Page<CouponDTO> findValidCoupons(int page, int size, String sortBy, String sortDir) {
-        Sort sort = createSort(sortBy, sortDir);
-        Pageable pageable = PageRequest.of(page, size, sort);
-        
-        Date today = new Date(System.currentTimeMillis());
-        Page<CouponEntity> couponPage = couponRepository.findByExpirationDateGreaterThanEqual(today, pageable);
-        
-        return couponPage.map(this::convertToDTO);
-    }
-
-    @Override
     public Page<CouponDTO> findExpiredCoupons(int page, int size, String sortBy, String sortDir) {
         Sort sort = createSort(sortBy, sortDir);
         Pageable pageable = PageRequest.of(page, size, sort);
-        
+
         Date today = new Date(System.currentTimeMillis());
         Page<CouponEntity> couponPage = couponRepository.findByExpirationDateLessThan(today, pageable);
-        
+
         return couponPage.map(this::convertToDTO);
     }
 
@@ -205,7 +160,7 @@ public class CouponServiceImpl implements CouponService {
      */
     private Sort createSort(String sortBy, String sortDir) {
         String sortField = "id";  // Default sort field
-        
+
         // Validate sort field
         if (sortBy != null && !sortBy.isEmpty()) {
             switch (sortBy.toLowerCase()) {
@@ -220,13 +175,13 @@ public class CouponServiceImpl implements CouponService {
                     break;
             }
         }
-        
-        Sort.Direction direction = sortDir != null && sortDir.equalsIgnoreCase("asc") ? 
+
+        Sort.Direction direction = sortDir != null && sortDir.equalsIgnoreCase("asc") ?
                 Sort.Direction.ASC : Sort.Direction.DESC;
-                
+
         return Sort.by(direction, sortField);
     }
-    
+
     /**
      * Chuyển đổi từ Entity sang DTO
      */
@@ -234,7 +189,7 @@ public class CouponServiceImpl implements CouponService {
         if (entity == null) {
             return null;
         }
-        
+
         CouponDTO dto = new CouponDTO();
         dto.setId(entity.getId());
         dto.setCode(entity.getCode());
@@ -243,17 +198,17 @@ public class CouponServiceImpl implements CouponService {
         dto.setMinimumOrderAmount(entity.getMinimumOrderAmount());
         dto.setExpirationDate(entity.getExpirationDate());
         dto.setDiscountType(entity.getDiscountType());
-        
+
         // Tính toán các trường bổ sung
         Date today = new Date(System.currentTimeMillis());
         dto.setValid(entity.getExpirationDate() != null && !entity.getExpirationDate().before(today));
-        
+
         // Get actual usage count from UserCouponService
         dto.setUsageCount(userCouponService.getCouponUsageCount(entity.getId()));
-        
+
         return dto;
     }
-    
+
     /**
      * Chuyển đổi từ DTO sang Entity
      */
@@ -261,7 +216,7 @@ public class CouponServiceImpl implements CouponService {
         if (dto == null) {
             return null;
         }
-        
+
         CouponEntity entity = new CouponEntity();
         entity.setId(dto.getId());
         entity.setCode(dto.getCode());
@@ -270,7 +225,84 @@ public class CouponServiceImpl implements CouponService {
         entity.setMinimumOrderAmount(dto.getMinimumOrderAmount());
         entity.setExpirationDate(dto.getExpirationDate());
         entity.setDiscountType(dto.getDiscountType());
-        
+
         return entity;
     }
-} 
+
+    @Override
+    public Page<CouponDTO> searchCoupons(String keyword, int page, int size, String sortBy, String sortDir) {
+        Sort sort = createSort(sortBy, sortDir);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<CouponEntity> couponPage;
+        if (keyword != null && !keyword.isEmpty()) {
+            couponPage = couponRepository.findByKeyword(keyword.toLowerCase(), pageable);
+        } else {
+            couponPage = couponRepository.findAll(pageable);
+        }
+
+        return couponPage.map(this::convertToDTO);
+    }
+
+    @Override
+    @Transactional
+    public CouponDTO createCoupon(CouponDTO couponDTO) {
+        if (isCouponCodeExists(couponDTO.getCode())) {
+            throw new IllegalArgumentException("Coupon code already exists: " + couponDTO.getCode());
+        }
+
+        CouponEntity entity = convertToEntity(couponDTO);
+        CouponEntity savedEntity = couponRepository.save(entity);
+        return convertToDTO(savedEntity);
+    }
+
+    @Override
+    @Transactional
+    public CouponDTO updateCoupon(Long id, CouponDTO couponDTO) {
+        CouponEntity existingCoupon = couponRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Coupon not found with ID: " + id));
+
+        // Kiểm tra nếu code thay đổi và code mới đã tồn tại
+        if (!existingCoupon.getCode().equals(couponDTO.getCode()) &&
+                couponRepository.existsByCode(couponDTO.getCode())) {
+            throw new IllegalArgumentException("Coupon code already exists: " + couponDTO.getCode());
+        }
+
+        // Cập nhật thông tin
+        existingCoupon.setCode(couponDTO.getCode());
+        existingCoupon.setDescription(couponDTO.getDescription());
+        existingCoupon.setValue(couponDTO.getValue());
+        existingCoupon.setMinimumOrderAmount(couponDTO.getMinimumOrderAmount());
+        existingCoupon.setExpirationDate(couponDTO.getExpirationDate());
+        existingCoupon.setDiscountType(couponDTO.getDiscountType());
+
+        CouponEntity updatedEntity = couponRepository.save(existingCoupon);
+        return convertToDTO(updatedEntity);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCoupon(Long id) {
+        if (!couponRepository.existsById(id)) {
+            throw new IllegalArgumentException("Coupon not found with ID: " + id);
+        }
+
+        couponRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean isCouponCodeExists(String code) {
+        return couponRepository.existsByCode(code);
+    }
+
+    @Override
+    public Page<CouponDTO> findValidCoupons(int page, int size, String sortBy, String sortDir) {
+        Sort sort = createSort(sortBy, sortDir);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Date today = new Date(System.currentTimeMillis());
+        Page<CouponEntity> couponPage = couponRepository.findByExpirationDateGreaterThanEqual(today, pageable);
+
+        return couponPage.map(this::convertToDTO);
+    }
+}

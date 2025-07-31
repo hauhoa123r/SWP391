@@ -1,0 +1,234 @@
+<!doctype html>
+<html class="theme-fs-sm" data-bs-theme="light" data-bs-theme-color="default" dir="ltr" lang="vi"
+      layout:decorate="~{/dashboard/layouts/main-layout}"
+      th:with="breadCrumbTitle = ${'Danh sách phòng ban'}, navItem= ${'department'}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Danh sách phòng ban</title>
+    <th:block layout:fragment="custom-css">
+        <style>
+            .truncate {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 200px;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="card">
+        <div class="card-header">
+            <form id="filter" th:object="${departmentDTO}">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="name">Tên</label>
+                        <input class="form-control" id="name" placeholder="Nhập tên" th:field="*{name}" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="slogan">Slogan</label>
+                        <input class="form-control" id="slogan" placeholder="Nhập slogan" th:field="*{slogan}"
+                               type="text">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="sortField">Sắp xếp theo</label>
+                        <select class="form-select" id="sortField" th:field="*{sortFieldName}">
+                            <option value="">-- Chọn trường --</option>
+                            <option value="name">Tên</option>
+                            <option value="slogan">Slogan</option>
+                            <option value="description">Mô tả</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="sortDirection">Thứ tự</label>
+                        <select class="form-select" id="sortDirection" th:field="*{sortDirection}">
+                            <option value="ASC">Tăng dần</option>
+                            <option value="DESC">Giảm dần</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end justify-content-center text-end">
+                        <button class="btn btn-outline-secondary me-2" type="reset">
+                            <i class="fas fa-undo me-1"></i> Đặt lại
+                        </button>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search me-1"></i> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <button aria-controls="addForm" class="btn btn-primary "
+                    data-bs-target="#addForm"
+                    data-bs-toggle="offcanvas" type="button">
+                <span class="btn-inner">
+                    <span class="text d-inline-block align-middle">Thêm mới</span>
+                    <span class="icon d-inline-block align-middle ms-1 ps-2">
+                       <svg fill="none" height="8" viewBox="0 0 8 8" width="8" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                                  d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                  fill="currentColor"/>
+                       </svg>
+                    </span>
+                </span>
+            </button>
+        </div>
+        <div class="card-body pt-0">
+            <div class="table-responsive">
+                <table class="table border-end border-start align-middle mb-0 rounded">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Banner</th>
+                        <th>Tên</th>
+                        <th>Slogan</th>
+                        <th>Mô tả</th>
+                        <th>Video</th>
+                        <th>Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody id="list"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="pagination"></div>
+    </div>
+
+    <!-- Form Sửa -->
+    <form aria-labelledby="editFormLabel" class="offcanvas offcanvas-end" enctype="multipart/form-data" id="editForm"
+          method="post" tabindex="-1" th:object="${departmentDTO}">
+        <div class="offcanvas-header border-bottom">
+            <h3 class="offcanvas-title" id="editFormLabel">Sửa phòng ban</h3>
+            <button aria-label="Close" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    type="button"></button>
+        </div>
+        <div class="offcanvas-body">
+            <input name="id" type="hidden"/>
+            <div class="form-group">
+                <label class="form-label" for="edit_entityName">Tên <span class="text-danger">*</span></label>
+                <input class="form-control" id="edit_entityName" placeholder="Nhập tên" required th:field="*{name}"
+                       type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="edit_entitySlogan">Slogan</label>
+                <input class="form-control" id="edit_entitySlogan" placeholder="Nhập slogan" th:field="*{slogan}"
+                       type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="edit_entityDescription">Mô tả</label>
+                <textarea class="form-control" id="edit_entityDescription" placeholder="Nhập mô tả"
+                          th:field="*{description}"></textarea>
+            </div>
+            <div class="form-group text-center mb-4">
+                <label class="form-label d-block">Banner</label>
+                <img alt="Banner Preview"
+                     class="d-none banner-preview"
+                     data-name="bannerUrl"
+                     style="width:200px; height:200px; object-fit:cover; border-radius:6px; border:1px solid #dee2e6; margin-bottom:10px;"
+                     th:src="${departmentDTO.bannerUrl != null && !#strings.isEmpty(departmentDTO.bannerUrl) ? departmentDTO.bannerUrl : ''}">
+                <input accept="image/*" class="form-control mt-2" id="edit_entityBanner"
+                       onchange="previewBanner(event)"
+                       th:field="*{bannerUrl}"
+                       type="file">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="edit_entityVideo">Video (URL)</label>
+                <input class="form-control" id="edit_entityVideo" placeholder="Nhập link video" th:field="*{videoUrl}"
+                       type="text">
+                <video controls style="width:200px; margin-top:5px;" th:if="*{videoUrl != null}"
+                       th:src="*{videoUrl}"></video>
+            </div>
+        </div>
+        <div class="offcanvas-footer border-top">
+            <div class="d-grid d-md-flex gap-3 p-3">
+                <button class="btn btn-primary d-block" type="submit">Cập nhật</button>
+                <button class="btn btn-secondary d-block" data-bs-dismiss="offcanvas" type="button">Đóng</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Form Thêm mới -->
+    <form aria-labelledby="addFormLabel" class="offcanvas offcanvas-end" enctype="multipart/form-data" id="addForm"
+          method="post" tabindex="-1" th:object="${departmentDTO}">
+        <div class="offcanvas-header border-bottom">
+            <h3 class="offcanvas-title" id="addFormLabel">Thêm phòng ban</h3>
+            <button aria-label="Close" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    type="button"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group">
+                <label class="form-label" for="add_entityName">Tên <span class="text-danger">*</span></label>
+                <input class="form-control" id="add_entityName" placeholder="Nhập tên" required th:field="*{name}"
+                       type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="add_entitySlogan">Slogan</label>
+                <input class="form-control" id="add_entitySlogan" placeholder="Nhập slogan" th:field="*{slogan}"
+                       type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="add_entityDescription">Mô tả</label>
+                <textarea class="form-control" id="add_entityDescription" placeholder="Nhập mô tả"
+                          th:field="*{description}"></textarea>
+            </div>
+            <div class="form-group text-center mb-4">
+                <label class="form-label d-block">Banner</label>
+                <img alt="Banner Preview" class="banner-preview d-none"
+                     style="width:200px; height:200px; object-fit:cover; border-radius:6px; border:1px solid #dee2e6; margin-bottom:10px;">
+                <input accept="image/*" class="form-control mt-2" id="add_entityBanner"
+                       onchange="previewBanner(event)"
+                       th:field="*{bannerUrl}"
+                       type="file">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="add_entityVideo">Video (URL)</label>
+                <input class="form-control" id="add_entityVideo" placeholder="Nhập link video" th:field="*{videoUrl}"
+                       type="text">
+                <video controls style="width:200px; margin-top:5px;" th:if="*{videoUrl != null}"
+                       th:src="*{videoUrl}"></video>
+            </div>
+        </div>
+        <div class="offcanvas-footer border-top">
+            <div class="d-grid d-md-flex gap-3 p-3">
+                <button class="btn btn-primary d-block" type="submit">Tạo</button>
+                <button class="btn btn-secondary d-block" data-bs-dismiss="offcanvas" type="button">Đóng</button>
+            </div>
+        </div>
+    </form>
+</th:block>
+<th:block layout:fragment="custom-js">
+    <script>
+        function previewBanner(event) {
+            const input = event.target;
+            const preview = input.closest("div").querySelector(".banner-preview");
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+                preview.classList.remove("d-none");
+            } else {
+                preview.classList.add("d-none");
+            }
+        }
+    </script>
+    <script type="module">
+        import {CrudUtils} from "/templates/shared/assets/js/utils/crud-utils.js";
+        import {
+            DepartmentResponse, renderDepartmentResponseForAdmin
+        } from "/templates/shared/assets/js/model/response/DepartmentResponse.js";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const crudUtils = new CrudUtils({
+                apiUrl: "/api/admin/department",
+                responseClass: DepartmentResponse,
+                renderStrategy: renderDepartmentResponseForAdmin
+            });
+            crudUtils.init();
+        });
+    </script>
+</th:block>
+</body>
+</html>

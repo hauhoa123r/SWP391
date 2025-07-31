@@ -21,11 +21,13 @@ public class ResultDetailEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "result_id", nullable = false)
     private ResultEntity resultEntity;
+    //private ResultEntity result;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "test_item_id", nullable = false)
     private TestItemEntity testItemEntity;
+    //private TestItemEntity testItem;
 
     @Column(name = "value", precision = 10, scale = 2)
     private BigDecimal value;

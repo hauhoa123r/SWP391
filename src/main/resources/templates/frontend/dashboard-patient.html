@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Dr. Christopher</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/frontend/assets/css/dashboard-patient.css}">
+    <link rel="stylesheet" href="./assets/css/dashboard-patient.css">
+</head>
+<body>
+<div class="dashboard-container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.15722 20.7714V17.7047C9.1572 16.9246 9.79312 16.2908 10.581 16.2856H13.4671C14.2587 16.2856 14.9005 16.9209 14.9005 17.7047V17.7047V20.7809C14.9003 21.4432 15.4343 21.9845 16.103 22H18.0271C19.9451 22 21.5 20.4607 21.5 18.5618V18.5618V9.83784C21.4898 9.09083 21.1355 8.38935 20.538 7.93303L13.9577 2.6853C12.8049 1.77157 11.1662 1.77157 10.0134 2.6853L3.46203 7.94256C2.86226 8.39702 2.50739 9.09967 2.5 9.84736V18.5618C2.5 20.4607 4.05488 22 5.97291 22H7.89696C8.58235 22 9.13797 21.4499 9.13797 20.7714V20.7714"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <svg class="mx-1" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <span>Trang chủ</span>
+    </div>
+
+    <!-- Row 1: Welcome and Popular Services -->
+    <div class="dashboard-grid">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <div class="welcome-content">
+                <div class="welcome-text">
+                    <h1>Kivicare xin chào</h1>
+                    <p>Chúc bạn một ngày hạnh phúc và tràn đầy năng lượng!</p>
+                    <div class="btn-group">
+                        <a th:href="@{/patient/showList}" class="btn btn-primary">
+                            <span>Xem danh sách bệnh nhân</span>
+                            <i class="fas fa-plus"></i>
+                        </a>
+                        <a th:href="@{/patient/appointment}" class="btn btn-secondary">
+                            <span>Lịch hẹn</span>
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="welcome-image">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2784/2784403.png" alt="Bác sĩ">
+                </div>
+            </div>
+        </div>
+
+        <!-- Popular Services -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Dịch vụ phổ biến</h3>
+                <p>3 dịch vụ được sử dụng nhiều nhất</p>
+            </div>
+            <div class="card-body">
+                <div class="service-item"
+                            th:each="service, stat : ${serviceResponses}">
+                    <div class="service-info">
+                        <h4 th:text="${service.productEntity.name}">Tên dịch vụ</h4>
+                        <p>Giá:
+                            <span th:text="${#numbers.formatDecimal(service.productEntity.price, 0, 'COMMA', 2, 'POINT')}">0</span>
+                            đ
+                        </p>
+                    </div>
+                    <div class="service-rank"
+                         th:text="'#' + ${stat.index + 1}">
+                        #1
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 2: Appointment Requests and Available Doctors -->
+    <div class="dashboard-row">
+        <!-- Appointment Requests -->
+        <div class="card">
+            <div class="requests-header">
+                <h3>Yêu cầu lịch hẹn</h3>
+                <a href="#" class="view-all">
+                    Xem tất cả
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                <table class="requests-table">
+                    <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên bệnh nhân</th>
+                        <th>Ngày</th>
+                        <th>Giờ</th>
+                        <th>Tên bác sĩ khám</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="appt, stat : ${appointmentResponses}">
+
+                        <td th:text="${stat.index + 1}">1</td>
+
+                        <td>
+                            <div class="patient-info">
+                                <div class="patient-name"
+                                     th:text="${appt.patientName}">Courtney Henry</div>
+                            </div>
+                        </td>
+
+                        <td th:text="${appt.date}">22/03/2023</td>
+
+                        <td th:text="${appt.time}">14:30</td>
+
+                        <td th:text="${appt.doctorName}">Dr. Someone</td>
+
+                        <td>
+                        <span th:switch="appt.status" class="status-badge">
+                              <span th:case="'APPROVED'"
+                                    class="status-approved"
+                                    th:text="'Đã duyệt'">Đã duyệt</span>
+                                  <span th:case="'REJECTED'"
+                                        class="status-rejected"
+                                        th:text="'Từ chối'">Từ chối</span>
+                                  <span th:case="'PENDING'"
+                                        class="status-pending"
+                                        th:text="'Chờ duyệt'">Chờ duyệt</span>
+                                  <span th:case="*"
+                                        class="status-cancelled"
+                                        th:text="'Đã hủy'">Đã hủy</span>
+                        </span>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Available Doctors -->
+        <div class="doctors-card">
+            <div class="doctors-header">
+                <h3>Bác sĩ có sẵn</h3>
+            </div>
+            <div class="doctor-list">
+                <div class="doctor-item" th:each="dr, stat : ${doctorResponses}">
+                    <div class="doctor-avatar">
+                        <img th:if="${dr.staffEntity.avatarUrl != null}"
+                             th:src="@{${dr.staffEntity.avatarUrl}}"
+                             th:alt="${dr.staffEntity.fullName}" />
+                        <i th:unless="${dr.staffEntity.avatarUrl}"
+                           class="fas fa-user-md"></i>
+                    </div>
+                    <div class="doctor-info">
+                        <h4 th:text="${dr.staffEntity.fullName}">Dr. Name</h4>
+                        <p th:text="${dr.staffEntity.departmentEntity.name}">Chuyên khoa</p>
+                    </div>
+                    <div class="doctor-stats" th:text="${dr.doctorRank}">
+                        Rank of Doctor
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Hàm khởi tạo avatar ngẫu nhiên
+    document.addEventListener('DOMContentLoaded', function() {
+        const patientAvatars = document.querySelectorAll('.patient-avatar');
+        const colors = [
+            { bg: '#E1F0FF', text: '#0D6EFD' },
+            { bg: '#E0F2FE', text: '#0284C7' },
+            { bg: '#FFE7D9', text: '#EA580C' },
+            { bg: '#DCFCE7', text: '#16A34A' },
+            { bg: '#FCE7F3', text: '#DB2777' }
+        ];
+
+        patientAvatars.forEach(avatar => {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            avatar.style.backgroundColor = randomColor.bg;
+            avatar.style.color = randomColor.text;
+        });
+
+        // Hiệu ứng cho các nút
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+            });
+
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>
+</body>
+</html>

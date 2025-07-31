@@ -22,4 +22,10 @@ public interface ServiceService {
     Long countActiveService();
 
     List<ServiceResponse> getTopServices(int top);
+
+    void createService(ServiceDTO serviceDTO);
+
+    void updateService(Long serviceId, ServiceDTO serviceDTO);
+
+    void deleteService(Long serviceId);
 }

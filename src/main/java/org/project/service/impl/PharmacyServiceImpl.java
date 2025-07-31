@@ -1,8 +1,7 @@
 package org.project.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.transaction.Transactional;
 import org.project.converter.ConverterPharmacyProduct;
-import org.project.converter.ProductConverter;
 import org.project.converter.ProductCreateConverter;
 import org.project.converter.ProductUpdateConverter;
 import org.project.entity.CategoryEntity;
@@ -11,32 +10,17 @@ import org.project.entity.ProductEntity;
 import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
 import org.project.exception.ResourceNotFoundException;
-import org.project.model.dto.ProductCreateDTO;
-import org.project.model.dto.ProductDetailDTO;
-import org.project.model.dto.ProductUpdateDTO;
-import org.project.model.dto.ProductViewDTO;
-import org.project.model.dto.ReviewDTO;
+import org.project.model.dto.*;
 import org.project.model.response.CategoryResponse;
 import org.project.model.response.PharmacyListResponse;
 import org.project.model.response.ProductAdditionalInfoResponse;
-import org.project.model.response.ProductResponse;
 import org.project.projection.ProductViewProjection;
 import org.project.repository.*;
 import org.project.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service

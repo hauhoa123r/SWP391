@@ -60,17 +60,16 @@ public class ResultSampleServiceImpl implements ResultSampleService {
         appointmentEntity.get().getTestRequestEntities().forEach(testRequestEntity -> {
             TestRequestEntity testRequestEntity1 = testRequestEntity;
             SampleEntity sampleEntity = new SampleEntity();
-            if(testRequestEntity.getSamples() != null){
+            if(testRequestEntity.getSamples() != null && testRequestEntity.getSamples().getSampleStatus().equals("completed")){
                 sampleEntity = testRequestEntity.getSamples();
                 sampleEntity.setSampleStatus("completed");
                 sampleScheduleRepository.save(sampleEntity);
+                testRequestEntity1.setRequestStatus(RequestStatus.completed);
+                testRequestRepository.save(testRequestEntity1);
             }
-            testRequestEntity1.setRequestStatus(RequestStatus.completed);
-            testRequestRepository.save(testRequestEntity1);
         });
         appointmentEntity.get().setResultUrl("/lab/view-result-patient/" + appointmentEntity.get().getId());
         appointmentRepository.save(appointmentEntity.get());
         return true;
     }
-
 }

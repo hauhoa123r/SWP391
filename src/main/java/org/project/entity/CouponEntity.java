@@ -49,7 +49,7 @@ public class CouponEntity {
     @NotNull
     @Column(name = "expiration_date", nullable = false)
     private Date expirationDate;
-    
+
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name = "discount_type", nullable = false)
@@ -57,7 +57,7 @@ public class CouponEntity {
 
     @OneToMany
     private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
-    
+
     @OneToMany
     private Set<UserCouponEntity> userCouponEntities = new LinkedHashSet<>();
     

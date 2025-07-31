@@ -65,6 +65,10 @@ public class AssignmentServiceImpl implements AssignmentService {
         for(Long id : ids){
             TestRequestEntity testRequestEntity = assignmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Receive false with id" + id));
             testRequestEntity.setRequestStatus(RequestStatus.received);
+            SampleEntity sampleEntity = new SampleEntity();
+            sampleEntity.setSampleStatus("pending");
+            sampleEntity.setTestRequest(testRequestEntity);
+            sampleScheduleRepositoryImpl.save(sampleEntity);
             assignmentRepository.save(testRequestEntity);
         }
         return true;

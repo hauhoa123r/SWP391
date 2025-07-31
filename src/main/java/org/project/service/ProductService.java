@@ -114,4 +114,6 @@ public interface ProductService {
      * @param quantity The new stock quantity
      */
     void updateStock(Long id, Integer quantity);
+
+    void deleteProduct(Long id);
 }

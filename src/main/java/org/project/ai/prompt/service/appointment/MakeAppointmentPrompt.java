@@ -6,7 +6,6 @@ import org.project.ai.intent.service.appointment.make.handler.AppointmentValidat
 import org.project.ai.prompt.PromptAnswer;
 import org.project.model.dai.AppointmentDAI;
 import org.project.model.dai.PatientBasicInfo;
-import org.project.model.dto.PatientDTO;
 import org.project.model.request.ChatMessageRequest;
 import org.springframework.stereotype.Component;
 
@@ -47,9 +46,4 @@ public class MakeAppointmentPrompt implements PromptAnswer {
        return "Bạn muốn đặt lịch cho ai, họ đang từng khám ở cơ sở bệnh viện nào thuộc về hệ thống của chúng tôi chưa?" +
                "nếu chưa bạn hãy tạo hồ sơ trước nhé!";
     }
-    private String checkRelationshipUser(PatientBasicInfo patientBasicInfo){
-            return "";
-    }
-
-
 }

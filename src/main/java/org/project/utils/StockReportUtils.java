@@ -1,15 +1,19 @@
 package org.project.utils;
 
-import org.project.entity.*;
+import org.project.entity.ProductEntity;
+import org.project.entity.StockRequestItemEntity;
+import org.project.entity.SupplierTransactionItemEntity;
+import org.project.entity.SupplierTransactionsEntity;
 import org.project.enums.SupplierTransactionType;
-import org.project.model.dto.SupplierRequestItemDTO;
 import org.project.model.response.ProductStockReportResponse;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 public class StockReportUtils {

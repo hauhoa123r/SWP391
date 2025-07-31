@@ -3,11 +3,15 @@ package org.project.controller;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.project.entity.CartItemEntity;
 import org.project.enums.ProductSortType;
+import org.project.model.dto.ProductDetailDTO;
 import org.project.model.response.CategoryListResponse;
 import org.project.model.response.PharmacyResponse;
+import org.project.service.CartService;
 import org.project.service.CategoryService;
 import org.project.service.ProductService;
+import org.project.service.WishlistService;
 import org.project.repository.ProductTagRepository;
 
 import java.math.BigDecimal;
@@ -15,11 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,8 +41,11 @@ public class ShopController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final ProductTagRepository productTagRepository;
-
+    private final WishlistService wishlistService;
+    private final CartService  cartService;
     private static final String PREVIOUS_SEARCH_KEY = "previousSearch";
+    //hard code id
+    private final Long userId = 4l;
 
     /**
      * Main shop page with filtering and searching capabilities
@@ -65,7 +75,7 @@ public class ShopController {
         log.info("Processing shop request: searchQuery={}, sortType={}, page={}, size={}, categoryId={}, minPrice={}, maxPrice={}, tag={}, label={}",
                 searchQuery, sortType, page, size, categoryId, minPrice, maxPrice, tagRaw, label);
 
-        ModelAndView mv = new ModelAndView("/shop");
+        ModelAndView mv = new ModelAndView("shop");
         
         // Convert "%23" back to "#" for tag searches if needed
         String tagProcessed = tagRaw != null ? tagRaw.replace("%23", "#") : null;
@@ -110,7 +120,12 @@ public class ShopController {
         mv.addObject("maxPrice", maxPrice);
         mv.addObject("selectedTag", tagProcessed);
         mv.addObject("selectedLabel", label);
-        
+
+        List<CartItemEntity> cartItems = cartService.getCart(userId);
+        mv.addObject("cartItems", cartItems);
+        mv.addObject("total", cartService.calculateTotal(userId));
+        mv.addObject("size", cartItems.size());
+
         log.debug("Shop page prepared with {} products", productPage.getNumberOfElements());
         return mv;
     }

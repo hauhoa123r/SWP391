@@ -306,7 +306,7 @@
   </div>
   <div class="chat-box" id="chatBox">
     <div class="chat-header">
-      <h5 class="mb-0">Chat Support</h5>
+      <h5 class="mb-0" style="color:white">Chat Support</h5>
       <button class="btn border-0 p-0" id="closeChat">
         <svg class="icon-24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -315,7 +315,7 @@
       </button>
     </div>
     <div class="chat-body" id="chatBody">
-      <div class="chat-message bot">Hello! How can I assist you today?</div>
+      <div class="chat-message bot">Chào bạn, tôi có thể giúp gì bạn!</div>
     </div>
     <div class="chat-footer">
       <input type="text" id="chatInput" placeholder="Type a message...">
@@ -643,8 +643,6 @@
                 <div class="d-flex align-items-center gap-3">
                   <h3 th:text="${totalToday}" class="text-primary d-inline-block counter mb-0"
                       style="visibility: visible;"></h3>
-                  <span
-                          class="badge rounded-pill bg-success-subtle text-success p-2">+25.2%</span>
                 </div>
               </div>
               <div class="card-bg position-relative mt-2">
@@ -681,8 +679,6 @@
                 <div class="d-flex align-items-center gap-3">
                   <h3 th:text="${totalPatient}" class="text-primary d-inline-block counter mb-0"
                       style="visibility: visible;">20M</h3>
-                  <span class="badge rounded-pill bg-success-subtle text-success p-2">+25.2%
-                                            Tuần trước</span>
                 </div>
               </div>
               <div class="card-bg position-relative mt-2">
@@ -1749,7 +1745,8 @@
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          userMessage: userMessage
+          userMessage: userMessage,
+          id: 923
         })
       })
               .then(response => {

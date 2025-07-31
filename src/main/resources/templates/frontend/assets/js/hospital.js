@@ -1,11 +1,11 @@
-import {HospitalDTO} from "/templates/frontend/assets/js/model/dto/HospitalDTO.js";
+import {HospitalDTO} from "/templates/shared/assets/js/model/dto/HospitalDTO.js";
 import {
     HospitalResponse, renderHospitalResponseForList
-} from "/templates/frontend/assets/js/model/response/HospitalResponse.js";
-import {FetchingUtils} from "/templates/frontend/assets/js/utils/fetching-utils.js";
-import {FormDataUtils} from "/templates/frontend/assets/js/utils/form-data.js";
-import {Pagination} from "/templates/frontend/assets/js/utils/pagination.js";
-import {SearchParamsUtils} from "/templates/frontend/assets/js/utils/search-params-utils.js";
+} from "/templates/shared/assets/js/model/response/HospitalResponse.js";
+import {FetchingUtils} from "/templates/shared/assets/js/utils/fetching-utils.js";
+import {FormDataUtils} from "/templates/shared/assets/js/utils/form-data.js";
+import {Pagination} from "/templates/shared/assets/js/utils/pagination.js";
+import {SearchParamsUtils} from "/templates/shared/assets/js/utils/search-params-utils.js";
 
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
@@ -41,7 +41,7 @@ class RenderHospital {
         paginationElement.innerHTML = ""; // Clear previous content
         if (!data || !("currentPage" in data) || !("totalPages" in data)) return;
         const pagination = new Pagination(data.currentPage, data.totalPages);
-        paginationElement.innerHTML = pagination.toHtml();
+        paginationElement.innerHTML = pagination.render();
         pagination.setEvent(this.fetchHospitals.bind(this));
     }
 

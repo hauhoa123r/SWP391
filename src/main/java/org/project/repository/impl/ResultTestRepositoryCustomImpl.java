@@ -73,6 +73,7 @@ public class ResultTestRepositoryCustomImpl implements ResultTestRepositoryCusto
             results.append("AND tt.test_type_name LIKE :testType\n");
             params.put("testType", "%" + resultTestDTO.getTestType() + "%");
         }
+        results.append("And a.result_url is null\n");
         results.append("AND a.appointment_id NOT IN (SELECT appointment_id FROM test_requests WHERE request_status IN ('pending', 'completed', 'received'))\n");
         return results.toString();
     }
@@ -81,8 +82,8 @@ public class ResultTestRepositoryCustomImpl implements ResultTestRepositoryCusto
     public Page<AppointmentEntity> filterAppointmentEntityCustom(ResultTestDTO resultTestDTO) throws IllegalAccessException {
         Map<String, Object> params = new HashMap<>();
         String baseQuery = "FROM appointments a" + "\n" + joinSearchTestRequest(resultTestDTO) + whereSearchTestRequest(resultTestDTO, params);
-        String selectQuery = "SELECT a.* " + baseQuery;
-        String countQuery = "SELECT COUNT(*) " + baseQuery;
+        String selectQuery = "SELECT distinct  a.* " + baseQuery;
+        String countQuery = "SELECT COUNT(DISTINCT a.appointment_id) " + baseQuery;
         int page = resultTestDTO.getPage();
         int size = resultTestDTO.getSize();
 

@@ -55,13 +55,13 @@ public class AppointmentEntity {
     @OneToMany(mappedBy = "appointmentEntity")
     private final Set<IngredientRequestEntity> ingredientRequestEntities = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "appointmentEntity")
-    private final Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "appointmentEntity")
+    private MedicalRecordEntity medicalRecordEntities;
 
     @OneToMany(mappedBy = "appointmentEntity")
     private final Set<OrderEntity> orderEntities = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "appointmentEntity")
+    @OneToMany(mappedBy = "appointmentEntity", fetch = FetchType.EAGER)
     private final Set<TestRequestEntity> testRequestEntities = new LinkedHashSet<>();
 
     @Enumerated(EnumType.STRING)
@@ -70,4 +70,5 @@ public class AppointmentEntity {
 
     @Column(name = "result_url")
     private String resultUrl;
+
 }

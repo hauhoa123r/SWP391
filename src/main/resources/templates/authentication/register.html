@@ -36,7 +36,7 @@
 <div class="container">
     <div class="auth-card">
         <div class="logo-img text-center mb-4">
-            <img alt="logo" src="/assets/images/logo/logo.png">
+            <img alt="logo" onclick="window.location.href='/'" src="/assets/images/logo/logo.png">
         </div>
 
         <h4 class="text-center mb-4">Đăng ký tài khoản</h4>
@@ -100,7 +100,7 @@
         </form>
 
         <div class="text-center mt-3">
-            <a th:href="@{/auth-view/login}">Đã có tài khoản? Đăng nhập</a>
+            <a th:href="@{/login}">Đã có tài khoản? Đăng nhập</a>
         </div>
     </div>
 </div>
@@ -126,9 +126,9 @@
 </script>
 <script th:inline="javascript" type="module">
 
-    import toast from "/templates/frontend/assets/js/plugins/toast.js";
-    import {FetchingUtils} from "/templates/frontend/assets/js/utils/fetching-utils.js";
-    import {FormDataUtils} from "/templates/frontend/assets/js/utils/form-data.js";
+    import toast from "/templates/shared/assets/js/plugins/toast.js";
+    import {FetchingUtils} from "/templates/shared/assets/js/utils/fetching-utils.js";
+    import {FormDataUtils} from "/templates/shared/assets/js/utils/form-data.js";
 
     document.getElementById("register-form").addEventListener("submit", async function (e) {
         e.preventDefault();

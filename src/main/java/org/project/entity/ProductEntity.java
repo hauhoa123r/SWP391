@@ -1,7 +1,6 @@
 package org.project.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +13,6 @@ import org.project.enums.ProductStatus;
 import org.project.enums.ProductType;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -31,7 +29,7 @@ public class ProductEntity {
     private Long id;
 
     @Size(max = 255)
-    @NotNull
+   
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -39,16 +37,16 @@ public class ProductEntity {
     @Column(name = "description")
     private String description;
 
-    @NotNull
+
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
     @Size(max = 255)
-    @NotNull
+
     @Column(name = "unit", nullable = false)
     private String unit;
 
-    @NotNull
+
     @Column(name = "stock_quantities", nullable = false)
     private Integer stockQuantities;
 
@@ -57,7 +55,7 @@ public class ProductEntity {
     private String imageUrl;
 
     @OneToMany(mappedBy = "productEntity")
-    private Set<CartItemEntity> cartItemEntities = new LinkedHashSet<>();
+    private Set<CartItemEntity> cartItemEntities;
 
     @OneToOne(mappedBy = "productEntity")
     private ServiceEntity serviceEntity;
@@ -69,16 +67,16 @@ public class ProductEntity {
     private MedicineEntity medicineEntity;
 
     @OneToMany(mappedBy = "productEntity")
-    private Set<OrderItemEntity> orderItemEntities = new LinkedHashSet<>();
+    private Set<OrderItemEntity> orderItemEntities;
 
     @OneToOne(mappedBy = "productEntity")
     private PricingPlanEntity pricingPlanEntity;
 
-    @OneToMany(mappedBy = "productEntity", cascade =  CascadeType.ALL,  orphanRemoval = true)
-    private Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProductAdditionalInfoEntity> productAdditionalInfoEntities;
 
     @ManyToMany(mappedBy = "productEntities")
-    private Set<CategoryEntity> categoryEntities = new LinkedHashSet<>();
+    private Set<CategoryEntity> categoryEntities;
 
     @ManyToMany()
     @JoinTable(
@@ -86,16 +84,16 @@ public class ProductEntity {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "product_review_id")
     )
-    private Set<ReviewEntity> reviewEntities = new LinkedHashSet<>();
+    private Set<ReviewEntity> reviewEntities;
 
     @OneToMany(mappedBy = "productEntity")
-    private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities = new LinkedHashSet<>();
+    private Set<SupplierTransactionItemEntity> supplierTransactionItemEntities;
     @OneToMany(mappedBy = "productEntity")
-    private Set<ProductTagEntity> productTagEntities = new LinkedHashSet<>();
+    private Set<ProductTagEntity> productTagEntities;
     //@OneToOne(mappedBy = "productEntity")
     //private TestEntity testEntity;
     @ManyToMany(mappedBy = "products")
-    private Set<UserEntity> userEntities = new LinkedHashSet<>();
+    private Set<UserEntity> userEntities;
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'MEDICAL_PRODUCT'")
     @Column(name = "product_type", columnDefinition = "enum not null")
@@ -116,7 +114,19 @@ public class ProductEntity {
                 .orElse(0.0);
     }
 
+    public void setAverageRating(Double averageRating) {
+        // This method is not needed as the average rating is calculated dynamically
+        // from the reviewEntities. If you want to set a static value, you can do so,
+        // but it won't reflect the actual average of the reviews.
+    }
+
     public Long getReviewCount() {
         return (long) reviewEntities.size();
+    }
+
+    public void setReviewCount(Long reviewCount) {
+        // This method is not needed as the review count is calculated dynamically
+        // from the reviewEntities. If you want to set a static value, you can do so,
+        // but it won't reflect the actual count of reviews.
     }
 }

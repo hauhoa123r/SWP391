@@ -1,7 +1,7 @@
 package org.project.controller;
 
-import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.project.model.request.DoctorStaffRequest;
 import org.project.model.response.DoctorStaffResponse;
 import org.project.repository.DepartmentRepository;
@@ -9,10 +9,10 @@ import org.project.repository.HospitalRepository;
 import org.project.service.DoctorStaffService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.validation.BindingResult;
 
 import java.io.IOException;
 import java.util.List;

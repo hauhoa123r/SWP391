@@ -5,11 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.project.enums.ReviewStatus;
 import org.project.model.dto.ReviewDTO;
 import org.project.model.dto.ReviewReplyDTO;
+import org.project.model.response.ReviewResponse;
 import org.project.service.ReviewService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
@@ -36,7 +40,7 @@ public class ReviewController {
         log.info("Fetching reviews with page={}, size={}, search={}, rating={}, status={}, sort={}, direction={}", 
                 page, size, search, rating, status, sort, direction);
         
-        Page<ReviewDTO> reviewPage = reviewService.findReviews(page, size, search, rating, status, sort, direction);
+        Page<ReviewResponse> reviewPage = reviewService.findReviews(page, size, search, rating, status, sort, direction);
         
         model.addAttribute("reviews", reviewPage.getContent());
         model.addAttribute("currentPage", page);

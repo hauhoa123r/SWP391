@@ -1,9 +1,5 @@
 package org.project.converter;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-
 import org.project.config.ModelMapperConfig;
 import org.project.entity.ProductEntity;
 import org.project.enums.Label;
@@ -14,6 +10,10 @@ import org.project.model.response.PharmacyListResponse;
 import org.project.model.response.PharmacyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ConverterPharmacyProduct {
