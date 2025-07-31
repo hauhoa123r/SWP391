@@ -11,4 +11,6 @@ public interface MedicalRecordRepository extends JpaRepository <MedicalRecordEnt
     List<MedicalRecordEntity> findByPatientEntity_Id(Long patientId);
 
     Optional<Object> findByAppointmentEntity(AppointmentEntity appointmentEntity);
+
+    MedicalRecordEntity findByAppointmentEntity_Id(Long appointmentEntityId);
 }

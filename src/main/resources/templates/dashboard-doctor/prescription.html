@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title data-setting="app_name" data-rightJoin=" Clinic And Patient Management Dashboard">Khám</title>
+    <meta name="description"
+          content="KiviCare is a revolutionary Bootstrap Admin Dashboard Template and UI Components Library. The Admin Dashboard Template and UI Component features 8 modules.">
+    <meta name="keywords"
+          content="premium, admin, dashboard, template, bootstrap 5, clean ui, Kivicare, admin dashboard,responsive dashboard, optimized dashboard,">
+    <meta name="author" content="Iqonic Design">
+    <meta name="DC.title" content="KiviCare Clinic And Patient Management Dashboard">
+    <!-- Config Options -->
+    <meta name="setting_options" content='{
+    "saveLocal": "localStorage",
+    "storeKey": "kivicare",
+    "setting": {
+        "app_name": {
+            "value": "KiviCare"
+        },
+        "theme_scheme_direction": {
+            "value": "ltr"
+        },
+        "theme_scheme": {
+            "value": "light"
+        },
+        "theme_style_appearance": {
+            "value": [
+                "theme-flat",
+                "theme-sharp"
+            ]
+        },
+        "theme_color": {
+            "colors": {},
+            "value": "color-4"
+        },
+        "theme_transition": {
+            "value": "theme-with-animation"
+        },
+        "theme_font_size": {
+            "value": "theme-fs-sm"
+        },
+        "page_layout": {
+            "value": "container"
+        },
+        "header_navbar": {
+            "value": "navs-transparent"
+        },
+        "header_banner": {
+            "value": "default"
+        },
+        "card_color": {
+            "value": "card-glass"
+        },
+        "sidebar_color": {
+            "value": "sidebar-color"
+        },
+        "sidebar_type": {
+            "value": [
+                "sidebar-mini"
+            ]
+        },
+        "sidebar_menu_style": {
+            "value": "sidebar-default navs-full-width"
+        },
+        "footer": {
+            "value": "default"
+        },
+        "body_font_family": {
+            "value": null
+        },
+        "heading_font_family": {
+            "value": null
+        }
+    }
+}'>
+    <!-- Google Font Api KEY-->
+    <meta name="google_font_api" content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/dashboard-doctor/assets/images/favicon.ico}" />
+
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/core/libs.min.css}" />
+
+    <!-- flaticon css -->
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/flaticon/css/flaticon.css}" />
+
+    <!-- font-awesome css -->
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/font-awesome/css/all.min.css}" />
+
+    <!-- Flatpickr css -->
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.css}" />
+
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/sheperd/dist/css/sheperd.css}">
+
+
+
+
+
+
+
+    <!-- Kivicare Design System Css -->
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/kivicare.min.css?v=1.4.1}" />
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/custom.min.css?v=1.4.1}" />
+
+    <!-- RTL Css -->
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/rtl.min.css?v=1.4.1}" />
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/customizer.min.css?v=1.4.1}" />
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap"
+            rel="stylesheet">
+</head>
+
+<body class=" full-screen ">
+<!-- loader Start -->
+<div id="loading">
+    <div class="loader simple-loader">
+        <div class="loader-body">
+            <img th:src="@{/dashboard-doctor/assets/images/loader.gif}" alt="loader" class="light-loader img-fluid " width="200">
+        </div>
+    </div>
+</div>
+<!-- loader END -->
+<main class="main-content">
+    <div class="position-relative ">
+        <!--Nav Start-->
+        <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar patient-header">
+            <div class="container-fluid navbar-inner">
+                <a th:href="@{/doctor/homepage}" class="navbar-brand ms-0 me-5">
+
+                    <!--Logo start-->
+                    <div class="logo-main">
+                        <img class="logo-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo.png}" height="30" alt="logo">
+                        <img class="logo-normal dark-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-dark.png}"
+                             height="30" alt="logo">
+                        <img class="logo-normal white-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-white.png}"
+                             height="30" alt="logo">
+                        <img class="logo-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini.png}" height="30" alt="logo">
+                        <img class="logo-mini dark-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini-dark.png}"
+                             height="30" alt="logo">
+                        <img class="logo-mini white-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini-white.png}"
+                             height="30" alt="logo">
+                    </div>
+                    <!--logo End-->
+                </a>
+                <div class="d-flex align-items-center justify-content-between product-offcanvas">
+                    <div class="offcanvas offcanvas-end shadow-none iq-product-menu-responsive border-0"
+                         tabindex="-1" id="offcanvasBottom">
+                        <div class="offcanvas-body">
+                            <ul class="iq-nav-menu list-unstyled gap-1">
+                                <li class="nav-item">
+                                    <a class="nav-link menu-arrow justify-content-start gap-2 rounded-0 "
+                                       aria-current="page" th:href="@{/patient-appointment.html}">
+                                        <i class="icon" data-bs-toggle="tooltip" title="Appointments"
+                                           data-bs-placement="right">
+                                            <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M3 16.87V9.25699H21V16.931C21 20.07 19.0241 22 15.8628 22H8.12733C4.99561 22 3 20.03 3 16.87ZM7.95938 14.41C7.50494 14.431 7.12953 14.07 7.10977 13.611C7.10977 13.151 7.46542 12.771 7.91987 12.75C8.36443 12.75 8.72997 13.101 8.73985 13.55C8.7596 14.011 8.40395 14.391 7.95938 14.41ZM12.0198 14.41C11.5653 14.431 11.1899 14.07 11.1701 13.611C11.1701 13.151 11.5258 12.771 11.9802 12.75C12.4248 12.75 12.7903 13.101 12.8002 13.55C12.82 14.011 12.4643 14.391 12.0198 14.41ZM16.0505 18.09C15.596 18.08 15.2305 17.7 15.2305 17.24C15.2206 16.78 15.5862 16.401 16.0406 16.391H16.0505C16.5148 16.391 16.8902 16.771 16.8902 17.24C16.8902 17.71 16.5148 18.09 16.0505 18.09ZM11.1701 17.24C11.1899 17.7 11.5653 18.061 12.0198 18.04C12.4643 18.021 12.82 17.641 12.8002 17.181C12.7903 16.731 12.4248 16.38 11.9802 16.38C11.5258 16.401 11.1701 16.78 11.1701 17.24ZM7.09989 17.24C7.11965 17.7 7.49506 18.061 7.94951 18.04C8.39407 18.021 8.74973 17.641 8.72997 17.181C8.72009 16.731 8.35456 16.38 7.90999 16.38C7.45554 16.401 7.09989 16.78 7.09989 17.24ZM15.2404 13.601C15.2404 13.141 15.596 12.771 16.0505 12.761C16.4951 12.761 16.8507 13.12 16.8705 13.561C16.8804 14.021 16.5247 14.401 16.0801 14.41C15.6257 14.42 15.2503 14.07 15.2404 13.611V13.601Z"
+                                                      fill="currentColor" />
+                                                <path opacity="0.4"
+                                                      d="M3.00336 9.2569C3.0162 8.6699 3.0656 7.5049 3.15846 7.1299C3.63267 5.0209 5.24298 3.6809 7.54485 3.4899H16.4559C18.738 3.6909 20.3681 5.0399 20.8423 7.1299C20.9342 7.4949 20.9836 8.6689 20.9964 9.2569H3.00336Z"
+                                                      fill="currentColor" />
+                                                <path
+                                                        d="M8.30486 6.59C8.73955 6.59 9.06556 6.261 9.06556 5.82V2.771C9.06556 2.33 8.73955 2 8.30486 2C7.87017 2 7.54416 2.33 7.54416 2.771V5.82C7.54416 6.261 7.87017 6.59 8.30486 6.59Z"
+                                                        fill="currentColor" />
+                                                <path
+                                                        d="M15.6949 6.59C16.1197 6.59 16.4556 6.261 16.4556 5.82V2.771C16.4556 2.33 16.1197 2 15.6949 2C15.2603 2 14.9342 2.33 14.9342 2.771V5.82C14.9342 6.261 15.2603 6.59 15.6949 6.59Z"
+                                                        fill="currentColor" />
+                                            </svg>
+                                        </i>
+                                        <span class="item-name">Lịch khám</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button id="navbar-toggle" class="navbar-toggler px-0" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-btn">
+                                <span class="navbar-toggler-icon"></span>
+                            </span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="my-2 navbar-nav ms-auto align-items-center navbar-list">
+                        <li class="nav-item dropdown me-0 me-xl-3">
+                            <div class="d-flex align-items-center mr-2 iq-font-style" role="group"
+                                 aria-label="First group" data-setting="radio">
+                                <input type="radio" class="btn-check" name="theme_font_size" value="theme-fs-sm"
+                                       id="font-size-sm">
+                                <label for="font-size-sm" class="btn btn-border border-0 btn-icon btn-sm"
+                                       data-bs-toggle="tooltip" title="Font size 14px" data-bs-placement="bottom">
+                                    <span class="mb-0 h6" style="color: inherit !important;">A</span>
+                                </label>
+                                <input type="radio" class="btn-check" name="theme_font_size" value="theme-fs-md"
+                                       id="font-size-md">
+                                <label for="font-size-md" class="btn btn-border border-0 btn-icon"
+                                       data-bs-toggle="tooltip" title="Font size 16px" data-bs-placement="bottom">
+                                    <span class="mb-0 h4" style="color: inherit !important;">A</span>
+                                </label>
+                                <input type="radio" class="btn-check" name="theme_font_size" value="theme-fs-lg"
+                                       id="font-size-lg">
+                                <label for="font-size-lg" class="btn btn-border border-0 btn-icon"
+                                       data-bs-toggle="tooltip" title="Font size 18px" data-bs-placement="bottom">
+                                    <span class="mb-0 h1" style="color: inherit !important;">A</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown iq-responsive-menu d-block d-xl-none">
+                            <div class="btn btn-sm px-0 border-0" id="navbarDropdown-search-11" role="button"
+                                 data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+                                    <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                            <ul class="dropdown-menu dropdown-menu-end" style="width: 25rem;">
+                                <li class="px-3 py-0">
+                                    <div class="form-group input-group mb-0">
+                                        <input type="text" class="form-control" placeholder="Search...">
+                                        <span class="input-group-text">
+                                                <svg class="icon-20" width="20" height="20" viewBox="0 0 24 24"
+                                                     fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor"
+                                                            stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round"></circle>
+                                                    <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor"
+                                                          stroke-width="1.5" stroke-linecap="round"
+                                                          stroke-linejoin="round"></path>
+                                                </svg>
+                                            </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link" id="notification-drop" data-bs-toggle="dropdown">
+                                <div class="nav-list-icon">
+                                    <div class="btn-inner">
+                                        <svg class="icon-20" width="19" height="22" viewBox="0 0 19 22" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <mask style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0"
+                                                  width="19" height="18">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M9.15527e-05 0H18.497V17.348H9.15527e-05V0Z" fill="white" />
+                                            </mask>
+                                            <g>
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M9.2471 1.5C5.75211 1.5 3.3161 4.238 3.3161 6.695C3.3161 8.774 2.7391 9.735 2.2291 10.583C1.8201 11.264 1.4971 11.802 1.4971 12.971C1.6641 14.857 2.90911 15.848 9.2471 15.848C15.5501 15.848 16.8341 14.813 17.0001 12.906C16.9971 11.802 16.6741 11.264 16.2651 10.583C15.7551 9.735 15.1781 8.774 15.1781 6.695C15.1781 4.238 12.7421 1.5 9.2471 1.5ZM9.2471 17.348C4.5711 17.348 0.345105 17.018 0.000104907 13.035C-0.00289509 11.387 0.500105 10.549 0.944105 9.811C1.3931 9.063 1.8161 8.358 1.8161 6.695C1.8161 3.462 4.8021 0 9.2471 0C13.6921 0 16.6781 3.462 16.6781 6.695C16.6781 8.358 17.1011 9.063 17.5501 9.811C17.9941 10.549 18.4971 11.387 18.4971 12.971C18.1481 17.018 13.9231 17.348 9.2471 17.348Z"
+                                                      fill="currentColor" />
+                                            </g>
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                  d="M9.1983 21.5001H9.1963C8.0753 21.4991 7.0143 21.0051 6.2093 20.1081C5.9323 19.8011 5.9573 19.3261 6.2653 19.0501C6.5733 18.7721 7.0473 18.7971 7.3243 19.1061C7.8423 19.6831 8.5073 20.0001 9.1973 20.0001H9.1983C9.8913 20.0001 10.5593 19.6831 11.0783 19.1051C11.3563 18.7981 11.8303 18.7731 12.1373 19.0501C12.4453 19.3271 12.4703 19.8021 12.1933 20.1091C11.3853 21.0061 10.3223 21.5001 9.1983 21.5001Z"
+                                                  fill="currentColor" />
+                                        </svg>
+                                        <span class="bg-danger dots"></span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item iq-full-screen d-none d-xl-block" id="fullscreen-item">
+                            <a href="#" class="nav-link" id="btnFullscreen" data-bs-toggle="dropdown">
+                                <div class="icon nav-list-icon">
+                                        <span class="btn-inner">
+                                            <svg class="normal-screen icon-20" width="24" height="24"
+                                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M18.5528 5.99656L13.8595 10.8961" stroke="currentColor"
+                                                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                </path>
+                                                <path d="M14.8016 5.97618L18.5524 5.99629L18.5176 9.96906"
+                                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                      stroke-linejoin="round"></path>
+                                                <path d="M5.8574 18.896L10.5507 13.9964" stroke="currentColor"
+                                                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                </path>
+                                                <path d="M9.60852 18.9164L5.85775 18.8963L5.89258 14.9235"
+                                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                      stroke-linejoin="round"></path>
+                                            </svg>
+                                            <svg class="full-normal-screen d-none icon-20" width="24" height="24"
+                                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M13.7542 10.1932L18.1867 5.79319" stroke="currentColor"
+                                                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                </path>
+                                                <path d="M17.2976 10.212L13.7547 10.1934L13.7871 6.62518"
+                                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                      stroke-linejoin="round"></path>
+                                                <path d="M10.4224 13.5726L5.82149 18.1398" stroke="currentColor"
+                                                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                </path>
+                                                <path d="M6.74391 13.5535L10.4209 13.5723L10.3867 17.2755"
+                                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                      stroke-linejoin="round"></path>
+                                            </svg>
+                                        </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown" id="itemdropdown1">
+                            <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown"
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="icon-40">
+                                        <span class="btn-inner d-inline-block position-relative">
+                                            <img th:src="@{/dashboard-doctor/assets/images/avatars/12.png}"
+                                                 class="img-fluid rounded-circle object-fit-cover" alt="icon">
+                                            <span
+                                                    class="bg-success p-1 rounded-circle position-absolute end-0 bottom-0 border border-3 border-white"></span>
+                                        </span>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/app/user-profile.html}">Profile</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/app/user-privacy-setting.html}">Privacy
+                                        Setting</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/auth/sign-in.html}">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col d-flex justify-content-start">
+            <a th:href="@{'/doctor/appointment/'}" class="btn btn-primary mt-2">Quay lại</a>
+        </div>
+    </div>
+    <div class="content-inner container-fluid pb-0" id="page_layout">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <h1 class="mt-5 mb-0">Thông tin bệnh nhân</h1>
+                <span class="mb-4">Hãy khám thật tận tâm để mang lại kết quả tốt nhất cho bệnh nhân.</span>
+            </div>
+
+        </div>
+        <div class="row pt-5">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="profile-img-edit position-relative">
+                                    <img th:src="@{/dashboar../dashboard-doctor/assets/images/avatars/rain2.jpg}" alt="profile-pic"
+                                         class="theme-color-default-img profile-pic rounded avatar-100"
+                                         loading="lazy">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="patientName">Tên bệnh nhân</label>
+                                <input type="text" class="form-control readonly-input" id="patientName"
+                                       readonly th:placeholder="${information.getPatientName()}" th:value="${information.getPatientName()}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="gender">Giới tính</label>
+                                <input type="text" class="form-control readonly-input" id="gender"
+                                       th:placeholder="${information.getGender()}" readonly th:value="${information.getGender()}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="age">Tuổi</label>
+                                <input type="text" class="form-control readonly-input" id="age"
+                                       th:placeholder="${information.getAge()}" readonly th:value="${information.getAge()}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="text" class="form-control readonly-input" id="email"
+                                       th:placeholder="${information.getEmail()}" readonly th:value="${information.getEmail()}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Số điện thoại</label>
+                                <input type="text" class="form-control readonly-input" id="phone"
+                                       th:placeholder="${information.getPhone()}" readonly th:value="${information.getPhone()}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="address">Địa chỉ</label>
+                                <input type="text" class="form-control readonly-input" id="address"
+                                       th:placeholder="${information.getAddress()}" readonly th:value="${information.getAddress()}">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" th:value="${information.getAppointmentId()}" id="appointmentId">
+            <div class="col-lg-9">
+                <h1>Thông tin chỉ định</h1>
+                <div class="row">
+                    <div class="col d-flex justify-content-end">
+                        <a th:href="@{'/lab/view-result-patient/' + ${information.appointmentId}}" class="btn btn-primary mt-2">Kết quả xét nghiệm</a>
+                    </div>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="treatmentForm">
+                                    <div class="mb-3 d-flex gap-3">
+                                        <div class="w-50">
+                                            <label for="startDate" class="form-label">Từ ngày</label>
+                                            <input type="date" class="form-control" id="startDate" required>
+                                            <div class="invalid-feedback" id="startDateError"></div>
+                                        </div>
+                                        <div class="w-50">
+                                            <label for="endDate" class="form-label">Đến ngày</label>
+                                            <input type="date" class="form-control" id="endDate" required>
+                                            <div class="invalid-feedback" id="endDateError"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="diagnosis" class="form-label">Chẩn đoán</label>
+                                        <textarea class="form-control" id="diagnosis" rows="4" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="treatmentMethod" class="form-label">Phương pháp điều trị</label>
+                                        <textarea class="form-control" id="treatmentMethod" rows="4"
+                                                  required></textarea>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#addMedicineModal">Kê đơn</button>
+                                    <button type="submit" class="btn btn-success" onclick="submitTreatment(event)">Lưu thông tin</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-body">
+            <ul class="left-panel list-inline mb-0 p-0">
+                <li class="list-inline-item fw-500"><a class="footer-link"
+                                                       th:href="@{/extra/privacy-policy.html}">Privacy Policy</a></li>
+                <li class="list-inline-item fw-500"><a class="footer-link"
+                                                       th:href="@{/extra/terms-of-service.html}">Terms of Use</a></li>
+            </ul>
+        </div>
+    </footer>
+</main>
+<div class="modal fade" id="addMedicineModal" tabindex="-1" aria-labelledby="addMedicineModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMedicineModalLabel">Chọn thuốc</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="searchMedicine" placeholder="Tìm kiếm thuốc...">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>Tên thuốc</th>
+                            <th>Giá (VND)</th>
+                        </tr>
+                        </thead>
+                        <tbody id="medicineList">
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Pagination">
+                    <ul class="pagination justify-content-center" id="pagination">
+                    </ul>
+                </nav>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="saveSelectedMedicines">Thêm thuốc đã
+                    chọn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a class="btn btn-fixed-end btn-warning btn-icon btn-setting" id="settingbutton" data-bs-toggle="offcanvas"
+   data-bs-target="#live-customizer" role="button" aria-controls="live-customizer">
+    <svg class="icon-24 animated-rotate" width="24" viewBox="0 0 24 24" fill="none"
+         xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M20.8064 7.62361L20.184 6.54352C19.6574 5.6296 18.4905 5.31432 17.5753 5.83872V5.83872C17.1397 6.09534 16.6198 6.16815 16.1305 6.04109C15.6411 5.91402 15.2224 5.59752 14.9666 5.16137C14.8021 4.88415 14.7137 4.56839 14.7103 4.24604V4.24604C14.7251 3.72922 14.5302 3.2284 14.1698 2.85767C13.8094 2.48694 13.3143 2.27786 12.7973 2.27808H11.5433C11.0367 2.27807 10.5511 2.47991 10.1938 2.83895C9.83644 3.19798 9.63693 3.68459 9.63937 4.19112V4.19112C9.62435 5.23693 8.77224 6.07681 7.72632 6.0767C7.40397 6.07336 7.08821 5.98494 6.81099 5.82041V5.82041C5.89582 5.29601 4.72887 5.61129 4.20229 6.52522L3.5341 7.62361C3.00817 8.53639 3.31916 9.70261 4.22975 10.2323V10.2323C4.82166 10.574 5.18629 11.2056 5.18629 11.8891C5.18629 12.5725 4.82166 13.2041 4.22975 13.5458V13.5458C3.32031 14.0719 3.00898 15.2353 3.5341 16.1454V16.1454L4.16568 17.2346C4.4124 17.6798 4.82636 18.0083 5.31595 18.1474C5.80554 18.2866 6.3304 18.2249 6.77438 17.976V17.976C7.21084 17.7213 7.73094 17.6516 8.2191 17.7822C8.70725 17.9128 9.12299 18.233 9.37392 18.6717C9.53845 18.9489 9.62686 19.2646 9.63021 19.587V19.587C9.63021 20.6435 10.4867 21.5 11.5433 21.5H12.7973C13.8502 21.5001 14.7053 20.6491 14.7103 19.5962V19.5962C14.7079 19.088 14.9086 18.6 15.2679 18.2407C15.6272 17.8814 16.1152 17.6807 16.6233 17.6831C16.9449 17.6917 17.2594 17.7798 17.5387 17.9394V17.9394C18.4515 18.4653 19.6177 18.1544 20.1474 17.2438V17.2438L20.8064 16.1454C21.0615 15.7075 21.1315 15.186 21.001 14.6964C20.8704 14.2067 20.55 13.7894 20.1108 13.5367V13.5367C19.6715 13.284 19.3511 12.8666 19.2206 12.3769C19.09 11.8873 19.16 11.3658 19.4151 10.928C19.581 10.6383 19.8211 10.3982 20.1108 10.2323V10.2323C21.0159 9.70289 21.3262 8.54349 20.8064 7.63277V7.63277V7.62361Z"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <circle cx="12.1747" cy="11.8891" r="2.63616" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"></circle>
+    </svg>
+</a> <!-- Live Customizer end -->
+<!-- Wrapper End-->
+<!-- The Modal -->
+<div class="modal fade setting-modal" id="setting-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-0 p-sm-5 p-4">
+
+            <!-- Modal Header -->
+            <div class="modal-header p-0 pb-3 mb-3 border-bottom">
+                <h3 class="modal-title">Settings</h3>
+                <a th:href="@{/auth/sign-in.html}" class="text-secondary">
+                    <svg height="20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                                d="M15.016 7.38948V6.45648C15.016 4.42148 13.366 2.77148 11.331 2.77148H6.45597C4.42197 2.77148 2.77197 4.42148 2.77197 6.45648V17.5865C2.77197 19.6215 4.42197 21.2715 6.45597 21.2715H11.341C13.37 21.2715 15.016 19.6265 15.016 17.5975V16.6545"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        </path>
+                        <path d="M21.8096 12.0215H9.76855" stroke="currentColor" stroke-width="1.5"
+                              stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M18.8813 9.1062L21.8093 12.0212L18.8813 14.9372" stroke="currentColor"
+                              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <h6 class="d-inline-block mb-0 text-secondary align-middle ms-1">Logout</h6>
+                </a>
+                <a href="#" class="d-inline-block position-absolute text-secondary" data-bs-dismiss="modal">
+                    <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M7.67 1.99927H16.34C19.73 1.99927 22 4.37927 22 7.91927V16.0903C22 19.6203 19.73 21.9993 16.34 21.9993H7.67C4.28 21.9993 2 19.6203 2 16.0903V7.91927C2 4.37927 4.28 1.99927 7.67 1.99927ZM15.01 14.9993C15.35 14.6603 15.35 14.1103 15.01 13.7703L13.23 11.9903L15.01 10.2093C15.35 9.87027 15.35 9.31027 15.01 8.97027C14.67 8.62927 14.12 8.62927 13.77 8.97027L12 10.7493L10.22 8.97027C9.87 8.62927 9.32 8.62927 8.98 8.97027C8.64 9.31027 8.64 9.87027 8.98 10.2093L10.76 11.9903L8.98 13.7603C8.64 14.1103 8.64 14.6603 8.98 14.9993C9.15 15.1693 9.38 15.2603 9.6 15.2603C9.83 15.2603 10.05 15.1693 10.22 14.9993L12 13.2303L13.78 14.9993C13.95 15.1803 14.17 15.2603 14.39 15.2603C14.62 15.2603 14.84 15.1693 15.01 14.9993Z"
+                              fill="currentColor"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body p-0">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs gap-sm-5 gap-3 border-bottom p-0">
+                    <li class="nav-item">
+                        <a class="nav-link active border-0" data-bs-toggle="tab" href="#setting-content-1">
+                            <svg height="18" width="18" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M11.9849 15.3462C8.11731 15.3462 4.81445 15.931 4.81445 18.2729C4.81445 20.6148 8.09636 21.2205 11.9849 21.2205C15.8525 21.2205 19.1545 20.6348 19.1545 18.2938C19.1545 15.9529 15.8735 15.3462 11.9849 15.3462Z"
+                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M11.9849 12.0059C14.523 12.0059 16.5801 9.94779 16.5801 7.40969C16.5801 4.8716 14.523 2.81445 11.9849 2.81445C9.44679 2.81445 7.3887 4.8716 7.3887 7.40969C7.38013 9.93922 9.42394 11.9973 11.9525 12.0059H11.9849Z"
+                                      stroke="currentColor" stroke-width="1.42857" stroke-linecap="round"
+                                      stroke-linejoin="round"></path>
+                            </svg>
+                            <span class="align-middle fw-500">Edit Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link border-0" data-bs-toggle="tab" href="#setting-content-3">
+                            <svg height="18" width="18" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M12 17.8476C17.6392 17.8476 20.2481 17.1242 20.5 14.2205C20.5 11.3188 18.6812 11.5054 18.6812 7.94511C18.6812 5.16414 16.0452 2 12 2C7.95477 2 5.31885 5.16414 5.31885 7.94511C5.31885 11.5054 3.5 11.3188 3.5 14.2205C3.75295 17.1352 6.36177 17.8476 12 17.8476Z"
+                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"></path>
+                                <path d="M14.3889 20.8572C13.0247 22.3719 10.8967 22.3899 9.51953 20.8572"
+                                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"></path>
+                            </svg>
+                            <span class="align-middle fw-500">Notification</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content mt-4">
+                    <div class="tab-pane fade show active" id="setting-content-1">
+                        <form>
+                            <div
+                                    class="d-flex align-items-sm-center align-items-start justify-content-between flex-sm-row flex-column gap-4">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="flex-shrink-0 d-inline-block position-relative">
+                                        <img th:src="@{/dashboard-doctor/assets/images/user/amie-steward.png}" alt="img-fluid">
+                                        <span
+                                                class="bg-success p-1 rounded-circle position-absolute end-0 bottom-0 border border-3 border-white me-1 mb-1"></span>
+                                    </div>
+                                    <div class="content">
+                                        <h4 class="mb-2">Amine Steward</h4>
+                                        <p class="m-0">Upload A New Image.</p>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-primary">
+                                        <span class="btn-inner">
+                                            <span class="text d-inline-block align-middle">Save Changes</span>
+                                            <span class="icon d-inline-block align-middle ms-1 ps-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+                                                     viewBox="0 0 8 8" fill="none">
+                                                    <path
+                                                            d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                                            fill="currentColor"></path>
+                                                </svg>
+                                            </span>
+                                        </span></button>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Your First Name *">
+                                </div>
+                                <div class="col-md-6 mt-md-0 mt-4">
+                                    <input type="text" class="form-control" placeholder="Your Last Name *">
+                                </div>
+                                <div class="col-md-6 mt-4">
+                                    <input type="email" class="form-control" placeholder="E-mail Address *">
+                                </div>
+                                <div class="col-md-6 mt-4">
+                                    <input type="text" class="form-control date_flatpicker flatpickr-input active"
+                                           placeholder="Your DOB*" readonly="readonly">
+                                </div>
+                                <div class="col-md-12 mt-4">
+                                    <textarea class="form-control" placeholder="Your Bio"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="setting-content-2">
+                        <form>
+                            <div
+                                    class="d-flex align-items-sm-center align-items-start justify-content-between flex-sm-row flex-column gap-4">
+                                <div class="content">
+                                    <h4 class="mb-2">Password</h4>
+                                    <p class="m-0">Update Or Change Your Current Password. </p>
+                                </div>
+
+                                <button type="button" class="btn btn-primary">
+                                        <span class="btn-inner">
+                                            <span class="text d-inline-block align-middle">Change Password</span>
+                                            <span class="icon d-inline-block align-middle ms-1 ps-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+                                                     viewBox="0 0 8 8" fill="none">
+                                                    <path
+                                                            d="M7.32046 4.70834H4.74952V7.25698C4.74952 7.66734 4.41395 8 4 8C3.58605 8 3.25048 7.66734 3.25048 7.25698V4.70834H0.679545C0.293423 4.6687 0 4.34614 0 3.96132C0 3.5765 0.293423 3.25394 0.679545 3.21431H3.24242V0.673653C3.28241 0.290878 3.60778 0 3.99597 0C4.38416 0 4.70954 0.290878 4.74952 0.673653V3.21431H7.32046C7.70658 3.25394 8 3.5765 8 3.96132C8 4.34614 7.70658 4.6687 7.32046 4.70834Z"
+                                                            fill="currentColor"></path>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                </button>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-md-12">
+                                    <input type="password" class="form-control"
+                                           placeholder="Your Current Password *">
+                                </div>
+                                <div class="col-md-12 mt-4">
+                                    <input type="password" class="form-control" placeholder="New Password *">
+                                    <label class="mt-2">Password Must Be in 8 Character</label>
+                                </div>
+                                <div class="col-md-12 mt-4">
+                                    <input type="password" class="form-control"
+                                           placeholder="Confirm New Password *">
+                                    <label class="mt-2">Must Be Same to New Password</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="setting-content-3">
+                        <form>
+                            <div class="content">
+                                <h4 class="mb-2">Notification</h4>
+                                <p class="m-0">Update Or Change Your Notification Settings.</p>
+                            </div>
+                            <div
+                                    class="d-flex aling-items-center justify-content-between gap-3 mt-5 me-0 mb-0 p-0 form-check form-switch form-check-inline">
+                                <h5 class="mb-0">Email Notification</h5>
+                                <input class="form-check-input" type="checkbox" id="switch1" checked />
+                            </div>
+                            <div
+                                    class="d-flex aling-items-center justify-content-between gap-3 mt-3 me-0 mb-0 p-0 form-check form-switch form-check-inline">
+                                <h5 class="mb-0">App Notification</h5>
+                                <input class="form-check-input" type="checkbox" id="switch2" checked />
+                            </div>
+                            <div class="mt-4 pt-4 border-top">
+                                <ul class="list-inline m-0 p-0">
+                                    <li class="mb-3">
+                                        <div
+                                                class="d-flex aling-items-center justify-content-between gap-3 m-0 p-0 form-check form-check-inline">
+                                            <label class="form-check-label h5 text-body mb-0"
+                                                   for="customCheck1">Appointment Reminder</label>
+                                            <input type="checkbox" class="form-check-input" id="customCheck1">
+                                        </div>
+                                    </li>
+                                    <li class="mb-3">
+                                        <div
+                                                class="d-flex aling-items-center justify-content-between gap-3 m-0 p-0 form-check form-check-inline">
+                                            <label class="form-check-label h5 text-body mb-0"
+                                                   for="customCheck2">Subscription Offer</label>
+                                            <input type="checkbox" class="form-check-input" id="customCheck2">
+                                        </div>
+                                    </li>
+                                    <li class="mb-3">
+                                        <div
+                                                class="d-flex aling-items-center justify-content-between gap-3 m-0 p-0 form-check form-check-inline">
+                                            <label class="form-check-label h5 text-body mb-0" for="customCheck3">New
+                                                Update Notification</label>
+                                            <input type="checkbox" class="form-check-input" id="customCheck3">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div
+                                                class="d-flex aling-items-center justify-content-between gap-3 m-0 p-0 form-check form-check-inline">
+                                            <label class="form-check-label h5 text-body mb-0" for="customCheck4">All
+                                                Notification</label>
+                                            <input type="checkbox" class="form-check-input" id="customCheck4">
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Library Bundle Script -->
+<script th:src="@{/dashboard-doctor/assets/js/core/libs.min.js}"></script>
+<!-- Plugin Scripts -->
+<!-- Tour plugin Start -->
+<script th:src="@{/dashboard-doctor/assets/vendor/sheperd/dist/js/sheperd.min.js}"></script>
+<script th:src="@{/dashboard-doctor/assets/js/plugins/tour.js}" defer></script>
+
+<!-- Flatpickr Script -->
+<script th:src="@{/dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.js}"></script>
+<script th:src="@{/dashboard-doctor/assets/js/plugins/flatpickr.js}" defer></script>
+
+
+
+<!-- Slider-tab Script -->
+<script th:src="@{/dashboard-doctor/assets/js/plugins/slider-tabs.js}"></script>
+
+
+<!-- fslightbox Script -->
+<script th:src="@{/dashboard-doctor/assets/js/plugins/fslightbox.js}" defer></script>
+
+
+
+
+<!-- Select2 Script -->
+<script th:src="@{/dashboard-doctor/assets/js/plugins/select2.js}" defer></script>
+
+
+
+
+<!-- Lodash Utility -->
+<script th:src="@{/dashboard-doctor/assets/vendor/lodash/lodash.min.js}"></script>
+<!-- Utilities Functions -->
+<script th:src="@{/dashboard-doctor/assets/js/iqonic-script/utility.min.js}"></script>
+<!-- Settings Script -->
+<script th:src="@{/dashboard-doctor/assets/js/iqonic-script/setting.min.js}"></script>
+<!-- Settings Init Script -->
+<script th:src="@{/dashboard-doctor/assets/js/setting-init.js}"></script>
+<!-- External Library Bundle Script -->
+<script th:src="@{/dashboard-doctor/assets/js/core/external.min.js}"></script>
+<!-- Widgetchart Script -->
+<script th:src="@{/dashboard-doctor/assets/js/charts/widgetcharts.js?v=1.4.1}" defer></script>
+<!-- Dashboard Script -->
+<script th:src="@{/dashboard-doctor/assets/js/charts/dashboard.js?v=1.4.1}" defer></script>
+<!-- Hopeui Script -->
+<script th:src="@{/dashboard-doctor/assets/js/kivicare.js?v=1.4.1}" defer></script>
+<script th:src="@{/dashboard-doctor/assets/js/kivicare-advance.js?v=1.4.1}" defer></script>
+<script th:src="@{/dashboard-doctor/assets/js/sidebar.js?v=1.4.1}" defer></script>
+
+<script th:src="@{/dashboard-doctor/assets/js/solid-icon-search-filter.js?v=1.4.1}" defer></script>
+</body>
+<script>
+    $(document).ready(function () {
+
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0];
+        $('#startDate, #endDate').attr('min', todayString);
+
+        function validateDate(input, errorElement, message) {
+            const selectedDate = new Date($(input).val());
+            const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            selectedDate.setHours(0, 0, 0, 0);
+
+            if (selectedDate < todayDateOnly) {
+                $(input).addClass('is-invalid');
+                $(errorElement).text(message);
+                return false;
+            } else {
+                $(input).removeClass('is-invalid');
+                $(errorElement).text('');
+                return true;
+            }
+        }
+
+        $('#startDate').on('change', function () {
+            validateDate('#startDate', '#startDateError', 'Ngày bắt đầu không được là ngày trong quá khứ.');
+            if ($(this).val()) {
+                $('#endDate').attr('min', $(this).val());
+            }
+        });
+
+        $('#endDate').on('change', function () {
+            const startDate = new Date($('#startDate').val());
+            const endDate = new Date($(this).val());
+            if (startDate && endDate < startDate) {
+                $(this).addClass('is-invalid');
+                $('#endDateError').text('Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.');
+            } else {
+                validateDate('#endDate', '#endDateError', 'Ngày kết thúc không được là ngày trong quá khứ.');
+            }
+        });
+
+
+        let selectedMedicines = [];
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let filteredMedicines = [];
+        let totalPages = 1;
+
+        function fetchMedicines(name = '', page = 1) {
+            $.ajax({
+                url: '/api/doctor/medicine',
+                method: 'GET',
+                data: {
+                    medicineName: name,
+                    page: page - 1,
+                    size: itemsPerPage
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log('API response:', data);
+                    filteredMedicines = data.content.map(item => ({
+                        id: item.medicineId,
+                        name: item.medicineName,
+                        price: item.price
+                    }));
+                    totalPages = data.totalPages;
+                    renderMedicineList();
+                    renderPagination(currentPage, totalPages);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching medicines:', status, error);
+                    console.error('Response:', xhr.responseText);
+                    filteredMedicines = [];
+                    totalPages = 1;
+                    alert('Không thể tải danh sách thuốc. Vui lòng thử lại sau.');
+                    renderMedicineList();
+                    renderPagination(currentPage, totalPages);
+                }
+            });
+        }
+        function renderMedicineList() {
+            const $medicineList = $('#medicineList');
+            $medicineList.empty();
+            filteredMedicines.forEach(medicine => {
+                const isChecked = selectedMedicines.some(m => m.id === medicine.id);
+                const row = `
+                <tr>
+                    <td><input type="checkbox" class="medicine-checkbox" data-id="${medicine.id}" data-name="${medicine.name}" data-price="${medicine.price}" ${isChecked ? 'checked' : ''}></td>
+                    <td>${medicine.name}</td>
+                    <td>${medicine.price.toLocaleString('vi-VN')} VND</td>
+                </tr>`;
+                $medicineList.append(row);
+            });
+
+            const allChecked = filteredMedicines.length > 0 && filteredMedicines.every(medicine =>
+                selectedMedicines.some(m => m.id === medicine.id)
+            );
+            $('#selectAll').prop('checked', allChecked);
+        }
+
+        // Hàm hiển thị phân trang
+        function renderPagination(currentPage, totalPages) {
+            const $pagination = $('#pagination');
+            let html = '';
+
+            html += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage - 1}">Trước</a></li>`;
+
+            if (currentPage > 2) {
+                html += `<li class="page-item"><a class="page-link" href="#" data-page="1">1</a></li>`;
+                if (currentPage > 3) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+
+            for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
+                html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+            }
+
+            if (currentPage < totalPages - 1) {
+                if (currentPage < totalPages - 2) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+                html += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a></li>`;
+            }
+
+            html += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage + 1}">Sau</a></li>`;
+
+            $pagination.html(html);
+
+            $pagination.find('.page-link').on('click', function (e) {
+                e.preventDefault();
+                const page = parseInt($(this).attr('data-page'));
+                if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                    changePage(page);
+                }
+            });
+        }
+        function changePage(page) {
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            fetchMedicines($('#searchMedicine').val(), currentPage);
+        }
+        $('#searchMedicine').on('input', function () {
+            currentPage = 1;
+            fetchMedicines($(this).val(), currentPage);
+        });
+        $('#selectAll').on('change', function () {
+            const isChecked = $(this).prop('checked');
+            $('.medicine-checkbox').prop('checked', isChecked);
+            updateSelectedMedicines();
+        });
+        $('#medicineList').on('change', '.medicine-checkbox', function () {
+            updateSelectedMedicines();
+            const allChecked = filteredMedicines.length > 0 && filteredMedicines.every(medicine =>
+                selectedMedicines.some(m => m.id === medicine.id)
+            );
+            $('#selectAll').prop('checked', allChecked);
+        });
+        function updateSelectedMedicines() {
+            selectedMedicines = [];
+            $('.medicine-checkbox:checked').each(function () {
+                selectedMedicines.push({
+                    id: parseInt($(this).data('id')),
+                    name: $(this).data('name'),
+                    price: parseFloat($(this).data('price'))
+                });
+            });
+        }
+        $('#saveSelectedMedicines').on('click', function () {
+            if (selectedMedicines.length === 0) {
+                alert('Vui lòng chọn ít nhất một loại thuốc.');
+                return;
+            }
+
+            const selectedText = selectedMedicines
+                .map(medicine => `- ${medicine.name}:`)
+                .join('\n');
+
+            const $treatmentMethod = $('#treatmentMethod');
+            $treatmentMethod.val(
+                $treatmentMethod.val()
+                    ? `${$treatmentMethod.val()}\n${selectedText}`
+                    : selectedText
+            );
+            $('#addMedicineModal').modal('hide');
+        });
+        function submitTreatment() {
+            const startDate = $('#startDate').val();
+            const endDate = $('#endDate').val();
+            const diagnosis = $('#diagnosis').val();
+            const treatmentMethod = $('#treatmentMethod').val();
+
+            if (!startDate || !endDate || !diagnosis || !treatmentMethod) {
+                alert('Vui lòng điền đầy đủ thông tin điều trị.');
+                return;
+            }
+
+            if (selectedMedicines.length === 0) {
+                alert('Vui lòng chọn ít nhất một loại thuốc.');
+                return;
+            }
+        }
+        $('#submitTreatment').on('click', submitTreatment);
+        $('#addMedicineModal').on('show.bs.modal', function () {
+            currentPage = 1;
+            fetchMedicines('', currentPage);
+        });
+    });
+    function submitTreatment(e) {
+        e.preventDefault();
+        const appointmentId = $('#appointmentId').val();
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+        const diagnosis = $('#diagnosis').val();
+        const treatmentMethod = $('#treatmentMethod').val();
+
+        const treatmentData = {
+            appointmentId,
+            startDate,
+            endDate,
+            diagnosis,
+            treatmentMethod,
+        };
+
+        $.ajax({
+            url: '/api/doctor/create/medical/profile',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(treatmentData),
+            success: function (response) {
+                alert('Hồ sơ điều trị đã được tạo thành công!');
+                window.href.location = '/doctor/result'
+            },
+            error: function (xhr, status, error) {
+                console.error('Error creating medical profile:', status, error);
+                console.error('Response:', xhr.responseText);
+                alert('Không thể tạo hồ sơ điều trị. Vui lòng thử lại sau.');
+            }
+        });
+    }
+
+</script>
+</html>

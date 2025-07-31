@@ -1649,9 +1649,9 @@
             <td>${d.date || 'N/A'}</td>
             <td>${d.gender || 'N/A'}</td>
             <td>
-                <button class="btn btn-success btn-sm"
-                        onclick="window.location.href='${d.resultURL || '#'}'"
-                        ${!d.resultURL ? 'disabled' : ''}>
+                <button
+                    class="btn btn-success btn-sm"
+                    onclick="window.location.href='/doctor/prescription/${d.appointmentId}'">
                     Xem kết quả
                 </button>
             </td>

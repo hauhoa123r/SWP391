@@ -64,7 +64,6 @@ public class OpenAiServiceImpl implements AIService {
     public String fulfillPrompt(String fullInstructionPrompt) {
         return chatClient4
                 .prompt()
-                .system(SYSTEM_PROMPT_FULL_AI)
                 .user(fullInstructionPrompt)
                 .call()
                 .content()

@@ -3,12 +3,16 @@ package org.project.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.project.converter.AppointmentFilterResponseConverter;
+import org.project.converter.DoctorMedicineConverter;
 import org.project.entity.*;
 import org.project.enums.AppointmentStatus;
 import org.project.enums.RequestStatus;
 import org.project.model.dto.AppointmentFilterDTO;
 import org.project.model.dto.CreateTestRequestDTO;
+import org.project.model.dto.DoctorMedicineDTO;
+import org.project.model.dto.TreatmentPatientDTO;
 import org.project.model.response.AppointmentFilterResponse;
+import org.project.model.response.DoctorMedicineResponse;
 import org.project.repository.*;
 import org.project.service.AppointmentExaminationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +56,9 @@ public class AppointmentExaminationServiceImpl implements AppointmentExamination
 
     @Autowired
     private TestTypeRepository testTypeRepository;
+
+    @Autowired
+    private DoctorMedicineConverter doctorMedicineConverter;
 
     @Override
     public Page<AppointmentFilterResponse> getAppointmentExamination(AppointmentFilterDTO appointmentFilterDTO) {
@@ -144,6 +151,26 @@ public class AppointmentExaminationServiceImpl implements AppointmentExamination
     public Page<AppointmentFilterResponse> getAppointmentCompleted(AppointmentFilterDTO appointmentFilterDTO) {
         Page<AppointmentFilterResponse> appointmentFilterResponses = appointmentFilterResponseConverter.toConverterAppointmentComplete(appointmentFilterDTO);
         return appointmentFilterResponses;
+    }
+
+    @Override
+    public Page<DoctorMedicineResponse> filterMedicines(DoctorMedicineDTO doctorMedicineDTO) {
+        Page<DoctorMedicineResponse> results = doctorMedicineConverter.toFilterMedicine(doctorMedicineDTO);
+        return results;
+    }
+
+    @Override
+    public Boolean isAddMedicalProfile(TreatmentPatientDTO treatmentPatientDTO) {
+        AppointmentEntity appointmentEntity = appointmentRepository.findById(treatmentPatientDTO.getAppointmentId()).get();
+        MedicalRecordEntity medicalRecordEntity = medicalRecordRepository.findByAppointmentEntity_Id(appointmentEntity.getId());
+        medicalRecordEntity.setTreatmentPlan(treatmentPatientDTO.getTreatmentMethod());
+        medicalRecordEntity.setAdmissionDate(java.sql.Date.valueOf(treatmentPatientDTO.getStartDate()));
+        medicalRecordEntity.setDiagnosis(treatmentPatientDTO.getDiagnosis());
+        medicalRecordEntity.setDischargeDate(java.sql.Date.valueOf(treatmentPatientDTO.getStartDate()));
+        appointmentEntity.setAppointmentStatus(AppointmentStatus.COMPLETED);
+        appointmentRepository.save(appointmentEntity);
+        medicalRecordRepository.save(medicalRecordEntity);
+        return true;
     }
 
 }

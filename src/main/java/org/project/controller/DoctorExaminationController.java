@@ -65,4 +65,11 @@ public class DoctorExaminationController {
         mv.addObject("information", doctorExaminationResponse);
         return mv;
     }
+    @GetMapping("/doctor/prescription/{id}")
+    public ModelAndView doctorPrescription(@PathVariable Long id) {
+        ModelAndView mv = new ModelAndView("/dashboard-doctor/prescription");
+        DoctorExaminationResponse doctorExaminationResponse = doctorExaminationConverter.getInformationPatientToAppointment(id);
+        mv.addObject("information", doctorExaminationResponse);
+        return mv;
+    }
 }

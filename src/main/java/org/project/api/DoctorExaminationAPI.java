@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.project.converter.TestItemConverter;
 import org.project.model.dto.*;
 import org.project.model.response.AppointmentFilterResponse;
+import org.project.model.response.DoctorMedicineResponse;
 import org.project.model.response.TestRequestResponse;
 import org.project.service.AppointmentExaminationService;
 import org.project.service.ExaminationService;
@@ -111,5 +112,17 @@ public class DoctorExaminationAPI {
         appointmentFilterDTO.setDoctorId(60L);
         Page<AppointmentFilterResponse> appointmentEntities = appointmentExaminationService.getAppointmentCompleted(appointmentFilterDTO);
         return appointmentEntities;
+    }
+
+    @GetMapping("/medicine")
+    public Page<DoctorMedicineResponse> filterMedicine(@ModelAttribute DoctorMedicineDTO medicineDTO){
+        Page<DoctorMedicineResponse> result = appointmentExaminationService.filterMedicines(medicineDTO);
+        return result;
+    }
+
+    @PostMapping("/create/medical/profile")
+    public Boolean isAddMedicalProfile(@RequestBody TreatmentPatientDTO treatmentPatientDTO){
+        Boolean isAddMedicalRecord = appointmentExaminationService.isAddMedicalProfile(treatmentPatientDTO);
+        return true;
     }
 }
