@@ -26,11 +26,14 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Nhà cung cấp <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="si-supplier" name="supplierName" required placeholder="Tên nhà cung cấp">
+                                <input type="text" class="form-control" id="si-supplier" name="supplierName" required 
+                                       placeholder="Tên nhà cung cấp" minlength="2" maxlength="100">
+                                <div class="invalid-feedback">Vui lòng nhập tên nhà cung cấp (2-100 ký tự)</div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Ngày giao dự kiến <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="si-expectedDate" name="expectedDeliveryDate" required>
+                                <div class="invalid-feedback">Vui lòng chọn ngày giao dự kiến</div>
                             </div>
                         </div>
 
@@ -42,10 +45,13 @@
                                     <option value="MEDICINE">Thuốc</option>
                                     <option value="MEDICAL_PRODUCT">Thiết bị y tế</option>
                                 </select>
+                                <div class="invalid-feedback">Vui lòng chọn loại đơn hàng</div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Ghi chú</label>
-                                <input type="text" class="form-control" id="si-notes" name="notes">
+                                <input type="text" class="form-control" id="si-notes" name="notes" maxlength="500" 
+                                       placeholder="Ghi chú thêm (tối đa 500 ký tự)">
+                                <div class="invalid-feedback">Ghi chú không được vượt quá 500 ký tự</div>
                             </div>
                         </div>
 
