@@ -40,18 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(
-                                        "/login",
-                                        "/register"
-                                ).anonymous()
-
-                                .requestMatchers(
-                                        "/setting",
-                                        "/logout"
-                                ).authenticated()
-
-                                .requestMatchers(
-                                        "/admin/**",
-                                        "/api/admin/**"
+                                        "/admin/**"
                                 ).hasRole("ADMIN")
 
                                 .requestMatchers(
@@ -88,7 +77,7 @@ public class SecurityConfig {
                                             response.setContentType("application/json; charset=UTF-8");
                                             response.getWriter().write("Email hoặc mật khẩu không đúng");
                                         })
-                )
+                                        .permitAll())
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer ->
                         httpSecurityOAuth2LoginConfigurer
                                 .userInfoEndpoint(userInfoEndpointConfig ->

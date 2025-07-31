@@ -1,6 +1,5 @@
 package org.project.api;
 
-import jakarta.validation.Valid;
 import org.project.model.dto.ServiceDTO;
 import org.project.model.response.ServiceResponse;
 import org.project.service.ServiceService;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/service")
 public class ServiceAPI {
     private final int PAGE_SIZE_FOR_APPOINTMENT = 6;
     private final int PAGE_SIZE_FOR_LIST = 9;
@@ -23,7 +23,7 @@ public class ServiceAPI {
         this.serviceService = serviceService;
     }
 
-    @GetMapping("/api/service/page/{pageIndex}/department/{departmentId}")
+    @GetMapping("/page/{pageIndex}/department/{departmentId}")
     public ResponseEntity<Map<String, Object>> getAllServicesByPageAndStaffId(@PathVariable int pageIndex, @PathVariable Long departmentId) {
         Page<ServiceResponse> serviceResponsePage = serviceService.getServicesByDepartment(departmentId, pageIndex, PAGE_SIZE_FOR_APPOINTMENT);
         return ResponseEntity.ok(
@@ -35,7 +35,7 @@ public class ServiceAPI {
         );
     }
 
-    @GetMapping("/api/service/page/{pageIndex}/department/{departmentId}/search/{keyword}")
+    @GetMapping("/page/{pageIndex}/department/{departmentId}/search/{keyword}")
     public ResponseEntity<Map<String, Object>> searchServicesByStaffIdAndName(
             @PathVariable int pageIndex,
             @PathVariable Long departmentId,
@@ -50,7 +50,7 @@ public class ServiceAPI {
         );
     }
 
-    @GetMapping("/api/service/page/{pageIndex}")
+    @GetMapping("/page/{pageIndex}")
     public ResponseEntity<Map<String, Object>> service(@PathVariable int pageIndex, @ModelAttribute ServiceDTO serviceDTO) {
         Page<ServiceResponse> productRespsonsePage = serviceService.getServices(pageIndex, PAGE_SIZE_FOR_LIST, serviceDTO);
         return ResponseEntity.ok(
@@ -60,32 +60,5 @@ public class ServiceAPI {
                         "totalPages", productRespsonsePage.getTotalPages()
                 )
         );
-    }
-
-    @GetMapping("/api/admin/service/page/{pageIndex}")
-    public ResponseEntity<Map<String, Object>> getServicesForAdmin(@PathVariable int pageIndex, @ModelAttribute ServiceDTO serviceDTO) {
-        Page<ServiceResponse> serviceResponsePage = serviceService.getServices(pageIndex, PAGE_SIZE_FOR_LIST, serviceDTO);
-        return ResponseEntity.ok(
-                Map.of(
-                        "items", serviceResponsePage.getContent(),
-                        "currentPage", serviceResponsePage.getNumber(),
-                        "totalPages", serviceResponsePage.getTotalPages()
-                )
-        );
-    }
-
-    @PostMapping("/api/admin/service")
-    public void createService(@RequestBody @Valid ServiceDTO serviceDTO) {
-        serviceService.createService(serviceDTO);
-    }
-
-    @PutMapping("/api/admin/service/{serviceId}")
-    public void updateService(@PathVariable Long serviceId, @RequestBody @Valid ServiceDTO serviceDTO) {
-        serviceService.updateService(serviceId, serviceDTO);
-    }
-
-    @DeleteMapping("/api/admin/service/{serviceId}")
-    public void deleteService(@PathVariable Long serviceId) {
-        serviceService.deleteService(serviceId);
     }
 }

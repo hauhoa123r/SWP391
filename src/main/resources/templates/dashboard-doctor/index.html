@@ -1,11 +1,10 @@
 <!doctype html>
-<html lang="en" class="theme-fs-sm" data-bs-theme="light" data-bs-theme-color="default" dir="ltr">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title data-setting="app_name" data-rightJoin=" Clinic And Patient Management Dashboard">KiviCare Clinic And Patient
-        Management Dashboard</title>
+    <title data-setting="app_name" data-rightJoin=" Clinic And Patient Management Dashboard">Trang chủ</title>
     <meta name="description"
         content="KiviCare is a revolutionary Bootstrap Admin Dashboard Template and UI Components Library. The Admin Dashboard Template and UI Component features 8 modules.">
     <meta name="keywords"
@@ -81,32 +80,32 @@
     <!-- Google Font Api KEY-->
     <meta name="google_font_api" content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
     <!-- Favicon -->
-    <link rel="shortcut icon" href="../dashboard-doctor/assets/images/favicon.ico" />
+    <link rel="shortcut icon" th:href="@{/dashboard-doctor/assets/images/favicon.ico}" />
 
     <!-- Library / Plugin Css Build -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/css/core/libs.min.css" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/core/libs.min.css}" />
 
     <!-- flaticon css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/flaticon/css/flaticon.css" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/flaticon/css/flaticon.css}" />
 
     <!-- font-awesome css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/font-awesome/css/all.min.css}" />
 
     <!-- Flatpickr css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.css" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.css}" />
 
-    <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/sheperd/dist/css/sheperd.css">
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/sheperd/dist/css/sheperd.css}" />
     <!-- Kivicare Design System Css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/css/kivicare.min.css?v=1.4.1" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/kivicare.min.css?v=1.4.1}" />
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/css/custom.min.css?v=1.4.1" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/custom.min.css?v=1.4.1}" />
 
     <!-- RTL Css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/css/rtl.min.css?v=1.4.1" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/rtl.min.css?v=1.4.1}" />
 
     <!-- Customizer Css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/css/customizer.min.css?v=1.4.1" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/customizer.min.css?v=1.4.1}" />
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -121,177 +120,31 @@
     <div id="loading">
         <div class="loader simple-loader">
             <div class="loader-body">
-                <img src="../dashboard-doctor/assets/images/loader.gif" alt="loader" class="light-loader img-fluid " width="200">
+                <img th:src="@{/dashboard-doctor/assets/images/loader.gif}"  alt="loader" class="light-loader img-fluid " width="200">
             </div>
         </div>
     </div>
     <!-- loader END -->
-    <aside class="sidebar sidebar-base " id="first-tour" data-toggle="main-sidebar" data-sidebar="responsive">
-        <div class="sidebar-header d-flex align-items-center justify-content-start position-relative">
-            <a href="./index.html" class="navbar-brand">
+    <div th:replace="~{dashboard-doctor/fragments/sidebar :: sidebar}"></div>
 
-                <!--Logo start-->
-                <div class="logo-main">
-                    <img class="logo-normal img-fluid" src="../dashboard-doctor/assets/images/logo.png" height="30" alt="logo">
-                    <img class="logo-normal dark-normal img-fluid" src="../dashboard-doctor/assets/images/logo-dark.png" height="30"
-                        alt="logo">
-                    <img class="logo-normal white-normal img-fluid" src="../dashboard-doctor/assets/images/logo-white.png" height="30"
-                        alt="logo">
-                    <img class="logo-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini.png" height="30" alt="logo">
-                    <img class="logo-mini dark-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini-dark.png" height="30"
-                        alt="logo">
-                    <img class="logo-mini white-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini-white.png" height="30"
-                        alt="logo">
-                </div>
-                <!--logo End-->
-            </a>
-            <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
-                <i class="icon">
-                    <svg class="icon-20 icon-arrow" width="20" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M15.5 19L8.5 12L15.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round"></path>
-                    </svg>
-                </i>
-            </div>
-        </div>
-        <div class="sidebar-body pt-0 data-scrollbar">
-            <div class="sidebar-list">
-                <!-- Sidebar Menu Start -->
-                <ul class="navbar-nav iq-main-menu" id="sidebar-menu">
-                    <li class="nav-item static-item">
-                        <a class="nav-link static-item disabled text-start" href="#" tabindex="-1">
-                            <span class="default-icon">Home</span>
-                            <span class="mini-icon" data-bs-toggle="tooltip" title="Home"
-                                data-bs-placement="right">-</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./index.html">
-                            <i class="icon" data-bs-toggle="tooltip" title="Dashboard" data-bs-placement="right">
-                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M9.14373 20.7821V17.7152C9.14372 16.9381 9.77567 16.3067 10.5584 16.3018H13.4326C14.2189 16.3018 14.8563 16.9346 14.8563 17.7152V20.7732C14.8562 21.4473 15.404 21.9951 16.0829 22H18.0438C18.9596 22.0023 19.8388 21.6428 20.4872 21.0007C21.1356 20.3586 21.5 19.4868 21.5 18.5775V9.86585C21.5 9.13139 21.1721 8.43471 20.6046 7.9635L13.943 2.67427C12.7785 1.74912 11.1154 1.77901 9.98539 2.74538L3.46701 7.9635C2.87274 8.42082 2.51755 9.11956 2.5 9.86585V18.5686C2.5 20.4637 4.04738 22 5.95617 22H7.87229C8.19917 22.0023 8.51349 21.8751 8.74547 21.6464C8.97746 21.4178 9.10793 21.1067 9.10792 20.7821H9.14373Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                            </i>
-                            <i class="sidenav-mini-icon" data-bs-toggle="tooltip" title="Admin Dashboard"
-                                data-bs-placement="right">AD</i>
-                            <span class="item-name">Trang chủ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="hr-horizontal">
-                    </li>
-                    <li class="nav-item static-item">
-                        <a class="nav-link static-item disabled text-start" href="#" tabindex="-1">
-                            <span class="default-icon">Lịch</span>
-                            <span class="mini-icon">-</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " aria-current="page" href="./appointment.html">
-                            <i class="icon" data-bs-toggle="tooltip" title="Appointment" data-bs-placement="right">
-                                <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M3 16.87V9.25699H21V16.931C21 20.07 19.0241 22 15.8628 22H8.12733C4.99561 22 3 20.03 3 16.87ZM7.95938 14.41C7.50494 14.431 7.12953 14.07 7.10977 13.611C7.10977 13.151 7.46542 12.771 7.91987 12.75C8.36443 12.75 8.72997 13.101 8.73985 13.55C8.7596 14.011 8.40395 14.391 7.95938 14.41ZM12.0198 14.41C11.5653 14.431 11.1899 14.07 11.1701 13.611C11.1701 13.151 11.5258 12.771 11.9802 12.75C12.4248 12.75 12.7903 13.101 12.8002 13.55C12.82 14.011 12.4643 14.391 12.0198 14.41ZM16.0505 18.09C15.596 18.08 15.2305 17.7 15.2305 17.24C15.2206 16.78 15.5862 16.401 16.0406 16.391H16.0505C16.5148 16.391 16.8902 16.771 16.8902 17.24C16.8902 17.71 16.5148 18.09 16.0505 18.09ZM11.1701 17.24C11.1899 17.7 11.5653 18.061 12.0198 18.04C12.4643 18.021 12.82 17.641 12.8002 17.181C12.7903 16.731 12.4248 16.38 11.9802 16.38C11.5258 16.401 11.1701 16.78 11.1701 17.24ZM7.09989 17.24C7.11965 17.7 7.49506 18.061 7.94951 18.04C8.39407 18.021 8.74973 17.641 8.72997 17.181C8.72009 16.731 8.35456 16.38 7.90999 16.38C7.45554 16.401 7.09989 16.78 7.09989 17.24ZM15.2404 13.601C15.2404 13.141 15.596 12.771 16.0505 12.761C16.4951 12.761 16.8507 13.12 16.8705 13.561C16.8804 14.021 16.5247 14.401 16.0801 14.41C15.6257 14.42 15.2503 14.07 15.2404 13.611V13.601Z"
-                                        fill="currentColor" />
-                                    <path opacity="0.4"
-                                        d="M3.00336 9.2569C3.0162 8.6699 3.0656 7.5049 3.15846 7.1299C3.63267 5.0209 5.24298 3.6809 7.54485 3.4899H16.4559C18.738 3.6909 20.3681 5.0399 20.8423 7.1299C20.9342 7.4949 20.9836 8.6689 20.9964 9.2569H3.00336Z"
-                                        fill="currentColor" />
-                                    <path
-                                        d="M8.30486 6.59C8.73955 6.59 9.06556 6.261 9.06556 5.82V2.771C9.06556 2.33 8.73955 2 8.30486 2C7.87017 2 7.54416 2.33 7.54416 2.771V5.82C7.54416 6.261 7.87017 6.59 8.30486 6.59Z"
-                                        fill="currentColor" />
-                                    <path
-                                        d="M15.6949 6.59C16.1197 6.59 16.4556 6.261 16.4556 5.82V2.771C16.4556 2.33 16.1197 2 15.6949 2C15.2603 2 14.9342 2.33 14.9342 2.771V5.82C14.9342 6.261 15.2603 6.59 15.6949 6.59Z"
-                                        fill="currentColor" />
-                                </svg>
-                            </i>
-                            <span class="item-name">Lịch khám hôm nay</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " aria-current="page" href="./schedule.html">
-                            <i class="icon" data-bs-toggle="tooltip" title="Appointment" data-bs-placement="right">
-                                <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M3 16.87V9.25699H21V16.931C21 20.07 19.0241 22 15.8628 22H8.12733C4.99561 22 3 20.03 3 16.87ZM7.95938 14.41C7.50494 14.431 7.12953 14.07 7.10977 13.611C7.10977 13.151 7.46542 12.771 7.91987 12.75C8.36443 12.75 8.72997 13.101 8.73985 13.55C8.7596 14.011 8.40395 14.391 7.95938 14.41ZM12.0198 14.41C11.5653 14.431 11.1899 14.07 11.1701 13.611C11.1701 13.151 11.5258 12.771 11.9802 12.75C12.4248 12.75 12.7903 13.101 12.8002 13.55C12.82 14.011 12.4643 14.391 12.0198 14.41ZM16.0505 18.09C15.596 18.08 15.2305 17.7 15.2305 17.24C15.2206 16.78 15.5862 16.401 16.0406 16.391H16.0505C16.5148 16.391 16.8902 16.771 16.8902 17.24C16.8902 17.71 16.5148 18.09 16.0505 18.09ZM11.1701 17.24C11.1899 17.7 11.5653 18.061 12.0198 18.04C12.4643 18.021 12.82 17.641 12.8002 17.181C12.7903 16.731 12.4248 16.38 11.9802 16.38C11.5258 16.401 11.1701 16.78 11.1701 17.24ZM7.09989 17.24C7.11965 17.7 7.49506 18.061 7.94951 18.04C8.39407 18.021 8.74973 17.641 8.72997 17.181C8.72009 16.731 8.35456 16.38 7.90999 16.38C7.45554 16.401 7.09989 16.78 7.09989 17.24ZM15.2404 13.601C15.2404 13.141 15.596 12.771 16.0505 12.761C16.4951 12.761 16.8507 13.12 16.8705 13.561C16.8804 14.021 16.5247 14.401 16.0801 14.41C15.6257 14.42 15.2503 14.07 15.2404 13.611V13.601Z"
-                                        fill="currentColor" />
-                                    <path opacity="0.4"
-                                        d="M3.00336 9.2569C3.0162 8.6699 3.0656 7.5049 3.15846 7.1299C3.63267 5.0209 5.24298 3.6809 7.54485 3.4899H16.4559C18.738 3.6909 20.3681 5.0399 20.8423 7.1299C20.9342 7.4949 20.9836 8.6689 20.9964 9.2569H3.00336Z"
-                                        fill="currentColor" />
-                                    <path
-                                        d="M8.30486 6.59C8.73955 6.59 9.06556 6.261 9.06556 5.82V2.771C9.06556 2.33 8.73955 2 8.30486 2C7.87017 2 7.54416 2.33 7.54416 2.771V5.82C7.54416 6.261 7.87017 6.59 8.30486 6.59Z"
-                                        fill="currentColor" />
-                                    <path
-                                        d="M15.6949 6.59C16.1197 6.59 16.4556 6.261 16.4556 5.82V2.771C16.4556 2.33 16.1197 2 15.6949 2C15.2603 2 14.9342 2.33 14.9342 2.771V5.82C14.9342 6.261 15.2603 6.59 15.6949 6.59Z"
-                                        fill="currentColor" />
-                                </svg>
-                            </i>
-                            <span class="item-name">Lịch làm việc</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="hr-horizontal">
-                    </li>
-                    <li class="nav-item static-item">
-                        <a class="nav-link static-item disabled text-start" href="#" tabindex="-1">
-                            <span class="default-icon">Kết quả</span>
-                            <span class="mini-icon">-</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " aria-current="page" href="./category.html">
-                            <i class="icon" data-bs-toggle="tooltip" title="Category" data-bs-placement="right">
-                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.1528 5.55559C10.2037 5.65925 10.2373 5.77027 10.2524 5.8844L10.5308 10.0243L10.669 12.1051C10.6705 12.3191 10.704 12.5317 10.7687 12.7361C10.9356 13.1326 11.3372 13.3846 11.7741 13.3671L18.4313 12.9316C18.7196 12.9269 18.998 13.0347 19.2052 13.2313C19.3779 13.3952 19.4894 13.6096 19.5246 13.8402L19.5364 13.9802C19.2609 17.795 16.4592 20.9767 12.6524 21.7981C8.84555 22.6194 4.94186 20.8844 3.06071 17.535C2.51839 16.5619 2.17965 15.4923 2.06438 14.389C2.01623 14.0624 1.99503 13.7326 2.00098 13.4026C1.99503 9.31279 4.90747 5.77702 8.98433 4.92463C9.47501 4.84822 9.95603 5.10798 10.1528 5.55559Z"
-                                        fill="currentColor"></path>
-                                    <path opacity="0.4"
-                                        d="M12.8701 2.00082C17.43 2.11683 21.2624 5.39579 22.0001 9.81229L21.993 9.84488L21.9729 9.89227L21.9757 10.0224C21.9652 10.1947 21.8987 10.3605 21.784 10.4945C21.6646 10.634 21.5014 10.729 21.3217 10.7659L21.2121 10.7809L13.5313 11.2786C13.2758 11.3038 13.0214 11.2214 12.8314 11.052C12.6731 10.9107 12.5719 10.7201 12.5433 10.5147L12.0277 2.84506C12.0188 2.81913 12.0188 2.79102 12.0277 2.76508C12.0348 2.55367 12.1278 2.35384 12.2861 2.21023C12.4444 2.06662 12.6547 1.9912 12.8701 2.00082Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                            </i>
-                            <i class="sidenav-mini-icon" data-bs-toggle="tooltip" title="Category"
-                                data-bs-placement="right">C</i>
-                            <span class="item-name">Kết quả xét nghiệm</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <hr class="hr-horizontal">
-                    </li>
-
-
-                </ul>
-
-                <!-- Sidebar Menu End -->
-            </div>
-        </div>
-        <div class="sidebar-footer"></div>
-    </aside>
     <main class="main-content">
         <div class="position-relative ">
             <!--Nav Start-->
             <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar">
                 <div class="container-fluid navbar-inner">
-                    <a href="./index.html" class="navbar-brand">
+                    <a href="/doctor/homepage" class="navbar-brand">
 
                         <!--Logo start-->
                         <div class="logo-main">
-                            <img class="logo-normal img-fluid" src="../dashboard-doctor/assets/images/logo.png" height="30" alt="logo">
-                            <img class="logo-normal dark-normal img-fluid" src="../dashboard-doctor/assets/images/logo-dark.png"
+                            <img class="logo-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo.png}" height="30" alt="logo">
+                            <img class="logo-normal dark-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-dark.png}"
                                 height="30" alt="logo">
-                            <img class="logo-normal white-normal img-fluid" src="../dashboard-doctor/assets/images/logo-white.png"
+                            <img class="logo-normal white-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-white.png}"
                                 height="30" alt="logo">
-                            <img class="logo-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini.png" height="30" alt="logo">
-                            <img class="logo-mini dark-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini-dark.png"
+                            <img class="logo-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini.png}" height="30" alt="logo">
+                            <img class="logo-mini dark-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini-dark.png}"
                                 height="30" alt="logo">
-                            <img class="logo-mini white-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini-white.png"
+                            <img class="logo-mini white-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini-white.png}"
                                 height="30" alt="logo">
                         </div>
                         <!--logo End-->
@@ -303,245 +156,6 @@
                                     d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
                             </svg>
                         </i>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between product-offcanvas">
-                        <div class="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabindex="-1"
-                            id="offcanvasBottomNav">
-                            <div class="offcanvas-body">
-                                <ul class="iq-nav-menu list-unstyled">
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start active" href="./index.html">
-                                            <span class="nav-text">Home</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
-                                            href="#allPagesData" role="button" aria-expanded="false"
-                                            aria-controls="allPagesData">
-                                            <span class="nav-text">Pages</span>
-                                        </a>
-                                        <ul class="iq-header-sub-menu list-unstyled collapse" id="allPagesData">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="./component.html">Components</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="./ui-color.html">UI Color</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#authSkins" role="button" aria-expanded="false">
-                                                    Auth skins
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="defaultAuth">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/sign-in.html">Sign In</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/sign-up.html">Sign Up</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/confirm-mail.html">Email Verified</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/recoverpw.html">Reset
-                                                            Password</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./auth/lock-screen.html">Lock Screen</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#userApps" role="button" aria-expanded="false"
-                                                    aria-controls="userApps">
-                                                    User
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="userApps">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-profile.html">User Profile</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-add.html">User Add</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./app/user-list.html">User List</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#utilities" role="button" aria-expanded="false"
-                                                    aria-controls="utilities">
-                                                    Utilities
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="utilities">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/maintenance.html">Maintenance</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/error404.html">404</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./errors/error500.html">500</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#widgetsPage" role="button" aria-expanded="false"
-                                                    aria-controls="widgetsPage">
-                                                    Widgets
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="widgetsPage">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetbasic.html">Widget Basic</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetchart.html">Widget Chart</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./widget/widgetcard.html">Widget Card</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#mapPages" role="button" aria-expanded="false"
-                                                    aria-controls="mapPages">
-                                                    Map
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="mapPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./maps/google.html">Google</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./maps/vector.html">Vector</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#formsPages" role="button" aria-expanded="false"
-                                                    aria-controls="formsPages">
-                                                    Form
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="formsPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./form/form-element.html">Element</a></li>
-
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./form/form-validation.html">Validation</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#tablesPages" role="button" aria-expanded="false"
-                                                    aria-controls="tablesPages">
-                                                    Table
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="tablesPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/bootstrap-table.html">Bootstrap Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/table-data.html">Data Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/border-table.html">Bordered Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/fancy-table.html">Fancy Table</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./table/fixed-table.html">Fixed Table</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow" data-bs-toggle="collapse"
-                                                    href="#iconsPages" role="button" aria-expanded="false"
-                                                    aria-controls="iconsPages">
-                                                    Icons
-                                                    <i class="right-icon">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ul aria-expanded="false"
-                                                    class="iq-header-sub-menu left list-unstyled collapse"
-                                                    id="iconsPages">
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/solid.html">Solid</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/outline.html">Outlined</a></li>
-                                                    <li class="nav-item"><a class="nav-link "
-                                                            href="./icons/dual-tone.html">Dual Tone</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start " href="./setting.html">
-                                            <span class="nav-text">Setting </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                     <div class="d-flex align-items-center">
                         <button id="navbar-toggle" class="navbar-toggler px-0" type="button" data-bs-toggle="collapse"
@@ -632,234 +246,6 @@
                                         </div>
                                     </div>
                                 </a>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link" id="notification-cart" data-bs-toggle="dropdown">
-                                    <div class="btn-action position-relative nav-list-icon">
-                                        <span class="btn-inner">
-                                            <svg class="cart-icons icon-20" xmlns="http://www.w3.org/2000/svg"
-                                                width="18" height="17" viewBox="0 0 18 17" fill="none">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M4.27385 4.95616L4.77635 10.9328C4.81302 11.3928 5.18885 11.7378 5.64802 11.7378H5.65135H14.7439H14.7455C15.1797 11.7378 15.5505 11.4145 15.6122 10.9853L16.4039 5.51949C16.4222 5.38949 16.3897 5.25949 16.3105 5.15449C16.2322 5.04866 16.1172 4.98033 15.9872 4.96199C15.813 4.96866 8.58552 4.95866 4.27385 4.95616ZM5.64631 12.9878C4.54881 12.9878 3.61964 12.1311 3.53047 11.0353L2.76714 1.95695L1.51131 1.74028C1.17048 1.68028 0.942975 1.35778 1.00131 1.01695C1.06131 0.676117 1.39047 0.45445 1.72381 0.507784L3.45714 0.807784C3.73631 0.85695 3.94881 1.08862 3.97297 1.37195L4.16881 3.70612C16.0655 3.71112 16.1038 3.71695 16.1613 3.72362C16.6255 3.79112 17.0338 4.03362 17.3121 4.40695C17.5905 4.77945 17.7071 5.23862 17.6405 5.69862L16.8496 11.1636C16.7005 12.2036 15.7971 12.9878 14.7471 12.9878H14.743H5.65297H5.64631Z"
-                                                    fill="currentColor"></path>
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M13.4077 8.03638H11.0977C10.7518 8.03638 10.4727 7.75638 10.4727 7.41138C10.4727 7.06638 10.7518 6.78638 11.0977 6.78638H13.4077C13.7527 6.78638 14.0327 7.06638 14.0327 7.41138C14.0327 7.75638 13.7527 8.03638 13.4077 8.03638Z"
-                                                    fill="currentColor"></path>
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M5.28815 15.2516C5.53898 15.2516 5.74148 15.4541 5.74148 15.7049C5.74148 15.9558 5.53898 16.1591 5.28815 16.1591C5.03648 16.1591 4.83398 15.9558 4.83398 15.7049C4.83398 15.4541 5.03648 15.2516 5.28815 15.2516Z"
-                                                    fill="currentColor"></path>
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M5.28732 16.784C4.69232 16.784 4.20898 16.2998 4.20898 15.7048C4.20898 15.1098 4.69232 14.6265 5.28732 14.6265C5.88232 14.6265 6.36648 15.1098 6.36648 15.7048C6.36648 16.2998 5.88232 16.784 5.28732 16.784"
-                                                    fill="currentColor"></path>
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M14.6877 16.784C14.0927 16.784 13.6094 16.2998 13.6094 15.7048C13.6094 15.1098 14.0927 14.6265 14.6877 14.6265C15.2835 14.6265 15.7677 15.1098 15.7677 15.7048C15.7677 16.2998 15.2835 16.784 14.6877 16.784"
-                                                    fill="currentColor"></path>
-                                            </svg>
-                                        </span>
-                                        <span class="badge-notification">4</span>
-                                    </div>
-                                </a>
-                                <div class="p-0 sub-drop dropdown-menu dropdown-menu-end"
-                                    aria-labelledby="notification-cart">
-                                    <div class="m-0 shadow-none card">
-                                        <div class="py-3 card-header d-flex justify-content-between bg-primary mb-0">
-                                            <div class="header-title">
-                                                <h5 class="mb-0 text-white">All Carts</h5>
-                                            </div>
-                                        </div>
-                                        <div class="p-0 card-body max-17 scroll-thin">
-                                            <div class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/01.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">Biker’s Jacket</h6>
-                                                        <p class="mb-0">$56.00</p>
-                                                    </div>
-                                                    <button type="button" class="btn btn-icon text-danger btn-sm">
-                                                        <span class="btn-inner">
-                                                            <svg viewBox="0 0 24 24" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path opacity="0.4"
-                                                                    d="M19.643 9.48851C19.643 9.5565 19.11 16.2973 18.8056 19.1342C18.615 20.8751 17.4927 21.9311 15.8092 21.9611C14.5157 21.9901 13.2494 22.0001 12.0036 22.0001C10.6809 22.0001 9.38741 21.9901 8.13185 21.9611C6.50477 21.9221 5.38147 20.8451 5.20057 19.1342C4.88741 16.2873 4.36418 9.5565 4.35445 9.48851C4.34473 9.28351 4.41086 9.08852 4.54507 8.93053C4.67734 8.78453 4.86796 8.69653 5.06831 8.69653H18.9388C19.1382 8.69653 19.3191 8.78453 19.4621 8.93053C19.5953 9.08852 19.6624 9.28351 19.643 9.48851Z"
-                                                                    fill="currentColor"></path>
-                                                                <path
-                                                                    d="M21 5.97686C21 5.56588 20.6761 5.24389 20.2871 5.24389H17.3714C16.7781 5.24389 16.2627 4.8219 16.1304 4.22692L15.967 3.49795C15.7385 2.61698 14.9498 2 14.0647 2H9.93624C9.0415 2 8.26054 2.61698 8.02323 3.54595L7.87054 4.22792C7.7373 4.8219 7.22185 5.24389 6.62957 5.24389H3.71385C3.32386 5.24389 3 5.56588 3 5.97686V6.35685C3 6.75783 3.32386 7.08982 3.71385 7.08982H20.2871C20.6761 7.08982 21 6.75783 21 6.35685V5.97686Z"
-                                                                    fill="currentColor"></path>
-                                                            </svg>
-                                                        </span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/02.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">Casual Shoes</h6>
-                                                        <p class="mb-0">$56.00</p>
-                                                    </div>
-                                                    <button type="button" class="btn btn-icon text-danger btn-sm">
-                                                        <span class="btn-inner">
-                                                            <svg viewBox="0 0 24 24" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path opacity="0.4"
-                                                                    d="M19.643 9.48851C19.643 9.5565 19.11 16.2973 18.8056 19.1342C18.615 20.8751 17.4927 21.9311 15.8092 21.9611C14.5157 21.9901 13.2494 22.0001 12.0036 22.0001C10.6809 22.0001 9.38741 21.9901 8.13185 21.9611C6.50477 21.9221 5.38147 20.8451 5.20057 19.1342C4.88741 16.2873 4.36418 9.5565 4.35445 9.48851C4.34473 9.28351 4.41086 9.08852 4.54507 8.93053C4.67734 8.78453 4.86796 8.69653 5.06831 8.69653H18.9388C19.1382 8.69653 19.3191 8.78453 19.4621 8.93053C19.5953 9.08852 19.6624 9.28351 19.643 9.48851Z"
-                                                                    fill="currentColor"></path>
-                                                                <path
-                                                                    d="M21 5.97686C21 5.56588 20.6761 5.24389 20.2871 5.24389H17.3714C16.7781 5.24389 16.2627 4.8219 16.1304 4.22692L15.967 3.49795C15.7385 2.61698 14.9498 2 14.0647 2H9.93624C9.0415 2 8.26054 2.61698 8.02323 3.54595L7.87054 4.22792C7.7373 4.8219 7.22185 5.24389 6.62957 5.24389H3.71385C3.32386 5.24389 3 5.56588 3 5.97686V6.35685C3 6.75783 3.32386 7.08982 3.71385 7.08982H20.2871C20.6761 7.08982 21 6.75783 21 6.35685V5.97686Z"
-                                                                    fill="currentColor"></path>
-                                                            </svg>
-                                                        </span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/03.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">Knitted Shrug</h6>
-                                                        <p class="mb-0">$56.00</p>
-                                                    </div>
-                                                    <button type="button" class="btn btn-icon text-danger btn-sm">
-                                                        <span class="btn-inner">
-                                                            <svg viewBox="0 0 24 24" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path opacity="0.4"
-                                                                    d="M19.643 9.48851C19.643 9.5565 19.11 16.2973 18.8056 19.1342C18.615 20.8751 17.4927 21.9311 15.8092 21.9611C14.5157 21.9901 13.2494 22.0001 12.0036 22.0001C10.6809 22.0001 9.38741 21.9901 8.13185 21.9611C6.50477 21.9221 5.38147 20.8451 5.20057 19.1342C4.88741 16.2873 4.36418 9.5565 4.35445 9.48851C4.34473 9.28351 4.41086 9.08852 4.54507 8.93053C4.67734 8.78453 4.86796 8.69653 5.06831 8.69653H18.9388C19.1382 8.69653 19.3191 8.78453 19.4621 8.93053C19.5953 9.08852 19.6624 9.28351 19.643 9.48851Z"
-                                                                    fill="currentColor"></path>
-                                                                <path
-                                                                    d="M21 5.97686C21 5.56588 20.6761 5.24389 20.2871 5.24389H17.3714C16.7781 5.24389 16.2627 4.8219 16.1304 4.22692L15.967 3.49795C15.7385 2.61698 14.9498 2 14.0647 2H9.93624C9.0415 2 8.26054 2.61698 8.02323 3.54595L7.87054 4.22792C7.7373 4.8219 7.22185 5.24389 6.62957 5.24389H3.71385C3.32386 5.24389 3 5.56588 3 5.97686V6.35685C3 6.75783 3.32386 7.08982 3.71385 7.08982H20.2871C20.6761 7.08982 21 6.75783 21 6.35685V5.97686Z"
-                                                                    fill="currentColor"></path>
-                                                            </svg>
-                                                        </span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/04.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">Blue Handbag</h6>
-                                                        <p class="mb-0">$56.00</p>
-                                                    </div>
-                                                    <button type="button" class="btn btn-icon text-danger btn-sm">
-                                                        <span class="btn-inner">
-                                                            <svg viewBox="0 0 24 24" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path opacity="0.4"
-                                                                    d="M19.643 9.48851C19.643 9.5565 19.11 16.2973 18.8056 19.1342C18.615 20.8751 17.4927 21.9311 15.8092 21.9611C14.5157 21.9901 13.2494 22.0001 12.0036 22.0001C10.6809 22.0001 9.38741 21.9901 8.13185 21.9611C6.50477 21.9221 5.38147 20.8451 5.20057 19.1342C4.88741 16.2873 4.36418 9.5565 4.35445 9.48851C4.34473 9.28351 4.41086 9.08852 4.54507 8.93053C4.67734 8.78453 4.86796 8.69653 5.06831 8.69653H18.9388C19.1382 8.69653 19.3191 8.78453 19.4621 8.93053C19.5953 9.08852 19.6624 9.28351 19.643 9.48851Z"
-                                                                    fill="currentColor"></path>
-                                                                <path
-                                                                    d="M21 5.97686C21 5.56588 20.6761 5.24389 20.2871 5.24389H17.3714C16.7781 5.24389 16.2627 4.8219 16.1304 4.22692L15.967 3.49795C15.7385 2.61698 14.9498 2 14.0647 2H9.93624C9.0415 2 8.26054 2.61698 8.02323 3.54595L7.87054 4.22792C7.7373 4.8219 7.22185 5.24389 6.62957 5.24389H3.71385C3.32386 5.24389 3 5.56588 3 5.97686V6.35685C3 6.75783 3.32386 7.08982 3.71385 7.08982H20.2871C20.6761 7.08982 21 6.75783 21 6.35685V5.97686Z"
-                                                                    fill="currentColor"></path>
-                                                            </svg>
-                                                        </span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/01.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">Biker’s Jacket</h6>
-                                                        <p class="mb-0">$56.00</p>
-                                                    </div>
-                                                    <button type="button" class="btn btn-icon text-danger btn-sm">
-                                                        <span class="btn-inner">
-                                                            <svg viewBox="0 0 24 24" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path opacity="0.4"
-                                                                    d="M19.643 9.48851C19.643 9.5565 19.11 16.2973 18.8056 19.1342C18.615 20.8751 17.4927 21.9311 15.8092 21.9611C14.5157 21.9901 13.2494 22.0001 12.0036 22.0001C10.6809 22.0001 9.38741 21.9901 8.13185 21.9611C6.50477 21.9221 5.38147 20.8451 5.20057 19.1342C4.88741 16.2873 4.36418 9.5565 4.35445 9.48851C4.34473 9.28351 4.41086 9.08852 4.54507 8.93053C4.67734 8.78453 4.86796 8.69653 5.06831 8.69653H18.9388C19.1382 8.69653 19.3191 8.78453 19.4621 8.93053C19.5953 9.08852 19.6624 9.28351 19.643 9.48851Z"
-                                                                    fill="currentColor"></path>
-                                                                <path
-                                                                    d="M21 5.97686C21 5.56588 20.6761 5.24389 20.2871 5.24389H17.3714C16.7781 5.24389 16.2627 4.8219 16.1304 4.22692L15.967 3.49795C15.7385 2.61698 14.9498 2 14.0647 2H9.93624C9.0415 2 8.26054 2.61698 8.02323 3.54595L7.87054 4.22792C7.7373 4.8219 7.22185 5.24389 6.62957 5.24389H3.71385C3.32386 5.24389 3 5.56588 3 5.97686V6.35685C3 6.75783 3.32386 7.08982 3.71385 7.08982H20.2871C20.6761 7.08982 21 6.75783 21 6.35685V5.97686Z"
-                                                                    fill="currentColor"></path>
-                                                            </svg>
-                                                        </span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/02.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">Casual Shoes</h6>
-                                                        <p class="mb-0">$56.00</p>
-                                                    </div>
-                                                    <button type="button" class="btn btn-icon text-danger btn-sm">
-                                                        <span class="btn-inner">
-                                                            <svg viewBox="0 0 24 24" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path opacity="0.4"
-                                                                    d="M19.643 9.48851C19.643 9.5565 19.11 16.2973 18.8056 19.1342C18.615 20.8751 17.4927 21.9311 15.8092 21.9611C14.5157 21.9901 13.2494 22.0001 12.0036 22.0001C10.6809 22.0001 9.38741 21.9901 8.13185 21.9611C6.50477 21.9221 5.38147 20.8451 5.20057 19.1342C4.88741 16.2873 4.36418 9.5565 4.35445 9.48851C4.34473 9.28351 4.41086 9.08852 4.54507 8.93053C4.67734 8.78453 4.86796 8.69653 5.06831 8.69653H18.9388C19.1382 8.69653 19.3191 8.78453 19.4621 8.93053C19.5953 9.08852 19.6624 9.28351 19.643 9.48851Z"
-                                                                    fill="currentColor"></path>
-                                                                <path
-                                                                    d="M21 5.97686C21 5.56588 20.6761 5.24389 20.2871 5.24389H17.3714C16.7781 5.24389 16.2627 4.8219 16.1304 4.22692L15.967 3.49795C15.7385 2.61698 14.9498 2 14.0647 2H9.93624C9.0415 2 8.26054 2.61698 8.02323 3.54595L7.87054 4.22792C7.7373 4.8219 7.22185 5.24389 6.62957 5.24389H3.71385C3.32386 5.24389 3 5.56588 3 5.97686V6.35685C3 6.75783 3.32386 7.08982 3.71385 7.08982H20.2871C20.6761 7.08982 21 6.75783 21 6.35685V5.97686Z"
-                                                                    fill="currentColor"></path>
-                                                            </svg>
-                                                        </span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/03.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">Knitted Shrug</h6>
-                                                        <p class="mb-0">$56.00</p>
-                                                    </div>
-                                                    <button type="button" class="btn btn-icon text-danger btn-sm">
-                                                        <span class="btn-inner">
-                                                            <svg viewBox="0 0 24 24" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path opacity="0.4"
-                                                                    d="M19.643 9.48851C19.643 9.5565 19.11 16.2973 18.8056 19.1342C18.615 20.8751 17.4927 21.9311 15.8092 21.9611C14.5157 21.9901 13.2494 22.0001 12.0036 22.0001C10.6809 22.0001 9.38741 21.9901 8.13185 21.9611C6.50477 21.9221 5.38147 20.8451 5.20057 19.1342C4.88741 16.2873 4.36418 9.5565 4.35445 9.48851C4.34473 9.28351 4.41086 9.08852 4.54507 8.93053C4.67734 8.78453 4.86796 8.69653 5.06831 8.69653H18.9388C19.1382 8.69653 19.3191 8.78453 19.4621 8.93053C19.5953 9.08852 19.6624 9.28351 19.643 9.48851Z"
-                                                                    fill="currentColor"></path>
-                                                                <path
-                                                                    d="M21 5.97686C21 5.56588 20.6761 5.24389 20.2871 5.24389H17.3714C16.7781 5.24389 16.2627 4.8219 16.1304 4.22692L15.967 3.49795C15.7385 2.61698 14.9498 2 14.0647 2H9.93624C9.0415 2 8.26054 2.61698 8.02323 3.54595L7.87054 4.22792C7.7373 4.8219 7.22185 5.24389 6.62957 5.24389H3.71385C3.32386 5.24389 3 5.56588 3 5.97686V6.35685C3 6.75783 3.32386 7.08982 3.71385 7.08982H20.2871C20.6761 7.08982 21 6.75783 21 6.35685V5.97686Z"
-                                                                    fill="currentColor"></path>
-                                                            </svg>
-                                                        </span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/04.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">Blue Handbag</h6>
-                                                        <p class="mb-0">$56.00</p>
-                                                    </div>
-                                                    <button type="button" class="btn btn-icon text-danger btn-sm">
-                                                        <span class="btn-inner">
-                                                            <svg viewBox="0 0 24 24" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path opacity="0.4"
-                                                                    d="M19.643 9.48851C19.643 9.5565 19.11 16.2973 18.8056 19.1342C18.615 20.8751 17.4927 21.9311 15.8092 21.9611C14.5157 21.9901 13.2494 22.0001 12.0036 22.0001C10.6809 22.0001 9.38741 21.9901 8.13185 21.9611C6.50477 21.9221 5.38147 20.8451 5.20057 19.1342C4.88741 16.2873 4.36418 9.5565 4.35445 9.48851C4.34473 9.28351 4.41086 9.08852 4.54507 8.93053C4.67734 8.78453 4.86796 8.69653 5.06831 8.69653H18.9388C19.1382 8.69653 19.3191 8.78453 19.4621 8.93053C19.5953 9.08852 19.6624 9.28351 19.643 9.48851Z"
-                                                                    fill="currentColor"></path>
-                                                                <path
-                                                                    d="M21 5.97686C21 5.56588 20.6761 5.24389 20.2871 5.24389H17.3714C16.7781 5.24389 16.2627 4.8219 16.1304 4.22692L15.967 3.49795C15.7385 2.61698 14.9498 2 14.0647 2H9.93624C9.0415 2 8.26054 2.61698 8.02323 3.54595L7.87054 4.22792C7.7373 4.8219 7.22185 5.24389 6.62957 5.24389H3.71385C3.32386 5.24389 3 5.56588 3 5.97686V6.35685C3 6.75783 3.32386 7.08982 3.71385 7.08982H20.2871C20.6761 7.08982 21 6.75783 21 6.35685V5.97686Z"
-                                                                    fill="currentColor"></path>
-                                                            </svg>
-                                                        </span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer p-0 text-center">
-                                            <div class="d-grid">
-                                                <a href="#" class="btn btn-primary">View All</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
                             <li class="nav-item iq-full-screen d-none d-xl-block" id="fullscreen-item">
                                 <a href="#" class="nav-link" id="btnFullscreen" data-bs-toggle="dropdown">
                                     <div class="icon nav-list-icon">
@@ -903,7 +289,7 @@
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="icon-40">
                                         <span class="btn-inner d-inline-block position-relative">
-                                            <img src="../dashboard-doctor/assets/images/avatars/14.png"
+                                            <img th:src="@{/dashboard-doctor/assets/images/avatars/14.png}"
                                                 class="img-fluid rounded-circle object-fit-cover" alt="icon">
                                             <span
                                                 class="bg-success p-1 rounded-circle position-absolute end-0 bottom-0 border border-3 border-white"></span>
@@ -915,7 +301,7 @@
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="./auth/sign-in.html">Logout</a>
+                                        <a class="dropdown-item" th:href="@{/auth/sign-in.html}">Logout</a>
                                     </li>
                                 </ul>
                             </li>
@@ -937,21 +323,20 @@
                     <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round"></path>
                 </svg>
-
             </div>
             <div class="row">
                 <div class="col-lg-8">
                     <div class="d-flex align-items-center justify-content-between flex-sm-row flex-column-reverse">
                         <div>
                             <h1 class="fs-37">
-                                <span class="left-text text-capitalize fw-light">Good morning, </span>
-                                <span class="right-text text-capitalize">Dr. Christopher </span>
+                                <span id="greeting" class="left-text text-capitalize fw-light"></span>
+                                <span class="right-text text-capitalize" th:text="${doctorHomePage.getDoctorName()}"></span>
                             </h1>
-                            <p class="mb-5">Have a nice day at work. Progress is excellent!</p>
+                            <p class="mb-5">Chúc bạn một ngày làm việc tốt lành. Tiến độ công việc rất tốt!</p>
                             <div class="d-flex align-items-center flex-wrap gap-3">
-                                <a href="schedule.html" class="btn btn-primary">
+                                <a href="/doctor/schedule" class="btn btn-primary">
                                     <span class="btn-inner">
-                                        <span class="text d-inline-block align-middle">View Schedule</span>
+                                        <span class="text d-inline-block align-middle">Lịch làm việc</span>
                                         <span class="icon d-inline-block align-middle ms-1 ps-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
                                                 viewBox="0 0 8 8" fill="none">
@@ -962,9 +347,9 @@
                                         </span>
                                     </span>
                                 </a>
-                                <a href="appointment.html" class="btn btn-secondary">
+                                <a href="/doctor/appointment" class="btn btn-secondary">
                                     <span class="btn-inner">
-                                        <span class="text d-inline-block align-middle">Appointment</span>
+                                        <span class="text d-inline-block align-middle">Lịch khám</span>
                                         <span class="icon d-inline-block align-middle ms-1 ps-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
                                                 viewBox="0 0 8 8" fill="none">
@@ -978,7 +363,7 @@
                             </div>
                         </div>
                         <div>
-                            <img class="img-fluid" src="../dashboard-doctor/assets/images/dashboard/dr-dashboard.png" alt="dr-profile"
+                            <img class="img-fluid" th:src="@{/dashboard-doctor/assets/images/dashboard/dr-dashboard.png}" alt="dr-profile"
                                 loading="lazy" />
                         </div>
                     </div>
@@ -987,7 +372,7 @@
                             <div class="card card-block card-stretch card-height overflow-hidden">
                                 <div class="card-body pb-0">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="mb-3">Today Appointment</h5>
+                                        <h5 class="mb-3">Số lịch khám hôm nay</h5>
                                         <div class="dropdown lh-1">
                                             <span role="button" id="dropdownMenuTodayAppointment"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -1009,13 +394,11 @@
                                     </div>
                                     <div class="d-flex align-items-center gap-3">
                                         <h3 class="text-primary d-inline-block counter mb-0"
-                                            style="visibility: visible;">50</h3>
-                                        <span
-                                            class="badge rounded-pill bg-success-subtle text-success p-2">+25.2%</span>
+                                            style="visibility: visible;" th:text="${doctorHomePage.getTotalAppointmentsToday()}"></h3>
                                     </div>
                                 </div>
                                 <div class="card-bg position-relative mt-2">
-                                    <img class="img-fluid float-end" src="../dashboard-doctor/assets/images/dashboard/finance.png"
+                                    <img class="img-fluid float-end" th:src="@{/dashboard-doctor/assets/images/dashboard/finance.png}"
                                         alt="finance" loading="lazy" />
                                 </div>
                             </div>
@@ -1024,7 +407,7 @@
                             <div class="card card-block card-stretch card-height overflow-hidden">
                                 <div class="card-body pb-0">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="mb-3">Total patients</h5>
+                                        <h5 class="mb-3">Tổng số bệnh nhân</h5>
                                         <div class="dropdown lh-1">
                                             <span role="button" id="dropdownMenuTotalPatients" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
@@ -1046,14 +429,12 @@
                                     </div>
                                     <div class="d-flex align-items-center gap-3">
                                         <h3 class="text-primary d-inline-block counter mb-0"
-                                            style="visibility: visible;">20M</h3>
-                                        <span class="badge rounded-pill bg-success-subtle text-success p-2">+25.2%
-                                            last week</span>
+                                            style="visibility: visible;" th:text="${doctorHomePage.getTotalPatients()}"></h3>
                                     </div>
                                 </div>
                                 <div class="card-bg position-relative mt-2">
                                     <img class="img-fluid float-end"
-                                        src="../dashboard-doctor/assets/images/dashboard/hand-holding-heart.png" alt="finance"
+                                        th:src="@{/dashboard-doctor/assets/images/dashboard/hand-holding-heart.png}" alt="finance"
                                         loading="lazy" />
                                 </div>
                             </div>
@@ -1064,74 +445,23 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
                             <div>
-                                <h4>Upcoming Appointment</h4>
-                                <p class="mb-0">6 Appointment Today</p>
+                                <h4>Lịch khám gần nhất</h4>
+                                <p class="mb-0" th:text="${doctorHomePage.getTopThreeAppointmentNearest().size()} + ' Gần nhất'"></p>
                             </div>
-                            <div class="dropdown text-end f-none">
-                                <button class="dropdown btn btn-light-subtle border text-body py-2 px-3"
-                                    id="dropdownMenuAppointmentToday" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="fw-500">Today</span>
-                                    <svg width="8" class="ms-1 transform-up" viewBox="0 0 12 8" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M6 5.08579L10.2929 0.792893C10.6834 0.402369 11.3166 0.402369 11.7071 0.792893C12.0976 1.18342 12.0976 1.81658 11.7071 2.20711L6.70711 7.20711C6.31658 7.59763 5.68342 7.59763 5.29289 7.20711L0.292893 2.20711C-0.0976311 1.81658 -0.0976311 1.18342 0.292893 0.792893C0.683418 0.402369 1.31658 0.402369 1.70711 0.792893L6 5.08579Z"
-                                            fill="currentColor" />
-                                    </svg>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-soft-primary sub-dropdown"
-                                    aria-labelledby="dropdownMenuAppointmentToday">
-                                    <li><a class="dropdown-item active" href="#">Monday</a></li>
-                                    <li><a class="dropdown-item" href="#">Tuesday</a></li>
-                                    <li><a class="dropdown-item" href="#">Wednesday</a></li>
-                                    <li><a class="dropdown-item" href="#">Thursday</a></li>
-                                    <li><a class="dropdown-item" href="#">Friday</a></li>
-                                </ul>
+                            <div>
+                                    <span>Hôm nay</span>
                             </div>
                         </div>
-                        <div class="card-body pt-0">
+                        <div class="card-body pt-0" th:each="item:${doctorHomePage.getTopThreeAppointmentNearest()}">
                             <div class="d-flex align-items-center mb-4 bg-primary-subtle px-3 py-3 px-lg-4 rounded">
-                                <h6 class="mb-0 text-primary f-none">10:00 AM</h6>
+                                <h6 class="mb-0 text-primary f-none" th:text="${item.getTimeAppointment()}"></h6>
                                 <div class="border-start ps-3 ms-3 flex-grow-1">
-                                    <h5>Emily Johnson</h5>
-                                    <h6 class="mb-0">Reason: <span class="text-body fw-normal">Acne Treatment</span>
+                                    <h5 th:text="${item.getName()}"></h5>
+                                    <h6 class="mb-0">Khoa: <span class="text-body fw-normal" th:text="${item.getDepartmentName()}"></span>
                                     </h6>
                                 </div>
                                 <div>
-                                    <button class="dropdown btn border-0 p-0">
-                                        <svg width="15" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
-                                                stroke-linecap="round" stroke-linejoin="round"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mb-4 bg-primary-subtle px-3 py-3 px-lg-4 rounded">
-                                <h6 class="mb-0 text-primary f-none">10:00 AM</h6>
-                                <div class="border-start ps-3 ms-3 flex-grow-1">
-                                    <h5>Michael Rodriguez</h5>
-                                    <h6 class="mb-0">Reason: <span class="text-body fw-normal">Tooth Cleaning</span>
-                                    </h6>
-                                </div>
-                                <div>
-                                    <button class="dropdown btn border-0 p-0">
-                                        <svg width="15" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
-                                                stroke-linecap="round" stroke-linejoin="round"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center bg-primary-subtle px-3 py-3 px-lg-4 rounded">
-                                <h6 class="mb-0 text-primary f-none">10:00 AM</h6>
-                                <div class="border-start ps-3 ms-3 flex-grow-1">
-                                    <h5>Jessica Anderson</h5>
-                                    <h6 class="mb-0">Reason: <span class="text-body fw-normal">Skin Whitening</span>
-                                    </h6>
-                                </div>
-                                <div>
-                                    <button class="dropdown btn border-0 p-0">
+                                    <button class="dropdown btn border-0 p-0" id="examination" th:data-id="${item.getAppointmentId()}">
                                         <svg width="15" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
@@ -1150,9 +480,9 @@
             <div class="footer-body">
                 <ul class="left-panel list-inline mb-0 p-0">
                     <li class="list-inline-item fw-500"><a class="footer-link"
-                            href="./extra/privacy-policy.html">Privacy Policy</a></li>
+                            th:href="@{/extra/privacy-policy.html}">Privacy Policy</a></li>
                     <li class="list-inline-item fw-500"><a class="footer-link"
-                            href="./extra/terms-of-service.html">Terms of Use</a></li>
+                            th:href="@{/extra/terms-of-service.html}">Terms of Use</a></li>
                 </ul>
             </div>
         </footer>
@@ -1263,9 +593,9 @@
                                         <input type="radio" value="ltr" class="btn-check" name="theme_scheme_direction"
                                             data-prop="dir" id="theme-scheme-direction-ltr" checked>
                                         <label class="btn btn-border d-block p-0" for="theme-scheme-direction-ltr">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/01.png" alt="ltr"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/01.png}" alt="ltr"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/01.png" alt="ltr"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/01.png}" alt="ltr"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1275,9 +605,9 @@
                                         <input type="radio" value="rtl" class="btn-check" name="theme_scheme_direction"
                                             data-prop="dir" id="theme-scheme-direction-rtl">
                                         <label class="btn btn-border d-block p-0" for="theme-scheme-direction-rtl">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/02.png" alt="ltr"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/02.png}" alt="ltr"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/02.png" alt="ltr"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/02.png}" alt="ltr"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1524,9 +854,9 @@
                                         <input type="checkbox" value="sidebar-mini" class="btn-check"
                                             name="sidebar_type" id="sidebar-mini">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-mini">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/03.png" alt="mini"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/03.png}" alt="mini"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/03.png" alt="mini"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/03.png}" alt="mini"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1537,9 +867,9 @@
                                             data-extra="{target: '.sidebar', ClassListAdd: 'sidebar-mini'}"
                                             class="btn-check" name="sidebar_type" id="sidebar-hover">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-hover">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/04.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/04.png}" alt="hover"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/04.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/04.png}" alt="hover"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1549,9 +879,9 @@
                                         <input type="checkbox" value="sidebar-boxed" class="btn-check"
                                             name="sidebar_type" id="sidebar-boxed">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-boxed">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/05.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/05.png}" alt="boxed"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/05.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/05.png}" alt="boxed"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1561,9 +891,9 @@
                                         <input type="checkbox" value="sidebar-soft" class="btn-check"
                                             name="sidebar_type" id="sidebar-soft">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="sidebar-soft">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/05.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/05.png}" alt="boxed"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/05.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/05.png}" alt="boxed"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1585,9 +915,9 @@
                                         <input type="radio" value="sidebar-default navs-rounded" class="btn-check"
                                             name="sidebar_menu_style" id="navs-rounded">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-rounded">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/06.png" alt="mini"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/06.png}" alt="mini"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/06.png" alt="mini"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/06.png}" alt="mini"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1598,9 +928,9 @@
                                             name="sidebar_menu_style" id="navs-rounded-all">
                                         <label class="btn btn-border p-0 d-block overflow-hidden"
                                             for="navs-rounded-all">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/07.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/07.png}" alt="hover"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/07.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/07.png}" alt="hover"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1610,9 +940,9 @@
                                         <input type="radio" value="sidebar-default navs-pill" class="btn-check"
                                             name="sidebar_menu_style" id="navs-pill">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-pill">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/08.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/08.png}" alt="boxed"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/08.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/08.png}" alt="boxed"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1622,9 +952,9 @@
                                         <input type="radio" value="sidebar-default navs-pill-all" class="btn-check"
                                             name="sidebar_menu_style" id="navs-pill-all">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-pill-all">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/09.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/09.png}" alt="boxed"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/09.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/09.png}" alt="boxed"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1635,9 +965,9 @@
                                             name="sidebar_menu_style" id="text-hover" checked>
                                         <label class="btn btn-border position-relative p-0 d-block overflow-hidden"
                                             for="text-hover">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/14.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/14.png}" alt="boxed"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/14.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/14.png}" alt="boxed"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1648,9 +978,9 @@
                                             name="sidebar_menu_style" id="navs-full-width">
                                         <label class="btn btn-border position-relative p-0 d-block overflow-hidden"
                                             for="navs-full-width">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/15.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/15.png}" alt="boxed"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/15.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/15.png}" alt="boxed"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1670,9 +1000,9 @@
                                         <input type="radio" value="nav-glass" class="btn-check" name="header_navbar"
                                             id="nav-glass">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="nav-glass">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/10.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/10.png}" alt="hover"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/10.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/10.png}" alt="hover"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1682,9 +1012,9 @@
                                         <input type="radio" value="navs-sticky" class="btn-check" name="header_navbar"
                                             id="navs-sticky">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-sticky">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/04.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/04.png}" alt="hover"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/04.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/04.png}" alt="hover"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1695,9 +1025,9 @@
                                             name="header_navbar" id="navs-transparent">
                                         <label class="btn btn-border p-0 d-block overflow-hidden"
                                             for="navs-transparent">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/12.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/12.png}" alt="boxed"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/12.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/12.png}" alt="boxed"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1707,9 +1037,9 @@
                                         <input type="radio" value="navs-default" class="btn-check" name="header_navbar"
                                             id="navs-default" checked>
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-default">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/01.png" alt="default"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/01.png}" alt="default"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/01.png" alt="default"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/01.png}" alt="default"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1962,55 +1292,102 @@
 
 
     <!-- Library Bundle Script -->
-    <script src="../dashboard-doctor/assets/js/core/libs.min.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/core/libs.min.js}"></script>
     <!-- Plugin Scripts -->
     <!-- Tour plugin Start -->
-    <script src="../dashboard-doctor/assets/vendor/sheperd/dist/js/sheperd.min.js"></script>
-    <script src="../dashboard-doctor/assets/js/plugins/tour.js" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/vendor/sheperd/dist/js/sheperd.min.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/plugins/tour.js}" defer></script>
 
     <!-- Flatpickr Script -->
-    <script src="../dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
-    <script src="../dashboard-doctor/assets/js/plugins/flatpickr.js" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/plugins/flatpickr.js}" defer></script>
 
 
 
     <!-- Slider-tab Script -->
-    <script src="../dashboard-doctor/assets/js/plugins/slider-tabs.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/plugins/slider-tabs.js}"></script>
 
 
     <!-- fslightbox Script -->
-    <script src="../dashboard-doctor/assets/js/plugins/fslightbox.js" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/plugins/fslightbox.js}" defer></script>
 
 
 
 
     <!-- Select2 Script -->
-    <script src="../dashboard-doctor/assets/js/plugins/select2.js" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/plugins/select2.js}" defer></script>
 
 
 
 
     <!-- Lodash Utility -->
-    <script src="../dashboard-doctor/assets/vendor/lodash/lodash.min.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/vendor/lodash/lodash.min.js}"></script>
     <!-- Utilities Functions -->
-    <script src="../dashboard-doctor/assets/js/iqonic-script/utility.min.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/iqonic-script/utility.min.js}"></script>
     <!-- Settings Script -->
-    <script src="../dashboard-doctor/assets/js/iqonic-script/setting.min.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/iqonic-script/setting.min.js}"></script>
     <!-- Settings Init Script -->
-    <script src="../dashboard-doctor/assets/js/setting-init.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/setting-init.js}"></script>
     <!-- External Library Bundle Script -->
-    <script src="../dashboard-doctor/assets/js/core/external.min.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/core/external.min.js}"></script>
     <!-- Widgetchart Script -->
-    <script src="../dashboard-doctor/assets/js/charts/widgetcharts.js?v=1.4.1" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/charts/widgetcharts.js?v=1.4.1}" defer></script>
     <!-- Dashboard Script -->
-    <script src="../dashboard-doctor/assets/js/charts/dashboard.js?v=1.4.1" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/charts/dashboard.js?v=1.4.1}" defer></script>
     <!-- Hopeui Script -->
-    <script src="../dashboard-doctor/assets/js/kivicare.js?v=1.4.1" defer></script>
-    <script src="../dashboard-doctor/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
-    <script src="../dashboard-doctor/assets/js/sidebar.js?v=1.4.1" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/kivicare.js?v=1.4.1}" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/kivicare-advance.js?v=1.4.1}" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/sidebar.js?v=1.4.1}" defer></script>
 
     <!-- Icons -->
-    <script src="../dashboard-doctor/assets/js/solid-icon-search-filter.js?v=1.4.1" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/solid-icon-search-filter.js?v=1.4.1}" defer></script>
 </body>
+<script>
+    function formatTime(dateString) {
+        if (!dateString || !/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d/.test(dateString)) {
+            return dateString;
+        }
+        const date = new Date(dateString);
+        return date.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.mb-0.text-primary.f-none').forEach(element => {
+            const rawTime = element.textContent.trim();
+            element.textContent = formatTime(rawTime);
+        });
+    });
 
+    $(document).on('click', '#examination', function (){
+        const id = $(this).data("id");
+        $.ajax({
+            url: '/doctor/examination/' + id,
+            method: 'GET',
+            success(){
+
+            },
+            failed(){
+
+            }
+            }
+        )
+
+    })
+
+    function getVietnamGreeting() {
+        const now = new Date();
+        const vnTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+        const hour = vnTime.getHours();
+
+        if (hour >= 5 && hour < 12) return "Chào buổi sáng,";
+        if (hour >= 12 && hour < 18) return "Chào buổi chiều,";
+        if (hour >= 18 && hour < 22) return "Chào buổi tối,";
+        return "Chào buổi đêm,";
+    }
+
+    document.getElementById("greeting").textContent = getVietnamGreeting();
+</script>
 </html>

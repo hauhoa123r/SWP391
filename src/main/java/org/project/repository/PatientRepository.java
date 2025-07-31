@@ -39,6 +39,14 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long>, J
             FamilyRelationship familyRelationship
     );
 
+    @Query(value = "SELECT COUNT(DISTINCT p.patient_id) " +
+            "FROM patients p " +
+            "JOIN appointments a ON a.patient_id = p.patient_id " +
+            "JOIN staffs s ON s.staff_id = a.doctor_id " +
+            "JOIN hospitals h ON h.hospital_id = s.hospital_id " +
+            "WHERE h.name = :hospitalName", nativeQuery = true)
+    long countPatientByHospital(@Param("hospitalName") String hospitalName);
+
     PatientEntity findByUserEntity_IdAndFullName(Long userId, String patientName);
 
     @Query("SELECT COUNT(pe.id) FROM PatientEntity pe")
@@ -46,6 +54,8 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long>, J
 
     @Query("FROM PatientEntity pe ORDER BY RAND() LIMIT 1")
     PatientEntity getRandom();
+
+
 
     PatientEntity findByUserEntity_Id(Long userEntityId);
 }

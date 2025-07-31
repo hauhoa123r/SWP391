@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum Gender {
     MALE("Nam"),
     FEMALE("Nữ"),
-    OTHER("Khác");
+    OTHER("Giới tính khác");
 
     private final String gender;
 }

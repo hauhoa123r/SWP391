@@ -89,7 +89,7 @@ public class StaffTestLabController {
         modelAndView.addObject("staffs", staffEntity);
         modelAndView.addObject("totalPatient", patientRepository.countAllPatients());
         modelAndView.addObject("currentURI", request.getRequestURI());
-        modelAndView.addObject("totalToday", appointmentRepository.countTotalAppointmentsToday());
+        modelAndView.addObject("totalToday",50);
         return modelAndView;
     }
 

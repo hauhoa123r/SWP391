@@ -9,6 +9,7 @@ import org.project.model.response.ViewResultDetailResponse;
 import org.project.model.response.ViewResultResponse;
 import org.project.repository.AppointmentRepository;
 import org.project.repository.AssignmentRepository;
+import org.project.repository.TestRequestRepository;
 import org.project.repository.TestTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,8 @@ public class ViewTestRequestDetailConverter {
     @Autowired
     private TestTypeRepository testTypeRepository;
 
+    @Autowired
+    private TestRequestRepository testRequestRepository;
 
     @Autowired
     private AppointmentRepository appointmentRepositoryImpl;
@@ -53,6 +56,9 @@ public class ViewTestRequestDetailConverter {
             viewResultDetailResponse.setStatus(testRequestEntity.getRequestStatus().getValue());
             viewResultDetailResponses.add(viewResultDetailResponse);
         });
+
+        Set<TestRequestEntity> testRequestEntities = testRequestRepository.findByAppointmentEntity_Id(appointmentEntity.get().getId());
+
         StringBuilder noteResult = new StringBuilder();
         if(isCompleted(appointmentEntity.get().getTestRequestEntities())){
             noteResult.append(converterResult(appointmentEntity.get().getTestRequestEntities()) + "\n");

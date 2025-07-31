@@ -1,11 +1,10 @@
 <!doctype html>
-<html lang="en" class="theme-fs-sm" data-bs-theme="light" data-bs-theme-color="default" dir="ltr">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title data-setting="app_name" data-rightJoin=" Clinic And Patient Management Dashboard">KiviCare Clinic And Patient
-        Management Dashboard</title>
+    <title data-setting="app_name" data-rightJoin=" Clinic And Patient Management Dashboard">Khám</title>
     <meta name="description"
         content="KiviCare is a revolutionary Bootstrap Admin Dashboard Template and UI Components Library. The Admin Dashboard Template and UI Component features 8 modules.">
     <meta name="keywords"
@@ -79,21 +78,21 @@
     <!-- Google Font Api KEY-->
     <meta name="google_font_api" content="AIzaSyBG58yNdAjc20_8jAvLNSVi9E4Xhwjau_k">
     <!-- Favicon -->
-    <link rel="shortcut icon" href="../dashboard-doctor/assets/images/favicon.ico" />
+    <link rel="shortcut icon" th:href="@{/dashboard-doctor/assets/images/favicon.ico}" />
 
     <!-- Library / Plugin Css Build -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/css/core/libs.min.css" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/core/libs.min.css}" />
 
     <!-- flaticon css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/flaticon/css/flaticon.css" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/flaticon/css/flaticon.css}" />
 
     <!-- font-awesome css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/font-awesome/css/all.min.css}" />
 
     <!-- Flatpickr css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.css" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.css}" />
 
-    <link rel="stylesheet" href="../dashboard-doctor/assets/vendor/sheperd/dist/css/sheperd.css">
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/vendor/sheperd/dist/css/sheperd.css}">
 
 
 
@@ -102,16 +101,16 @@
 
 
     <!-- Kivicare Design System Css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/css/kivicare.min.css?v=1.4.1" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/kivicare.min.css?v=1.4.1}" />
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/css/custom.min.css?v=1.4.1" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/custom.min.css?v=1.4.1}" />
 
     <!-- RTL Css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/css/rtl.min.css?v=1.4.1" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/rtl.min.css?v=1.4.1}" />
 
     <!-- Customizer Css -->
-    <link rel="stylesheet" href="../dashboard-doctor/assets/css/customizer.min.css?v=1.4.1" />
+    <link rel="stylesheet" th:href="@{/dashboard-doctor/assets/css/customizer.min.css?v=1.4.1}" />
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -126,7 +125,7 @@
     <div id="loading">
         <div class="loader simple-loader">
             <div class="loader-body">
-                <img src="../dashboard-doctor/assets/images/loader.gif" alt="loader" class="light-loader img-fluid " width="200">
+                <img th:src="@{/dashboard-doctor/assets/images/loader.gif}" alt="loader" class="light-loader img-fluid " width="200">
             </div>
         </div>
     </div>
@@ -136,19 +135,19 @@
             <!--Nav Start-->
             <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar patient-header">
                 <div class="container-fluid navbar-inner">
-                    <a href="./index.html" class="navbar-brand ms-0 me-5">
+                    <a th:href="@{/doctor/homepage}" class="navbar-brand ms-0 me-5">
 
                         <!--Logo start-->
                         <div class="logo-main">
-                            <img class="logo-normal img-fluid" src="../dashboard-doctor/assets/images/logo.png" height="30" alt="logo">
-                            <img class="logo-normal dark-normal img-fluid" src="../dashboard-doctor/assets/images/logo-dark.png"
+                            <img class="logo-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo.png}" height="30" alt="logo">
+                            <img class="logo-normal dark-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-dark.png}"
                                 height="30" alt="logo">
-                            <img class="logo-normal white-normal img-fluid" src="../dashboard-doctor/assets/images/logo-white.png"
+                            <img class="logo-normal white-normal img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-white.png}"
                                 height="30" alt="logo">
-                            <img class="logo-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini.png" height="30" alt="logo">
-                            <img class="logo-mini dark-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini-dark.png"
+                            <img class="logo-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini.png}" height="30" alt="logo">
+                            <img class="logo-mini dark-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini-dark.png}"
                                 height="30" alt="logo">
-                            <img class="logo-mini white-mini img-fluid" src="../dashboard-doctor/assets/images/logo-mini-white.png"
+                            <img class="logo-mini white-mini img-fluid" th:src="@{/dashboard-doctor/assets/images/logo-mini-white.png}"
                                 height="30" alt="logo">
                         </div>
                         <!--logo End-->
@@ -159,65 +158,8 @@
                             <div class="offcanvas-body">
                                 <ul class="iq-nav-menu list-unstyled gap-1">
                                     <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
-                                            href="#allPatitentDash" role="button" aria-expanded="false"
-                                            aria-controls="allPatitentDash">
-                                            <i class="icon" data-bs-toggle="tooltip" title="Dashboard"
-                                                data-bs-placement="right">
-                                                <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path opacity="0.4"
-                                                        d="M16.0756 2H19.4616C20.8639 2 22.0001 3.14585 22.0001 4.55996V7.97452C22.0001 9.38864 20.8639 10.5345 19.4616 10.5345H16.0756C14.6734 10.5345 13.5371 9.38864 13.5371 7.97452V4.55996C13.5371 3.14585 14.6734 2 16.0756 2Z"
-                                                        fill="currentColor"></path>
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M4.53852 2H7.92449C9.32676 2 10.463 3.14585 10.463 4.55996V7.97452C10.463 9.38864 9.32676 10.5345 7.92449 10.5345H4.53852C3.13626 10.5345 2 9.38864 2 7.97452V4.55996C2 3.14585 3.13626 2 4.53852 2ZM4.53852 13.4655H7.92449C9.32676 13.4655 10.463 14.6114 10.463 16.0255V19.44C10.463 20.8532 9.32676 22 7.92449 22H4.53852C3.13626 22 2 20.8532 2 19.44V16.0255C2 14.6114 3.13626 13.4655 4.53852 13.4655ZM19.4615 13.4655H16.0755C14.6732 13.4655 13.537 14.6114 13.537 16.0255V19.44C13.537 20.8532 14.6732 22 16.0755 22H19.4615C20.8637 22 22 20.8532 22 19.44V16.0255C22 14.6114 20.8637 13.4655 19.4615 13.4655Z"
-                                                        fill="currentColor"></path>
-                                                </svg>
-                                            </i>
-                                            <span class="nav-text ms-2">Dashboard</span>
-                                        </a>
-                                        <ul class="iq-header-sub-menu list-unstyled collapse" id="allPatitentDash">
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow justify-content-start gap-2 rounded-0 active"
-                                                    aria-current="page" href="./patient-dashboard.html">
-                                                    <i class="icon" data-bs-toggle="tooltip" title="Dashboard"
-                                                        data-bs-placement="right">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                            viewBox="0 0 24 24" fill="none">
-                                                            <path opacity="0.4"
-                                                                d="M2 4C2 2.89543 2.89543 2 4 2H9C10.1046 2 11 2.89543 11 4V20C11 21.1046 10.1046 22 9 22H4C2.89543 22 2 21.1046 2 20V4Z"
-                                                                fill="currentColor"></path>
-                                                            <path
-                                                                d="M13 4C13 2.89543 13.8954 2 15 2H20C21.1046 2 22 2.89543 22 4V9C22 10.1046 21.1046 11 20 11H15C13.8954 11 13 10.1046 13 9V4Z"
-                                                                fill="currentColor"></path>
-                                                            <path
-                                                                d="M13 15C13 13.8954 13.8954 13 15 13H20C21.1046 13 22 13.8954 22 15V20C22 21.1046 21.1046 22 20 22H15C13.8954 22 13 21.1046 13 20V15Z"
-                                                                fill="currentColor"></path>
-                                                        </svg>
-                                                    </i>
-                                                    <span class="item-name">patient-dashboard</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow justify-content-start gap-2 rounded-0 "
-                                                    aria-current="page" href="./index.html">
-                                                    <i class="icon" data-bs-toggle="tooltip" title="Dashboard"
-                                                        data-bs-placement="right">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M9.14373 20.7821V17.7152C9.14372 16.9381 9.77567 16.3067 10.5584 16.3018H13.4326C14.2189 16.3018 14.8563 16.9346 14.8563 17.7152V20.7732C14.8562 21.4473 15.404 21.9951 16.0829 22H18.0438C18.9596 22.0023 19.8388 21.6428 20.4872 21.0007C21.1356 20.3586 21.5 19.4868 21.5 18.5775V9.86585C21.5 9.13139 21.1721 8.43471 20.6046 7.9635L13.943 2.67427C12.7785 1.74912 11.1154 1.77901 9.98539 2.74538L3.46701 7.9635C2.87274 8.42082 2.51755 9.11956 2.5 9.86585V18.5686C2.5 20.4637 4.04738 22 5.95617 22H7.87229C8.19917 22.0023 8.51349 21.8751 8.74547 21.6464C8.97746 21.4178 9.10793 21.1067 9.10792 20.7821H9.14373Z"
-                                                                fill="currentColor"></path>
-                                                        </svg>
-                                                    </i>
-                                                    <span class="item-name">Admin Dashboard</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
                                         <a class="nav-link menu-arrow justify-content-start gap-2 rounded-0 "
-                                            aria-current="page" href="./patient-appointment.html">
+                                            aria-current="page" th:href="@{/patient-appointment.html}">
                                             <i class="icon" data-bs-toggle="tooltip" title="Appointments"
                                                 data-bs-placement="right">
                                                 <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
@@ -236,103 +178,7 @@
                                                         fill="currentColor" />
                                                 </svg>
                                             </i>
-                                            <span class="item-name">Appointments</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
-                                            href="#allPatitentPages" role="button" aria-expanded="false"
-                                            aria-controls="allPatitentPages">
-                                            <i class="icon" data-bs-toggle="tooltip" title="Pages"
-                                                data-bs-placement="right">
-                                                <svg class="icon-20" height="20" width="20" viewBox="0 0 24 24"
-                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path opacity="0.4"
-                                                        d="M16.191 2H7.81C4.77 2 3 3.78 3 6.83V17.16C3 20.26 4.77 22 7.81 22H16.191C19.28 22 21 20.26 21 17.16V6.83C21 3.78 19.28 2 16.191 2Z"
-                                                        fill="currentColor"></path>
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M8.07996 6.6499V6.6599C7.64896 6.6599 7.29996 7.0099 7.29996 7.4399C7.29996 7.8699 7.64896 8.2199 8.07996 8.2199H11.069C11.5 8.2199 11.85 7.8699 11.85 7.4289C11.85 6.9999 11.5 6.6499 11.069 6.6499H8.07996ZM15.92 12.7399H8.07996C7.64896 12.7399 7.29996 12.3899 7.29996 11.9599C7.29996 11.5299 7.64896 11.1789 8.07996 11.1789H15.92C16.35 11.1789 16.7 11.5299 16.7 11.9599C16.7 12.3899 16.35 12.7399 15.92 12.7399ZM15.92 17.3099H8.07996C7.77996 17.3499 7.48996 17.1999 7.32996 16.9499C7.16996 16.6899 7.16996 16.3599 7.32996 16.1099C7.48996 15.8499 7.77996 15.7099 8.07996 15.7399H15.92C16.319 15.7799 16.62 16.1199 16.62 16.5299C16.62 16.9289 16.319 17.2699 15.92 17.3099Z"
-                                                        fill="currentColor"></path>
-                                                </svg>
-                                            </i>
-                                            <span class="nav-text ms-2">Pages</span>
-                                        </a>
-                                        <ul class="iq-header-sub-menu list-unstyled collapse" id="allPatitentPages">
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow justify-content-start gap-2 rounded-0 "
-                                                    aria-current="page" href="./patient-encounters.html">
-                                                    <i class="icon" data-bs-toggle="tooltip" title="Encounters"
-                                                        data-bs-placement="right">
-                                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path opacity="0.4"
-                                                                d="M16.3125 6.60938C16.3125 11.25 9 15.1875 9 15.1875C9 15.1875 1.6875 11.25 1.6875 6.60938C1.6875 5.60238 2.08753 4.63663 2.79958 3.92458C3.51163 3.21253 4.47738 2.8125 5.48438 2.8125C7.07273 2.8125 8.43328 3.67805 9 5.0625C9.56672 3.67805 10.9273 2.8125 12.5156 2.8125C13.5226 2.8125 14.4884 3.21253 15.2004 3.92458C15.9125 4.63663 16.3125 5.60238 16.3125 6.60938Z"
-                                                                fill="currentColor" />
-                                                            <path
-                                                                d="M5.0625 9.5625H2.25C2.10082 9.5625 1.95774 9.50324 1.85225 9.39775C1.74676 9.29226 1.6875 9.14918 1.6875 9C1.6875 8.85082 1.74676 8.70774 1.85225 8.60225C1.95774 8.49676 2.10082 8.4375 2.25 8.4375H4.76156L5.71922 7.00031C5.77057 6.92316 5.84018 6.85988 5.92188 6.81612C6.00357 6.77235 6.09482 6.74945 6.1875 6.74945C6.28018 6.74945 6.37143 6.77235 6.45312 6.81612C6.53482 6.85988 6.60443 6.92316 6.65578 7.00031L8.4375 9.67219L9.09422 8.68781C9.14563 8.61076 9.21527 8.54759 9.29696 8.50392C9.37866 8.46026 9.46987 8.43744 9.5625 8.4375H11.25C11.3992 8.4375 11.5423 8.49676 11.6477 8.60225C11.7532 8.70774 11.8125 8.85082 11.8125 9C11.8125 9.14918 11.7532 9.29226 11.6477 9.39775C11.5423 9.50324 11.3992 9.5625 11.25 9.5625H9.86344L8.90578 10.9997C8.85443 11.0768 8.78482 11.1401 8.70312 11.1839C8.62143 11.2276 8.53018 11.2505 8.4375 11.2505C8.34482 11.2505 8.25357 11.2276 8.17188 11.1839C8.09018 11.1401 8.02057 11.0768 7.96922 10.9997L6.1875 8.32641L5.53078 9.31078C5.47953 9.3881 5.40996 9.45154 5.32826 9.49546C5.24655 9.53937 5.15526 9.56241 5.0625 9.5625ZM12.5156 2.25C11.0637 2.25 9.79242 2.87437 9 3.92977C8.20758 2.87437 6.93633 2.25 5.48438 2.25C4.3286 2.2513 3.22053 2.71101 2.40327 3.52827C1.58601 4.34553 1.1263 5.4536 1.125 6.60938C1.125 6.66211 1.125 6.71484 1.125 6.76758C1.12966 6.91676 1.1934 7.05798 1.30218 7.16018C1.41097 7.26237 1.55589 7.31716 1.70508 7.3125C1.85426 7.30784 1.99548 7.2441 2.09768 7.13532C2.19987 7.02653 2.25466 6.88161 2.25 6.73242C2.25 6.69164 2.25 6.65016 2.25 6.60938C2.25112 5.75191 2.59224 4.92988 3.19856 4.32356C3.80488 3.71724 4.62691 3.37612 5.48438 3.375C6.85195 3.375 8.00016 4.10344 8.47969 5.27344C8.52207 5.37661 8.59416 5.46485 8.6868 5.52695C8.77945 5.58905 8.88847 5.62221 9 5.62221C9.11153 5.62221 9.22055 5.58905 9.3132 5.52695C9.40584 5.46485 9.47793 5.37661 9.52031 5.27344C9.99984 4.10133 11.148 3.375 12.5156 3.375C13.3731 3.37612 14.1951 3.71724 14.8014 4.32356C15.4078 4.92988 15.7489 5.75191 15.75 6.60938C15.75 10.3788 10.2825 13.7918 9 14.5406C8.23852 14.097 6.00258 12.7125 4.31156 10.8696C4.21068 10.7596 4.07022 10.6941 3.92108 10.6877C3.77195 10.6812 3.62635 10.7343 3.51633 10.8352C3.4063 10.936 3.34086 11.0765 3.3344 11.2256C3.32794 11.3748 3.38099 11.5204 3.48187 11.6304C5.67352 14.021 8.60977 15.6157 8.73352 15.6825C8.81543 15.7266 8.90699 15.7496 9 15.7496C9.09301 15.7496 9.18457 15.7266 9.26648 15.6825C9.57726 15.5152 16.875 11.5312 16.875 6.60938C16.8737 5.4536 16.414 4.34553 15.5967 3.52827C14.7795 2.71101 13.6714 2.2513 12.5156 2.25Z"
-                                                                fill="currentColor" />
-                                                        </svg>
-                                                    </i>
-                                                    <span class="item-name">Encounters</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow justify-content-start gap-2 rounded-0 "
-                                                    aria-current="page" href="./patient-doctors.html">
-                                                    <i class="icon" data-bs-toggle="tooltip" title="Doctors"
-                                                        data-bs-placement="right">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M11.997 15.1746C7.684 15.1746 4 15.8546 4 18.5746C4 21.2956 7.661 21.9996 11.997 21.9996C16.31 21.9996 19.994 21.3206 19.994 18.5996C19.994 15.8786 16.334 15.1746 11.997 15.1746Z"
-                                                                fill="currentColor"></path>
-                                                            <path opacity="0.4"
-                                                                d="M11.9971 12.5838C14.9351 12.5838 17.2891 10.2288 17.2891 7.29176C17.2891 4.35476 14.9351 1.99976 11.9971 1.99976C9.06008 1.99976 6.70508 4.35476 6.70508 7.29176C6.70508 10.2288 9.06008 12.5838 11.9971 12.5838Z"
-                                                                fill="currentColor"></path>
-                                                        </svg>
-                                                    </i>
-                                                    <span class="item-name">Doctors</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link menu-arrow justify-content-start gap-2 rounded-0 "
-                                                    aria-current="page" href="./patient-payments.html">
-                                                    <i class="icon" data-bs-toggle="tooltip" title="Payments"
-                                                        data-bs-placement="right">
-                                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                d="M21.9964 8.37513H17.7618C15.7911 8.37859 14.1947 9.93514 14.1911 11.8566C14.1884 13.7823 15.7867 15.3458 17.7618 15.3484H22V15.6543C22 19.0136 19.9636 21 16.5173 21H7.48356C4.03644 21 2 19.0136 2 15.6543V8.33786C2 4.97862 4.03644 3 7.48356 3H16.5138C19.96 3 21.9964 4.97862 21.9964 8.33786V8.37513ZM6.73956 8.36733H12.3796H12.3831H12.3902C12.8124 8.36559 13.1538 8.03019 13.152 7.61765C13.1502 7.20598 12.8053 6.87318 12.3831 6.87491H6.73956C6.32 6.87664 5.97956 7.20858 5.97778 7.61852C5.976 8.03019 6.31733 8.36559 6.73956 8.36733Z"
-                                                                fill="currentColor"></path>
-                                                            <path opacity="0.4"
-                                                                d="M16.0374 12.2966C16.2465 13.2478 17.0805 13.917 18.0326 13.8996H21.2825C21.6787 13.8996 22 13.5715 22 13.166V10.6344C21.9991 10.2297 21.6787 9.90077 21.2825 9.8999H17.9561C16.8731 9.90338 15.9983 10.8024 16 11.9102C16 12.0398 16.0128 12.1695 16.0374 12.2966Z"
-                                                                fill="currentColor"></path>
-                                                            <circle cx="18" cy="11.8999" r="1" fill="currentColor">
-                                                            </circle>
-                                                        </svg>
-                                                    </i>
-                                                    <span class="item-name">Payments</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-arrow justify-content-start gap-2 rounded-0 "
-                                            aria-current="page" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#setting-modal">
-                                            <i class="icon" data-bs-toggle="tooltip" title="Setting"
-                                                data-bs-placement="right">
-                                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M12.0122 14.8299C10.4077 14.8299 9.10986 13.5799 9.10986 12.0099C9.10986 10.4399 10.4077 9.17993 12.0122 9.17993C13.6167 9.17993 14.8839 10.4399 14.8839 12.0099C14.8839 13.5799 13.6167 14.8299 12.0122 14.8299Z"
-                                                        fill="currentColor"></path>
-                                                    <path opacity="0.4"
-                                                        d="M21.2301 14.37C21.036 14.07 20.76 13.77 20.4023 13.58C20.1162 13.44 19.9322 13.21 19.7687 12.94C19.2475 12.08 19.5541 10.95 20.4228 10.44C21.4447 9.87 21.7718 8.6 21.179 7.61L20.4943 6.43C19.9118 5.44 18.6344 5.09 17.6226 5.67C16.7233 6.15 15.5685 5.83 15.0473 4.98C14.8838 4.7 14.7918 4.4 14.8122 4.1C14.8429 3.71 14.7203 3.34 14.5363 3.04C14.1582 2.42 13.4735 2 12.7172 2H11.2763C10.5302 2.02 9.84553 2.42 9.4674 3.04C9.27323 3.34 9.16081 3.71 9.18125 4.1C9.20169 4.4 9.10972 4.7 8.9462 4.98C8.425 5.83 7.27019 6.15 6.38109 5.67C5.35913 5.09 4.09191 5.44 3.49917 6.43L2.81446 7.61C2.23194 8.6 2.55897 9.87 3.57071 10.44C4.43937 10.95 4.74596 12.08 4.23498 12.94C4.06125 13.21 3.87729 13.44 3.59115 13.58C3.24368 13.77 2.93709 14.07 2.77358 14.37C2.39546 14.99 2.4159 15.77 2.79402 16.42L3.49917 17.62C3.87729 18.26 4.58245 18.66 5.31825 18.66C5.66572 18.66 6.0745 18.56 6.40153 18.36C6.65702 18.19 6.96361 18.13 7.30085 18.13C8.31259 18.13 9.16081 18.96 9.18125 19.95C9.18125 21.1 10.1215 22 11.3069 22H12.6968C13.872 22 14.8122 21.1 14.8122 19.95C14.8429 18.96 15.6911 18.13 16.7029 18.13C17.0299 18.13 17.3365 18.19 17.6022 18.36C17.9292 18.56 18.3278 18.66 18.6855 18.66C19.411 18.66 20.1162 18.26 20.4943 17.62L21.2097 16.42C21.5776 15.75 21.6083 14.99 21.2301 14.37Z"
-                                                        fill="currentColor"></path>
-                                                </svg>
-                                            </i>
-                                            <span class="item-name">Setting</span>
+                                            <span class="item-name">Lịch khám</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -371,22 +217,6 @@
                                         data-bs-toggle="tooltip" title="Font size 18px" data-bs-placement="bottom">
                                         <span class="mb-0 h1" style="color: inherit !important;">A</span>
                                     </label>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown pe-3 d-none d-xl-block">
-                                <div class="form-group input-group mb-0 search-input">
-                                    <input type="text" class="form-control" placeholder="Search...">
-                                    <span class="input-group-text">
-                                        <svg class="icon-20" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            </circle>
-                                            <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            </path>
-                                        </svg>
-                                    </span>
                                 </div>
                             </li>
                             <li class="nav-item dropdown iq-responsive-menu d-block d-xl-none">
@@ -443,62 +273,6 @@
                                         </div>
                                     </div>
                                 </a>
-                                <div class="p-0 sub-drop dropdown-menu dropdown-menu-end"
-                                    aria-labelledby="notification-drop">
-                                    <div class="m-0 shadow-none card">
-                                        <div class="py-3 card-header d-flex justify-content-between bg-primary mb-0">
-                                            <div class="header-title">
-                                                <h5 class="mb-0 text-white">All Notifications</h5>
-                                            </div>
-                                        </div>
-                                        <div class="p-0 card-body">
-                                            <a href="#" class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/01.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">Emma Watson Bni</h6>
-                                                        <p class="mb-0">95 MB</p>
-                                                    </div>
-                                                    <small class="float-end font-size-12">Just Now</small>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/02.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">New customer is join</h6>
-                                                        <p class="mb-0">Cyst Bni</p>
-                                                    </div>
-                                                    <small class="float-end font-size-12">5 days ago</small>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/03.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">Two customer is left</h6>
-                                                        <p class="mb-0">Cyst Bni</p>
-                                                    </div>
-                                                    <small class="float-end font-size-12">2 days ago</small>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="iq-sub-card">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
-                                                        src="../dashboard-doctor/assets/images/shapes/04.png" loading="lazy" />
-                                                    <div class="ms-3 flex-grow-1 text-start">
-                                                        <h6 class="mb-0 ">New Mail from Fenny</h6>
-                                                        <p class="mb-0">Cyst Bni</p>
-                                                    </div>
-                                                    <small class="float-end font-size-12">3 days ago</small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
                             </li>
                             <li class="nav-item iq-full-screen d-none d-xl-block" id="fullscreen-item">
                                 <a href="#" class="nav-link" id="btnFullscreen" data-bs-toggle="dropdown">
@@ -543,7 +317,7 @@
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="icon-40">
                                         <span class="btn-inner d-inline-block position-relative">
-                                            <img src="../dashboard-doctor/assets/images/avatars/12.png"
+                                            <img th:src="@{/dashboard-doctor/assets/images/avatars/12.png}"
                                                 class="img-fluid rounded-circle object-fit-cover" alt="icon">
                                             <span
                                                 class="bg-success p-1 rounded-circle position-absolute end-0 bottom-0 border border-3 border-white"></span>
@@ -552,17 +326,17 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <li>
-                                        <a class="dropdown-item" href="./app/user-profile.html">Profile</a>
+                                        <a class="dropdown-item" th:href="@{/app/user-profile.html}">Profile</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="./app/user-privacy-setting.html">Privacy
+                                        <a class="dropdown-item" th:href="@{/app/user-privacy-setting.html}">Privacy
                                             Setting</a>
                                     </li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="./auth/sign-in.html">Logout</a>
+                                        <a class="dropdown-item" th:href="@{/auth/sign-in.html}">Logout</a>
                                     </li>
                                 </ul>
                             </li>
@@ -570,7 +344,11 @@
                     </div>
                 </div>
             </nav>
-            <!--Nav End-->
+        </div>
+        <div class="row">
+                <div class="col d-flex justify-content-start">
+                    <a th:href="@{'/doctor/appointment/' + ${information.appointmentId}}" class="btn btn-primary mt-2">Quay lại</a>
+                </div>
         </div>
         <div class="content-inner container-fluid pb-0" id="page_layout">
             <div class="row align-items-center">
@@ -578,12 +356,7 @@
                     <h1 class="mt-5 mb-0">Thông tin bệnh nhân, Bùi Huy Hùng</h1>
                     <span class="mb-4">Hãy khám thật tận tâm để mang lại kết quả tốt nhất cho bệnh nhân.</span>
                 </div>
-                                <div class="col d-flex">
-                    <button type="button" class="btn btn-primary mt-2" onclick="window.location.href='patient-dashboard.html'">Quay lại</button>
-                </div>
-                <div class="col d-flex justify-content-end">
-                    <button type="button" class="btn btn-primary mt-2" onclick="window.location.href='add-test-request.html'">Xét nghiệm</button>
-                </div>
+
             </div>
             <div class="row pt-5">
                 <div class="col-lg-3">
@@ -592,7 +365,7 @@
                             <form>
                                 <div class="form-group">
                                     <div class="profile-img-edit position-relative">
-                                        <img src="../dashboar../dashboard-doctor/assets/images/avatars/rain2.jpg" alt="profile-pic"
+                                        <img th:src="@{/dashboar../dashboard-doctor/assets/images/avatars/rain2.jpg}" alt="profile-pic"
                                             class="theme-color-default-img profile-pic rounded avatar-100"
                                             loading="lazy">
                                     </div>
@@ -600,37 +373,38 @@
                                 <div class="form-group">
                                     <label class="form-label" for="patientName">Tên bệnh nhân</label>
                                     <input type="text" class="form-control readonly-input" id="patientName"
-                                        placeholder="Patient Name" readonly value="Bùi Huy Hùng">
+                                        readonly th:placeholder="${information.getPatientName()}" th:value="${information.getPatientName()}">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="department">Giới tính</label>
-                                    <input type="text" class="form-control readonly-input" id="department"
-                                        placeholder="Referring Department" readonly value="Nam">
+                                    <label class="form-label" for="gender">Giới tính</label>
+                                    <input type="text" class="form-control readonly-input" id="gender"
+                                        th:placeholder="${information.getGender()}" readonly th:value="${information.getGender()}">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="department">Tuổi</label>
-                                    <input type="text" class="form-control readonly-input" id="department"
-                                        placeholder="Referring Department" readonly value="21">
+                                    <label class="form-label" for="age">Tuổi</label>
+                                    <input type="text" class="form-control readonly-input" id="age"
+                                        th:placeholder="${information.getAge()}" readonly th:value="${information.getAge()}">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="department">Email</label>
-                                    <input type="text" class="form-control readonly-input" id="department"
-                                        placeholder="Referring Department" readonly value="buihuyhung@gmail.com">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input type="text" class="form-control readonly-input" id="email"
+                                        th:placeholder="${information.getEmail()}" readonly th:value="${information.getEmail()}">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="department">Địa chỉ</label>
-                                    <input type="text" class="form-control readonly-input" id="department"
-                                        placeholder="Referring Department" readonly value="Hà Nội, Việt Nam">
+                                    <label class="form-label" for="phone">Số điện thoại</label>
+                                    <input type="text" class="form-control readonly-input" id="phone"
+                                           th:placeholder="${information.getPhone()}" readonly th:value="${information.getPhone()}">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="testType">Dịch vụ</label>
-                                    <input type="text" class="form-control readonly-input" id="testType"
-                                        placeholder="Test Type" readonly value="Chữa bệnh ngô">
+                                    <label class="form-label" for="address">Địa chỉ</label>
+                                    <input type="text" class="form-control readonly-input" id="address"
+                                        th:placeholder="${information.getAddress()}" readonly th:value="${information.getAddress()}">
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+                <input type="hidden" th:value="${information.getAppointmentId()}" id="appointmentId">
                 <div class="col-lg-9">
                     <h1>Khám lâm sàng</h1>
                     <div class="row">
@@ -641,397 +415,78 @@
                                         <div class="row mb-2">
                                             <div class="col-md-6 form-group">
                                                 <button type="button" class="btn btn-outline-primary w-100"
-                                                    id="vitalSignsToggle" data-bs-toggle="offcanvas"
-                                                    data-bs-target="#vitalSignsOffcanvas"
-                                                    this.classList.toggle('btn-outline-primary')">
+                                                        id="vitalSignsToggle" data-bs-toggle="offcanvas"
+                                                        data-bs-target="#vitalSignsOffcanvas">
                                                     Chỉ số cơ bản
                                                 </button>
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <button type="button" class="btn btn-outline-primary w-100"
-                                                    id="respiratoryToggle" data-bs-toggle="offcanvas"
-                                                    data-bs-target="#respiratoryOffcanvas"
-                                                    this.classList.toggle('btn-outline-primary')">
+                                                        id="respiratoryToggle" data-bs-toggle="offcanvas"
+                                                        data-bs-target="#respiratoryOffcanvas">
                                                     Khám hô hấp
                                                 </button>
                                             </div>
-
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-md-6 form-group">
                                                 <button type="button" class="btn btn-outline-primary w-100"
-                                                    id="cardiacToggle" data-bs-toggle="offcanvas"
-                                                    data-bs-target="#cardiacOffcanvas"
-                                                    this.classList.toggle('btn-outline-primary')">
+                                                        id="cardiacToggle" data-bs-toggle="offcanvas"
+                                                        data-bs-target="#cardiacOffcanvas"
+                                                        >
                                                     Khám tim mạch
                                                 </button>
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <button type="button" class="btn btn-outline-primary w-100"
-                                                    id="neurologicToggle" data-bs-toggle="offcanvas"
-                                                    data-bs-target="#neurologicOffcanvas"
-                                                    this.classList.toggle('btn-outline-primary')">
+                                                        id="neurologicToggle" data-bs-toggle="offcanvas"
+                                                        data-bs-target="#neurologicOffcanvas"
+                                                        >
                                                     Khám thần kinh
                                                 </button>
                                             </div>
                                         </div>
-
                                         <div class="row mb-2">
                                             <div class="col-md-6 form-group">
                                                 <button type="button" class="btn btn-outline-primary w-100"
-                                                    id="gastroToggle" data-bs-toggle="offcanvas"
-                                                    data-bs-target="#gastroOffcanvas"
-                                                    this.classList.toggle('btn-outline-primary')">
+                                                        id="gastroToggle" data-bs-toggle="offcanvas"
+                                                        data-bs-target="#gastroOffcanvas"
+                                                        >
                                                     Khám tiêu hóa
                                                 </button>
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <button type="button" class="btn btn-outline-primary w-100"
-                                                    id="genitourinaryToggle" data-bs-toggle="offcanvas"
-                                                    data-bs-target="#genitourinaryOffcanvas"
-                                                    this.classList.toggle('btn-outline-primary')">
+                                                        id="genitourinaryToggle" data-bs-toggle="offcanvas"
+                                                        data-bs-target="#genitourinaryOffcanvas"
+                                                        >
                                                     Khám tiết niệu
                                                 </button>
                                             </div>
                                         </div>
+
                                         <div class="row mb-2">
                                             <div class="col-md-6 form-group">
                                                 <button type="button" class="btn btn-outline-primary w-100"
-                                                    id="musculoskeletalToggle" data-bs-toggle="offcanvas"
-                                                    data-bs-target="#musculoskeletalOffcanvas"
-                                                    this.classList.toggle('btn-outline-primary')">
+                                                        id="musculoskeletalToggle" data-bs-toggle="offcanvas"
+                                                        data-bs-target="#musculoskeletalOffcanvas"
+                                                        >
                                                     Khám cơ xương
                                                 </button>
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <button type="button" class="btn btn-outline-primary w-100"
-                                                    id="dermatologicToggle" data-bs-toggle="offcanvas"
-                                                    data-bs-target="#dermatologicOffcanvas"
-                                                    this.classList.toggle('btn-outline-primary')">
+                                                        id="dermatologicToggle" data-bs-toggle="offcanvas"
+                                                        data-bs-target="#dermatologicOffcanvas"
+                                                        >
                                                     Khám da liễu
                                                 </button>
                                             </div>
                                         </div>
-                                        <div class="offcanvas offcanvas-end" tabindex="-1" id="vitalSignsOffcanvas"
-                                            aria-labelledby="vitalSignsOffcanvasLabel">
-                                            <div class="offcanvas-header">
-                                                <h5 class="offcanvas-title" id="vitalSignsOffcanvasLabel">Nhập chỉ số cơ
-                                                    bản</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                                    aria-label="Đóng"></button>
-                                            </div>
-                                            <div class="offcanvas-body">
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="heartRate">Nhịp tim (bpm)</label>
-                                                    <input type="text" class="form-control" id="heartRate"
-                                                        placeholder="Nhập nhịp tim">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="systolicBP">Huyết áp tâm thu
-                                                        (mmHg)</label>
-                                                    <input type="text" class="form-control" id="systolicBP"
-                                                        placeholder="Nhập huyết áp tâm thu">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="diastolicBP">Huyết áp tâm trương
-                                                        (mmHg)</label>
-                                                    <input type="text" class="form-control" id="diastolicBP"
-                                                        placeholder="Nhập huyết áp tâm trương">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="temperature">Nhiệt độ cơ thể
-                                                        (°C)</label>
-                                                    <input type="text" class="form-control" id="temperature"
-                                                        placeholder="Nhập nhiệt độ cơ thể">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="respiratoryRate">Nhịp thở
-                                                        (lần/phút)</label>
-                                                    <input type="text" class="form-control" id="respiratoryRate"
-                                                        placeholder="Nhập nhịp thở">
-                                                </div>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <button type="button" class="btn btn-primary w-20"
-                                                        id="saveVitalSigns">Lưu kết quả</button>
-                                                    <button type="button" class="btn btn-secondary w-20"
-                                                        data-bs-dismiss="offcanvas">Đóng</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="offcanvas offcanvas-end" tabindex="-1" id="respiratoryOffcanvas"
-                                            aria-labelledby="respiratoryOffcanvasLabel">
-                                            <div class="offcanvas-header">
-                                                <h5 class="offcanvas-title" id="respiratoryOffcanvasLabel">Khám hô hấp
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                                    aria-label="Đóng"></button>
-                                            </div>
-                                            <div class="offcanvas-body">
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="breathingPattern">Kiểu thở</label>
-                                                    <input type="text" class="form-control" id="breathingPattern"
-                                                        name="breathingPattern"
-                                                        placeholder="e.g., Bình thường, khó thở">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="fremitus">Rung thanh</label>
-                                                    <input type="text" class="form-control" id="fremitus"
-                                                        name="fremitus" placeholder="e.g., Bình thường, tăng">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="percussionNote">Âm gõ</label>
-                                                    <input type="text" class="form-control" id="percussionNote"
-                                                        name="percussionNote" placeholder="e.g., Trong, đục">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="auscultation">Kết quả nghe
-                                                        phổi</label>
-                                                    <textarea class="form-control" id="auscultation"
-                                                        name="auscultation"></textarea>
-                                                </div>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <button type="button" class="btn btn-primary w-20"
-                                                        id="saveRespiratory">Lưu kết quả</button>
-                                                    <button type="button" class="btn btn-secondary w-20"
-                                                        data-bs-dismiss="offcanvas">Đóng</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="offcanvas offcanvas-end" tabindex="-1" id="cardiacOffcanvas"
-                                            aria-labelledby="cardiacOffcanvasLabel">
-                                            <div class="offcanvas-header">
-                                                <h5 class="offcanvas-title" id="cardiacOffcanvasLabel">Khám tim mạch
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                                    aria-label="Đóng"></button>
-                                            </div>
-                                            <div class="offcanvas-body">
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="heartRateCardiac">Nhịp tim
-                                                        (lần/phút)</label>
-                                                    <input type="number" class="form-control" id="heartRateCardiac"
-                                                        name="heartRate" placeholder="e.g., 80">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="heartSounds">Âm tim</label>
-                                                    <input type="text" class="form-control" id="heartSounds"
-                                                        name="heartSounds" placeholder="e.g., S1, S2 bình thường">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="murmur">Tiếng thổi</label>
-                                                    <input type="text" class="form-control" id="murmur" name="murmur"
-                                                        placeholder="e.g., Không có, systolic murmur">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="jugularVenousPressure">Áp lực tĩnh
-                                                        mạch cảnh</label>
-                                                    <input type="text" class="form-control" id="jugularVenousPressure"
-                                                        name="jugularVenousPressure"
-                                                        placeholder="e.g., Bình thường, tăng">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="edema">Phù</label>
-                                                    <input type="text" class="form-control" id="edema" name="edema"
-                                                        placeholder="e.g., Không có, phù chân">
-                                                </div>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <button type="button" class="btn btn-primary w-20"
-                                                        id="saveCardiac">Lưu kết quả</button>
-                                                    <button type="button" class="btn btn-secondary w-20"
-                                                        data-bs-dismiss="offcanvas">Đóng</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="offcanvas offcanvas-end" tabindex="-1" id="neurologicOffcanvas"
-                                            aria-labelledby="neurologicOffcanvasLabel">
-                                            <div class="offcanvas-header">
-                                                <h5 class="offcanvas-title" id="neurologicOffcanvasLabel">Khám thần kinh
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                                    aria-label="Đóng"></button>
-                                            </div>
-                                            <div class="offcanvas-body">
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="consciousness">Ý thức</label>
-                                                    <input type="text" class="form-control" id="consciousness"
-                                                        name="consciousness" placeholder="e.g., Tỉnh táo, lơ mơ">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="cranialNerves">Thần kinh sọ</label>
-                                                    <input type="text" class="form-control" id="cranialNerves"
-                                                        name="cranialNerves"
-                                                        placeholder="e.g., Bình thường, bất thường">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="motorFunction">Chức năng vận
-                                                        động</label>
-                                                    <input type="text" class="form-control" id="motorFunction"
-                                                        name="motorFunction" placeholder="e.g., Bình thường, yếu cơ">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="sensoryFunction">Chức năng cảm
-                                                        giác</label>
-                                                    <input type="text" class="form-control" id="sensoryFunction"
-                                                        name="sensoryFunction"
-                                                        placeholder="e.g., Bình thường, giảm cảm giác">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="reflexes">Phản xạ</label>
-                                                    <input type="text" class="form-control" id="reflexes"
-                                                        name="reflexes" placeholder="e.g., Bình thường, tăng phản xạ">
-                                                </div>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <button type="button" class="btn btn-primary w-20"
-                                                        id="saveNeurologic">Lưu kết quả</button>
-                                                    <button type="button" class="btn btn-secondary w-20"
-                                                        data-bs-dismiss="offcanvas">Đóng</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="offcanvas offcanvas-end" tabindex="-1" id="gastroOffcanvas"
-                                            aria-labelledby="gastroOffcanvasLabel">
-                                            <div class="offcanvas-header">
-                                                <h5 class="offcanvas-title" id="gastroOffcanvasLabel">Khám tiêu hóa</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                                    aria-label="Đóng"></button>
-                                            </div>
-                                            <div class="offcanvas-body">
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="abdominalInspection">Quan sát
-                                                        bụng</label>
-                                                    <input type="text" class="form-control" id="abdominalInspection"
-                                                        name="abdominalInspection"
-                                                        placeholder="e.g., Bình thường, chướng bụng">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="palpation">Sờ nắn</label>
-                                                    <input type="text" class="form-control" id="palpation"
-                                                        name="palpation" placeholder="e.g., Mềm, đau khi sờ">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="percussion">Gõ</label>
-                                                    <input type="text" class="form-control" id="percussion"
-                                                        name="percussion" placeholder="e.g., Âm đục, âm vang">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="auscultationGastro">Nghe</label>
-                                                    <textarea class="form-control" id="auscultationGastro"
-                                                        name="auscultation"></textarea>
-                                                </div>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <button type="button" class="btn btn-primary w-20"
-                                                        id="saveGastro">Lưu kết quả</button>
-                                                    <button type="button" class="btn btn-secondary w-20"
-                                                        data-bs-dismiss="offcanvas">Đóng</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="offcanvas offcanvas-end" tabindex="-1" id="genitourinaryOffcanvas"
-                                            aria-labelledby="genitourinaryOffcanvasLabel">
-                                            <div class="offcanvas-header">
-                                                <h5 class="offcanvas-title" id="genitourinaryOffcanvasLabel">Khám tiết
-                                                    niệu</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                                    aria-label="Đóng"></button>
-                                            </div>
-                                            <div class="offcanvas-body">
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="kidneyArea">Vùng thận</label>
-                                                    <input type="text" class="form-control" id="kidneyArea"
-                                                        name="kidneyArea" placeholder="e.g., Bình thường, đau khi gõ">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="bladder">Bàng quang</label>
-                                                    <input type="text" class="form-control" id="bladder" name="bladder"
-                                                        placeholder="e.g., Bình thường, căng tức">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="genitalInspection">Kiểm tra cơ quan
-                                                        sinh dục</label>
-                                                    <input type="text" class="form-control" id="genitalInspection"
-                                                        name="genitalInspection"
-                                                        placeholder="e.g., Bình thường, bất thường">
-                                                </div>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <button type="button" class="btn btn-primary w-20"
-                                                        id="saveGenitourinary">Lưu kết quả</button>
-                                                    <button type="button" class="btn btn-secondary w-20"
-                                                        data-bs-dismiss="offcanvas">Đóng</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="offcanvas offcanvas-end" tabindex="-1" id="musculoskeletalOffcanvas"
-                                            aria-labelledby="musculoskeletalOffcanvasLabel">
-                                            <div class="offcanvas-header">
-                                                <h5 class="offcanvas-title" id="musculoskeletalOffcanvasLabel">Khám cơ
-                                                    xương</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                                    aria-label="Đóng"></button>
-                                            </div>
-                                            <div class="offcanvas-body">
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="jointExam">Khám khớp</label>
-                                                    <input type="text" class="form-control" id="jointExam"
-                                                        name="jointExam" placeholder="e.g., Bình thường, sưng khớp">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="muscleStrength">Sức mạnh cơ</label>
-                                                    <input type="text" class="form-control" id="muscleStrength"
-                                                        name="muscleStrength" placeholder="e.g., 5/5, giảm sức cơ">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="deformity">Dị dạng</label>
-                                                    <input type="text" class="form-control" id="deformity"
-                                                        name="deformity" placeholder="e.g., Không có, vẹo cột sống">
-                                                </div>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <button type="button" class="btn btn-primary w-20"
-                                                        id="saveMusculoskeletal">Lưu kết quả</button>
-                                                    <button type="button" class="btn btn-secondary w-20"
-                                                        data-bs-dismiss="offcanvas">Đóng</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="offcanvas offcanvas-end" tabindex="-1" id="dermatologicOffcanvas"
-                                            aria-labelledby="dermatologicOffcanvasLabel">
-                                            <div class="offcanvas-header">
-                                                <h5 class="offcanvas-title" id="dermatologicOffcanvasLabel">Khám da liễu
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                                    aria-label="Đóng"></button>
-                                            </div>
-                                            <div class="offcanvas-body">
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="skinAppearance">Tình trạng da</label>
-                                                    <input type="text" class="form-control" id="skinAppearance"
-                                                        name="skinAppearance" placeholder="e.g., Bình thường, khô da">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="rash">Phát ban</label>
-                                                    <input type="text" class="form-control" id="rash" name="rash"
-                                                        placeholder="e.g., Không có, phát ban đỏ">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label" for="lesions">Tổn thương</label>
-                                                    <input type="text" class="form-control" id="lesions" name="lesions"
-                                                        placeholder="e.g., Không có, loét da">
-                                                </div>
-                                                <div class="d-flex justify-content-end gap-2">
-                                                    <button type="button" class="btn btn-primary w-20"
-                                                        id="saveDermatologic">Lưu kết quả</button>
-                                                    <button type="button" class="btn btn-secondary w-20"
-                                                        data-bs-dismiss="offcanvas">Đóng</button>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </form>
+                                    <div class="col d-flex justify-content-end">
+                                    <a th:href="@{'/doctor/test/request/' + ${information.appointmentId}}" class="btn btn-primary mt-2">Xét nghiệm</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1046,9 +501,9 @@
             <div class="footer-body">
                 <ul class="left-panel list-inline mb-0 p-0">
                     <li class="list-inline-item fw-500"><a class="footer-link"
-                            href="./extra/privacy-policy.html">Privacy Policy</a></li>
+                            th:href="@{/extra/privacy-policy.html}">Privacy Policy</a></li>
                     <li class="list-inline-item fw-500"><a class="footer-link"
-                            href="./extra/terms-of-service.html">Terms of Use</a></li>
+                            th:href="@{/extra/terms-of-service.html}">Terms of Use</a></li>
                 </ul>
             </div>
         </footer>
@@ -1159,9 +614,9 @@
                                         <input type="radio" value="ltr" class="btn-check" name="theme_scheme_direction"
                                             data-prop="dir" id="theme-scheme-direction-ltr" checked>
                                         <label class="btn btn-border d-block p-0" for="theme-scheme-direction-ltr">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/01.png" alt="ltr"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/01.png}" alt="ltr"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/01.png" alt="ltr"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/01.png}" alt="ltr"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1171,9 +626,9 @@
                                         <input type="radio" value="rtl" class="btn-check" name="theme_scheme_direction"
                                             data-prop="dir" id="theme-scheme-direction-rtl">
                                         <label class="btn btn-border d-block p-0" for="theme-scheme-direction-rtl">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/02.png" alt="ltr"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/02.png}" alt="ltr"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/02.png" alt="ltr"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/02.png}" alt="ltr"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1328,9 +783,9 @@
                                         <input type="radio" value="nav-glass" class="btn-check" name="header_navbar"
                                             id="nav-glass">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="nav-glass">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/10.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/10.png}" alt="hover"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/10.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/10.png}" alt="hover"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1340,9 +795,9 @@
                                         <input type="radio" value="navs-sticky" class="btn-check" name="header_navbar"
                                             id="navs-sticky">
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-sticky">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/04.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/04.png}" alt="hover"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/04.png" alt="hover"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/04.png}" alt="hover"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1353,9 +808,9 @@
                                             name="header_navbar" id="navs-transparent">
                                         <label class="btn btn-border p-0 d-block overflow-hidden"
                                             for="navs-transparent">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/12.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/12.png}" alt="boxed"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/12.png" alt="boxed"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/12.png}" alt="boxed"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1365,9 +820,9 @@
                                         <input type="radio" value="navs-default" class="btn-check" name="header_navbar"
                                             id="navs-default" checked>
                                         <label class="btn btn-border p-0 d-block overflow-hidden" for="navs-default">
-                                            <img src="../dashboard-doctor/assets/images/settings/dark/01.png" alt="default"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/dark/01.png}" alt="default"
                                                 class="mode dark-img img-fluid" width="200" height="200" loading="lazy">
-                                            <img src="../dashboard-doctor/assets/images/settings/light/01.png" alt="default"
+                                            <img th:src="@{/dashboard-doctor/assets/images/settings/light/01.png}" alt="default"
                                                 class="mode light-img img-fluid" width="200" height="200"
                                                 loading="lazy">
                                         </label>
@@ -1628,7 +1083,238 @@
         </svg>
     </a> <!-- Live Customizer end -->
     <!-- Wrapper End-->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="vitalSignsOffcanvas" aria-labelledby="vitalSignsOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="vitalSignsOffcanvasLabel">Nhập chỉ số cơ bản</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group mb-3">
+                <label class="form-label" for="heartRate">Nhịp tim (bpm)</label>
+                <input type="text" class="form-control" id="heartRate" placeholder="Nhập nhịp tim">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="systolicBP">Huyết áp tâm thu (mmHg)</label>
+                <input type="text" class="form-control" id="systolicBP" placeholder="Nhập huyết áp tâm thu">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="diastolicBP">Huyết áp tâm trương (mmHg)</label>
+                <input type="text" class="form-control" id="diastolicBP" placeholder="Nhập huyết áp tâm trương">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="temperature">Nhiệt độ cơ thể (°C)</label>
+                <input type="text" class="form-control" id="temperature" placeholder="Nhập nhiệt độ cơ thể">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="respiratoryRate">Nhịp thở (lần/phút)</label>
+                <input type="text" class="form-control" id="respiratoryRate" placeholder="Nhập nhịp thở">
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-primary w-20" id="saveVitalSigns">Lưu kết quả</button>
+                <button type="button" class="btn btn-secondary w-20" data-bs-dismiss="offcanvas">Đóng</button>
+            </div>
+        </div>
+    </div>
 
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="respiratoryOffcanvas" aria-labelledby="respiratoryOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="respiratoryOffcanvasLabel">Khám hô hấp</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group mb-3">
+                <label class="form-label" for="breathingPattern">Kiểu thở</label>
+                <input type="text" class="form-control" id="breathingPattern" name="breathingPattern" placeholder="e.g., Bình thường, khó thở">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="fremitus">Rung thanh</label>
+                <input type="text" class="form-control" id="fremitus" name="fremitus" placeholder="e.g., Bình thường, tăng">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="percussionNote">Âm gõ</label>
+                <input type="text" class="form-control" id="percussionNote" name="percussionNote" placeholder="e.g., Trong, đục">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="auscultation">Kết quả nghe phổi</label>
+                <textarea class="form-control" id="auscultation" name="auscultation"></textarea>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-primary w-20" id="saveRespiratory">Lưu kết quả</button>
+                <button type="button" class="btn btn-secondary w-20" data-bs-dismiss="offcanvas">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="cardiacOffcanvas" aria-labelledby="cardiacOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="cardiacOffcanvasLabel">Khám tim mạch</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group mb-3">
+                <label class="form-label" for="heartRateCardiac">Nhịp tim (lần/phút)</label>
+                <input type="number" class="form-control" id="heartRateCardiac" name="heartRate" placeholder="e.g., 80">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="heartSounds">Âm tim</label>
+                <input type="text" class="form-control" id="heartSounds" name="heartSounds" placeholder="e.g., S1, S2 bình thường">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="murmur">Tiếng thổi</label>
+                <input type="text" class="form-control" id="murmur" name="murmur" placeholder="e.g., Không có, systolic murmur">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="jugularVenousPressure">Áp lực tĩnh mạch cảnh</label>
+                <input type="text" class="form-control" id="jugularVenousPressure" name="jugularVenousPressure" placeholder="e.g., Bình thường, tăng">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="edema">Phù</label>
+                <input type="text" class="form-control" id="edema" name="edema" placeholder="e.g., Không có, phù chân">
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-primary w-20" id="saveCardiac">Lưu kết quả</button>
+                <button type="button" class="btn btn-secondary w-20" data-bs-dismiss="offcanvas">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="neurologicOffcanvas" aria-labelledby="neurologicOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="neurologicOffcanvasLabel">Khám thần kinh</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group mb-3">
+                <label class="form-label" for="consciousness">Ý thức</label>
+                <input type="text" class="form-control" id="consciousness" name="consciousness" placeholder="e.g., Tỉnh táo, lơ mơ">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="cranialNerves">Thần kinh sọ</label>
+                <input type="text" class="form-control" id="cranialNerves" name="cranialNerves" placeholder="e.g., Bình thường, bất thường">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="motorFunction">Chức năng vận động</label>
+                <input type="text" class="form-control" id="motorFunction" name="motorFunction" placeholder="e.g., Bình thường, yếu cơ">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="sensoryFunction">Chức năng cảm giác</label>
+                <input type="text" class="form-control" id="sensoryFunction" name="sensoryFunction" placeholder="e.g., Bình thường, giảm cảm giác">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="reflexes">Phản xạ</label>
+                <input type="text" class="form-control" id="reflexes" name="reflexes" placeholder="e.g., Bình thường, tăng phản xạ">
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-primary w-20" id="saveNeurologic">Lưu kết quả</button>
+                <button type="button" class="btn btn-secondary w-20" data-bs-dismiss="offcanvas">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="gastroOffcanvas" aria-labelledby="gastroOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="gastroOffcanvasLabel">Khám tiêu hóa</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group mb-3">
+                <label class="form-label" for="abdominalInspection">Quan sát bụng</label>
+                <input type="text" class="form-control" id="abdominalInspection" name="abdominalInspection" placeholder="e.g., Bình thường, chướng bụng">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="palpation">Sờ nắn</label>
+                <input type="text" class="form-control" id="palpation" name="palpation" placeholder="e.g., Mềm, đau khi sờ">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="percussion">Gõ</label>
+                <input type="text" class="form-control" id="percussion" name="percussion" placeholder="e.g., Âm đục, âm vang">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="auscultationGastro">Nghe</label>
+                <textarea class="form-control" id="auscultationGastro" name="auscultation"></textarea>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-primary w-20" id="saveGastro">Lưu kết quả</button>
+                <button type="button" class="btn btn-secondary w-20" data-bs-dismiss="offcanvas">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="genitourinaryOffcanvas" aria-labelledby="genitourinaryOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="genitourinaryOffcanvasLabel">Khám tiết niệu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group mb-3">
+                <label class="form-label" for="kidneyArea">Vùng thận</label>
+                <input type="text" class="form-control" id="kidneyArea" name="kidneyArea" placeholder="e.g., Bình thường, đau khi gõ">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="bladder">Bàng quang</label>
+                <input type="text" class="form-control" id="bladder" name="bladder" placeholder="e.g., Bình thường, căng tức">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="genitalInspection">Kiểm tra cơ quan sinh dục</label>
+                <input type="text" class="form-control" id="genitalInspection" name="genitalInspection" placeholder="e.g., Bình thường, bất thường">
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-primary w-20" id="saveGenitourinary">Lưu kết quả</button>
+                <button type="button" class="btn btn-secondary w-20" data-bs-dismiss="offcanvas">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="musculoskeletalOffcanvas" aria-labelledby="musculoskeletalOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="musculoskeletalOffcanvasLabel">Khám cơ xương</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group mb-3">
+                <label class="form-label" for="jointExam">Khám khớp</label>
+                <input type="text" class="form-control" id="jointExam" name="jointExam" placeholder="e.g., Bình thường, sưng khớp">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="muscleStrength">Sức mạnh cơ</label>
+                <input type="text" class="form-control" id="muscleStrength" name="muscleStrength" placeholder="e.g., 5/5, giảm sức cơ">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="deformity">Dị dạng</label>
+                <input type="text" class="form-control" id="deformity" name="deformity" placeholder="e.g., Không có, vẹo cột sống">
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-primary w-20" id="saveMusculoskeletal">Lưu kết quả</button>
+                <button type="button" class="btn btn-secondary w-20" data-bs-dismiss="offcanvas">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="dermatologicOffcanvas" aria-labelledby="dermatologicOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="dermatologicOffcanvasLabel">Khám da liễu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="form-group mb-3">
+                <label class="form-label" for="skinAppearance">Tình trạng da</label>
+                <input type="text" class="form-control" id="skinAppearance" name="skinAppearance" placeholder="e.g., Bình thường, khô da">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="rash">Phát ban</label>
+                <input type="text" class="form-control" id="rash" name="rash" placeholder="e.g., Không có, phát ban đỏ">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label" for="lesions">Tổn thương</label>
+                <input type="text" class="form-control" id="lesions" name="lesions" placeholder="e.g., Không có, loét da">
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-primary w-20" id="saveDermatologic">Lưu kết quả</button>
+                <button type="button" class="btn btn-secondary w-20" data-bs-dismiss="offcanvas">Đóng</button>
+            </div>
+        </div>
+    </div>
     <!-- The Modal -->
     <div class="modal fade setting-modal" id="setting-modal">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -1637,7 +1323,7 @@
                 <!-- Modal Header -->
                 <div class="modal-header p-0 pb-3 mb-3 border-bottom">
                     <h3 class="modal-title">Settings</h3>
-                    <a href="./auth/sign-in.html" class="text-secondary">
+                    <a th:href="@{/auth/sign-in.html}" class="text-secondary">
                         <svg height="20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M15.016 7.38948V6.45648C15.016 4.42148 13.366 2.77148 11.331 2.77148H6.45597C4.42197 2.77148 2.77197 4.42148 2.77197 6.45648V17.5865C2.77197 19.6215 4.42197 21.2715 6.45597 21.2715H11.341C13.37 21.2715 15.016 19.6265 15.016 17.5975V16.6545"
@@ -1723,7 +1409,7 @@
                                     class="d-flex align-items-sm-center align-items-start justify-content-between flex-sm-row flex-column gap-4">
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="flex-shrink-0 d-inline-block position-relative">
-                                            <img src="../dashboard-doctor/assets/images/user/amie-steward.png" alt="img-fluid">
+                                            <img th:src="@{/dashboard-doctor/assets/images/user/amie-steward.png}" alt="img-fluid">
                                             <span
                                                 class="bg-success p-1 rounded-circle position-absolute end-0 bottom-0 border border-3 border-white me-1 mb-1"></span>
                                         </div>
@@ -1866,55 +1552,396 @@
         </div>
     </div>
     <!-- Library Bundle Script -->
-    <script src="../dashboard-doctor/assets/js/core/libs.min.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/core/libs.min.js}"></script>
     <!-- Plugin Scripts -->
     <!-- Tour plugin Start -->
-    <script src="../dashboard-doctor/assets/vendor/sheperd/dist/js/sheperd.min.js"></script>
-    <script src="../dashboard-doctor/assets/js/plugins/tour.js" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/vendor/sheperd/dist/js/sheperd.min.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/plugins/tour.js}" defer></script>
 
     <!-- Flatpickr Script -->
-    <script src="../dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
-    <script src="../dashboard-doctor/assets/js/plugins/flatpickr.js" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/vendor/flatpickr/dist/flatpickr.min.js}"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/plugins/flatpickr.js}" defer></script>
 
 
 
     <!-- Slider-tab Script -->
-    <script src="../dashboard-doctor/assets/js/plugins/slider-tabs.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/plugins/slider-tabs.js}"></script>
 
 
     <!-- fslightbox Script -->
-    <script src="../dashboard-doctor/assets/js/plugins/fslightbox.js" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/plugins/fslightbox.js}" defer></script>
 
 
 
 
     <!-- Select2 Script -->
-    <script src="../dashboard-doctor/assets/js/plugins/select2.js" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/plugins/select2.js}" defer></script>
 
 
 
 
     <!-- Lodash Utility -->
-    <script src="../dashboard-doctor/assets/vendor/lodash/lodash.min.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/vendor/lodash/lodash.min.js}"></script>
     <!-- Utilities Functions -->
-    <script src="../dashboard-doctor/assets/js/iqonic-script/utility.min.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/iqonic-script/utility.min.js}"></script>
     <!-- Settings Script -->
-    <script src="../dashboard-doctor/assets/js/iqonic-script/setting.min.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/iqonic-script/setting.min.js}"></script>
     <!-- Settings Init Script -->
-    <script src="../dashboard-doctor/assets/js/setting-init.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/setting-init.js}"></script>
     <!-- External Library Bundle Script -->
-    <script src="../dashboard-doctor/assets/js/core/external.min.js"></script>
+    <script th:src="@{/dashboard-doctor/assets/js/core/external.min.js}"></script>
     <!-- Widgetchart Script -->
-    <script src="../dashboard-doctor/assets/js/charts/widgetcharts.js?v=1.4.1" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/charts/widgetcharts.js?v=1.4.1}" defer></script>
     <!-- Dashboard Script -->
-    <script src="../dashboard-doctor/assets/js/charts/dashboard.js?v=1.4.1" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/charts/dashboard.js?v=1.4.1}" defer></script>
     <!-- Hopeui Script -->
-    <script src="../dashboard-doctor/assets/js/kivicare.js?v=1.4.1" defer></script>
-    <script src="../dashboard-doctor/assets/js/kivicare-advance.js?v=1.4.1" defer></script>
-    <script src="../dashboard-doctor/assets/js/sidebar.js?v=1.4.1" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/kivicare.js?v=1.4.1}" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/kivicare-advance.js?v=1.4.1}" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/sidebar.js?v=1.4.1}" defer></script>
 
     <!-- Icons -->
-    <script src="../dashboard-doctor/assets/js/solid-icon-search-filter.js?v=1.4.1" defer></script>
+    <script th:src="@{/dashboard-doctor/assets/js/solid-icon-search-filter.js?v=1.4.1}" defer></script>
 </body>
+<script>
+    $("#saveVitalSigns").click(function() {
+        const inputs = {
+            heartRate: $("#heartRate").val().trim(),
+            systolicBP: $("#systolicBP").val().trim(),
+            diastolicBP: $("#diastolicBP").val().trim(),
+            temperature: $("#temperature").val().trim(),
+            respiratoryRate: $("#respiratoryRate").val().trim(),
+        };
 
+        const emptyFields = Object.keys(inputs).filter(key => inputs[key] === "");
+
+        if (emptyFields.length > 0) {
+            alert("Vui lòng nhập đầy đủ các chỉ số: " + emptyFields.join(", "));
+            return;
+        }
+
+        const numericFields = {
+            heartRate: "Nhịp tim",
+            systolicBP: "Huyết áp tâm thu",
+            diastolicBP: "Huyết áp tâm trương",
+            temperature: "Nhiệt độ cơ thể",
+            respiratoryRate: "Nhịp thở",
+        };
+
+        for (let field in inputs) {
+            if (isNaN(inputs[field]) || inputs[field] <= 0) {
+                alert(`${numericFields[field]} phải là số dương hợp lệ`);
+                return;
+            }
+        }
+
+        const data = {
+            appointmentId: $('#appointmentId').val(),
+            pulse_rate: parseFloat(inputs.heartRate),
+            bp_systolic: parseFloat(inputs.systolicBP),
+            bp_diastolic: parseFloat(inputs.diastolicBP),
+            temperature: parseFloat(inputs.temperature),
+            respiratory_rate: parseFloat(inputs.respiratoryRate),
+        };
+
+        $.ajax({
+            url: "/api/doctor/add/vital",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function(response) {
+                alert("Lưu chỉ số thành công!");
+                $("#vitalSignsOffcanvas").offcanvas('hide');
+                // Clean form
+                $("#heartRate, #systolicBP, #diastolicBP, #temperature, #respiratoryRate, #spo2").val("");
+            },
+            error: function(xhr, status, error) {
+                alert("Có lỗi xảy ra khi lưu chỉ số: " + (xhr.responseText || error));
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $("#saveRespiratory").click(function() {
+            const inputs = {
+                breathing_pattern: $("#breathingPattern").val().trim(),
+                fremitus: $("#fremitus").val().trim(),
+                percussion_note: $("#percussionNote").val().trim(),
+                auscultation: $("#auscultation").val().trim()
+            };
+
+            const emptyFields = Object.keys(inputs).filter(key => inputs[key] === "");
+
+            if (emptyFields.length > 0) {
+                alert("Vui lòng nhập đầy đủ thông tin khám hô hấp!");
+                return;
+            }
+            const data = {
+                appointmentId: $('#appointmentId').val(),
+                breathing_pattern: inputs.breathing_pattern,
+                fremitus: inputs.fremitus,
+                percussion_note: inputs.percussion_note,
+                auscultation: inputs.auscultation
+            };
+
+            $.ajax({
+                url: "/api/doctor/add/respiratory",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    alert("Đã lưu kết quả khám hô hấp thành công!");
+                    $("#respiratoryOffcanvas").offcanvas('hide');
+                    $("#breathingPattern, #fremitus, #percussionNote, #auscultation").val("");
+                },
+                error: function(xhr, status, error) {
+                    alert("Có lỗi xảy ra khi lưu dữ liệu: " + (xhr.responseText || error));
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $("#saveCardiac").click(function () {
+            const inputs = {
+                heart_rate: $("#heartRateCardiac").val().trim(),
+                heart_sounds: $("#heartSounds").val().trim(),
+                murmur: $("#murmur").val().trim(),
+                jugular_venous_pressure: $("#jugularVenousPressure").val().trim(),
+                edema: $("#edema").val().trim()
+            };
+
+            const emptyFields = Object.keys(inputs).filter(key => inputs[key] === "");
+
+            if (emptyFields.length > 0) {
+                alert("Vui lòng nhập đầy đủ thông tin khám tim mạch!");
+                return;
+            }
+
+            if (isNaN(inputs.heart_rate) || inputs.heart_rate <= 0) {
+                alert("Nhịp tim phải là số dương hợp lệ!");
+                return;
+            }
+
+            const data = {
+                appointmentId: $('#appointmentId').val(),
+                heart_rate: parseFloat(inputs.heart_rate),
+                heart_sounds: inputs.heart_sounds,
+                murmur: inputs.murmur,
+                jugular_venous_pressure: inputs.jugular_venous_pressure,
+                edema: inputs.edema
+            };
+
+            $.ajax({
+                url: "/api/doctor/add/cardiac",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("Đã lưu kết quả khám tim mạch thành công!");
+                    $("#cardiacOffcanvas").offcanvas('hide');
+                    $("#heartRateCardiac, #heartSounds, #murmur, #jugularVenousPressure, #edema").val("");
+                },
+                error: function (xhr, status, error) {
+                    alert("Có lỗi khi lưu kết quả: " + (xhr.responseText || error));
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#saveNeurologic").click(function () {
+            const inputs = {
+                consciousness: $("#consciousness").val().trim(),
+                cranial_nerves: $("#cranialNerves").val().trim(),
+                motor_function: $("#motorFunction").val().trim(),
+                sensory_function: $("#sensoryFunction").val().trim(),
+                reflexes: $("#reflexes").val().trim()
+            };
+
+            const emptyFields = Object.keys(inputs).filter(key => inputs[key] === "");
+
+            if (emptyFields.length > 0) {
+                alert("Vui lòng nhập đầy đủ thông tin khám thần kinh!");
+                return;
+            }
+
+            const data = {
+                appointmentId: $('#appointmentId').val(),
+                consciousness: inputs.consciousness,
+                cranial_nerves: inputs.cranial_nerves,
+                motor_function: inputs.motor_function,
+                sensory_function: inputs.sensory_function,
+                reflexes: inputs.reflexes
+            };
+            $.ajax({
+                url: "/api/doctor/add/neurologic",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("Đã lưu kết quả khám thần kinh thành công!");
+                    $("#neurologicOffcanvas").offcanvas('hide');
+                    $("#consciousness, #cranialNerves, #motorFunction, #sensoryFunction, #reflexes").val("");
+                },
+                error: function (xhr, status, error) {
+                    alert("Có lỗi khi lưu kết quả: " + (xhr.responseText || error));
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#saveGastro").click(function () {
+            const inputs = {
+                abdominal_inspection: $("#abdominalInspection").val().trim(),
+                palpation: $("#palpation").val().trim(),
+                percussion: $("#percussion").val().trim(),
+                auscultation: $("#auscultationGastro").val().trim()
+            };
+            const emptyFields = Object.keys(inputs).filter(key => inputs[key] === "");
+
+            if (emptyFields.length > 0) {
+                alert("Vui lòng nhập đầy đủ thông tin khám tiêu hóa!");
+                return;
+            }
+
+            const data = {
+                appointmentId: $('#appointmentId').val(),
+                abdominal_inspection: inputs.abdominal_inspection,
+                palpation: inputs.palpation,
+                percussion: inputs.percussion,
+                auscultation: inputs.auscultation
+            };
+
+            $.ajax({
+                url: "/api/doctor/add/gastro",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("Đã lưu kết quả khám tiêu hóa thành công!");
+                    $("#gastroOffcanvas").offcanvas('hide');
+                    $("#abdominalInspection, #palpation, #percussion, #auscultationGastro").val("");
+                },
+                error: function (xhr, status, error) {
+                    alert("Có lỗi khi lưu kết quả: " + (xhr.responseText || error));
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $("#saveGenitourinary").click(function () {
+            const inputs = {
+                kidney_area: $("#kidneyArea").val().trim(),
+                bladder: $("#bladder").val().trim(),
+                genital_inspection: $("#genitalInspection").val().trim()
+            };
+
+            const emptyFields = Object.keys(inputs).filter(key => inputs[key] === "");
+
+            if (emptyFields.length > 0) {
+                alert("Vui lòng nhập đầy đủ thông tin khám tiết niệu!");
+                return;
+            }
+
+            const data = {
+                appointmentId: $('#appointmentId').val(),
+                kidney_area: inputs.kidney_area,
+                bladder: inputs.bladder,
+                genital_inspection: inputs.genital_inspection
+            };
+
+            $.ajax({
+                url: "/api/doctor/add/genitourinary",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("Đã lưu kết quả khám tiết niệu thành công!");
+                    $("#genitourinaryOffcanvas").offcanvas('hide');
+                    $("#kidneyArea, #bladder, #genitalInspection").val("");
+                },
+                error: function (xhr, status, error) {
+                    alert("Có lỗi khi lưu kết quả: " + (xhr.responseText || error));
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $("#saveMusculoskeletal").click(function () {
+            const inputs = {
+                joint_exam: $("#jointExam").val().trim(),
+                muscle_strength: $("#muscleStrength").val().trim(),
+                deformity: $("#deformity").val().trim()
+            };
+            const emptyFields = Object.keys(inputs).filter(key => inputs[key] === "");
+
+            if (emptyFields.length > 0) {
+                alert("Vui lòng nhập đầy đủ thông tin khám cơ xương!");
+                return;
+            }
+
+            const data = {
+                appointmentId: $('#appointmentId').val(),
+                joint_exam: inputs.joint_exam,
+                muscle_strength: inputs.muscle_strength,
+                deformity: inputs.deformity
+            };
+
+            $.ajax({
+                url: "/api/doctor/add/musculoskeletal",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("Đã lưu kết quả khám cơ xương thành công!");
+                    $("#musculoskeletalOffcanvas").offcanvas('hide');
+                    $("#jointExam, #muscleStrength, #deformity").val("");
+                },
+                error: function (xhr, status, error) {
+                    alert("Có lỗi khi lưu kết quả: " + (xhr.responseText || error));
+                }
+            });
+        });
+    });
+
+
+    $(document).ready(function () {
+        $("#saveDermatologic").click(function () {
+            const inputs = {
+                skin_appearance: $("#skinAppearance").val().trim(),
+                rash: $("#rash").val().trim(),
+                lesions: $("#lesions").val().trim()
+            };
+
+            const emptyFields = Object.keys(inputs).filter(key => inputs[key] === "");
+            if (emptyFields.length > 0) {
+                alert("Vui lòng điền đầy đủ thông tin khám da liễu!");
+                return;
+            }
+            const data = {
+                appointmentId: $('#appointmentId').val(),
+                skin_appearance: inputs.skin_appearance,
+                rash: inputs.rash,
+                lesions: inputs.lesions
+            };
+
+            $.ajax({
+                url: "/api/doctor/add/dermatologic",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("Đã lưu kết quả khám da liễu thành công!");
+                    $("#dermatologicOffcanvas").offcanvas('hide');
+                    // Reset form
+                    $("#skinAppearance, #rash, #lesions").val("");
+                },
+                error: function (xhr, status, error) {
+                    alert("Lỗi khi lưu kết quả: " + (xhr.responseText || error));
+                }
+            });
+        });
+    });
+
+</script>
 </html>

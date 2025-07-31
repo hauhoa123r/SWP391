@@ -25,11 +25,11 @@ public class ApproveResultFilterConverter
         return sampleEntities.map(entity -> {
             ApproveResultFilterResponse approveResultFilterResponse = new ApproveResultFilterResponse();
             approveResultFilterResponse.setPatientName(entity.getTestRequest().getAppointmentEntity().getPatientEntity().getFullName());
-            approveResultFilterResponse.setId(entity.getId());
+            approveResultFilterResponse.setResultId(entity.getResults().getId());
             approveResultFilterResponse.setTestType(entity.getTestRequest().getTestTypeEntity().getTestTypeName());
-            approveResultFilterResponse.setTester("Sửa 1 - 1");
-            approveResultFilterResponse.setRequestAt("Sửa 1- 1");
-            approveResultFilterResponse.setStatus("Thêm field status vào result");
+            approveResultFilterResponse.setTester("Nguyen Van A");
+            approveResultFilterResponse.setRequestAt(String.valueOf(entity.getCollectionTime()));
+            approveResultFilterResponse.setStatus(entity.getResults().getStatus());
             return approveResultFilterResponse;
         });
     }

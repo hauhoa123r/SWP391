@@ -28,10 +28,12 @@ public class MedicalRecordEntity {
     private PatientEntity patientEntity;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "appointment_id", nullable = false)
     private AppointmentEntity appointmentEntity;
 
+    @OneToOne(mappedBy = "medicalRecord", fetch = FetchType.LAZY, optional = false)
+    private MedicalRecordSymptomEntity medicalRecordSymptomEntity;
 
     @Column(name = "admission_date", nullable = false)
     private Date admissionDate;

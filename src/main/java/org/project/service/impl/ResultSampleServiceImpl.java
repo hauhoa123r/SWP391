@@ -60,7 +60,7 @@ public class ResultSampleServiceImpl implements ResultSampleService {
         appointmentEntity.get().getTestRequestEntities().forEach(testRequestEntity -> {
             TestRequestEntity testRequestEntity1 = testRequestEntity;
             SampleEntity sampleEntity = new SampleEntity();
-            if(testRequestEntity.getSamples() != null && testRequestEntity.getSamples().getSampleStatus().equals("collected")){
+            if(testRequestEntity.getSamples() != null && testRequestEntity.getSamples().getSampleStatus().equals("completed")){
                 sampleEntity = testRequestEntity.getSamples();
                 sampleEntity.setSampleStatus("completed");
                 sampleScheduleRepository.save(sampleEntity);
@@ -72,5 +72,4 @@ public class ResultSampleServiceImpl implements ResultSampleService {
         appointmentRepository.save(appointmentEntity.get());
         return true;
     }
-
 }

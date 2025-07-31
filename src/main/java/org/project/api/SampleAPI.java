@@ -2,11 +2,13 @@ package org.project.api;
 
 import org.project.entity.ResultEntity;
 import org.project.exception.ResourceNotFoundException;
+import org.project.model.dto.FilterSampleNameDTO;
 import org.project.model.dto.RejectCollectDTO;
 import org.project.model.dto.RejectSampleScheduleDTO;
 import org.project.model.dto.SampleFilterDTO;
 import org.project.model.request.CreateSamplePatientRequest;
 import org.project.model.response.SampleConfirmResponse;
+import org.project.model.response.SampleFilterResponse;
 import org.project.model.response.SampleScheduleResponse;
 import org.project.model.response.SymtomResponse;
 import org.project.service.ReferrenceRangeService;
@@ -17,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @RestController
@@ -118,5 +119,31 @@ public class SampleAPI {
     public ResponseEntity<?> setResultSample(@RequestBody Map<String, String> dataDTO){
         ResultEntity isCheck = resultSampleServiceImpl.isSaveResultSample(dataDTO);
         return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping("/filter/name")
+    public ResponseEntity<?> filterSampleName(@ModelAttribute FilterSampleNameDTO filterSampleNameDTO){
+        try {
+            Page<SampleFilterResponse> results = sampleScheduleServiceImpl.searchSampleSchedule(filterSampleNameDTO);
+            if (results == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid search parameters");
+            }
+            return ResponseEntity.ok(results);
+        }  catch (ResourceNotFoundException | IllegalAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/filter/inactive")
+    public ResponseEntity<?> filterSampleInactive(@ModelAttribute FilterSampleNameDTO filterSampleNameDTO){
+        try {
+            Page<SampleFilterResponse> results = sampleScheduleServiceImpl.searchSampleInactive(filterSampleNameDTO);
+            if (results == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid search parameters");
+            }
+            return ResponseEntity.ok(results);
+        }  catch (ResourceNotFoundException | IllegalAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
