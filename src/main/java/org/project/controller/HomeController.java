@@ -65,15 +65,11 @@ public class HomeController {
 
     @GetMapping("/home")
     public String getHomeByRole(@AuthenticationPrincipal AccountDetails accountDetails) {
-        if (accountDetails == null) {
+        if (accountDetails == null || accountDetails.getUserEntity() == null) {
             return "redirect:/login";
         }
 
         UserEntity userEntity = accountDetails.getUserEntity();
-
-        if (userEntity == null) {
-            return "redirect:/login";
-        }
 
         // TODO: Sửa redirect cho các role USER
         Map<UserRole, String> roleToRedirect = Map.of(
