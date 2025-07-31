@@ -74,7 +74,7 @@ public class HomeController {
         // TODO: Sửa redirect cho các role USER
         Map<UserRole, String> roleToRedirect = Map.of(
                 UserRole.ADMIN, "redirect:/admin/appointment",
-                UserRole.PATIENT, "redirect:/patient/showList"
+                UserRole.PATIENT, "redirect:/patient/openCustomerDashboard"
         );
         if (roleToRedirect.containsKey(userEntity.getUserRole())) {
             return roleToRedirect.get(userEntity.getUserRole());
@@ -84,7 +84,7 @@ public class HomeController {
                 StaffRole.DOCTOR, "redirect:/doctor",
                 StaffRole.PHARMACIST, "redirect:/staff/pharmacy",
                 StaffRole.TECHNICIAN, "redirect:/lab/homepage",
-                StaffRole.SCHEDULING_COORDINATOR, "redirect:/staff/schedule",
+                StaffRole.SCHEDULING_COORDINATOR, "redirect:/staff/coordinator/showPending",
                 StaffRole.INVENTORY_MANAGER, "redirect:/staff/inventory"
         );
         if (roleToRedirectStaff.containsKey(userEntity.getStaffEntity().getStaffRole())) {

@@ -112,6 +112,7 @@ public class StaffServiceImpl implements StaffService {
                     staffEntity.getDepartmentEntity().getId(),
                     staffEntity.getHospitalEntity().getId(),
                     availability.getStaffId(),
+                    staffEntity.getStaffRole().toString(),
                     availability.getStartTime(),
                     availability.getEndTime()
             );
@@ -124,7 +125,7 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public boolean isStaffExist(Long staffId) {
-        return staffRepository.existsById(staffId);
+        return staffRepository.existsByIdAndStaffStatus(staffId, WebConstant.STAFF_STATUS_ACTIVE);
     }
 
     @Override

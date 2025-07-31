@@ -26,6 +26,7 @@ public interface AppointmentService {
     Boolean changeAppointment(ChangeAppointmentDTO changeAppointmentDTO);
 
     Page<AppointmentResponse> getAppointments(int pageIndex, int pageSize, AppointmentDTO appointmentDTO);
+   
     List<AppointmentDashboardCustomerResponse> get5AppointmentsByUserId(Long userId);
 
     Page<AppointmentCustomerResponse> getAppointmentByUserId(Long userId, int index, int size, String status);

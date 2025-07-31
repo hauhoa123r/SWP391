@@ -1,13 +1,17 @@
 package org.project.api;
 
 import jakarta.validation.Valid;
+import org.project.model.dto.AvailabilityRequestDTO;
 import org.project.model.dto.StaffDTO;
 import org.project.model.response.StaffResponse;
+import org.project.model.response.StaffSubstituteResponse;
 import org.project.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -48,5 +52,11 @@ public class StaffAPI {
     @DeleteMapping("/api/admin/staff/{staffId}")
     public void deleteStaff(@PathVariable Long staffId) {
         staffService.deleteStaff(staffId);
+    }
+
+    @PostMapping("/api/staff/substitutes")
+    public ResponseEntity<List<StaffSubstituteResponse>> getAllStaffSubstitutes(@RequestBody AvailabilityRequestDTO availability) {
+        List<StaffSubstituteResponse> response = staffService.getAllStaffSubstitutes(availability);
+        return ResponseEntity.ok(response);
     }
 }

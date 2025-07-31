@@ -104,51 +104,6 @@ body {
     max-width: 500px;
 }
 
-.btn-group {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-.btn-primary {
-    background-color: var(--primary);
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #1e4ab4;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(42, 91, 215, 0.2);
-}
-
-.btn-secondary {
-    background-color: var(--primary-light);
-    color: var(--primary);
-}
-
-.btn-secondary:hover {
-    background-color: #d1defc;
-    transform: translateY(-2px);
-}
-
-.btn i {
-    margin-left: 8px;
-    font-size: 14px;
-}
-
 .welcome-image {
     width: 200px;
 }
@@ -424,10 +379,6 @@ body {
         text-align: center;
     }
 
-    .btn-group {
-        justify-content: center;
-    }
-
     .welcome-image {
         margin-top: 20px;
         margin-left: auto;
@@ -447,8 +398,14 @@ body {
 
 /* Animation */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .card {

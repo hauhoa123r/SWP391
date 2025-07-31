@@ -214,31 +214,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isExistPhoneNumber(String phoneNumber) {
-        return userRepository.existsByPhoneNumber(phoneNumber);
+        return userRepository.existsByPhoneNumberAndUserStatus(phoneNumber, WebConstant.USER_STATUS_ACTIVE);
     }
 
     @Override
     public boolean isExistEmail(String email) {
-        return userRepository.existsByEmail(email);
+        return userRepository.existsByEmailAndUserStatus(email, WebConstant.USER_STATUS_ACTIVE);
     }
 
     @Override
     public void updatePhoneNumber(Long userId, String phoneNumber) {
-        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        UserEntity userEntity = userRepository.findByIdAndUserStatus(userId, WebConstant.USER_STATUS_ACTIVE).orElse(null);
         userEntity.setPhoneNumber(phoneNumber);
         userRepository.save(userEntity);
     }
 
     @Override
     public void updateEmail(Long userId, String email) {
-        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        UserEntity userEntity = userRepository.findByIdAndUserStatus(userId, WebConstant.USER_STATUS_ACTIVE).orElse(null);
         userEntity.setEmail(email);
         userRepository.save(userEntity);
     }
 
     @Override
     public void updatePassword(Long userId, String password) {
-        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        UserEntity userEntity = userRepository.findByIdAndUserStatus(userId, WebConstant.USER_STATUS_ACTIVE).orElse(null);
         userEntity.setPasswordHash(passwordEncoder.encode(password));
         userRepository.save(userEntity);
     }
