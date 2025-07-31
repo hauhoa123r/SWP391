@@ -1065,6 +1065,31 @@
     </div>
 </div>
 
+<!-- Supplier Search Modal for Inbound Order -->
+<div class="modal fade" id="supplierModalIn" tabindex="-1" aria-labelledby="supplierModalInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="supplierModalInLabel">Chọn nhà cung cấp</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="supplierModalSearchIn" placeholder="Tìm kiếm nhà cung cấp...">
+                </div>
+                <div id="supplierLoadingIn" class="text-center" style="display: none;">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Đang tải...</span>
+                    </div>
+                </div>
+                <div id="supplierModalResultsIn" class="list-group">
+                    <div class="list-group-item text-center">Nhập từ khóa để tìm kiếm nhà cung cấp</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- JavaScript Files -->
 <script th:src="@{/templates_storage/assets/js/jquery-3.6.0.min.js}"></script>
 <script th:src="@{/templates_storage/assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
@@ -2963,6 +2988,253 @@
         });
         return problemMedicines;
     }
+    
+    // Debounce function
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    // Initialize supplier search
+    function initSupplierSearch() {
+        const supplierSearch = document.getElementById('supplierSearchIn');
+        if (!supplierSearch) {
+            console.log('Supplier search input not found');
+            return;
+        }
+        
+        const supplierSearchResults = document.getElementById('supplierSearchResultsIn');
+        const supplierId = document.getElementById('supplierIdIn');
+        const selectedSupplierInfo = document.getElementById('selectedSupplierInfoIn');
+        
+        if (!supplierSearchResults || !supplierId || !selectedSupplierInfo) {
+            console.log('Some supplier search elements not found');
+            return;
+        }
+        
+        // Search on input
+        supplierSearch.addEventListener('input', debounce(function() {
+            const query = supplierSearch.value.trim();
+            if (query.length < 2) {
+                supplierSearchResults.classList.remove('show');
+                return;
+            }
+            
+            fetch(`/warehouse/stock-out/api/suppliers?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    supplierSearchResults.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        const item = document.createElement('a');
+                        item.className = 'dropdown-item';
+                        item.textContent = 'Không tìm thấy nhà cung cấp';
+                        supplierSearchResults.appendChild(item);
+                    } else {
+                        data.forEach(supplier => {
+                            const item = document.createElement('a');
+                            item.className = 'dropdown-item';
+                            item.href = '#';
+                            item.textContent = supplier.name;
+                            item.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                supplierSearch.value = supplier.name;
+                                supplierId.value = supplier.id;
+                                selectedSupplierInfo.textContent = `ID: ${supplier.id}, Liên hệ: ${supplier.contactPerson || 'N/A'}`;
+                                supplierSearchResults.classList.remove('show');
+                            });
+                            supplierSearchResults.appendChild(item);
+                        });
+                    }
+                    
+                    supplierSearchResults.classList.add('show');
+                })
+                .catch(error => {
+                    console.error('Error searching suppliers:', error);
+                });
+        }, 500));
+        
+        // Hide results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (supplierSearchResults && !supplierSearch.contains(e.target) && !supplierSearchResults.contains(e.target)) {
+                supplierSearchResults.classList.remove('show');
+            }
+        });
+        
+        // Modal search - check if modal elements exist
+        const supplierModalSearch = document.getElementById('supplierModalSearchIn');
+        const supplierModalResults = document.getElementById('supplierModalResultsIn');
+        const supplierLoading = document.getElementById('supplierLoadingIn');
+        
+        if (!supplierModalSearch || !supplierModalResults || !supplierLoading) {
+            console.log('Supplier modal elements not found, skipping modal initialization');
+            return;
+        }
+        
+        supplierModalSearch.addEventListener('input', debounce(function() {
+            const query = supplierModalSearch.value.trim();
+            if (query.length < 2) {
+                return;
+            }
+            
+            supplierLoading.style.display = 'block';
+            
+            fetch(`/warehouse/stock-out/api/suppliers?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    supplierModalResults.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        const item = document.createElement('div');
+                        item.className = 'list-group-item';
+                        item.textContent = 'Không tìm thấy nhà cung cấp';
+                        supplierModalResults.appendChild(item);
+                    } else {
+                        data.forEach(supplier => {
+                            const item = document.createElement('button');
+                            item.className = 'list-group-item list-group-item-action';
+                            item.type = 'button';
+                            item.innerHTML = `
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">${supplier.name}</h5>
+                                    <small>ID: ${supplier.id}</small>
+                                </div>
+                                <p class="mb-1">${supplier.address || 'N/A'}</p>
+                                <small>Liên hệ: ${supplier.contactPerson || 'N/A'}</small>
+                            `;
+                            item.addEventListener('click', function() {
+                                try {
+                                    supplierSearch.value = supplier.name;
+                                    supplierId.value = supplier.id;
+                                    selectedSupplierInfo.textContent = `ID: ${supplier.id}, Liên hệ: ${supplier.contactPerson || 'N/A'}`;
+                                    
+                                    // Use Bootstrap 5 modal hide method
+                                    const modal = bootstrap.Modal.getInstance(document.getElementById('supplierModalIn'));
+                                    if (modal) {
+                                        modal.hide();
+                                    } else {
+                                        // Fallback to jQuery if bootstrap instance not found
+                                        $('#supplierModalIn').modal('hide');
+                                    }
+                                } catch (error) {
+                                    console.error('Error hiding modal:', error);
+                                }
+                            });
+                            supplierModalResults.appendChild(item);
+                        });
+                    }
+                    
+                    supplierLoading.style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error searching suppliers:', error);
+                    supplierLoading.style.display = 'none';
+                });
+        }, 500));
+    }
+    
+    // Initialize product search for inbound order
+    function initProductSearchIn() {
+        const productSearchIn = document.getElementById('productSearchIn');
+        if (!productSearchIn) {
+            console.log('Product search input not found');
+            return;
+        }
+        
+        const productSearchResultsIn = document.getElementById('productSearchResultsIn');
+        const selectedProductIdIn = document.getElementById('selectedProductIdIn');
+        const productDetailsIn = document.getElementById('productDetailsIn');
+        const productNameIn = document.getElementById('productNameIn');
+        const productStockIn = document.getElementById('productStockIn');
+        const productPriceIn = document.getElementById('productPriceIn');
+        
+        if (!productSearchResultsIn || !selectedProductIdIn || !productDetailsIn) {
+            console.log('Some product search elements not found');
+            return;
+        }
+        
+        // Add event listener for product search with debounce
+        productSearchIn.addEventListener('input', debounce(function() {
+            const query = productSearchIn.value.trim();
+            if (query.length < 2) {
+                productSearchResultsIn.classList.remove('show');
+                productDetailsIn.style.display = 'none';
+                return;
+            }
+            
+            // Search in existing medicines data first
+            const filteredMedicines = medicines.filter(medicine => {
+                const medicineName = medicine.name || '';
+                const medicineId = medicine.id || '';
+                return medicineName.toLowerCase().includes(query.toLowerCase()) ||
+                       medicineId.toString().toLowerCase().includes(query.toLowerCase());
+            });
+            
+            productSearchResultsIn.innerHTML = '';
+            
+            if (filteredMedicines.length === 0) {
+                const item = document.createElement('a');
+                item.className = 'dropdown-item';
+                item.textContent = 'Không tìm thấy thuốc';
+                productSearchResultsIn.appendChild(item);
+            } else {
+                filteredMedicines.slice(0, 10).forEach(product => {
+                    const item = document.createElement('a');
+                    item.className = 'dropdown-item';
+                    item.href = '#';
+                    item.innerHTML = `
+                        <div class="d-flex justify-content-between">
+                            <span>${product.name}</span>
+                            <small class="text-muted">Tồn: ${product.stockQuantities || 0}</small>
+                        </div>
+                    `;
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Set selected product
+                        productSearchIn.value = product.name;
+                        selectedProductIdIn.value = product.id;
+                        
+                        // Show product details
+                        if (productNameIn) productNameIn.textContent = product.name;
+                        if (productStockIn) productStockIn.textContent = product.stockQuantities || 0;
+                        if (productPriceIn) productPriceIn.textContent = formatCurrency(product.price || 0);
+                        productDetailsIn.style.display = 'block';
+                        
+                        productSearchResultsIn.classList.remove('show');
+                    });
+                    productSearchResultsIn.appendChild(item);
+                });
+            }
+            
+            productSearchResultsIn.classList.add('show');
+        }, 500));
+        
+        // Hide results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (productSearchResultsIn && !productSearchIn.contains(e.target) && !productSearchResultsIn.contains(e.target)) {
+                productSearchResultsIn.classList.remove('show');
+            }
+        });
+        
+        // Clear product details when input is cleared
+        productSearchIn.addEventListener('input', function() {
+            if (productSearchIn.value.trim() === '') {
+                productDetailsIn.style.display = 'none';
+                selectedProductIdIn.value = '';
+            }
+        });
+    }
+    
+    // Initialize supplier search when document is ready
+    $(document).ready(function() {
+        initSupplierSearch();
+        initProductSearchIn();
+    });
 </script>
-
-```

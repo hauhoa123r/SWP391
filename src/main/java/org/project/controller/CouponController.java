@@ -310,32 +310,29 @@ public class CouponController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    @PostMapping("/apply")
-    public String applyCoupon(@RequestParam("code") String code,
-                              HttpSession session,
-                              RedirectAttributes redirectAttributes) {
-        try {
-//            // Get userId from session (update this based on your app's auth setup)
-//            Long userId = (Long) session.getAttribute("userId");
-//            if (userId == null) {
-//                redirectAttributes.addFlashAttribute("couponError", "User not logged in.");
-//                return "redirect:/login";
-//            }
-            Long userId=2l;
+//    @PostMapping("/apply")
+//    public String applyCoupon(@RequestParam("code") String code, HttpSession session, RedirectAttributes redirectAttributes) {
+//        logger.info("Applying coupon code: {}", code);
+//        CouponDTO coupon = couponService.findByCode(code);
+//        if (coupon != null && coupon.getStatus() == CouponStatus.ACTIVE) {
+//            logger.info("Coupon found and active: {}", code);
+//            session.setAttribute("couponCode", code);
+//            session.setAttribute("couponValue", coupon.getValue());
+//            session.setAttribute("couponType", coupon.getDiscountType().toString().equals("PERCENTAGE") ? "PERCENTAGE" : "FIXED");
+//            redirectAttributes.addFlashAttribute("couponMessage", "Mã giảm giá đã được áp dụng thành công!");
+//        } else {
+//            logger.warn("Invalid or inactive coupon: {}", code);
+//            redirectAttributes.addFlashAttribute("couponError", "Mã giảm giá không hợp lệ hoặc không hoạt động.");
+//        }
+//        return "redirect:/cart";
+//    }
 
-            couponService.applyCouponToCart(code, userId, session);
-            redirectAttributes.addFlashAttribute("couponSuccess", "Coupon applied successfully!");
-        } catch (CouponException e) {
-            redirectAttributes.addFlashAttribute("couponError", e.getMessage());
-        }
-
-        return "redirect:/cart";
-    }
     @GetMapping("/remove")
     public String removeCoupon(HttpSession session, RedirectAttributes redirectAttributes) {
-        session.removeAttribute("appliedCoupon");
-        session.removeAttribute("discountedTotal");
-        redirectAttributes.addFlashAttribute("couponSuccess", "Coupon removed.");
+        session.removeAttribute("couponCode");
+        session.removeAttribute("couponValue");
+        session.removeAttribute("couponType");
+        redirectAttributes.addFlashAttribute("couponMessage", "Mã giảm giá đã được xóa.");
         return "redirect:/cart";
     }
 
