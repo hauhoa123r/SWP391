@@ -5,7 +5,8 @@
        breadCrumbTitle = ${hospital.name},
         breadCrumbTexts = ${{{hospital.name}}},
         breadCrumbLinks = ${{{''}}}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${hospital.name}"></title>
 </head>
@@ -35,7 +36,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="padding-top-60">
+                            <div class="padding-top-60" sec:authorize="hasRole('PATIENT')">
                                 <div class="iq-btn-container">
                                     <a class="iq-button text-capitalize" th:href="@{/patient/appointment}">
                                         <span class="iq-btn-text-holder position-relative">Đặt lịch ngay</span>

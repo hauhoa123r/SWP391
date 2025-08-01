@@ -383,7 +383,7 @@
                                     </th:block>
                                 </ul>
                             </li>
-                            <li>
+                            <li sec:authorize="hasRole('PATIENT')">
                                 <div class="iq-btn-container">
                                     <a class="iq-button text-capitalize" th:href="@{/patient/appointment}">
                                         <span class="iq-btn-text-holder position-relative">Đặt lịch</span>

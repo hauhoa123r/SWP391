@@ -1,7 +1,8 @@
 <!doctype html>
 <html layout:decorate="~{/frontend/layouts/main-layout}"
       th:with="navActive = ${'home'}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Kivicare</title>
 </head>
@@ -104,7 +105,7 @@
                             thiện. Hãy đến với KiviCare để được chăm sóc tận tâm và chu đáo!
                         </p>
                         <!-- Nút Đặt lịch khám nằm dưới đoạn giới thiệu -->
-                        <div class="iq-btn-container mt-4">
+                        <div class="iq-btn-container mt-4" sec:authorize="hasRole('PATIENT')">
                             <a class="iq-button text-capitalize" th:href="@{/patient/appointment}">
                                 <span class="iq-btn-text-holder position-relative">Đặt lịch ngay</span>
                                 <span class="iq-btn-icon-holder">
