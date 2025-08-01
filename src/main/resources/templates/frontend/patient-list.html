@@ -361,20 +361,20 @@
             <div class="pagination-wrap">
                 <a class="pagination-btn prev" th:classappend="${pageIndex == 0} ? 'disabled'"
                    th:if="${pageIndex > 0}"
-                   th:href="@{${'/patient/showList/' + 1 + '?pageIndex=' + (pageIndex - 1)}}"
+                   th:href="@{${'/patient/showList?pageIndex=' + (pageIndex - 1)}}"
                    aria-disabled="false">Previous&nbsp;&nbsp;+</a>
                 <span class="pagination-btn prev disabled" th:if="${pageIndex == 0}"
                       aria-disabled="true">Previous&nbsp;&nbsp;+</span>
                 <ul class="pagination">
                     <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                         th:classappend="${i} == ${pageIndex} ? 'active'">
-                        <a class="page-link" th:href="@{'/patient/showList/' + ${userId} + '?pageIndex=' + ${i}}"
+                        <a class="page-link" th:href="@{'/patient/showList?pageIndex=' + ${i}}"
                            th:text="${i + 1}"></a>
                     </li>
                 </ul>
                 <a class="pagination-btn next" th:classappend="${pageIndex == totalPages - 1} ? 'disabled'"
                    th:if="${pageIndex < totalPages - 1}"
-                   th:href="@{${'/patient/showList/' + 1 + '?pageIndex=' + (pageIndex + 1)}}"
+                   th:href="@{${'/patient/showList?pageIndex=' + (pageIndex + 1)}}"
                    aria-disabled="false">Next&nbsp;&nbsp;+</a>
                 <span class="pagination-btn next disabled" th:if="${pageIndex == totalPages - 1}"
                       aria-disabled="true">Next&nbsp;&nbsp;+</span>
