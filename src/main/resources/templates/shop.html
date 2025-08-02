@@ -57,7 +57,7 @@
                                 <input name="maxPrice" th:if="${maxPrice != null}" th:value="${maxPrice}" type="hidden">
 
                                 <input class="form-control rm-cancel-btn mb-5 bg-white border" name="search"
-                                       placeholder="Search Products..."
+                                       placeholder="Tìm kiếm sản phẩm..."
                                        th:value="${search}"
                                        type="search">
                                 <button class="position-absolute  end-0 top-0 text-body p-0 border-0 bg-transparent cursor-pointer"
@@ -75,7 +75,7 @@
                                 </button>
                             </div>
                         </form>
-                        <h4 class="product-title mb-4">Product Categories</h4>
+                        <h4 class="product-title mb-4">Danh mục sản phẩm</h4>
                         <ul class="p-0 mb-5 list-unstyled">
                             <li class="shop-cat-item border-0 pb-0"
                                 th:classappend="${category.id == categoryId} ? ' active-cat'"
@@ -91,7 +91,7 @@
                                       th:text="'(' + (${category.productCount} != null ? ${category.productCount} : 0) + ')'">(0)</span>
                             </li>
                         </ul>
-                        <h4 class="product-title mb-4">Price Filter</h4>
+                        <h4 class="product-title mb-4">Bộ lọc giá</h4>
                         <form class="mb-5" method="get" th:action="@{/shop}">
                             <input name="search" th:value="${search}" type="hidden">
                             <input name="categoryId" th:value="${categoryId}" type="hidden">
@@ -109,7 +109,7 @@
                         </form>
                     </div>
                     <div class="product-list-widget p-3 p-md-4 bg-primary-subtle mb-5">
-                        <h4 class="product-title mb-4">Top Rated Products</h4>
+                        <h4 class="product-title mb-4">Sản phẩm đánh giá cao</h4>
                         <ul class="p-0 m-0">
                             <li class="d-flex align-items-center gap-3 border-0 mb-4" th:each="p : ${topProducts}">
                                 <div class="img-holder">
@@ -138,7 +138,7 @@
                         </ul>
                     </div>
                     <div class="widget widget_tags p-3 p-md-4 bg-primary-subtle">
-                        <h4 class="product-title mb-4">Tags</h4>
+                        <h4 class="product-title mb-4">Thẻ</h4>
                         <ul class="p-0 m-0 list-unstyled">
                             <!-- "All" option -->
                             <li class="cat-item mb-0 pb-0 border-0 d-inline"
@@ -191,17 +191,17 @@
                                     <a class="btn"
                                        th:classappend="${selectedLabel == 'NEW' ? 'btn-primary' : 'btn-outline-primary'}"
                                        th:href="@{/shop(label='NEW', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}">
-                                        New Products
+                                        Sản phẩm mới
                                     </a>
                                     <a class="btn"
                                        th:classappend="${selectedLabel == 'SALE' ? 'btn-primary' : 'btn-outline-primary'}"
                                        th:href="@{/shop(label='SALE', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}">
-                                        Sale Products
+                                        Sản phẩm giảm giá
                                     </a>
                                     <a class="btn"
                                        th:classappend="${selectedLabel == 'STANDARD' ? 'btn-primary' : 'btn-outline-primary'}"
                                        th:href="@{/shop(label='STANDARD', search=${search!=null?search:''}, categoryId=${categoryId!=null?categoryId:''}, minPrice=${minPrice!=null?minPrice:''}, maxPrice=${maxPrice!=null?maxPrice:''}, tag=${selectedTag!=null?selectedTag:''}, sort=${selectedSort != null ? selectedSort : 'DEFAULT'})}">
-                                        Standard Products
+                                        Sản phẩm tiêu chuẩn
                                     </a>
                                 </div>
                             </div>
@@ -337,7 +337,7 @@
                                         <input name="search" th:value="${search}" type="hidden">
                                         <select class="select2-basic-single js-states" name="sort"
                                                 onchange="document.getElementById('sortForm').submit()">
-                                            <option disabled hidden selected value="">Sort by...</option>
+                                            <option disabled hidden selected value="">Sắp xếp theo...</option>
                                             <option th:selected="${selectedSort == 'DEFAULT'}" value="DEFAULT">Default
                                             </option>
                                             <option th:selected="${selectedSort == 'RATING'}" value="RATING">rating
@@ -1005,7 +1005,7 @@
                                     <li>
                                         <div class="iq-btn-container">
                                             <a class="iq-button text-uppercase cart-btn">
-                                                <span class="iq-btn-text-holder position-relative cart-btn">Add to Cart</span>
+                                                <span class="iq-btn-text-holder position-relative cart-btn">Thêm vào giỏ hàng</span>
                                                 <span class="iq-btn-icon-holder">
                                     <svg fill="none" height="11" viewBox="0 0 10 11" width="10"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -1019,7 +1019,7 @@
                                     </li>
                                 </ul>
                                 <div class="d-flex align-items-center">
-                                    <span>Categories :</span>
+                                    <span>Danh mục :</span>
                                     <h6 class="d-inline text-primary mb-0">Home Equipment</h6>
                                 </div>
                             </div>
