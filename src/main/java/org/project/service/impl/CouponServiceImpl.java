@@ -262,11 +262,11 @@ public class CouponServiceImpl implements CouponService {
         CouponEntity existingCoupon = couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Coupon not found with ID: " + id));
 
-        // Kiểm tra nếu code thay đổi và code mới đã tồn tại
-        if (!existingCoupon.getCode().equals(couponDTO.getCode()) &&
-                couponRepository.existsByCode(couponDTO.getCode())) {
-            throw new IllegalArgumentException("Coupon code already exists: " + couponDTO.getCode());
-        }
+//        // Kiểm tra nếu code thay đổi và code mới đã tồn tại
+//        if (!existingCoupon.getCode().equals(couponDTO.getCode()) &&
+//                couponRepository.existsByCode(couponDTO.getCode())) {
+//            throw new IllegalArgumentException("Coupon code already exists: " + couponDTO.getCode());
+//        }
 
         // Cập nhật thông tin
         existingCoupon.setCode(couponDTO.getCode());
@@ -287,7 +287,7 @@ public class CouponServiceImpl implements CouponService {
             throw new IllegalArgumentException("Coupon not found with ID: " + id);
         }
 
-        couponRepository.deleteById(id);
+        couponRepository.deleteCouponEntityById(id);
     }
 
     @Override
@@ -305,4 +305,53 @@ public class CouponServiceImpl implements CouponService {
 
         return couponPage.map(this::convertToDTO);
     }
+
+    @Override
+    public Page<CouponDTO> findCouponsByDiscountType(DiscountType discountType, int page, int size, String sortBy, String sortDir) {
+        log.info("Finding coupons with discount type: {}", discountType);
+        
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) 
+                ? Sort.by(sortBy).ascending() 
+                : Sort.by(sortBy).descending();
+                
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<CouponEntity> couponPage = couponRepository.findByDiscountType(discountType, pageable);
+        
+        return couponPage.map(this::convertToDTO);
+    }
+
+    @Override
+    public Page<CouponDTO> findCouponsWithFilters(String status, String discountTypeStr, String keyword, 
+                                            int page, int size, String sortBy, String sortDir) {
+    log.info("Finding coupons with filters: status={}, discountType={}, keyword={}",
+            status, discountTypeStr, keyword);
+    
+    Sort sort = createSort(sortBy, sortDir);
+    Pageable pageable = PageRequest.of(page, size, sort);
+    
+    // Parse discount type if provided
+    DiscountType discountType = null;
+    if (discountTypeStr != null && !discountTypeStr.isEmpty()) {
+        try {
+            discountType = DiscountType.valueOf(discountTypeStr);
+        } catch (IllegalArgumentException e) {
+            log.warn("Invalid discount type: {}", discountTypeStr);
+        }
+    }
+    
+    // Parse status flags
+    boolean validOnly = "valid".equals(status);
+    boolean expiredOnly = "expired".equals(status);
+    
+    // Get current date for expiry check
+    Date today = new Date(System.currentTimeMillis());
+    
+    // Execute query with all filters
+    Page<CouponEntity> couponPage = couponRepository.findWithFilters(
+            discountType, validOnly, expiredOnly, today, 
+            keyword != null && !keyword.isEmpty() ? keyword : null, 
+            pageable);
+    
+    return couponPage.map(this::convertToDTO);
+}
 }

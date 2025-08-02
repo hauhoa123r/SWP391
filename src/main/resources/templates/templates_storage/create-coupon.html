@@ -69,6 +69,12 @@
         .container-fluid {
             padding-right: 0 !important;
         }
+        .btn-secondary {
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-left: 10px;
+        }
     </style>
 </head>
 
@@ -285,6 +291,167 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card">
+<!--                                    <div class="card-body">-->
+<!--                                        <div class="title-header option-title">-->
+<!--                                            <h5>Tạo Mã Giảm Giá</h5>-->
+<!--                                        </div>-->
+<!--                                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">-->
+<!--                                            <li class="nav-item" role="presentation">-->
+<!--                                                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button">Thông Tin Chung</button>-->
+<!--                                            </li>-->
+<!--                                            <li class="nav-item" role="presentation">-->
+<!--                                                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button">Hạn Chế</button>-->
+<!--                                            </li>-->
+<!--                                            <li class="nav-item" role="presentation">-->
+<!--                                                <button class="nav-link" id="pills-usage-tab" data-bs-toggle="pill" data-bs-target="#pills-usage" type="button">Sử Dụng</button>-->
+<!--                                            </li>-->
+<!--                                        </ul>-->
+
+<!--                                        <div class="tab-content" id="pills-tabContent">-->
+<!--                                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel">-->
+<!--                                                <form id="couponForm" class="theme-form theme-form-2 mega-form" th:action="@{/create-coupon}" method="post">-->
+<!--                                                    <div class="card-header-1">-->
+<!--                                                        <h5>Thông Tin Chung</h5>-->
+<!--                                                    </div>-->
+
+<!--                                                    <div class="row">-->
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Tiêu Đề Mã Giảm Giá</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input class="form-control" type="text" name="description" required placeholder="Tiêu đề mã giảm giá">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Mã Giảm Giá</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input class="form-control" type="text" name="code" required placeholder="Nhập mã coupon (VD: SAVE10)">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Ngày Bắt Đầu</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input class="form-control" type="date" name="startDate" required>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Ngày Kết Thúc</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input class="form-control" type="date" name="expirationDate" required>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Miễn Phí Vận Chuyển</label>-->
+<!--                                                            <div class="col-md-9">-->
+<!--                                                                <div class="form-check user-checkbox ps-0">-->
+<!--                                                                    <input class="checkbox_animated check-it" type="checkbox" name="freeShipping" value="true" id="flexCheckDefault">-->
+<!--                                                                    <label class="form-label-title col-md-2 mb-0">Cho Phép Miễn Phí Vận Chuyển</label>-->
+<!--                                                                </div>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Số Lượng</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input class="form-control" type="number" name="quantity" required placeholder="Số lượng mã giảm giá">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="col-sm-2 col-form-label form-label-title">Loại Giảm Giá</label>-->
+<!--                                                            <div class="col-sm-10">-->
+<!--                                                                <select class="js-example-basic-single form-select" name="discountType" required>-->
+<!--                                                                    <option value="PERCENTAGE">Phần Trăm</option>-->
+<!--                                                                    <option value="FIXED_AMOUNT">Số Tiền Cố Định</option>-->
+<!--                                                                </select>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Giá Trị Giảm Giá</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input class="form-control" type="number" name="discountValue" required placeholder="Giá trị giảm giá">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </form>-->
+<!--                                            </div>-->
+
+<!--                                            <div class="tab-pane fade" id="pills-profile" role="tabpanel">-->
+<!--                                                <div class="theme-form theme-form-2 mega-form">-->
+<!--                                                    <div class="card-header-1">-->
+<!--                                                        <h5>Hạn Chế Sử Dụng</h5>-->
+<!--                                                    </div>-->
+
+<!--                                                    <div class="row">-->
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Sản Phẩm</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input class="form-control" type="text" placeholder="Chọn sản phẩm áp dụng mã giảm giá">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="col-sm-2 col-form-label form-label-title">Danh Mục</label>-->
+<!--                                                            <div class="col-sm-10">-->
+<!--                                                                <select class="js-example-basic-single" name="state">-->
+<!--                                                                    <option disabled>&#45;&#45;Chọn&#45;&#45;</option>-->
+<!--                                                                    <option>Thuốc</option>-->
+<!--                                                                    <option>Thiết Bị Y Tế</option>-->
+<!--                                                                </select>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="row align-items-center">-->
+<!--                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Chi Tiêu Tối Đa</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input class="form-control" type="number" placeholder="Giá trị chi tiêu tối đa để áp dụng mã giảm giá">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+
+<!--                                            <div class="tab-pane fade" id="pills-usage" role="tabpanel">-->
+<!--                                                <div class="theme-form theme-form-2 mega-form">-->
+<!--                                                    <div class="card-header-1">-->
+<!--                                                        <h5>Giới Hạn Sử Dụng</h5>-->
+<!--                                                    </div>-->
+
+<!--                                                    <div class="row">-->
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Giới Hạn Mỗi Mã</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input class="form-control" type="number" placeholder="Số lần tối đa mã này được sử dụng">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="row align-items-center">-->
+<!--                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Giới Hạn Mỗi Khách Hàng</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input class="form-control" type="number" placeholder="Số lần tối đa mỗi khách hàng có thể sử dụng mã này">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+
+<!--                                        <div class="mt-4 row">-->
+<!--                                            <div class="col-md-9 offset-md-3 d-flex justify-content-start">-->
+<!--                                                <button type="submit" class="btn btn-primary" form="couponForm">-->
+<!--                                                    <i class="ri-save-line"></i> Lưu Mã Giảm Giá-->
+<!--                                                </button>-->
+<!--                                                <a th:href="@{/coupon-list}" class="btn btn-secondary">-->
+<!--                                                    <i class="ri-arrow-left-line"></i> Quay Lại Danh Sách-->
+<!--                                                </a>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+
                                     <div class="card-body">
                                         <div class="title-header option-title">
                                             <h5>Tạo Mã Giảm Giá</h5>
@@ -303,7 +470,7 @@
 
                                         <div class="tab-content" id="pills-tabContent">
                                             <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
-                                                <form id="couponForm" class="theme-form theme-form-2 mega-form" th:action="@{/create-coupon}" method="post">
+                                                <form th:action="@{/create-coupon}" th:object="${coupon}" method="post" class="theme-form theme-form-2 mega-form">
                                                     <div class="card-header-1">
                                                         <h5>Thông Tin Chung</h5>
                                                     </div>
@@ -312,52 +479,45 @@
                                                         <div class="mb-4 row align-items-center">
                                                             <label class="form-label-title col-lg-2 col-md-3 mb-0">Tiêu Đề Mã Giảm Giá</label>
                                                             <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="text" name="description" required placeholder="Tiêu đề mã giảm giá">
+                                                                <input type="text" th:field="*{description}" class="form-control" required placeholder="Tiêu đề mã giảm giá">
                                                             </div>
                                                         </div>
 
                                                         <div class="mb-4 row align-items-center">
                                                             <label class="col-lg-2 col-md-3 col-form-label form-label-title">Mã Giảm Giá</label>
                                                             <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="text" name="code" required placeholder="Nhập mã coupon (VD: SAVE10)">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="mb-4 row align-items-center">
-                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Ngày Bắt Đầu</label>
-                                                            <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="date" name="startDate" required>
+                                                                <input type="text" th:field="*{code}" class="form-control" required placeholder="Nhập mã coupon (VD: SAVE10)">
                                                             </div>
                                                         </div>
 
                                                         <div class="mb-4 row align-items-center">
                                                             <label class="col-lg-2 col-md-3 col-form-label form-label-title">Ngày Kết Thúc</label>
                                                             <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="date" name="expirationDate" required>
+                                                                <input type="date" th:field="*{expirationDate}" class="form-control" required>
                                                             </div>
                                                         </div>
 
-                                                        <div class="mb-4 row align-items-center">
-                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Miễn Phí Vận Chuyển</label>
-                                                            <div class="col-md-9">
-                                                                <div class="form-check user-checkbox ps-0">
-                                                                    <input class="checkbox_animated check-it" type="checkbox" name="freeShipping" value="true" id="flexCheckDefault">
-                                                                    <label class="form-label-title col-md-2 mb-0">Cho Phép Miễn Phí Vận Chuyển</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Miễn Phí Vận Chuyển</label>-->
+<!--                                                            <div class="col-md-9">-->
+<!--                                                                <div class="form-check user-checkbox ps-0">-->
+<!--                                                                    <input type="checkbox" th:field="*{freeShipping}" class="checkbox_animated check-it" id="freeShipping">-->
+<!--                                                                    <label class="form-label-title col-md-2 mb-0" for="freeShipping">Cho Phép Miễn Phí Vận Chuyển</label>-->
+<!--                                                                </div>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
 
-                                                        <div class="mb-4 row align-items-center">
-                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Số Lượng</label>
-                                                            <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number" name="quantity" required placeholder="Số lượng mã giảm giá">
-                                                            </div>
-                                                        </div>
+<!--                                                        <div class="mb-4 row align-items-center">-->
+<!--                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Số Lượng</label>-->
+<!--                                                            <div class="col-md-9 col-lg-10">-->
+<!--                                                                <input type="number" th:field="*{quantity}" class="form-control" required placeholder="Số lượng mã giảm giá">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
 
                                                         <div class="mb-4 row align-items-center">
                                                             <label class="col-sm-2 col-form-label form-label-title">Loại Giảm Giá</label>
                                                             <div class="col-sm-10">
-                                                                <select class="js-example-basic-single form-select" name="discountType" required>
+                                                                <select th:field="*{discountType}" class="js-example-basic-single form-select" required>
                                                                     <option value="PERCENTAGE">Phần Trăm</option>
                                                                     <option value="FIXED_AMOUNT">Số Tiền Cố Định</option>
                                                                 </select>
@@ -367,78 +527,35 @@
                                                         <div class="mb-4 row align-items-center">
                                                             <label class="col-lg-2 col-md-3 col-form-label form-label-title">Giá Trị Giảm Giá</label>
                                                             <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number" name="discountValue" required placeholder="Giá trị giảm giá">
+                                                                <input type="number" th:field="*{value}" class="form-control" required placeholder="Giá trị giảm giá" step="0.01">
                                                             </div>
+                                                        </div>
+
+                                                        <div class="mb-4 row align-items-center">
+                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Chi Tiêu Tối Đa</label>
+                                                            <div class="col-md-9 col-lg-10">
+                                                                <input type="number" th:field="*{minimumOrderAmount}" class="form-control" placeholder="Giá trị chi tiêu tối đa" step="0.01">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+                                                    <div class="mt-4 row">
+                                                        <div class="col-md-9 offset-md-3 d-flex justify-content-start">
+                                                            <button type="submit" class="btn btn-primary">
+                                                                <i class="ri-save-line"></i> Lưu Mã Giảm Giá
+                                                            </button>
+                                                            <a th:href="@{/coupon-list}" class="btn btn-secondary">
+                                                                <i class="ri-arrow-left-line"></i> Quay Lại Danh Sách
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </form>
                                             </div>
 
-                                            <div class="tab-pane fade" id="pills-profile" role="tabpanel">
-                                                <div class="theme-form theme-form-2 mega-form">
-                                                    <div class="card-header-1">
-                                                        <h5>Hạn Chế Sử Dụng</h5>
-                                                    </div>
+                                            <!-- Other tabs (Hạn Chế and Sử Dụng) remain unchanged for brevity -->
 
-                                                    <div class="row">
-                                                        <div class="mb-4 row align-items-center">
-                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Sản Phẩm</label>
-                                                            <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="text" placeholder="Chọn sản phẩm áp dụng mã giảm giá">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="mb-4 row align-items-center">
-                                                            <label class="col-sm-2 col-form-label form-label-title">Danh Mục</label>
-                                                            <div class="col-sm-10">
-                                                                <select class="js-example-basic-single" name="state">
-                                                                    <option disabled>--Chọn--</option>
-                                                                    <option>Thuốc</option>
-                                                                    <option>Thiết Bị Y Tế</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row align-items-center">
-                                                            <label class="col-lg-2 col-md-3 col-form-label form-label-title">Chi Tiêu Tối Đa</label>
-                                                            <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number" placeholder="Giá trị chi tiêu tối đa để áp dụng mã giảm giá">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="tab-pane fade" id="pills-usage" role="tabpanel">
-                                                <div class="theme-form theme-form-2 mega-form">
-                                                    <div class="card-header-1">
-                                                        <h5>Giới Hạn Sử Dụng</h5>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="mb-4 row align-items-center">
-                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Giới Hạn Mỗi Mã</label>
-                                                            <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number" placeholder="Số lần tối đa mã này được sử dụng">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row align-items-center">
-                                                            <label class="form-label-title col-lg-2 col-md-3 mb-0">Giới Hạn Mỗi Khách Hàng</label>
-                                                            <div class="col-md-9 col-lg-10">
-                                                                <input class="form-control" type="number" placeholder="Số lần tối đa mỗi khách hàng có thể sử dụng mã này">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="mt-4 row">
-                                            <div class="col-md-9 offset-md-3">
-                                                <button type="submit" class="btn btn-primary" form="couponForm"><i class="ri-save-line"></i> Lưu Mã Giảm Giá</button>
-                                                <a th:href="@{/coupon-list}" class="btn btn-secondary"><i class="ri-arrow-left-line"></i> Quay Lại Danh Sách</a>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

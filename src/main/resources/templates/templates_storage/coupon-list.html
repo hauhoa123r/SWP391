@@ -63,6 +63,284 @@
         .container-fluid {
             padding-right: 0 !important;
         }
+
+        .logout-confirmation {
+            display: none; /* Hidden by default */
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .logout-confirmation.show {
+            display: block; /* Show when class 'show' is added */
+        }
+
+        .coupon-confirmation {
+            display: none;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #ccc;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .coupon-confirmation.show {
+            display: block;
+        }
+
+        /* Thêm vào phần <style> hiện có */
+        .pagination {
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .page-item:not(:first-child) .page-link {
+            margin-left: 5px;
+        }
+
+        .page-link {
+            position: relative;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #7638ff;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+        }
+
+        .page-link:hover {
+            color: #5924d4;
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+        }
+
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #7638ff;
+            border-color: #7638ff;
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+
+        .pagination-section {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Styles cho bộ lọc */
+        .search-box-filter {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+        }
+        
+        .search-box-filter .form-label {
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #2c323f;
+            font-size: 14px;
+        }
+        
+        .search-box-filter .form-control, 
+        .search-box-filter .form-select {
+            border-radius: 5px;
+            border: 1px solid #e6e6e6;
+            padding: 10px 15px;
+            font-size: 14px;
+            height: auto;
+            box-shadow: none;
+            transition: all 0.3s;
+            background-color: #fff;
+        }
+        
+        .search-box-filter .form-control:focus, 
+        .search-box-filter .form-select:focus {
+            border-color: var(--theme-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 164, 135, 0.15);
+        }
+        
+        .search-box-filter .btn-solid {
+            height: 100%;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: 500;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Style cho phân trang */
+        .pagination-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .pagination {
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+            border-radius: 0.25rem;
+            margin-bottom: 0;
+        }
+        
+        .page-item {
+            margin: 0 3px;
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--theme-color);
+            border-color: var(--theme-color);
+            color: #fff;
+            z-index: 3;
+        }
+        
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            cursor: not-allowed;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+        
+        .page-link {
+            position: relative;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: var(--theme-color);
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        
+        .page-link:hover {
+            z-index: 2;
+            color: #0a8c72;
+            text-decoration: none;
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+        }
+        
+        /* Style cho bảng */
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+            border: 1px solid #f0f0f0;
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table thead th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+            border-top: none;
+            border-bottom: 1px solid #eaeaea !important;
+            padding: 12px 15px;
+            color: #333;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+        
+        .table tbody td {
+            vertical-align: middle;
+            padding: 14px 15px;
+            border-color: #f2f2f2;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Style cho các nút và badges */
+        .success, .danger {
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .success {
+            background-color: #28a745;
+        }
+        
+        .danger {
+            background-color: #dc3545;
+        }
+        
+        /* Style cho buttons trong bảng */
+        .table .btn {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        /* Style cho icon actions */
+        .table ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        
+        .table ul li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .table ul li:last-child {
+            margin-right: 0;
+        }
+        
+        .table ul li a {
+            color: #4a5568;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .table ul li a:hover {
+            color: var(--theme-color);
+        }
+        
+        .ri-pencil-line {
+            color: #007bff;
+        }
+        
+        .delete-coupon {
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            color: #dc3545;
+            font-size: 16px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 767px) {
+            .search-box-filter {
+                padding: 15px;
+            }
+            
+            .search-box-filter .form-label {
+                margin-bottom: 5px;
+            }
+            
+            .search-box-filter .btn-solid {
+                margin-top: 10px;
+            }
+        }
     </style>
 
     <!-- App css-->
@@ -294,15 +572,45 @@
                         <div class="card card-table">
                             <div class="card-body">
                                 <div class="title-header option-title">
-                                    <h5>Coupon List</h5>
+                                    <h5>Danh sách mã giảm giá</h5>
                                     <div class="right-options">
                                         <ul>
                                             <li>
-                                                <a class="btn btn-solid" th:href="@{/create-coupon}">Add Coupon</a>
+                                                <a class="btn btn-solid" th:href="@{/create-coupon}">Thêm mã giảm giá</a>
                                             </li>
                                         </ul>
+                                    </div>
+                                </div>
+                                
+                                <!-- Thanh tìm kiếm và bộ lọc -->
+                                <div class="search-box-filter mb-4">
+                                    <form th:action="@{/coupon-list}" method="get" class="row g-3 align-items-end">
+                                        <div class="col-md-4">
+                                            <label for="keyword" class="form-label">Tìm kiếm theo tên/mã:</label>
+                                            <input type="text" class="form-control" id="keyword" name="keyword" 
+                                                   th:value="${keyword}" placeholder="Nhập từ khóa...">
                                         </div>
+                                        <div class="col-md-3">
+                                            <label for="status" class="form-label">Trạng thái:</label>
+                                            <select class="form-select" id="status" name="status">
+                                                <option value="">Tất cả</option>
+                                                <option value="valid" th:selected="${validFilter != null && validFilter}">Hoạt động</option>
+                                                <option value="expired" th:selected="${expiredFilter != null && expiredFilter}">Hết hạn</option>
+                                            </select>
                                         </div>
+                                        <div class="col-md-3">
+                                            <label for="discountType" class="form-label">Kiểu giảm giá:</label>
+                                            <select class="form-select" id="discountType" name="discountType">
+                                                <option value="">Tất cả</option>
+                                                <option value="PERCENTAGE" th:selected="${discountType != null && discountType == 'PERCENTAGE'}">Phần trăm</option>
+                                                <option value="FIXED" th:selected="${discountType != null && discountType == 'FIXED'}">Số tiền cố định</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="submit" class="btn btn-solid w-100">Lọc</button>
+                                        </div>
+                                    </form>
+                                </div>
                                 <div>
                                         <div class="table-responsive" th:if="${coupons != null and !coupons.isEmpty()}">
                                         <table class="table all-package coupon-list-table table-hover theme-table"
@@ -310,10 +618,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>
-                                                            <span class="form-check user-checkbox m-0 p-0">
-                                                            <input class="checkbox_animated checkall"
-                                                                type="checkbox" value="">
-                                                            </span>
+                                                            ID
                                                         </th>
                                                     <th>Tiêu đề</th>
                                                     <th>Mã</th>
@@ -325,12 +630,7 @@
 
                                                 <tbody>
                                                 <tr th:each="coupon : ${coupons}">
-                                                    <td>
-                                                        <span class="form-check user-checkbox m-0 p-0">
-                                                            <input class="checkbox_animated check-it"
-                                                                type="checkbox" value="">
-                                                        </span>
-                                                    </td>
+                                                    <td th:text="${coupon.id}"></td>
                                                     <td th:text="${coupon.description}"></td>
                                                     <td th:text="${coupon.code}"></td>
                                                     <td class="theme-color" th:text="${coupon.discountType.toString() == 'PERCENTAGE'} ? ${coupon.value + '%'} : ${coupon.value + ' VNĐ'}"></td>
@@ -340,15 +640,23 @@
                                                     <td>
                                                         <ul>
                                                             <li>
-                                                                <a th:href="@{/coupon-edit/{id}(id=${coupon.id})}">
+                                                                <a th:href="@{/edit-coupon/{id}(id=${coupon.id})}">
                                                                     <i class="ri-pencil-line"></i>
                                                                 </a>
                                                             </li>
 
                                                             <li>
-                                                                <a href="javascript:void(0)" th:attr="onclick='confirmDelete(' + ${coupon.id} + ')'" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+<!--                                                                <a href="javascript:void(0)" th:attr="onclick='confirmDelete(' + ${coupon.id} + ')'" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">-->
+<!--                                                                    <i class="ri-delete-bin-line"></i>-->
+<!--                                                                </a>-->
+                                                                <button type="button" th:attr="onclick='showCouponConfirmation(' + ${coupon.id} + ')'" class="delete-coupon">
                                                                     <i class="ri-delete-bin-line"></i>
-                                                                </a>
+                                                                </button>
+                                                                <div class="coupon-confirmation" th:attr="data-coupon-id=${coupon.id}">
+                                                                    <p th:text="'Bạn có chắc chắn muốn xoá mã giảm giá có ID #' + ${coupon.id} + '?'"></p>
+                                                                    <button type="button" class="btn btn-light" onclick="hideCouponConfirmation(this)">Cancel</button>
+                                                                    <button type="button" class="btn btn-primary" onclick="deleteCoupon(this)">Delete</button>
+                                                                </div>
                                                             </li>
                                                         </ul>
                                                     </td>
@@ -358,6 +666,74 @@
                                     </div>
                                     <div th:if="${coupons == null or coupons.isEmpty()}" class="text-center">
                                         <p>Không có mã giảm giá nào.</p>
+                                    </div>
+                                    
+                                    <!-- Phân trang -->
+                                    <div th:if="${totalPages > 0}" class="pagination-section">
+                                        <nav aria-label="Phân trang">
+                                            <ul class="pagination">
+                                                <!-- Nút về trang đầu -->
+                                                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                                    <a class="page-link" th:href="@{/coupon-list(page=0, size=${size}, keyword=${keyword != null ? keyword : ''}, status=${param.status != null ? param.status[0] : ''}, discountType=${param.discountType != null ? param.discountType[0] : ''}, sortBy=${sortBy}, sortDir=${sortDir})}" aria-label="Trang đầu">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                                
+                                                <!-- Nút lùi một trang -->
+                                                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                                    <a class="page-link" th:href="@{/coupon-list(page=${currentPage - 1}, size=${size}, keyword=${keyword != null ? keyword : ''}, status=${param.status != null ? param.status[0] : ''}, discountType=${param.discountType != null ? param.discountType[0] : ''}, sortBy=${sortBy}, sortDir=${sortDir})}" aria-label="Trang trước">
+                                                        <span aria-hidden="true">&lsaquo;</span>
+                                                    </a>
+                                                </li>
+                                                
+                                                <!-- Hiển thị các trang -->
+                                                <th:block th:with="start=${currentPage > 2 ? currentPage - 2 : 0}, 
+                                                              end=${currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1}">
+                                                    
+                                                    <!-- Trang đầu + dấu ... nếu không phải ở gần trang đầu -->
+                                                    <th:block th:if="${start > 0}">
+                                                        <li class="page-item">
+                                                            <a class="page-link" th:href="@{/coupon-list(page=0, size=${size}, keyword=${keyword != null ? keyword : ''}, status=${param.status != null ? param.status[0] : ''}, discountType=${param.discountType != null ? param.discountType[0] : ''}, sortBy=${sortBy}, sortDir=${sortDir})}">1</a>
+                                                        </li>
+                                                        <li class="page-item disabled" th:if="${start > 1}">
+                                                            <span class="page-link">...</span>
+                                                        </li>
+                                                    </th:block>
+                                                    
+                                                    <!-- Trang hiện tại và lân cận -->
+                                                    <li class="page-item" th:each="i : ${#numbers.sequence(start, end)}" 
+                                                        th:classappend="${i == currentPage} ? 'active'">
+                                                        <a class="page-link" th:href="@{/coupon-list(page=${i}, size=${size}, keyword=${keyword != null ? keyword : ''}, status=${param.status != null ? param.status[0] : ''}, discountType=${param.discountType != null ? param.discountType[0] : ''}, sortBy=${sortBy}, sortDir=${sortDir})}" 
+                                                           th:text="${i + 1}"></a>
+                                                    </li>
+                                                    
+                                                    <!-- Dấu ... và trang cuối nếu không phải ở gần trang cuối -->
+                                                    <th:block th:if="${end < totalPages - 1}">
+                                                        <li class="page-item disabled" th:if="${end < totalPages - 2}">
+                                                            <span class="page-link">...</span>
+                                                        </li>
+                                                        <li class="page-item">
+                                                            <a class="page-link" th:href="@{/coupon-list(page=${totalPages - 1}, size=${size}, keyword=${keyword != null ? keyword : ''}, status=${param.status != null ? param.status[0] : ''}, discountType=${param.discountType != null ? param.discountType[0] : ''}, sortBy=${sortBy}, sortDir=${sortDir})}" 
+                                                               th:text="${totalPages}"></a>
+                                                        </li>
+                                                    </th:block>
+                                                </th:block>
+                                                
+                                                <!-- Nút tiến một trang -->
+                                                <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled'">
+                                                    <a class="page-link" th:href="@{/coupon-list(page=${currentPage + 1}, size=${size}, keyword=${keyword != null ? keyword : ''}, status=${param.status != null ? param.status[0] : ''}, discountType=${param.discountType != null ? param.discountType[0] : ''}, sortBy=${sortBy}, sortDir=${sortDir})}" aria-label="Trang sau">
+                                                        <span aria-hidden="true">&rsaquo;</span>
+                                                    </a>
+                                                </li>
+                                                
+                                                <!-- Nút đến trang cuối -->
+                                                <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled'">
+                                                    <a class="page-link" th:href="@{/coupon-list(page=${totalPages - 1}, size=${size}, keyword=${keyword != null ? keyword : ''}, status=${param.status != null ? param.status[0] : ''}, discountType=${param.discountType != null ? param.discountType[0] : ''}, sortBy=${sortBy}, sortDir=${sortDir})}" aria-label="Trang cuối">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
                                     </div>
                                 </div>
                             </div>
@@ -383,49 +759,60 @@
     </div>
 
     <!-- Modal Start -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog  modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h5 class="modal-title" id="staticBackdropLabel">Logging Out</h5>
-                    <p>Are you sure you want to log out?</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <div class="button-box">
-                        <button type="button" class="btn btn--no" data-bs-dismiss="modal">No</button>
-                        <button type="button" onclick="location.href = 'login.html';"
-                                class="btn  btn--yes btn-primary">Yes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">-->
+<!--        <div class="modal-dialog  modal-dialog-centered">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-body">-->
+<!--                    <h5 class="modal-title" id="staticBackdropLabel">Logging Out</h5>-->
+<!--                    <p>Are you sure you want to log out?</p>-->
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                    <div class="button-box">-->
+<!--                        <button type="button" class="btn btn&#45;&#45;no" data-bs-dismiss="modal">No</button>-->
+<!--                        <button type="button" onclick="location.href = 'login.html';"-->
+<!--                                class="btn  btn&#45;&#45;yes btn-primary">Yes</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div class="logout-confirmation">
+        <p>Are you sure you want to log out?</p>
+        <button type="button" class="btn btn--no" onclick="hideConfirmation()">No</button>
+        <button type="button" class="btn btn--yes btn-primary" onclick="location.href = 'login.html'; hideConfirmation()">Yes</button>
     </div>
     <!-- Modal End -->
 </div>
 <!-- page-wrapper End -->
 
 <!-- Delete Modal Box Start -->
-<div class="modal fade theme-modal remove-coupon" id="exampleModalToggle" aria-hidden="true" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header d-block text-center pb-3 border-bottom-0">
-                <h5 class="modal-title w-100" id="exampleModalLabel22">Xác nhận xóa</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="remove-box text-center">
-                    <i class="ri-delete-bin-line"></i>
-                    <h2 class="mt-2">Xóa mã giảm giá</h2>
-                    <p>Bạn có chắc chắn muốn xóa mã giảm giá này không?</p>
-                </div>
-            </div>
-            <div class="modal-footer border-top-0 justify-content-center">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-primary" onclick="deleteCoupon()">Xóa</button>
-                <input type="hidden" id="deleteCouponId">
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="modal fade theme-modal remove-coupon" id="exampleModalToggle" aria-hidden="true" tabindex="-1">-->
+<!--    <div class="modal-dialog modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header d-block text-center pb-3 border-bottom-0">-->
+<!--                <h5 class="modal-title w-100" id="exampleModalLabel22">Xác nhận xóa</h5>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <div class="remove-box text-center">-->
+<!--                    <i class="ri-delete-bin-line"></i>-->
+<!--                    <h2 class="mt-2">Xóa mã giảm giá</h2>-->
+<!--                    <p>Bạn có chắc chắn muốn xóa mã giảm giá này không?</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="modal-footer border-top-0 justify-content-center">-->
+<!--                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>-->
+<!--                <button type="button" class="btn btn-primary" onclick="deleteCoupon()">Xóa</button>-->
+<!--                <input type="hidden" id="deleteCouponId">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div class="coupon-confirmation" data-coupon-id="123">-->
+<!--    <p>Are you sure you want to delete coupon #123?</p>-->
+<!--    <button type="button" class="btn btn-light" onclick="hideCouponConfirmation(this)">Cancel</button>-->
+<!--    <button type="button" class="btn btn-primary" onclick="deleteCoupon(this)">Delete</button>-->
+<!--</div>-->
 
 <div class="modal fade theme-modal remove-coupon" id="exampleModalToggle2" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -461,11 +848,48 @@
         $('#deleteCouponId').val(id);
     }
 
-    function deleteCoupon() {
-        var id = $('#deleteCouponId').val();
+    // function deleteCoupon() {
+    //     var id = $('#deleteCouponId').val();
+    //     $.ajax({
+    //         url: '/coupon-delete/' + id,
+    //         type: 'DELETE',
+    //         success: function(result) {
+    //             if (result.success) {
+    //                 location.reload();
+    //             } else {
+    //                 alert('Xóa thất bại: ' + result.message);
+    //             }
+    //         },
+    //         error: function(xhr) {
+    //             alert('Lỗi khi xóa mã giảm giá.');
+    //         }
+    //     });
+    // }
+
+    function showConfirmation() {
+        document.querySelector('.logout-confirmation').classList.add('show');
+    }
+    function hideConfirmation() {
+        document.querySelector('.logout-confirmation').classList.remove('show');
+    }
+
+    function showCouponConfirmation(couponId) {
+        const confirmation = document.querySelector(`.coupon-confirmation[data-coupon-id="${couponId}"]`);
+        if (confirmation) {
+            confirmation.classList.add('show');
+        }
+    }
+    function hideCouponConfirmation(button) {
+        button.closest('.coupon-confirmation').classList.remove('show');
+    }
+    function deleteCoupon(button) {
+        const couponId = button.closest('.coupon-confirmation').getAttribute('data-coupon-id');
+        console.log('Deleting coupon with ID:', couponId);
+        // Add deletion logic (e.g., AJAX request)
         $.ajax({
-            url: '/coupon-delete/' + id,
-            type: 'DELETE',
+            url: '/coupon-delete/' + couponId,
+            type: 'POST',
+            dataType: 'json',
             success: function(result) {
                 if (result.success) {
                     location.reload();
@@ -477,6 +901,7 @@
                 alert('Lỗi khi xóa mã giảm giá.');
             }
         });
+        hideCouponConfirmation(button);
     }
 </script>
 

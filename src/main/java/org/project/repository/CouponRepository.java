@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.util.Optional;
+import org.project.enums.DiscountType;
 
 @Repository
 public interface CouponRepository extends JpaRepository<CouponEntity, Long> {
@@ -44,7 +45,43 @@ public interface CouponRepository extends JpaRepository<CouponEntity, Long> {
     Page<CouponEntity> findByValueGreaterThanEqual(double value, Pageable pageable);
 
     /**
+     * Tìm kiếm coupon theo loại giảm giá
+     * 
+     * @param discountType Loại giảm giá cần tìm
+     * @param pageable Thông tin phân trang
+     * @return Trang dữ liệu các coupon theo loại giảm giá
+     */
+    Page<CouponEntity> findByDiscountType(DiscountType discountType, Pageable pageable);
+
+    /**
+     * Tìm kiếm coupon với nhiều điều kiện kết hợp
+     * 
+     * @param discountType Loại giảm giá cần tìm (null nếu không lọc)
+     * @param validOnly Chỉ lấy coupon còn hạn
+     * @param expiredOnly Chỉ lấy coupon hết hạn
+     * @param today Ngày hiện tại để so sánh hạn sử dụng
+     * @param keyword Từ khóa tìm kiếm (null nếu không tìm)
+     * @param pageable Thông tin phân trang
+     * @return Trang dữ liệu các coupon theo điều kiện
+     */
+    @Query("SELECT c FROM CouponEntity c WHERE " +
+           "(:discountType IS NULL OR c.discountType = :discountType) AND " +
+           "((:validOnly = false AND :expiredOnly = false) OR " +
+           "(:validOnly = true AND c.expirationDate >= :today) OR " +
+           "(:expiredOnly = true AND c.expirationDate < :today)) AND " +
+           "(:keyword IS NULL OR LOWER(c.code) LIKE LOWER(CONCAT('%', :keyword, '%')) OR c.description LIKE CONCAT('%', :keyword, '%'))")
+    Page<CouponEntity> findWithFilters(
+           @Param("discountType") DiscountType discountType,
+           @Param("validOnly") boolean validOnly,
+           @Param("expiredOnly") boolean expiredOnly,
+           @Param("today") Date today,
+           @Param("keyword") String keyword,
+           Pageable pageable);
+
+    /**
      * Kiểm tra mã code đã tồn tại chưa
      */
     boolean existsByCode(String code);
+
+    void deleteCouponEntityById(Long id);
 }

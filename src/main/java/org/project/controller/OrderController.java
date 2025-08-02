@@ -27,7 +27,7 @@ public class OrderController {
     private final CartService cartService;
 
     //hard coding user's id for testing
-    private final Long userId = 4l;
+    private final Long userId = 4L;
 
 //    @PostMapping("/checkout")
 //    public String createOrder(@ModelAttribute("checkoutForm") CheckoutFormDTO form,
@@ -48,7 +48,7 @@ public class OrderController {
         CheckoutFormDTO checkoutFormDTO = new CheckoutFormDTO();
 
         // Nếu có user đăng nhập:
-        Long userId = 10L; // hard-code tạm thời
+        Long userId = 4L; // hard-code tạm thời
         PatientEntity patient = patientRepository.findByUserEntity_Id(userId);
 
         String fullName = patient.getFullName();
