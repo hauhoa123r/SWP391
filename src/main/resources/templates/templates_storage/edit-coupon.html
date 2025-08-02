@@ -366,6 +366,20 @@
                                                                 <input type="number" th:field="*{minimumOrderAmount}" class="form-control" placeholder="Giá trị chi tiêu tối đa" step="0.01">
                                                             </div>
                                                         </div>
+
+                                                        <div class="mb-4 row align-items-center">
+                                                            <label class="col-sm-2 col-form-label form-label-title">Tình trạng hoạt động</label>
+                                                            <div class="col-sm-10">
+                                                                <select th:field="*{couponStatus}" class="js-example-basic-single form-select" required>
+                                                                    <option value="">-- Chọn loại giảm giá --</option>
+                                                                    <option th:each="stat : ${T(org.project.enums.CouponStatus).values()}"
+                                                                            th:value="${stat}"
+                                                                            th:text="${stat.status}"
+                                                                            th:selected="${coupon.couponStatus != null && coupon.couponStatus == stat}">
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                     <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>

@@ -518,8 +518,12 @@
                                                             <label class="col-sm-2 col-form-label form-label-title">Loại Giảm Giá</label>
                                                             <div class="col-sm-10">
                                                                 <select th:field="*{discountType}" class="js-example-basic-single form-select" required>
-                                                                    <option value="PERCENTAGE">Phần Trăm</option>
-                                                                    <option value="FIXED_AMOUNT">Số Tiền Cố Định</option>
+                                                                    <option value="">-- Chọn loại giảm giá --</option>
+                                                                    <option th:each="type : ${T(org.project.enums.DiscountType).values()}"
+                                                                            th:value="${type}"
+                                                                            th:text="${type.displayName}"
+                                                                            th:selected="${coupon.discountType != null && coupon.discountType == type}">
+                                                                    </option>
                                                                 </select>
                                                             </div>
                                                         </div>

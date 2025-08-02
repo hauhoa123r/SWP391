@@ -281,6 +281,7 @@ public class CouponServiceImpl implements CouponService {
         existingCoupon.setMinimumOrderAmount(couponDTO.getMinimumOrderAmount());
         existingCoupon.setExpirationDate(couponDTO.getExpirationDate());
         existingCoupon.setDiscountType(couponDTO.getDiscountType());
+        existingCoupon.setStatus(couponDTO.getCouponStatus());
 
         CouponEntity updatedEntity = couponRepository.save(existingCoupon);
         return convertToDTO(updatedEntity);
