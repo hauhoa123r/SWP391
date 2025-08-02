@@ -576,7 +576,7 @@
       <span class="head-title fw-500 mt-1">Trang chủ</span>
     </div>
     <div class="row">
-      <div class="col-lg-8">
+      <div class="col-lg-12">
         <div class="d-flex align-items-center justify-content-between flex-sm-row flex-column-reverse">
           <div>
             <h1 class="fs-37">
@@ -607,16 +607,7 @@
           </div>
         </div>
         <div class="row mt-5">
-          <div class="col-md-4">
-            <div class="card card-block card-stretch card-height overflow-hidden">
-              <div class="card-body px-0 pb-0 text-center d-flex flex-column justify-content-end">
-                <h5>Quá trình trong tháng</h5>
-                <h3 class="text-secondary counter mb-4" style="visibility: visible;">56%</h3>
-                <div id="areachart"></div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <div class="card card-block card-stretch card-height overflow-hidden">
               <div class="card-body pb-0">
                 <div class="d-flex justify-content-between">
@@ -652,7 +643,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <div class="card card-block card-stretch card-height overflow-hidden">
               <div class="card-body pb-0">
                 <div class="d-flex justify-content-between">
@@ -686,89 +677,6 @@
                      src="./assets/images/dashboard/hand-holding-heart.png" th:src="@{/dashboard-staff-test/assets/images/dashboard/hand-holding-heart.png}"
  alt="finance"
                      loading="lazy" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="card">
-          <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
-            <div>
-              <h4>Chuẩn bị xét nghiệm</h4>
-              <p class="mb-0">6 xét nghiệm cho hôm nay</p>
-            </div>
-            <div class="dropdown text-end f-none">
-              <button class="dropdown btn btn-light-subtle border text-body py-2 px-3"
-                      id="dropdownMenuAppointmentToday" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="fw-500">Hôm nay</span>
-                <svg width="8" class="ms-1 transform-up" viewBox="0 0 12 8" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M6 5.08579L10.2929 0.792893C10.6834 0.402369 11.3166 0.402369 11.7071 0.792893C12.0976 1.18342 12.0976 1.81658 11.7071 2.20711L6.70711 7.20711C6.31658 7.59763 5.68342 7.59763 5.29289 7.20711L0.292893 2.20711C-0.0976311 1.81658 -0.0976311 1.18342 0.292893 0.792893C0.683418 0.402369 1.31658 0.402369 1.70711 0.792893L6 5.08579Z"
-                        fill="currentColor" />
-                </svg>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-soft-primary sub-dropdown"
-                  aria-labelledby="dropdownMenuAppointmentToday">
-                <li><a class="dropdown-item active" href="#">Thứ 2</a></li>
-                <li><a class="dropdown-item" href="#">Thứ 3</a></li>
-                <li><a class="dropdown-item" href="#">Thứ 4</a></li>
-                <li><a class="dropdown-item" href="#">Thứ 5</a></li>
-                <li><a class="dropdown-item" href="#">Thứ 6</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card-body pt-0">
-            <div class="d-flex align-items-center mb-4 bg-primary-subtle px-3 py-3 px-lg-4 rounded">
-              <h6 class="mb-0 text-primary f-none">10:00 AM</h6>
-              <div class="border-start ps-3 ms-3 flex-grow-1">
-                <h5>Emily Johnson</h5>
-                <h6 class="mb-0">Lý do: <span class="text-body fw-normal">Đau bụng</span>
-                </h6>
-              </div>
-              <div>
-                <button class="dropdown btn border-0 p-0">
-                  <svg width="15" viewBox="0 0 24 24" fill="none"
-                       xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
-                          stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="d-flex align-items-center mb-4 bg-primary-subtle px-3 py-3 px-lg-4 rounded">
-              <h6 class="mb-0 text-primary f-none">10:00 AM</h6>
-              <div class="border-start ps-3 ms-3 flex-grow-1">
-                <h5>Michael Rodriguez</h5>
-                <h6 class="mb-0">Lý do: <span class="text-body fw-normal">Đau răng</span>
-                </h6>
-              </div>
-              <div>
-                <button class="dropdown btn border-0 p-0">
-                  <svg width="15" viewBox="0 0 24 24" fill="none"
-                       xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
-                          stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="d-flex align-items-center bg-primary-subtle px-3 py-3 px-lg-4 rounded">
-              <h6 class="mb-0 text-primary f-none">10:00 AM</h6>
-              <div class="border-start ps-3 ms-3 flex-grow-1">
-                <h5>Jessica Anderson</h5>
-                <h6 class="mb-0">Lý do: <span class="text-body fw-normal">Đau tim</span>
-                </h6>
-              </div>
-              <div>
-                <button class="dropdown btn border-0 p-0">
-                  <svg width="15" viewBox="0 0 24 24" fill="none"
-                       xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8.5 5L15.5 12L8.5 19" stroke="currentColor" stroke-width="1.5"
-                          stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </button>
               </div>
             </div>
           </div>
@@ -1746,7 +1654,7 @@
         },
         body: JSON.stringify({
           userMessage: userMessage,
-          id: 923
+          id: 922
         })
       })
               .then(response => {

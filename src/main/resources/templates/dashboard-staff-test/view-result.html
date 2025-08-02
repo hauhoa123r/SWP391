@@ -1911,7 +1911,8 @@
             method: 'GET'
         });
         if(response.ok){
-            alert('Successfully sent');
+
+            window.location.href = '/lab/send-result';
         }else{
             alert('Failed to send');
         }

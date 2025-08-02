@@ -58,4 +58,6 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long>, J
 
 
     PatientEntity findByUserEntity_Id(Long userEntityId);
+
+    PatientEntity findByUserEntity_IdAndFamilyRelationship(Long id, FamilyRelationship relationship);
 }
