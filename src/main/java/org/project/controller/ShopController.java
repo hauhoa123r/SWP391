@@ -30,10 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Controller for handling shop related operations including product listings,
- * searching, and filtering.
- */
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -47,19 +44,7 @@ public class ShopController {
     //hard code id
     private final Long userId = 4l;
 
-    /**
-     * Main shop page with filtering and searching capabilities
-     * @param searchQuery Optional search query for product names
-     * @param sortType Optional sort type for results
-     * @param page Page number (zero-based)
-     * @param size Number of items per page
-     * @param categoryId Optional category ID filter
-     * @param minPrice Optional minimum price filter
-     * @param maxPrice Optional maximum price filter
-     * @param tagRaw Optional tag filter
-     * @param session HTTP session for maintaining search context
-     * @return ModelAndView for shop page with search results
-     */
+
     @GetMapping("/shop")
     public ModelAndView shop(
             @RequestParam(value = "search", required = false) String searchQuery,
@@ -130,16 +115,6 @@ public class ShopController {
         return mv;
     }
 
-    /**
-     * Process search form submission
-     * @param searchQuery Optional search query
-     * @param sortType Optional sort type
-     * @param categoryId Optional category ID to preserve
-     * @param tag Optional tag to preserve
-     * @param minPrice Optional minimum price to preserve
-     * @param maxPrice Optional maximum price to preserve
-     * @return Redirect to shop page with search parameters
-     */
     @PostMapping("/submit")
     public String search(@RequestParam(value = "search", required = false) String searchQuery,
                          @RequestParam(value = "sort", required = false) String sortType,
@@ -200,13 +175,7 @@ public class ShopController {
 
     // ==================== Helper methods ====================
     
-    /**
-     * Build search context from parameters and session state
-     * @param searchQuery Search query string
-     * @param sortType Sort type
-     * @param session HTTP session
-     * @return Search context containing normalized query and sort type
-     */
+
     private SearchContext buildSearchContext(String searchQuery, ProductSortType sortType, HttpSession session) {
         String normalizedQuery = normalizeQuery(searchQuery);
         String previousSearch = (String) session.getAttribute(PREVIOUS_SEARCH_KEY);
@@ -223,10 +192,7 @@ public class ShopController {
         return new SearchContext(Optional.ofNullable(normalizedQuery), finalSortType);
     }
 
-    /**
-     * Load categories with product count for sidebar
-     * @return List of categories with product count
-     */
+
     private List<CategoryListResponse> loadCategoriesWithProductCount() {
         // Only keep categories that have at least one product to display in sidebar
         List<CategoryListResponse> categories = categoryService.findAllCategory();
@@ -239,27 +205,17 @@ public class ShopController {
                 .toList();
     }
 
-    /**
-     * Normalize a search query
-     * @param query Raw search query
-     * @return Normalized query or null if invalid
-     */
+
     private String normalizeQuery(String query) {
         return isValid(query) ? query.trim() : null;
     }
 
-    /**
-     * Check if a string is valid (not null and not empty)
-     * @param input String to validate
-     * @return true if valid, false otherwise
-     */
+
     private boolean isValid(String input) {
         return input != null && !input.trim().isEmpty();
     }
 
-    /**
-     * Record class representing search context
-     */
+
     private record SearchContext(Optional<String> searchQuery, ProductSortType sortType) {}
 
 

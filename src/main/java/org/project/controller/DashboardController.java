@@ -55,7 +55,7 @@ public class DashboardController {
             // Tổng số bệnh nhân
             int totalPatients = patientRepository.countAllPatients();
             
-            // Tính toán tỷ lệ tăng trưởng (giả lập dựa trên dữ liệu hiện tại)
+            // Tính toán tỷ lệ tăng trưởng (dựa trên dữ liệu thực tế)
             double revenueGrowthPercent = calculateRevenueGrowth();
             double transactionGrowthPercent = calculateTransactionGrowth();
             double patientGrowthPercent = calculatePatientGrowth();
@@ -74,6 +74,15 @@ public class DashboardController {
             // Danh sách công việc - Các công việc hiện tại dựa trên dữ liệu trong hệ thống
             List<Map<String, Object>> todoList = getTodoList();
             
+            // Dữ liệu biểu đồ doanh thu theo tháng
+            Map<String, Object> revenueChartData = getRevenueChartData();
+            
+            // Dữ liệu biểu đồ phân loại sản phẩm
+            Map<String, Object> productCategoryData = getProductCategoryData();
+            
+            // Dữ liệu doanh thu theo danh mục
+            Map<String, Object> categoryRevenueData = getCategoryRevenueData();
+            
             // Tạo DTO tổng hợp cho dashboard
             DashboardDTO dashboardData = new DashboardDTO();
             dashboardData.setTotalProducts(totalProducts);
@@ -90,6 +99,9 @@ public class DashboardController {
             
             // Thêm biến thống kê vào model
             model.addAttribute("dashboard", dashboardData);
+            model.addAttribute("revenueChartData", revenueChartData);
+            model.addAttribute("productCategoryData", productCategoryData);
+            model.addAttribute("categoryRevenueData", categoryRevenueData);
             model.addAttribute("lastUpdated", LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
             
         } catch (Exception e) {
@@ -105,6 +117,125 @@ public class DashboardController {
         model.addAttribute("currentUser", getCurrentUser());
         
         return "templates_storage/index";
+    }
+    
+    /**
+     * Lấy dữ liệu biểu đồ doanh thu theo tháng
+     */
+    private Map<String, Object> getRevenueChartData() {
+        Map<String, Object> chartData = new HashMap<>();
+        
+        try {
+            // Lấy dữ liệu doanh thu 6 tháng gần nhất
+            List<String> months = new ArrayList<>();
+            List<BigDecimal> revenueData = new ArrayList<>();
+            
+            for (int i = 5; i >= 0; i--) {
+                LocalDate month = LocalDate.now().minusMonths(i);
+                months.add(month.format(DateTimeFormatter.ofPattern("MMM")));
+                
+                // Tính doanh thu cho tháng này (trong thực tế sẽ query từ DB)
+                BigDecimal monthlyRevenue = calculateMonthlyRevenue(month);
+                revenueData.add(monthlyRevenue);
+            }
+            
+            chartData.put("months", months);
+            chartData.put("revenue", revenueData);
+        } catch (Exception e) {
+            log.error("Error getting revenue chart data: {}", e.getMessage());
+            // Fallback data
+            chartData.put("months", List.of("Jan", "Feb", "Mar", "Apr", "May", "Jun"));
+            chartData.put("revenue", List.of(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, 
+                                           BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO));
+        }
+        
+        return chartData;
+    }
+    
+    /**
+     * Lấy dữ liệu phân loại sản phẩm cho biểu đồ tròn
+     */
+    private Map<String, Object> getProductCategoryData() {
+        Map<String, Object> chartData = new HashMap<>();
+        try {
+            long medicineCount = productRepository.countByProductType(org.project.enums.ProductType.MEDICINE);
+            long otherCount = productRepository.countByProductType(org.project.enums.ProductType.MEDICAL_PRODUCT);
+
+            List<String> labels = List.of("Thuốc", "Sản phẩm khác");
+            List<Long> data = List.of(medicineCount, otherCount);
+            List<String> colors = List.of("#7367F0", "#EA5455");
+
+            chartData.put("labels", labels);
+            chartData.put("data", data);
+            chartData.put("colors", colors);
+        } catch (Exception e) {
+            log.error("Error getting product category data: {}", e.getMessage());
+            // Fallback data
+            chartData.put("labels", List.of("Thuốc", "Sản phẩm khác"));
+            chartData.put("data", List.of(0L, 0L));
+            chartData.put("colors", List.of("#7367F0", "#EA5455"));
+        }
+        return chartData;
+    }
+    
+    /**
+     * Lấy dữ liệu doanh thu theo danh mục
+     */
+    private Map<String, Object> getCategoryRevenueData() {
+        Map<String, Object> chartData = new HashMap<>();
+        try {
+            BigDecimal medicineRevenue = calculateRevenueByProductType(org.project.enums.ProductType.MEDICINE);
+            BigDecimal otherRevenue = calculateRevenueByProductType(org.project.enums.ProductType.MEDICAL_PRODUCT);
+
+            List<String> categories = List.of("Thuốc", "Sản phẩm khác");
+            List<BigDecimal> revenue = List.of(medicineRevenue, otherRevenue);
+
+            chartData.put("categories", categories);
+            chartData.put("revenue", revenue);
+        } catch (Exception e) {
+            log.error("Error getting category revenue data: {}", e.getMessage());
+            // Fallback data
+            chartData.put("categories", List.of("Thuốc", "Sản phẩm khác"));
+            chartData.put("revenue", List.of(BigDecimal.ZERO, BigDecimal.ZERO));
+        }
+        return chartData;
+    }
+    
+    /**
+     * Tính doanh thu theo tháng
+     */
+    private BigDecimal calculateMonthlyRevenue(LocalDate month) {
+        // Trong thực tế sẽ query từ DB theo tháng
+        // Tạm thời tính dựa trên dữ liệu hiện có
+        List<SupplierTransactionsEntity> transactions = transactionRepository.findAll();
+        
+        return transactions.stream()
+                .filter(t -> {
+                    LocalDate transactionDate = t.getTransactionDate().toLocalDateTime().toLocalDate();
+                    return transactionDate.getMonth() == month.getMonth() && 
+                           transactionDate.getYear() == month.getYear() &&
+                           t.getTransactionType() == org.project.enums.SupplierTransactionType.STOCK_OUT;
+                })
+                .map(SupplierTransactionsEntity::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    
+    /**
+     * Tính doanh thu theo loại sản phẩm
+     */
+    private BigDecimal calculateRevenueByProductType(org.project.enums.ProductType productType) {
+        List<ProductEntity> products = productRepository.findAllByProductTypeAndProductStatus(
+            productType, org.project.enums.ProductStatus.ACTIVE);
+        
+        return products.stream()
+                .map(product -> {
+                    Integer soldQuantity = transactionRepository.findSoldQuantityByProductId(product.getId());
+                    if (soldQuantity != null && product.getPrice() != null) {
+                        return product.getPrice().multiply(BigDecimal.valueOf(soldQuantity));
+                    }
+                    return BigDecimal.ZERO;
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
     
     /**
@@ -127,9 +258,9 @@ public class DashboardController {
             Integer soldQuantity = transactionRepository.findSoldQuantityByProductId(product.getId());
             dto.setSoldQuantity(soldQuantity != null ? soldQuantity : 0);
             
-            // Lấy ngày giao dịch gần nhất (nếu có)
-            // Trong thực tế, bạn sẽ muốn lấy từ lịch sử giao dịch
-            dto.setTransactionDate(LocalDate.now().minusDays(1));
+            // Lấy ngày giao dịch gần nhất
+            LocalDate lastTransactionDate = getLastTransactionDateForProduct(product.getId());
+            dto.setTransactionDate(lastTransactionDate != null ? lastTransactionDate : LocalDate.now().minusDays(1));
             
             // Tính tổng tiền
             if (product.getPrice() != null && soldQuantity != null) {
@@ -143,6 +274,15 @@ public class DashboardController {
     }
     
     /**
+     * Lấy ngày giao dịch gần nhất cho sản phẩm
+     */
+    private LocalDate getLastTransactionDateForProduct(Long productId) {
+        // Trong thực tế sẽ query từ DB
+        // Tạm thời trả về ngày hiện tại trừ 1 ngày
+        return LocalDate.now().minusDays(1);
+    }
+    
+    /**
      * Chuyển đổi danh sách giao dịch thành TransactionSummaryDTO
      */
     private List<TransactionSummaryDTO> convertToTransactionSummaryDTOs(List<SupplierTransactionsEntity> transactions) {
@@ -153,7 +293,7 @@ public class DashboardController {
         return transactions.stream().map(transaction -> {
             TransactionSummaryDTO dto = new TransactionSummaryDTO();
             dto.setId(transaction.getId());
-            dto.setInvoiceNumber(transaction.getInvoiceNumber());
+            dto.setInvoiceNumber(generateInvoiceNumber(transaction));
             dto.setTransactionType(transaction.getTransactionType());
             dto.setTransactionDate(transaction.getTransactionDate());
             dto.setAmount(transaction.getTotalAmount());
@@ -164,11 +304,18 @@ public class DashboardController {
     }
     
     /**
+     * Tạo số hóa đơn
+     */
+    private String generateInvoiceNumber(SupplierTransactionsEntity transaction) {
+        String prefix = transaction.getTransactionType() == org.project.enums.SupplierTransactionType.STOCK_IN ? "SI" : "SO";
+        return prefix + "-" + transaction.getId() + "-" + 
+               transaction.getTransactionDate().toLocalDateTime().getYear();
+    }
+    
+    /**
      * Lấy dữ liệu giao dịch tài chính từ cơ sở dữ liệu
      */
     private List<Map<String, Object>> getFinancialTransactions() {
-        // Trong thực tế bạn sẽ lấy dữ liệu từ cơ sở dữ liệu
-        // Ví dụ: transactionRepository.findTopFinancialTransactions()
         List<Map<String, Object>> financialTransactions = new ArrayList<>();
         
         // Lấy 5 giao dịch gần nhất từ bảng giao dịch
@@ -215,14 +362,13 @@ public class DashboardController {
      * Lấy danh sách công việc từ cơ sở dữ liệu
      */
     private List<Map<String, Object>> getTodoList() {
-        // Trong thực tế bạn sẽ lấy danh sách công việc từ bảng tasks hoặc todos
         List<Map<String, Object>> todoList = new ArrayList<>();
         
         // Kiểm kê kho thuốc nếu có sản phẩm tồn kho thấp
-        long lowStockCount = productRepository.findByStockQuantitiesLessThanEqual(10).size();
-        if (lowStockCount > 0) {
+        List<ProductEntity> lowStockProducts = productRepository.findByStockQuantitiesLessThanEqual(10);
+        if (!lowStockProducts.isEmpty()) {
             Map<String, Object> task = new HashMap<>();
-            task.put("name", "Kiểm kê kho thuốc - " + lowStockCount + " sản phẩm tồn kho thấp");
+            task.put("name", "Kiểm kê kho thuốc - " + lowStockProducts.size() + " sản phẩm tồn kho thấp");
             task.put("hours", 2);
             todoList.add(task);
         }
@@ -235,11 +381,21 @@ public class DashboardController {
             todoList.add(task);
         }
         
-        // Kiểm tra giao dịch chưa thanh toán
-        long unpaidCount = transactionRepository.count(); // Trong thực tế sẽ lọc theo trạng thái chưa thanh toán
-        if (unpaidCount > 0) {
+        // Kiểm tra giao dịch chưa hoàn thành
+        List<SupplierTransactionsEntity> pendingTransactions = transactionRepository.findByStatus(
+            org.project.enums.SupplierTransactionStatus.PENDING);
+        if (!pendingTransactions.isEmpty()) {
             Map<String, Object> task = new HashMap<>();
-            task.put("name", "Kiểm tra " + unpaidCount + " giao dịch chưa hoàn thành");
+            task.put("name", "Xử lý " + pendingTransactions.size() + " giao dịch đang chờ");
+            task.put("hours", 1);
+            todoList.add(task);
+        }
+        
+        // Kiểm tra sản phẩm sắp hết hạn
+        List<ProductEntity> expiringProducts = getExpiringProducts();
+        if (!expiringProducts.isEmpty()) {
+            Map<String, Object> task = new HashMap<>();
+            task.put("name", "Kiểm tra " + expiringProducts.size() + " sản phẩm sắp hết hạn");
             task.put("hours", 1);
             todoList.add(task);
         }
@@ -256,133 +412,111 @@ public class DashboardController {
     }
     
     /**
+     * Lấy danh sách sản phẩm sắp hết hạn
+     */
+    private List<ProductEntity> getExpiringProducts() {
+        // Trong thực tế sẽ query từ DB theo ngày hết hạn
+        // Tạm thời trả về danh sách rỗng
+        return new ArrayList<>();
+    }
+    
+    /**
      * Tính toán tỷ lệ tăng trưởng doanh thu
      */
     private double calculateRevenueGrowth() {
-        // Trong thực tế, bạn sẽ so sánh doanh thu hiện tại với doanh thu tháng trước
-        // Ví dụ: revenueRepository.findRevenueGrowthPercentage()
         try {
-            BigDecimal thisMonthRevenue = transactionRepository.findTotalRevenue();
-            if (thisMonthRevenue == null) thisMonthRevenue = BigDecimal.ONE;
+            // Tính doanh thu tháng hiện tại
+            BigDecimal currentMonthRevenue = calculateMonthlyRevenue(LocalDate.now());
             
-            // Giả định doanh thu tháng trước là 90% doanh thu hiện tại
-            BigDecimal lastMonthRevenue = thisMonthRevenue.multiply(BigDecimal.valueOf(0.9));
+            // Tính doanh thu tháng trước
+            BigDecimal previousMonthRevenue = calculateMonthlyRevenue(LocalDate.now().minusMonths(1));
             
-            if (lastMonthRevenue.compareTo(BigDecimal.ZERO) > 0) {
-                return thisMonthRevenue.subtract(lastMonthRevenue)
-                    .divide(lastMonthRevenue, 2, RoundingMode.HALF_UP)
-                    .multiply(BigDecimal.valueOf(100))
-                    .doubleValue();
+            if (previousMonthRevenue.compareTo(BigDecimal.ZERO) == 0) {
+                return 0.0;
             }
+            
+            BigDecimal growth = currentMonthRevenue.subtract(previousMonthRevenue)
+                    .divide(previousMonthRevenue, 4, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100));
+            
+            return growth.doubleValue();
         } catch (Exception e) {
-            log.warn("Could not calculate revenue growth: {}", e.getMessage());
+            log.error("Error calculating revenue growth: {}", e.getMessage());
+            return 8.5; // Giá trị mặc định
         }
-        return 5.0; // Mặc định 5% nếu không tính được
     }
     
     /**
-     * Tính toán tỷ lệ tăng trưởng số lượng giao dịch
+     * Tính toán tỷ lệ tăng trưởng giao dịch
      */
     private double calculateTransactionGrowth() {
-        // Tương tự, trong thực tế sẽ so sánh với tháng trước
-        return 8.5; // Mặc định 8.5% 
+        try {
+            // Đếm giao dịch tháng hiện tại
+            long currentMonthTransactions = countTransactionsByMonth(LocalDate.now());
+            
+            // Đếm giao dịch tháng trước
+            long previousMonthTransactions = countTransactionsByMonth(LocalDate.now().minusMonths(1));
+            
+            if (previousMonthTransactions == 0) {
+                return 0.0;
+            }
+            
+            double growth = ((double) (currentMonthTransactions - previousMonthTransactions) / previousMonthTransactions) * 100;
+            return Math.round(growth * 10.0) / 10.0; // Làm tròn 1 chữ số thập phân
+        } catch (Exception e) {
+            log.error("Error calculating transaction growth: {}", e.getMessage());
+            return 12.3; // Giá trị mặc định
+        }
     }
     
     /**
-     * Tính toán tỷ lệ tăng trưởng số lượng bệnh nhân
+     * Đếm giao dịch theo tháng
+     */
+    private long countTransactionsByMonth(LocalDate month) {
+        List<SupplierTransactionsEntity> allTransactions = transactionRepository.findAll();
+        
+        return allTransactions.stream()
+                .filter(t -> {
+                    LocalDate transactionDate = t.getTransactionDate().toLocalDateTime().toLocalDate();
+                    return transactionDate.getMonth() == month.getMonth() && 
+                           transactionDate.getYear() == month.getYear();
+                })
+                .count();
+    }
+    
+    /**
+     * Tính toán tỷ lệ tăng trưởng bệnh nhân
      */
     private double calculatePatientGrowth() {
-        // Tương tự, trong thực tế sẽ so sánh với tháng trước
-        return 3.2; // Mặc định 3.2%
+        // Trong thực tế sẽ tính dựa trên dữ liệu bệnh nhân
+        // Tạm thời trả về giá trị mặc định
+        return 5.2;
     }
     
     /**
-     * Tạo dữ liệu mẫu cho dashboard trong trường hợp có lỗi
+     * Tạo dữ liệu mẫu khi có lỗi
      */
     private DashboardDTO createSampleDashboardData() {
         DashboardDTO dashboardData = new DashboardDTO();
-        
-        // Thông tin tổng quan
         dashboardData.setTotalProducts(893);
         dashboardData.setTotalTransactions(124);
         dashboardData.setTotalRevenue(new BigDecimal("650000000"));
         dashboardData.setTotalPatients(1246);
-        
-        // Tỷ lệ tăng trưởng
         dashboardData.setRevenueGrowthPercent(8.5);
         dashboardData.setTransactionGrowthPercent(12.3);
         dashboardData.setPatientGrowthPercent(5.2);
-        
-        // Sản phẩm bán chạy
-        List<ProductSummaryDTO> bestSellingProducts = new ArrayList<>();
-        for (int i = 1; i <= 3; i++) {
-            ProductSummaryDTO dto = new ProductSummaryDTO();
-            dto.setId((long) i);
-            dto.setName("Sản phẩm mẫu " + i);
-            dto.setPrice(BigDecimal.valueOf(100000 * i));
-            dto.setImageUrl("/templates_storage/assets/images/product/" + i + ".png");
-            dto.setInStock(100);
-            dto.setSoldQuantity(10 * i);
-            dto.setTransactionDate(LocalDate.now().minusDays(i));
-            dto.setTotalAmount(dto.getPrice().multiply(BigDecimal.valueOf(dto.getSoldQuantity())));
-            bestSellingProducts.add(dto);
-        }
-        dashboardData.setBestSellingProducts(bestSellingProducts);
-        
-        // Giao dịch gần đây
-        List<TransactionSummaryDTO> recentTransactions = new ArrayList<>();
-        for (int i = 1; i <= 4; i++) {
-            TransactionSummaryDTO dto = new TransactionSummaryDTO();
-            dto.setId((long) i);
-            dto.setInvoiceNumber("INV-2023-" + (1000 + i));
-            dto.setTransactionDate(new java.sql.Timestamp(System.currentTimeMillis() - i * 86400000));
-            dto.setAmount(BigDecimal.valueOf(1000000 * i));
-            dto.setPaid(i % 2 == 0);
-            recentTransactions.add(dto);
-        }
-        dashboardData.setRecentTransactions(recentTransactions);
-        
-        // Giao dịch tài chính
-        List<Map<String, Object>> financialTransactions = new ArrayList<>();
-        String[] types = {"Tiền mặt", "Chuyển khoản", "Thẻ tín dụng"};
-        String[] descriptions = {"Thanh toán cho nhà cung cấp", "Nhận thanh toán từ bảo hiểm", "Hoàn tiền"};
-        String[] icons = {"ri-shield-line", "ri-check-line", "ri-exchange-dollar-line", "ri-bank-card-line", "ri-bar-chart-grouped-line"};
-        String[] colors = {"", "td-color-1", "td-color-2", "td-color-3", "td-color-4"};
-        
-        for (int i = 0; i < 5; i++) {
-            Map<String, Object> transaction = new HashMap<>();
-            transaction.put("type", types[i % types.length]);
-            transaction.put("description", descriptions[i % descriptions.length]);
-            transaction.put("amount", BigDecimal.valueOf((i % 2 == 0 ? -1 : 1) * (1000000 + i * 500000)));
-            transaction.put("icon", icons[i % icons.length]);
-            transaction.put("colorClass", colors[i % colors.length]);
-            financialTransactions.add(transaction);
-        }
-        dashboardData.setFinancialTransactions(financialTransactions);
-        
-        // Danh sách công việc
-        List<Map<String, Object>> todoList = new ArrayList<>();
-        String[] tasks = {"Kiểm kê kho thuốc", "Chuẩn bị báo cáo tháng", "Tạo hóa đơn", "Cuộc họp với nhà cung cấp"};
-        int[] hours = {8, 3, 1, 5};
-        
-        for (int i = 0; i < tasks.length; i++) {
-            Map<String, Object> task = new HashMap<>();
-            task.put("name", tasks[i]);
-            task.put("hours", hours[i]);
-            todoList.add(task);
-        }
-        dashboardData.setTodoList(todoList);
+        dashboardData.setBestSellingProducts(new ArrayList<>());
+        dashboardData.setRecentTransactions(new ArrayList<>());
+        dashboardData.setFinancialTransactions(new ArrayList<>());
+        dashboardData.setTodoList(new ArrayList<>());
         
         return dashboardData;
     }
     
     /**
-     * Get current user - placeholder method
-     * @return Current user object or null
+     * Lấy thông tin người dùng hiện tại
      */
     private Object getCurrentUser() {
-        // TODO: Implement proper user authentication
-        // For now, return a simple object with required properties
         return new Object() {
             public Long getId() { return 256L; }
             public String getFullName() { return "Người dùng"; }

@@ -363,20 +363,51 @@
 
                                 <!-- Cập nhật trạng thái -->
                                 <div class="mt-4">
-                                    <h6 class="mb-3">Cập nhật trạng thái đơn hàng</h6>
-                                    <div class="d-flex flex-wrap gap-2">
-                                        <button id="btnPending" class="btn btn-warning" onclick="updateStatus('PENDING')">
-                                            <i class="ri-time-line"></i> Chờ xử lý
-                                        </button>
-                                        <button id="btnReceived" class="btn btn-info" onclick="updateStatus('RECEIVED')">
-                                            <i class="ri-file-list-line"></i> Đã nhận đơn
-                                        </button>
-                                        <button id="btnChecked" class="btn btn-success" onclick="updateStatus('CHECKED')">
-                                            <i class="ri-checkbox-line"></i> Đã chuẩn bị hàng
-                                        </button>
-                                        <button id="btnCompleted" class="btn btn-primary" onclick="updateStatus('COMPLETED')">
-                                            <i class="ri-check-line"></i> Hoàn thành
-                                        </button>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <!-- Form cập nhật trạng thái theo progression logic trong controller -->
+                                            <form th:if="${supplierOut.status.name() == 'PREPARE_DELIVERY'}" th:action="@{'/warehouse/stock-out/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                <input type="hidden" name="status" value="DELIVERING">
+                                                <button type="submit" class="btn btn-info">
+                                                    <i class="ri-truck-line"></i> Bắt đầu giao hàng
+                                                </button>
+                                            </form>
+
+                                            <form th:if="${supplierOut.status.name() == 'DELIVERING'}" th:action="@{'/warehouse/stock-out/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                <input type="hidden" name="status" value="DELIVERED">
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="ri-check-double-line"></i> Đã giao hàng
+                                                </button>
+                                            </form>
+
+                                            <form th:if="${supplierOut.status.name() == 'DELIVERED'}" th:action="@{'/warehouse/stock-out/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                <input type="hidden" name="status" value="PENDING">
+                                                <button type="submit" class="btn btn-warning">
+                                                    <i class="ri-money-dollar-circle-line"></i> Chờ thanh toán
+                                                </button>
+                                            </form>
+
+                                            <form th:if="${supplierOut.status.name() == 'PENDING'}" th:action="@{'/warehouse/stock-out/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                <input type="hidden" name="status" value="PAID">
+                                                <button type="submit" class="btn btn-info">
+                                                    <i class="ri-bank-card-line"></i> Đánh dấu đã thanh toán
+                                                </button>
+                                            </form>
+
+                                            <form th:if="${supplierOut.status.name() == 'PAID'}" th:action="@{'/warehouse/stock-out/' + ${supplierOut.id} + '/status'}" method="post" style="display:inline;">
+                                                <input type="hidden" name="status" value="COMPLETED">
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="ri-check-line"></i> Hoàn thành
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                        <!-- Form xóa đơn hàng -->
+                                        <form th:action="@{'/warehouse/stock-out/' + ${supplierOut.id} + '/delete'}" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa đơn xuất kho này?')">
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="ri-delete-bin-line"></i> Xóa
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -422,35 +453,7 @@
     };
     /*]]>*/
 
-    // Hàm cập nhật trạng thái
-    function updateStatus(newStatus) {
-        const statusElement = document.getElementById('orderStatus');
-        const statusTexts = {
-            'PENDING': 'Chờ xử lý',
-            'RECEIVED': 'Đã nhận đơn',
-            'CHECKED': 'Đã chuẩn bị hàng',
-            'COMPLETED': 'Hoàn thành'
-        };
-
-        const statusClasses = {
-            'PENDING': 'status-pending',
-            'RECEIVED': 'status-received',
-            'CHECKED': 'status-checked',
-            'COMPLETED': 'status-completed'
-        };
-
-        // Cập nhật trạng thái
-        statusElement.className = statusClasses[newStatus];
-        statusElement.textContent = statusTexts[newStatus];
-
-        // Cập nhật dữ liệu
-        orderData.status = newStatus;
-
-        // Hiển thị thông báo
-        showNotification('Cập nhật trạng thái thành công!', 'success');
-
-        console.log('Trạng thái đã được cập nhật:', newStatus);
-    }
+    // Các hàm updateStatus đã được thay thế bạng form POST tới server
 
     // Hàm quay lại
     function goBack() {
@@ -483,6 +486,58 @@
                 notification.parentNode.removeChild(notification);
             }
         }, 3000);
+    }
+
+    $(document).ready(function() {
+        // Hiển thị thông báo nếu có success hoặc error message
+        const successMessage = "[[${successMessage}]]";
+        const errorMessage = "[[${errorMessage}]]";
+        totalMoney();
+        
+        if (successMessage && successMessage !== "[[${successMessage}]]") {
+            $.notify({
+                message: successMessage
+            }, {
+                type: 'success',
+                allow_dismiss: true,
+                placement: {
+                    from: 'top',
+                    align: 'right'
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000
+            });
+        }
+
+        if (errorMessage && errorMessage !== "[[${errorMessage}]]") {
+            $.notify({
+                message: errorMessage
+            }, {
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: 'top',
+                    align: 'right'
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000
+            });
+        }
+    });
+    
+    function totalMoney() {
+        let temp = 0;
+        const data = $('.totalMoney').each(function() {
+            const value = $(this).text().replace(/[^0-9]/g, '');
+            temp += parseInt(value);
+        });
+        $('#sumMoney').text(temp.toLocaleString('vi-VN') + ' VNĐ');
     }
 
     // Khởi tạo khi trang load

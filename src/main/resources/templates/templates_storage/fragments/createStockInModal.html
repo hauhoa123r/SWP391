@@ -102,8 +102,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Tên sản phẩm</label>
-                        <input type="text" class="form-control" id="si-prodName" placeholder="Nhập tên...">
+                        <label class="form-label">Sản phẩm <span class="text-danger">*</span></label>
+                        <div class="position-relative">
+                            <input type="text" class="form-control" id="si-prodName" placeholder="Tìm kiếm sản phẩm..." autocomplete="off">
+                            <input type="hidden" id="si-prodId" value="">
+                            <div id="si-productDropdown" class="dropdown-menu" style="width: 100%; max-height: 200px; overflow-y: auto;">
+                                <!-- Product options will be populated here -->
+                            </div>
+                        </div>
+                        <small class="text-muted">Gõ để tìm kiếm hoặc chọn từ danh sách</small>
                     </div>
                     <div class="row">
                         <div class="col-6">
@@ -159,17 +166,229 @@
 
     // ========== Basic product modal ==========
     document.addEventListener('DOMContentLoaded',()=>{
-        document.getElementById('si-addProductBtn').addEventListener('click',()=>{
-            document.getElementById('si-prodName').value='';
-            document.getElementById('si-prodQty').value=1;
-            document.getElementById('si-prodPrice').value=0;
-            new bootstrap.Modal(document.getElementById('si-productModal')).show();
+        console.log('CreateStockInModal: DOMContentLoaded started');
+        
+        const addProductBtn = document.getElementById('si-addProductBtn');
+        const addProdConfirm = document.getElementById('si-addProdConfirm');
+        const productModal = document.getElementById('si-productModal');
+        
+        if (!addProductBtn) {
+            console.error('CreateStockInModal: si-addProductBtn not found');
+            return;
+        }
+        if (!addProdConfirm) {
+            console.error('CreateStockInModal: si-addProdConfirm not found');
+            return;
+        }
+        if (!productModal) {
+            console.error('CreateStockInModal: si-productModal not found');
+            return;
+        }
+        
+        console.log('CreateStockInModal: All elements found, adding event listeners');
+        
+        // Product search functionality
+        function initProductSearch() {
+            const nameInput = document.getElementById('si-prodName');
+            const prodIdInput = document.getElementById('si-prodId');
+            const dropdown = document.getElementById('si-productDropdown');
+            const priceInput = document.getElementById('si-prodPrice');
+            
+            if (!nameInput || !dropdown) return;
+            
+            // Get products from current page context
+            let availableProducts = [];
+            
+            // Try to get products from window object (set by the main pages)
+            if (window.medicines && Array.isArray(window.medicines)) {
+                availableProducts = window.medicines.map(m => ({
+                    id: m.id,
+                    name: m.name,
+                    price: m.price || 0,
+                    stock: m.stockQuantities || 0,
+                    type: 'MEDICINE'
+                }));
+            } else if (window.equipments && Array.isArray(window.equipments)) {
+                availableProducts = window.equipments.map(e => ({
+                    id: e.id,
+                    name: e.name,
+                    price: e.price || 0,
+                    stock: e.stockQuantities || 0,
+                    type: 'MEDICAL_PRODUCT'
+                }));
+            }
+            
+            console.log('Available products for search:', availableProducts.length);
+            
+            nameInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                prodIdInput.value = ''; // Clear selected product ID
+                
+                if (query.length < 1) {
+                    dropdown.classList.remove('show');
+                    return;
+                }
+                
+                const filtered = availableProducts.filter(p => 
+                    p.name.toLowerCase().includes(query)
+                ).slice(0, 10); // Limit to 10 results
+                
+                dropdown.innerHTML = '';
+                
+                if (filtered.length === 0) {
+                    dropdown.innerHTML = '<div class="dropdown-item-text text-muted">Không tìm thấy sản phẩm nào phù hợp</div>';
+                } else {
+                    filtered.forEach(product => {
+                        const item = document.createElement('button');
+                        item.type = 'button';
+                        item.className = 'dropdown-item';
+                        item.innerHTML = `
+                            <div class="d-flex justify-content-between">
+                                <span>${product.name}</span>
+                                <small class="text-muted">Tồn: ${product.stock}</small>
+                            </div>
+                        `;
+                        item.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            nameInput.value = product.name;
+                            prodIdInput.value = product.id;
+                            priceInput.value = product.price;
+                            dropdown.classList.remove('show');
+                            console.log('CreateStockInModal: Selected product:', product);
+                            // Đảm bảo giá trị được lưu trữ ngay lập tức
+                            nameInput.setAttribute('data-selected-name', product.name);
+                            prodIdInput.setAttribute('data-selected-id', product.id);
+                            priceInput.setAttribute('data-selected-price', product.price);
+                        });
+                        dropdown.appendChild(item);
+                    });
+                }
+                dropdown.classList.add('show');
+            });
+            
+            // Hide dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!nameInput.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        }
+        
+        // Initialize product search when modal is shown
+        document.getElementById('si-productModal').addEventListener('shown.bs.modal', function() {
+            initProductSearch();
+            document.getElementById('si-prodName').focus();
         });
-        document.getElementById('si-addProdConfirm').addEventListener('click',()=>{
-            const n=document.getElementById('si-prodName').value.trim(); if(!n){siNotify('Nhập tên sản phẩm','warning');return;}
-            const q=parseInt(document.getElementById('si-prodQty').value)||1;
-            const pr=parseFloat(document.getElementById('si-prodPrice').value)||0;
-            siAddProduct({name:n,qty:q,price:pr});
+        
+        addProductBtn.addEventListener('click', (e) => {
+            console.log('CreateStockInModal: Add product button clicked');
+            e.preventDefault();
+            
+            const nameInput = document.getElementById('si-prodName');
+            const prodIdInput = document.getElementById('si-prodId');
+            const qtyInput = document.getElementById('si-prodQty');
+            const priceInput = document.getElementById('si-prodPrice');
+            const dropdown = document.getElementById('si-productDropdown');
+            
+            if (nameInput) nameInput.value = '';
+            if (prodIdInput) prodIdInput.value = '';
+            if (qtyInput) qtyInput.value = 1;
+            if (priceInput) priceInput.value = 0;
+            if (dropdown) dropdown.classList.remove('show');
+            
+            try {
+                const modal = new bootstrap.Modal(productModal);
+                modal.show();
+                console.log('CreateStockInModal: Product modal opened');
+            } catch (error) {
+                console.error('CreateStockInModal: Error opening modal:', error);
+                siNotify('Lỗi mở modal thêm sản phẩm', 'danger');
+            }
+        });
+        
+        addProdConfirm.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            const nameInput = document.getElementById('si-prodName');
+            const prodIdInput = document.getElementById('si-prodId');
+            const qtyInput = document.getElementById('si-prodQty');
+            const priceInput = document.getElementById('si-prodPrice');
+            
+            if (!nameInput || !qtyInput || !priceInput) {
+                console.error('CreateStockInModal: Input elements not found');
+                siNotify('Lỗi: Không tìm thấy các trường nhập liệu', 'danger');
+                return;
+            }
+            
+            const name = nameInput.value.trim();
+            const productId = prodIdInput ? prodIdInput.value.trim() : '';
+            const qty = parseInt(qtyInput.value) || 1;
+            const price = parseFloat(priceInput.value) || 0;
+            
+            console.log('CreateStockInModal: Product data:', {name, productId, qty, price});
+            
+            if (!name) {
+                siNotify('Vui lòng chọn sản phẩm', 'warning');
+                nameInput.focus();
+                return;
+            }
+            
+            // Prefer productId for validation, but allow manual entry
+            if (!productId && name.length < 2) {
+                siNotify('Tên sản phẩm phải có ít nhất 2 ký tự', 'warning');
+                nameInput.focus();
+                return;
+            }
+            
+            // Kiểm tra nếu giá trị hiện tại không khớp với giá trị đã chọn từ dropdown
+            if (nameInput.getAttribute('data-selected-name') && nameInput.getAttribute('data-selected-name') !== name) {
+                prodIdInput.value = '';
+                console.log('CreateStockInModal: Product name changed after selection, clearing productId');
+            }
+            
+            if (qty <= 0) {
+                siNotify('Số lượng phải lớn hơn 0', 'warning');
+                qtyInput.focus();
+                return;
+            }
+            
+            if (price < 0) {
+                siNotify('Đơn giá không được âm', 'warning');
+                priceInput.focus();
+                return;
+            }
+            
+            // Check for duplicate product (by productId if available, otherwise by name)
+            const existingProduct = siProducts.find(p => {
+                if (productId) {
+                    return p.productId === productId;
+                }
+                return p.name.toLowerCase() === name.toLowerCase();
+            });
+            
+            if (existingProduct) {
+                siNotify('Sản phẩm này đã có trong danh sách', 'warning');
+                nameInput.focus();
+                return;
+            }
+            
+            // Add product to list
+            const productData = {
+                name: name,
+                qty: qty,
+                price: price
+            };
+            
+            // Only add productId if it's available (don't send empty string)
+            if (productId) {
+                productData.productId = productId;
+            }
+            
+            console.log('CreateStockInModal: Adding product to list:', productData);
+            siAddProduct(productData);
+            siNotify('Đã thêm sản phẩm vào danh sách', 'success');
+            
+            // Close modal
             bootstrap.Modal.getInstance(document.getElementById('si-productModal')).hide();
         });
 

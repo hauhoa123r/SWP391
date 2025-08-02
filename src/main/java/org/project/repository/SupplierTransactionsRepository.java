@@ -16,21 +16,15 @@ import java.util.Collection;
 @Repository
 public interface SupplierTransactionsRepository extends JpaRepository<SupplierTransactionsEntity, Long> {
 
-    /**
-     * Tìm tổng doanh thu từ tất cả các giao dịch
-     */
+
     @Query("SELECT SUM(t.totalAmount) FROM SupplierTransactionsEntity t")
     BigDecimal findTotalRevenue();
 
-    /**
-     * Tìm số lượng sản phẩm đã bán theo ID sản phẩm
-     */
+
     @Query("SELECT SUM(i.quantity) FROM SupplierTransactionItemEntity i WHERE i.productEntity.id = :productId AND i.supplierTransactionEntity.transactionType = org.project.enums.SupplierTransactionType.STOCK_OUT")
     Integer findSoldQuantityByProductId(@Param("productId") Long productId);
 
-    /**
-     * Tìm 4 giao dịch gần đây nhất
-     */
+
     List<SupplierTransactionsEntity> findTop4ByOrderByTransactionDateDesc();
     Collection<SupplierTransactionsEntity> findAllByTransactionType(SupplierTransactionType transactionType);
 }

@@ -83,5 +83,8 @@ public interface SupplierTransactionRepository extends JpaRepository<SupplierTra
 
     @Query("SELECT t FROM SupplierTransactionsEntity t WHERE t.transactionType = :type AND (t.status = 'COMPLETED' OR t.status = 'REJECTED')")
     List<SupplierTransactionsEntity> findCompletedOrRejectedInvoicesByType(@Param("type") SupplierTransactionType type);
+    
+    List<SupplierTransactionsEntity> findByStatus(SupplierTransactionStatus status);
+    
     Page<SupplierTransactionsEntity> findAll(Specification<SupplierTransactionsEntity> spec, Pageable pageable);
 }

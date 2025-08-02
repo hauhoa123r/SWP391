@@ -2629,9 +2629,12 @@
 
     // Create stock in order for a specific medicine
     function createStockInForMedicine(medicineId) {
-        // Find the medicine in the medicines array
-        const medicine = medicines.find(m => m.id === medicineId);
-        if (!medicine) {
+        let product = window.selectedProductDetailsIn;
+    if (!product || String(product.id) !== String(medicineId)) {
+        // Fallback to searching the medicines array if selectedProductDetailsIn is not set or doesn't match
+        product = medicines.find(m => String(m.id) === String(medicineId));
+    }
+        if (!product) {
             showNotification('Không tìm thấy thông tin thuốc', 'error');
             return;
         }
@@ -2681,8 +2684,13 @@
         }
         
         // Find the product from medicines array
-        const product = medicines.find(m => m.id == productId);
+        let product = window.selectedProductDetailsIn;
+    if (!product || product.id != productId) {
+        // Fallback to searching the medicines array if selectedProductDetailsIn is not set or doesn't match
+        product = medicines.find(m => m.id == productId);
+    }
         if (product) {
+            console.log('addItemToListIn - Found product:', product);
             // Add to selected products (global variable)
             if (!window.selectedProducts) window.selectedProducts = [];
             
@@ -2707,29 +2715,42 @@
             showNotification('Không tìm thấy thông tin sản phẩm', 'danger');
         }
     }
-
     // Add item to list for stock in modal
     function addItemToListIn() {
         const productId = document.getElementById('selectedProductIdIn').value;
         const quantity = parseInt(document.getElementById('quantityIn').value);
+        console.log('addItemToListIn - Initial productId:', productId);
+        console.log('addItemToListIn - Initial quantity:', quantity);
+        console.log('addItemToListIn - window.selectedProductDetailsIn:', window.selectedProductDetailsIn);
+        console.log('addItemToListIn - medicines array length:', medicines ? medicines.length : 0);
         
         if (!productId) {
             showNotification('Vui lòng chọn một sản phẩm', 'warning');
             return;
         }
-        
+
         if (quantity <= 0) {
             showNotification('Số lượng phải lớn hơn 0', 'warning');
             return;
         }
         
-        // Find the product from medicines array
-        const product = medicines.find(m => m.id == productId);
+        let product = window.selectedProductDetailsIn;
+        console.log('addItemToListIn - Checking selectedProductDetailsIn:', product);
+        
+        if (!product || String(product.id) !== String(productId)) {
+            console.log('addItemToListIn - selectedProductDetailsIn not matching, searching medicines array...');
+            // Fallback to searching the medicines array if selectedProductDetailsIn is not set or doesn't match
+            product = medicines.find(m => String(m.id) === String(productId));
+            console.log('addItemToListIn - Found in medicines array:', product);
+        } else {
+            console.log('addItemToListIn - Using selectedProductDetailsIn (matched)');
+        }
+
         if (product) {
-            // Add to selected products for inbound (global variable)
+            console.log('addItemToListIn - Final product to add:', product);
             if (!window.selectedProductsIn) window.selectedProductsIn = [];
             
-            const existingIndex = window.selectedProductsIn.findIndex(p => p.id == productId);
+            const existingIndex = window.selectedProductsIn.findIndex(p => String(p.id) === String(productId));
             if (existingIndex !== -1) {
                 window.selectedProductsIn[existingIndex].quantity += quantity;
             } else {
@@ -2741,7 +2762,6 @@
                 });
             }
             
-            // Update the table
             updateItemsTableIn();
             $('#addItemModalIn').modal('hide');
             
@@ -3234,6 +3254,10 @@
                                 // Set selected product
                                 productSearchIn.value = product.name;
                                 selectedProductIdIn.value = product.id;
+                                window.selectedProductDetailsIn = product; // Store the full product object
+                                console.log('initProductSearchIn - Selected Product ID:', product.id);
+                                console.log('initProductSearchIn - selectedProductIdIn.value:', selectedProductIdIn.value);
+                                console.log('initProductSearchIn - window.selectedProductDetailsIn:', window.selectedProductDetailsIn);
                                 
                                 // Show product details
                                 if (productNameIn) productNameIn.textContent = product.name;
@@ -3282,6 +3306,10 @@
                                 // Set selected product
                                 productSearchIn.value = product.name;
                                 selectedProductIdIn.value = product.id;
+                                window.selectedProductDetailsIn = product; // Store the full product object
+                                console.log('initProductSearchIn - Selected Product ID:', product.id);
+                                console.log('initProductSearchIn - selectedProductIdIn.value:', selectedProductIdIn.value);
+                                console.log('initProductSearchIn - window.selectedProductDetailsIn:', window.selectedProductDetailsIn);
                                 
                                 // Show product details
                                 if (productNameIn) productNameIn.textContent = product.name;
@@ -3313,6 +3341,18 @@
             if (productSearchIn.value.trim() === '') {
                 productDetailsIn.style.display = 'none';
                 selectedProductIdIn.value = '';
+                window.selectedProductDetailsIn = null; // Clear cached product details
+            };
+        });
+        
+        // Clear selected product when input text changes after selection
+        productSearchIn.addEventListener('input', function() {
+            const currentValue = productSearchIn.value.trim();
+            if (window.selectedProductDetailsIn && currentValue !== window.selectedProductDetailsIn.name) {
+                // Text was changed after selection - clear the selection
+                selectedProductIdIn.value = '';
+                window.selectedProductDetailsIn = null;
+                productDetailsIn.style.display = 'none';
             }
         });
     }
@@ -3322,6 +3362,7 @@
         initSupplierSearch();
         initProductSearchIn();
     });
+
 </script>
 
 <!-- Medicine Detail Modal -->

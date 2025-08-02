@@ -7,23 +7,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-/**
- * Controller for inventory management endpoints
- */
 @Slf4j
 @Controller
 @RequestMapping("/warehouse/inventory")
 @RequiredArgsConstructor
 public class InventoryController {
 
-    /**
-     * Handle inventory management page
-     * @param model Spring MVC Model
-     * @return View name for inventory management page
-     */
     @GetMapping("/management")
     public String inventoryManagementPage(Model model) {
         log.info("Accessing inventory management page");
         return "templates_storage/inventory-management";
     }
-} 
+}
