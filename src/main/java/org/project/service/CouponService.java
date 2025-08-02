@@ -61,6 +61,12 @@ public interface CouponService {
     void deleteCoupon(Long id);
     
     /**
+     * Xoá mềm coupon bằng cách đặt trạng thái thành INACTIVE
+     * @param id ID của coupon cần xoá mềm
+     */
+    void softDeleteCoupon(Long id);
+    
+    /**
      * Kiểm tra mã coupon đã tồn tại chưa
      */
     boolean isCouponCodeExists(String code);
@@ -99,8 +105,14 @@ public interface CouponService {
      * @param sortDir Hướng sắp xếp
      * @return Trang dữ liệu các coupon theo điều kiện lọc
      */
+        Page<CouponDTO> findCouponsWithFilters(String status, String discountTypeStr, String keyword, 
+                                       int page, int size, String sortBy, String sortDir);
+                                       
+    /**
+     * Tìm kiếm coupon với bộ lọc và tùy chọn hiển thị coupon không hoạt động
+     */
     Page<CouponDTO> findCouponsWithFilters(String status, String discountTypeStr, String keyword, 
-                                           int page, int size, String sortBy, String sortDir);
+                                       int page, int size, String sortBy, String sortDir, boolean includeInactive);
 
     //delete coupon from the list of coupon by its id
 }

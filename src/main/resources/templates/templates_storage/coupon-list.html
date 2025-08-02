@@ -326,6 +326,21 @@
             color: #dc3545;
             font-size: 16px;
         }
+
+        .show-inactive-container {
+            padding: 10px 15px; /* Increase padding for more space */
+            font-size: 16px; /* Increase font size for better readability */
+        }
+
+        .show-inactive-container .form-check-label {
+            margin-left: 10px; /* Add space between checkbox and label */
+            font-weight: 500; /* Slightly bolder text for emphasis */
+        }
+
+        .show-inactive-container .form-check-input {
+            transform: scale(1.2); /* Enlarge the checkbox slightly */
+            margin-top: 2px; /* Adjust vertical alignment */
+        }
         
         /* Responsive */
         @media (max-width: 767px) {
@@ -585,26 +600,40 @@
                                 <!-- Thanh tìm kiếm và bộ lọc -->
                                 <div class="search-box-filter mb-4">
                                     <form th:action="@{/coupon-list}" method="get" class="row g-3 align-items-end">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="keyword" class="form-label">Tìm kiếm theo tên/mã:</label>
                                             <input type="text" class="form-control" id="keyword" name="keyword" 
                                                    th:value="${keyword}" placeholder="Nhập từ khóa...">
                                         </div>
-                                        <div class="col-md-3">
-                                            <label for="status" class="form-label">Trạng thái:</label>
+                                        <div class="col-md-2">
+                                            <label for="status" class="form-label">Trạng thái hết hạn:</label>
                                             <select class="form-select" id="status" name="status">
                                                 <option value="">Tất cả</option>
-                                                <option value="valid" th:selected="${validFilter != null && validFilter}">Hoạt động</option>
+                                                <option value="valid" th:selected="${validFilter != null && validFilter}">Còn hạn</option>
                                                 <option value="expired" th:selected="${expiredFilter != null && expiredFilter}">Hết hạn</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <label for="discountType" class="form-label">Kiểu giảm giá:</label>
                                             <select class="form-select" id="discountType" name="discountType">
                                                 <option value="">Tất cả</option>
                                                 <option value="PERCENTAGE" th:selected="${discountType != null && discountType == 'PERCENTAGE'}">Phần trăm</option>
                                                 <option value="FIXED" th:selected="${discountType != null && discountType == 'FIXED'}">Số tiền cố định</option>
                                             </select>
+                                        </div>
+<!--                                        <div class="col-md-3">-->
+<!--                                            <label for="showInactive" class="form-label">Hiển thị mã đã vô hiệu hóa:</label>-->
+<!--                                            <div class="form-check form-switch mt-2">-->
+<!--                                                <input class="form-check-input" type="checkbox" id="showInactive" name="showInactive" value="true" th:checked="${showInactive}">-->
+<!--                                                <label class="form-check-label" for="showInactive">Hiển thị mã đã vô hiệu hóa</label>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+                                        <div class="col-md-3 show-inactive-container">
+<!--                                            <label for="showInactive" class="form-label">Hiển thị mã đã vô hiệu hóa:</label>-->
+                                            <div class="form-check form-switch mt-2">
+                                                <input class="form-check-input" type="checkbox" id="showInactive" name="showInactive" value="true" th:checked="${showInactive}">
+                                                <label class="form-check-label" for="showInactive">Hiển thị mã đã vô hiệu hóa</label>
+                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <button type="submit" class="btn btn-solid w-100">Lọc</button>
@@ -624,6 +653,7 @@
                                                     <th>Mã</th>
                                                     <th>Giảm giá</th>
                                                     <th>Trạng thái</th>
+                                                    <th>Tình trạng hoạt động</th>
                                                     <th>Tùy chọn</th>
                                                     </tr>
                                                 </thead>
@@ -636,6 +666,9 @@
                                                     <td class="theme-color" th:text="${coupon.discountType.toString() == 'PERCENTAGE'} ? ${coupon.value + '%'} : ${coupon.value + ' VNĐ'}"></td>
                                                     <td class="menu-status">
                                                         <span th:class="${!coupon.expired ? 'success' : 'danger'}" th:text="${!coupon.expired ? 'Hoạt động' : 'Hết hạn'}"></span>
+                                                    </td>
+                                                    <td class="menu-status">
+                                                        <span th:class="${coupon.couponStatus.toString() == 'ACTIVE' ? 'success' : 'danger'}" th:text="${coupon.couponStatus.status}"></span>
                                                     </td>
                                                     <td>
                                                         <ul>

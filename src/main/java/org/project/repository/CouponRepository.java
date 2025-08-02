@@ -65,18 +65,21 @@ public interface CouponRepository extends JpaRepository<CouponEntity, Long> {
      * @return Trang dữ liệu các coupon theo điều kiện
      */
     @Query("SELECT c FROM CouponEntity c WHERE " +
-           "(:discountType IS NULL OR c.discountType = :discountType) AND " +
-           "((:validOnly = false AND :expiredOnly = false) OR " +
-           "(:validOnly = true AND c.expirationDate >= :today) OR " +
-           "(:expiredOnly = true AND c.expirationDate < :today)) AND " +
-           "(:keyword IS NULL OR LOWER(c.code) LIKE LOWER(CONCAT('%', :keyword, '%')) OR c.description LIKE CONCAT('%', :keyword, '%'))")
-    Page<CouponEntity> findWithFilters(
-           @Param("discountType") DiscountType discountType,
-           @Param("validOnly") boolean validOnly,
-           @Param("expiredOnly") boolean expiredOnly,
-           @Param("today") Date today,
-           @Param("keyword") String keyword,
-           Pageable pageable);
+       "(:discountType IS NULL OR c.discountType = :discountType) AND " +
+       "((:validOnly = false AND :expiredOnly = false) OR " +
+       "(:validOnly = true AND c.expirationDate >= :today) OR " +
+       "(:expiredOnly = true AND c.expirationDate < :today)) AND " +
+       "(:keyword IS NULL OR LOWER(c.code) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+       "c.description LIKE CONCAT('%', :keyword, '%')) AND " +
+       "(:includeInactive = true OR c.status = org.project.enums.CouponStatus.ACTIVE)")
+Page<CouponEntity> findWithFilters(
+       @Param("discountType") DiscountType discountType,
+       @Param("validOnly") boolean validOnly,
+       @Param("expiredOnly") boolean expiredOnly,
+       @Param("today") Date today,
+       @Param("keyword") String keyword,
+       @Param("includeInactive") boolean includeInactive,
+       Pageable pageable);
 
     /**
      * Kiểm tra mã code đã tồn tại chưa

@@ -51,14 +51,15 @@ public class CouponController {
             @RequestParam(required = false) String discountType,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false, defaultValue = "desc") String sortDir,
+            @RequestParam(required = false, defaultValue = "false") boolean showInactive,
             Model model) {
 
-        log.info("Fetching coupons with page={}, size={}, keyword={}, status={}, discountType={}, sortBy={}, sortDir={}",
-                page, size, keyword, status, discountType, sortBy, sortDir);
+        log.info("Fetching coupons with page={}, size={}, keyword={}, status={}, discountType={}, sortBy={}, sortDir={}, showInactive={}",
+                page, size, keyword, status, discountType, sortBy, sortDir, showInactive);
 
         // Sử dụng phương thức mới để xử lý lọc đa điều kiện
         Page<CouponDTO> couponPage = couponService.findCouponsWithFilters(
-                status, discountType, keyword, page, size, sortBy, sortDir);
+                status, discountType, keyword, page, size, sortBy, sortDir, showInactive);
         
         // Thêm các thuộc tính cho view
         model.addAttribute("coupons", couponPage.getContent());
@@ -69,6 +70,7 @@ public class CouponController {
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("showInactive", showInactive);
         
         // Thêm các thuộc tính phục vụ cho form lọc
         if (keyword != null && !keyword.isEmpty()) {
@@ -404,6 +406,7 @@ public class CouponController {
         Map<String, Object> response = new HashMap<>();
         CouponEntity appliedCoupon = (CouponEntity) session.getAttribute("appliedCoupon");
         Optional<CouponEntity> couponOptional = couponRepository.findById(id);
+        
         if (id == null) {
             response.put("success", false);
             response.put("message", "Invalid coupon ID");
@@ -416,27 +419,22 @@ public class CouponController {
             return response;
         }
 
-//        Long appliedCouponId = (Long) session.getAttribute("appliedCoupon");
-//        if (appliedCouponId != null && appliedCouponId.equals(id)) {
-//            response.put("success", false);
-//            response.put("message", "Coupon with id " + id + " is being used");
-//            return response;
-//        }
-
-        //Check if coupon is being used by another user
+        //Check if coupon is being used by another user in current session
         if (couponOptional.isPresent() && appliedCoupon != null && appliedCoupon.getId().equals(couponOptional.get().getId())) {
             response.put("success", false);
-            response.put("message", "Coupon with id " + id + " is being used");
+            response.put("message", "Coupon with id " + id + " is being used in the current session");
             return response;
         }
 
         try {
-            couponService.deleteCoupon(id);
+            // Sử dụng soft delete thay vì hard delete để tránh lỗi constraint violation
+            couponService.softDeleteCoupon(id);
             response.put("success", true);
-            response.put("message", "Coupon with id " + id + " is successfully deleted!");
+            response.put("message", "Coupon with id " + id + " has been deactivated!");
         } catch (Exception e) {
+            log.error("Error when soft deleting coupon: ", e);
             response.put("success", false);
-            response.put("message", "Failed to delete coupon with id " + id + ": " + e.getMessage());
+            response.put("message", "Failed to deactivate coupon with id " + id + ": " + e.getMessage());
         }
         return response;
     }

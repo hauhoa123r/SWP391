@@ -198,6 +198,7 @@ public class CouponServiceImpl implements CouponService {
         dto.setMinimumOrderAmount(entity.getMinimumOrderAmount());
         dto.setExpirationDate(entity.getExpirationDate());
         dto.setDiscountType(entity.getDiscountType());
+        dto.setCouponStatus(entity.getStatus()); // Thêm dòng này để set couponStatus
 
         // Tính toán các trường bổ sung
         Date today = new Date(System.currentTimeMillis());
@@ -225,6 +226,11 @@ public class CouponServiceImpl implements CouponService {
         entity.setMinimumOrderAmount(dto.getMinimumOrderAmount());
         entity.setExpirationDate(dto.getExpirationDate());
         entity.setDiscountType(dto.getDiscountType());
+        
+        // Lưu status từ DTO
+        if (dto.getCouponStatus() != null) {
+            entity.setStatus(dto.getCouponStatus());
+        }
 
         return entity;
     }
@@ -289,6 +295,21 @@ public class CouponServiceImpl implements CouponService {
 
         couponRepository.deleteCouponEntityById(id);
     }
+    
+    @Override
+    @Transactional
+    public void softDeleteCoupon(Long id) {
+        CouponEntity coupon = couponRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Coupon not found with ID: " + id));
+        
+        // Đặt trạng thái thành INACTIVE
+        coupon.setStatus(org.project.enums.CouponStatus.INACTIVE);
+        
+        // Lưu lại vào database
+        couponRepository.save(coupon);
+        
+        log.info("Soft deleted coupon with ID: {}", id);
+    }
 
     @Override
     public boolean isCouponCodeExists(String code) {
@@ -323,35 +344,43 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public Page<CouponDTO> findCouponsWithFilters(String status, String discountTypeStr, String keyword, 
                                             int page, int size, String sortBy, String sortDir) {
-    log.info("Finding coupons with filters: status={}, discountType={}, keyword={}",
-            status, discountTypeStr, keyword);
-    
-    Sort sort = createSort(sortBy, sortDir);
-    Pageable pageable = PageRequest.of(page, size, sort);
-    
-    // Parse discount type if provided
-    DiscountType discountType = null;
-    if (discountTypeStr != null && !discountTypeStr.isEmpty()) {
-        try {
-            discountType = DiscountType.valueOf(discountTypeStr);
-        } catch (IllegalArgumentException e) {
-            log.warn("Invalid discount type: {}", discountTypeStr);
-        }
+        // Gọi phương thức overload với includeInactive=false
+        return findCouponsWithFilters(status, discountTypeStr, keyword, page, size, sortBy, sortDir, false);
     }
-    
-    // Parse status flags
-    boolean validOnly = "valid".equals(status);
-    boolean expiredOnly = "expired".equals(status);
-    
-    // Get current date for expiry check
-    Date today = new Date(System.currentTimeMillis());
-    
-    // Execute query with all filters
-    Page<CouponEntity> couponPage = couponRepository.findWithFilters(
-            discountType, validOnly, expiredOnly, today, 
-            keyword != null && !keyword.isEmpty() ? keyword : null, 
-            pageable);
-    
-    return couponPage.map(this::convertToDTO);
-}
+
+    @Override
+    public Page<CouponDTO> findCouponsWithFilters(String status, String discountTypeStr, String keyword, 
+                                            int page, int size, String sortBy, String sortDir, boolean includeInactive) {
+        log.info("Finding coupons with filters: status={}, discountType={}, keyword={}, includeInactive={}",
+                status, discountTypeStr, keyword, includeInactive);
+        
+        Sort sort = createSort(sortBy, sortDir);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        
+        // Parse discount type if provided
+        DiscountType discountType = null;
+        if (discountTypeStr != null && !discountTypeStr.isEmpty()) {
+            try {
+                discountType = DiscountType.valueOf(discountTypeStr);
+            } catch (IllegalArgumentException e) {
+                log.warn("Invalid discount type: {}", discountTypeStr);
+            }
+        }
+        
+        // Parse status flags
+        boolean validOnly = "valid".equals(status);
+        boolean expiredOnly = "expired".equals(status);
+        
+        // Get current date for expiry check
+        Date today = new Date(System.currentTimeMillis());
+        
+        // Execute query with all filters
+        Page<CouponEntity> couponPage = couponRepository.findWithFilters(
+                discountType, validOnly, expiredOnly, today, 
+                keyword != null && !keyword.isEmpty() ? keyword : null,
+                includeInactive, 
+                pageable);
+        
+        return couponPage.map(this::convertToDTO);
+    }
 }
