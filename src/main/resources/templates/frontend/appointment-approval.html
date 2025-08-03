@@ -836,13 +836,13 @@
                 }
                 const changeAppointmentDTO = {
                     appointmentId: appointmentId,
-                    staffScheduleId: 381,
+                    staffScheduleId: null,
                     doctorId: selectedSuggestion.doctorId,
                     appointmentDate: formatDateTime(selectedSuggestion.availableTime),
                     appointmentStatus: "CONFIRMED"
                 };
                 try {
-                    const res = await fetch(`${API_BASE}/appointment/change`, {
+                    const res = await fetch(`/api/staff/appointment/change`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(changeAppointmentDTO)

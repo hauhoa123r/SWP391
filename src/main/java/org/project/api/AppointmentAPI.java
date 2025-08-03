@@ -66,8 +66,9 @@ public class AppointmentAPI {
         }
     }
 
-    @PatchMapping("change")
-    public ResponseEntity<String> changeAppointmentAndApproval(@RequestBody ChangeAppointmentDTO changeAppointmentDTO) {
+    @PatchMapping("/api/staff/appointment/change")
+    public ResponseEntity<String> changeAppointmentAndApproval(@RequestBody ChangeAppointmentDTO changeAppointmentDTO, @AuthenticationPrincipal AccountDetails accountDetails) {
+        changeAppointmentDTO.setStaffScheduleId(accountDetails.getUserEntity().getStaffEntity().getId());
         boolean isChanged = appointmentService.changeAppointment(changeAppointmentDTO);
         if (isChanged) {
             return ResponseEntity.ok("Appointment changed successfully.");
