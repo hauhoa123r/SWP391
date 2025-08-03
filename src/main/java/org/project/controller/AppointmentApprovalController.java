@@ -26,7 +26,7 @@ public class AppointmentApprovalController {
                                                       Model model) {
         Long staffId = accountDetails.getUserEntity().getStaffEntity().getId();
         List<AppointmentApprovalResponse> pendingAppointments = appointmentService.getAppointmentsHaveStatusPendingByStaffId(staffId);
-
+        model.addAttribute("staffAvatar", accountDetails.getUserEntity().getStaffEntity().getAvatarUrl());
         model.addAttribute("staffId", staffId);
         model.addAttribute("pendingAppointments", pendingAppointments);
         return "frontend/appointment-approval";
