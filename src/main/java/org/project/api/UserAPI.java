@@ -58,7 +58,7 @@ public class UserAPI {
         if (!passwordEncoder.matches(changePhoneNumberDTO.getPassword(), accountDetails.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Mật khẩu cũ không đúng");
         }
-        if (!userService.isExistPhoneNumber(changePhoneNumberDTO.getPhoneNumber())){
+        if (userService.isExistPhoneNumber(changePhoneNumberDTO.getPhoneNumber())){
             return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).body("Số điện thoại đã được sử dụng");
         }
 

@@ -1,9 +1,9 @@
 package org.project.enums;
 
 public enum PaymentMethod {
-    CASH("cash"),
-    CARD("card"),
-    MOMO("momo");
+    CASH("Tiền mặt"),
+    CARD("Thẻ tín dụng"),
+    MOMO("Ví MoMo");
 
     private final String value;
 

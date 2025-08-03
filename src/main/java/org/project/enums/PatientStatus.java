@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum PatientStatus {
-    ACTIVE("Active"),
-    INACTIVE("Inactive");
+    ACTIVE("Hoạt động"),
+    INACTIVE("Không hoạt động");
 
     private final String status;
 

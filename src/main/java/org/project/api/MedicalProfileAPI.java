@@ -5,18 +5,16 @@ import org.project.model.dto.MedicalProfileDTO;
 import org.project.model.dto.PatientAndMedicalProfileDTO;
 import org.project.model.dto.PatientDTO;
 import org.project.model.response.PatientResponse;
+import org.project.security.AccountDetails;
 import org.project.service.MedicalProfileService;
 import org.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 
 @RestController
 public class MedicalProfileAPI {
@@ -32,10 +30,11 @@ public class MedicalProfileAPI {
     }
 
     @PostMapping("/api/profile")
-    public ResponseEntity<?> createPatientAndMedicalProfile(@RequestBody PatientAndMedicalProfileDTO dto) {
+    public ResponseEntity<?> createPatientAndMedicalProfile(@RequestBody PatientAndMedicalProfileDTO dto, @AuthenticationPrincipal AccountDetails accountDetails) {
         try {
             PatientDTO patientDTO = dto.getPatientDTO();
             MedicalProfileDTO medicalProfileDTO = dto.getMedicalProfileDTO();
+            patientDTO.setUserId(accountDetails.getUserEntity().getId());
             PatientResponse patientResponse = medicalProfileService.addPatientAndMedicalProfile(medicalProfileDTO, patientDTO);
             if (patientResponse != null) {
                 return ResponseEntity.status(HttpStatus.OK)

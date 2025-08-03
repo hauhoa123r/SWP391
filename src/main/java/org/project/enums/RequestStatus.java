@@ -1,13 +1,13 @@
 package org.project.enums;
 
-
 public enum RequestStatus {
-    pending("pending"),
-    received("received"),
-    processing("processing"),
-    completed("completed"),
-    rejected("rejected"),
-    collected("collected");
+    collected("Đã nhận"),
+    pending("Chờ xử lý"),
+    received("Đã nhận"),
+    processing("Đang xử lý"),
+    completed("Đã hoàn thành"),
+    rejected("Đã từ chối");
+
     private final String value;
 
     RequestStatus(String value) {

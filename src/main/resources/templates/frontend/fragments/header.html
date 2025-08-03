@@ -301,9 +301,10 @@
                                     </th:block>
                                     <th:block sec:authorize="isAuthenticated()">
                                         <li><a class="dropdown-item border-bottom"
+                                               th:classappend="${navActive == 'manage' ? 'text-primary' : ''}"
                                                th:href="@{/home}">Trang quản lý</a></li>
                                         <li><a class="dropdown-item"
-                                               th:classappend="${navActive == 'setting' ? 'active' : ''"
+                                               th:classappend="${navActive == 'setting' ? 'text-primary' : ''}"
                                                th:href="@{/setting}">Cài đặt</a></li>
                                         <li><a class="dropdown-item"
                                                th:href="@{/logout}">Đăng
@@ -311,7 +312,7 @@
                                     </th:block>
                                 </ul>
                             </li>
-                            <li>
+                            <li sec:authorize="hasRole('PATIENT')">
                                 <div class="iq-btn-container">
                                     <a class="iq-button text-capitalize" th:href="@{/patient/appointment}">
                                         <span class="iq-btn-text-holder position-relative">Đặt lịch</span>
