@@ -18,7 +18,7 @@ public interface StaffService {
 
     StaffEntity getStaffByStaffId(Long staffId);
 
-    void deleteStaff(Long staffId);
+    void deleteStaff(Long staffId, boolean isNeedCheckManager);
 
     Page<StaffResponse> getStaffs(int index, int size, StaffDTO staffDTO);
 

@@ -147,9 +147,9 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void deleteStaff(Long staffId) {
+    public void deleteStaff(Long staffId, boolean isNeedCheckManager) {
         StaffEntity staffEntity = getStaffByStaffId(staffId);
-        if (staffEntity.getManager() == null) {
+        if (staffEntity.getManager() == null && isNeedCheckManager) {
             throw new ErrorResponse("Không thể xóa nhân viên quản lý, vui lòng chuyển giao quyền quản lý trước khi xóa.");
         }
 

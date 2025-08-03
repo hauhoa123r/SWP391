@@ -1,9 +1,7 @@
 package org.project.controlleradvance;
 
 import org.project.entity.CartItemEntity;
-import org.project.entity.NotificationEntity;
 import org.project.model.response.NotificationResponse;
-import org.project.security.AccountDetails;
 import org.project.service.CartService;
 import org.project.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,7 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalModelAttribute {
-    
+
     private final NotificationService notificationService;
     private final CartService cartService;
 
@@ -99,7 +97,21 @@ public class GlobalModelAttribute {
      */
     private Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
-        return accountDetails.getUserEntity().getId();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof org.project.security.AccountDetails accountDetails) {
+                return accountDetails.getUserEntity().getId();
+            }
+            if (principal instanceof org.project.entity.UserEntity userEntity) {
+                return userEntity.getId();
+            }
+            if (principal instanceof String str && !"anonymousUser".equals(str)) {
+                // Có thể lấy userId từ username nếu cần, ví dụ:
+                // return userService.findIdByUsername(str);
+                return null; // hoặc xử lý phù hợp với hệ thống của bạn
+            }
+        }
+
+        return null; // Trả về null nếu không có user đăng nhập
     }
 } 

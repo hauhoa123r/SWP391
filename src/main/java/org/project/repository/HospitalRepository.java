@@ -29,4 +29,12 @@ public interface HospitalRepository extends JpaRepository<HospitalEntity, Long>,
     List<HospitalEntity> findAllByHospitalStatus(HospitalStatus hospitalStatus);
 
     boolean existsByIdAndHospitalStatus(Long id, HospitalStatus hospitalStatus);
+
+    boolean existsByPhoneNumberAndHospitalStatus(String phoneNumber, HospitalStatus hospitalStatus);
+
+    boolean existsByEmailAndHospitalStatus(String email, HospitalStatus hospitalStatus);
+
+    boolean existsByPhoneNumberAndHospitalStatusAndIdNot(String phoneNumber, HospitalStatus hospitalStatus, Long id);
+
+    boolean existsByEmailAndHospitalStatusAndIdNot(String email, HospitalStatus hospitalStatus, Long id);
 }

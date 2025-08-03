@@ -2,7 +2,6 @@ package org.project.model.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +24,6 @@ public class PatientDTO extends AbstractServiceDTO {
     private String address;
     @Pattern(regexp = "^(MALE|FEMALE|OTHER)$", message = "Giới tính không hợp lệ")
     private String gender;
-    @Past(message = "Ngày sinh phải là ngày trong quá khứ")
     private String dateOfBirth;
     @Pattern(regexp = "^(SELF|FATHER|MOTHER|HUSBAND|BROTHER|SISTER|WIFE|SON|DAUGHTER|GRAND_FATHER|GRAND_MOTHER|COUSIN|AUNT|UNCLE|OTHER)$", message = "Mối quan hệ gia đình không hợp lệ")
     private String familyRelationship;

@@ -35,7 +35,6 @@ public class DepartmentEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
     @Lob
     @Column(name = "description", nullable = false)
     private String description;

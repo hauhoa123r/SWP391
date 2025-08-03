@@ -4,12 +4,16 @@ import org.project.entity.UserEntity;
 import org.project.enums.AppointmentStatus;
 import org.project.model.dto.AppointmentDTO;
 import org.project.model.dto.ChangeAppointmentDTO;
+import org.project.model.response.AppointmentResponse;
 import org.project.security.AccountDetails;
 import org.project.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 public class AppointmentAPI {
@@ -31,7 +35,8 @@ public class AppointmentAPI {
 
     @PatchMapping("/api/staff/appointment/confirm/{appointmentId}")
     public ResponseEntity<String> confirmAppointment(@PathVariable Long appointmentId
-            , @RequestParam Long scheduleCoordinatorId) {
+            , @AuthenticationPrincipal AccountDetails accountDetails) {
+        Long scheduleCoordinatorId = accountDetails.getUserEntity().getStaffEntity().getId();
         boolean isUpdated = appointmentService.changeStatus(appointmentId, AppointmentStatus.CONFIRMED, scheduleCoordinatorId);
         if (isUpdated) {
             return ResponseEntity.ok("Appointment confirmed successfully.");
@@ -41,12 +46,24 @@ public class AppointmentAPI {
 
     @PatchMapping("/api/staff/appointment/cancel/{appointmentId}")
     public ResponseEntity<String> cancelAppointment(@PathVariable Long appointmentId
-            , @RequestParam Long scheduleCoordinatorId) {
+            , @AuthenticationPrincipal AccountDetails accountDetails) {
+        Long scheduleCoordinatorId = accountDetails.getUserEntity().getStaffEntity().getId();
         boolean isUpdated = appointmentService.changeStatus(appointmentId, AppointmentStatus.CANCELLED, scheduleCoordinatorId);
         if (isUpdated) {
             return ResponseEntity.ok("Appointment canceled successfully.");
         }
         return ResponseEntity.badRequest().body("Failed to cancel appointment.");
+    }
+
+    @PatchMapping("/api/patient/cancel-appointment/{appointmentId}")
+    public ResponseEntity<String> cancelAppointmentByPatient(@PathVariable Long appointmentId,
+                                                             @AuthenticationPrincipal AccountDetails accountDetails) {
+        boolean isUpdated = appointmentService.changeStatus(appointmentId, AppointmentStatus.CANCELLED, null);
+        if (isUpdated) {
+            return ResponseEntity.ok("Appointment canceled successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to cancel appointment.");
+        }
     }
 
     @PatchMapping("change")
@@ -56,5 +73,15 @@ public class AppointmentAPI {
             return ResponseEntity.ok("Appointment changed successfully.");
         }
         return ResponseEntity.badRequest().body("Failed to change appointment.");
+    }
+
+    @GetMapping("/api/admin/appointment/page/{pageIndex}")
+    public Map<String, Object> getAppointmentsForAdmin(@PathVariable int pageIndex, @ModelAttribute AppointmentDTO appointmentDTO) {
+        Page<AppointmentResponse> appointmentResponsePage = appointmentService.getAppointments(pageIndex, 6, appointmentDTO);
+        return Map.of(
+                "items", appointmentResponsePage.getContent(),
+                "currentPage", pageIndex,
+                "totalPages", appointmentResponsePage.getTotalPages()
+        );
     }
 }

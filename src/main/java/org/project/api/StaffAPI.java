@@ -51,7 +51,7 @@ public class StaffAPI {
 
     @DeleteMapping("/api/admin/staff/{staffId}")
     public void deleteStaff(@PathVariable Long staffId) {
-        staffService.deleteStaff(staffId);
+        staffService.deleteStaff(staffId, true);
     }
 
     @PostMapping("/api/staff/substitutes")

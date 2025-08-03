@@ -109,11 +109,11 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public void createHospital(HospitalDTO hospitalDTO) {
         // check if phone number or email already exists
-        if (hospitalRepository.existsByPhoneNumber(hospitalDTO.getPhoneNumber())) {
+        if (hospitalRepository.existsByPhoneNumberAndHospitalStatus(hospitalDTO.getPhoneNumber(), WebConstant.HOSPITAL_STATUS_ACTIVE)) {
             throw new ErrorResponse("Số điện thoại đã được sử dụng");
         }
 
-        if (hospitalRepository.existsByEmail(hospitalDTO.getEmail())) {
+        if (hospitalRepository.existsByEmailAndHospitalStatus(hospitalDTO.getEmail(), WebConstant.HOSPITAL_STATUS_ACTIVE)) {
             throw new ErrorResponse("Email đã được sử dụng");
         }
 
@@ -125,11 +125,11 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public void updateHospital(Long hospitalId, HospitalDTO hospitalDTO) {
         // Check if same email && phoneNumber
-        if (hospitalRepository.existsByPhoneNumberAndIdNot(hospitalDTO.getPhoneNumber(), hospitalId)) {
+        if (hospitalRepository.existsByPhoneNumberAndHospitalStatusAndIdNot(hospitalDTO.getPhoneNumber(), WebConstant.HOSPITAL_STATUS_ACTIVE, hospitalId)) {
             throw new ErrorResponse("Số điện thoại đã được sử dụng");
         }
 
-        if (hospitalRepository.existsByEmailAndIdNot(hospitalDTO.getEmail(), hospitalId)) {
+        if (hospitalRepository.existsByEmailAndHospitalStatusAndIdNot(hospitalDTO.getEmail(), WebConstant.HOSPITAL_STATUS_ACTIVE, hospitalId)) {
             throw new ErrorResponse("Email đã được sử dụng");
         }
 
@@ -147,7 +147,9 @@ public class HospitalServiceImpl implements HospitalService {
         HospitalEntity hospitalEntity = hospitalRepository.findById(hospitalId)
                 .orElseThrow(() -> new EntityNotFoundException(HospitalEntity.class, hospitalId));
         hospitalEntity.getStaffEntities().forEach(staffEntity -> {
-            staffService.deleteStaff(staffEntity.getId());
+            if (staffService.isStaffExist(staffEntity.getId())) {
+                staffService.deleteStaff(staffEntity.getId(), false);
+            }
         });
         hospitalEntity.setHospitalStatus(WebConstant.HOSPITAL_STATUS_INACTIVE);
         hospitalRepository.save(hospitalEntity);

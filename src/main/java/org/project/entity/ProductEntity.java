@@ -29,7 +29,7 @@ public class ProductEntity {
     private Long id;
 
     @Size(max = 255)
-   
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -50,7 +50,7 @@ public class ProductEntity {
     @Column(name = "stock_quantities", nullable = false)
     private Integer stockQuantities;
 
-    @Size(max = 255)
+    @Lob
     @Column(name = "image_url")
     private String imageUrl;
 

@@ -169,7 +169,9 @@ public class DepartmentServiceImpl implements DepartmentService {
             productService.deleteProduct(serviceEntity.getProductEntity().getId());
         });
         departmentEntity.getStaffEntities().forEach(staffEntity -> {
-            staffService.deleteStaff(staffEntity.getId());
+            if (staffService.isStaffExist(staffEntity.getId())) {
+                staffService.deleteStaff(staffEntity.getId(), false);
+            }
         });
         departmentEntity.setDepartmentStatus(WebConstant.DEPARTMENT_STATUS_INACTIVE);
     }
