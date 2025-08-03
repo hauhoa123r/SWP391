@@ -65,7 +65,7 @@ public class PatientEntity {
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
     @Column(name = "patient_status", columnDefinition = "enum not null")
-    private PatientStatus patientStatus;
+    private PatientStatus patientStatus = PatientStatus.ACTIVE;
 
     @OneToMany(mappedBy = "patientEntity")
     private Set<MedicalRecordEntity> medicalRecordEntities = new LinkedHashSet<>();

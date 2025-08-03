@@ -20,29 +20,14 @@ import java.util.Optional;
 
 @Repository
 public interface StaffRepository extends JpaRepository<StaffEntity, Long>, JpaSpecificationExecutor<StaffEntity>, StaffRepositoryCustom {
-    @org.springframework.data.jpa.repository.Query("SELECT DISTINCT s.staffRole FROM StaffEntity s")
-    java.util.List<org.project.enums.StaffRole> findDistinctStaffRoles();
-
-    Page<StaffEntity> findAllByStaffRole(StaffRole staffRole, Pageable pageable);
-
-    Page<StaffEntity> findAllByStaffRoleAndDepartmentEntityName(StaffRole staffRole, String departmentEntityName, Pageable pageable);
-
-    List<StaffEntity> findAllByStaffRoleAndDepartmentEntityNameAndIdIsNot(StaffRole staffRole, String departmentEntityName, Long id);
-
     StaffEntity findByStaffRoleAndId(StaffRole staffRole, Long id);
 
     List<StaffEntity> findAllByStaffRole(StaffRole staffRole);
-
-    boolean existsByStaffRoleAndId(StaffRole staffRole, Long id);
-
-    List<StaffEntity> findAllByStaffRoleAndFullNameContainingAndDepartmentEntity_IdAndHospitalEntity_Id(StaffRole staffRole, String fullName, Long departmentId, Long hospitalId);
 
     List<StaffEntity> findByStaffRoleAndHospitalEntity_IdAndTechnicianEntity_TechnicianRank(StaffRole staffRole, Long hospitalEntityId, TechnicianRank technicianEntityTechnicianRank);
 
     // Find the first staff (lowest rank level) in the same department & hospital to act as default manager
     Optional<StaffEntity> findFirstByDepartmentEntity_IdAndHospitalEntity_IdOrderByRankLevelAsc(Long departmentId, Long hospitalId);
-
-    Optional<StaffEntity> findFirstByDepartmentEntityIdAndStaffRole(Long departmentEntity_id, StaffRole staffRole);
 
     // Tìm kiếm staff theo keyword
     Page<StaffEntity> findByFullNameContainingIgnoreCaseOrUserEntityEmailContainingIgnoreCaseOrUserEntityPhoneNumberContainingIgnoreCase(String keyword, String keyword2, String keyword3, Pageable pageable);
@@ -57,28 +42,26 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long>, JpaSp
     Page<StaffEntity> findByStaffStatus(StaffStatus staffStatus, Pageable pageable);
 
     @Query(value = """
-                                SELECT s.*
-                                FROM staffs s
-                                WHERE s.department_id = :deptId
-                                    AND s.hospital_id   = :hospitalId
-                                    AND s.staff_id     <> :excludedStaffId
-                                    AND s.staff_id NOT IN (
-                                                        SELECT a.doctor_id
-                                                        FROM appointments a
-                                                        WHERE a.start_time < :endTime
-                                                        AND DATE_ADD(a.start_time, INTERVAL a.duration_minutes MINUTE) > :startTime
-                                                        )
-                                    AND s.staff_id NOT IN (
-                                                        SELECT sch.staff_id
-                                                        FROM staff_schedules sch
-                                                        WHERE sch.start_time < :endTime
-                                                        AND sch.end_time   > :startTime
-                )
+                SELECT s.*
+                FROM staffs s
+                WHERE s.department_id = :deptId
+                  AND s.hospital_id   = :hospitalId
+                  AND s.staff_id     <> :excludedStaffId
+                  AND s.staff_role   = :role
+                  AND s.staff_status = 'ACTIVE'
+                  AND NOT EXISTS (
+                    SELECT 1
+                    FROM appointments a
+                    WHERE a.doctor_id = s.staff_id
+                      AND a.start_time < :endTime
+                      AND DATE_ADD(a.start_time, INTERVAL a.duration_minutes MINUTE) > :startTime
+                  )
             """, nativeQuery = true)
     List<StaffEntity> findAvailableSubstitutesNative(
             @Param("deptId") Long deptId,
             @Param("hospitalId") Long hospitalId,
             @Param("excludedStaffId") Long excludedStaffId,
+            @Param("role") String role,
             @Param("startTime") Timestamp startTime,
             @Param("endTime") Timestamp endTime
     );
@@ -95,8 +78,6 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long>, JpaSp
 
     StaffEntity findByHospitalEntityIdAndDepartmentEntityIdAndManager(Long hospitalEntityId, Long departmentEntityId, StaffEntity manager);
 
-    List<StaffEntity> findAllByDepartmentEntityIdAndHospitalEntityIdAndIdNot(Long departmentEntityId, Long hospitalEntityId, Long id);
-
     @Modifying
     @Transactional
     @Query(value = """
@@ -107,5 +88,7 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Long>, JpaSp
                     AND se <> :staffEntity
             """)
     void upgradeStaffToManager(StaffEntity staffEntity, Long hospitalEntityId, Long departmentEntityId);
+
+    boolean existsByIdAndStaffStatus(Long id, StaffStatus staffStatus);
 }
 

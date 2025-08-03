@@ -24,16 +24,16 @@ public enum Language {
         return language;
     }
 
-    public static Optional<Language> getLanguae(String input){
-        for(Language language : Language.values()){
-            if(language.getLanguage().equalsIgnoreCase(input)){
+    public static Optional<Language> getLanguae(String input) {
+        for (Language language : Language.values()) {
+            if (language.getLanguage().equalsIgnoreCase(input)) {
                 return Optional.of(language);
             }
         }
         return Optional.empty();
     }
 
-    public static String getAllLanguage(){
+    public static String getAllLanguage() {
         return Arrays.stream(Language.values())
                 .map(i -> "- " + i.getLanguage())
                 .collect(Collectors.joining("\n"));

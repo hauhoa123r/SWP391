@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
@@ -60,4 +61,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     boolean existsByEmailAndUserStatus(String email, UserStatus userStatus);
 
     boolean existsByPhoneNumberAndUserStatus(String phoneNumber, UserStatus userStatus);
+
+    Optional<UserEntity> findByIdAndUserStatus(Long id, UserStatus userStatus);
 }

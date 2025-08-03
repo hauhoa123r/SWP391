@@ -5,13 +5,13 @@ import lombok.Getter;
 @Getter
 
 public enum DoctorRank {
-    INTERN("Intern"),
-    RESIDENT("Resident"),
-    ATTENDING("Attending"),
-    SPECIALIST("Specialist"),
-    SENIOR_SPECIALIST("Senior Specialist"),
-    CONSULTANT("Consultant"),
-    CHIEF_PHYSICIAN("Chief Physician");
+    INTERN("Thực tập sinh"),
+    RESIDENT("Nội trú"),
+    ATTENDING("Điều trị"),
+    SPECIALIST("Chuyên khoa"),
+    SENIOR_SPECIALIST("Chuyên khoa cao cấp"),
+    CONSULTANT("Tư vấn"),
+    CHIEF_PHYSICIAN("Trưởng khoa");
 
     private final String rank;
 

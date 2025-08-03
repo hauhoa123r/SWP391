@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum StaffStatus {
-    ACTIVE("ACTIVE"),
-    INACTIVE("INACTIVE");
+    ACTIVE("Hoạt động"),
+    INACTIVE("Không hoạt động");
 
     private final String status;
 }

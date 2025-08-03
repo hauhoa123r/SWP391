@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 
 public enum QualificationType {
-    DEGREE("DEGREE"),
-    CERTIFICATE("CERTIFICATE"),
-    LICENSE("LICENSE"),
-    AWARD("AWARD");
+    DEGREE("Bằng cấp"),
+    CERTIFICATE("Chứng chỉ"),
+    LICENSE("Giấy phép"),
+    AWARD("Giải thưởng");
 
     private final String value;
 

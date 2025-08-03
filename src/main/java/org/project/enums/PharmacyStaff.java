@@ -1,10 +1,10 @@
 package org.project.enums;
 
 public enum PharmacyStaff {
-    PHARMACIST("pharmacist"),
-    CASHIRER("cashier"),
-    INVENTORY_MANAGER("inventory_manager"),
-    DELIVERY("delivery");
+    PHARMACIST("Dược sĩ"),
+    CASHIRER("Thu ngân"),
+    INVENTORY_MANAGER("Quản lý kho"),
+    DELIVERY("Giao hàng");
 
     private final String value;
 
