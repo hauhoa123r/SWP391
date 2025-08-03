@@ -128,8 +128,8 @@ export function renderStaffResponseForAdmin(staffResponse) {
                 <span data-name="fullName" class="fw-semibold">${staffResponse.fullName}</span>
             </div>
         </td>
-        <td data-name="userEntityEmail">${staffResponse.userEntityEmail}</td>
-        <td data-name="userEntityPhoneNumber">${staffResponse.userEntityPhoneNumber}</td>
+        <td data-name="email">${staffResponse.userEntityEmail}</td>
+        <td data-name="phoneNumber">${staffResponse.userEntityPhoneNumber}</td>
         <td data-name="hireDate" data-value="${staffResponse.hireDate}">${FormatUtils.formatDate(staffResponse.hireDate)}</td>
         <td data-name="departmentEntityId">${staffResponse.departmentEntity.name}</td>
         <td data-name="hospitalEntityId">${staffResponse.hospitalEntityName}</td>

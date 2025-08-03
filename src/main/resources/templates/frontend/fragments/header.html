@@ -107,60 +107,8 @@
                     </button>
                     <div class="collapse navbar-collapse"
                          id="navbarSupportedContent">
-                        <ul
-                                class="navbar-nav align-items-center ms-auto mb-2 mb-xl-0">
-                            <li class="nav-item dropdown iq-responsive-menu">
-                                <a class="nav-link" data-bs-toggle="dropdown" href="#"
-                                   id="search-drop">
-                                    <div class="btn-icon btn-sm rounded-pill btn-action">
-                                        <span class="btn-inner">
-                                           <svg class="icon-20" fill="none"
-                                                viewBox="0 0 24 24" width="20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                              <circle cx="11.7669" cy="11.7666"
-                                                      r="8.98856" stroke="currentColor"
-                                                      stroke-linecap="round" stroke-linejoin="round"
-                                                      stroke-width="1.5">
-                                              </circle>
-                                              <path d="M18.0186 18.4851L21.5426 22"
-                                                    stroke="currentColor"
-                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="1.5">
-                                              </path>
-                                           </svg>
-                                        </span>
-                                    </div>
-                                </a>
-                                <ul
-                                        class="dropdown-menu dropdown-menu-end p-0 dropdown-search"
-                                        style="width: 20rem;">
-                                    <li class="p-0">
-                                        <div class="form-group input-group mb-0">
-                                            <input class="form-control border-0"
-                                                   placeholder="Search..."
-                                                   type="text">
-                                            <span class="input-group-text border-0">
-                                              <svg class="icon-20" fill="none" height="20"
-                                                   viewBox="0 0 24 24"
-                                                   width="20"
-                                                   xmlns="http://www.w3.org/2000/svg">
-                                                 <circle cx="11.7669" cy="11.7666"
-                                                         r="8.98856" stroke="currentColor"
-                                                         stroke-linecap="round"
-                                                         stroke-linejoin="round"
-                                                         stroke-width="1.5"></circle>
-                                                 <path d="M18.0186 18.4851L21.5426 22"
-                                                       stroke="currentColor"
-                                                       stroke-linecap="round"
-                                                       stroke-linejoin="round"
-                                                       stroke-width="1.5"></path>
-                                              </svg>
-                                           </span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
+                        <ul class="navbar-nav align-items-center ms-auto mb-2 mb-xl-0">
+                            <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                                 <a class="nav-link" data-bs-toggle="dropdown" href="#"
                                    id="cart-drop">
                                     <div

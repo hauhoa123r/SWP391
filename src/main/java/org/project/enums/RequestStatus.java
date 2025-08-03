@@ -1,8 +1,7 @@
 package org.project.enums;
 
-
 public enum RequestStatus {
-    collected("đã lấy mẫu"),
+    collected("Đã nhận"),
     pending("Chờ xử lý"),
     received("Đã nhận"),
     processing("Đang xử lý"),

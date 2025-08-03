@@ -673,34 +673,67 @@
             });
 
         // === DYNAMIC INPUTS (STEP 2) ===
-        function addDynamic(container, type, label) {
-            const last = container.querySelector('input.dynamic-input:last-of-type');
-            if (!last || !last.value.trim()) return;
-            const idx = container.querySelectorAll('input.dynamic-input').length + 1;
-            const wrap = document.createElement('div');
-            wrap.className = 'form-floating mt-2';
-            wrap.innerHTML = `
-        <input type="text" class="form-control dynamic-input"
-               id="${type}${idx}" name="${type}[]" placeholder="${label} ${idx}">
-        <label for="${type}${idx}">${idx}. ${label}</label>`;
-            container.append(wrap);
+        function updateLabels(container, type, label) {
+            const inputs = container.querySelectorAll('input.dynamic-input');
+            inputs.forEach((input, index) => {
+                const newId = `${type}${index+1}`;
+                input.id = newId;
+                const labelElement = input.nextElementSibling;
+                if (labelElement && labelElement.tagName === 'LABEL') {
+                    labelElement.htmlFor = newId;
+                    labelElement.textContent = `${index+1}. ${label}`;
+                }
+            });
         }
+        function addDynamic(container, type, label) {
+            const inputs = container.querySelectorAll('input.dynamic-input');
+            const lastInput = inputs[inputs.length - 1];
+
+            // Chỉ thêm input mới nếu ô cuối cùng có nội dung
+            if (lastInput && lastInput.value.trim() !== '') {
+                const wrap = document.createElement('div');
+                wrap.className = 'form-floating mt-2';
+                wrap.innerHTML = `
+            <input type="text" class="form-control dynamic-input"
+                   name="${type}[]" placeholder="${label}">
+            <label>${label}</label>`;
+                container.append(wrap);
+
+                // Cập nhật lại số thứ tự
+                updateLabels(container, type, label);
+            }
+        }
+
         ['allergiesContainer', 'chronicContainer'].forEach(id => {
             const cont = document.getElementById(id);
             if (!cont) return;
-            const type = id === 'allergiesContainer' ? 'allergies' : 'chronicDiseases';
+            const type = id === 'allergiesContainer' ? 'allergyInput' : 'chronicInput';
             const label = id === 'allergiesContainer' ? 'Dị ứng' : 'Bệnh mãn tính';
+
             cont.addEventListener('input', e => {
                 if (!e.target.classList.contains('dynamic-input')) return;
                 validateField(e.target);
-                addDynamic(cont, type, label);
-            });
-            cont.addEventListener('blur', e => {
-                if (e.target.classList.contains('dynamic-input') && !e.target.value.trim()
-                    && cont.querySelectorAll('input.dynamic-input').length > 1) {
-                    e.target.closest('.form-floating').remove();
+
+                // Chỉ xử lý nếu đây là ô input cuối cùng
+                const inputs = cont.querySelectorAll('input.dynamic-input');
+                const lastInput = inputs[inputs.length - 1];
+                if (e.target === lastInput) {
+                    addDynamic(cont, type, label);
                 }
-            }, true);
+            });
+
+            cont.addEventListener('blur', e => {
+                if (e.target.classList.contains('dynamic-input')) {
+                    const inputs = cont.querySelectorAll('input.dynamic-input');
+
+                    // Nếu ô đang blur trống và không phải là ô cuối cùng và có nhiều hơn 1 ô
+                    if (e.target.value.trim() === '' && inputs.length > 1 && e.target !== inputs[inputs.length - 1]) {
+                        e.target.closest('.form-floating').remove();
+                        // Sau khi xóa, cập nhật lại số thứ tự của các ô
+                        updateLabels(cont, type, label);
+                    }
+                }
+            }, true); // Sử dụng capture phase để xử lý blur
         });
 
         // === MULTI-STEP FORM ===
