@@ -198,6 +198,7 @@ public class CouponServiceImpl implements CouponService {
         dto.setMinimumOrderAmount(entity.getMinimumOrderAmount());
         dto.setExpirationDate(entity.getExpirationDate());
         dto.setDiscountType(entity.getDiscountType());
+        dto.setCouponStatus(entity.getStatus()); // Thêm dòng này để set couponStatus
 
         // Tính toán các trường bổ sung
         Date today = new Date(System.currentTimeMillis());
@@ -225,6 +226,11 @@ public class CouponServiceImpl implements CouponService {
         entity.setMinimumOrderAmount(dto.getMinimumOrderAmount());
         entity.setExpirationDate(dto.getExpirationDate());
         entity.setDiscountType(dto.getDiscountType());
+        
+        // Lưu status từ DTO
+        if (dto.getCouponStatus() != null) {
+            entity.setStatus(dto.getCouponStatus());
+        }
 
         return entity;
     }
@@ -262,11 +268,11 @@ public class CouponServiceImpl implements CouponService {
         CouponEntity existingCoupon = couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Coupon not found with ID: " + id));
 
-        // Kiểm tra nếu code thay đổi và code mới đã tồn tại
-        if (!existingCoupon.getCode().equals(couponDTO.getCode()) &&
-                couponRepository.existsByCode(couponDTO.getCode())) {
-            throw new IllegalArgumentException("Coupon code already exists: " + couponDTO.getCode());
-        }
+//        // Kiểm tra nếu code thay đổi và code mới đã tồn tại
+//        if (!existingCoupon.getCode().equals(couponDTO.getCode()) &&
+//                couponRepository.existsByCode(couponDTO.getCode())) {
+//            throw new IllegalArgumentException("Coupon code already exists: " + couponDTO.getCode());
+//        }
 
         // Cập nhật thông tin
         existingCoupon.setCode(couponDTO.getCode());
@@ -275,6 +281,7 @@ public class CouponServiceImpl implements CouponService {
         existingCoupon.setMinimumOrderAmount(couponDTO.getMinimumOrderAmount());
         existingCoupon.setExpirationDate(couponDTO.getExpirationDate());
         existingCoupon.setDiscountType(couponDTO.getDiscountType());
+        existingCoupon.setStatus(couponDTO.getCouponStatus());
 
         CouponEntity updatedEntity = couponRepository.save(existingCoupon);
         return convertToDTO(updatedEntity);
@@ -287,7 +294,22 @@ public class CouponServiceImpl implements CouponService {
             throw new IllegalArgumentException("Coupon not found with ID: " + id);
         }
 
-        couponRepository.deleteById(id);
+        couponRepository.deleteCouponEntityById(id);
+    }
+    
+    @Override
+    @Transactional
+    public void softDeleteCoupon(Long id) {
+        CouponEntity coupon = couponRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Coupon not found with ID: " + id));
+        
+        // Đặt trạng thái thành INACTIVE
+        coupon.setStatus(org.project.enums.CouponStatus.INACTIVE);
+        
+        // Lưu lại vào database
+        couponRepository.save(coupon);
+        
+        log.info("Soft deleted coupon with ID: {}", id);
     }
 
     @Override
@@ -303,6 +325,63 @@ public class CouponServiceImpl implements CouponService {
         Date today = new Date(System.currentTimeMillis());
         Page<CouponEntity> couponPage = couponRepository.findByExpirationDateGreaterThanEqual(today, pageable);
 
+        return couponPage.map(this::convertToDTO);
+    }
+
+    @Override
+    public Page<CouponDTO> findCouponsByDiscountType(DiscountType discountType, int page, int size, String sortBy, String sortDir) {
+        log.info("Finding coupons with discount type: {}", discountType);
+        
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) 
+                ? Sort.by(sortBy).ascending() 
+                : Sort.by(sortBy).descending();
+                
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<CouponEntity> couponPage = couponRepository.findByDiscountType(discountType, pageable);
+        
+        return couponPage.map(this::convertToDTO);
+    }
+
+    @Override
+    public Page<CouponDTO> findCouponsWithFilters(String status, String discountTypeStr, String keyword, 
+                                            int page, int size, String sortBy, String sortDir) {
+        // Gọi phương thức overload với includeInactive=false
+        return findCouponsWithFilters(status, discountTypeStr, keyword, page, size, sortBy, sortDir, false);
+    }
+
+    @Override
+    public Page<CouponDTO> findCouponsWithFilters(String status, String discountTypeStr, String keyword, 
+                                            int page, int size, String sortBy, String sortDir, boolean includeInactive) {
+        log.info("Finding coupons with filters: status={}, discountType={}, keyword={}, includeInactive={}",
+                status, discountTypeStr, keyword, includeInactive);
+        
+        Sort sort = createSort(sortBy, sortDir);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        
+        // Parse discount type if provided
+        DiscountType discountType = null;
+        if (discountTypeStr != null && !discountTypeStr.isEmpty()) {
+            try {
+                discountType = DiscountType.valueOf(discountTypeStr);
+            } catch (IllegalArgumentException e) {
+                log.warn("Invalid discount type: {}", discountTypeStr);
+            }
+        }
+        
+        // Parse status flags
+        boolean validOnly = "valid".equals(status);
+        boolean expiredOnly = "expired".equals(status);
+        
+        // Get current date for expiry check
+        Date today = new Date(System.currentTimeMillis());
+        
+        // Execute query with all filters
+        Page<CouponEntity> couponPage = couponRepository.findWithFilters(
+                discountType, validOnly, expiredOnly, today, 
+                keyword != null && !keyword.isEmpty() ? keyword : null,
+                includeInactive, 
+                pageable);
+        
         return couponPage.map(this::convertToDTO);
     }
 }

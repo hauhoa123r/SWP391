@@ -38,7 +38,7 @@ public class CartController {
     private final CartService cartService;
     private final ProductRepository productRepository;
     //hard-code userId
-    Long userId = 10L;
+    Long userId = 4L;
     
 
 
@@ -46,7 +46,7 @@ public class CartController {
     // including the total amount of money and number of item in cart
     @GetMapping
     public String viewCart(Model model, HttpSession session) {
-        Long userId = 10L;
+        Long userId = 4L;
         List<CartItemEntity> cartItems = cartService.getCart(userId);
         BigDecimal totalBigDecimal = cartItems.stream()
             .map(item -> item.getProductEntity().getPrice().multiply(new BigDecimal(item.getQuantity())))
@@ -86,7 +86,7 @@ public class CartController {
                             @RequestParam(value = "quantity", defaultValue = "1") int quantity,
                             HttpSession session,
                             RedirectAttributes redirectAttributes) {
-        Long userId = 10L;
+        Long userId = 4L;
         logger.info("Adding product {} with quantity {} to cart for user {}", productId, quantity, userId);
         try {
             cartService.addItem(userId, productId, quantity);
@@ -100,21 +100,23 @@ public class CartController {
     }
 
     @PostMapping("/update")
-    public String updateCart(@RequestParam("productId") Long productId,
+    public String updateCart(@RequestParam("cartId") Long productId,
                              @RequestParam("quantity") int quantity,
                              HttpSession session,
                              RedirectAttributes redirectAttributes) {
-        Long userId = 10L;
+        Long userId = 4L;
         logger.info("Updating product {} quantity to {} in cart for user {}", productId, quantity, userId);
         try {
             CartItemEntityId id = new CartItemEntityId(productId, userId);
             CartItemEntity item = cartService.getItemById(id);
-            if (item != null) {
+            if (item != null && item.getQuantity() < item.getProductEntity().getStockQuantities()) {
                 item.setQuantity(quantity);
                 cartService.updateItem(item);
                 logger.info("Product {} quantity updated to {} in cart for user {}", productId, quantity, userId);
+                redirectAttributes.addFlashAttribute("success", "Giỏ hàng đã được cập nhật!");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Số lượng phải nhỏ hơn số lượng tồn kho.");
             }
-            redirectAttributes.addFlashAttribute("success", "Giỏ hàng đã được cập nhật!");
         } catch (Exception e) {
             logger.error("Error updating product {} quantity in cart for user {}: {}", productId, userId, e.getMessage());
             redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật giỏ hàng: " + e.getMessage());
@@ -126,7 +128,7 @@ public class CartController {
     public String removeFromCart(@RequestParam("productId") Long productId,
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes) {
-        Long userId = 10L;
+        Long userId = 4L;
         logger.info("Removing product {} from cart for user {}", productId, userId);
         try {
             cartService.removeItem(userId, productId);
@@ -194,22 +196,58 @@ public class CartController {
         return response;
     }
 
+//    @PostMapping("/update-quantity")
+//    public String updateQuantity(@RequestParam("cartId") Long productId,
+//                                 @RequestParam("quantity") int quantity,
+//                                 HttpSession session,
+//                                 RedirectAttributes redirectAttributes) {
+//        Long userId = 4L;
+//        logger.info("Updating product {} quantity to {} in cart for user {}", productId, quantity, userId);
+//        try {
+//            CartItemEntityId id = new CartItemEntityId(productId, userId);
+//            CartItemEntity item = cartService.getItemById(id);
+//            if (item != null && quantity > 0) {
+//                item.setQuantity(quantity);
+//                cartService.updateItem(item);
+//                logger.info("Product {} quantity updated to {} in cart for user {}", productId, quantity, userId);
+//            }
+//            redirectAttributes.addFlashAttribute("success", "Số lượng sản phẩm đã được cập nhật!");
+//        } catch (Exception e) {
+//            logger.error("Error updating product {} quantity in cart for user {}: {}", productId, userId, e.getMessage());
+//            redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật số lượng sản phẩm: " + e.getMessage());
+//        }
+//        return "redirect:/cart";
+//    }
+
     @PostMapping("/update-quantity")
-    public String updateQuantity(@RequestParam("productId") Long productId,
-                                 @RequestParam("quantity") int quantity,
+    public String updateQuantity(@RequestParam("cartId") Long productId,
+                                 @RequestParam("quantity") int currentQuantity,
+                                 @RequestParam("action") String action,
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes) {
-        Long userId = 10L;
-        logger.info("Updating product {} quantity to {} in cart for user {}", productId, quantity, userId);
+        Long userId = 4L;
+        logger.info("Updating product {} with action {} for user {}", productId, action, userId);
         try {
             CartItemEntityId id = new CartItemEntityId(productId, userId);
             CartItemEntity item = cartService.getItemById(id);
-            if (item != null && quantity > 0) {
-                item.setQuantity(quantity);
-                cartService.updateItem(item);
-                logger.info("Product {} quantity updated to {} in cart for user {}", productId, quantity, userId);
+            if (item != null) {
+                int newQuantity = currentQuantity;
+                if ("increment".equals(action)) {
+                    newQuantity = item.getQuantity() + 1;
+                } else if ("decrement".equals(action)) {
+                    newQuantity = item.getQuantity() - 1;
+                }
+                if (newQuantity > 0 && item.getProductEntity().getStockQuantities() > newQuantity) {
+                    item.setQuantity(newQuantity);
+                    cartService.updateItem(item);
+                    logger.info("Product {} quantity updated to {} in cart for user {}", productId, newQuantity, userId);
+                    redirectAttributes.addFlashAttribute("success", "Số lượng sản phẩm đã được cập nhật!");
+                } else if (newQuantity >= item.getProductEntity().getStockQuantities()) {
+                    redirectAttributes.addFlashAttribute("error", "Số lượng phải nhỏ hơn số lượng tồn kho!!");
+                } else {
+                    redirectAttributes.addFlashAttribute("error", "Số lượng phải lớn hơn 0!!");
+                }
             }
-            redirectAttributes.addFlashAttribute("success", "Số lượng sản phẩm đã được cập nhật!");
         } catch (Exception e) {
             logger.error("Error updating product {} quantity in cart for user {}: {}", productId, userId, e.getMessage());
             redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật số lượng sản phẩm: " + e.getMessage());

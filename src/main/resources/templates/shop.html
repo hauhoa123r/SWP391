@@ -75,7 +75,7 @@
                                 </button>
                             </div>
                         </form>
-                        <h4 class="product-title mb-4">Product Categories</h4>
+                        <h4 class="product-title mb-4">Phân loại</h4>
                         <ul class="p-0 mb-5 list-unstyled">
                             <li class="shop-cat-item border-0 pb-0"
                                 th:classappend="${category.id == categoryId} ? ' active-cat'"
@@ -91,7 +91,7 @@
                                       th:text="'(' + (${category.productCount} != null ? ${category.productCount} : 0) + ')'">(0)</span>
                             </li>
                         </ul>
-                        <h4 class="product-title mb-4">Price Filter</h4>
+                        <h4 class="product-title mb-4">Giá tiền</h4>
                         <form class="mb-5" method="get" th:action="@{/shop}">
                             <input name="search" th:value="${search}" type="hidden">
                             <input name="categoryId" th:value="${categoryId}" type="hidden">
@@ -109,7 +109,7 @@
                         </form>
                     </div>
                     <div class="product-list-widget p-3 p-md-4 bg-primary-subtle mb-5">
-                        <h4 class="product-title mb-4">Top Rated Products</h4>
+                        <h4 class="product-title mb-4">Các sản phẩm được đánh giá cao</h4>
                         <ul class="p-0 m-0">
                             <li class="d-flex align-items-center gap-3 border-0 mb-4" th:each="p : ${topProducts}">
                                 <div class="img-holder">
@@ -138,7 +138,7 @@
                         </ul>
                     </div>
                     <div class="widget widget_tags p-3 p-md-4 bg-primary-subtle">
-                        <h4 class="product-title mb-4">Tags</h4>
+                        <h4 class="product-title mb-4">Nhãn</h4>
                         <ul class="p-0 m-0 list-unstyled">
                             <!-- "All" option -->
                             <li class="cat-item mb-0 pb-0 border-0 d-inline"
@@ -171,7 +171,7 @@
                                     <input name="page" th:value="${productPage.getNumber()}" type="hidden">
                                     <input name="categoryId" th:value="${categoryId != null ? categoryId : ''}"
                                            type="hidden">
-                                    <label class="me-2" for="size">Items per page:</label>
+                                    <label class="me-2" for="size">Số sản phẩm trên 1 trang:</label>
                                     <select class="form-select d-inline-block w-auto" id="size" name="size"
                                             onchange="this.form.submit()">
                                         <option th:selected="${productPage.getSize() == 18}" value="18"18</option>
@@ -337,16 +337,15 @@
                                         <input name="search" th:value="${search}" type="hidden">
                                         <select class="select2-basic-single js-states" name="sort"
                                                 onchange="document.getElementById('sortForm').submit()">
-                                            <option disabled hidden selected value="">Sort by...</option>
-                                            <option th:selected="${selectedSort == 'DEFAULT'}" value="DEFAULT">Default
+                                            <option disabled hidden selected value="">Lọc bằng..</option>
+                                            <option th:selected="${selectedSort == 'DEFAULT'}" value="DEFAULT">Mặc định
                                             </option>
-                                            <option th:selected="${selectedSort == 'RATING'}" value="RATING">rating
+                                            <option th:selected="${selectedSort == 'RATING'}" value="RATING">Lượt đánh goá
                                             </option>
-                                            <option th:selected="${selectedSort == 'PRICE_ASC'}" value="PRICE_ASC">low
-                                                to high
+                                            <option th:selected="${selectedSort == 'PRICE_ASC'}" value="PRICE_ASC">Giá tiền từ thấp đến cao
                                             </option>
                                             <option th:selected="${selectedSort == 'PRICE_DESC'}" value="PRICE_DESC">
-                                                high to low
+                                                Giá tiền từ cao xuống thấp
                                             </option>
                                         </select>
                                     </form>
@@ -488,7 +487,7 @@
                                                             </ul>
                                                         </div>
                                                         <p class="product-desc mt-4 mb-0"
-                                                           th:text="${product.description}">Product Description</p>
+                                                           th:text="${product.description}">Mô tả sản phẩm</p>
                                                     </div>
                                                 </div>
                                             </div>

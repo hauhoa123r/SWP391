@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.project.enums.CouponStatus;
 import org.project.enums.DiscountType;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ public class CouponDTO {
     private BigDecimal minimumOrderAmount;
     private Date expirationDate;
     private DiscountType discountType;
+    private CouponStatus couponStatus;
     
     // Các trường bổ sung cho hiển thị trên UI
     private boolean isValid; // Đánh dấu coupon còn hạn hay không

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.ColumnDefault;
+import org.project.enums.CouponStatus;
 import org.project.enums.DiscountType;
 
 import java.math.BigDecimal;
@@ -55,10 +56,16 @@ public class CouponEntity {
     @Column(name = "discount_type", nullable = false)
     private DiscountType discountType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private CouponStatus status = CouponStatus.ACTIVE; // Giá trị mặc định
+
     @OneToMany
+    @JoinColumn(name = "coupon_id")
     private Set<OrderEntity> orderEntities = new LinkedHashSet<>();
 
     @OneToMany
+    @JoinColumn(name = "coupon_id", referencedColumnName = "coupon_id", updatable = false)
     private Set<UserCouponEntity> userCouponEntities = new LinkedHashSet<>();
     
 }
