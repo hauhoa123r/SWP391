@@ -13,11 +13,14 @@ import org.project.model.dto.SupplierRequestItemDTO;
 import org.project.model.dto.SupplierTransactionDTO;
 import org.project.repository.ProductRepository;
 import org.project.repository.SupplierEntityRepository;
+import org.project.security.AccountDetails;
 import org.project.service.SupplierInInvoiceService;
 import org.project.service.SupplierInService;
 import org.project.service.SupplierOutInvoiceService;
 import org.project.utils.LogUtils;
 import org.springframework.data.domain.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -1019,8 +1022,10 @@ public class SupplierInController {
     private Object getCurrentUser() {
         // TODO: Implement proper user authentication
         // For now, return a simple object with required properties
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
         return new Object() {
-            public Long getId() { return 256L; }
+            public Long getId() { return accountDetails.getUserEntity().getId(); }
             public String getFullName() { return "Người dùng"; }
             public String getRoleName() { return "STAFF"; }
             public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }

@@ -1126,7 +1126,7 @@
                                 </div>
                             </div>
                             <!-- Card style end here -->
-
+                            <input type="hidden" th:value="${doctorId}" id="doctorId">
 
                             <hr class="hr-horizontal">
 
@@ -1400,7 +1400,7 @@
     let currentPage = 1;
     let searchKeyword = "";
     let totalPages = 1;
-
+    let doctorId = $('#doctorId').val();
     function debounce(func, wait) {
         let timeout;
         return function (...args) {
@@ -1438,7 +1438,8 @@
             data: {
                 page: currentPage - 1,
                 size: 6,
-                name: searchKeyword
+                name: searchKeyword,
+                doctorId: doctorId
             },
             success: function (res) {
                 console.log('API response:', res); // Debug

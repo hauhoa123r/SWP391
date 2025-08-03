@@ -3,7 +3,9 @@ package org.project.controller;
 import org.project.converter.DoctorExaminationConverter;
 import org.project.converter.DoctorHomePageConverter;
 import org.project.model.response.DoctorExaminationResponse;
+import org.project.security.AccountDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +21,9 @@ public class DoctorExaminationController {
     private DoctorExaminationConverter doctorExaminationConverter;
 
     @GetMapping("/doctor/homepage")
-    public ModelAndView doctorHomepage() {
+    public ModelAndView doctorHomepage(@AuthenticationPrincipal AccountDetails accountDetails) {
         ModelAndView mv = new ModelAndView("/dashboard-doctor/index");
-        mv.addObject("doctorHomePage", doctorHomePageConverter.doctorHomepageResponse(60L));
+        mv.addObject("doctorHomePage", doctorHomePageConverter.doctorHomepageResponse(accountDetails.getUserEntity().getId()));
         return mv;
     }
 
@@ -40,14 +42,16 @@ public class DoctorExaminationController {
     }
 
     @GetMapping("/doctor/appointment")
-    public ModelAndView doctorAppointment() {
+    public ModelAndView doctorAppointment(@AuthenticationPrincipal AccountDetails accountDetails) {
         ModelAndView mv = new ModelAndView("/dashboard-doctor/appointment");
+        mv.addObject("doctorId", accountDetails.getUserEntity().getStaffEntity().getId());
         return mv;
     }
 
     @GetMapping("/doctor/result")
-    public ModelAndView doctorReview() {
+    public ModelAndView doctorReview(@AuthenticationPrincipal AccountDetails accountDetails) {
         ModelAndView mv = new ModelAndView("/dashboard-doctor/result");
+        mv.addObject("doctorId", accountDetails.getUserEntity().getStaffEntity().getId());
         return mv;
     }
 

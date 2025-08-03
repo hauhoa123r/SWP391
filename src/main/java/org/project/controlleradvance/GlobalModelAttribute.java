@@ -3,6 +3,7 @@ package org.project.controlleradvance;
 import org.project.entity.CartItemEntity;
 import org.project.entity.NotificationEntity;
 import org.project.model.response.NotificationResponse;
+import org.project.security.AccountDetails;
 import org.project.service.CartService;
 import org.project.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,23 +99,7 @@ public class GlobalModelAttribute {
      */
     private Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && 
-            !"anonymousUser".equals(authentication.getPrincipal())) {
-            
-            // Nếu sử dụng AccountDetails
-            if (authentication.getPrincipal() instanceof org.project.security.AccountDetails) {
-                org.project.security.AccountDetails accountDetails = 
-                    (org.project.security.AccountDetails) authentication.getPrincipal();
-                return accountDetails.getUserEntity().getId();
-            }
-            
-            // Fallback: nếu có user ID trong principal
-            if (authentication.getPrincipal() instanceof org.project.entity.UserEntity) {
-                return ((org.project.entity.UserEntity) authentication.getPrincipal()).getId();
-            }
-        }
-        
-        // Fallback cho trường hợp chưa đăng nhập hoặc test
-        return 2L; // Default user ID cho test
+        AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
+        return accountDetails.getUserEntity().getId();
     }
 } 

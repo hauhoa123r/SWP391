@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.project.entity.UserEntity;
+import org.project.enums.StaffRole;
+import org.project.enums.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +26,13 @@ public class AccountDetails implements UserDetails, OidcUser {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + userEntity.getRole()));
+        if (userEntity.getUserRole() == UserRole.STAFF &&
+                userEntity.getStaffEntity() != null &&
+                userEntity.getStaffEntity().getStaffRole() != null) {
+
+            return List.of(new SimpleGrantedAuthority("ROLE_" + userEntity.getStaffEntity().getStaffRole().name()));
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_" + userEntity.getUserRole().name()));
     }
 
     @Override

@@ -3,7 +3,10 @@ package org.project.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.model.response.PharmacyResponse;
+import org.project.security.AccountDetails;
 import org.project.service.WishlistService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -163,6 +166,8 @@ public class WishlistController {
     /** Get current authenticated user ID from session */
     private Long getCurrentUserId(HttpSession session) {
         log.info("Getting current user ID from session, session id: {}", session.getId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
         // Log tất cả các attribute trong session để debug
         Enumeration<String> attributeNames = session.getAttributeNames();
         log.info("Session attributes:");
@@ -176,13 +181,7 @@ public class WishlistController {
             }
         }
         // TODO: Replace with authenticated user ID once security is integrated
-        Long userId = (Long) session.getAttribute("userId");
-        if (userId == null) {
-            log.warn("No userId found in session, using default value and setting it");
-            userId = 1L; // Default for demo, replace with proper authentication
-            session.setAttribute("userId", userId);
-            // TODO: Ensure this matches a valid user ID in your database
-        }
+        Long userId = (Long) accountDetails.getUserEntity().getId();
         log.info("Returning userId: {}", userId);
         return userId;
     }

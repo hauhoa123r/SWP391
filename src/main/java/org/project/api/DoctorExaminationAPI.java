@@ -29,7 +29,6 @@ public class DoctorExaminationAPI {
 
     @GetMapping("/appointment/filter")
     public Page<AppointmentFilterResponse> filterAppointment(@ModelAttribute AppointmentFilterDTO appointmentFilterDTO){
-        appointmentFilterDTO.setDoctorId(60L);
         Page<AppointmentFilterResponse> appointmentEntities = appointmentExaminationService.getAppointmentExamination(appointmentFilterDTO);
         return appointmentEntities;
     }
@@ -109,7 +108,6 @@ public class DoctorExaminationAPI {
 
     @GetMapping("/appointment/complete/filter")
     public Page<AppointmentFilterResponse> filterAppointmentComplete(@ModelAttribute AppointmentFilterDTO appointmentFilterDTO){
-        appointmentFilterDTO.setDoctorId(60L);
         Page<AppointmentFilterResponse> appointmentEntities = appointmentExaminationService.getAppointmentCompleted(appointmentFilterDTO);
         return appointmentEntities;
     }

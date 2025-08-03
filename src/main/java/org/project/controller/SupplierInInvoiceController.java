@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.enums.SupplierTransactionStatus;
 import org.project.model.dto.SupplierInDTO;
+import org.project.security.AccountDetails;
 import org.project.service.SupplierInService;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -230,8 +233,10 @@ public class SupplierInInvoiceController {
     private Object getCurrentUser() {
         // TODO: Implement proper user authentication
         // For now, return a simple object with required properties
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
         return new Object() {
-            public Long getId() { return 256L; }
+            public Long getId() { return accountDetails.getUserEntity().getId(); }
             public String getFullName() { return "Người dùng"; }
             public String getRoleName() { return "STAFF"; }
             public String getAvatar() { return "/templates_storage/assets/images/avatar.png"; }

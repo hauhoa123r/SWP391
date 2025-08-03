@@ -81,7 +81,7 @@ public class HomeController {
         }
         // TODO: Sửa redirect cho các role STAFF
         Map<StaffRole, String> roleToRedirectStaff = Map.of(
-                StaffRole.DOCTOR, "redirect:/doctor",
+                StaffRole.DOCTOR, "redirect:/doctor/homepage",
                 StaffRole.PHARMACIST, "redirect:/staff/pharmacy",
                 StaffRole.TECHNICIAN, "redirect:/lab/homepage",
                 StaffRole.SCHEDULING_COORDINATOR, "redirect:/staff/coordinator/showPending",

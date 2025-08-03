@@ -42,7 +42,12 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/admin/**"
                                 ).hasRole("ADMIN")
-
+                                .requestMatchers(
+                                        "/lab/**"
+                                ).hasRole("TECHNICIAN")
+                                .requestMatchers(
+                                        "/doctor/**"
+                                ).hasRole("DOCTOR")
                                 .requestMatchers(
                                         "/patient/**",
                                         "/api/patient/**"
